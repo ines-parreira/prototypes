@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { ZENDESK_IMPORTED_TICKETS_FOR_YEARS } from 'config'
 import { IntegrationType, ZendeskIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'

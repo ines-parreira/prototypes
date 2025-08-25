@@ -2,7 +2,8 @@ import React, { FormEvent, useCallback } from 'react'
 
 import classNames from 'classnames'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'

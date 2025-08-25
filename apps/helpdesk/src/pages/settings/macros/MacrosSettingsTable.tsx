@@ -2,7 +2,7 @@ import { ComponentProps, useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
@@ -11,7 +11,6 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

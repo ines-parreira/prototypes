@@ -1,4 +1,4 @@
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 import {
     CreateCustomFieldCondition,
     CustomFieldCondition,
@@ -6,7 +6,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'
-import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'

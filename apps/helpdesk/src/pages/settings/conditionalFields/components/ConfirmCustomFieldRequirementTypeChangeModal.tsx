@@ -2,11 +2,11 @@ import React, { useCallback } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

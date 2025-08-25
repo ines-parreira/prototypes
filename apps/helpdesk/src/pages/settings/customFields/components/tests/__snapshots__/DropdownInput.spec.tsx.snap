@@ -26,11 +26,11 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     </span>
     <button
       aria-disabled="false"
-      class="wrapper import ghost primary small"
+      class="ui-button-wrapper-a432 import ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Import from CSV
       </span>

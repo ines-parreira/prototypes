@@ -15,6 +15,7 @@ import _uniqWith from 'lodash/uniqWith'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import {
     CreateMacroBody,
     type Language,
@@ -37,7 +38,6 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { isGorgiasApiError } from 'models/api/types'
 import { MacroDraft } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

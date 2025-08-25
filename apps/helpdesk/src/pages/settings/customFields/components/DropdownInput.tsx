@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from 'react'
 
 import uniqueId from 'lodash/uniqueId'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 import { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import {
@@ -15,7 +15,6 @@ import {
     CustomFieldObjectTypes,
     CustomFieldValue,
 } from 'custom-fields/types'
-import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import DropdownCSVImport from './DropdownCSVImport'

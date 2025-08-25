@@ -4,12 +4,11 @@ import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { Form } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ZendeskIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

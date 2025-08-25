@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
 import { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -17,7 +18,6 @@ import {
 } from 'custom-fields/types'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'

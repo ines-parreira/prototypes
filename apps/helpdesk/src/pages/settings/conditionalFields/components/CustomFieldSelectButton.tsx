@@ -1,6 +1,10 @@
 import React, { useMemo } from 'react'
 
-import { SelectField, type SelectFieldTriggerProps } from '@gorgias/axiom'
+import {
+    Button,
+    SelectField,
+    type SelectFieldTriggerProps,
+} from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -10,7 +14,6 @@ import {
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 
 const SelectTrigger = ({
     hasError: __hasError,

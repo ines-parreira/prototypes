@@ -306,22 +306,22 @@ exports[`SatisfactionSurveyView should render current survey settings form 1`] =
           </div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Save Changes
             </span>
           </button>
           <button
             aria-disabled="true"
-            class="wrapper fill secondary medium isDisabled"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Cancel
             </span>

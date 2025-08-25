@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'
-import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'

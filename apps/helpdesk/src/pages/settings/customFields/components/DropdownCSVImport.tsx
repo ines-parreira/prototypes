@@ -6,7 +6,7 @@ import { CsvError, parse } from 'csv-parse/sync'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -17,7 +17,6 @@ import {
 } from 'custom-fields/constants'
 import { CustomFieldObjectTypes } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'

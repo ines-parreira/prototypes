@@ -6,8 +6,9 @@ import _isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
 
+import { Button } from '@gorgias/axiom'
+
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Search from 'pages/common/components/Search'
 

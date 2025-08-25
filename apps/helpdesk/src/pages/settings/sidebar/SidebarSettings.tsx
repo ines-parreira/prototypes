@@ -4,11 +4,12 @@ import classNames from 'classnames'
 import { produce } from 'immer'
 import _isEqual from 'lodash/isEqual'
 
+import { Button } from '@gorgias/axiom'
+
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import settingsCss from 'pages/settings/settings.less'
