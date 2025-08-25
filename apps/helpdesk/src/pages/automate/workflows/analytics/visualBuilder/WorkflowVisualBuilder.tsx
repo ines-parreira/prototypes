@@ -1,6 +1,6 @@
 import '@xyflow/react/dist/style.css'
 
-import React, { Dispatch, useCallback, useMemo } from 'react'
+import React, { Dispatch, useCallback, useEffect, useMemo } from 'react'
 
 import {
     ControlButton,
@@ -9,7 +9,9 @@ import {
     ReactFlow,
     ReactFlowInstance,
     ReactFlowProvider,
+    useEdgesState,
     useNodesInitialized,
+    useNodesState,
     useReactFlow,
 } from '@xyflow/react'
 import classNames from 'classnames'
@@ -69,6 +71,20 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
     } = useWorkflowEditorContext()
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
+    const [nodes, setNodes, onNodesChange] = useNodesState<VisualBuilderNode>(
+        visualBuilderGraph.nodes,
+    )
+    const [edges, setEdges, onEdgesChange] = useEdgesState<VisualBuilderEdge>(
+        visualBuilderGraph.edges,
+    )
+
+    useEffect(() => {
+        setNodes(visualBuilderGraph.nodes)
+    }, [visualBuilderGraph.nodes, setNodes])
+
+    useEffect(() => {
+        setEdges(visualBuilderGraph.edges)
+    }, [visualBuilderGraph.edges, setEdges])
 
     const onDrawerTestEditorClose = useCallback(() => {
         setIsTesting(false)
@@ -77,13 +93,11 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
     const areNodesInitialized = useNodesInitialized()
 
     // for big flows we disable some features to improve performance
-    const isDegradedMode = visualBuilderGraph.nodes.length > 800
+    const isDegradedMode = nodes.length > 800
 
     const hasNodeWithShopperAuthentication = useMemo(() => {
-        return visualBuilderGraph.nodes.some(
-            (n) => n.type === 'shopper_authentication',
-        )
-    }, [visualBuilderGraph.nodes])
+        return nodes.some((n) => n.type === 'shopper_authentication')
+    }, [nodes])
 
     const reactFlowOnInit = useCallback(
         (instance: ReactFlowInstance<VisualBuilderNode, VisualBuilderEdge>) => {
@@ -127,8 +141,10 @@ export const WorkflowVisualBuilderWrapped: React.FC<Props> = () => {
                                 duration: 0,
                             }}
                             onlyRenderVisibleElements
-                            nodes={visualBuilderGraph.nodes}
-                            edges={visualBuilderGraph.edges}
+                            nodes={nodes}
+                            onNodesChange={onNodesChange}
+                            edges={edges}
+                            onEdgesChange={onEdgesChange}
                             edgeTypes={edgeTypes}
                             nodeTypes={nodeTypes}
                             minZoom={0.1}

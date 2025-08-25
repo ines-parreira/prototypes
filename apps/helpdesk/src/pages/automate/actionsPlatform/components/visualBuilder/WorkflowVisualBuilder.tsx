@@ -1,12 +1,14 @@
 import '@xyflow/react/dist/style.css'
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import {
     MiniMap,
     NodeMouseHandler,
     ReactFlow,
     ReactFlowProvider,
+    useEdgesState,
+    useNodesState,
 } from '@xyflow/react'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
@@ -32,6 +34,10 @@ import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import {
+    VisualBuilderEdge,
+    VisualBuilderNode,
+} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EditOrderNoteNode from '../../../workflows/editor/visualBuilder/nodes/EditOrderNoteNode'
 import VisualBuilderControls from './VisualBuilderControls'
@@ -72,6 +78,21 @@ const WorkflowVisualBuilder = ({
 }: Props) => {
     const { visualBuilderGraph, dispatch } = useVisualBuilderContext()
 
+    const [nodes, setNodes, onNodesChange] = useNodesState<VisualBuilderNode>(
+        visualBuilderGraph.nodes,
+    )
+    const [edges, setEdges, onEdgesChange] = useEdgesState<VisualBuilderEdge>(
+        visualBuilderGraph.edges,
+    )
+
+    useEffect(() => {
+        setNodes(visualBuilderGraph.nodes)
+    }, [visualBuilderGraph.nodes, setNodes])
+
+    useEffect(() => {
+        setEdges(visualBuilderGraph.edges)
+    }, [visualBuilderGraph.edges, setEdges])
+
     const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
         ? visualBuilderGraph.nodes.find(
               (n) => n.id === visualBuilderGraph.nodeEditingId,
@@ -108,8 +129,10 @@ const WorkflowVisualBuilder = ({
                             duration: 0,
                         }}
                         onlyRenderVisibleElements
-                        nodes={visualBuilderGraph.nodes}
-                        edges={visualBuilderGraph.edges}
+                        nodes={nodes}
+                        onNodesChange={onNodesChange}
+                        edges={edges}
+                        onEdgesChange={onEdgesChange}
                         edgeTypes={edgeTypes}
                         nodeTypes={nodeTypes}
                         minZoom={0.1}

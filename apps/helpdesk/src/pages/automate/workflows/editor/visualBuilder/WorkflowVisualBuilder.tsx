@@ -1,6 +1,6 @@
 import '@xyflow/react/dist/style.css'
 
-import React, { Dispatch, useCallback, useMemo } from 'react'
+import React, { Dispatch, useCallback, useEffect, useMemo } from 'react'
 
 import {
     ControlButton,
@@ -10,7 +10,9 @@ import {
     ReactFlow,
     ReactFlowInstance,
     ReactFlowProvider,
+    useEdgesState,
     useNodesInitialized,
+    useNodesState,
     useReactFlow,
 } from '@xyflow/react'
 import classNames from 'classnames'
@@ -89,11 +91,23 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
     const reactFlow = useReactFlow()
     const [searchParams] = useSearchParam('zoom')
     const theme = useTheme()
+    const [nodes, setNodes, onNodesChange] = useNodesState<VisualBuilderNode>(
+        visualBuilderGraph.nodes,
+    )
+    const [edges, setEdges, onEdgesChange] = useEdgesState<VisualBuilderEdge>(
+        visualBuilderGraph.edges,
+    )
+
+    useEffect(() => {
+        setNodes(visualBuilderGraph.nodes)
+    }, [visualBuilderGraph.nodes, setNodes])
+
+    useEffect(() => {
+        setEdges(visualBuilderGraph.edges)
+    }, [visualBuilderGraph.edges, setEdges])
 
     const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
-        ? visualBuilderGraph.nodes.find(
-              (n) => n.id === visualBuilderGraph.nodeEditingId,
-          )
+        ? nodes.find((n) => n.id === visualBuilderGraph.nodeEditingId)
         : null
 
     const onDrawerEditorClose = useCallback(() => {
@@ -117,13 +131,11 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
     const areNodesInitialized = useNodesInitialized()
 
     // for big flows we disable some features to improve performance
-    const isDegradedMode = visualBuilderGraph.nodes.length > 800
+    const isDegradedMode = nodes.length > 800
 
     const hasNodeWithShopperAuthentication = useMemo(() => {
-        return visualBuilderGraph.nodes.some(
-            (n) => n.type === 'shopper_authentication',
-        )
-    }, [visualBuilderGraph.nodes])
+        return nodes.some((n) => n.type === 'shopper_authentication')
+    }, [nodes])
 
     const reactFlowOnInit = useCallback(
         (instance: ReactFlowInstance<VisualBuilderNode, VisualBuilderEdge>) => {
@@ -167,8 +179,10 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
                                 duration: 0,
                             }}
                             onlyRenderVisibleElements
-                            nodes={visualBuilderGraph.nodes}
-                            edges={visualBuilderGraph.edges}
+                            nodes={nodes}
+                            onNodesChange={onNodesChange}
+                            edges={edges}
+                            onEdgesChange={onEdgesChange}
                             edgeTypes={edgeTypes}
                             nodeTypes={nodeTypes}
                             minZoom={0.1}
@@ -195,6 +209,7 @@ export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
                                     zoomable
                                     pannable
                                     position="top-left"
+                                    nodeStrokeWidth={3}
                                     className={css.minimap}
                                     maskColor={gorgiasColors.neutralGrey0}
                                     nodeColor={gorgiasColors.neutralGrey3}
