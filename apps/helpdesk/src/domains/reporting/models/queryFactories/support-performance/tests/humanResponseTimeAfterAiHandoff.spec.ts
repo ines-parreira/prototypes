@@ -21,23 +21,121 @@ describe('humanResponseTimeAfterAiHandoff', () => {
     const sorting = OrderDirection.Asc
 
     describe('base query factory', () => {
-        it('TODO: implement', () => {
+        it('creates valid query', () => {
             const actual = humanResponseTimeAfterAiHandoffQueryFactory(
                 statsFilters,
                 timezone,
                 sorting,
             )
 
-            expect(actual).toEqual({
-                measures: [],
+            const expected = {
+                measures: [
+                    'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                ],
                 dimensions: [],
-                filters: [],
-            })
+                timezone: 'someTimeZone',
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2025-01-01T00:00:00.000',
+                            '2025-01-07T23:59:59.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-01-07T23:59:59.000'],
+                    },
+                ],
+                order: [
+                    [
+                        'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                        'asc',
+                    ],
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('per agent query factory', () => {
+        it('creates valid query', () => {
+            const actual = humanResponseTimeAfterAiHandoffPerAgentQueryFactory(
+                statsFilters,
+                timezone,
+                sorting,
+            )
+
+            const expected = {
+                measures: [
+                    'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                ],
+                dimensions: [
+                    'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageUserId',
+                ],
+                timezone: 'someTimeZone',
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2025-01-01T00:00:00.000',
+                            '2025-01-07T23:59:59.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-01-07T23:59:59.000'],
+                    },
+                ],
+                order: [
+                    [
+                        'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                        'asc',
+                    ],
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 
     describe('per channel query factory', () => {
-        it('TODO: implement', () => {
+        it('creates valid query', () => {
             const actual =
                 humanResponseTimeAfterAiHandoffPerChannelQueryFactory(
                     statsFilters,
@@ -45,43 +143,112 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                     sorting,
                 )
 
-            expect(actual).toEqual({
-                measures: [],
-                dimensions: [],
-                filters: [],
-            })
+            const expected = {
+                measures: [
+                    'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                ],
+                dimensions: ['TicketEnriched.channel'],
+                timezone: 'someTimeZone',
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2025-01-01T00:00:00.000',
+                            '2025-01-07T23:59:59.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-01-07T23:59:59.000'],
+                    },
+                ],
+                order: [
+                    [
+                        'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                        'asc',
+                    ],
+                ],
+            }
+
+            expect(actual).toEqual(expected)
         })
     })
 
     describe('drill-down query factory', () => {
-        it('TODO: implement', () => {
+        it('creates valid query', () => {
             const actual = humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 sorting,
             )
 
-            expect(actual).toEqual({
-                measures: [],
-                dimensions: [],
-                filters: [],
-            })
-        })
-    })
+            const expected = {
+                measures: [
+                    'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                ],
+                dimensions: [
+                    'TicketEnriched.ticketId',
+                    'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageUserId',
+                    'TicketFirstHumanAgentResponseTime.firstHumanAgentResponseTime',
+                ],
+                timezone: 'someTimeZone',
+                filters: [
+                    {
+                        member: 'TicketEnriched.isTrashed',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketEnriched.isSpam',
+                        operator: 'equals',
+                        values: ['0'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageDatetime',
+                        operator: 'inDateRange',
+                        values: [
+                            '2025-01-01T00:00:00.000',
+                            '2025-01-07T23:59:59.000',
+                        ],
+                    },
+                    {
+                        member: 'TicketEnriched.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'TicketEnriched.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-01-07T23:59:59.000'],
+                    },
+                ],
+                limit: 100,
+                order: [
+                    [
+                        'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
+                        'asc',
+                    ],
+                ],
+            }
 
-    describe('per agent query factory', () => {
-        it('TODO: implement', () => {
-            const actual = humanResponseTimeAfterAiHandoffPerAgentQueryFactory(
-                statsFilters,
-                timezone,
-                sorting,
-            )
-
-            expect(actual).toEqual({
-                measures: [],
-                dimensions: [],
-                filters: [],
-            })
+            expect(actual).toEqual(expected)
         })
     })
 })

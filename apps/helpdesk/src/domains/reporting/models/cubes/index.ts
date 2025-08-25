@@ -18,6 +18,7 @@ import { HelpCenterTrackingEventCube } from 'domains/reporting/models/cubes/Help
 import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketSLACubeWithJoins } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceCallSummaryCube } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
@@ -48,3 +49,4 @@ export type Cubes =
     | AiSalesAgentOrderCustomersCube
     | ConvertTrackingEventsCube
     | AIAgentAutomatedInteractionsCube
+    | TicketFirstHumanAgentResponseTimeCube

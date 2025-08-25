@@ -25,6 +25,10 @@ import {
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
 import {
+    TicketFirstHumanAgentResponseTimeDimension,
+    TicketFirstHumanAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
     TicketMessagesMember,
@@ -60,6 +64,7 @@ type AgentIdentifierDimension =
     | TicketDimension.MessageSenderId
     | TicketMessagesMember.SenderId
     | TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId
+    | TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId
 
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -67,6 +72,7 @@ type AgentReportMetrics =
     | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins['measures']
     | AgentTimeTrackingCube['measures']
     | HandleTimeCube['measures']
+    | TicketFirstHumanAgentResponseTimeMeasure
 
 type ReportDataMap = Record<
     AgentsTableColumn,
@@ -199,6 +205,10 @@ export const getData = (
     const OnlineTime = AgentTimeTrackingMeasure.OnlineTime
     const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
     const UserId = AgentTimeTrackingDimension.UserId
+    const FirstHumanAgentMessageUserId =
+        TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId
+    const MedianFirstHumanAgentResponseTime =
+        TicketFirstHumanAgentResponseTimeMeasure.MedianFirstHumanAgentResponseTime
 
     const columnsToMetricDataMap: ReportDataMap = {
         [AgentsTableColumn.AgentName]: {
@@ -227,10 +237,9 @@ export const getData = (
         },
         [AgentsTableColumn.HumanResponseTimeAfterAiHandoff]: {
             column: AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
-            metricData: data.medianFirstResponseTimeMetric,
-            // TODO: Update: when BE is ready confirm values?
-            idField: FirstHelpdeskMessageUserId,
-            metricField: MedianFirstResponseTime,
+            metricData: data.humanResponseTimeAfterAiHandoffMetric,
+            idField: FirstHumanAgentMessageUserId,
+            metricField: MedianFirstHumanAgentResponseTime,
             averageData:
                 average.humanResponseTimeAfterAiHandoffMetric.data?.value,
             totalData: total.humanResponseTimeAfterAiHandoffMetric.data?.value,

@@ -7,6 +7,7 @@ import { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/
 import { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketSLACubeWithJoins } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -74,6 +75,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | AiSalesAgentConversationsCube
     | AiSalesAgentOrdersCube
     | TicketProductsEnrichedCube
+    | TicketFirstHumanAgentResponseTimeCube
 >
 
 export type ReportingQueryJobParams = {

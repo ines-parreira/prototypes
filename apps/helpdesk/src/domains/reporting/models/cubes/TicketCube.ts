@@ -1,6 +1,7 @@
 import { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { TagsOnTicketCube } from 'domains/reporting/models/cubes/TagsOnTicketCube'
 import { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyCube } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -89,7 +90,10 @@ export type TicketCubeWithJoins = JoinedCubesWithMapping<
                     JoinedCubesWithMapping<
                         JoinedCubesWithMapping<
                             JoinedCubesWithMapping<
-                                TicketCube,
+                                JoinedCubesWithMapping<
+                                    TicketCube,
+                                    TicketFirstHumanAgentResponseTimeCube
+                                >,
                                 TicketProductsEnrichedCube
                             >,
                             TicketMessagesEnrichedResponseTimes
