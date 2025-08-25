@@ -58,7 +58,7 @@ export function useYourProfileForm({
             ...currentUser,
             preferences: {
                 ...DEFAULT_PREFERENCES,
-                primary: 'en',
+                primary: '',
                 proficient: [],
                 ...settingsPreferences?.data,
                 ...languagePreferences?.data,
