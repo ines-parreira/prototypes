@@ -17,5 +17,6 @@ export const createMockTrialAccess = (overrides = {}) => ({
     isAdminUser: false,
     isLoading: false,
     trialType: TrialType.ShoppingAssistant,
+    currentAutomatePlan: undefined,
     ...overrides,
 })

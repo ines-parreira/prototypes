@@ -4,7 +4,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpdeskPlanTier } from 'models/billing/types'
+import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
 import {
     useStoreActivations,
     useStoreConfigurations,
@@ -52,6 +52,7 @@ export type TrialAccess = {
     isAdminUser: boolean
     isLoading?: boolean
     trialType: TrialType
+    currentAutomatePlan: AutomatePlan | undefined
 }
 
 /**
@@ -161,6 +162,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             isAdminUser: isAdmin(currentUser),
             isLoading: false,
             trialType: TrialType.ShoppingAssistant,
+            currentAutomatePlan,
         }
     }
     const isAdminUser = isAdmin(currentUser)
@@ -255,5 +257,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         isAdminUser,
         isLoading: isFetchLoading,
         trialType,
+        currentAutomatePlan,
     }
 }

@@ -52,7 +52,12 @@ const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
 
-const defaultExpectedValues = createMockTrialAccess()
+const defaultExpectedValues = {
+    ...createMockTrialAccess(),
+    currentAutomatePlan: {
+        generation: 5,
+    },
+}
 
 describe('useTrialAccess', () => {
     const mockUser = fromJS({

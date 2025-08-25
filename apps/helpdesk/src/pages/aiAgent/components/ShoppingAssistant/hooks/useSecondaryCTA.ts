@@ -1,62 +1,37 @@
-import { useMemo } from 'react'
-
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 import {
     ButtonConfig,
     PromoCardVariant,
-    ShoppingAssistantEventType,
+    TrialType,
 } from '../types/ShoppingAssistant'
-import {
-    logShoppingAssistantEvent,
-    logShoppingAssistantInTrialEvent,
-} from '../utils/eventLogger'
+import { useAiAgentSecondaryCTA } from './useAiAgentSecondaryCTA'
+import { useShoppingAssistantSecondaryCTA } from './useShoppingAssistantSecondaryCTA'
 
+/**
+ * Returns the secondary CTA for the AI Agent or Shopping Assistant based on the trial type
+ */
 export const useSecondaryCTA = (
     variant: PromoCardVariant,
     trialAccess: ReturnType<typeof useTrialAccess>,
     trialFlow: UseShoppingAssistantTrialFlowReturn,
 ): ButtonConfig | undefined => {
-    return useMemo(() => {
-        if (variant === PromoCardVariant.AdminTrialProgress) {
-            const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
+    const aiAgentSecondaryCTA = useAiAgentSecondaryCTA(
+        variant,
+        trialAccess,
+        trialFlow,
+    )
 
-            if (isOptedOut) return undefined
+    const shoppingAssistantSecondaryCTA = useShoppingAssistantSecondaryCTA(
+        variant,
+        trialAccess,
+        trialFlow,
+    )
 
-            return {
-                label: 'Manage Trial',
-                onClick: () => {
-                    logShoppingAssistantInTrialEvent(
-                        ShoppingAssistantEventType.ManageTrial,
-                    )
-                    trialFlow.openManageTrialModal()
-                },
-                disabled: false,
-            }
-        }
+    if (trialAccess.trialType === TrialType.AiAgent) {
+        return aiAgentSecondaryCTA
+    }
 
-        if (variant === PromoCardVariant.LeadTrialProgress) return undefined
-
-        if (trialAccess.canNotifyAdmin && trialAccess.canBookDemo) {
-            return {
-                label: 'Book a demo',
-                href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
-                target: '_blank',
-                onClick: () =>
-                    logShoppingAssistantEvent(ShoppingAssistantEventType.Demo),
-                disabled: false,
-            }
-        }
-
-        return {
-            label: 'Learn more',
-            href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
-            target: '_blank',
-            onClick: () =>
-                logShoppingAssistantEvent(ShoppingAssistantEventType.Learn),
-            disabled: false,
-        }
-    }, [variant, trialAccess, trialFlow])
+    return shoppingAssistantSecondaryCTA
 }

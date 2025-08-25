@@ -16,9 +16,9 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     PromoCardContent,
     PromoCardVariant,
-    ShoppingAssistantEventType,
+    TrialEventType,
 } from '../types/ShoppingAssistant'
-import { logShoppingAssistantEvent } from '../utils/eventLogger'
+import { logTrialBannerEvent } from '../utils/eventLogger'
 import { usePrimaryCTA } from './usePrimaryCTA'
 import { useSecondaryCTA } from './useSecondaryCTA'
 import { useTrialDescription } from './useTrialDescription'
@@ -106,9 +106,7 @@ export const useShoppingAssistantPromoCard = (
                     ? {
                           label: primaryButton.label,
                           onClick: () => {
-                              logShoppingAssistantEvent(
-                                  ShoppingAssistantEventType.StartTrial,
-                              )
+                              logTrialBannerEvent(TrialEventType.StartTrial)
                               trialFlow.openTrialUpgradeModal()
                           },
                           disabled: false,

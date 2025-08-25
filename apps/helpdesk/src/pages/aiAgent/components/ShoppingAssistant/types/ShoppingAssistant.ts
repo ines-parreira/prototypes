@@ -7,7 +7,7 @@ export enum PromoCardVariant {
     Hidden = 'hidden',
 }
 
-export enum ShoppingAssistantEventType {
+export enum TrialEventType {
     StartTrial = 'Start Trial',
     Demo = 'Demo',
     Learn = 'Learn',

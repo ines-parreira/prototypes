@@ -1,36 +1,43 @@
-// eventLogger.ts
 import { logEvent, SegmentEvent } from 'common/segment'
 
-import { ShoppingAssistantEventType } from '../types/ShoppingAssistant'
+import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
 
-export const logShoppingAssistantEvent = (
-    eventType: ShoppingAssistantEventType,
+export const logTrialBannerEvent = (
+    eventType: TrialEventType,
+    trialType: TrialType = TrialType.ShoppingAssistant,
 ) => {
     const validEvents = [
-        ShoppingAssistantEventType.StartTrial,
-        ShoppingAssistantEventType.Demo,
-        ShoppingAssistantEventType.Learn,
-        ShoppingAssistantEventType.NotifyAdmin,
+        TrialEventType.StartTrial,
+        TrialEventType.Demo,
+        TrialEventType.Learn,
+        TrialEventType.NotifyAdmin,
     ]
 
     if (validEvents.includes(eventType)) {
-        logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, { CTA: eventType })
+        logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
+            CTA: eventType,
+            trialType,
+        })
     } else {
         console.warn(`Unsupported event type: ${eventType}`)
     }
 }
 
-export const logShoppingAssistantInTrialEvent = (
-    eventType: ShoppingAssistantEventType,
+export const logInTrialEvent = (
+    eventType: TrialEventType,
+    trialType: TrialType = TrialType.ShoppingAssistant,
 ) => {
     const validEvents = [
-        ShoppingAssistantEventType.UpgradePlan,
-        ShoppingAssistantEventType.ManageTrial,
-        ShoppingAssistantEventType.SetUpSalesStrategy,
+        TrialEventType.UpgradePlan,
+        TrialEventType.ManageTrial,
+        TrialEventType.SetUpSalesStrategy,
     ]
 
     if (validEvents.includes(eventType)) {
-        logEvent(SegmentEvent.TrialBannerSettingsClicked, { CTA: eventType })
+        logEvent(SegmentEvent.TrialBannerSettingsClicked, {
+            CTA: eventType,
+            trialType,
+        })
     } else {
         console.warn(`Unsupported event type: ${eventType}`)
     }

@@ -29,6 +29,7 @@ export type TrialMetrics = {
     gmvInfluenced: string
     gmvInfluencedRate: number
     isLoading: boolean
+    automationRate?: number
 }
 
 const REFETCH_INTERVAL_MS = 5 * 60 * 1000 // 5 minutes

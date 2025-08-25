@@ -2,150 +2,120 @@ import { renderHook } from '@testing-library/react'
 
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
-import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
+import { useAiAgentSecondaryCTA } from '../hooks/useAiAgentSecondaryCTA'
 import { useSecondaryCTA } from '../hooks/useSecondaryCTA'
-import {
-    PromoCardVariant,
-    ShoppingAssistantEventType,
-} from '../types/ShoppingAssistant'
-import {
-    logShoppingAssistantEvent,
-    logShoppingAssistantInTrialEvent,
-} from '../utils/eventLogger'
+import { useShoppingAssistantSecondaryCTA } from '../hooks/useShoppingAssistantSecondaryCTA'
+import { PromoCardVariant, TrialType } from '../types/ShoppingAssistant'
 
-jest.mock('../utils/eventLogger', () => ({
-    logShoppingAssistantEvent: jest.fn(),
-    logShoppingAssistantInTrialEvent: jest.fn(),
+jest.mock('../hooks/useAiAgentSecondaryCTA', () => ({
+    useAiAgentSecondaryCTA: jest.fn(),
 }))
 
-const mockLogShoppingAssistantEvent = logShoppingAssistantEvent as jest.Mock
-const mockLogShoppingAssistantInTrialEvent =
-    logShoppingAssistantInTrialEvent as jest.Mock
+jest.mock('../hooks/useShoppingAssistantSecondaryCTA', () => ({
+    useShoppingAssistantSecondaryCTA: jest.fn(),
+}))
 
-beforeEach(() => {
-    jest.clearAllMocks()
-})
+const mockUseAiAgentSecondaryCTA = useAiAgentSecondaryCTA as jest.Mock
+const mockUseShoppingAssistantSecondaryCTA =
+    useShoppingAssistantSecondaryCTA as jest.Mock
 
 const createMockTrialFlow = (overrides = {}) =>
     getUseShoppingAssistantTrialFlowFixture(overrides)
 
 describe('useSecondaryCTA', () => {
-    it('returns "Manage Trial" button for AdminTrialProgress variant when not opted out', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseAiAgentSecondaryCTA.mockReturnValue({
+            label: 'AI Agent Secondary CTA',
+            onClick: jest.fn(),
+        })
+
+        mockUseShoppingAssistantSecondaryCTA.mockReturnValue({
+            label: 'Shopping Assistant Secondary CTA',
+            onClick: jest.fn(),
+        })
+    })
+
+    it('returns AI Agent Secondary CTA when trial type is AiAgent', () => {
+        const variant = PromoCardVariant.AdminTrial
         const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
+            trialType: TrialType.AiAgent,
         })
         const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(
-                PromoCardVariant.AdminTrialProgress,
-                trialAccess,
-                trialFlow,
-            ),
+            useSecondaryCTA(variant, trialAccess, trialFlow),
         )
 
+        expect(mockUseAiAgentSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
+        )
+        expect(mockUseShoppingAssistantSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
+        )
         expect(result.current).toEqual({
-            label: 'Manage Trial',
+            label: 'AI Agent Secondary CTA',
             onClick: expect.any(Function),
-            disabled: false,
         })
-
-        result.current?.onClick?.()
-        expect(mockLogShoppingAssistantInTrialEvent).toHaveBeenCalledWith(
-            ShoppingAssistantEventType.ManageTrial,
-        )
-        expect(trialFlow.openManageTrialModal).toHaveBeenCalled()
     })
 
-    it('returns undefined for AdminTrialProgress variant when opted out', () => {
+    it('returns Shopping Assistant Secondary CTA by default', () => {
+        const variant = PromoCardVariant.AdminTrial
         const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialOptedOut: true,
-            hasAnyTrialOptedOut: false,
+            trialType: TrialType.ShoppingAssistant,
         })
         const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(
-                PromoCardVariant.AdminTrialProgress,
-                trialAccess,
-                trialFlow,
-            ),
+            useSecondaryCTA(variant, trialAccess, trialFlow),
         )
 
-        expect(result.current).toBeUndefined()
-    })
-
-    it('returns undefined for LeadTrialProgress variant', () => {
-        const trialAccess = createMockTrialAccess({
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-        })
-        const trialFlow = createMockTrialFlow()
-
-        const { result } = renderHook(() =>
-            useSecondaryCTA(
-                PromoCardVariant.LeadTrialProgress,
-                trialAccess,
-                trialFlow,
-            ),
+        expect(mockUseAiAgentSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
         )
-
-        expect(result.current).toBeUndefined()
-    })
-
-    it('returns "Book a demo" button when user can notify admin and book demo', () => {
-        const trialAccess = createMockTrialAccess({
-            canNotifyAdmin: true,
-            canBookDemo: true,
-        })
-        const trialFlow = createMockTrialFlow()
-
-        const { result } = renderHook(() =>
-            useSecondaryCTA(
-                PromoCardVariant.AdminTrial,
-                trialAccess,
-                trialFlow,
-            ),
+        expect(mockUseShoppingAssistantSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
         )
-
         expect(result.current).toEqual({
-            label: 'Book a demo',
-            href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
-            target: '_blank',
+            label: 'Shopping Assistant Secondary CTA',
             onClick: expect.any(Function),
-            disabled: false,
         })
-
-        result.current?.onClick?.()
-        expect(mockLogShoppingAssistantEvent).toHaveBeenCalledWith(
-            ShoppingAssistantEventType.Demo,
-        )
     })
 
-    it('returns "Learn more" button as default', () => {
+    it('returns Shopping Assistant Secondary CTA when trial type is undefined', () => {
+        const variant = PromoCardVariant.AdminTrial
         const trialAccess = createMockTrialAccess({
-            canNotifyAdmin: false,
-            canBookDemo: false,
+            trialType: undefined,
         })
         const trialFlow = createMockTrialFlow()
 
         const { result } = renderHook(() =>
-            useSecondaryCTA(PromoCardVariant.AdminDemo, trialAccess, trialFlow),
+            useSecondaryCTA(variant, trialAccess, trialFlow),
         )
 
+        expect(mockUseAiAgentSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
+        )
+        expect(mockUseShoppingAssistantSecondaryCTA).toHaveBeenCalledWith(
+            variant,
+            trialAccess,
+            trialFlow,
+        )
         expect(result.current).toEqual({
-            label: 'Learn more',
-            href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
-            target: '_blank',
+            label: 'Shopping Assistant Secondary CTA',
             onClick: expect.any(Function),
-            disabled: false,
         })
-
-        result.current?.onClick?.()
-        expect(mockLogShoppingAssistantEvent).toHaveBeenCalledWith(
-            ShoppingAssistantEventType.Learn,
-        )
     })
 })

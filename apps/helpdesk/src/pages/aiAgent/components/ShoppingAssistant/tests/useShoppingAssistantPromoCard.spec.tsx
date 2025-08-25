@@ -26,6 +26,7 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useShoppingAssistantPromoCard } from '../hooks/useShoppingAssistantPromoCard'
+import { TrialType } from '../types/ShoppingAssistant'
 
 // Mock dependencies
 jest.mock('common/segment')
@@ -322,7 +323,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Start Trial' },
+                { CTA: 'Start Trial', trialType: TrialType.ShoppingAssistant },
             )
         })
 
@@ -342,7 +343,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Start Trial' },
+                { CTA: 'Start Trial', trialType: TrialType.ShoppingAssistant },
             )
         })
 
@@ -362,7 +363,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Learn' },
+                { CTA: 'Learn', trialType: TrialType.ShoppingAssistant },
             )
         })
     })
@@ -433,7 +434,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Demo' },
+                { CTA: 'Demo', trialType: TrialType.ShoppingAssistant },
             )
         })
     })
@@ -502,7 +503,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Notify Admin' },
+                { CTA: 'Notify Admin', trialType: TrialType.ShoppingAssistant },
             )
         })
     })
@@ -571,7 +572,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Notify Admin' },
+                { CTA: 'Notify Admin', trialType: TrialType.ShoppingAssistant },
             )
         })
 
@@ -591,7 +592,7 @@ describe('useShoppingAssistantPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Demo' },
+                { CTA: 'Demo', trialType: TrialType.ShoppingAssistant },
             )
         })
     })

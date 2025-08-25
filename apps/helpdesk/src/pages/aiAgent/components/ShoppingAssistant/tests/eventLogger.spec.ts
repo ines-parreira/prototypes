@@ -1,10 +1,7 @@
 import { logEvent, SegmentEvent } from 'common/segment'
 
-import { ShoppingAssistantEventType } from '../types/ShoppingAssistant'
-import {
-    logShoppingAssistantEvent,
-    logShoppingAssistantInTrialEvent,
-} from '../utils/eventLogger'
+import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
+import { logInTrialEvent, logTrialBannerEvent } from '../utils/eventLogger'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -20,40 +17,52 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
-describe('logShoppingAssistantEvent', () => {
+describe('logTrialBannerEvent', () => {
     it('logs StartTrial event correctly', () => {
-        logShoppingAssistantEvent(ShoppingAssistantEventType.StartTrial)
+        logTrialBannerEvent(TrialEventType.StartTrial)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerOverviewCTAClicked,
-            { CTA: ShoppingAssistantEventType.StartTrial },
+            {
+                CTA: TrialEventType.StartTrial,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
     it('logs Demo event correctly', () => {
-        logShoppingAssistantEvent(ShoppingAssistantEventType.Demo)
+        logTrialBannerEvent(TrialEventType.Demo)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerOverviewCTAClicked,
-            { CTA: ShoppingAssistantEventType.Demo },
+            {
+                CTA: TrialEventType.Demo,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
     it('logs Learn event correctly', () => {
-        logShoppingAssistantEvent(ShoppingAssistantEventType.Learn)
+        logTrialBannerEvent(TrialEventType.Learn)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerOverviewCTAClicked,
-            { CTA: ShoppingAssistantEventType.Learn },
+            {
+                CTA: TrialEventType.Learn,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
     it('logs NotifyAdmin event correctly', () => {
-        logShoppingAssistantEvent(ShoppingAssistantEventType.NotifyAdmin)
+        logTrialBannerEvent(TrialEventType.NotifyAdmin)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerOverviewCTAClicked,
-            { CTA: ShoppingAssistantEventType.NotifyAdmin },
+            {
+                CTA: TrialEventType.NotifyAdmin,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
@@ -61,7 +70,7 @@ describe('logShoppingAssistantEvent', () => {
         const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
 
         // @ts-ignore - Testing invalid event type
-        logShoppingAssistantEvent('InvalidEventType')
+        logTrialBannerEvent('InvalidEventType')
 
         expect(mockLogEvent).not.toHaveBeenCalled()
         expect(consoleSpy).toHaveBeenCalledWith(
@@ -72,33 +81,40 @@ describe('logShoppingAssistantEvent', () => {
     })
 })
 
-describe('logShoppingAssistantInTrialEvent', () => {
+describe('logInTrialEvent', () => {
     it('logs UpgradePlan event correctly', () => {
-        logShoppingAssistantInTrialEvent(ShoppingAssistantEventType.UpgradePlan)
+        logInTrialEvent(TrialEventType.UpgradePlan)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerSettingsClicked,
-            { CTA: ShoppingAssistantEventType.UpgradePlan },
+            {
+                CTA: TrialEventType.UpgradePlan,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
     it('logs ManageTrial event correctly', () => {
-        logShoppingAssistantInTrialEvent(ShoppingAssistantEventType.ManageTrial)
+        logInTrialEvent(TrialEventType.ManageTrial)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerSettingsClicked,
-            { CTA: ShoppingAssistantEventType.ManageTrial },
+            {
+                CTA: TrialEventType.ManageTrial,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
     it('logs SetUpSalesStrategy event correctly', () => {
-        logShoppingAssistantInTrialEvent(
-            ShoppingAssistantEventType.SetUpSalesStrategy,
-        )
+        logInTrialEvent(TrialEventType.SetUpSalesStrategy)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.TrialBannerSettingsClicked,
-            { CTA: ShoppingAssistantEventType.SetUpSalesStrategy },
+            {
+                CTA: TrialEventType.SetUpSalesStrategy,
+                trialType: TrialType.ShoppingAssistant,
+            },
         )
     })
 
@@ -106,7 +122,7 @@ describe('logShoppingAssistantInTrialEvent', () => {
         const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
 
         // @ts-ignore - Testing invalid event type
-        logShoppingAssistantInTrialEvent('InvalidEventType')
+        logInTrialEvent('InvalidEventType')
 
         expect(mockLogEvent).not.toHaveBeenCalled()
         expect(consoleSpy).toHaveBeenCalledWith(
