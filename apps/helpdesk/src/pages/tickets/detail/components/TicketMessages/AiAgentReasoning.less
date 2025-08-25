@@ -83,6 +83,8 @@
             padding: 0 !important;
             margin-block-start: 0 !important;
             margin-block-end: 0 !important;
+            /* Remove native markers; we'll draw our own bullet */
+
             list-style: none !important;
         }
 
@@ -90,16 +92,17 @@
             margin: 0 !important;
             padding: 0 !important;
             position: relative;
-            padding-left: 8px !important;
+            padding-left: 12px !important;
             line-height: 18px;
 
+            /* Top-align the custom bullet with the first text line */
             &::before {
                 content: '•';
                 position: absolute;
-                left: 0;
-                top: 50%;
-                transform: translateY(-50%);
+                left: 4px;
+                top: 4px; /* nudge bullet 4px down and right */
                 font-size: 8px !important;
+                font-weight: 500;
                 line-height: 1;
                 color: var(--neutral-grey-6);
             }
