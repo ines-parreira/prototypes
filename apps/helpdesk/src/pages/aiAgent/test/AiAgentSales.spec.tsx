@@ -2,7 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
@@ -94,7 +94,7 @@ describe('<AiAgentSales />', () => {
         })
     })
 
-    it('should render without error', () => {
+    it('should render without error', async () => {
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: true,
             isLoading: false,
@@ -102,10 +102,12 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('sales-settings')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByTestId('sales-settings')).toBeInTheDocument()
+        })
     })
 
-    it('should redirect to strategy tab when shopping assistant is not enabled', () => {
+    it('should redirect to strategy tab when shopping assistant is not enabled', async () => {
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: false,
             isLoading: false,
@@ -113,12 +115,14 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryReplace).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/sales/strategy',
-        )
+        await waitFor(() => {
+            expect(mockHistoryReplace).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/sales/strategy',
+            )
+        })
     })
 
-    it('should redirect to analytics tab when shopping assistant is enabled', () => {
+    it('should redirect to strategy tab when shopping assistant is enabled', async () => {
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: true,
             isLoading: false,
@@ -126,12 +130,14 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryReplace).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/sales/analytics',
-        )
+        await waitFor(() => {
+            expect(mockHistoryReplace).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/sales/strategy',
+            )
+        })
     })
 
-    it('should not redirect when data is loading', () => {
+    it('should not redirect when data is loading', async () => {
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: false,
             isLoading: true,
@@ -139,10 +145,12 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryReplace).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockHistoryReplace).not.toHaveBeenCalled()
+        })
     })
 
-    it('should not redirect when feature flag is disabled', () => {
+    it('should not redirect when feature flag is disabled', async () => {
         mockUseFlags.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
@@ -154,6 +162,8 @@ describe('<AiAgentSales />', () => {
 
         renderComponent()
 
-        expect(mockHistoryReplace).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockHistoryReplace).not.toHaveBeenCalled()
+        })
     })
 })

@@ -27,17 +27,14 @@ import css from './KpiSection.less'
 const KpiContainer = ({
     isLoading = false,
     metrics,
-    isActionDrivenAiAgentNavigationEnabled,
 }: {
     isLoading?: boolean
     metrics?: KpiMetric[]
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }) => {
     if (isLoading || !metrics?.length) {
         return (
             <div className={css.kpiContainer}>
                 <Kpi isLoading />
-                {!isActionDrivenAiAgentNavigationEnabled && <Kpi isLoading />}
                 <Kpi isLoading />
                 <Kpi isLoading />
             </div>
@@ -76,7 +73,6 @@ const Kpis = ({
     showEarlyAccessModal,
     showActivationModal,
     shopName,
-    isActionDrivenAiAgentNavigationEnabled,
 }: {
     aiAgentType?: AiAgentType
     aiAgentUserId: number
@@ -84,7 +80,6 @@ const Kpis = ({
     showEarlyAccessModal: () => void
     showActivationModal: () => void
     shopName?: string
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }) => {
     const { automationRateFilters, filters } = useMemo(() => {
         const start_datetime = moment()
@@ -121,17 +116,9 @@ const Kpis = ({
         showEarlyAccessModal,
         showActivationModal,
         shopName,
-        isActionDrivenAiAgentNavigationEnabled,
     })
 
-    return (
-        <KpiContainer
-            metrics={metrics}
-            isActionDrivenAiAgentNavigationEnabled={
-                isActionDrivenAiAgentNavigationEnabled
-            }
-        />
-    )
+    return <KpiContainer metrics={metrics} />
 }
 
 type Props = {
@@ -139,14 +126,12 @@ type Props = {
     showEarlyAccessModal: () => void
     showActivationModal: () => void
     shopName?: string
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 export const KpiSection = ({
     isOnNewPlan,
     showEarlyAccessModal,
     showActivationModal,
     shopName,
-    isActionDrivenAiAgentNavigationEnabled,
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const aiAgentUserId = useAIAgentUserId()
@@ -157,16 +142,8 @@ export const KpiSection = ({
             return ''
         }
 
-        if (isActionDrivenAiAgentNavigationEnabled) {
-            return `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
-        }
-
-        if (aiAgentType === 'sales' || aiAgentType === 'mixed') {
-            return `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
-        }
-
-        return `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
-    }, [isLoading, aiAgentType, isActionDrivenAiAgentNavigationEnabled])
+        return `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
+    }, [isLoading])
 
     if (isLoading || !aiAgentUserId) {
         return (
@@ -185,12 +162,7 @@ export const KpiSection = ({
                     </div>
                 </div>
 
-                <KpiContainer
-                    isLoading
-                    isActionDrivenAiAgentNavigationEnabled={
-                        isActionDrivenAiAgentNavigationEnabled
-                    }
-                />
+                <KpiContainer isLoading />
             </OverviewCard>
         )
     }
@@ -230,9 +202,6 @@ export const KpiSection = ({
                 showEarlyAccessModal={showEarlyAccessModal}
                 isOnNewPlan={isOnNewPlan}
                 shopName={shopName}
-                isActionDrivenAiAgentNavigationEnabled={
-                    isActionDrivenAiAgentNavigationEnabled
-                }
             />
         </OverviewCard>
     )

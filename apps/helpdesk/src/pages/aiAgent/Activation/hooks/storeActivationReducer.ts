@@ -427,7 +427,6 @@ export const storeConfigurationToState = (
         emailIntegrations,
         helpCentersFaq,
         chatIntegrationStatus,
-        ldFlags,
         storesKnowledgeStatus,
         hasNewAutomatePlan,
         flags: { hasAiAgentNewActivationXp, aiSalesAgentEmailEnabled },
@@ -457,8 +456,7 @@ export const storeConfigurationToState = (
                     'At least one knowledge source required. Update your knowledge tab to be able to activate AI Agent.',
                 cta: {
                     label: 'Visit Knowledge',
-                    to: getAiAgentNavigationRoutes(storeName, ldFlags)
-                        .knowledge,
+                    to: getAiAgentNavigationRoutes(storeName).knowledge,
                 },
             }
             if (isMissingKnowledge) {
@@ -599,7 +597,7 @@ export const clearSalesDeactivatedDatetime = (
     return Object.values(state).map((store) => {
         return {
             ...cloneDeep(store.configuration),
-            ...{ salesDeactivatedDatetime: null },
+            salesDeactivatedDatetime: null,
         }
     })
 }
@@ -615,7 +613,7 @@ export const stateToUpdatedStoreConfiguration = (
     return Object.values(state).map((store) => {
         const newStoreConfiguration = {
             ...cloneDeep(store.configuration),
-            ...(updateState || {}),
+            ...updateState,
         }
 
         const scopes: AiAgentScope[] = [AiAgentScope.Support]

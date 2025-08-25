@@ -72,6 +72,8 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
             `/mock/store-website/view/${id}`,
         productsContentDetail: (id: number) =>
             `/app/ai-agent/shopify/test-store/knowledge/sources/products-content/${id}`,
+        productsDetail: (productId: number) =>
+            `/app/ai-agent/shopify/test-store/products/${productId}`,
     })),
 }))
 
@@ -494,9 +496,7 @@ describe('useEnrichFeedbackData', () => {
             {children}
         </QueryClientProvider>
     )
-    const mockFlags = {
-        [FeatureFlagKey.ActionDrivenAiAgentNavigation]: false,
-    }
+    const mockFlags = {}
 
     beforeEach(() => {
         jest.clearAllMocks()

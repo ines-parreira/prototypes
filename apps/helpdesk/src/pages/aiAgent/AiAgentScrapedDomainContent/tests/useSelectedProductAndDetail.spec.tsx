@@ -59,7 +59,7 @@ describe('useSelectedProductAndDetail', () => {
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
                 main: '/main',
-                productsContent: '/knowledge/sources/products-content',
+                products: '/app/ai-agent/shopify/Test Shop/products',
             },
             navigationItems: [],
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
@@ -125,7 +125,7 @@ describe('useSelectedProductAndDetail', () => {
             status: NotificationStatus.Error,
         })
         expect(history.push).toHaveBeenCalledWith(
-            '/knowledge/sources/products-content',
+            '/app/ai-agent/shopify/Test Shop/products',
         )
         expect(result.current.selectedProduct).toBeNull()
         expect(result.current.productDetail).toBeNull()

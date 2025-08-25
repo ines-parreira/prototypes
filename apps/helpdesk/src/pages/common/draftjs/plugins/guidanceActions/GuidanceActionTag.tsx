@@ -17,7 +17,6 @@ import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import { getLDClient } from 'utils/launchDarkly'
 
 import css from './GuidanceActionTag.less'
 
@@ -30,10 +29,9 @@ export default function GuidanceActionTag({
     value,
     children,
 }: GuidanceActionTagProps) {
-    const flags = getLDClient().allFlags()
     const { guidanceActions, shopName } = useToolbarContext()
 
-    const routes = getAiAgentNavigationRoutes(shopName || '', flags)
+    const routes = getAiAgentNavigationRoutes(shopName || '')
 
     const contentRef = useRef<HTMLSpanElement>(null)
     const randomId = useId()

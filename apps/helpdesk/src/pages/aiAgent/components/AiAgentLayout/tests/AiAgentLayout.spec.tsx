@@ -9,10 +9,8 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { AI_AGENT } from 'pages/aiAgent/constants'
-import history from 'pages/history'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
@@ -40,7 +38,6 @@ jest.mock('../../../hooks/useAiAgentEnabled', () => ({
 }))
 
 jest.mock('core/flags')
-const mockUseFlag = jest.mocked(useFlag)
 
 const defaultStore = mockStore({
     currentAccount: fromJS({
@@ -79,50 +76,17 @@ describe('<AiAgentLayout />', () => {
         expect(screen.getByText('Test Content')).toBeInTheDocument()
     })
 
-    it('should render ai agent ticket view button and redirect to ticket view on click', () => {
-        renderComponent({})
-        const ticketViewButton = screen.getByRole('button', {
-            name: 'View AI Agent Tickets',
-        })
-        ticketViewButton.click()
-        expect(history.push).toHaveBeenCalledWith('/app/views/1', {
-            skipRedirect: true,
-        })
-    })
-
-    it('should hide ai agent ticket view button if action driven ai agent navigation feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
-        renderComponent({})
-        const ticketViewButton = screen.queryByRole('button', {
-            name: 'View AI Agent Tickets',
-        })
-        expect(ticketViewButton).not.toBeInTheDocument()
-    })
-
-    it('should hide ai agent ticket view button if hideAiAgentTicketsViewButton props is passed', () => {
-        renderComponent({ hideViewAiAgentTicketsButton: true })
-        const ticketViewButton = screen.queryByRole('button', {
-            name: 'View AI Agent Tickets',
-        })
-        expect(ticketViewButton).not.toBeInTheDocument()
-    })
-
-    it('should hide the title and the navigation when fullscreen = true', () => {
+    it('should hide the title when fullscreen = true', () => {
         renderComponent({ fullscreen: true })
 
         const title = screen.queryByText(AI_AGENT)
-        const navigation = screen.queryByRole('navigation')
         expect(title).not.toBeInTheDocument()
-        expect(navigation).not.toBeInTheDocument()
     })
 
-    it('should render the title and the navigation when fullscreen = false', () => {
+    it('should render the title when fullscreen = false', () => {
         renderComponent({ fullscreen: false })
 
         const title = screen.getByText(AI_AGENT)
-        const navigation = screen.getByRole('navigation')
         expect(title).toBeInTheDocument()
-        expect(navigation).toBeInTheDocument()
     })
 })

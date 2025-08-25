@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory } from 'react-router'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -39,7 +38,6 @@ export const useStartShoppingAssistantTrial = ({
 }) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const flags = useFlags()
     const queryClient = useQueryClient()
 
     const milestone = useSalesTrialRevampMilestone()
@@ -95,7 +93,7 @@ export const useStartShoppingAssistantTrial = ({
             },
             onError: (error, { storeActivations }) => {
                 const store = getSingleStoreOrThrow(storeActivations)
-                const routes = getAiAgentNavigationRoutes(store.name, flags)
+                const routes = getAiAgentNavigationRoutes(store.name)
                 if (error instanceof InvalidChatError) {
                     dispatch(
                         notify({

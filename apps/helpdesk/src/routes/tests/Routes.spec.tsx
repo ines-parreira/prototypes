@@ -138,10 +138,6 @@ jest.mock('pages/aiAgent/AiAgentCustomerEngagement', () => ({
     AiAgentCustomerEngagement: () => <div>AiAgentCustomerEngagement</div>,
 }))
 
-jest.mock('pages/aiAgent/AiAgentAnalytics', () => ({
-    AiAgentAnalytics: () => <div>AiAgentAnalytics</div>,
-}))
-
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
@@ -735,30 +731,9 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render analytics page under sales', () => {
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
-
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/sales/analytics',
-                        ]}
-                    >
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(screen.getByText('AiAgentAnalytics')).toBeInTheDocument()
-        })
-
         it('should redirect to /intents when accessing /optimize', () => {
             mockFlags({
                 [FeatureFlagKey.AiAgentOptimizeTab]: true,
-                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
             })
 
             render(
@@ -777,6 +752,32 @@ describe('<Routes/>', () => {
 
             expect(mockHistory.location.pathname).toBe(
                 '/app/ai-agent/shopify/test-shop/intents',
+            )
+        })
+
+        it('should redirect to /app/stats/ai-sales-agent/overview when accessing /sales/analytics', () => {
+            mockFlags({
+                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push(
+                    '/app/ai-agent/shopify/test-shop/sales/analytics',
+                ),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/stats/ai-sales-agent/overview',
             )
         })
     })

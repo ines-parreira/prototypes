@@ -15,7 +15,6 @@ import {
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { TRIAL_MESSAGE_TAG } from './constants'
 
@@ -29,8 +28,7 @@ export const getKnowledgeUrl = (
         case 'external_snippet':
             return knowledge.url
         case 'file_external_snippet': {
-            const flags = getLDClient().allFlags()
-            const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)
+            const aiAgentRoutes = getAiAgentNavigationRoutes(shopName)
             return aiAgentRoutes.knowledge
         }
         case 'macro':
@@ -45,8 +43,7 @@ export const getGuidanceUrl = (
     shopType: string,
     shopName: string,
 ) => {
-    const flags = getLDClient().allFlags()
-    const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)
+    const aiAgentRoutes = getAiAgentNavigationRoutes(shopName)
     return aiAgentRoutes.guidanceArticleEdit(guidance.id)
 }
 
@@ -69,8 +66,7 @@ export const getActionUrl = (
     shopType: string,
     shopName: string,
 ) => {
-    const flags = getLDClient().allFlags()
-    const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)
+    const aiAgentRoutes = getAiAgentNavigationRoutes(shopName)
     return aiAgentRoutes.editAction(String(action.id))
 }
 

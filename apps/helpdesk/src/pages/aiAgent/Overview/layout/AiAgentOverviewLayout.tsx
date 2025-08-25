@@ -4,29 +4,16 @@ import css from './AiAgentOverviewLayout.less'
 
 type Props = {
     children: React.ReactNode
-    shopName?: string
-    isActionDrivenAiAgentNavigationEnabled: boolean
+    shopName: string
 }
-export const AiAgentOverviewLayout = ({
-    children,
-    shopName,
-    isActionDrivenAiAgentNavigationEnabled,
-}: Props) => {
-    if (isActionDrivenAiAgentNavigationEnabled && shopName) {
-        return (
-            <AiAgentLayout
-                shopName={shopName}
-                className={css.containerActionDriven}
-                title={'Overview'}
-            >
-                {children}
-            </AiAgentLayout>
-        )
-    }
-
+export const AiAgentOverviewLayout = ({ children, shopName }: Props) => {
     return (
-        <div className={css.container} data-overflow="visible">
+        <AiAgentLayout
+            shopName={shopName}
+            className={css.containerActionDriven}
+            title={'Overview'}
+        >
             {children}
-        </div>
+        </AiAgentLayout>
     )
 }

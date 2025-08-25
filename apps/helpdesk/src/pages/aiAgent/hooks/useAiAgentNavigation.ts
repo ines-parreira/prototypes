@@ -5,9 +5,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
-    ANALYTICS,
     ANALYZE,
-    CHANNELS,
     CHAT,
     CUSTOMER_ENGAGEMENT,
     DEPLOY,
@@ -17,7 +15,6 @@ import {
     INTENTS,
     KNOWLEDGE,
     OPPORTUNITIES,
-    OPTIMIZE,
     OVERVIEW,
     PREVIEW,
     PRODUCT_RECOMMENDATIONS,
@@ -39,14 +36,9 @@ export const aiAgentRoutes = {
     actionsPlatform: '/app/ai-agent/actions-platform',
 }
 
-export const getAiAgentNavigationRoutes = (
-    shopName: string,
-    flags: LDFlagSet,
-) => {
+export const getAiAgentNavigationRoutes = (shopName: string) => {
     const basePath = getAiAgentBasePath(shopName)
     const automationBasePath = '/app/automation'
-    const isActionDrivenAiAgentNavigationEnabled =
-        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const guidancePath = 'knowledge/guidance'
 
@@ -125,20 +117,12 @@ export const getAiAgentNavigationRoutes = (
             `${basePath}/products/${productId}`,
 
         // New routes for action-driven navigation
-        analyzeOverview: isActionDrivenAiAgentNavigationEnabled
-            ? `${basePath}/overview`
-            : `${basePath}/overview`,
-        analyzeIntents: isActionDrivenAiAgentNavigationEnabled
-            ? `${basePath}/intents`
-            : `${basePath}/optimize`,
+        analyzeOverview: `${basePath}/overview`,
+        analyzeIntents: `${basePath}/intents`,
         analyzeOpportunities: `${basePath}/analyze/opportunities`,
         trainAiFeedback: `${basePath}/train/ai-feedback`,
-        deployChat: isActionDrivenAiAgentNavigationEnabled
-            ? `${basePath}/deploy/chat`
-            : `${basePath}/settings/channels`,
-        deployEmail: isActionDrivenAiAgentNavigationEnabled
-            ? `${basePath}/deploy/email`
-            : `${basePath}/settings`,
+        deployChat: `${basePath}/deploy/chat`,
+        deployEmail: `${basePath}/deploy/email`,
     }
 }
 
@@ -175,236 +159,140 @@ const useNavigationItems = (
     const isShoppingAssitantDeactivationEnforced =
         flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
 
-    const isActionDrivenAiAgentNavigationEnabled =
-        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
-
     const isOpportunitiesEnabled = flags[FeatureFlagKey.SurfaceOpportunities]
 
     // Actions platform is rendered outside the per-shop navigation in the
     // ActionDrivenNavigation component.
 
     return useMemo<NavigationItem[]>(() => {
-        if (isActionDrivenAiAgentNavigationEnabled) {
-            return [
-                {
-                    title: ANALYZE,
-                    dataCanduId: 'ai-agent-navbar-analyze',
-                    items: [
-                        {
-                            route: routes.analyzeOverview,
-                            title: OVERVIEW,
-                            exact: true,
-                        },
-                        isAiAgentOptimizeTabEnabled && {
-                            route: routes.analyzeIntents,
-                            title: INTENTS,
-                            exact: false,
-                        },
-                        isOpportunitiesEnabled && {
-                            route: routes.opportunities,
-                            title: OPPORTUNITIES,
-                            dataCanduId: 'ai-agent-navbar-opportunities',
-                            exact: false,
-                        },
-                    ].filter((x) => !!x) as NavigationItem[],
-                },
-                {
-                    title: TRAIN,
-                    dataCanduId: 'ai-agent-navbar-train',
-                    items: [
-                        // TODO: uncomment when overview page is moved to the new navigation
-                        /*{
+        return [
+            {
+                title: ANALYZE,
+                dataCanduId: 'ai-agent-navbar-analyze',
+                items: [
+                    {
+                        route: routes.analyzeOverview,
+                        title: OVERVIEW,
+                        exact: true,
+                    },
+                    isAiAgentOptimizeTabEnabled && {
+                        route: routes.analyzeIntents,
+                        title: INTENTS,
+                        exact: false,
+                    },
+                    isOpportunitiesEnabled && {
+                        route: routes.opportunities,
+                        title: OPPORTUNITIES,
+                        dataCanduId: 'ai-agent-navbar-opportunities',
+                        exact: false,
+                    },
+                ].filter((x) => !!x) as NavigationItem[],
+            },
+            {
+                title: TRAIN,
+                dataCanduId: 'ai-agent-navbar-train',
+                items: [
+                    // TODO: uncomment when overview page is moved to the new navigation
+                    /*{
                             route: routes.trainAiFeedback,
                             title: AI_FEEDBACK,
                             exact: true,
                         }, */
-                        {
-                            route: isAiAgentKnowledgeTabEnabled
-                                ? routes.knowledge
-                                : routes.guidance,
-                            title: KNOWLEDGE,
-                            items: [
-                                isAiAgentKnowledgeTabEnabled && {
-                                    route: isAiAgentScrapeStoreDomainEnabled
-                                        ? routes.knowledgeSources
-                                        : routes.knowledge,
-                                    title: isAiAgentScrapeStoreDomainEnabled
-                                        ? SOURCES
-                                        : GENERAL,
-                                    exact: !isAiAgentScrapeStoreDomainEnabled,
-                                },
-                                {
-                                    route: routes.guidance,
-                                    title: GUIDANCE,
-                                },
-                            ].filter((x) => !!x) as NavigationItem[],
-                        },
-                        {
-                            route: routes.actions,
-                            title: SUPPORT_ACTIONS,
-                        },
-                        {
-                            route: routes.products,
-                            title: PRODUCTS,
-                            exact: true,
-                        },
-                        !isShoppingAssitantDeactivationEnforced && {
-                            route: routes.sales,
-                            title: SALES,
-                            items: isAiShoppingAssistantEnabled
-                                ? ([
-                                      isAiShoppingAssistantEnabled && {
-                                          route: routes.salesStrategy,
-                                          title: STRATEGY,
-                                          exact: true,
-                                      },
-                                      isAiShoppingAssistantEnabled && {
-                                          route: routes.customerEngagement,
-                                          title: CUSTOMER_ENGAGEMENT,
-                                          exact: true,
-                                      },
-                                      isAiShoppingAssistantEnabled &&
-                                          isAiShoppingAssistantProductRecommendationsEnabled && {
-                                              route: routes.productRecommendations,
-                                              title: PRODUCT_RECOMMENDATIONS,
-                                              exact: true,
-                                          },
-                                  ].filter((x) => !!x) as NavigationItem[])
-                                : undefined,
-                        },
-                    ].filter((x) => !!x) as NavigationItem[],
-                },
-                {
-                    route: routes.test,
-                    title: TEST,
-                    dataCanduId: 'ai-agent-navbar-test',
-                    exact: true,
-                },
-                {
-                    title: DEPLOY,
-                    dataCanduId: 'ai-agent-navbar-deploy',
-                    items: [
-                        {
-                            route: routes.deployChat,
-                            title: CHAT,
-                            exact: true,
-                        },
-                        {
-                            route: routes.deployEmail,
-                            title: EMAIL,
-                            exact: true,
-                        },
-                    ],
-                },
-                {
-                    title: SETTINGS,
-                    dataCanduId: 'ai-agent-navbar-settings',
-                    route: routes.settings,
-                    items: isGorgiasUser
-                        ? [
-                              {
-                                  route: routes.configuration(),
-                                  title: GENERAL,
-                                  exact: true,
-                              },
-                              {
-                                  route: routes.previewMode,
-                                  title: PREVIEW,
-                              },
-                          ]
-                        : undefined,
-                },
-            ].filter((x) => !!x) as NavigationItem[]
-        }
-
-        return [
-            isAiAgentOptimizeTabEnabled && {
-                route: routes.optimize,
-                title: OPTIMIZE,
-                dataCanduId: 'ai-agent-navbar-optimize',
-                exact: false,
-            },
-            {
-                route: isAiAgentKnowledgeTabEnabled
-                    ? routes.knowledge
-                    : routes.guidance,
-                title: KNOWLEDGE,
-                dataCanduId: 'ai-agent-navbar-knowledge',
-                items: [
-                    isAiAgentKnowledgeTabEnabled && {
-                        route: isAiAgentScrapeStoreDomainEnabled
-                            ? routes.knowledgeSources
-                            : routes.knowledge,
-                        title: isAiAgentScrapeStoreDomainEnabled
-                            ? SOURCES
-                            : GENERAL,
-                        exact: !isAiAgentScrapeStoreDomainEnabled,
+                    {
+                        route: isAiAgentKnowledgeTabEnabled
+                            ? routes.knowledge
+                            : routes.guidance,
+                        title: KNOWLEDGE,
+                        items: [
+                            isAiAgentKnowledgeTabEnabled && {
+                                route: isAiAgentScrapeStoreDomainEnabled
+                                    ? routes.knowledgeSources
+                                    : routes.knowledge,
+                                title: isAiAgentScrapeStoreDomainEnabled
+                                    ? SOURCES
+                                    : GENERAL,
+                                exact: !isAiAgentScrapeStoreDomainEnabled,
+                            },
+                            {
+                                route: routes.guidance,
+                                title: GUIDANCE,
+                            },
+                        ].filter((x) => !!x) as NavigationItem[],
                     },
                     {
-                        route: routes.guidance,
-                        title: GUIDANCE,
+                        route: routes.actions,
+                        title: SUPPORT_ACTIONS,
                     },
-                ].filter((x) => !!x) as NavigationItem[],
-            },
-            {
-                route: routes.configuration(),
-                title: SETTINGS,
-                dataCanduId: 'ai-agent-navbar-configuration',
-                items: [
                     {
-                        route: routes.configuration(),
-                        title: GENERAL,
+                        route: routes.products,
+                        title: PRODUCTS,
                         exact: true,
                     },
-                    {
-                        route: routes.settingsChannels,
-                        title: CHANNELS,
-                    },
-                    isGorgiasUser && {
-                        route: routes.previewMode,
-                        title: PREVIEW,
+                    !isShoppingAssitantDeactivationEnforced && {
+                        route: routes.sales,
+                        title: SALES,
+                        items: isAiShoppingAssistantEnabled
+                            ? ([
+                                  isAiShoppingAssistantEnabled && {
+                                      route: routes.salesStrategy,
+                                      title: STRATEGY,
+                                      exact: true,
+                                  },
+                                  isAiShoppingAssistantEnabled && {
+                                      route: routes.customerEngagement,
+                                      title: CUSTOMER_ENGAGEMENT,
+                                      exact: true,
+                                  },
+                                  isAiShoppingAssistantEnabled &&
+                                      isAiShoppingAssistantProductRecommendationsEnabled && {
+                                          route: routes.productRecommendations,
+                                          title: PRODUCT_RECOMMENDATIONS,
+                                          exact: true,
+                                      },
+                              ].filter((x) => !!x) as NavigationItem[])
+                            : undefined,
                     },
                 ].filter((x) => !!x) as NavigationItem[],
-            },
-            {
-                route: routes.actions,
-                title: SUPPORT_ACTIONS,
-                dataCanduId: 'ai-agent-navbar-support-actions',
-            },
-            !isShoppingAssitantDeactivationEnforced && {
-                route: routes.sales,
-                title: SALES,
-                dataCanduId: 'ai-agent-navbar-sales',
-                items: isAiShoppingAssistantEnabled
-                    ? ([
-                          isAiShoppingAssistantEnabled && {
-                              route: routes.analytics,
-                              title: ANALYTICS,
-                              exact: true,
-                          },
-                          isAiShoppingAssistantEnabled && {
-                              route: routes.salesStrategy,
-                              title: STRATEGY,
-                              exact: true,
-                          },
-                          isAiShoppingAssistantEnabled && {
-                              route: routes.customerEngagement,
-                              title: CUSTOMER_ENGAGEMENT,
-                              exact: true,
-                          },
-                          isAiShoppingAssistantEnabled &&
-                              isAiShoppingAssistantProductRecommendationsEnabled && {
-                                  route: routes.productRecommendations,
-                                  title: PRODUCT_RECOMMENDATIONS,
-                                  exact: true,
-                              },
-                      ].filter((x) => !!x) as NavigationItem[])
-                    : undefined,
             },
             {
                 route: routes.test,
-                dataCanduId: 'ai-agent-navbar-test',
                 title: TEST,
+                dataCanduId: 'ai-agent-navbar-test',
+                exact: true,
+            },
+            {
+                title: DEPLOY,
+                dataCanduId: 'ai-agent-navbar-deploy',
+                items: [
+                    {
+                        route: routes.deployChat,
+                        title: CHAT,
+                        exact: true,
+                    },
+                    {
+                        route: routes.deployEmail,
+                        title: EMAIL,
+                        exact: true,
+                    },
+                ],
+            },
+            {
+                title: SETTINGS,
+                dataCanduId: 'ai-agent-navbar-settings',
+                route: routes.settings,
+                items: isGorgiasUser
+                    ? [
+                          {
+                              route: routes.configuration(),
+                              title: GENERAL,
+                              exact: true,
+                          },
+                          {
+                              route: routes.previewMode,
+                              title: PREVIEW,
+                          },
+                      ]
+                    : undefined,
             },
         ].filter((x) => !!x) as NavigationItem[]
     }, [
@@ -415,7 +303,6 @@ const useNavigationItems = (
         isAiShoppingAssistantEnabled,
         isAiShoppingAssistantProductRecommendationsEnabled,
         isShoppingAssitantDeactivationEnforced,
-        isActionDrivenAiAgentNavigationEnabled,
         isOpportunitiesEnabled,
         routes,
     ])
@@ -425,8 +312,8 @@ export const useAiAgentNavigation = ({ shopName }: { shopName: string }) => {
     const flags = useFlags()
 
     const routes = useMemo(
-        () => getAiAgentNavigationRoutes(shopName, flags),
-        [shopName, flags],
+        () => getAiAgentNavigationRoutes(shopName),
+        [shopName],
     )
 
     const navigationItems = useNavigationItems(routes, flags)

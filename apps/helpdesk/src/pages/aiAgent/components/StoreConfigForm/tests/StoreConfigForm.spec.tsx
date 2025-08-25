@@ -2388,7 +2388,9 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'email' })
 
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email').length,
+            ).toBeGreaterThan(0)
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2414,7 +2416,9 @@ describe('<StoreConfigForm />', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
 
-            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Email'),
+            ).not.toBeInTheDocument()
         })
 
         it('should display channels sections when section prop is not provided and tab is channels', () => {
@@ -2422,7 +2426,9 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: undefined })
 
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email').length,
+            ).toBeGreaterThan(0)
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2443,8 +2449,12 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'chat' })
 
-            expect(screen.getByText('Chat')).toBeInTheDocument()
-            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat').length,
+            ).toBeGreaterThan(0)
+            expect(
+                screen.queryByText('Enable AI Agent on Email'),
+            ).not.toBeInTheDocument()
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2465,9 +2475,13 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'sms' })
 
-            expect(screen.getByText('Sms for AI Journey')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Sms').length,
+            ).toBeGreaterThan(0)
 
-            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Email'),
+            ).not.toBeInTheDocument()
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2490,9 +2504,13 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'chat' })
 
-            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat').length,
+            ).toBeGreaterThan(0)
 
-            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Email'),
+            ).not.toBeInTheDocument()
             expect(
                 screen.queryByText('Tone of Voice and Language'),
             ).not.toBeInTheDocument()
@@ -2517,8 +2535,12 @@ describe('<StoreConfigForm />', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('AI ticket tagging')).toBeInTheDocument()
 
-            expect(screen.queryByText('Chat')).not.toBeInTheDocument()
-            expect(screen.queryByText('Email')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Chat'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Email'),
+            ).not.toBeInTheDocument()
         })
 
         it('should display channels section when section prop is not provided and tab is channels', () => {
@@ -2529,8 +2551,12 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: undefined })
 
-            expect(screen.getByText('Chat')).toBeInTheDocument()
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat').length,
+            ).toBeGreaterThan(0)
+            expect(
+                screen.getAllByText('Enable AI Agent on Email').length,
+            ).toBeGreaterThan(0)
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2548,7 +2574,9 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'email' })
 
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email').length,
+            ).toBeGreaterThan(0)
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),
@@ -2569,7 +2597,9 @@ describe('<StoreConfigForm />', () => {
 
             renderComponent({ section: 'sms' })
 
-            expect(screen.getByText('Sms for AI Journey')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Sms').length,
+            ).toBeGreaterThan(0)
 
             expect(
                 screen.queryByText('Tone of Voice and Language'),

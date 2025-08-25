@@ -127,7 +127,6 @@ describe('<SalesOverview />', () => {
     beforeEach(() => {
         useFlagsMock.mockReturnValue({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
         })
         mockUseFirstStoreWithAiSalesData.mockReturnValue({
             isLoading: false,

@@ -9,4 +9,20 @@
         gap: var(--layout-spacing-l);
         padding: var(--layout-spacing-m);
     }
+
+    .settingsContent {
+        & > * + * {
+            margin-top: var(--layout-spacing-m);
+        }
+
+        /* Remove margin from empty data-candu div */
+        & > div[data-candu-id]:empty + * {
+            margin-top: 0;
+        }
+
+        /* Apply margin after data-candu div only when it has content */
+        & > div[data-candu-id]:not(:empty) {
+            margin-bottom: var(--layout-spacing-m);
+        }
+    }
 }

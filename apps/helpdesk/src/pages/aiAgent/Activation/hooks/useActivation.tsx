@@ -7,12 +7,6 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useNotify } from 'hooks/useNotify'
-import {
-    ActivationManageButton,
-    type ActivationManageButtonBorderedProps,
-    type ActivationManageButtonFlatProps,
-    type LegacyActivationManageButtonProps,
-} from 'pages/aiAgent/Activation/components/ActivationManageButton/ActivationManageButton'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
 
@@ -25,9 +19,6 @@ export const useActivation = (
         autoDisplayEarlyAccessDisabled?: boolean
     } = {},
 ) => {
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
     const location = useLocation()
     const pageName = location.pathname
     const hasAiAgentNewActivationXp = useFlag(
@@ -110,41 +101,6 @@ export const useActivation = (
 
     const showEarlyAccessModal = () => setIsPreviewModalVisible(true)
 
-    let activationButtonProps:
-        | Omit<LegacyActivationManageButtonProps, 'onClick'>
-        | Omit<ActivationManageButtonBorderedProps, 'onClick'>
-        | Omit<ActivationManageButtonFlatProps, 'onClick'>
-    if (hasAiAgentNewActivationXp) {
-        if (pageName.includes('overview')) {
-            activationButtonProps = {
-                hasAiAgentNewActivationXp,
-                variant: 'bordered',
-            } satisfies Omit<ActivationManageButtonBorderedProps, 'onClick'>
-        } else {
-            // We check only the 1st store because when not on overview we have only 1 store.
-            const firstStoreActivation = Object.values(storeActivations).at(0)
-
-            // Live = email or chat not deactivated
-            const aiAgentIsLive =
-                !firstStoreActivation?.configuration
-                    .emailChannelDeactivatedDatetime ||
-                !firstStoreActivation?.configuration
-                    .chatChannelDeactivatedDatetime
-
-            activationButtonProps = {
-                hasAiAgentNewActivationXp,
-                variant: 'flat',
-                status: aiAgentIsLive ? 'live' : 'off',
-            } satisfies Omit<ActivationManageButtonFlatProps, 'onClick'>
-        }
-    } else {
-        activationButtonProps = {
-            hasAiAgentNewActivationXp,
-            progress: progressPercentage,
-            variant: pageName.includes('overview') ? 'bordered' : 'flat',
-        } satisfies Omit<LegacyActivationManageButtonProps, 'onClick'>
-    }
-
     const onUpgradePlanClick = async () => {
         try {
             await handleSubscriptionUpdate()
@@ -217,21 +173,6 @@ export const useActivation = (
                 hasAiAgentNewActivationXp={hasAiAgentNewActivationXp}
             />
         ),
-        activationButton:
-            !isActionDrivenAiAgentNavigationEnabled && hasActivationEnabled ? (
-                <ActivationManageButton
-                    onClick={() => {
-                        setIsModalVisible(true)
-                        logEvent(
-                            SegmentEvent.AiAgentActivateMainButtonClicked,
-                            {
-                                page: pageName,
-                            },
-                        )
-                    }}
-                    {...activationButtonProps}
-                />
-            ) : null,
         earlyAccessModal: (
             <EarlyAccessModal
                 isLoading={isLoading}

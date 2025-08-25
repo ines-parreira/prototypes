@@ -1,10 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { STATS_ROUTES } from 'routes/constants'
 import { assetsUrl } from 'utils'
@@ -37,13 +34,9 @@ export const TriggerOnSearchSettings = ({
     gmv,
     isGmvLoading,
 }: Props) => {
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
     const { watch, setValue } = useFormContext()
     const isSalesHelpOnSearchEnabled = watch('isSalesHelpOnSearchEnabled')
     const { shopName } = useParams<{ shopName: string }>()
-    const { routes } = useAiAgentNavigation({ shopName })
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const potentialImpact = usePotentialImpact(
@@ -92,11 +85,7 @@ export const TriggerOnSearchSettings = ({
 
                     {storeConfiguration?.isSalesHelpOnSearchEnabled && (
                         <EngagementSettingsCardLinkButton
-                            href={
-                                isActionDrivenAiAgentNavigationEnabled
-                                    ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/${shopName}`
-                                    : routes.analytics
-                            }
+                            href={`/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/${shopName}`}
                             text="Track Performance"
                         />
                     )}

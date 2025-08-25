@@ -43,10 +43,7 @@ const defaultStore = {
     stats: initialStatsFiltersState,
 } as StoreState
 
-const renderComponent = (
-    history: History = createMemoryHistory(),
-    isActionDrivenAiAgentNavigationEnabled?: boolean,
-) => {
+const renderComponent = (history: History = createMemoryHistory()) => {
     return render(
         <Router history={history}>
             <Provider store={mockStore(defaultStore)}>
@@ -54,9 +51,6 @@ const renderComponent = (
                     isOnNewPlan
                     showEarlyAccessModal={() => {}}
                     showActivationModal={() => {}}
-                    isActionDrivenAiAgentNavigationEnabled={
-                        isActionDrivenAiAgentNavigationEnabled
-                    }
                 />
             </Provider>
         </Router>,
@@ -229,33 +223,7 @@ describe('KpiSection', () => {
             },
         )
 
-        it('should redirect to AI Agent Support Analytics when AI Agent type is support', () => {
-            const history = createMemoryHistory()
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
-
-            useAiAgentTypeMock.mockReturnValue({
-                isLoading: false,
-                aiAgentType: 'support' as const,
-            })
-
-            const { getByRole } = renderComponent(history, false)
-            const reportButton = getByRole('button', {
-                name: 'View Full Report',
-            })
-
-            userEvent.click(reportButton)
-
-            // Add a small delay to allow navigation to complete
-            setTimeout(() => {
-                expect(history.location.pathname).toEqual(
-                    '/stats/ai-sales-agent/overview',
-                )
-            }, 0)
-        })
-
-        it('should redirect to automate overview when action-driven navigation is enabled', () => {
+        it('should redirect to automate overview', () => {
             const history = createMemoryHistory()
             mockFlags({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
@@ -266,7 +234,7 @@ describe('KpiSection', () => {
                 aiAgentType: 'support',
             })
 
-            const { getByRole } = renderComponent(history, true)
+            const { getByRole } = renderComponent(history)
             const reportButton = getByRole('button', {
                 name: 'View Full Report',
             })

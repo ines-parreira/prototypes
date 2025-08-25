@@ -168,18 +168,8 @@ describe('AiAgentOverview', () => {
     })
     it('should render', () => {
         const { queryByText } = renderComponent()
-        expect(queryByText(/Welcome,.*/)).toBeTruthy()
         expect(queryByText('AI Agent performance')).toBeTruthy()
         expect(queryByText('Mocked PendingTasksSectionConnected')).toBeTruthy()
-        expect(queryByText('ActivationButton')).toBeInTheDocument()
-    })
-
-    it('should not render the activation button if account has no onboarded stores', () => {
-        mockUseHasNoOnboardedStores.mockReturnValue(true)
-
-        const { queryByText } = renderComponent()
-
-        expect(queryByText('ActivationButton')).not.toBeInTheDocument()
     })
 
     it('should not renders the Thank You modal', () => {
@@ -588,7 +578,7 @@ describe('AiAgentOverview', () => {
             const { queryByText, getByTestId } = renderComponent()
 
             // Check all major sections
-            expect(queryByText(/Welcome,.*/)).toBeTruthy() // Title
+            expect(queryByText('AI Agent performance')).toBeTruthy() // KPI Section
             expect(
                 queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy() // Trial Banner

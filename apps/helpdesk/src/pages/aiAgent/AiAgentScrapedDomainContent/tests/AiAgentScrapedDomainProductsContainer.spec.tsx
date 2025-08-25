@@ -3,7 +3,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -175,85 +175,31 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         mockIsProductExcludedFromAiAgent.mockReturnValue(false)
     })
 
-    it('should render the component as Products tab in Knowledge section', () => {
+    it('should render the component as Products tab in Knowledge section', async () => {
         renderComponent()
 
-        expect(screen.getAllByText('Knowledge')[0]).toBeInTheDocument()
-        expect(screen.getByText('Back to Sources')).toBeInTheDocument()
-        expect(screen.getByText('Store website')).toBeInTheDocument()
-        expect(screen.getByText('Sync')).toBeInTheDocument()
-        expect(screen.getByText('Questions')).toBeInTheDocument()
-        expect(screen.getByText('Products')).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'AI Agent uses product details from your Shopify app and store website.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Products')).toBeInTheDocument()
+        })
+
         expect(screen.getByText('Product')).toBeInTheDocument()
     })
 
-    it('should render the component as a separate Products page when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
-            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
-                ? true
-                : false
+    it('should render the component as a separate Products page', async () => {
+        mockUseFlag.mockImplementation(() => {
+            return false
         })
 
         renderComponent()
 
-        expect(screen.queryByText('Knowledge')).not.toBeInTheDocument()
-        expect(screen.queryByText('Back to Sources')).not.toBeInTheDocument()
-        expect(screen.queryByText('Store website')).not.toBeInTheDocument()
-        expect(screen.queryByText('Sync')).not.toBeInTheDocument()
-        expect(screen.queryByText('Questions')).not.toBeInTheDocument()
-        expect(screen.getByText('Products')).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Products')).toBeInTheDocument()
+        })
+
         expect(screen.getByText('Product')).toBeInTheDocument()
     })
 
-    it('should render the component with loading banner when sync is pending', () => {
-        mockUsePollStoreDomainIngestionLog.mockReturnValue({
-            ingestionLogStatus: IngestionLogStatus.Pending,
-            syncIsPending: true,
-        })
-
-        renderComponent()
-        expect(
-            screen.getByText(
-                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
-            ),
-        ).toBeInTheDocument()
-    })
-
-    it('should close the banner when close button is clicked', () => {
-        mockUsePollStoreDomainIngestionLog.mockReturnValue({
-            ingestionLogStatus: IngestionLogStatus.Pending,
-            syncIsPending: true,
-        })
-
-        renderComponent()
-
-        expect(
-            screen.getByText(
-                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
-            ),
-        ).toBeInTheDocument()
-
-        const closeButton = screen.getByRole('button', { name: /close/i })
-        fireEvent.click(closeButton)
-
-        expect(
-            screen.queryByText(
-                'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.',
-            ),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should render empty state when storeDomainIngestionLog is undefined', () => {
+    it('should render empty state when storeDomainIngestionLog is undefined', async () => {
         mockUseSyncStoreDomain.mockReturnValue({
             storeDomain: undefined,
             storeUrl: null,
@@ -267,7 +213,11 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByText('No products available')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText('No products available'),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should open side panel on row click (handleOnSelect)', async () => {
@@ -348,7 +298,7 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
     })
 
-    it('should open side panel and display selected content when selectedId in param is not null', () => {
+    it('should open side panel and display selected content when selectedId in param is not null', async () => {
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
             data: [
                 {
@@ -360,13 +310,16 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         renderComponent('1')
 
-        expect(screen.getByText('Product details')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Product details')).toBeInTheDocument()
+        })
+
         const hideIcon = screen.getByAltText('hide-view-icon')
         expect(hideIcon).toBeInTheDocument()
-        expect(screen.getByText('From your Shopify app')).toBeInTheDocument()
+        expect(screen.getByText('Shopify app')).toBeInTheDocument()
     })
 
-    it('should redirect to productsContent path without id when hide side panel button is clicked', () => {
+    it('should redirect to products path without id when hide side panel button is clicked', async () => {
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
             data: [
                 {
@@ -378,20 +331,21 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         renderComponent('1')
 
-        expect(screen.getByText('Product details')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Product details')).toBeInTheDocument()
+        })
+
         const hideIcon = screen.getByAltText('hide-view-icon')
         fireEvent.click(hideIcon)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/knowledge/sources/products-content',
+            '/app/ai-agent/shopify/test-shop/products',
         )
     })
 
-    it('should redirect to Products page path without id when hide side panel button is clicked and ActionDrivenAiAgentNavigation feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
-            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
-                ? true
-                : false
+    it('should redirect to Products page path without id when hide side panel button is clicked', async () => {
+        mockUseFlag.mockImplementation(() => {
+            return false
         })
 
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
@@ -405,7 +359,10 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
 
         renderComponent('1')
 
-        expect(screen.getByText('Product details')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Product details')).toBeInTheDocument()
+        })
+
         expect(screen.getByText('Shopify app')).toBeInTheDocument()
         expect(
             screen.getByText(

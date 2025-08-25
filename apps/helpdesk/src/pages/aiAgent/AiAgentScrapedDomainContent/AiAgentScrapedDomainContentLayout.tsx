@@ -1,16 +1,10 @@
-import { NavLink } from 'react-router-dom'
-
 import { Card } from '@gorgias/analytics-ui-kit'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import {
     HeaderType,
     PAGE_NAME,
-    SCRAPPING_CONTENT,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import BackLink from 'pages/common/components/BackLink'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import AiAgentScrapedDomainContentHeader from './AiAgentScrapedDomainContentHeader'
@@ -50,20 +44,6 @@ const AiAgentScrapedDomainContentLayout = ({
     pageType,
 }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
-
-    const headerNavbarItems = [
-        {
-            route: routes.questionsContent,
-            title: SCRAPPING_CONTENT.QUESTIONS,
-        },
-        {
-            route: routes.productsContent,
-            title: SCRAPPING_CONTENT.PRODUCTS,
-        },
-    ]
 
     return (
         <div className={css.container}>
@@ -97,20 +77,7 @@ const AiAgentScrapedDomainContentLayout = ({
                     pageType={pageType}
                     storeDomain={storeDomain}
                 />
-                <div>
-                    {!isActionDrivenAiAgentNavigationEnabled &&
-                        pageType === HeaderType.Domain && (
-                            <SecondaryNavbar>
-                                {headerNavbarItems.map(({ route, title }) => (
-                                    <NavLink key={route} to={route}>
-                                        {title}
-                                    </NavLink>
-                                ))}
-                            </SecondaryNavbar>
-                        )}
-
-                    {children}
-                </div>
+                <div>{children}</div>
             </Card>
         </div>
     )

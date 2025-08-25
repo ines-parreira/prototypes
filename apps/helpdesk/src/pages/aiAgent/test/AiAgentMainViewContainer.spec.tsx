@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
@@ -28,8 +27,13 @@ import { renderWithRouter } from 'utils/testing'
 import AiAgentMainViewContainer from '../AiAgentMainViewContainer'
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
+import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('launchdarkly-react-client-sdk')
+
+jest.mock('@gorgias/axiom', () => ({
+    LoadingSpinner: () => <div data-testid="loading-spinner">Loading...</div>,
+}))
 jest.mock(
     'pages/settings/billing/automate/AutomateSubscriptionModal',
     () => () => <div>Automate Subscription Modal</div>,
@@ -64,6 +68,14 @@ const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 jest.mock('../hooks/useStoreConfiguration')
 const mockUseStoreConfiguration = jest.mocked(useStoreConfiguration)
 
+jest.mock('../providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(),
+}))
+
+const mockUseAiAgentStoreConfigurationContext = jest.mocked(
+    useAiAgentStoreConfigurationContext,
+)
+
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: () => ({
         isLoading: false,
@@ -73,6 +85,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
 
 jest.mock('pages/automate/common/hooks/useHelpCentersArticleCount', () => ({
     useHelpCentersArticleCount: () => [],
+}))
+
+jest.mock('../AIAgentWelcomePageDynamic', () => ({
+    AIAgentWelcomePageDynamic: () => <div>AI Agent Welcome Page</div>,
 }))
 
 jest.mock('models/storeMapping/queries', () => ({
@@ -190,14 +206,11 @@ const renderComponent = ({
     )
 
 const setupMocks = ({
-    optimizeTabFlag = false,
     isStoreConfigurationLoading = false,
     isHelpCentersLoading = false,
     hasStoreConfiguration = true,
 } = {}) => {
-    mockFlags({
-        [FeatureFlagKey.AiAgentOptimizeTab]: optimizeTabFlag,
-    })
+    mockFlags({})
 
     mockGetHasAutomate.mockReturnValue(false)
     mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
@@ -219,6 +232,18 @@ const setupMocks = ({
         isLoading: isStoreConfigurationLoading,
         isFetched: true,
         error: null,
+    })
+
+    mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+        ...mockedAiAgentStoreConfigurationContext,
+        storeConfiguration: hasStoreConfiguration
+            ? getStoreConfigurationFixture({
+                  wizard: {
+                      completedDatetime: '2021-01-01',
+                  } as Wizard,
+              })
+            : undefined,
+        isLoading: isStoreConfigurationLoading,
     })
 
     mockUseAiAgentOnboardingNotification.mockReturnValue(
@@ -243,10 +268,19 @@ describe('AiAgentMainViewContainer', () => {
     it('renders loader if loading store configuration', () => {
         setupMocks({ isStoreConfigurationLoading: true })
         renderComponent()
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        // The LoadingSpinner component should be rendered with a loading div
+        const loadingDiv = document.querySelector('[aria-label="loading"]')
+        expect(loadingDiv).toBeInTheDocument()
     })
 
-    it('redirects to settings page if onboarding wizard is done', () => {
+    it('renders welcome page if onboarding wizard is not completed', () => {
+        setupMocks({ hasStoreConfiguration: false })
+        renderComponent()
+        // When there's no store configuration, the component should show the welcome page
+        expect(screen.getByText('AI Agent Welcome Page')).toBeInTheDocument()
+    })
+
+    it('redirects to overview page if onboarding wizard is done', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest
             .spyOn(history, 'replace')
@@ -266,32 +300,7 @@ describe('AiAgentMainViewContainer', () => {
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/settings',
-        )
-    })
-
-    it('redirects to optimize page if optimize tab flag is enabled', () => {
-        const history = createMemoryHistory()
-        const historyPushSpy = jest
-            .spyOn(history, 'replace')
-            .mockImplementationOnce(jest.fn)
-
-        setupMocks({
-            optimizeTabFlag: true,
-            hasStoreConfiguration: true,
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore(getState())}>
-                <QueryClientProvider client={mockQueryClient()}>
-                    <AiAgentMainViewContainer />
-                </QueryClientProvider>
-            </Provider>,
-            { history },
-        )
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/optimize`,
+            '/app/ai-agent/shopify/test-shop/overview',
         )
     })
 })

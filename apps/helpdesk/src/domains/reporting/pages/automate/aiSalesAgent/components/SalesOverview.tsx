@@ -9,7 +9,7 @@ import { Banner, Button, Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'
 import { RenderChart } from 'domains/reporting/pages/automate/aiSalesAgent/components/RenderChart'
@@ -38,8 +38,6 @@ const SalesOverview = () => {
     const getGridCellSize = useGridSize()
     const isDiscountSectionVisible: boolean | undefined =
         useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
-    const isActionDrivenAiAgentNavigationEnabled =
-        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -66,22 +64,12 @@ const SalesOverview = () => {
         storeIntegrationFromStoreFilter,
     })
 
-    const filteredPersistentFilters = useMemo((): StaticFilter[] => {
-        if (!isActionDrivenAiAgentNavigationEnabled && shopName) {
-            return AiSalesAgentReportConfig.reportFilters.persistent.filter(
-                (filter) => filter !== FilterKey.StoreIntegrations,
-            )
-        }
-        return AiSalesAgentReportConfig.reportFilters.persistent
-    }, [shopName, isActionDrivenAiAgentNavigationEnabled])
-
     useEffect(() => {
         const pathnameEndsWithShopName = location.pathname.endsWith(
             `/${shopName}`,
         )
 
         if (
-            isActionDrivenAiAgentNavigationEnabled &&
             shopName &&
             pathnameEndsWithShopName &&
             activeStoreIntegrationId === storeIntegration?.id
@@ -90,7 +78,6 @@ const SalesOverview = () => {
             history.replace(basePath)
         }
     }, [
-        isActionDrivenAiAgentNavigationEnabled,
         shopName,
         activeStoreIntegrationId,
         storeIntegration?.id,
@@ -149,7 +136,10 @@ const SalesOverview = () => {
                     >
                         <CampaignStatsFilters isSelectStoreWithData>
                             <FiltersPanelWrapper
-                                persistentFilters={filteredPersistentFilters}
+                                persistentFilters={
+                                    AiSalesAgentReportConfig.reportFilters
+                                        .persistent
+                                }
                                 optionalFilters={
                                     AiSalesAgentReportConfig.reportFilters
                                         .optional

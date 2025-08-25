@@ -24,7 +24,6 @@ const expireIn1Hour = 3_600 * 1_000
 
 interface PendingTasksSectionConnectedProps {
     shopName?: string
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 
 /**
@@ -34,7 +33,6 @@ interface PendingTasksSectionConnectedProps {
  * */
 export const PendingTasksSectionConnected = ({
     shopName: propShopName,
-    isActionDrivenAiAgentNavigationEnabled,
 }: PendingTasksSectionConnectedProps = {}) => {
     const rawStores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)
@@ -103,16 +101,10 @@ export const PendingTasksSectionConnected = ({
 
     return (
         <PendingTasksSection
-            stores={stores}
-            selectedStore={selectedStore}
-            onStoreChange={setSelectedStoreAndPersist}
             isLoading={isLoading}
             isFetched={isFetched}
             pendingTasks={pendingTasks}
             completedTasks={completedTasks}
-            isActionDrivenAiAgentNavigationEnabled={
-                isActionDrivenAiAgentNavigationEnabled
-            }
         />
     )
 }

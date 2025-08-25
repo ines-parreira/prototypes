@@ -1,6 +1,5 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
-    ActionDrivenAiAgentNavigation = 'linear.project_streamline-navigation-in-ai-agent-page.action-driven-ai-agent-navigation',
     ActionEventsLogs = 'action-events-logs',
     Actions3plObjects = 'actions-3pl-objects',
     ActionsInputsProduct = 'actions-inputs-product',

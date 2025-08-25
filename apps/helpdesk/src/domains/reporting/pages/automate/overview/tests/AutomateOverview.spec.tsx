@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { act } from 'react-dom/test-utils'
@@ -32,10 +32,7 @@ import {
     FilterKey,
     LegacyStatsFilters,
 } from 'domains/reporting/models/stat/types'
-import {
-    AAO_TIPS_VISIBILITY_KEY,
-    AutomateOverview,
-} from 'domains/reporting/pages/automate/overview/AutomateOverview'
+import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
 import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/automate/overview/AutomateOverviewDownloadDataButton'
 import { TimeSavedByAgentsKPIChart } from 'domains/reporting/pages/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
@@ -50,7 +47,6 @@ import { billingState } from 'fixtures/billing'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { IntegrationType } from 'models/integration/constants'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import { AUTOMATION_RATE_FIXED_STATS } from 'pages/automate/automate-metrics/constants'
 import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -576,193 +572,6 @@ describe('<AutomateOverview />', () => {
         ).not.toBeInTheDocument()
     })
 
-    describe('Performance Tips', () => {
-        it('should show tips by default', () => {
-            const { getByText } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(getByText(/^Top 5%/)).toBeInTheDocument()
-        })
-
-        it('should show tips and save the value to local storage on show tips button click', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-
-            const { getByText } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            fireEvent.click(getByText(/Show tips/))
-
-            expect(getByText(/^Top 5%/)).toBeInTheDocument()
-            expect(localStorage.getItem(AAO_TIPS_VISIBILITY_KEY)).toBe('true')
-        })
-
-        it('should hide tips and save the value to local storage on hide tips button click ', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'true')
-
-            const { getByText, queryAllByText } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            fireEvent.click(getByText(/Hide tips/))
-
-            expect(queryAllByText(/^Top 5%/)).toHaveLength(0)
-            expect(localStorage.getItem(AAO_TIPS_VISIBILITY_KEY)).toBe('false')
-        })
-
-        describe.each([
-            [
-                'light-error',
-                /Room for improvement/,
-                AUTOMATION_RATE_FIXED_STATS.avg - 0.1,
-            ],
-            [
-                'light-success',
-                /You’re doing good/,
-                AUTOMATION_RATE_FIXED_STATS.top10P - 0.1,
-            ],
-            [
-                'success',
-                /You’re doing great/,
-                AUTOMATION_RATE_FIXED_STATS.top10P + 0.1,
-            ],
-        ])('%s', (_, sentiment, value) => {
-            it('should show tips with sentiment ', () => {
-                localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-                useAutomationRateTrendMock.mockReturnValue({
-                    ...defaultMetricTrend,
-                    data: {
-                        value,
-                        prevValue: value,
-                    },
-                })
-
-                const screen = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AutomateOverview />
-                        </QueryClientProvider>
-                    </Provider>,
-                )
-
-                fireEvent.click(screen.getByText(/Show tips/))
-                expect(screen.getByText(sentiment)).toBeInTheDocument()
-                expect(screen).toMatchSnapshot()
-            })
-        })
-    })
-
-    describe.each([['show dash in case of', 0]])('%s', (testName, value) => {
-        it('should show tips with sentiment ', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-            useAutomationRateTrendMock.mockReturnValue({
-                ...defaultMetricTrend,
-                data: {
-                    value,
-                    prevValue: value,
-                },
-            })
-
-            const screen = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-            fireEvent.click(screen.getByText(/Show tips/))
-
-            expect(screen.getByText('-'))
-        })
-    })
-
-    describe.each([['FRT show 0h 0m in case of', 0]])('%s', (_, value) => {
-        it('should show tips with sentiment ', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-            useDecreaseInFirstResponseTimeTrendMock.mockReturnValue({
-                ...defaultMetricTrend,
-                data: {
-                    value,
-                    prevValue: value,
-                },
-            })
-
-            const screen = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-            fireEvent.click(screen.getByText(/Show tips/))
-
-            expect(screen.getByText('0h 0m'))
-        })
-    })
-
-    describe.each([
-        ['DecreaseInResolutionTimeWithAutomation show 0h 0m in case of', 0],
-    ])('%s', (testName, value) => {
-        it('should show tips with sentiment ', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-            useDecreaseInResolutionTimeTrendMock.mockReturnValue({
-                ...defaultMetricTrend,
-                data: {
-                    value,
-                    prevValue: value,
-                },
-            })
-
-            const screen = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-            fireEvent.click(screen.getByText(/Show tips/))
-
-            expect(screen.getByText('0h 0m'))
-        })
-    })
-
-    describe.each([['AI show 0 in case of', 0]])('%s', (testName, value) => {
-        it('should show tips with sentiment ', () => {
-            localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
-            useFilteredAutomatedInteractionsMock.mockReturnValue({
-                ...defaultMetricTrend,
-                data: {
-                    value,
-                    prevValue: value,
-                },
-            })
-
-            const screen = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-            fireEvent.click(screen.getByText(/Show tips/))
-
-            expect(screen.getByText('0'))
-        })
-    })
-
     describe('Autoresponder deprecation', () => {
         it('should display autoresponder filter label', () => {
             const automateMetricsTimeseries: AutomateTimeseries = {
@@ -1143,10 +952,10 @@ describe('<AutomateOverview />', () => {
             expect(aiAgentInteractionElements).toHaveLength(2)
         })
 
-        it('should not render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is disabled', () => {
+        it('should render AI Agent KPI charts regardless of ActionDrivenAiAgentNavigation flag', () => {
             ;(useFlag as jest.Mock).mockReturnValue(false)
 
-            const { queryByText } = render(
+            const { queryByText, getAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
@@ -1154,41 +963,12 @@ describe('<AutomateOverview />', () => {
                 </Provider>,
             )
 
-            expect(
-                queryByText('AI Agent automation rate'),
-            ).not.toBeInTheDocument()
-            expect(
-                queryByText('AI Agent automated interactions KPI'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should hide tips toggle when ActionDrivenAiAgentNavigation flag is enabled', () => {
-            ;(useFlag as jest.Mock).mockReturnValue(true)
-
-            const { queryByText } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
+            expect(queryByText('AI Agent automation rate')).toBeInTheDocument()
+            // There are two elements with this text - the KPI chart and the bar chart
+            const aiAgentInteractionElements = getAllByText(
+                'AI Agent automated interactions',
             )
-
-            expect(queryByText(/Show tips/)).not.toBeInTheDocument()
-            expect(queryByText(/Hide tips/)).not.toBeInTheDocument()
-        })
-
-        it('should show tips toggle when ActionDrivenAiAgentNavigation flag is disabled', () => {
-            ;(useFlag as jest.Mock).mockReturnValue(false)
-
-            const { getByText } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(getByText(/Hide tips/)).toBeInTheDocument()
+            expect(aiAgentInteractionElements).toHaveLength(2)
         })
     })
 })

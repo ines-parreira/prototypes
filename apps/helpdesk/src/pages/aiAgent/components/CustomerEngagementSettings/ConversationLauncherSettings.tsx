@@ -8,12 +8,9 @@ import { Link } from 'react-router-dom'
 
 import { Button, CheckBoxField, Label } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { Drawer } from 'pages/common/components/Drawer'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
@@ -279,17 +276,12 @@ export const ConversationLauncherSettings = ({
     translations,
     onAdvancedSettingsSave,
 }: Props) => {
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
     const [isSidebarOpen, setSidebarOpen] = useState(false)
 
     const { watch, setValue } = useFormContext()
     const isAskAnythingInputEnabled = watch('isAskAnythingInputEnabled')
     const isFloatingInputDesktopOnly = watch('isFloatingInputDesktopOnly')
     const { shopName } = useParams<{ shopName: string }>()
-
-    const { routes } = useAiAgentNavigation({ shopName })
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const potentialImpact = usePotentialImpact(
@@ -380,11 +372,7 @@ export const ConversationLauncherSettings = ({
                         {storeConfiguration?.floatingChatInputConfiguration
                             ?.isEnabled && (
                             <EngagementSettingsCardLinkButton
-                                href={
-                                    isActionDrivenAiAgentNavigationEnabled
-                                        ? `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/${shopName}`
-                                        : routes.analytics
-                                }
+                                href={`/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/${shopName}`}
                                 text="Track Performance"
                             />
                         )}

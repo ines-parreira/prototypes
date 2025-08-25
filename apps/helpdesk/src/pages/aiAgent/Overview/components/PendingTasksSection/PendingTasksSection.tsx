@@ -1,9 +1,6 @@
 import { useState } from 'react'
 
-import classNames from 'classnames'
-
 import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
-import { IntegrationType } from 'models/integration/constants'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 import { useTaskDisplayLimit } from 'pages/aiAgent/Overview/hooks/pendingTasks/useTaskDisplayLimit'
@@ -12,37 +9,23 @@ import { Task } from '../../hooks/pendingTasks/tasks/Task'
 import { PendingTask } from '../PendingTask/PendingTask'
 import { PendingTasksCompletionBar } from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
 import { Expander } from './Expander'
-import { StorePicker } from './StorePicker'
 
 import css from './PendingTasksSection.less'
 
 export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
 
-type Store = {
-    name: string
-    id: number
-    type: IntegrationType
-}
 type Props = {
-    selectedStore: Store
-    stores: Store[]
-    onStoreChange: (store: Store) => void
     isLoading: boolean
     isFetched: boolean
     pendingTasks: Task[]
     completedTasks: Task[]
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }
 
 export const PendingTasksSection = ({
-    stores,
-    selectedStore,
-    onStoreChange,
     completedTasks,
     isLoading,
     isFetched,
     pendingTasks,
-    isActionDrivenAiAgentNavigationEnabled,
 }: Props) => {
     const [isPendingTasksExpanded, setIsPendingTasksExpanded] = useState(false)
 
@@ -75,43 +58,20 @@ export const PendingTasksSection = ({
     return (
         <OverviewCard>
             <div className={css.innerCard}>
-                <div className={css.titleContainer}>
-                    <CardTitle>
-                        <div className={css.title}>
-                            {isActionDrivenAiAgentNavigationEnabled ? (
-                                <>Complete AI Agent setup</>
-                            ) : (
-                                <>
-                                    Setup your store
-                                    <i
-                                        className={classNames(
-                                            'material-icons',
-                                            css.titleIcon,
-                                        )}
-                                    >
-                                        auto_awesome
-                                    </i>
-                                </>
-                            )}
-                        </div>
-                    </CardTitle>
+                <div className={css.headerContainer}>
+                    <div className={css.titleContainer}>
+                        <CardTitle>
+                            <div className={css.title}>
+                                Complete AI Agent setup
+                            </div>
+                        </CardTitle>
+                    </div>
+                    <PendingTasksCompletionBar
+                        isLoading={isLoadingState}
+                        totalTasks={pendingTasks.length + completedTasks.length}
+                        totalTasksCompleted={completedTasks?.length}
+                    />
                 </div>
-                {stores.length > 1 &&
-                    !isActionDrivenAiAgentNavigationEnabled && (
-                        <StorePicker
-                            stores={stores}
-                            selectedStore={selectedStore}
-                            onStoreChange={onStoreChange}
-                        />
-                    )}
-                <PendingTasksCompletionBar
-                    isLoading={isLoadingState}
-                    totalTasks={pendingTasks.length + completedTasks.length}
-                    totalTasksCompleted={completedTasks?.length}
-                    isActionDrivenAiAgentNavigationEnabled={
-                        isActionDrivenAiAgentNavigationEnabled
-                    }
-                />
 
                 {!allTasksCompleted || isLoading ? (
                     <>

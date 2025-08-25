@@ -43,7 +43,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         fileArticlesDetail: (ingestionId: number, id: number) =>
             `/file/${ingestionId}/${id}`,
         questionsContentDetail: (id: number) => `/questions/content/${id}`,
-        productsContentDetail: (id: number) => `/products/content/${id}`,
+        productsDetail: (id: number) => `/products/content/${id}`,
     })),
 }))
 
@@ -958,7 +958,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -978,7 +977,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -998,7 +996,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1017,7 +1014,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1036,7 +1032,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1055,7 +1050,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1070,7 +1064,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ACTION,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1089,7 +1082,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ORDER,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1108,7 +1100,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1127,7 +1118,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1146,7 +1136,6 @@ describe('utils', () => {
                     type: 'MACRO' as any,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1161,7 +1150,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1176,7 +1164,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 null,
             )
 
@@ -1191,7 +1178,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ORDER,
                 },
                 '',
-                {},
                 mockResourceData,
             )
 
@@ -1210,7 +1196,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1230,7 +1215,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutQuestions,
             )
 
@@ -1245,7 +1229,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 mockResourceData,
             )
 
@@ -1265,7 +1248,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutSourceItems,
             )
 
@@ -1285,7 +1267,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutHelpCenter,
             )
 
@@ -1310,7 +1291,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 resourceDataWithMismatchedHelpCenter,
             )
 
@@ -1335,7 +1315,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutGuidance,
             )
 
@@ -1355,7 +1334,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutSourceItems,
             )
 
@@ -1375,7 +1353,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutQuestions,
             )
 
@@ -1395,7 +1372,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutFiles,
             )
 
@@ -1415,7 +1391,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ACTION,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutActions,
             )
 
@@ -1435,7 +1410,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutProducts,
             )
 
@@ -1455,7 +1429,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
                 },
                 'test-store',
-                {},
                 resourceDataWithoutProducts,
             )
 
@@ -1482,7 +1455,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 },
                 'test-store',
-                {},
                 resourceDataWithGuidanceNoTitle,
             )
 
@@ -1507,7 +1479,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ACTION,
                 },
                 'test-store',
-                {},
                 resourceDataWithActionNoName,
             )
 
@@ -1537,7 +1508,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 resourceDataWithArticleNoTitle,
             )
 
@@ -1568,7 +1538,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                 },
                 'test-store',
-                {},
                 resourceDataWithArticleNoContent,
             )
 
@@ -1600,7 +1569,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 },
                 'test-store',
-                {},
                 resourceDataWithGuidanceNoContent,
             )
 
@@ -1620,7 +1588,6 @@ describe('utils', () => {
                     type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                 },
                 '',
-                {},
                 mockResourceData,
             )
 
@@ -1701,7 +1668,6 @@ describe('utils', () => {
                         type,
                     },
                     shopName,
-                    {},
                     mockResourceData,
                 )
 

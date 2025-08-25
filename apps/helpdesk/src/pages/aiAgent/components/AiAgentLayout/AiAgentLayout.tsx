@@ -2,17 +2,11 @@ import { ReactNode, useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
-import Button from 'pages/common/components/button/Button'
-import history from 'pages/history'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentView } from '../AiAgentView/AiAgentView'
@@ -26,7 +20,6 @@ type Props = {
     className?: string
     title: ReactNode
     isLoading?: boolean
-    hideViewAiAgentTicketsButton?: boolean
     // Hide title and navbar (eg: to show a paywall)
     fullscreen?: boolean
 }
@@ -37,17 +30,10 @@ export const AiAgentLayout = ({
     children,
     title,
     isLoading,
-    hideViewAiAgentTicketsButton,
     fullscreen,
 }: Props) => {
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
-    const { aiAgentTicketViewId } = useAccountStoreConfiguration({
-        storeNames: [shopName],
-    })
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -62,51 +48,22 @@ export const AiAgentLayout = ({
             onSuccess: () => {},
         })
 
-    const { activationModal, earlyAccessModal, activationButton } =
-        useActivation({
-            autoDisplayEarlyAccessDisabled:
-                atLeastOneStoreHasActiveTrial ||
-                canStartTrial ||
-                canStartTrialFromFeatureFlag,
-        })
+    const { activationModal, earlyAccessModal } = useActivation({
+        autoDisplayEarlyAccessDisabled:
+            atLeastOneStoreHasActiveTrial ||
+            canStartTrial ||
+            canStartTrialFromFeatureFlag,
+    })
 
     const AiAgentTitle = useMemo(() => {
         return (
             <div className={css.customAiAgentTitle}>
                 <div className={css.customAiAgentTitleSubContainer}>
                     <h1 className="d-flex align-items-center">{title}</h1>
-                    {!isActionDrivenAiAgentNavigationEnabled &&
-                        !hideViewAiAgentTicketsButton &&
-                        aiAgentTicketViewId && (
-                            <Button
-                                size="small"
-                                intent="secondary"
-                                onClick={() => {
-                                    logEvent(
-                                        SegmentEvent.AiAgentViewTicketsClicked,
-                                    )
-                                    history.push(
-                                        `/app/views/${aiAgentTicketViewId}`,
-                                        {
-                                            skipRedirect: true,
-                                        },
-                                    )
-                                }}
-                            >
-                                View AI Agent Tickets
-                            </Button>
-                        )}
                 </div>
-                <div>{activationButton}</div>
             </div>
         )
-    }, [
-        hideViewAiAgentTicketsButton,
-        aiAgentTicketViewId,
-        title,
-        activationButton,
-        isActionDrivenAiAgentNavigationEnabled,
-    ])
+    }, [title])
 
     return (
         <AiAgentView

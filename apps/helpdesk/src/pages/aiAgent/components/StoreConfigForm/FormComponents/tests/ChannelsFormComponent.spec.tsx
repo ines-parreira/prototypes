@@ -708,12 +708,6 @@ describe('ChannelsFormComponent', () => {
             )
 
             // Should render SMS configuration section
-            const sections = screen.getAllByTestId('configuration-section')
-            const smsSection = sections.find(
-                (section) =>
-                    section.getAttribute('data-title') === 'Sms for AI Journey',
-            )
-            expect(smsSection).toBeDefined()
             expect(screen.getByTestId('channel-toggle-sms')).toBeInTheDocument()
             expect(screen.getByTestId('sms-form')).toBeInTheDocument()
             const smsBanners = screen.getAllByTestId('settings-banner')

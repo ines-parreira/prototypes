@@ -1,12 +1,10 @@
 import React, { useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useLast28daysForAutomateRedirect } from 'domains/reporting/hooks/automate/useLast28daysForAutomateRedirect'
@@ -17,7 +15,6 @@ import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
 } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
-import { AAO_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/automate/overview/constants'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
@@ -26,7 +23,6 @@ import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'domains/reporting/pages/self-service/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
@@ -46,14 +42,6 @@ export default function AutomateOverviewContent() {
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
     const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
-    const isActionDrivenAiAgentNavigationEnabled: boolean | undefined = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
-
-    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
-        AAO_TIPS_VISIBILITY_KEY,
-        true,
-    )
 
     const isDurationLast3Days = useMemo(() => {
         const startDateTime = moment(statsFilters.period.start_datetime)
@@ -142,19 +130,7 @@ export default function AutomateOverviewContent() {
                         />
                     </DashboardGridCell>
                 </DashboardSection>
-                <DashboardSection
-                    title="Performance"
-                    titleExtra={
-                        !isActionDrivenAiAgentNavigationEnabled && (
-                            <TipsToggle
-                                isVisible={!!areTipsVisible}
-                                onClick={() =>
-                                    setAreTipsVisible(!areTipsVisible)
-                                }
-                            />
-                        )
-                    }
-                >
+                <DashboardSection title="Performance">
                     <DashboardGridCell size={6}>
                         <DashboardComponent
                             chart={AutomateOverviewChart.AutomationRateKPIChart}
@@ -169,26 +145,22 @@ export default function AutomateOverviewContent() {
                             config={AutomateOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    {isActionDrivenAiAgentNavigationEnabled && (
-                        <>
-                            <DashboardGridCell size={6}>
-                                <DashboardComponent
-                                    chart={
-                                        AutomateOverviewChart.AIAgentAutomationRateKPIChart
-                                    }
-                                    config={AutomateOverviewReportConfig}
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={6}>
-                                <DashboardComponent
-                                    chart={
-                                        AutomateOverviewChart.AIAgentAutomatedInteractionsKPIChart
-                                    }
-                                    config={AutomateOverviewReportConfig}
-                                />
-                            </DashboardGridCell>
-                        </>
-                    )}
+                    <DashboardGridCell size={6}>
+                        <DashboardComponent
+                            chart={
+                                AutomateOverviewChart.AIAgentAutomationRateKPIChart
+                            }
+                            config={AutomateOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <DashboardComponent
+                            chart={
+                                AutomateOverviewChart.AIAgentAutomatedInteractionsKPIChart
+                            }
+                            config={AutomateOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Impact">
                     <DashboardGridCell size={6}>

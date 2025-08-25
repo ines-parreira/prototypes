@@ -111,7 +111,6 @@ describe('useUpgradePlan', () => {
             showActivationModal: jest.fn(),
             onUpgradePlanClick: mockOnUpgradePlanClick,
             activationModal: {} as any,
-            activationButton: null,
             earlyAccessModal: {} as any,
         })
         useSalesTrialRevampMilestoneMock.mockReturnValue('off')

@@ -13,9 +13,6 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
-import { Separator } from 'pages/aiAgent/Overview/components/Separator/Separator'
-import { Title } from 'pages/aiAgent/Overview/components/Title/Title'
-import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
@@ -24,7 +21,6 @@ import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModa
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
 import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
@@ -35,21 +31,15 @@ export const AiAgentOverview = () => {
         shopType: string
     }>()
 
-    const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const hasResourceSection =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]
 
-    // If shopname is not provided, we don't want to take into account the feature flag
-    // as the latter is supposed to render the page only for the shopname provided
-    const isActionDrivenAiAgentNavigationEnabled =
-        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation] && !!shopName
     const isShoppingAssistantTrialImprovement =
         useFlags()[FeatureFlagKey.ShoppingAssistantTrialImprovement]
 
     const {
-        activationButton,
         activationModal,
         earlyAccessModal,
         isOnNewPlan,
@@ -113,24 +103,8 @@ export const AiAgentOverview = () => {
 
     const trialModalProps = useTrialModalProps({ onConfirmTrial })
 
-    const hasNoOnboardedStores = useHasNoOnboardedStores()
-
     return (
-        <AiAgentOverviewLayout
-            shopName={shopName}
-            isActionDrivenAiAgentNavigationEnabled={
-                isActionDrivenAiAgentNavigationEnabled
-            }
-        >
-            {!isActionDrivenAiAgentNavigationEnabled && (
-                <Title
-                    firstName={currentUser.get('firstname')}
-                    activationButton={
-                        hasNoOnboardedStores ? null : activationButton
-                    }
-                />
-            )}
-
+        <AiAgentOverviewLayout shopName={shopName}>
             {/* TODO: [AIFLY-547] remove this when the trial improvement is enabled */}
             {!isShoppingAssistantTrialImprovement && (
                 <>
@@ -165,22 +139,9 @@ export const AiAgentOverview = () => {
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
                 shopName={shopName}
-                isActionDrivenAiAgentNavigationEnabled={
-                    isActionDrivenAiAgentNavigationEnabled
-                }
             />
-            <PendingTasksSectionConnected
-                shopName={shopName}
-                isActionDrivenAiAgentNavigationEnabled={
-                    isActionDrivenAiAgentNavigationEnabled
-                }
-            />
-            {hasResourceSection && (
-                <>
-                    {!isActionDrivenAiAgentNavigationEnabled && <Separator />}
-                    <ResourcesSection />
-                </>
-            )}
+            <PendingTasksSectionConnected shopName={shopName} />
+            {hasResourceSection && <ResourcesSection />}
             <ThankYouModal
                 isOpen={isOpen}
                 title={modalContent.title}

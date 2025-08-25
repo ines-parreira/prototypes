@@ -220,8 +220,8 @@ export const CustomerEngagementSettings = () => {
                     flexGrow={1}
                 >
                     <Box
+                        className={css.settingsContent}
                         flexDirection="column"
-                        gap="var(--layout-spacing-s)"
                         w="100%"
                     >
                         <AiShoppingAssistantExpireBanner

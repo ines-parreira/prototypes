@@ -1,13 +1,10 @@
 import { useMemo, useRef } from 'react'
 
-import { LDFlagSet } from 'launchdarkly-react-client-sdk'
-
 import {
     FeedbackExecutionsItem,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {
@@ -21,7 +18,6 @@ import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNaviga
 import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     AiAgentFeedbackTypeEnum,
@@ -333,7 +329,6 @@ export const getResourceMetadata = (
         type: AiAgentKnowledgeResourceTypeEnum
     },
     shopName: string,
-    flags: LDFlagSet,
     resourceData: {
         articles?: ReturnType<
             typeof useGetMultipleHelpCenterArticleLists
@@ -362,11 +357,8 @@ export const getResourceMetadata = (
     } | null,
 ) => {
     const aiAgentRoutes = shopName
-        ? getAiAgentNavigationRoutes(shopName, flags)
+        ? getAiAgentNavigationRoutes(shopName)
         : undefined
-
-    const isActionDrivenAiAgentNavigationEnabled =
-        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const idAsNumber = parseInt(id)
 
@@ -497,9 +489,7 @@ export const getResourceMetadata = (
                 ? {
                       title: title ?? '',
                       content: title ?? '',
-                      url: isActionDrivenAiAgentNavigationEnabled
-                          ? aiAgentRoutes?.productsDetail(idAsNumber)
-                          : aiAgentRoutes?.productsContentDetail(idAsNumber),
+                      url: aiAgentRoutes?.productsDetail(idAsNumber),
                   }
                 : getEmptyMetadata()
         }
@@ -581,7 +571,6 @@ export const useProcessResources = (
         >
     } | null,
 ) => {
-    const flags = getLDClient().allFlags()
     const previousValueRef = useRef<{
         knowledgeResources: KnowledgeResource[]
         suggestedResources: SuggestedResource[]
@@ -628,7 +617,6 @@ export const useProcessResources = (
                         type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
                     },
                     shopName,
-                    flags,
                     resourceData,
                 )
 
@@ -673,7 +661,6 @@ export const useProcessResources = (
                                     type: parsedResource.resourceType as AiAgentKnowledgeResourceTypeEnum,
                                 },
                                 shopName,
-                                flags,
                                 resourceData.isLoading
                                     ? previousResourceDataRef.current
                                     : resourceData,
@@ -732,7 +719,7 @@ export const useProcessResources = (
             previousResourceDataRef.current = resourceData
         }
         return output
-    }, [executions, shopName, resourceData, flags])
+    }, [executions, shopName, resourceData])
 }
 
 export const useExtractDistinctProductIdsFromResources = (

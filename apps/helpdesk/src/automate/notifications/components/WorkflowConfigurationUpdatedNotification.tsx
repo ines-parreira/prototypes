@@ -6,7 +6,6 @@ import { WARNING_ICON } from 'pages/common/components/SourceIcon'
 
 import { trackstarDefinitionKeys } from '../../../models/workflows/queries'
 import { getAiAgentNavigationRoutes } from '../../../pages/aiAgent/hooks/useAiAgentNavigation'
-import { getLDClient } from '../../../utils/launchDarkly'
 import { WorkflowConfigurationUpdatedNotificationPayload } from '../types'
 
 type Props = {
@@ -18,8 +17,7 @@ export default function WorkflowConfigurationUpdatedNotification({
     ...props
 }: Props) {
     const payload = notification.payload
-    const flags = getLDClient().allFlags()
-    const routes = getAiAgentNavigationRoutes(payload.store_name, flags)
+    const routes = getAiAgentNavigationRoutes(payload.store_name)
     const queryClient = useQueryClient()
     return (
         <Content

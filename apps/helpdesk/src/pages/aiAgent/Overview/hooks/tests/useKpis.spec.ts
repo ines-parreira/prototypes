@@ -4,14 +4,8 @@ import { IntegrationType } from 'models/integration/types'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
-    useCoverageRate: jest.fn(() => 'mockCoverageRate'),
-}))
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced', () => ({
     useGmvInfluenced: jest.fn(() => 'mockGmvInfluenced'),
-}))
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate', () => ({
-    useAiAgentAutomationRate: jest.fn(() => 'mockAiAgentAutomationRate'),
 }))
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCsat', () => ({
     useCsat: jest.fn(() => 'mockCsat'),
@@ -91,60 +85,33 @@ describe('useKpis', () => {
             mockStoreState,
         )
 
-        expect(result.current.metrics).toEqual([
-            'mockCoverageRate',
-            'mockAiAgentAutomationRate',
-            'mockGmvInfluenced',
-            'mockCsat',
-        ])
-    })
-
-    it('should return metrics with shopName provided', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            () =>
-                useKpis({
-                    automationRateFilters: filters,
-                    filters,
-                    timezone,
-                    aiAgentUserId: 123,
-                    aiAgentType: 'mixed',
-                    showActivationModal: () => {},
-                    showEarlyAccessModal: () => {},
-                    isOnNewPlan: true,
-                    shopName: 'test-shop',
-                }),
-            mockStoreState,
-        )
-
-        expect(result.current.metrics).toEqual([
-            'mockCoverageRate',
-            'mockAiAgentAutomationRate',
-            'mockGmvInfluenced',
-            'mockCsat',
-        ])
-    })
-
-    it('should return different metrics when isActionDrivenAiAgentNavigationEnabled is true', () => {
-        const { result } = renderHookWithStoreAndQueryClientProvider(
-            () =>
-                useKpis({
-                    automationRateFilters: filters,
-                    filters,
-                    timezone,
-                    aiAgentUserId: 123,
-                    aiAgentType: 'mixed',
-                    showActivationModal: () => {},
-                    showEarlyAccessModal: () => {},
-                    isOnNewPlan: true,
-                    shopName: 'test-shop',
-                    isActionDrivenAiAgentNavigationEnabled: true,
-                }),
-            mockStoreState,
-        )
-
-        // When isActionDrivenAiAgentNavigationEnabled is true, it should return [automatedInteractions, csat, gmvInfluenced]
         expect(result.current.metrics).toHaveLength(3)
-        // The first metric will be the automated interactions metric
+        expect(result.current.metrics[0]).toHaveProperty(
+            'title',
+            'AI Agent automated interactions',
+        )
+        expect(result.current.metrics[1]).toEqual('mockCsat')
+        expect(result.current.metrics[2]).toEqual('mockGmvInfluenced')
+    })
+
+    it('should return metrics', () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            () =>
+                useKpis({
+                    automationRateFilters: filters,
+                    filters,
+                    timezone,
+                    aiAgentUserId: 123,
+                    aiAgentType: 'mixed',
+                    showActivationModal: () => {},
+                    showEarlyAccessModal: () => {},
+                    isOnNewPlan: true,
+                    shopName: 'test-shop',
+                }),
+            mockStoreState,
+        )
+
+        expect(result.current.metrics).toHaveLength(3)
         expect(result.current.metrics[0]).toHaveProperty(
             'title',
             'AI Agent automated interactions',
@@ -168,20 +135,18 @@ describe('useKpis', () => {
             mockStoreState,
         )
 
-        expect(result.current.metrics).toEqual([
-            'mockCoverageRate',
-            'mockAiAgentAutomationRate',
-            'mockGmvInfluenced',
-            'mockCsat',
-        ])
+        expect(result.current.metrics).toHaveLength(3)
+        expect(result.current.metrics[0]).toHaveProperty(
+            'title',
+            'AI Agent automated interactions',
+        )
+        expect(result.current.metrics[1]).toEqual('mockCsat')
+        expect(result.current.metrics[2]).toEqual('mockGmvInfluenced')
     })
 
     it('should call hooks with correct parameters', () => {
-        const { useCoverageRate } = jest.requireMock(
-            'pages/aiAgent/Overview/hooks/kpis/useCoverageRate',
-        )
-        const { useAiAgentAutomationRate } = jest.requireMock(
-            'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate',
+        const { useAiAgentTicketNoHandover } = jest.requireMock(
+            'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover',
         )
         const { useGmvInfluenced } = jest.requireMock(
             'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced',
@@ -221,30 +186,34 @@ describe('useKpis', () => {
         expect(useGetTicketChannelsStoreIntegrations).toHaveBeenCalledWith(
             'my-shop',
         )
-        expect(useCoverageRate).toHaveBeenCalledWith(
-            customFilters,
+
+        const expectedFilters = {
+            ...customFilters,
+            agents: {
+                operator: 'one-of',
+                values: [456],
+            },
+        }
+
+        expect(useAiAgentTicketNoHandover).toHaveBeenCalledWith(
+            expectedFilters,
             'America/New_York',
-            undefined,
-        )
-        expect(useAiAgentAutomationRate).toHaveBeenCalledWith(
-            customFilters,
-            'America/New_York',
-            undefined,
+            ['123', '456'],
         )
         expect(useGmvInfluenced).toHaveBeenCalledWith({
-            filters: customFilters,
+            filters: expectedFilters,
             timezone: 'America/New_York',
             aiAgentType: 'support',
             isOnNewPlan: true,
             showEarlyAccessModal,
             showActivationModal,
-            integrationIds: undefined,
+            integrationIds: [],
         })
         expect(useCsat).toHaveBeenCalledWith(
-            customFilters,
+            expectedFilters,
             'America/New_York',
             456,
-            undefined,
+            ['123', '456'],
         )
     })
 })

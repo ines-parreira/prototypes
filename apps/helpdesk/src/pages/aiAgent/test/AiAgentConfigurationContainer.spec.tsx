@@ -446,8 +446,16 @@ describe('AiAgentConfigurationContainer', () => {
 
         renderComponent({ tab: 'channels' })
         expect(screen.queryByText('General')).not.toBeInTheDocument()
-        expect(screen.getByText('Chat')).toBeInTheDocument()
-        expect(screen.getByText('Email')).toBeInTheDocument()
+        // The title will be "Settings" since the route is /settings/channels, not /deploy/chat
+        const heading = screen.getByRole('heading', { level: 1 })
+        expect(heading).toHaveTextContent('Settings')
+        // Check for the actual content that gets rendered in channels tab
+        expect(
+            screen.getAllByText('Enable AI Agent on Chat')[0],
+        ).toBeInTheDocument()
+        expect(
+            screen.getAllByText('Enable AI Agent on Email')[0],
+        ).toBeInTheDocument()
         expect(
             screen.queryByText('Handover and exclusion'),
         ).not.toBeInTheDocument()
@@ -586,8 +594,13 @@ describe('AiAgentConfigurationContainer', () => {
             })
 
             renderComponent({ tab: 'channels' })
-            expect(screen.getByText('Chat')).toBeInTheDocument()
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            // Check for actual content in channels tab
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat')[0],
+            ).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email')[0],
+            ).toBeInTheDocument()
         })
     })
 
@@ -602,8 +615,12 @@ describe('AiAgentConfigurationContainer', () => {
 
             renderComponent({ tab: 'channels' })
 
-            expect(screen.getByText('Chat')).toBeInTheDocument()
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat')[0],
+            ).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email')[0],
+            ).toBeInTheDocument()
         })
 
         it('should handle disabled feature flags', () => {
@@ -614,8 +631,12 @@ describe('AiAgentConfigurationContainer', () => {
 
             renderComponent({ tab: 'channels' })
 
-            expect(screen.queryByText('Chat')).not.toBeInTheDocument()
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Enable AI Agent on Chat'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email')[0],
+            ).toBeInTheDocument()
         })
     })
 
@@ -628,8 +649,12 @@ describe('AiAgentConfigurationContainer', () => {
 
             renderComponent({ tab: 'channels' })
 
-            expect(screen.getByText('Chat')).toBeInTheDocument()
-            expect(screen.getByText('Email')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Chat')[0],
+            ).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Enable AI Agent on Email')[0],
+            ).toBeInTheDocument()
         })
     })
 

@@ -12,14 +12,12 @@ import {
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import IconButton from 'pages/common/components/button/IconButton'
 import history from 'pages/history'
-import { getLDClient } from 'utils/launchDarkly'
 
 import css from './ConvAiOnboardingLayout.less'
 
 const onClose = (shopName?: string) => {
     if (shopName) {
-        const flags = getLDClient().allFlags()
-        history.push(getAiAgentNavigationRoutes(shopName, flags).main)
+        history.push(getAiAgentNavigationRoutes(shopName).main)
         return
     }
     history.push(aiAgentRoutes.overview)

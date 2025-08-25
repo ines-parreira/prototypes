@@ -22,7 +22,6 @@ import {
     SuggestedResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTicketState } from 'state/ticket/selectors'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -82,7 +81,6 @@ const MissingKnowledgeSelect = ({
     const currentUser = useAppSelector((state) => state.currentUser)
     const ticketId: number = ticket.get('id')
     const userId: number = currentUser.get('id')
-    const flags = useMemo(() => getLDClient().allFlags(), [])
 
     const { onFeedbackGiven } = useFeedbackTracking({
         ticketId,
@@ -113,7 +111,6 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
@@ -141,7 +138,6 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.ACTION,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
@@ -167,7 +163,6 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
@@ -194,7 +189,6 @@ const MissingKnowledgeSelect = ({
                             type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     ),
                     resource: question,
@@ -222,7 +216,6 @@ const MissingKnowledgeSelect = ({
                             title: snippet.title,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     )
 
@@ -255,7 +248,6 @@ const MissingKnowledgeSelect = ({
                             title: snippet.title,
                         },
                         shopName,
-                        flags,
                         resourcesData,
                     )
 
@@ -277,7 +269,6 @@ const MissingKnowledgeSelect = ({
         snippetHelpCenterId,
         knowledgeResources,
         shopName,
-        flags,
     ])
 
     const makeLabelsUnique = useCallback((choices: ChoiceOption[]) => {

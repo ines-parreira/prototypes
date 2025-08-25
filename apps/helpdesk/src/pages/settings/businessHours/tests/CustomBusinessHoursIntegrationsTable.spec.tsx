@@ -175,7 +175,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             expect(selectAllCheckbox).not.toBeChecked()
 
             /* select all */
-            await waitFor(() => user.click(selectAllCheckbox))
+            await act(async () => {
+                await user.click(selectAllCheckbox)
+            })
 
             expect(firstIntegrationCheckbox).toBeChecked()
             expect(secondIntegrationCheckbox).toBeChecked()
@@ -183,7 +185,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
             /* unselect all */
 
-            await waitFor(() => user.click(selectAllCheckbox))
+            await act(async () => {
+                await user.click(selectAllCheckbox)
+            })
 
             expect(firstIntegrationCheckbox).not.toBeChecked()
             expect(secondIntegrationCheckbox).not.toBeChecked()
@@ -299,7 +303,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             name: 'Select all integrations',
         })
 
-        await user.click(selectAllCheckbox)
+        await act(async () => {
+            await user.click(selectAllCheckbox)
+        })
 
         await waitFor(() => {
             expect(selectAllCheckbox).toBeChecked()
@@ -310,7 +316,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             true,
         )
 
-        await user.click(selectAllCheckbox)
+        await act(async () => {
+            await user.click(selectAllCheckbox)
+        })
 
         await waitFor(() => {
             expect(selectAllCheckbox).not.toBeChecked()
@@ -457,11 +465,13 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         const allChannelsDropdown = await screen.findByRole('button', {
             name: /all channels/i,
         })
-        await act(() => user.click(allChannelsDropdown))
+        await act(async () => {
+            await user.click(allChannelsDropdown)
+        })
 
         const voiceOption = await screen.findByText('Voice')
-        await act(() => {
-            user.click(voiceOption)
+        await act(async () => {
+            await user.click(voiceOption)
         })
 
         await waitFor(() => {
@@ -489,11 +499,13 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         const allStoresButton = await screen.findByRole('button', {
             name: /all stores/i,
         })
-        await act(() => user.click(allStoresButton))
+        await act(async () => {
+            await user.click(allStoresButton)
+        })
 
         const storeOption = await screen.findByText('Test Shopify Store')
-        await act(() => {
-            user.click(storeOption)
+        await act(async () => {
+            await user.click(storeOption)
         })
 
         await waitFor(() => {
@@ -513,7 +525,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
     it('displays badge with plural form when multiple integrations are selected', async () => {
         const user = userEvent.setup()
-        renderComponent()
+        renderComponent(undefined, {
+            toggleIntegrationsToOverride: jest.fn(),
+        })
 
         await waitFor(() => {
             expect(
@@ -521,24 +535,18 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             ).toBeInTheDocument()
         })
 
-        const integrationHeader = screen.getByText('Integration')
-
-        expect(integrationHeader).toBeInTheDocument()
-
-        await act(async () => {
-            await user.click(integrationHeader)
+        const selectAllCheckbox = screen.getByRole('checkbox', {
+            name: 'Select all integrations',
         })
 
-        expect(screen.getByText('arrow_upward')).toBeVisible()
-
         await act(async () => {
-            await user.click(integrationHeader)
+            await user.click(selectAllCheckbox)
         })
 
-        expect(screen.getByText('arrow_downward')).toBeVisible()
-
-        await act(async () => {
-            await user.click(integrationHeader)
+        await waitFor(() => {
+            expect(
+                screen.getByText('3 integrations selected'),
+            ).toBeInTheDocument()
         })
     })
 

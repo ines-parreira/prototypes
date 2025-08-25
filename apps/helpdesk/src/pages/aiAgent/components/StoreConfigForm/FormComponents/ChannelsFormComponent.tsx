@@ -82,8 +82,6 @@ export const ChannelsFormComponent = ({
         useFlags()[FeatureFlagKey.AiAgentChat]
     const isAiAgentSmsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSms]
-    const isActionDrivenNavbarEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const isAiAgentActivationEnabled =
         !!useFlags()[FeatureFlagKey.AiAgentActivation]
@@ -142,8 +140,8 @@ export const ChannelsFormComponent = ({
             {isAiAgentChatEnabled &&
                 (section === 'all' || section === 'chat') && (
                     <ConfigurationSection
-                        title={!isActionDrivenNavbarEnabled ? 'Chat' : ''}
-                        isBeta={!isActionDrivenNavbarEnabled ? true : false}
+                        title={''}
+                        isBeta={false}
                         data-candu-id="ai-agent-configuration-chat-settings"
                     >
                         {(!isAiAgentActivationEnabled ||
@@ -194,7 +192,7 @@ export const ChannelsFormComponent = ({
                 )}
             {!isStandalone && (section === 'all' || section === 'email') && (
                 <ConfigurationSection
-                    title={!isActionDrivenNavbarEnabled ? 'Email' : ''}
+                    title={''}
                     data-candu-id="ai-agent-configuration-email-settings"
                 >
                     {showToggles && (
@@ -240,11 +238,7 @@ export const ChannelsFormComponent = ({
             {isAiAgentSmsEnabled &&
                 (section === 'sms' || section === 'all') && (
                     <ConfigurationSection
-                        title={
-                            !isActionDrivenNavbarEnabled
-                                ? 'Sms for AI Journey'
-                                : ''
-                        }
+                        title={''}
                         data-candu-id="ai-agent-configuration-sms-settings"
                     >
                         {showToggles && (

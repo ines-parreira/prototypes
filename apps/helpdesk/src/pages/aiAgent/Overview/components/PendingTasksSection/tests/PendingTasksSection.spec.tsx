@@ -1,6 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { IntegrationType } from 'models/integration/constants'
 import { AlwaysDisplayedTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'
 import { AlwaysHiddenTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysHidden.task'
 
@@ -29,19 +28,6 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={true}
                 isFetched={false}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
             />,
         )
 
@@ -59,83 +45,11 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 isFetched={true}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
             />,
         )
 
         expect(screen.getAllByRole('link')[0]).not.toHaveAttribute('aria-busy')
         expect(screen.getByText('Show all')).toBeInTheDocument()
-    })
-
-    it('render the store selector when multiple stores', () => {
-        jest.useFakeTimers()
-        render(
-            <PendingTasksSection
-                completedTasks={completedTasks}
-                pendingTasks={pendingTasks}
-                isLoading={false}
-                isFetched={true}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                    {
-                        id: 2,
-                        name: 'other test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
-            />,
-        )
-
-        expect(screen.getAllByText('test store')).not.toHaveLength(0)
-    })
-
-    it('not render the store selector when single store', () => {
-        jest.useFakeTimers()
-        render(
-            <PendingTasksSection
-                completedTasks={completedTasks}
-                pendingTasks={pendingTasks}
-                isLoading={false}
-                isFetched={true}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
-            />,
-        )
-
-        expect(screen.queryAllByText('test store')).toHaveLength(0)
     })
 
     it('render the component after loading when all tasks are completed', () => {
@@ -146,19 +60,6 @@ describe('PendingTasksSection', () => {
                 pendingTasks={[]}
                 isLoading={false}
                 isFetched={true}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
             />,
         )
 
@@ -176,19 +77,6 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 isFetched={true}
-                onStoreChange={() => {}}
-                selectedStore={{
-                    id: 1,
-                    name: 'test store',
-                    type: IntegrationType.Shopify,
-                }}
-                stores={[
-                    {
-                        id: 1,
-                        name: 'test store',
-                        type: IntegrationType.Shopify,
-                    },
-                ]}
             />,
         )
 

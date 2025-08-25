@@ -4,8 +4,6 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
-import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
-import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
@@ -53,7 +51,6 @@ export const useKpis = ({
     showEarlyAccessModal,
     showActivationModal,
     shopName,
-    isActionDrivenAiAgentNavigationEnabled,
 }: {
     automationRateFilters: StatsFilters
     filters: StatsFilters
@@ -64,7 +61,6 @@ export const useKpis = ({
     showEarlyAccessModal: () => void
     showActivationModal: () => void
     shopName?: string
-    isActionDrivenAiAgentNavigationEnabled?: boolean
 }) => {
     // Always call the hook to avoid conditional hook issue
     const storeIntegrationIds = useGetTicketChannelsStoreIntegrations(
@@ -72,46 +68,29 @@ export const useKpis = ({
     )
     // For GMV we need to use the integration ids from the store integrations
     const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
-    const gmvIntegrationIds =
-        isActionDrivenAiAgentNavigationEnabled && shopName
-            ? storeIntegrations
-                  .filter((s) => s.name === shopName)
-                  .map((s) => s.id)
-            : undefined
-    // Only use the integrations when shopName is provided and feature flag is enabled
-    const integrationIds =
-        isActionDrivenAiAgentNavigationEnabled && shopName
-            ? storeIntegrationIds
-            : undefined
+    const gmvIntegrationIds = storeIntegrations
+        .filter((s) => s.name === shopName)
+        .map((s) => s.id)
 
-    const automationRateFilters = { ...initialAutomationRateFilters }
-    const filters = { ...initialFilters }
-
-    if (isActionDrivenAiAgentNavigationEnabled) {
-        automationRateFilters[FilterKey.Agents] = {
+    const automationRateFilters = {
+        ...initialAutomationRateFilters,
+        [FilterKey.Agents]: {
             operator: LogicalOperatorEnum.ONE_OF,
             values: [aiAgentUserId],
-        }
-        filters[FilterKey.Agents] = {
+        },
+    }
+    const filters = {
+        ...initialFilters,
+        [FilterKey.Agents]: {
             operator: LogicalOperatorEnum.ONE_OF,
             values: [aiAgentUserId],
-        }
+        },
     }
 
-    const coverageRate = useCoverageRate(
-        automationRateFilters,
-        timezone,
-        integrationIds,
-    )
-    const automationRate = useAiAgentAutomationRate(
-        automationRateFilters,
-        timezone,
-        integrationIds,
-    )
     const automatedInteractions = useAiAgentAutomationTickets(
         automationRateFilters,
         timezone,
-        integrationIds,
+        storeIntegrationIds,
     )
     const gmvInfluenced = useGmvInfluenced({
         filters: filters,
@@ -122,14 +101,9 @@ export const useKpis = ({
         showActivationModal: showActivationModal,
         integrationIds: gmvIntegrationIds,
     })
-    const csat = useCsat(filters, timezone, aiAgentUserId, integrationIds)
-
-    let metrics = [coverageRate, automationRate, gmvInfluenced, csat]
-    if (isActionDrivenAiAgentNavigationEnabled) {
-        metrics = [automatedInteractions, csat, gmvInfluenced]
-    }
+    const csat = useCsat(filters, timezone, aiAgentUserId, storeIntegrationIds)
 
     return {
-        metrics,
+        metrics: [automatedInteractions, csat, gmvInfluenced],
     }
 }

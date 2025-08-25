@@ -69,7 +69,10 @@ describe('IntentTableCells', () => {
     describe('IntentNameCellContent', () => {
         beforeEach(() => {
             mockUseAiAgentNavigation.mockReturnValue({
-                routes: { optimizeIntent: (id: string) => `/optimize/${id}` },
+                routes: {
+                    optimizeIntent: (id: string) => `/optimize/${id}`,
+                    intentsWithId: (id: string) => `/optimize/${id}`,
+                },
             } as unknown as ReturnType<typeof useAiAgentNavigation>)
         })
 
@@ -231,7 +234,7 @@ describe('IntentTableCells', () => {
         } as unknown as Intent
 
         it('formats and displays the value correctly when intent[column] exists', () => {
-            const { getByText } = render(
+            renderTableCell(
                 <IntentAvgCsatCellContent
                     intent={mockIntent}
                     column={IntentTableColumn.AvgCustomerSatisfaction}
@@ -240,7 +243,9 @@ describe('IntentTableCells', () => {
 
             const formattedValue = 4.6
 
-            expect(getByText(formattedValue)).toBeInTheDocument()
+            expect(
+                screen.getByText(formattedValue.toString()),
+            ).toBeInTheDocument()
         })
 
         it('displays a dash when intent[column] is undefined', () => {
@@ -249,14 +254,14 @@ describe('IntentTableCells', () => {
                 [IntentTableColumn.IntentName]: 'Mock Intent Name',
             } as unknown as Intent
 
-            const { getByText } = render(
+            renderTableCell(
                 <IntentAvgCsatCellContent
                     intent={noDataIntent}
                     column={IntentTableColumn.AvgCustomerSatisfaction}
                 />,
             )
 
-            expect(getByText('-')).toBeInTheDocument()
+            expect(screen.getByText('-')).toBeInTheDocument()
         })
     })
 })

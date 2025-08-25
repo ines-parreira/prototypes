@@ -19,14 +19,9 @@ export const AiAgentSales = () => {
     }>()
     const flags = useFlags()
     const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
-    const isActionDrivenAiAgentNavigationEnabled =
-        flags[FeatureFlagKey.ActionDrivenAiAgentNavigation]
     const history = useHistory()
-    const analyticsRoute = getAiAgentNavigationRoutes(shopName, flags).analytics
-    const strategyRoute = getAiAgentNavigationRoutes(
-        shopName,
-        flags,
-    ).salesStrategy
+    const analyticsRoute = getAiAgentNavigationRoutes(shopName).analytics
+    const strategyRoute = getAiAgentNavigationRoutes(shopName).salesStrategy
     const { isEnabled: isShoppingAssistantEnabled, isLoading } =
         useGetShoppingAssistantEnabled({ shopName })
 
@@ -35,13 +30,7 @@ export const AiAgentSales = () => {
             return
         }
 
-        const route =
-            !isActionDrivenAiAgentNavigationEnabled &&
-            isShoppingAssistantEnabled
-                ? analyticsRoute
-                : strategyRoute
-
-        history.replace(route)
+        history.replace(strategyRoute)
     }, [
         isSalesPageEnabled,
         isLoading,
@@ -49,7 +38,6 @@ export const AiAgentSales = () => {
         history,
         analyticsRoute,
         strategyRoute,
-        isActionDrivenAiAgentNavigationEnabled,
     ])
 
     return (
@@ -57,7 +45,6 @@ export const AiAgentSales = () => {
             shopName={shopName}
             className={css.container}
             title={SALES}
-            hideViewAiAgentTicketsButton
         >
             <div className={css.sales}>
                 <SalesSettings />

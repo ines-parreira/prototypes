@@ -7,7 +7,6 @@ import {
 } from 'models/aiAgent/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getAgent } from 'services/notificationTracker/notificationTracker'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentNotificationPayload, AiAgentNotificationType } from './types'
 
@@ -29,8 +28,7 @@ export const getNotificationParams = (
         agent_id: agentId,
     } = payload
 
-    const flags = getLDClient().allFlags()
-    const routes = getAiAgentNavigationRoutes(shopName, flags)
+    const routes = getAiAgentNavigationRoutes(shopName)
     let agent: User | undefined
 
     if (agentId) {

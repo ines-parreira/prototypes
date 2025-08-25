@@ -74,6 +74,17 @@ jest.mock('models/helpCenter/queries', () => ({
 }))
 const mockUseGetIngestedResource = assumeMock(useGetIngestedResource)
 
+jest.mock('pages/aiAgent/hooks/useTrialEligibility', () => ({
+    useTrialEligibility: jest.fn(() => ({
+        canStartTrial: false,
+        isLoading: false,
+    })),
+    useTrialEligibilityForManualActivationFromFeatureFlag: jest.fn(() => ({
+        canStartTrial: false,
+        isLoading: false,
+    })),
+}))
+
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
@@ -83,6 +94,9 @@ const defaultState = {
     }),
     billing: toImmutable({
         products: [],
+    }),
+    currentAccount: toImmutable({
+        domain: 'test-account.gorgias.com',
     }),
 }
 
@@ -200,13 +214,12 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         expect(screen.getByText('Back to Sources')).toBeInTheDocument()
         expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
-        expect(screen.getByText('Questions')).toBeInTheDocument()
-        expect(screen.getByText('Products')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'AI Agent automatically generates questions and answers from your website content to use as knowledge.',
+                /AI Agent automatically generates questions and answers from your website content/,
             ),
         ).toBeInTheDocument()
+        expect(screen.getByText('Products')).toBeInTheDocument()
         expect(screen.getAllByText('Question')[0]).toBeInTheDocument()
     })
 
@@ -447,11 +460,11 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
         // The modal is always in the DOM but controlled by isOpened prop
         // With no articleId, isOpened should be false (controlled by the useEffect with setIsOpened)
         // We verify this by checking that we can see the main table content without the side panel opened
-        expect(screen.getByText('Questions')).toBeInTheDocument()
+        expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(screen.getByText('Products')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'AI Agent automatically generates questions and answers from your website content to use as knowledge.',
+                /AI Agent automatically generates questions and answers from your website content/,
             ),
         ).toBeInTheDocument()
     })

@@ -4,9 +4,8 @@ import css from 'pages/aiAgent/Overview/components/Title/Title.less'
 
 type Props = {
     firstName: string
-    activationButton: React.ReactNode
 }
-export const Title = ({ firstName, activationButton }: Props) => {
+export const Title = ({ firstName }: Props) => {
     return (
         <div className={css.container}>
             <div className={css.titleContainer}>
@@ -20,7 +19,6 @@ export const Title = ({ firstName, activationButton }: Props) => {
                     improvement.
                 </Subtitle>
             </div>
-            {activationButton}
         </div>
     )
 }

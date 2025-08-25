@@ -5,7 +5,6 @@ import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-typ
 
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useGetResourceData } from '../useEnrichFeedbackData'
@@ -18,10 +17,6 @@ jest.mock('../useEnrichFeedbackData', () => ({
 
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
-}))
-
-jest.mock('utils/launchDarkly', () => ({
-    getLDClient: jest.fn(),
 }))
 
 jest.mock('../utils', () => ({
@@ -69,19 +64,12 @@ describe('useGetResourcesReasoningMetadata', () => {
         products: [],
     }
 
-    const mockFlags = {
-        'ai-shopping-assistant-enabled': false,
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
         ;(useGetResourceData as jest.Mock).mockReturnValue(mockResourceData)
         ;(useShopifyIntegrationAndScope as jest.Mock).mockReturnValue({
             integrationId: 1,
-        })
-        ;(getLDClient as jest.Mock).mockReturnValue({
-            allFlags: jest.fn().mockReturnValue(mockFlags),
         })
         ;(getResourceMetadata as jest.Mock).mockImplementation((resource) => ({
             title: resource.title || '',
@@ -156,7 +144,6 @@ describe('useGetResourcesReasoningMetadata', () => {
         )
 
         expect(useShopifyIntegrationAndScope).toHaveBeenCalledWith('test-store')
-        expect(getLDClient().allFlags).toHaveBeenCalled()
         expect(useGetResourceData).toHaveBeenCalledWith({
             queriesEnabled: true,
             faqHelpCenterMetadata: {
@@ -530,7 +517,6 @@ describe('useGetResourcesReasoningMetadata', () => {
                 type: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
             },
             'test-store',
-            mockFlags,
             mockResourceData,
         )
 
@@ -541,7 +527,6 @@ describe('useGetResourcesReasoningMetadata', () => {
                 type: AiAgentKnowledgeResourceTypeEnum.ORDER,
             },
             'test-store',
-            mockFlags,
             mockResourceData,
         )
     })

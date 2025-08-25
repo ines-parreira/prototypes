@@ -271,88 +271,6 @@ describe('useActivation', () => {
         useStoresKnowledgeStatusMock.mockReturnValue({ data: undefined } as any)
     })
 
-    describe.each([
-        { aiAgentNewActivationXp: true },
-        { aiAgentNewActivationXp: false },
-    ])('activationButton', ({ aiAgentNewActivationXp }) => {
-        beforeEach(() => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiAgentActivation) {
-                    return true
-                }
-
-                if (flag === FeatureFlagKey.AiAgentNewActivationXp) {
-                    return aiAgentNewActivationXp
-                }
-
-                if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
-                    return false
-                }
-                return false
-            })
-        })
-
-        it('should render activation button when feature flag is enabled', () => {
-            const { result } = renderHookWithRouter()
-
-            expect(result.current.activationButton).toBeDefined()
-        })
-
-        it('should not render activation button when action driven ai agent navigation feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
-                    return true
-                }
-                return false
-            })
-
-            const { result } = renderHookWithRouter()
-
-            expect(result.current.activationButton).toBeFalsy()
-        })
-
-        it('should render bordered variant when on overview page', () => {
-            const { result } = renderHookWithRouter({
-                initialEntry: '/overview',
-            })
-
-            expect(result.current.activationButton?.props.variant).toBe(
-                'bordered',
-            )
-        })
-
-        it('should open activation modal and log event when clicked', async () => {
-            const { result } = renderHookWithRouter()
-
-            await act(() => {
-                result.current.activationButton?.props.onClick()
-            })
-
-            expect(result.current.activationModal.props.isOpen).toBe(true)
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivateMainButtonClicked,
-                { page: '/' },
-            )
-        })
-    })
-
-    describe('when AiAgentActivation Off', () => {
-        beforeEach(() => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiAgentActivation) {
-                    return false
-                }
-                return false
-            })
-        })
-
-        it('should not render activation button', () => {
-            const { result } = renderHookWithRouter()
-
-            expect(result.current.activationButton).toBeFalsy()
-        })
-    })
-
     describe('activationModal', () => {
         it('should show early access modal when clicking on learn more', async () => {
             const { result } = renderHookWithRouter()
@@ -471,27 +389,6 @@ describe('useActivation', () => {
                     skill: 'support',
                     page: '/',
                     channel: 'email',
-                },
-            )
-        })
-
-        it('should close modal and log event when clicking close', async () => {
-            const { result } = renderHookWithRouter()
-
-            await act(() => {
-                result.current.activationButton?.props.onClick()
-            })
-
-            await act(() => {
-                result.current.activationModal.props.onClose()
-            })
-
-            expect(result.current.activationModal.props.isOpen).toBe(false)
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                segment.SegmentEvent.AiAgentActivateCloseActivationModal,
-                {
-                    page: '/',
-                    reason: 'clicked-on-cancel-or-clicked-outside',
                 },
             )
         })

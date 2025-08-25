@@ -2,7 +2,6 @@ import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-typ
 
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { useGetResourceData } from './useEnrichFeedbackData'
@@ -21,7 +20,6 @@ export const useGetResourcesReasoningMetadata = ({
 }) => {
     const shopName = storeConfiguration?.shopName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
-    const flags = getLDClient().allFlags()
 
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
     const productIds = resources
@@ -159,7 +157,6 @@ export const useGetResourcesReasoningMetadata = ({
                     type: resource.resourceType,
                 },
                 shopName,
-                flags,
                 resourceData,
             )
         }),

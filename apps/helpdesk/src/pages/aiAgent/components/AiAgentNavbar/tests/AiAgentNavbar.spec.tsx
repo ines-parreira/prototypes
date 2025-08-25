@@ -40,11 +40,30 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
+jest.mock('../../ShoppingAssistant/ShoppingAssistantPromoCard', () => ({
+    ShoppingAssistantPromoCard: () => <div>ShoppingAssistantPromoCard</div>,
+}))
+
+// Mock useActionDrivenNavbarSections to prevent complex hook interactions
+jest.mock('../useActionDrivenNavbarSections', () => ({
+    useActionDrivenNavbarSections: () => ({
+        selectedStore: 'teststore1',
+        selectedStoreIntegration: { id: 99, name: 'teststore1' },
+        storeIntegrations: [],
+        handleStoreSelect: jest.fn(),
+        getStoreActivationStatus: jest.fn(() => false),
+        getChannelStatus: jest.fn(() => 'inactive'),
+        navigationItems: [],
+        expandedSections: [],
+        handleExpandedSectionsChange: jest.fn(),
+    }),
+}))
+
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('../ActionDrivenNavigation', () => ({
-    ActionDrivenNavigation: () => <div>ActionDrivenNavigation</div>,
+    ActionDrivenNavigation: jest.fn(() => <div>ActionDrivenNavigation</div>),
 }))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
@@ -60,6 +79,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
 const mockedOnboardingHook = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentOnboardingState',
 ).useAiAgentOnboardingState as jest.Mock
+
+const mockActionDrivenNavigation = jest.requireMock('../ActionDrivenNavigation')
+    .ActionDrivenNavigation as jest.Mock
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
@@ -150,10 +172,15 @@ describe('<AiAgentNavbar />', () => {
             isFetched: true,
             error: null,
         })
+
+        // Reset mocked ActionDrivenNavigation to default behavior
+        mockActionDrivenNavigation.mockImplementation(() => (
+            <div>ActionDrivenNavigation</div>
+        ))
     })
 
     describe('render()', () => {
-        it('should render ai agent navbar with all options', async () => {
+        it('should render ai agent navbar with ActionDrivenNavigation', async () => {
             renderNavbar({
                 store: {
                     currentAccount: fromJS({
@@ -166,15 +193,10 @@ describe('<AiAgentNavbar />', () => {
                 },
             })
 
-            expect(screen.getByText('teststore1')).toBeInTheDocument()
-            expect(screen.getByText('teststore2')).toBeInTheDocument()
-            expect(screen.getByText('teststore3')).toBeInTheDocument()
-            expect(screen.getByText('teststore4')).toBeInTheDocument()
-
-            expect(screen.getByText('Optimize')).toBeInTheDocument()
-            expect(screen.getByText('Knowledge')).toBeInTheDocument()
-            expect(screen.getByText('Settings')).toBeInTheDocument()
-            expect(screen.getByText('Test')).toBeInTheDocument()
+            // ActionDrivenNavigation is always rendered now
+            expect(
+                screen.getByText('ActionDrivenNavigation'),
+            ).toBeInTheDocument()
         })
 
         it('should not render ai agent navbar without automate', () => {
@@ -183,8 +205,17 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
 
-        it('should render ai agent Get Started option', () => {
+        it('should render ActionDrivenNavigation when wizard is not completed', () => {
             mockedOnboardingHook.mockReturnValue('onboardingWizard')
+
+            // Mock the ActionDrivenNavigation to include Get Started when in onboarding wizard state
+            mockActionDrivenNavigation.mockImplementation(() => (
+                <div>
+                    ActionDrivenNavigation
+                    <div>Get Started</div>
+                </div>
+            ))
+
             useStoreConfigurationMock.mockReturnValue({
                 storeConfiguration: {
                     ...defaultStoreConfiguration,
@@ -202,7 +233,7 @@ describe('<AiAgentNavbar />', () => {
                 isFetched: true,
                 error: null,
             })
-            const { queryByText, queryAllByText } = renderNavbar({
+            const { queryByText } = renderNavbar({
                 store: {
                     currentAccount: fromJS({
                         ...account,
@@ -214,11 +245,39 @@ describe('<AiAgentNavbar />', () => {
                 },
             })
 
-            expect(queryByText('teststore1')).toBeInTheDocument()
-            expect(queryAllByText('Optimize').length).toBe(0)
-            expect(queryAllByText('Get Started').length).toBeGreaterThanOrEqual(
-                1,
-            )
+            expect(queryByText('Get Started')).toBeInTheDocument()
+        })
+        it('should render ai agent Get Started option', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    ...defaultStoreConfiguration,
+                    wizard: {
+                        stepName: AiAgentOnboardingWizardStep.Knowledge,
+                        stepData: {
+                            enabledChannels: null,
+                            isAutoresponderTurnedOff: null,
+                            onCompletePathway: null,
+                        },
+                        completedDatetime: null,
+                    },
+                },
+                isLoading: false,
+                isFetched: true,
+                error: null,
+            })
+            const { queryByText } = renderNavbar({
+                store: {
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: automationSubscriptionProductPrices,
+                        },
+                    }),
+                },
+            })
+
+            expect(queryByText('ActionDrivenNavigation')).toBeInTheDocument()
         })
 
         it('should render no stores', () => {
@@ -240,7 +299,7 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('teststore1')).not.toBeInTheDocument()
         })
 
-        it('should always render Overview menu item when flag', () => {
+        it('should render ActionDrivenNavigation with automate subscription', () => {
             const { queryByText } = renderNavbar({
                 store: {
                     currentAccount: fromJS({
@@ -253,7 +312,7 @@ describe('<AiAgentNavbar />', () => {
                 },
             })
 
-            expect(queryByText('Overview')).toBeInTheDocument()
+            expect(queryByText('ActionDrivenNavigation')).toBeInTheDocument()
         })
 
         it('should not render Overview menu item when there is no store connected', () => {
@@ -283,7 +342,7 @@ describe('<AiAgentNavbar />', () => {
             expect(queryByText('Overview')).not.toBeInTheDocument()
         })
 
-        it('should render ai agent navbar with actions internal platform', () => {
+        it('should render ActionDrivenNavigation when ActionsInternalPlatform flag is true', () => {
             mockUseFlag.mockImplementation((flag) => {
                 if (flag === FeatureFlagKey.ActionsInternalPlatform) {
                     return true
@@ -304,18 +363,11 @@ describe('<AiAgentNavbar />', () => {
                 },
             })
 
-            expect(queryByText('Actions platform')).toBeInTheDocument()
+            expect(queryByText('ActionDrivenNavigation')).toBeInTheDocument()
         })
 
-        describe('ActionDrivenAiAgentNavigation feature flag', () => {
-            it('should render ActionDrivenNavigation when feature flag is enabled', () => {
-                mockUseFlag.mockImplementation((flag) => {
-                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
-                        return true
-                    }
-                    return false
-                })
-
+        describe('ActionDrivenNavigation (always rendered)', () => {
+            it('should always render ActionDrivenNavigation', () => {
                 const { queryByText } = renderNavbar({
                     store: {
                         currentAccount: fromJS({
@@ -331,43 +383,9 @@ describe('<AiAgentNavbar />', () => {
                 expect(
                     queryByText('ActionDrivenNavigation'),
                 ).toBeInTheDocument()
-                expect(queryByText('Overview')).not.toBeInTheDocument()
             })
 
-            it('should render regular navigation when feature flag is disabled', () => {
-                mockUseFlag.mockImplementation((flag) => {
-                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
-                        return false
-                    }
-                    return false
-                })
-
-                const { queryByText } = renderNavbar({
-                    store: {
-                        currentAccount: fromJS({
-                            ...account,
-                            current_subscription: {
-                                ...account.current_subscription,
-                                products: automationSubscriptionProductPrices,
-                            },
-                        }),
-                    },
-                })
-
-                expect(
-                    queryByText('ActionDrivenNavigation'),
-                ).not.toBeInTheDocument()
-                expect(queryByText('Overview')).toBeInTheDocument()
-            })
-
-            it('should not render the regular navbar sections when feature flag is enabled', () => {
-                mockUseFlag.mockImplementation((flag) => {
-                    if (flag === FeatureFlagKey.ActionDrivenAiAgentNavigation) {
-                        return true
-                    }
-                    return false
-                })
-
+            it('should not render the old navbar sections', () => {
                 const { queryByText } = renderNavbar({
                     store: {
                         currentAccount: fromJS({

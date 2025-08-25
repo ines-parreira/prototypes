@@ -2,19 +2,15 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import { useFlag } from 'core/flags'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import history from 'pages/history'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
-import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
 import {
     CONTENT_TYPE,
-    HeaderType,
     IngestionLogStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
@@ -38,24 +34,13 @@ const AiAgentScrapedDomainProductsView = ({
         string | null
     >(null)
     const [isOpened, setIsOpened] = useState(false)
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
 
-    const {
-        storeDomain,
-        storeUrl,
-        storeDomainIngestionLog,
-        isFetchLoading,
-        syncTriggered,
-        handleTriggerSync,
-        handleOnSync,
-        handleOnCancel,
-    } = useSyncStoreDomain({
-        helpCenterId,
-        shopName,
-        onStatusChange: setSyncStoreDomainStatus,
-    })
+    const { storeUrl, storeDomainIngestionLog, isFetchLoading } =
+        useSyncStoreDomain({
+            helpCenterId,
+            shopName,
+            onStatusChange: setSyncStoreDomainStatus,
+        })
 
     const { syncIsPending } = usePollStoreDomainIngestionLog({
         helpCenterId,
@@ -71,18 +56,9 @@ const AiAgentScrapedDomainProductsView = ({
     }, [syncIsPending, setSyncStoreDomainStatus])
 
     const handleOnSelect = (id: number) =>
-        history.push(
-            isActionDrivenAiAgentNavigationEnabled
-                ? routes.productsDetail(id)
-                : routes.productsContentDetail(id),
-        )
+        history.push(routes.productsDetail(id))
 
-    const handleOnClose = () =>
-        history.push(
-            isActionDrivenAiAgentNavigationEnabled
-                ? routes.products
-                : routes.productsContent,
-        )
+    const handleOnClose = () => history.push(routes.products)
 
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
@@ -123,7 +99,7 @@ const AiAgentScrapedDomainProductsView = ({
         }
     }, [productId])
 
-    const children = (
+    return (
         <>
             <ScrapedDomainContentView<ProductWithAiAgentStatus>
                 shopName={shopName}
@@ -150,29 +126,6 @@ const AiAgentScrapedDomainProductsView = ({
                 detail={productDetail}
             />
         </>
-    )
-
-    if (isActionDrivenAiAgentNavigationEnabled) {
-        return children
-    }
-
-    return (
-        <AiAgentScrapedDomainContentLayout
-            shopName={shopName}
-            latestSync={storeDomainIngestionLog?.latest_sync}
-            storeDomain={storeDomain ?? null}
-            storeUrl={storeUrl ?? null}
-            isFetchLoading={isDataLoading}
-            syncTriggered={syncTriggered}
-            handleOnSync={handleOnSync}
-            handleOnCancel={handleOnCancel}
-            handleTriggerSync={handleTriggerSync}
-            syncStoreDomainStatus={syncStoreDomainStatus}
-            title="Store website"
-            pageType={HeaderType.Domain}
-        >
-            {children}
-        </AiAgentScrapedDomainContentLayout>
     )
 }
 

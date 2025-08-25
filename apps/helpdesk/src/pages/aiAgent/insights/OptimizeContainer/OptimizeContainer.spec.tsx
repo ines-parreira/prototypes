@@ -11,7 +11,6 @@ import moment, { Moment } from 'moment/moment'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
@@ -106,11 +105,9 @@ describe('OptimizeContainer', () => {
         expect(IntentTableWidget).toHaveBeenCalled()
     })
 
-    it('renders the component with the new page title when ActionDrivenAiAgentNavigation feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
-            return flag === FeatureFlagKey.ActionDrivenAiAgentNavigation
-                ? true
-                : false
+    it('renders the component with the new page title', () => {
+        mockUseFlag.mockImplementation(() => {
+            return false
         })
 
         renderComponent()

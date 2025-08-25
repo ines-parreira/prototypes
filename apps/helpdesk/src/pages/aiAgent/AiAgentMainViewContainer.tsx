@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -31,11 +29,6 @@ const AiAgentMainViewContainer = () => {
 
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
-
-    const isAiAgentOptimizeTabEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
-    const isActionDrivenAiAgentNavigationEnabled =
-        useFlags()[FeatureFlagKey.ActionDrivenAiAgentNavigation]
 
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useAiAgentStoreConfigurationContext()
@@ -127,13 +120,7 @@ const AiAgentMainViewContainer = () => {
                 />
             )
         case OnboardingState.Onboarded:
-            history.replace(
-                isAiAgentOptimizeTabEnabled
-                    ? isActionDrivenAiAgentNavigationEnabled
-                        ? routes.intents
-                        : routes.optimize
-                    : routes.configuration(),
-            )
+            history.replace(routes.perShopOverview)
     }
 
     return null

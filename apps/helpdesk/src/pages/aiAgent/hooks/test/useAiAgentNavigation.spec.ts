@@ -38,13 +38,15 @@ describe('useAiAgentNavigation', () => {
             useAiAgentNavigation({ shopName: 'test' }),
         )
 
-        const knowledgeItem = result.current.navigationItems.find(
-            (item) => item.dataCanduId === 'ai-agent-navbar-knowledge',
+        const trainItem = result.current.navigationItems.find(
+            (item) => item.dataCanduId === 'ai-agent-navbar-train',
+        )
+        const knowledgeItem = trainItem?.items?.find(
+            (item) => item.title === 'Knowledge',
         )
         expect(knowledgeItem).toEqual({
             route: '/app/ai-agent/shopify/test/knowledge',
             title: 'Knowledge',
-            dataCanduId: 'ai-agent-navbar-knowledge',
             items: [
                 {
                     route: '/app/ai-agent/shopify/test/knowledge',
@@ -69,13 +71,15 @@ describe('useAiAgentNavigation', () => {
             useAiAgentNavigation({ shopName: 'test' }),
         )
 
-        const knowledgeItem = result.current.navigationItems.find(
-            (item) => item.dataCanduId === 'ai-agent-navbar-knowledge',
+        const trainItem = result.current.navigationItems.find(
+            (item) => item.dataCanduId === 'ai-agent-navbar-train',
+        )
+        const knowledgeItem = trainItem?.items?.find(
+            (item) => item.title === 'Knowledge',
         )
         expect(knowledgeItem).toEqual({
             route: '/app/ai-agent/shopify/test/knowledge',
             title: 'Knowledge',
-            dataCanduId: 'ai-agent-navbar-knowledge',
             items: [
                 {
                     route: '/app/ai-agent/shopify/test/knowledge/sources',
@@ -277,7 +281,10 @@ describe('useAiAgentNavigation', () => {
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItems = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItems = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )?.items
 
@@ -292,42 +299,46 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for analytics when ai shopping assistant is enabled and action driven ai agent navbar is disabled', () => {
+        it('should return ai-agent route for strategy when ai shopping assistant is enabled', () => {
             useFlagsMock.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: false,
             })
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItems = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItems = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )?.items
 
             expect(salesItems).toEqual(
                 expect.arrayContaining([
                     {
-                        route: '/app/ai-agent/shopify/my-shop/sales/analytics',
-                        title: ANALYTICS,
+                        route: '/app/ai-agent/shopify/my-shop/sales/strategy',
+                        title: STRATEGY,
                         exact: true,
                     },
                 ]),
             )
         })
 
-        it('should not return ai-agent route for analytics when action driven ai agent navbar is enabled', () => {
+        it('should not return ai-agent route for analytics in sales items', () => {
             useFlagsMock.mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.ActionDrivenAiAgentNavigation]: true,
             })
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItems = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItems = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )?.items
 
@@ -351,7 +362,10 @@ describe('useAiAgentNavigation', () => {
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItems = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItems = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )?.items
 
@@ -376,7 +390,10 @@ describe('useAiAgentNavigation', () => {
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItems = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItems = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )?.items
 
@@ -434,7 +451,10 @@ describe('useAiAgentNavigation', () => {
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItem = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItem = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )
 
@@ -451,7 +471,10 @@ describe('useAiAgentNavigation', () => {
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
-            const salesItem = result.current.navigationItems.find(
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItem = trainItem?.items?.find(
                 (item) => item.title === SALES,
             )
 

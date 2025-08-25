@@ -1,7 +1,5 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
@@ -24,9 +22,6 @@ export const useSelectedProductAndDetail = ({
 }) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
-    const isActionDrivenAiAgentNavigationEnabled = useFlag(
-        FeatureFlagKey.ActionDrivenAiAgentNavigation,
-    )
 
     const selectedProductData = useGetProductsByIdsFromIntegration(
         integrationId || 0,
@@ -77,11 +72,7 @@ export const useSelectedProductAndDetail = ({
                 }),
             )
 
-            history.push(
-                isActionDrivenAiAgentNavigationEnabled
-                    ? routes.products
-                    : routes.productsContent,
-            )
+            history.push(routes.products)
         }
     }, [
         selectedProductData,
@@ -89,8 +80,6 @@ export const useSelectedProductAndDetail = ({
         selectedProduct,
         dispatch,
         routes.products,
-        routes.productsContent,
-        isActionDrivenAiAgentNavigationEnabled,
     ])
 
     return useMemo(() => {
