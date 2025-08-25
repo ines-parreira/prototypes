@@ -1,9 +1,12 @@
+import { useMemo } from 'react'
+
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
 import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
@@ -28,29 +31,37 @@ export const useGmvInfluenced = ({
     integrationIds?: number[]
 }): KpiMetric => {
     const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const { currency } = useCurrency()
 
-    const { currency } = useCurrency(
-        integrationIds?.[0] ? integrationIds[0] : undefined,
+    const currentPeriodQuery = gmvInfluencedQueryFactory(
+        filters,
+        timezone,
+        integrationIds?.map((id) => id.toString()),
+    )
+    const previousPeriodQuery = gmvInfluencedQueryFactory(
+        {
+            ...filters,
+            period: getPreviousPeriod(filters.period),
+        },
+        timezone,
+        integrationIds?.map((id) => id.toString()),
     )
 
-    const { data, isFetching } = useMetricTrend(
-        gmvInfluencedQueryFactory(
-            filters,
-            timezone,
-            integrationIds?.map((id) => id.toString()),
-        ),
-        gmvInfluencedQueryFactory(
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            timezone,
-            integrationIds?.map((id) => id.toString()),
-        ),
+    const { data: currentPeriodData, isFetching: isCurrentPeriodFetching } =
+        useMetricPerDimension(currentPeriodQuery)
+
+    const { data: previousPeriodData, isFetching: isPreviousPeriodFetching } =
+        useMetricPerDimension(previousPeriodQuery)
+
+    const formattedData = useMemo(
+        () => formatGmvInfluencedData(currentPeriodData, previousPeriodData),
+        [currentPeriodData, previousPeriodData],
     )
+
+    const isFetching = isCurrentPeriodFetching || isPreviousPeriodFetching
 
     const action = useGmvInfluencedCtaButton({
-        gmvInfluenced: data?.value,
+        gmvInfluenced: formattedData?.value,
         gmvInfluencedLoading: isFetching,
         isOnNewPlan,
         showEarlyAccessModal,
@@ -66,9 +77,10 @@ export const useGmvInfluenced = ({
         },
         metricFormat: 'currency-precision-1',
         isLoading: isFetching,
-        currency,
         'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
-        ...data,
+        value: formattedData?.value,
+        prevValue: formattedData?.prevValue,
+        currency: formattedData?.currency ?? currency,
         hideTrend: !!action,
         action,
     }

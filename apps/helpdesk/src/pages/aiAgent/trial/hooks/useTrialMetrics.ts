@@ -7,16 +7,19 @@ import {
     fetchMetricPerDimension,
     ReportingMetricItem,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     gmvInfluencedQueryFactory,
     gmvQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { calculateRate } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { getTimeFilters } from 'pages/aiAgent/trial/utils/getTimeFilters'
 import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 import { getTimezone } from 'state/currentUser/selectors'
@@ -108,9 +111,11 @@ export const useTrialMetrics = (): TrialMetrics => {
         refetchOnReconnect: false,
     })
 
-    const billingState = useBillingState()
-    const currentPlan = billingState?.data?.current_plans?.automate
-    const currency = currentPlan?.currency ?? 'USD'
+    const { currency: fallBackCurrency } = useCurrency()
+    const currency =
+        gmvInfluencedData?.data?.allData[0]?.[
+            AiSalesAgentOrdersDimension.Currency
+        ] ?? fallBackCurrency
 
     const reduceGmvTotal = (data?: ReportingMetricItem[]): number => {
         if (!data || !Array.isArray(data)) return 0

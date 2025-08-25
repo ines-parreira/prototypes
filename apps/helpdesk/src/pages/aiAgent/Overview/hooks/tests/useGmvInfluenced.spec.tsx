@@ -10,22 +10,28 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
 import { RootState, StoreDispatch } from 'state/types'
 
-jest.mock('domains/reporting/hooks/useMetricTrend')
-const useMetricTrendMock = assumeMock(useMetricTrend)
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
-const useCurrencyMock = assumeMock(useCurrency)
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend',
+)
+const formatGmvInfluencedDataMock = assumeMock(formatGmvInfluencedData)
+
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton')
+const useGmvInfluencedCtaButtonMock = assumeMock(useGmvInfluencedCtaButton)
 
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 const gmvInfluencedQueryFactoryMock = assumeMock(gmvInfluencedQueryFactory)
@@ -80,20 +86,51 @@ describe('useGmvInfluenced', () => {
             filters: [],
             timeDimensions: [],
         })
+
+        useGmvInfluencedCtaButtonMock.mockReturnValue(
+            <button>Mock Action</button>,
+        )
+
+        formatGmvInfluencedDataMock.mockReturnValue({
+            value: 12000,
+            prevValue: 10000,
+            currency: 'USD',
+        })
     })
 
     it('should return correct metric data when the query resolves and currency is USD', () => {
-        useCurrencyMock.mockReturnValue({
-            currency: 'USD',
-            isCurrencyUSD: true,
-        })
-        useMetricTrendMock.mockReturnValue({
-            data: {
-                value: 12000,
-                prevValue: 10000,
-            },
-            isFetching: false,
-        } as any)
+        const mockCurrentPeriodData = {
+            value: 12000,
+            decile: null,
+            allData: [
+                {
+                    'AiSalesAgentOrders.gmv': '12000',
+                    'AiSalesAgentOrders.currency': 'USD',
+                },
+            ],
+        }
+        const mockPreviousPeriodData = {
+            value: 10000,
+            decile: null,
+            allData: [
+                {
+                    'AiSalesAgentOrders.gmv': '10000',
+                    'AiSalesAgentOrders.currency': 'USD',
+                },
+            ],
+        }
+
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: mockCurrentPeriodData,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: mockPreviousPeriodData,
+                isFetching: false,
+                isError: false,
+            })
 
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
@@ -114,23 +151,50 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'USD',
             hidden: false,
-            action: expect.anything(),
+            action: <button>Mock Action</button>,
             hideTrend: true,
         })
     })
 
     it('should return correct metric data when the query resolves and currency is EUR', () => {
-        useCurrencyMock.mockReturnValue({
+        const mockCurrentPeriodData = {
+            value: 12000,
+            decile: null,
+            allData: [
+                {
+                    'AiSalesAgentOrders.gmv': '12000',
+                    'AiSalesAgentOrders.currency': 'EUR',
+                },
+            ],
+        }
+        const mockPreviousPeriodData = {
+            value: 10000,
+            decile: null,
+            allData: [
+                {
+                    'AiSalesAgentOrders.gmv': '10000',
+                    'AiSalesAgentOrders.currency': 'EUR',
+                },
+            ],
+        }
+
+        formatGmvInfluencedDataMock.mockReturnValueOnce({
+            value: 12000,
+            prevValue: 10000,
             currency: 'EUR',
-            isCurrencyUSD: false,
         })
-        useMetricTrendMock.mockReturnValue({
-            data: {
-                value: 12000,
-                prevValue: 10000,
-            },
-            isFetching: false,
-        } as any)
+
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: mockCurrentPeriodData,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: mockPreviousPeriodData,
+                isFetching: false,
+                isError: false,
+            })
 
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
@@ -151,19 +215,29 @@ describe('useGmvInfluenced', () => {
             isLoading: false,
             currency: 'EUR',
             hidden: false,
-            action: expect.anything(),
+            action: <button>Mock Action</button>,
             hideTrend: true,
         })
     })
 
     it('should return loading state when the query is still loading', () => {
-        useCurrencyMock.mockReturnValue({
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: true,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+
+        formatGmvInfluencedDataMock.mockReturnValue({
+            value: null,
+            prevValue: null,
             currency: 'USD',
-            isCurrencyUSD: true,
         })
-        useMetricTrendMock.mockReturnValue({
-            isFetching: true,
-        } as any)
 
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
@@ -180,9 +254,11 @@ describe('useGmvInfluenced', () => {
             'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
             metricFormat: 'currency-precision-1',
             isLoading: true,
+            value: null,
+            prevValue: null,
             currency: 'USD',
             hidden: false,
-            action: expect.anything(),
+            action: <button>Mock Action</button>,
             hideTrend: true,
         })
     })
@@ -191,13 +267,18 @@ describe('useGmvInfluenced', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
         })
-        useCurrencyMock.mockReturnValue({
-            currency: 'USD',
-            isCurrencyUSD: true,
-        })
-        useMetricTrendMock.mockReturnValue({
-            isFetching: true,
-        } as any)
+
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: true,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
 
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
@@ -213,13 +294,18 @@ describe('useGmvInfluenced', () => {
         mockFlags({
             [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         })
-        useCurrencyMock.mockReturnValue({
-            currency: 'USD',
-            isCurrencyUSD: true,
-        })
-        useMetricTrendMock.mockReturnValue({
-            isFetching: true,
-        } as any)
+
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: true,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
 
         const { result } = renderHook(
             () => useGmvInfluenced(useGmvInfluencedInput),
@@ -231,20 +317,20 @@ describe('useGmvInfluenced', () => {
         expect(result.current.hidden).toBe(false)
     })
 
-    it('should pass integrationIds to useCurrency and useMetricTrend correctly', () => {
+    it('should pass integrationIds to gmvInfluencedQueryFactory correctly', () => {
         const integrationIds = [123, 456]
-        useCurrencyMock.mockReturnValue({
-            currency: 'USD',
-            isCurrencyUSD: true,
-        })
-        useMetricTrendMock.mockReturnValue({
-            data: {
-                value: 12000,
-                prevValue: 10000,
-            },
-            isFetching: false,
-            isError: false,
-        })
+
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
 
         renderHook(
             () =>
@@ -257,11 +343,99 @@ describe('useGmvInfluenced', () => {
             },
         )
 
-        expect(useCurrencyMock).toHaveBeenCalledWith(123)
         expect(gmvInfluencedQueryFactoryMock).toHaveBeenCalledWith(
             useGmvInfluencedInput.filters,
             useGmvInfluencedInput.timezone,
             ['123', '456'],
         )
+    })
+
+    it('should handle when formattedData is undefined (covering optional chaining)', () => {
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+
+        // Mock formatGmvInfluencedData to return undefined to test optional chaining
+        formatGmvInfluencedDataMock.mockReturnValue(undefined as any)
+
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper,
+            },
+        )
+
+        expect(result.current).toEqual({
+            title: 'GMV Influenced',
+            hint: {
+                title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            },
+            'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
+            metricFormat: 'currency-precision-1',
+            value: undefined,
+            prevValue: undefined,
+            currency: 'USD',
+            isLoading: false,
+            hidden: false,
+            action: <button>Mock Action</button>,
+            hideTrend: true,
+        })
+    })
+
+    it('should handle when formattedData has partial data (testing optional chaining edge cases)', () => {
+        useMetricPerDimensionMock
+            .mockReturnValueOnce({
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [],
+                },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [],
+                },
+                isFetching: false,
+                isError: false,
+            })
+
+        // Test partial data object with missing properties
+        const partialData = { value: 5000 } as any // Missing prevValue and currency
+        formatGmvInfluencedDataMock.mockReturnValue(partialData)
+
+        const { result } = renderHook(
+            () => useGmvInfluenced(useGmvInfluencedInput),
+            {
+                wrapper,
+            },
+        )
+
+        expect(result.current).toEqual({
+            title: 'GMV Influenced',
+            hint: {
+                title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            },
+            'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
+            metricFormat: 'currency-precision-1',
+            value: 5000,
+            prevValue: undefined,
+            currency: 'USD',
+            isLoading: false,
+            hidden: false,
+            action: <button>Mock Action</button>,
+            hideTrend: true,
+        })
     })
 })

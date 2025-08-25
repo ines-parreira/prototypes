@@ -11,6 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 
 import { useTrialMetrics } from '../hooks/useTrialMetrics'
@@ -27,6 +28,7 @@ jest.mock(
         formatAmount: jest.fn(),
     }),
 )
+jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 
 const mockFetchMetricPerDimension = assumeMock(fetchMetricPerDimension)
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -35,6 +37,7 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseSalesTrialRevampMilestone = assumeMock(
     useSalesTrialRevampMilestone,
 )
+const mockedUseCurrency = assumeMock(useCurrency)
 const mockFormatAmount = jest.requireMock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils',
 ).formatAmount
@@ -87,6 +90,10 @@ const gmvReportingDataWithNulls = {
 
 beforeEach(() => {
     mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
+    mockedUseCurrency.mockReturnValue({
+        currency: 'USD',
+        isCurrencyUSD: true,
+    })
 })
 
 afterEach(() => {
