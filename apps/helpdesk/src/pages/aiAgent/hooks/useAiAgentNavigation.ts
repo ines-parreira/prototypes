@@ -180,6 +180,9 @@ const useNavigationItems = (
 
     const isOpportunitiesEnabled = flags[FeatureFlagKey.SurfaceOpportunities]
 
+    // Actions platform is rendered outside the per-shop navigation in the
+    // ActionDrivenNavigation component.
+
     return useMemo<NavigationItem[]>(() => {
         if (isActionDrivenAiAgentNavigationEnabled) {
             return [

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -28,17 +28,18 @@ const NAVBAR_SECTIONS = [
 export const useActionDrivenNavbarSections = () => {
     const params = useParams<{ shopName?: string; shopType?: string }>()
     const history = useHistory()
+    const location = useLocation()
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     const extractFromUrl = useCallback(() => {
-        const pathname = window.location.pathname
+        const pathname = location.pathname
         const match = pathname.match(/\/app\/ai-agent\/(\w+)\/([^/]+)/)
         if (match) {
             const [, integrationType, storeSlug] = match
             return { integrationType, storeSlug }
         }
         return { integrationType: params.shopType, storeSlug: params.shopName }
-    }, [params.shopName, params.shopType])
+    }, [params.shopName, params.shopType, location.pathname])
 
     const urlData = extractFromUrl()
     const currentShopName = params.shopName || urlData.storeSlug
@@ -48,6 +49,10 @@ export const useActionDrivenNavbarSections = () => {
 
     useEffect(() => {
         if (!currentShopName && storeIntegrations.length > 0) {
+            const pathname = location.pathname
+            if (pathname.startsWith('/app/ai-agent/actions-platform')) {
+                return
+            }
             const firstStore = storeIntegrations[0]
             const firstShopName = getShopNameFromStoreIntegration(firstStore)
             if (firstShopName) {
@@ -57,7 +62,13 @@ export const useActionDrivenNavbarSections = () => {
                 setSelectedStore(firstShopName)
             }
         }
-    }, [currentShopName, storeIntegrations, history, currentIntegrationType])
+    }, [
+        currentShopName,
+        storeIntegrations,
+        history,
+        currentIntegrationType,
+        location.pathname,
+    ])
 
     const [expandedSections, setExpandedSections] =
         useLocalStorage<AccordionValues>(ACTION_DRIVEN_NAVBAR_SECTIONS_KEY, [
@@ -115,7 +126,7 @@ export const useActionDrivenNavbarSections = () => {
         (shopName: string) => {
             setSelectedStore(shopName)
 
-            const currentPath = window.location.pathname
+            const currentPath = location.pathname
             const pathMatch = currentPath.match(
                 /\/app\/ai-agent\/(\w+)\/[^/]+\/(.*)/,
             )
@@ -138,6 +149,7 @@ export const useActionDrivenNavbarSections = () => {
             currentIntegrationType,
             setExpandedSections,
             getStoreActivationStatus,
+            location.pathname,
         ],
     )
 

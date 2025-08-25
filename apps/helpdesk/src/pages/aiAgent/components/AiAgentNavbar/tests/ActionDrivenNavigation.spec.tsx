@@ -4,10 +4,18 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { StoreIntegration } from 'models/integration/types'
 
 import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(() => ({})),
+}))
+
+const mockUseFlags = jest.requireMock('launchdarkly-react-client-sdk')
+    .useFlags as jest.Mock
 
 jest.mock('../useActionDrivenNavbarSections', () => ({
     useActionDrivenNavbarSections: jest.fn(),
@@ -141,6 +149,7 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlags.mockReturnValue({})
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
@@ -179,6 +188,20 @@ describe('ActionDrivenNavigation', () => {
 
         expect(screen.getByText('Overview')).toBeInTheDocument()
         expect(screen.getByText('Analyze')).toBeInTheDocument()
+    })
+
+    it('renders Actions platform link when flag enabled', () => {
+        mockUseFlags.mockReturnValue({
+            [FeatureFlagKey.ActionsInternalPlatform]: true,
+        })
+
+        renderComponent()
+
+        const link = screen.getByText('Actions platform')
+        expect(link).toBeInTheDocument()
+        expect((link as HTMLAnchorElement).getAttribute('href')).toBe(
+            '/app/ai-agent/actions-platform',
+        )
     })
 
     it('renders Get Started and hides nav items when in onboarding', () => {

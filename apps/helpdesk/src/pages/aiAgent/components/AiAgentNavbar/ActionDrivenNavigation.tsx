@@ -1,7 +1,15 @@
 import React from 'react'
 
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink } from 'react-router-dom'
+
 import { Navigation } from 'components/Navigation/Navigation'
+import { FeatureFlagKey } from 'config/featureFlags'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import {
+    aiAgentRoutes,
+    getAiAgentBasePath,
+} from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
@@ -28,6 +36,9 @@ export const ActionDrivenNavigation = () => {
 
     const onboardingState = useAiAgentOnboardingState(selectedStore || '')
     const isOnboarded = onboardingState === OnboardingState.Onboarded
+    const flags = useFlags()
+    const isActionsInternalPlatformEnabled =
+        !!flags[FeatureFlagKey.ActionsInternalPlatform]
     const isActive =
         !!selectedStore &&
         !!getStoreActivationStatus &&
@@ -39,6 +50,15 @@ export const ActionDrivenNavigation = () => {
             value={expandedSections}
             onValueChange={handleExpandedSectionsChange}
         >
+            {isActionsInternalPlatformEnabled && (
+                <Navigation.SectionItem
+                    as={NavLink}
+                    to={aiAgentRoutes.actionsPlatform}
+                    data-candu-id="ai-agent-navbar-actions-platform"
+                >
+                    Actions platform
+                </Navigation.SectionItem>
+            )}
             <div className={css.storeSelector}>
                 <StoreSelector
                     integrations={storeIntegrations}
@@ -67,7 +87,12 @@ export const ActionDrivenNavigation = () => {
             {selectedStore &&
                 onboardingState === OnboardingState.OnboardingWizard &&
                 !isActive && (
-                    <Navigation.SectionItem isSelected displayType="indent">
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        to={getAiAgentBasePath(selectedStore)}
+                        exact
+                        displayType="indent"
+                    >
                         Get Started
                     </Navigation.SectionItem>
                 )}

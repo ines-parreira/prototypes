@@ -185,6 +185,13 @@ describe('useActionDrivenNavbarSections', () => {
                 },
                 writable: true,
             })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore2/train',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
 
             const { result } = renderHook(() => useActionDrivenNavbarSections())
 
@@ -219,6 +226,28 @@ describe('useActionDrivenNavbarSections', () => {
             mockUseParams.mockReturnValue({
                 shopName: 'teststore1',
                 shopType: 'shopify',
+            })
+
+            renderHook(() => useActionDrivenNavbarSections())
+
+            expect(mockReplace).not.toHaveBeenCalled()
+        })
+
+        it('should not redirect when on actions platform path', () => {
+            mockUseParams.mockReturnValue({})
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent/actions-platform',
+                },
+                writable: true,
+                configurable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/actions-platform',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
             })
 
             renderHook(() => useActionDrivenNavbarSections())
@@ -408,6 +437,13 @@ describe('useActionDrivenNavbarSections', () => {
                         '/app/ai-agent/shopify/teststore1/train/knowledge',
                 },
                 writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/train/knowledge',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
             })
 
             const { result } = renderHook(() => useActionDrivenNavbarSections())
