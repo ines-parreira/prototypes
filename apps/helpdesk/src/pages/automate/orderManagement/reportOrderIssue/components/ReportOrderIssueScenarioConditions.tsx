@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import shopify from 'assets/img/integrations/shopify.png'
 import {
     JsonLogicOperator,
@@ -9,7 +11,6 @@ import {
     ReportIssueVariable,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'

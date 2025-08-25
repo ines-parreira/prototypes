@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { createMemoryHistory } from 'history'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     PolicyKey,
     ResponseMessageContent,
@@ -10,7 +12,6 @@ import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/pr
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import Button from 'pages/common/components/button/Button'
 
 import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 

@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import shopify from 'assets/img/integrations/shopify.png'
 import {
     FINANCIAL_STATUSES_OPTIONS,
@@ -12,7 +14,6 @@ import {
     JsonLogicRuleOverVariable,
     ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

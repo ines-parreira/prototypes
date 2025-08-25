@@ -1,3 +1,5 @@
+import { Button } from '@gorgias/axiom'
+
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import {
     ReportIssueCaseReason,
@@ -6,7 +8,6 @@ import {
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
-import Button from 'pages/common/components/button/Button'
 
 import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
 import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'

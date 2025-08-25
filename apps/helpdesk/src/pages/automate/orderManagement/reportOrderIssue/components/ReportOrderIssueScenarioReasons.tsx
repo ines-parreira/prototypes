@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     DEFAULT_REASON_ACTIONS,
     REASONS_DROPDOWN_SECTIONS_WITH_OPTIONS,
@@ -7,7 +9,6 @@ import {
 import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
