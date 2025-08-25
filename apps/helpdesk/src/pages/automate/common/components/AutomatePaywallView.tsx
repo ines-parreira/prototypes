@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
-import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -2,6 +2,8 @@ import React, { useRef } from 'react'
 
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import {
@@ -9,7 +11,6 @@ import {
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasAgentPrivileges, isAdmin } from 'utils'
 

@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
-import Button from 'pages/common/components/button/Button'
 import {
     CONSTRAST_COLORS,
     getTextColorBasedOnBackground,

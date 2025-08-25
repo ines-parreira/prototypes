@@ -5,11 +5,10 @@ import _keyBy from 'lodash/keyBy'
 import _uniq from 'lodash/uniq'
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
-import Button from 'pages/common/components/button/Button'
 
 import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
@@ -19,7 +19,6 @@ import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants
 import css from 'pages/automate/common/components/AutomateLandingPage.less'
 import { AutomateSavingsCard } from 'pages/automate/common/components/AutomateSavingsCard'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import Button from 'pages/common/components/button/Button'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
 import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'

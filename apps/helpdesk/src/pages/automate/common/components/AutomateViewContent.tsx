@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import css from './AutomateViewContent.less'
