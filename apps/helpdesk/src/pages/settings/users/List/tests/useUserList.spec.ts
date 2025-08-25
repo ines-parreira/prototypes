@@ -220,6 +220,9 @@ describe('useUserList', () => {
                 1,
                 {
                     order_by: ListUsersOrderBy.NameAsc,
+                    relationships: [
+                        ListUsersRelationshipsItem.AvailabilityStatus,
+                    ],
                     cursor: 'next-cursor',
                     limit: USERS_PER_PAGE - 1,
                 },

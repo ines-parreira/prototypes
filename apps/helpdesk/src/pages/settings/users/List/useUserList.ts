@@ -195,6 +195,7 @@ async function completeUsers(
         const response = await listUsers(
             {
                 ...params,
+                relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
                 cursor: cursor ?? undefined,
                 limit,
             },
