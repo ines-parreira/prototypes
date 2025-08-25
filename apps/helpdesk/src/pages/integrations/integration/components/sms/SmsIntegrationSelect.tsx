@@ -1,16 +1,19 @@
 import React, { useRef, useState } from 'react'
 
-import { SmsIntegration } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
 type SmsIntegrationSelectProps = {
     value: number | null
-    options: SmsIntegration[]
+    options: {
+        label: string
+        value: number
+    }[]
     onChange: (id: number) => void
 }
 
@@ -27,8 +30,8 @@ export default function SmsIntegrationSelect({
         <SelectInputBox
             onToggle={setIsOpen}
             label={
-                options.find((integration) => integration.id === value)?.name ??
-                'Select SMS integration'
+                options.find((option) => option.value === value)?.label ??
+                'Search'
             }
             ref={selectRef}
             floating={floatingSelectRef}
@@ -42,15 +45,13 @@ export default function SmsIntegrationSelect({
                         target={selectRef}
                         value={value}
                     >
+                        <DropdownSearch autoFocus />
                         <DropdownBody>
-                            {options.map((integration) => (
+                            {options.map((option) => (
                                 <DropdownItem
-                                    key={integration.id}
-                                    option={{
-                                        label: integration.name,
-                                        value: integration.id,
-                                    }}
-                                    onClick={() => onChange(integration.id)}
+                                    key={option.value}
+                                    option={option}
+                                    onClick={() => onChange(option.value)}
                                     shouldCloseOnSelect
                                 />
                             ))}

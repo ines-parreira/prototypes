@@ -17,6 +17,7 @@ import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { PlayMessageNode } from './nodes/PlayMessageNode'
+import { SendToSMSNode } from './nodes/SendToSMSNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
 import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
@@ -31,6 +32,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.SendToVoicemail]: SendToVoicemailNode,
     [VoiceFlowNodeType.TimeSplitConditional]: TimeSplitConditionalNode,
     [VoiceFlowNodeType.TimeSplitOption]: TimeSplitOptionNode,
+    [VoiceFlowNodeType.SendToSMS]: SendToSMSNode,
 }
 
 const edgeTypes = {

@@ -20,6 +20,7 @@ export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.SendToVoicemail:
         case VoiceFlowNodeType.TimeSplitConditional:
+        case VoiceFlowNodeType.SendToSMS:
             return false
         default:
             return true

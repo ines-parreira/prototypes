@@ -163,7 +163,10 @@ const IvrMenuActionSendToSMSField = ({
                     <h5>Select SMS integration</h5>
                     <SmsIntegrationSelect
                         value={smsIntegrationId}
-                        options={smsIntegrations}
+                        options={smsIntegrations.map((integration) => ({
+                            label: integration.name,
+                            value: integration.id,
+                        }))}
                         onChange={setSmsIntegrationId}
                     />
                     <h5 className={css.headerWithDetails}>

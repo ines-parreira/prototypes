@@ -24,7 +24,10 @@ describe('<SmsIntegrationSelect />', () => {
 
         return render(
             <SmsIntegrationSelect
-                options={integrations}
+                options={integrations.map((integration) => ({
+                    value: integration.id,
+                    label: integration.name,
+                }))}
                 value={selectedIntegration}
                 onChange={mockOnChange}
             />,

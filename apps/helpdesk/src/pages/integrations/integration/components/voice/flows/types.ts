@@ -3,6 +3,7 @@ import {
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
+    SendToSMSStep,
     SendToVoicemailStep,
     TimeSplitConditionalStep,
 } from '@gorgias/helpdesk-types'
@@ -49,6 +50,7 @@ export type TimeSplitOptionNode = Node<
     VoiceFlowNodeType.TimeSplitOption
 >
 export type IvrOptionNode = Node<IvrOptionStep, VoiceFlowNodeType.IvrOption>
+export type SendToSMSNode = Node<SendToSMSStep, VoiceFlowNodeType.SendToSMS>
 
 export type VoiceFlowNode =
     | IncomingCallNode
@@ -60,6 +62,7 @@ export type VoiceFlowNode =
     | SendToVoicemailNode
     | TimeSplitConditionalNode
     | TimeSplitOptionNode
+    | SendToSMSNode
 
 export type VoiceFlowNodeBase = Pick<VoiceFlowNode, 'id' | 'type' | 'data'>
 

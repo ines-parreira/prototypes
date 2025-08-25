@@ -8,6 +8,7 @@ export enum VoiceFlowNodeType {
     TimeSplitOption = 'time_split_option',
     IvrMenu = 'ivr_menu',
     IvrOption = 'ivr_option',
+    SendToSMS = 'send_to_sms',
 }
 
 export const INCOMING_CALL_NODE = {

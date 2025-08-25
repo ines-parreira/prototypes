@@ -40,7 +40,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         )
 
     it('should render defaults', () => {
-        const { getByText, getAllByText, getByLabelText } = renderComponent(
+        const { getByText, getByLabelText } = renderComponent(
             {
                 confirmation_message:
                     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
@@ -51,7 +51,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
 
         expect(getByText('Add message')).toBeInTheDocument()
         expect(getByText('Message')).toBeInTheDocument()
-        expect(getAllByText('Select SMS integration')).toHaveLength(2)
+        expect(getByText('Select SMS integration')).toBeInTheDocument()
         expect(getByText('SMS confirmation message')).toBeInTheDocument()
         expect(getByText('Outbound SMS Message')).toBeInTheDocument()
         expect(getByLabelText('Custom recording')).not.toBeChecked()
