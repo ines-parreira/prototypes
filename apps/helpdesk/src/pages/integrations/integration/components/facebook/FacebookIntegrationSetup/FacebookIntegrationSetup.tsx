@@ -13,13 +13,12 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/axiom'
+import { Button, ToggleField } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Pagination from 'pages/common/components/Pagination'

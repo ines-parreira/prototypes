@@ -14,13 +14,14 @@ import {
     Row,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
 } from 'config/integrations/klaviyo'
 import { KLAVIYO_INTEGRATION_TYPE } from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'

@@ -1,6 +1,7 @@
+import { Button } from '@gorgias/axiom'
+
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import FormRow from 'pages/common/forms/FormRow'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'

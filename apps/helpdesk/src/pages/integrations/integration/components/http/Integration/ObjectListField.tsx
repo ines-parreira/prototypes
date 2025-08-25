@@ -4,7 +4,8 @@ import _clone from 'lodash/clone'
 import _trim from 'lodash/trim'
 import { Col, Row } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import IconButton from 'pages/common/components/button/IconButton'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 

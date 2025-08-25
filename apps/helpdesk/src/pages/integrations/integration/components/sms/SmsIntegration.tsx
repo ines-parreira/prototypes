@@ -1,9 +1,10 @@
 import { Route, Switch, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType, isSmsIntegration } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'

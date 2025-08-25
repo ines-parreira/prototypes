@@ -34,11 +34,11 @@ exports[`<FacebookIntegrationDetailSummary/> should display the icon, name, desc
   </div>
   <button
     aria-disabled="false"
-    class="wrapper facebookButton fill secondary medium"
+    class="ui-button-wrapper-a432 facebookButton ui-button-fill-a432 ui-button-secondary-a432"
     type="submit"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Reconnect
     </span>

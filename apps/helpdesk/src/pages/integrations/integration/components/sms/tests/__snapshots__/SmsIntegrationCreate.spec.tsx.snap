@@ -193,11 +193,11 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
         </div>
         <button
           aria-disabled="true"
-          class="wrapper mt-4 mb-4 fill primary medium isDisabled"
+          class="ui-button-wrapper-a432 mt-4 mb-4 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
           type="button"
         >
           <svg
-            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
             height="22"
             preserveAspectRatio="xMidYMid meet"
             role="status"
@@ -227,7 +227,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
             </span>
           </svg>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Add SMS
           </span>
@@ -431,11 +431,11 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
         </div>
         <button
           aria-disabled="false"
-          class="wrapper mt-4 mb-4 fill primary medium"
+          class="ui-button-wrapper-a432 mt-4 mb-4 ui-button-fill-a432 ui-button-primary-a432"
           type="submit"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Add SMS
           </span>
@@ -639,11 +639,11 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
         </div>
         <button
           aria-disabled="true"
-          class="wrapper mt-4 mb-4 fill primary medium isDisabled"
+          class="ui-button-wrapper-a432 mt-4 mb-4 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
           type="button"
         >
           <svg
-            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
             height="22"
             preserveAspectRatio="xMidYMid meet"
             role="status"
@@ -673,7 +673,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
             </span>
           </svg>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Add SMS
           </span>

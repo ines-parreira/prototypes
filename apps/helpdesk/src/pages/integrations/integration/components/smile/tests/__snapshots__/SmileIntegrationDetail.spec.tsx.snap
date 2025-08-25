@@ -111,11 +111,11 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -256,11 +256,11 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -362,11 +362,11 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -507,11 +507,11 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -652,11 +652,11 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -797,11 +797,11 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -903,22 +903,22 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
           </button>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Reconnect
             </span>
@@ -1045,11 +1045,11 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -1188,11 +1188,11 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -1331,11 +1331,11 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
         <div>
           <button
             aria-disabled="true"
-            class="wrapper mr-2 fill primary medium isDisabled"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1365,7 +1365,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
               </span>
             </svg>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>
@@ -1504,11 +1504,11 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
         <div>
           <button
             aria-disabled="false"
-            class="wrapper mr-2 fill primary medium"
+            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
             type="submit"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Update integration
             </span>

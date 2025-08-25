@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import AppDetails from 'pages/common/components/ProductDetail'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'

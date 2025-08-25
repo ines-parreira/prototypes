@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { loadIntegration } from 'models/integration/resources/alloy'
 import { AlloyIntegration } from 'models/integration/types/alloy'
-import Button from 'pages/common/components/button/Button'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,

@@ -168,11 +168,11 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Connect 
                 recharge
@@ -412,11 +412,11 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
           </label>
           <button
             aria-disabled="false"
-            class="wrapper installButton mb-2 fill secondary medium"
+            class="ui-button-wrapper-a432 installButton mb-2 ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <img
                 alt="shopify logo"
@@ -473,11 +473,11 @@ exports[`<Recharge/> List should render 1`] = `
       >
         <button
           aria-disabled="false"
-          class="wrapper fill primary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Connect 
             recharge

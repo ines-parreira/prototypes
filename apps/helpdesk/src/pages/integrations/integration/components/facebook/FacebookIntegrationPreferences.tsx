@@ -8,14 +8,13 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Form } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/axiom'
+import { Button, ToggleField } from '@gorgias/axiom'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
 } from 'config/integrations/index'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import css from 'pages/settings/settings.less'

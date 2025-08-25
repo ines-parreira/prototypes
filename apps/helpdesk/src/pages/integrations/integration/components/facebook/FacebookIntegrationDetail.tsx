@@ -16,6 +16,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import {
@@ -28,7 +30,6 @@ import {
     isFacebookIntegration,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

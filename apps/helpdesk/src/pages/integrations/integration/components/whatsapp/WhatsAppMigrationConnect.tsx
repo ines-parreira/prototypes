@@ -1,7 +1,8 @@
 import { Col, Row } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
-import Button from 'pages/common/components/button/Button'
 import SettingsContent from 'pages/settings/SettingsContent'
 
 import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'

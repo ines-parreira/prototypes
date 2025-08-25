@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { AppOAuthPermission } from 'config/oauthPermissions'
-import Button from 'pages/common/components/button/Button'
 
 import AppPermission from './AppPermission'
 

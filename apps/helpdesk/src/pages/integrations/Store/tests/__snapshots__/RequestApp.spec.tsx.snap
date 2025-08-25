@@ -16,11 +16,11 @@ exports[`<RequestApp /> should render correctly 1`] = `
   </p>
   <button
     aria-disabled="false"
-    class="wrapper fill primary medium"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Request App
     </span>

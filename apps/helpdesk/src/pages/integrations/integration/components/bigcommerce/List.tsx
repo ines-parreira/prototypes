@@ -1,8 +1,9 @@
 import { List as ImmutableList, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 

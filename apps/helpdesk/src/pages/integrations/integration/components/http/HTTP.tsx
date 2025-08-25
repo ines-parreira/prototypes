@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import { getIntegrationConfig } from 'state/integrations/helpers'

@@ -3,10 +3,9 @@ import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Label, ToggleField } from '@gorgias/axiom'
+import { Button, Label, ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'

@@ -2,8 +2,9 @@ import { List as ImmutableList, Map } from 'immutable'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

@@ -34,11 +34,11 @@ exports[`<FacebookIntegrationList /> should render 1`] = `
     <div>
       <button
         aria-disabled="false"
-        class="wrapper facebookButton primary fill primary medium"
+        class="ui-button-wrapper-a432 facebookButton primary ui-button-fill-a432 ui-button-primary-a432"
         type="submit"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <img
             alt="facebook-logo"

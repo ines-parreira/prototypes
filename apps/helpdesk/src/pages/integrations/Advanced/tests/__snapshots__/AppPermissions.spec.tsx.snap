@@ -166,17 +166,17 @@ exports[`AppErrorRow should hide permissions if there are more than 5 1`] = `
   </div>
   <button
     aria-disabled="false"
-    class="wrapper mt-2 ghost primary medium"
+    class="ui-button-wrapper-a432 mt-2 ui-button-ghost-a432 ui-button-primary-a432"
     type="button"
   >
     <i
       aria-hidden="true"
-      class="material-icons icon medium"
+      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
     >
       unfold_more
     </i>
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Show all
     </span>

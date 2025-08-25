@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { useLocalStorage, useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import logoYotpo from 'assets/img/integrations/yotpo.png'
@@ -12,7 +14,6 @@ import { IntegrationType } from 'models/integration/constants'
 import { fetchInstalledApps } from 'models/integration/resources'
 import { AppListItem } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import { fetchIntegrations } from 'state/integrations/actions'
 import {

@@ -1,7 +1,8 @@
 import { List as ImmutableList, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Loader from 'pages/common/components/Loader/Loader'
 
 import NoIntegration from '../NoIntegration'
