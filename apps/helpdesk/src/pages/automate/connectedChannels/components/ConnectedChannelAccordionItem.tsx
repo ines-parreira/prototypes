@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { TicketChannel } from 'business/types/ticket'
 import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
 import {
@@ -9,7 +11,6 @@ import {
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Button from 'pages/common/components/button/Button'
 
 import ConnectedChannelAccordionBodyChat from './ConnectedChannelAccordionBodyChat'
 import ConnectedChannelAccordionBodyHelpCenter from './ConnectedChannelAccordionBodyHelpCenter'

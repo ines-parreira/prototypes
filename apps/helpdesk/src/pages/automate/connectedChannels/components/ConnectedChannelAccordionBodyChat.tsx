@@ -1,6 +1,8 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
@@ -8,7 +10,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ChannelLanguage } from 'pages/automate/common/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { getHasAutomate } from 'state/billing/selectors'
 

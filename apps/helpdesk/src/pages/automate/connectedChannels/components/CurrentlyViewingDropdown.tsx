@@ -4,11 +4,10 @@ import classNames from 'classnames'
 import { startCase } from 'lodash'
 import { Link } from 'react-router-dom'
 
-import { Label, Separator } from '@gorgias/axiom'
+import { Button, Label, Separator } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

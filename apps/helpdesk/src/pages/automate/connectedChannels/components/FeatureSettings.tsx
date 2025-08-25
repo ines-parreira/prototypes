@@ -1,9 +1,8 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Label, ToggleField } from '@gorgias/axiom'
+import { Button, Label, ToggleField } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './FeatureSettings.less'
