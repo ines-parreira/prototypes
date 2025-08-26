@@ -7,12 +7,14 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Route, Router } from 'react-router-dom'
 
+import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useBillingState,
     useEarlyAccessAutomatePlan,
 } from 'models/billing/queries'
+import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
@@ -27,6 +29,7 @@ import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { trial } from 'pages/settings/new_billing/fixtures'
 
 jest.mock('models/billing/queries')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
@@ -195,25 +198,11 @@ describe('useTrialModalProps', () => {
 
     describe('useTrialUpgradePlanModal', () => {
         it('should return correct modal props with billing state', () => {
-            const mockBillingState = {
-                data: {
-                    current_plans: {
-                        automate: {
-                            amount: 5000, // $50 in cents
-                            currency: 'USD',
-                            num_quota_tickets: 100,
-                        },
-                        helpdesk: {
-                            amount: 10000, // $100 in cents
-                            num_quota_tickets: 100,
-                        },
-                    },
-                },
-            } as any
-
-            mockUseBillingState.mockReturnValue(mockBillingState)
+            mockUseBillingState.mockReturnValue({
+                data: trial,
+            } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 }, // $99 in cents
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -225,12 +214,12 @@ describe('useTrialModalProps', () => {
                 currentPlan: {
                     title: 'AI Agent',
                     description: 'Provide best-in-class automated support',
-                    price: '$50',
-                    billingPeriod: 'month',
+                    price: '$180',
+                    billingPeriod: `${Cadence.Month}`,
                     features: [
                         {
                             isError: false,
-                            label: '100 automated interactions',
+                            label: '190 automated interactions',
                         },
                         {
                             isError: false,
@@ -251,8 +240,8 @@ describe('useTrialModalProps', () => {
                     title: 'AI Agent + Shopping Assistant',
                     description:
                         'Add powerful conversion features to your support flow',
-                    price: '$99',
-                    billingPeriod: 'month after trial ends',
+                    price: '$30',
+                    billingPeriod: `${Cadence.Month} after trial ends`,
                     features: [
                         {
                             isError: false,
@@ -277,7 +266,7 @@ describe('useTrialModalProps', () => {
                     ],
                     buttonText: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                     priceTooltipText:
-                        'Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a $1 helpdesk fee.',
+                        'Once you upgrade, each support or sales interaction will cost $1 per resolution, plus a $0.18 helpdesk fee.',
                 },
             })
         })
@@ -285,19 +274,17 @@ describe('useTrialModalProps', () => {
         it('should handle missing automate plan', () => {
             const mockBillingState = {
                 data: {
+                    ...trial,
                     current_plans: {
+                        ...trial.current_plans,
                         automate: null,
-                        helpdesk: {
-                            amount: 10000,
-                            num_quota_tickets: 100,
-                        },
                     },
                 },
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -312,11 +299,9 @@ describe('useTrialModalProps', () => {
         it('should handle missing helpdesk plan', () => {
             const mockBillingState = {
                 data: {
+                    ...trial,
                     current_plans: {
-                        automate: {
-                            amount: 5000,
-                            currency: 'USD',
-                        },
+                        ...trial.current_plans,
                         helpdesk: null,
                     },
                 },
@@ -324,7 +309,7 @@ describe('useTrialModalProps', () => {
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -337,9 +322,11 @@ describe('useTrialModalProps', () => {
         })
 
         it('should handle null billing state', () => {
-            mockUseBillingState.mockReturnValue({ data: null } as any)
+            mockUseBillingState.mockReturnValue({
+                data: null,
+            } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -358,15 +345,10 @@ describe('useTrialModalProps', () => {
     describe('useTrialActivatedModal', () => {
         it('should return correct trial activated modal props', () => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -382,15 +364,10 @@ describe('useTrialModalProps', () => {
     describe('useTrialStartedBanner', () => {
         it('should return correct banner with trial metrics', () => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             mockUseTrialMetrics.mockReturnValue({
@@ -428,15 +405,10 @@ describe('useTrialModalProps', () => {
 
         it('should update when trial metrics change', () => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result, rerender } = renderHookWithRouter(() =>
@@ -792,15 +764,10 @@ describe('useTrialModalProps', () => {
     describe('useTrialAlertBanner', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 
@@ -899,18 +866,205 @@ describe('useTrialModalProps', () => {
         })
     })
 
-    describe('handleUpgradePlan callback', () => {
-        beforeEach(() => {
+    describe('useTrialEndingModal', () => {
+        it('should return correct trial ending modal props', () => {
             mockUseBillingState.mockReturnValue({
                 data: {
+                    ...trial,
                     current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                        ...trial.current_plans,
+                        automate: {
+                            ...trial.current_plans.automate,
+                            // N.B. forcing increase in price to get cadence in the secondary description
+                            amount: 2000,
+                        },
                     },
                 },
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
+            } as any)
+
+            const { result } = renderHookWithRouter(() =>
+                useTrialModalProps({}),
+            )
+
+            expect(result.current.trialEndingModal.title).toEqual(
+                'Shopping Assistant trial ends tomorrow',
+            )
+            expect(
+                result.current.trialEndingModal.description?.toString(),
+            ).toEqual(
+                React.createElement('span', {}, [
+                    'Shopping Assistant drove ',
+                    React.createElement('strong', { key: 'gmv' }, '$25'),
+                    " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                ]).toString(),
+            )
+            expect(
+                result.current.trialEndingModal.secondaryDescription,
+            ).toEqual(
+                `With the upgrade, your plan will increase by $10/${Cadence.Month}.`,
+            )
+            expect(result.current.trialEndingModal.advantages).toEqual([
+                '$25 GMV uplift',
+            ])
+        })
+
+        it('should handle missing early access automate plan', () => {
+            mockUseBillingState.mockReturnValue({
+                data: trial,
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: null,
+            } as any)
+
+            const { result } = renderHookWithRouter(() =>
+                useTrialModalProps({}),
+            )
+
+            expect(result.current.trialEndingModal.title).toEqual(
+                'Shopping Assistant trial ends tomorrow',
+            )
+            expect(
+                result.current.trialEndingModal.description?.toString(),
+            ).toEqual(
+                React.createElement('span', {}, [
+                    'Shopping Assistant drove ',
+                    React.createElement('strong', { key: 'gmv' }, '$25'),
+                    " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                ]).toString(),
+            )
+            expect(
+                result.current.trialEndingModal.secondaryDescription,
+            ).toEqual(
+                'With the upgrade, the price of your plan remains the same.',
+            )
+            expect(result.current.trialEndingModal.advantages).toEqual([
+                '$25 GMV uplift',
+            ])
+        })
+    })
+
+    describe('useTrialEndedModal', () => {
+        it('should return correct trial ended modal props', () => {
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    ...trial,
+                    current_plans: {
+                        ...trial.current_plans,
+                        automate: {
+                            ...trial.current_plans.automate,
+                            // N.B. forcing increase in price to get cadence in the secondary description
+                            amount: 2000,
+                        },
+                    },
+                },
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: earlyAccessMonthlyAutomationPlan,
+            } as any)
+
+            const { result } = renderHookWithRouter(() =>
+                useTrialModalProps({}),
+            )
+            expect(result.current.trialEndedModal.title).toEqual(
+                'Your trial has ended — and it made an impact.',
+            )
+            expect(
+                result.current.trialEndedModal.description?.toString(),
+            ).toEqual(
+                React.createElement('span', {}, [
+                    'Shopping Assistant drove ',
+                    React.createElement('strong', { key: 'gmv' }, '$25'),
+                    ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                ]).toString(),
+            )
+            expect(result.current.trialEndedModal.secondaryDescription).toEqual(
+                `After your trial, your plan will increase by $10/${Cadence.Month}.`,
+            )
+            expect(result.current.trialEndedModal.advantages).toEqual([
+                '$25 GMV uplift',
+            ])
+        })
+
+        it('should handle missing early access automate plan', () => {
+            mockUseBillingState.mockReturnValue({
+                data: trial,
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: null,
+            } as any)
+
+            const { result } = renderHookWithRouter(() =>
+                useTrialModalProps({}),
+            )
+
+            expect(result.current.trialEndedModal.title).toEqual(
+                'Your trial has ended — and it made an impact.',
+            )
+            expect(
+                result.current.trialEndedModal.description?.toString(),
+            ).toEqual(
+                React.createElement('span', {}, [
+                    'Shopping Assistant drove ',
+                    React.createElement('strong', { key: 'gmv' }, '$25'),
+                    ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                ]).toString(),
+            )
+            expect(result.current.trialEndedModal.secondaryDescription).toEqual(
+                'The price of your plan remains the same after the upgrade.',
+            )
+            expect(result.current.trialEndedModal.advantages).toEqual([
+                '$25 GMV uplift',
+            ])
+        })
+    })
+
+    describe('useTrialFinishSetupModal', () => {
+        it('should return correct trial finish setup modal props', () => {
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    ...trial,
+                    current_plans: {
+                        ...trial.current_plans,
+                        automate: {
+                            ...trial.current_plans.automate,
+                            // N.B. forcing increase in price to get cadence in the secondary description
+                            amount: 2000,
+                        },
+                    },
+                },
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: earlyAccessMonthlyAutomationPlan,
+            } as any)
+
+            const { result } = renderHookWithRouter(() =>
+                useTrialModalProps({}),
+            )
+            expect(result.current.trialFinishSetupModal.title).toEqual(
+                'Ready. Set. Grow. Your 14-days trial starts now.',
+            )
+            expect(result.current.trialFinishSetupModal.subtitle).toEqual(
+                "Let's unlock its full potential.",
+            )
+            expect(result.current.trialFinishSetupModal.content).toEqual(
+                'Just two simple steps to increase conversions and make the most of your trial.',
+            )
+            expect(
+                result.current.trialFinishSetupModal.primaryAction?.label,
+            ).toEqual('Finish setup')
+        })
+    })
+
+    describe('handleUpgradePlan callback', () => {
+        beforeEach(() => {
+            mockUseBillingState.mockReturnValue({
+                data: trial,
+            } as any)
+            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 
@@ -1011,7 +1165,7 @@ describe('useTrialModalProps', () => {
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -1044,7 +1198,7 @@ describe('useTrialModalProps', () => {
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result } = renderHookWithRouter(() =>
@@ -1079,7 +1233,7 @@ describe('useTrialModalProps', () => {
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const { result, rerender } = renderHookWithRouter(() =>
@@ -1109,17 +1263,12 @@ describe('useTrialModalProps', () => {
 
         it('should create new object when onConfirmTrial changes', () => {
             const mockBillingState = {
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
             const mockOnConfirmTrial1 = jest.fn()
@@ -1149,15 +1298,10 @@ describe('useTrialModalProps', () => {
     describe('hasOptedOut scenarios', () => {
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 
@@ -1216,15 +1360,10 @@ describe('useTrialModalProps', () => {
 
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 
@@ -1345,7 +1484,7 @@ describe('useTrialModalProps', () => {
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
-                    'With the upgrade, your plan will increase by $49/month.',
+                    `With the upgrade, your plan will increase by $49/${Cadence.Month}.`,
                 )
             })
 
@@ -1387,7 +1526,7 @@ describe('useTrialModalProps', () => {
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
                 ).toBe(
-                    'Typical results achieved by merchants. After upgrading, your plan will increase by $49/month.',
+                    `Typical results achieved by merchants. After upgrading, your plan will increase by $49/${Cadence.Month}.`,
                 )
             })
 
@@ -1412,12 +1551,7 @@ describe('useTrialModalProps', () => {
     describe('edge cases', () => {
         it('should handle undefined early access plan data', () => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
                 data: undefined,
@@ -1438,15 +1572,10 @@ describe('useTrialModalProps', () => {
 
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 
@@ -1493,15 +1622,10 @@ describe('useTrialModalProps', () => {
 
         beforeEach(() => {
             mockUseBillingState.mockReturnValue({
-                data: {
-                    current_plans: {
-                        automate: { amount: 5000, currency: 'USD' },
-                        helpdesk: { amount: 10000, num_quota_tickets: 100 },
-                    },
-                },
+                data: trial,
             } as any)
             mockUseEarlyAccessAutomatePlan.mockReturnValue({
-                data: { amount: 9900 },
+                data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
 

@@ -501,7 +501,7 @@ const useTrialEndedModal = (
     const currency = currentPlan?.currency ?? 'USD'
 
     const difference = earlyAccessPlanPrice - currentPlanAmount
-    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? 'month'
+    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
 
     const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
 
@@ -576,7 +576,7 @@ const useTrialEndingModal = (
     const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
     const hasPriceIncrease = difference > 0
     const increaseAmount = formatAmount(difference, currency)
-    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? 'month'
+    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
 
     const description = useMemo(() => {
         if (hasSignificantGmvImpact) {
