@@ -1,13 +1,12 @@
 import classNames from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { AIGuidance } from 'pages/aiAgent/types'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 import css from './AiGuidanceEmptyState.less'

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 
-import { ToggleField } from '@gorgias/axiom'
+import { Button, ToggleField } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -15,7 +15,6 @@ import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSugge
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'

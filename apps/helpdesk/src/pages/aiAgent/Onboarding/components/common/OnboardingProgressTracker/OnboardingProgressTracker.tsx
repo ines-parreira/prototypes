@@ -1,5 +1,6 @@
+import { Button } from '@gorgias/axiom'
+
 import { getRGB } from 'gorgias-design-system/utils'
-import Button from 'pages/common/components/button/Button'
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
 
 const STEP_TRACKER_COLOR = '--accessory-magenta-25'

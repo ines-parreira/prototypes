@@ -3,7 +3,7 @@ import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
 import { Node } from '@xyflow/react'
 import _isEqual from 'lodash/isEqual'
 
-import { Label, Skeleton } from '@gorgias/axiom'
+import { Button, Label, Skeleton } from '@gorgias/axiom'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -25,7 +25,6 @@ import {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import Caption from 'pages/common/forms/Caption/Caption'
 

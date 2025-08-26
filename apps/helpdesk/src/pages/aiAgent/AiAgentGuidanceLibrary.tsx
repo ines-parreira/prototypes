@@ -1,9 +1,8 @@
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import BackLink from 'pages/common/components/BackLink'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 import { GuidanceAiSuggestionsList } from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'

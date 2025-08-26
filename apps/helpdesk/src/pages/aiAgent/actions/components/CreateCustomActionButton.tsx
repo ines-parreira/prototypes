@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import Button from 'pages/common/components/button/Button'
 
 export default function CreateCustomActionButton() {
     const { shopName } = useParams<{

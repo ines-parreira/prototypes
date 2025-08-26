@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'

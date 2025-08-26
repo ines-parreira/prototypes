@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -30,7 +30,6 @@ import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visual
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -80,10 +79,11 @@ const EditActionView = ({ configuration }: Props) => {
     const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
-    const [saveAndTestButtonRef, setSaveAndTestButtonRef] =
-        useState<HTMLButtonElement | null>(null)
+    const [saveAndTestButtonRef, setSaveAndTestButtonRef] = useState<
+        HTMLButtonElement | HTMLAnchorElement | null
+    >(null)
     const [deleteActionConfirmationRef, setDeleteActionConfirmationRef] =
-        useState<HTMLButtonElement | null>(null)
+        useState<HTMLButtonElement | HTMLAnchorElement | null>(null)
     const [isSaveAndTestButtonClicked, setIsSaveAndTestButtonClicked] =
         useState(false)
     const availableIntegrations = useThreeplIntegrations()

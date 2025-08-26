@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
-import { IconButton } from '@gorgias/axiom'
+import { Button, IconButton } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -11,7 +11,6 @@ import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
-import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 

@@ -1,9 +1,10 @@
 import React, { Dispatch, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Button from 'pages/common/components/button/Button'
 
 import StoreAppsProvider from '../providers/StoreAppsProvider'
 import { ConvertActionToAdvancedViewDialog } from './ConvertActionToAdvancedViewDialog'

@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import Button from 'pages/common/components/button/Button'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import history from 'pages/history'
 import { getHasAutomate } from 'state/billing/selectors'

@@ -1,12 +1,13 @@
 import React, { ReactNode } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     Card,
     CardContent,
     CardFooter,
     CardHeader,
 } from 'pages/aiAgent/Onboarding/components/Card'
-import Button from 'pages/common/components/button/Button'
 
 import css from './IntegrationCard.less'
 

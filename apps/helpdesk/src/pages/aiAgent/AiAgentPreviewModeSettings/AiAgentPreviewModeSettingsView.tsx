@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { ToggleField } from '@gorgias/axiom'
+import { Button, ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'
@@ -12,7 +12,6 @@ import {
     PREVIEW,
 } from 'pages/aiAgent/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
 import { notify } from 'state/notifications/actions'

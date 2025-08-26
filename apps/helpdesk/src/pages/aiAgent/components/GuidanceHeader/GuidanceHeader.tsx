@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@repo/hooks'
 import { useParams } from 'react-router'
 
-import { Banner, Tooltip } from '@gorgias/axiom'
+import { Banner, Button, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -10,7 +10,6 @@ import {
     getGuidanceArticleLimitWarning,
 } from 'pages/aiAgent/util'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 
 import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'

@@ -138,6 +138,7 @@ jest.mock('pages/common/forms/input/TextInput', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Tooltip: ({ children, target, placement, offset }: any) => (
         <div
             data-testid={`tooltip-${target}`}
@@ -219,7 +220,7 @@ describe('PlaygroundInputSection', () => {
             renderComponent()
 
             const resetButton = screen.getByRole('button', { name: 'Reset' })
-            expect(resetButton).toBeDisabled()
+            expect(resetButton).toHaveAttribute('aria-disabled', 'true')
         })
 
         it('should be disabled when message is typed', () => {
@@ -231,7 +232,7 @@ describe('PlaygroundInputSection', () => {
             })
 
             const resetButton = screen.getByRole('button', { name: 'Reset' })
-            expect(resetButton).toBeDisabled()
+            expect(resetButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
 

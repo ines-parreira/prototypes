@@ -9,14 +9,13 @@ import React, {
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import keymap from 'config/shortcuts'
 import useFlag from 'core/flags/hooks/useFlag'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
-import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import shortcutManager from 'services/shortcutManager'
 

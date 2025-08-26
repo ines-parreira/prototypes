@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 
 import { Popover, PopoverBody } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import { PlaygroundAction } from './types'

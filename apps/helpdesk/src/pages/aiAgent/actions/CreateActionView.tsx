@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -32,7 +32,6 @@ import {
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -122,8 +121,9 @@ const CreateActionView = () => {
         [],
     )
 
-    const [createAndTestButtonRef, setCreateAndTestButtonRef] =
-        useState<HTMLButtonElement | null>(null)
+    const [createAndTestButtonRef, setCreateAndTestButtonRef] = useState<
+        HTMLButtonElement | HTMLAnchorElement | null
+    >(null)
     const [isCreateAndTestButtonClicked, setIsCreateAndTestButtonClicked] =
         useState(false)
 

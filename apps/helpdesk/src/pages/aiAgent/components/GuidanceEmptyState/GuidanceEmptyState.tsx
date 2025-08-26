@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'

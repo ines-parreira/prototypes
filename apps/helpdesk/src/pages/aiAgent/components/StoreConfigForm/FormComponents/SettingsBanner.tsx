@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 
 import { BannerText, SettingsBannerType } from '../constants'
 

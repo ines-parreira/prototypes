@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -15,7 +15,6 @@ import {
     WIZARD_POST_COMPLETION_STATE,
 } from 'pages/aiAgent/constants'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
-import Button from 'pages/common/components/button/Button'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
