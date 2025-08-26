@@ -13,15 +13,18 @@ import {
 } from '../constants'
 import {
     EndCallNode,
+    IntermediaryNode,
     IvrMenuNode,
     IvrOptionNode,
     SendToVoicemailNode,
     TimeSplitConditionalNode,
+    VoiceFlowNode,
 } from '../types'
 import {
     canAddNewStepOnEdge,
     createIvrOptionNode,
     createTimeSplitOptionNode,
+    findConvergencePointsInVoiceFlow,
     getNextNodes,
     isVoiceFlowStep,
     transformToReactFlowNodes,
@@ -281,7 +284,10 @@ describe('utils', () => {
                     type: VoiceFlowNodeType.PlayMessage,
                     data: {
                         ...playMessageNode2,
-                        next_step_id: END_CALL_NODE.id,
+                        // intermediary node, not the same id as in the step
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
                     },
                 },
                 {
@@ -318,7 +324,10 @@ describe('utils', () => {
                     type: VoiceFlowNodeType.PlayMessage,
                     data: {
                         ...playMessageNode3,
-                        next_step_id: END_CALL_NODE.id,
+                        // intermediary node, not the same id as in the step
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
                     },
                 },
                 {
@@ -326,11 +335,36 @@ describe('utils', () => {
                     type: VoiceFlowNodeType.SendToVoicemail,
                     data: {
                         ...voicemailNode,
-                        next_step_id: END_CALL_NODE.id,
+                        // intermediary node, not the same id as in the step
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
                     },
                 },
                 {
                     ...END_CALL_NODE,
+                },
+                {
+                    data: {
+                        next_step_id: 'end_call',
+                    },
+                    id: expect.any(String),
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                    type: VoiceFlowNodeType.Intermediary,
+                },
+                {
+                    data: {
+                        next_step_id: expect.any(String),
+                    },
+                    id: expect.any(String),
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                    type: VoiceFlowNodeType.Intermediary,
                 },
             ]
 
@@ -340,6 +374,165 @@ describe('utils', () => {
                     position: { x: 0, y: 0 },
                 })),
             )
+
+            // check intermediary nodes links
+            const intermediaryNodes = nodes.filter(
+                (node) => node.type === VoiceFlowNodeType.Intermediary,
+            )
+            const intermediaryNode1 = intermediaryNodes[0] as IntermediaryNode
+            const intermediaryNode2 = intermediaryNodes[1] as IntermediaryNode
+
+            // check options from ivr menu point to intermediary node 2
+            ;['play_message_3', 'voicemail'].forEach((id) => {
+                const convergingNode = nodes.find((node) => node.id === id)
+                expect(convergingNode).toBeDefined()
+                expect((convergingNode as any).data.next_step_id).toBe(
+                    intermediaryNode2.id,
+                )
+            })
+            // check play message 2 and intermediary node 2 to intermediary node 1
+            ;['play_message_2', intermediaryNode2.id].forEach((id) => {
+                const convergingNode = nodes.find((node) => node.id === id)
+                expect(convergingNode).toBeDefined()
+                expect((convergingNode as any).data.next_step_id).toBe(
+                    intermediaryNode1.id,
+                )
+            })
+        })
+    })
+
+    describe('findConvergencePointsInVoiceFlow', () => {
+        const linearFlowNodes = [
+            {
+                id: 'incoming-call',
+                type: VoiceFlowNodeType.IncomingCall,
+                data: { next_step_id: 'welcome' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'welcome',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: { next_step_id: 'enqueue' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'enqueue',
+                type: VoiceFlowNodeType.Enqueue,
+                data: { next_step_id: 'end-call' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'end-call',
+                type: VoiceFlowNodeType.EndCall,
+                data: {},
+                position: { x: 0, y: 0 },
+            },
+        ] as VoiceFlowNode[]
+
+        const ivrMenuNodes = [
+            {
+                id: 'incoming-call',
+                type: VoiceFlowNodeType.IncomingCall,
+                data: { next_step_id: 'ivr-menu' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'ivr-menu',
+                type: VoiceFlowNodeType.IvrMenu,
+                data: {
+                    branch_options: [
+                        { input_digit: '1', next_step_id: 'option-1' },
+                        { input_digit: '2', next_step_id: 'option-2' },
+                    ],
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'option-1',
+                type: VoiceFlowNodeType.IvrOption,
+                data: {
+                    parentId: 'ivr-menu',
+                    optionsIndex: 0,
+                    next_step_id: 'play-message-1',
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'option-2',
+                type: VoiceFlowNodeType.IvrOption,
+                data: {
+                    parentId: 'ivr-menu',
+                    optionIndex: 1,
+                    next_step_id: 'play-message-2',
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'play-message-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: { next_step_id: 'end-call' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'play-message-2',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: { next_step_id: 'end-call' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'end-call',
+                type: VoiceFlowNodeType.EndCall,
+                data: {},
+                position: { x: 0, y: 0 },
+            },
+        ] as VoiceFlowNode[]
+
+        it('should return empty array for empty incoming edges map', () => {
+            const result = findConvergencePointsInVoiceFlow([])
+            expect(result).toEqual([])
+        })
+
+        it('should find no convergence in a linear flow', () => {
+            const result = findConvergencePointsInVoiceFlow(linearFlowNodes)
+
+            expect(result).toEqual([])
+        })
+
+        it('should find one convergence point in a branched flow', () => {
+            const result = findConvergencePointsInVoiceFlow(ivrMenuNodes)
+
+            expect(result).toEqual([
+                {
+                    targetNodeId: 'end-call',
+                    convergingNodes: ['play-message-1', 'play-message-2'],
+                },
+            ])
+        })
+
+        it('should exclude intermediary nodes from convergence points', () => {
+            const nodes = ivrMenuNodes.map((node) => {
+                if (node.type === VoiceFlowNodeType.PlayMessage) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            next_step_id: 'intermediary-node',
+                        },
+                    }
+                }
+                return node
+            })
+            nodes.push({
+                id: 'intermediary-node',
+                type: VoiceFlowNodeType.Intermediary,
+                data: {
+                    next_step_id: 'end-call',
+                },
+                position: { x: 0, y: 0 },
+            })
+            const result = findConvergencePointsInVoiceFlow(nodes)
+
+            expect(result).toEqual([])
         })
     })
 })

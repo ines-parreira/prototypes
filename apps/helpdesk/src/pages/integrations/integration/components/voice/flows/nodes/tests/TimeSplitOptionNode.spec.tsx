@@ -7,6 +7,7 @@ import {
     mockCallRoutingFlow,
     mockGetBusinessHoursDetailsHandler,
     mockListAccountSettingsHandler,
+    mockPlayMessageStep,
     mockTimeSplitConditionalStep,
 } from '@gorgias/helpdesk-mocks'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
@@ -39,11 +40,21 @@ describe('TimeSplitConditionalNode', () => {
             on_true_step_id: 'next-step-true',
             on_false_step_id: 'next-step-false',
         })
+    const mockOnTrueStep = mockPlayMessageStep({
+        id: 'next-step-true',
+        next_step_id: null,
+    })
+    const mockOnFalseStep = mockPlayMessageStep({
+        id: 'next-step-false',
+        next_step_id: null,
+    })
     const mockDefaultFlowData = {
         ...mockCallRoutingFlow({
             first_step_id: mockDefaultStep.id,
             steps: {
                 [mockDefaultStep.id]: mockDefaultStep,
+                'next-step-true': mockOnTrueStep,
+                'next-step-false': mockOnFalseStep,
             },
         }),
         business_hours_id: 123,
@@ -122,8 +133,12 @@ describe('TimeSplitConditionalNode', () => {
             },
         }
         const mockFlowData = {
-            ...mockDefaultFlowData,
-            steps: { [customStep.id]: customStep },
+            first_step_id: customStep.id,
+            steps: {
+                [customStep.id]: customStep,
+                'next-step-true': mockOnTrueStep,
+                'next-step-false': mockOnFalseStep,
+            },
         }
 
         renderComponent(mockFlowData)

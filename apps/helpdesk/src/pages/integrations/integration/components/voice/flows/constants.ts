@@ -9,6 +9,7 @@ export enum VoiceFlowNodeType {
     IvrMenu = 'ivr_menu',
     IvrOption = 'ivr_option',
     SendToSMS = 'send_to_sms',
+    Intermediary = 'intermediary',
 }
 
 export const INCOMING_CALL_NODE = {
@@ -22,3 +23,8 @@ export const END_CALL_NODE = {
     type: VoiceFlowNodeType.EndCall,
     data: {},
 }
+
+export const FINAL_NODES_TYPES = [
+    VoiceFlowNodeType.SendToVoicemail,
+    VoiceFlowNodeType.SendToSMS,
+]

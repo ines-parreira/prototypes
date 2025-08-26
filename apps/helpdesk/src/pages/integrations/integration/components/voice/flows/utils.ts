@@ -3,12 +3,19 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { CallRoutingFlow, CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
 
+import { ConvergencePoint } from 'core/ui/flows/types'
+import {
+    findConvergencePoints,
+    insertConvergenceNodes,
+} from 'core/ui/flows/utils'
+
 import {
     END_CALL_NODE,
     INCOMING_CALL_NODE,
     VoiceFlowNodeType,
 } from './constants'
 import {
+    IntermediaryNode,
     IvrMenuNode,
     TimeSplitConditionalNode,
     VoiceFlowNode,
@@ -21,6 +28,7 @@ export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
         case VoiceFlowNodeType.SendToVoicemail:
         case VoiceFlowNodeType.TimeSplitConditional:
         case VoiceFlowNodeType.SendToSMS:
+        case VoiceFlowNodeType.Intermediary:
             return false
         default:
             return true
@@ -221,5 +229,67 @@ export function transformToReactFlowNodes(
             }) as VoiceFlowNode,
     )
 
-    return withPosition
+    return insertVoiceConvergenceNodes(withPosition)
+}
+
+export const findConvergencePointsInVoiceFlow = (
+    nodes: VoiceFlowNode[],
+): ConvergencePoint[] => {
+    return findConvergencePoints(nodes, getNextNodes).filter(
+        (cp) =>
+            // filter out convergence points that are intermediary nodes as those are already handled
+            nodes.find((n) => n.id === cp.targetNodeId)?.type !==
+            VoiceFlowNodeType.Intermediary,
+    )
+}
+
+export const createIntermediaryNode = (
+    convergence: ConvergencePoint,
+): IntermediaryNode => {
+    return {
+        id: uuidv4(),
+        type: VoiceFlowNodeType.Intermediary,
+        data: {
+            next_step_id: convergence.targetNodeId,
+        },
+        position: { x: 0, y: 0 },
+    }
+}
+
+export const insertIntermediaryNode = (
+    intermediaryNode: IntermediaryNode,
+    convergence: ConvergencePoint,
+    nodes: VoiceFlowNode[],
+): VoiceFlowNode[] => {
+    const modifiedNodes = [...nodes, intermediaryNode]
+
+    convergence.convergingNodes.forEach((nodeId) => {
+        const node = nodes.find((n) => n.id === nodeId)
+        if (!node) return
+
+        switch (node.type) {
+            case VoiceFlowNodeType.TimeSplitConditional:
+            case VoiceFlowNodeType.IvrMenu:
+            case VoiceFlowNodeType.EndCall:
+                // these nodes shouldn't be included in convergence points (they should be filtered out before)
+                // we just safeguard against it here
+                break
+            default:
+                node.data.next_step_id = intermediaryNode.id
+                break
+        }
+    })
+    return modifiedNodes
+}
+
+export const insertVoiceConvergenceNodes = (
+    nodes: VoiceFlowNode[],
+): VoiceFlowNode[] => {
+    return insertConvergenceNodes(
+        nodes,
+        getNextNodes,
+        findConvergencePointsInVoiceFlow,
+        createIntermediaryNode,
+        insertIntermediaryNode,
+    )
 }

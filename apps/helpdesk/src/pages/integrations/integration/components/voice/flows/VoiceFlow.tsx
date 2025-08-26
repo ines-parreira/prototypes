@@ -16,6 +16,7 @@ import { createFlowGraph } from 'core/ui/flows/utils'
 import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
+import { IntermediaryNode } from './nodes/IntermediaryNode'
 import { PlayMessageNode } from './nodes/PlayMessageNode'
 import { SendToSMSNode } from './nodes/SendToSMSNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
@@ -33,6 +34,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.TimeSplitConditional]: TimeSplitConditionalNode,
     [VoiceFlowNodeType.TimeSplitOption]: TimeSplitOptionNode,
     [VoiceFlowNodeType.SendToSMS]: SendToSMSNode,
+    [VoiceFlowNodeType.Intermediary]: IntermediaryNode,
 }
 
 const edgeTypes = {

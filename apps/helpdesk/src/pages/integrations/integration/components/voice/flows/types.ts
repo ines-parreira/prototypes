@@ -51,6 +51,12 @@ export type TimeSplitOptionNode = Node<
 >
 export type IvrOptionNode = Node<IvrOptionStep, VoiceFlowNodeType.IvrOption>
 export type SendToSMSNode = Node<SendToSMSStep, VoiceFlowNodeType.SendToSMS>
+export type IntermediaryNode = Node<
+    {
+        next_step_id: string
+    },
+    VoiceFlowNodeType.Intermediary
+>
 
 export type VoiceFlowNode =
     | IncomingCallNode
@@ -63,6 +69,7 @@ export type VoiceFlowNode =
     | TimeSplitConditionalNode
     | TimeSplitOptionNode
     | SendToSMSNode
+    | IntermediaryNode
 
 export type VoiceFlowNodeBase = Pick<VoiceFlowNode, 'id' | 'type' | 'data'>
 
