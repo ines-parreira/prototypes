@@ -1,17 +1,16 @@
-import { useHistory, useParams } from 'react-router-dom'
+import React from 'react'
+
+import { Link, useParams } from 'react-router-dom'
 
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
-import sphereIcon from 'assets/img/ai-journey/sphere.svg'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import css from './DiscountCard.less'
 
-export const DiscountCard = ({
-    totalRevenue,
-}: {
+export type DiscountCardProps = {
     totalRevenue?: MetricProps
-}) => {
-    const history = useHistory()
+}
+export const DiscountCard = ({ totalRevenue }: DiscountCardProps) => {
     const { shopName } = useParams<{ shopName: string }>()
 
     const potentialRevenue = totalRevenue?.value
@@ -26,25 +25,29 @@ export const DiscountCard = ({
 
     return (
         <div className={css.discountCard}>
-            <div className={css.content}>
-                <div className={css.title}>
-                    <img src={sphereIcon} alt="sphere-icon" />
-
-                    <span>Immediate win</span>
+            <div className={css.discountInfo}>
+                <div className={css.discountInfoIcon}>
+                    <i
+                        style={{ fontSize: '12px' }}
+                        className="material-icons-outlined"
+                    >
+                        star
+                    </i>
                 </div>
-                Enable the Discount Codes to boost conversion by 50%{' '}
-                {potentialRevenue && `(+${potentialRevenueFormattedValue})`}
+                <div>
+                    Boost conversion by 50%{' '}
+                    {potentialRevenue !== undefined &&
+                        `(+${potentialRevenueFormattedValue}) `}
+                    by including a discount code{' '}
+                    <Link
+                        role="link"
+                        className={css.discountLink}
+                        to={`/app/ai-journey/${shopName}/conversation-setup`}
+                    >
+                        here
+                    </Link>
+                </div>
             </div>
-            <button
-                className={css.redirectIcon}
-                onClick={() => {
-                    history.push(
-                        `/app/ai-journey/${shopName}/conversation-setup`,
-                    )
-                }}
-            >
-                <i className="material-icons-outlined">arrow_forward</i>
-            </button>
         </div>
     )
 }

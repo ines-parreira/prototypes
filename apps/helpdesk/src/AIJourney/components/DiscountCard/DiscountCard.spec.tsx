@@ -1,60 +1,55 @@
-import { render, screen } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import { screen } from '@testing-library/react'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import { renderWithRouter } from 'utils/testing'
 
-import { DiscountCard } from './DiscountCard'
+import { DiscountCard, DiscountCardProps } from './DiscountCard'
 
-const mockPush = jest.fn()
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({
-        push: mockPush,
-    }),
-    useParams: () => ({
-        shopName: 'test-store',
-    }),
-}))
+const renderDiscountCard = (props: DiscountCardProps = {}) => {
+    return renderWithRouter(<DiscountCard {...props} />, {
+        path: '/app/ai-journey/:shopName/performance',
+        route: '/app/ai-journey/test-store/performance',
+    })
+}
 
 describe('<DiscountCard />', () => {
-    it('renders the title, icon, and description', () => {
-        render(<DiscountCard />)
-        expect(screen.getByText('Immediate win')).toBeInTheDocument()
-        expect(screen.getByAltText('sphere-icon')).toBeInTheDocument()
+    it('renders description when no revenue', () => {
+        renderDiscountCard()
+
         expect(
             screen.getByText(
-                'Enable the Discount Codes to boost conversion by 50%',
+                'Boost conversion by 50% by including a discount code',
             ),
         ).toBeInTheDocument()
     })
 
-    it('renders potential revenue when available', () => {
-        const mockedRevenue = 0.06
-        const mockedtotalRevenue = {
-            label: 'Total Revenue',
-            value: mockedRevenue,
-            prevValue: null,
-            interpretAs: 'more-is-better',
-            metricFormat: 'currency',
-            currency: 'USD',
-            isLoading: false,
-        } as MetricProps
+    it('renders description when revenue', () => {
+        renderDiscountCard({
+            totalRevenue: {
+                label: 'Total Revenue',
+                value: 150,
+                prevValue: null,
+                interpretAs: 'more-is-better',
+                metricFormat: 'currency',
+                currency: 'USD',
+                isLoading: false,
+            },
+        })
 
-        render(<DiscountCard totalRevenue={mockedtotalRevenue} />)
-        expect(screen.getByText('Immediate win')).toBeInTheDocument()
-        expect(screen.getByAltText('sphere-icon')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                `Enable the Discount Codes to boost conversion by 50% (+$${mockedRevenue / 2})`,
-            ),
+            screen.getByText((_content, element) => {
+                return (
+                    element?.textContent ===
+                    'Boost conversion by 50% (+$75) by including a discount code here'
+                )
+            }),
         ).toBeInTheDocument()
     })
 
-    it('redirects to conversation-setup when button is clicked', async () => {
-        render(<DiscountCard />)
-        const button = screen.getByRole('button')
-        await userEvent.click(button)
-        expect(mockPush).toHaveBeenCalledWith(
+    it('has correct link to conversation-setup page', async () => {
+        renderDiscountCard()
+
+        const link = screen.getByRole('link', { name: 'here' })
+        expect(link.getAttribute('to')).toBe(
             '/app/ai-journey/test-store/conversation-setup',
         )
     })
