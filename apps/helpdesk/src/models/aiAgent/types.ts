@@ -352,3 +352,55 @@ export type GetTestSessionLogsResponse = {
     id: string
     status: 'in-progress' | 'finished' | 'idle'
 }
+
+export type TriggerAIJourneyPayload = {
+    accountId: number
+    journeyId?: string | null
+    journeyParticipationId?: string | null
+    storeIntegrationId: number
+    followUpAttempt: number
+    storeName: string
+    storeType: string
+    ticketId: string
+    marketingId: string
+    createdAt: string
+    customer: {
+        id: number
+        phone: string
+        timezone: string
+        language: string
+    }
+    cart: {
+        cartToken: string
+        lastCartUpdate: string
+        currency: string
+        abandonedCheckoutUrl: string
+        lineItems: Array<{
+            variantId: string
+            productId: string
+            quantity: number
+            linePrice: number
+        }>
+    }
+    settings: {
+        maxFollowUpMessages: number | null
+        smsSenderNumber: string | null
+        smsSenderIntegrationId: number | null
+        offerDiscount: boolean
+        maxDiscountPercent: number | null
+        brandName?: string | null
+        optOutMessage?: string | null
+        discountCodeMessageThreshold?: number | null
+    }
+    executionMode: 'regular' | 'test' | 'dry-run' | 'trial'
+    journeyMessageInstructions?: string | null
+    testModeSessionId?: string
+}
+
+export type TriggerAIJourneyResponse = {
+    message: string
+    data: {
+        ticketId: string
+        executionId: string
+    }
+}

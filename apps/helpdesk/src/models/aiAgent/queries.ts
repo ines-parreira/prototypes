@@ -49,6 +49,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { MutationOverrides } from 'types/query'
 
+import { createContextAndTriggerAIJourney } from './resources/ai-journey'
 import { getAIGeneratedGuidances } from './resources/guidances'
 import {
     createContextAndGenerateCustomToneOfVoicePreview,
@@ -271,6 +272,15 @@ export const useGetTestSessionLogs = (
     return useQuery({
         queryKey: testSessionLogsKeys.logs(testSessionId),
         queryFn: () => getTestSessionLogs(testSessionId),
+        ...overrides,
+    })
+}
+
+export const useTriggerAIJourney = (
+    overrides?: MutationOverrides<typeof createContextAndTriggerAIJourney>,
+) => {
+    return useMutation({
+        mutationFn: (params) => createContextAndTriggerAIJourney(...params),
         ...overrides,
     })
 }

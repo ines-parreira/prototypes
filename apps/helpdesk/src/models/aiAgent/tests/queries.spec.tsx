@@ -8,6 +8,7 @@ import { FeatureFlagKey } from 'config/featureFlags'
 import {
     useCreateTestSessionMutation,
     useGetTestSessionLogs,
+    useTriggerAIJourney,
 } from 'models/aiAgent/queries'
 import {
     CreatePlaygroundBody,
@@ -40,6 +41,7 @@ import {
     useUpsertOnboardingNotificationState,
     useUpsertStoreHandoverConfiguration,
 } from '../queries'
+import { createContextAndTriggerAIJourney } from '../resources/ai-journey'
 import {
     createOnboardingNotificationState,
     createWelcomePageAcknowledged,
@@ -79,6 +81,10 @@ const mockGetOnboardingNotificationState = assumeMock(
 
 jest.mock('models/aiAgent/resources/message-processing', () => ({
     createContextAndGenerateCustomToneOfVoicePreview: jest.fn(),
+}))
+
+jest.mock('models/aiAgent/resources/ai-journey', () => ({
+    createContextAndTriggerAIJourney: jest.fn(),
 }))
 
 mockFlags({
@@ -796,6 +802,78 @@ describe('queries', () => {
             ).queryFn
 
             await expect(queryFn()).rejects.toThrow('Failed to fetch logs')
+        })
+    })
+
+    describe('useTriggerAIJourney', () => {
+        it('should successfully trigger AI journey', async () => {
+            const mockOptions = {
+                accountId: 6069,
+                storeIntegrationId: 33858,
+                storeName: 'artemisathletix',
+                storeType: 'shopify',
+                journeyId: '01JZAPAD606K1JSKNHC8KVA4BD',
+                journeyMessageInstructions: null,
+                followUpAttempt: 0,
+                testModeSessionId: '90a2b7b2-e936-4208-ad28-706611c1f9b6',
+                cart: {
+                    lineItems: [
+                        {
+                            variantId: '42972732358758',
+                            productId: '7698314297446',
+                            quantity: 1,
+                            linePrice: 34.99,
+                        },
+                    ],
+                },
+                settings: {
+                    maxFollowUpMessages: 1,
+                    smsSenderNumber: '+18773983515',
+                    smsSenderIntegrationId: 334789,
+                    offerDiscount: true,
+                    maxDiscountPercent: 25,
+                    brandName: 'artemisathletix',
+                    optOutMessage: 'Reply STOP to unsubscribe',
+                    discountCodeMessageThreshold: 1,
+                },
+            }
+
+            const mockResponse = {
+                message: 'Dispatch operation successful',
+                data: {
+                    ticketId: '1756199485200',
+                    executionId: '0198e5a5-805e-76be-92d8-3e566f2026b8',
+                },
+            }
+
+            ;(createContextAndTriggerAIJourney as jest.Mock).mockResolvedValue(
+                mockResponse,
+            )
+
+            const { result } = renderHook(() => useTriggerAIJourney(), {
+                wrapper,
+            })
+
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.isError).toBe(false)
+
+            result.current.mutate([mockOptions, undefined])
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(createContextAndTriggerAIJourney).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    accountId: 6069,
+                    storeIntegrationId: 33858,
+                    storeName: 'artemisathletix',
+                    journeyId: '01JZAPAD606K1JSKNHC8KVA4BD',
+                    testModeSessionId: '90a2b7b2-e936-4208-ad28-706611c1f9b6',
+                }),
+                undefined,
+            )
+            expect(result.current.data).toEqual(mockResponse)
         })
     })
 })
