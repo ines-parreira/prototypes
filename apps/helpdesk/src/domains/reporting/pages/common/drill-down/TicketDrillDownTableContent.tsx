@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import {
     defaultEnrichmentFields,
     extraEnrichmentFieldsPerMetric,
@@ -14,6 +15,7 @@ import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
+import TruncateMultilineCellContent from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
@@ -195,8 +197,8 @@ export const TicketDrillDownTableContent = ({
         surveyScore: 140,
         assignee: 180,
         created: 180,
-        contactReason: 200,
-        outcome: 140,
+        contactReason: 180,
+        outcome: 180,
         intent: 180,
         order: 140,
         product: 180,
@@ -469,8 +471,22 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentTotalProductRecommendationsMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
-                                        <TruncateCellContent
-                                            content={item.outcome}
+                                        <TruncateMultilineCellContent
+                                            className={css.multiLineOutcome}
+                                            maxLines={
+                                                item.outcome
+                                                    ? item.outcome.split(
+                                                          DROPDOWN_NESTING_DELIMITER,
+                                                      ).length
+                                                    : 1
+                                            }
+                                            tooltip={item.outcome}
+                                            value={item.outcome}
+                                            splitDelimiter={
+                                                DROPDOWN_NESTING_DELIMITER
+                                            }
+                                            level1ClassName={css.level1}
+                                            sublevelsClassName={css.sublevels}
                                         />
                                     ) : (
                                         <span className={css.noData}>
@@ -607,9 +623,22 @@ export const TicketDrillDownTableContent = ({
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (
-                                        <TruncateCellContent
-                                            content={item.ticket.contactReason}
-                                            left
+                                        <TruncateMultilineCellContent
+                                            className={css.multiLineOutcome}
+                                            tooltip={item.ticket.contactReason}
+                                            value={item.ticket.contactReason}
+                                            splitDelimiter={
+                                                DROPDOWN_NESTING_DELIMITER
+                                            }
+                                            maxLines={
+                                                item.ticket.contactReason
+                                                    ? item.ticket.contactReason.split(
+                                                          DROPDOWN_NESTING_DELIMITER,
+                                                      ).length
+                                                    : 1
+                                            }
+                                            level1ClassName={css.level1}
+                                            sublevelsClassName={css.sublevels}
                                         />
                                     ) : (
                                         <span className={css.noData}>
@@ -623,8 +652,21 @@ export const TicketDrillDownTableContent = ({
                                 isAiInsightsCsatMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
-                                        <TruncateCellContent
-                                            content={item.intent}
+                                        <TruncateMultilineCellContent
+                                            className={css.multiLineOutcome}
+                                            value={item.intent}
+                                            maxLines={
+                                                item.intent
+                                                    ? item.intent.split(
+                                                          DROPDOWN_NESTING_DELIMITER,
+                                                      ).length
+                                                    : 1
+                                            }
+                                            splitDelimiter={
+                                                DROPDOWN_NESTING_DELIMITER
+                                            }
+                                            level1ClassName={css.level1}
+                                            sublevelsClassName={css.sublevels}
                                         />
                                     ) : (
                                         <span className={css.noData}>

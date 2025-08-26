@@ -43,6 +43,7 @@ import {
     DrillDownMetric,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
+    AIInsightsMetric,
     AutoQAMetric,
     ConvertMetric,
     SatisfactionMetric,
@@ -460,6 +461,101 @@ describe('<DrillDownTable />', () => {
             renderTableForTicket(metricData)
 
             expect(screen.getByText('SKU-1, SKU-2')).toBeInTheDocument()
+        })
+
+        it('should render multi-line outcome with different styling for level 1 and level 2', () => {
+            const metricData: DrillDownMetric = {
+                metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
+                outcomeFieldId: 1,
+                intentFieldValues: [],
+                intentFieldId: 0,
+                integrationIds: [],
+            }
+            const dataWithMultiLineOutcome: TicketDrillDownRowData[] = [
+                {
+                    ticket: {
+                        id: 1,
+                        channel: TicketChannel.Chat,
+                        description: 'description',
+                        isRead: true,
+                        subject: 'Test ticket',
+                        created: '2025-09-01T10:11:12',
+                        contactReason: 'reason',
+                        status: TicketStatus.Closed,
+                    },
+                    assignee: {
+                        id: 1,
+                        name: 'Agent name',
+                    },
+                    outcome: 'Handover::With message',
+                    metricValue: 15,
+                },
+            ]
+
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: dataWithMultiLineOutcome,
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('Handover')).toBeInTheDocument()
+            expect(screen.getByText('With message')).toBeInTheDocument()
+
+            const level1Element = screen.getByText('Handover')
+            const level2Element = screen.getByText('With message')
+
+            expect(level1Element).toHaveClass('level1')
+            expect(level2Element).toHaveClass('sublevels')
+        })
+
+        it('should render single-line outcome normally', () => {
+            const metricData: DrillDownMetric = {
+                metricName: AIInsightsMetric.TicketCustomFieldsTicketCount,
+                outcomeFieldId: 1,
+                intentFieldValues: [],
+                intentFieldId: 0,
+                integrationIds: [],
+            }
+            const dataWithSingleLineOutcome: TicketDrillDownRowData[] = [
+                {
+                    ticket: {
+                        id: 1,
+                        channel: TicketChannel.Chat,
+                        description: 'description',
+                        isRead: true,
+                        subject: 'Test ticket',
+                        created: '2025-09-01T10:11:12',
+                        contactReason: 'reason',
+                        status: TicketStatus.Closed,
+                    },
+                    assignee: {
+                        id: 1,
+                        name: 'Agent name',
+                    },
+                    outcome: 'Handover',
+                    metricValue: 15,
+                },
+            ]
+
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: dataWithSingleLineOutcome,
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            const outcomeElement = screen.getByText('Handover')
+            expect(outcomeElement).toBeInTheDocument()
+            expect(outcomeElement).toHaveClass('level1')
         })
     })
 

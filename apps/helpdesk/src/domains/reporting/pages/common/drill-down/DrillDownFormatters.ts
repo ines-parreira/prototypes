@@ -1,10 +1,10 @@
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { User } from 'config/types/user'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import {
     AI_AGENT_OUTCOME_DISPLAY_LABELS,
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from 'domains/reporting/hooks/automate/types'
-import { transformIntentName } from 'domains/reporting/hooks/automate/utils'
 import { MergedRecord } from 'domains/reporting/hooks/withEnrichment'
 import {
     AiSalesAgentOrdersDimension,
@@ -97,11 +97,24 @@ const getAIOutcome = ({
         const outcome = (
             row[EnrichmentFields.CustomFields] as Record<string, any>
         )?.[outcomeId] as string | undefined
-        if (outcome?.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)) {
+
+        if (!outcome) {
+            return undefined
+        }
+
+        const hasDelimiter = outcome.includes(DROPDOWN_NESTING_DELIMITER)
+        const [level1, level2] = hasDelimiter
+            ? outcome.split(DROPDOWN_NESTING_DELIMITER)
+            : [outcome, undefined]
+
+        if (level1?.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)) {
+            if (level2) {
+                return `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}${DROPDOWN_NESTING_DELIMITER}${level2}`
+            }
             return AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover
         }
 
-        return AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated
+        return `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`
     }
     return undefined
 }
@@ -117,16 +130,11 @@ const getAIIntent = ({
     }
 }): string | undefined => {
     const intentId = customFieldsIds?.intentCustomFieldId
-    if (intentId) {
-        const intent = (
-            row[EnrichmentFields.CustomFields] as Record<string, any>
-        )?.[intentId] as string | undefined
-
-        if (intent) {
-            return transformIntentName(intent)
-        }
-    }
-    return undefined
+    return intentId
+        ? ((row[EnrichmentFields.CustomFields] as Record<string, any>)?.[
+              intentId
+          ] as string | undefined)
+        : undefined
 }
 
 export const formatTicketDrillDownRowData = ({

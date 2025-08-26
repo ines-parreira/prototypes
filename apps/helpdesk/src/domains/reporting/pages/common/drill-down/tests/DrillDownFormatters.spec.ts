@@ -190,8 +190,221 @@ describe('DrillDownFormatters', () => {
                         subject: null,
                     },
                     intent: undefined,
-                    outcome: 'Automated',
+                    outcome: 'Automated::1::1',
                     metricValue: undefined,
+                }),
+            )
+        })
+
+        it('should return formatted row data with handover outcome and level 2 detail', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {
+                    1: 'Handover::With message',
+                    2: '2::2',
+                },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: null,
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    intent: undefined,
+                    outcome: 'Handover::With message',
+                    metricValue: undefined,
+                }),
+            )
+        })
+
+        it('should return formatted row data with close outcome and level 2 detail', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {
+                    1: 'Close::Without message',
+                    2: '2::2',
+                },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: null,
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    intent: undefined,
+                    outcome: 'Automated::Close::Without message',
+                    metricValue: undefined,
+                }),
+            )
+        })
+
+        it('should return formatted row data with handover outcome but no level 2 detail', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Handover', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: null,
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    intent: undefined,
+                    outcome: 'Handover',
+                    metricValue: undefined,
+                }),
+            )
+        })
+
+        it('should return undefined outcome when custom field value is null', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: null, 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: undefined,
+                }),
+            )
+        })
+
+        it('should return undefined outcome when custom field value is empty string', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: '', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: undefined,
+                }),
+            )
+        })
+
+        it('should return Automated outcome when level1 does not start with Handover and no level2', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Unknown', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Automated::Unknown',
+                }),
+            )
+        })
+
+        it('should return Automated outcome when level1 is empty or undefined', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: '::', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Automated::::', // TODO: check if this is correct
                 }),
             )
         })
@@ -226,7 +439,7 @@ describe('DrillDownFormatters', () => {
                         status: null,
                         subject: null,
                     },
-                    intent: '2/2',
+                    intent: '2::2',
                     outcome: undefined,
                     metricValue: undefined,
                 }),
