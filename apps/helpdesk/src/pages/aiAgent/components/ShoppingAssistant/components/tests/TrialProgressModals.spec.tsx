@@ -6,6 +6,7 @@ import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
+import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -158,7 +159,7 @@ describe('TrialProgressModals', () => {
                     title: 'Current',
                     description: 'Current plan',
                     price: '$0',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Keep',
                     features: [],
@@ -167,7 +168,7 @@ describe('TrialProgressModals', () => {
                     title: 'New',
                     description: 'New plan',
                     price: '$10',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Upgrade',
                     features: [],
@@ -179,7 +180,7 @@ describe('TrialProgressModals', () => {
                     title: 'Current',
                     description: 'Current plan',
                     price: '$0',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Keep',
                     features: [],
@@ -188,7 +189,7 @@ describe('TrialProgressModals', () => {
                     title: 'New',
                     description: 'New plan',
                     price: '$10',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Upgrade',
                     features: [],
@@ -222,7 +223,7 @@ describe('TrialProgressModals', () => {
                     title: 'Current',
                     description: 'Current plan',
                     price: '$0',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Keep',
                     features: [],
@@ -231,7 +232,7 @@ describe('TrialProgressModals', () => {
                     title: 'New',
                     description: 'New plan',
                     price: '$10',
-                    billingPeriod: 'month',
+                    billingPeriod: Cadence.Month,
                     advantages: [],
                     buttonText: 'Upgrade',
                     features: [],
@@ -374,7 +375,7 @@ describe('TrialProgressModals', () => {
                         amount_after_discount: 3,
                         discount: 2,
                         currency: 'USD',
-                        cadence: 'month' as any,
+                        cadence: Cadence.Month,
                         name: 'Test Plan',
                         plan_id: 'test',
                         product: 'automate' as any,
