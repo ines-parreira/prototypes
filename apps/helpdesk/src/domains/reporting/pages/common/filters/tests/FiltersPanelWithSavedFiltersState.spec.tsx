@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -62,10 +60,7 @@ describe('SavedFiltersPanel', () => {
 
     it('should render FiltersPanel with own config', () => {
         useFlagMock.mockImplementation((flag) => {
-            if (
-                flag === FeatureFlagKey.VoiceCallDuringBusinessHours ||
-                flag === FeatureFlagKey.ReportingMultiStoreFilter
-            ) {
+            if (flag === FeatureFlagKey.VoiceCallDuringBusinessHours) {
                 return true
             }
         })
@@ -86,9 +81,6 @@ describe('SavedFiltersPanel', () => {
             if (flag === FeatureFlagKey.VoiceCallDuringBusinessHours) {
                 return false
             }
-            if (flag === FeatureFlagKey.ReportingMultiStoreFilter) {
-                return true
-            }
         })
 
         renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
@@ -97,29 +89,6 @@ describe('SavedFiltersPanel', () => {
             expect.objectContaining({
                 optionalFilters: SAVEABLE_FILTERS.filter(
                     (filter) => filter !== FilterKey.IsDuringBusinessHours,
-                ),
-                filterComponentMap: SavedFilterComponentMap,
-            }),
-            {},
-        )
-    })
-
-    it('should render FiltersPanel with own config without stores filter', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ReportingMultiStoreFilter) {
-                return false
-            }
-            if (flag === FeatureFlagKey.VoiceCallDuringBusinessHours) {
-                return true
-            }
-        })
-
-        renderWithStore(<FiltersPanelWithSavedFiltersState />, defaultState)
-
-        expect(FiltersPanelComponentMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                optionalFilters: SAVEABLE_FILTERS.filter(
-                    (filter) => filter !== FilterKey.Stores,
                 ),
                 filterComponentMap: SavedFilterComponentMap,
             }),

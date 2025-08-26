@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import { usePermittedFilters } from 'domains/reporting/hooks/filters/usePermittedFilters'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {
     emptyFiltersMock,
@@ -11,8 +10,6 @@ import {
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithStore } from 'utils/testing'
-
-import { OptionalFilter } from '../../FiltersPanel'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -28,8 +25,6 @@ jest.mock(
         SavedFiltersActions: () => <>SavedFiltersActionsMock</>,
     }),
 )
-jest.mock('domains/reporting/hooks/filters/usePermittedFilters')
-const usePermittedFiltersMock = assumeMock(usePermittedFilters)
 
 describe('FiltersPanelWrapper', () => {
     beforeEach(() => {
@@ -41,15 +36,11 @@ describe('FiltersPanelWrapper', () => {
             }),
         )
         useAppSelectorMock.mockReturnValueOnce(emptyFiltersMock)
-        usePermittedFiltersMock.mockImplementation(
-            (optionalFilters: OptionalFilter[]) => optionalFilters,
-        )
     })
 
     it('should show the buttons', () => {
         renderWithStore(<FiltersPanelWrapper />, {})
 
-        expect(usePermittedFiltersMock).toHaveBeenCalledWith([])
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
         expect(
             screen.getByText(new RegExp('MockedSavedFiltersPanel')),
@@ -65,7 +56,6 @@ describe('FiltersPanelWrapper', () => {
             {},
         )
 
-        expect(usePermittedFiltersMock).toHaveBeenCalledWith(filterKeysMock)
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
         expect(
             screen.queryByText(new RegExp('SavedFiltersFormMock')),

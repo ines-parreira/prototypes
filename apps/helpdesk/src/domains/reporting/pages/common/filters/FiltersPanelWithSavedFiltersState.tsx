@@ -17,23 +17,17 @@ export const FiltersPanelWithCustomFilters = (
     const isDuringBusinessHoursEnabled = useFlag(
         FeatureFlagKey.VoiceCallDuringBusinessHours,
     )
-    const isMultiStoreFilterEnabled = useFlag(
-        FeatureFlagKey.ReportingMultiStoreFilter,
-    )
 
     const optionalFilters = useMemo(() => {
         let filters = [...SAVEABLE_FILTERS]
 
-        if (!isMultiStoreFilterEnabled) {
-            filters = filters.filter((filter) => filter !== FilterKey.Stores)
-        }
         if (!isDuringBusinessHoursEnabled) {
             filters = filters.filter(
                 (filter) => filter !== FilterKey.IsDuringBusinessHours,
             )
         }
         return filters
-    }, [isDuringBusinessHoursEnabled, isMultiStoreFilterEnabled])
+    }, [isDuringBusinessHoursEnabled])
 
     return (
         <FiltersPanelComponent {...props} optionalFilters={optionalFilters} />

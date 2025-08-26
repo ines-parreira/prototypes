@@ -1,6 +1,5 @@
 import { ReactElement } from 'react'
 
-import { usePermittedFilters } from 'domains/reporting/hooks/filters/usePermittedFilters'
 import {
     FiltersPanel,
     FiltersPanelProps,
@@ -30,14 +29,13 @@ export const FiltersPanelWrapper = ({
     pinnedFilter,
 }: FiltersPanelWrapperProps): ReactElement => {
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
-    const permittedOptionalFilters = usePermittedFilters(optionalFilters)
 
     return (
         <div className={css.outerWrapper}>
             <div className={css.wrapper}>
                 <FiltersPanel
                     filterSettingsOverrides={filterSettingsOverrides}
-                    optionalFilters={permittedOptionalFilters}
+                    optionalFilters={optionalFilters}
                     persistentFilters={persistentFilters}
                     applicableFilters={[
                         ...(persistentFilters || []),
