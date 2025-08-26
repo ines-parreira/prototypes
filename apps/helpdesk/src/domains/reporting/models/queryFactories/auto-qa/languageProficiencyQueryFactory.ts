@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -22,6 +23,7 @@ export const languageProficiencyQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
+    metricName: METRIC_NAMES.AUTO_QA_LANGUAGE_PROFICIENCY,
     measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
     dimensions: [],
     segments: [],
@@ -57,6 +59,7 @@ export const languageProficiencyDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...languageProficiencyQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_LANGUAGE_PROFICIENCY_DRILL_DOWN,
     measures: [TicketQAScoreMeasure.AverageLanguageProficiencyScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,

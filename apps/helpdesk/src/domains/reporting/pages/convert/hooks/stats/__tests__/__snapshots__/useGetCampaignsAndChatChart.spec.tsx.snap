@@ -35,6 +35,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
           "CampaignOrderEvents.campaignCTR",
           "CampaignOrderEvents.totalConversionRate",
         ],
+        "metricName": "convert-campaigns-performance-graph",
         "order": [
           [
             "CampaignOrderEvents.createdDatetime",

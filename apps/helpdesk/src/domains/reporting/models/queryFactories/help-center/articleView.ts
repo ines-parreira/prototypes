@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
@@ -6,6 +7,7 @@ import {
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingGranularity,
+    ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
 import {
@@ -18,7 +20,8 @@ import { OrderDirection } from 'models/api/types'
 export const articleViewQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-) => ({
+): ReportingQuery<HelpCenterTrackingEventCube> => ({
+    metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW,
     measures: [HelpCenterTrackingEventMeasures.ArticleView],
     dimensions: [],
     filters: statsFiltersToReportingFilters(
@@ -50,4 +53,5 @@ export const articleViewTimeSeriesQueryFactory = (
             filters,
         ),
     ],
+    metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW_TIME_SERIES,
 })

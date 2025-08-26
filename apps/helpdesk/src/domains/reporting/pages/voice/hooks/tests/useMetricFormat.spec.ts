@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -60,6 +61,9 @@ describe('useMetricFormat', () => {
             mockCleanStatsFilters,
             mockUserTimezone,
             VoiceCallSegment.inboundCalls,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
         )
         expect(useMetricMock).toHaveBeenCalledWith(defaultQueryFactory, false)
     })

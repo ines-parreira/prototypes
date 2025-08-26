@@ -61,9 +61,9 @@ import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/repo
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
-import { oneTouchTicketsPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
+import { oneTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
-import { zeroTouchTicketsPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { zeroTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     Domain,
@@ -343,7 +343,7 @@ export const AgentsColumnConfig: Record<
         perAgent: false,
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: oneTouchTicketsPerTicketQueryFactory,
+        drillDownQuery: oneTouchTicketsPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.ZeroTouchTickets]: {
         format: 'decimal',
@@ -354,7 +354,7 @@ export const AgentsColumnConfig: Record<
         perAgent: false,
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: zeroTouchTicketsPerTicketQueryFactory,
+        drillDownQuery: zeroTouchTicketsPerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.OnlineTime]: {
         format: 'duration',

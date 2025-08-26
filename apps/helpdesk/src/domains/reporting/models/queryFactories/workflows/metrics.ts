@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
@@ -9,6 +10,7 @@ export const workflowDatasetCountQueryFactory = (
     filters: WorkflowStatsFilters,
     timezone: string,
 ) => ({
+    metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_COUNT,
     measures: [WorkflowDatasetMeasure.CountEvents],
     dimensions: [WorkflowDatasetDimension.EventType],
     timezone,
@@ -19,6 +21,7 @@ export const workflowDatasetStepQueryFactory = (
     filters: WorkflowStatsFilters,
     timezone: string,
 ) => ({
+    metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_STEP,
     measures: [WorkflowDatasetMeasure.FlowStepDropoff],
     dimensions: [WorkflowDatasetDimension.FlowStepId],
     timezone,
@@ -29,6 +32,7 @@ export const workflowDatasetStepCountQueryFactory = (
     filters: WorkflowStatsFilters,
     timezone: string,
 ) => ({
+    metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_STEP_COUNT,
     measures: [WorkflowDatasetMeasure.CountEvents],
     dimensions: [
         WorkflowDatasetDimension.EventType,

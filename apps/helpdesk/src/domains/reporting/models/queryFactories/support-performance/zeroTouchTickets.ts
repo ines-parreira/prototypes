@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketCubeWithJoins,
@@ -69,6 +70,7 @@ export const zeroTouchTicketsQueryFactory = (
             TicketSegment.ClosedTickets,
         ],
         timeDimensions: [],
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
         ...(sorting
             ? {
                   order: [[TicketMeasure.TicketCount, sorting]],
@@ -83,6 +85,7 @@ export const zeroTouchTicketsTimeSeriesQueryFactory = (
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...zeroTouchTicketsQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketDimension.ClosedDatetime,
@@ -102,12 +105,14 @@ export const zeroTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     CHANNEL_DIMENSION,
 )
 
-export const zeroTouchTicketsPerTicketQueryFactory = (
+export const zeroTouchTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...zeroTouchTicketsQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     filters: [

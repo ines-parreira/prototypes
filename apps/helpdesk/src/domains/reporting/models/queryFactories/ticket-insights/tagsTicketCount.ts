@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -46,6 +47,7 @@ export const totalTaggedTicketCountQueryFactory = (
               order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT,
 })
 
 export const tagsTicketCountQueryFactory = (
@@ -53,6 +55,7 @@ export const tagsTicketCountQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketTagsEnrichedCube> => ({
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
     measures: [TicketTagsEnrichedMeasure.TicketCount],
     dimensions: [TicketTagsEnrichedDimension.TagId],
     timezone,
@@ -84,6 +87,7 @@ export const tagsTicketCountTimeSeriesFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketTagsEnrichedDimension.Timestamp,
@@ -103,6 +107,8 @@ export const tagsTicketCountOnCreatedDatetimeQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME,
         filters: [...baseQueryFilters, createdTicketFilter(filters)],
     }
 }
@@ -114,6 +120,8 @@ export const tagsTicketCountOnCreatedDatetimeTimeSeriesFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountOnCreatedDatetimeQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketTagsEnrichedDimension.Timestamp,
@@ -130,6 +138,7 @@ export const totalTaggedTicketCountTimeSeriesFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...totalTaggedTicketCountQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketTagsEnrichedDimension.Timestamp,
@@ -155,6 +164,8 @@ export const totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
         filters: [...baseQueryFilters, createdTicketFilter(filters)],
     }
 }
@@ -167,6 +178,7 @@ export const tagsTicketCountDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_DRILL_DOWN,
     dimensions: [TicketDimension.TicketId],
     filters: [
         ...tagsTicketCountQueryFactory(filters, timezone, sorting).filters,
@@ -205,6 +217,8 @@ export const tagsTicketCountOnCreatedDatetimeDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_DRILL_DOWN,
         filters: [...baseQueryFilters, createdTicketFilter(filters)],
     }
 }

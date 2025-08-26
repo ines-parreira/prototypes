@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
     HelpdeskCustomerMessagesReceivedEnrichedMeasure,
@@ -47,6 +48,7 @@ export const messagesReceivedQueryFactory = (
               ],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
 })
 
 export const messagesReceivedTimeSeriesQueryFactory = (
@@ -63,6 +65,7 @@ export const messagesReceivedTimeSeriesQueryFactory = (
             dateRange: getFilterDateRange(filters.period),
         },
     ],
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES,
 })
 
 export const messagesReceivedMetricPerAgentQueryFactory =
@@ -99,5 +102,7 @@ export const messagesReceivedMetricPerTicketDrillDownQueryFactory = (
                   ],
               }
             : {}),
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_TICKET_DRILL_DOWN,
     }
 }

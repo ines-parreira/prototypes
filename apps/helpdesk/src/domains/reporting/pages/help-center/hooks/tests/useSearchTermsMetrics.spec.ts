@@ -1,5 +1,6 @@
 import { renderHook } from '@repo/testing'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -56,6 +57,7 @@ describe('useSearchTermsMetrics', () => {
         )
 
         expect(mockUseMetric).toHaveBeenCalledWith({
+            metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_COUNT,
             dimensions: [],
             filters: [
                 {

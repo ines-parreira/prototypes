@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
@@ -33,22 +34,32 @@ describe('VoiceCallCountTrend', () => {
         {
             fetch: fetchVoiceCallCountTrend,
             segment: undefined,
+            metricName: METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         },
         {
             fetch: fetchVoiceCallCountOutboundTrend,
             segment: VoiceCallSegment.outboundCalls,
+            metricName: METRIC_NAMES.VOICE_CALL_COUNT_OUTBOUND_TREND,
         },
         {
             fetch: fetchVoiceCallCountInboundTrend,
             segment: VoiceCallSegment.inboundCalls,
+            metricName: METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
         },
     ])(
         'should use voiceCallCountQueryFactory with specific segment ($segment)',
-        async ({ fetch, segment }) => {
+        async ({ fetch, segment, metricName }) => {
             await fetch(statsFilters, userTimezone)
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
-                voiceCallCountQueryFactory(statsFilters, userTimezone, segment),
+                voiceCallCountQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    segment,
+                    undefined,
+                    undefined,
+                    metricName,
+                ),
                 voiceCallCountQueryFactory(
                     {
                         ...statsFilters,
@@ -56,6 +67,9 @@ describe('VoiceCallCountTrend', () => {
                     },
                     userTimezone,
                     segment,
+                    undefined,
+                    undefined,
+                    metricName,
                 ),
             )
         },
@@ -80,7 +94,14 @@ describe('VoiceCallCountTrend', () => {
             await fetchVoiceCallCountTrend(statsFilters, userTimezone, segment)
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
-                voiceCallCountQueryFactory(statsFilters, userTimezone, segment),
+                voiceCallCountQueryFactory(
+                    statsFilters,
+                    userTimezone,
+                    segment,
+                    undefined,
+                    undefined,
+                    METRIC_NAMES.VOICE_CALL_COUNT_TREND,
+                ),
                 voiceCallCountQueryFactory(
                     {
                         ...statsFilters,
@@ -88,6 +109,9 @@ describe('VoiceCallCountTrend', () => {
                     },
                     userTimezone,
                     segment,
+                    undefined,
+                    undefined,
+                    METRIC_NAMES.VOICE_CALL_COUNT_TREND,
                 ),
             )
         },

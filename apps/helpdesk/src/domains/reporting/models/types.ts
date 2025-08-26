@@ -1,3 +1,4 @@
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import { Cubes } from 'domains/reporting/models/cubes'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
@@ -60,9 +61,11 @@ export type Cube<
     ReportingSegment = unknown,
     ReportingFilterMember = unknown,
     ReportingTimeDimension = unknown,
+    ReportingMetricName = unknown,
 > = {
     measures: ReportingMeasure
     dimensions: ReportingDimension
+    metricName: ReportingMetricName
     segments: ReportingSegment
     filters: ReportingFilterMember
     timeDimensions: ReportingTimeDimension
@@ -79,6 +82,7 @@ export type ReportingQuery<TCube extends Cube = Cube> = {
     measures: TCube['measures'][]
     dimensions: TCube['dimensions'][]
     filters: ReportingFilter[]
+    metricName: MetricName
     segments?: TCube['segments'][]
     order?: ReportingOrder<TCube['dimensions'] | TCube['measures']>[]
     limit?: number

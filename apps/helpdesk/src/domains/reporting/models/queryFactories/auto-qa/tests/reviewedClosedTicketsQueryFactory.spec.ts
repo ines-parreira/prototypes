@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -32,6 +33,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
         const query = reviewedClosedTicketsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS,
             measures: [TicketQAScoreMeasure.TicketCount],
             dimensions: [],
             segments: [],
@@ -58,6 +60,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS,
             measures: [TicketQAScoreMeasure.TicketCount],
             dimensions: [],
             segments: [],
@@ -97,6 +100,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [
                 TicketQAScoreMeasure.QAScoreData,
@@ -136,6 +140,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [
                 TicketQAScoreMeasure.QAScoreData,

@@ -3,6 +3,7 @@ import {
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from 'domains/reporting/hooks/automate/types'
 import { adjustPeriodForAutomatedInteractions } from 'domains/reporting/hooks/automate/utils'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
@@ -230,6 +231,7 @@ export const useGetTicketIntentsForTicketIds = (
     ticketIds?: string[] | null,
 ) => {
     return useMetricPerDimension({
+        metricName: METRIC_NAMES.AI_AGENT_TICKET_INTENTS_FOR_TICKETS,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

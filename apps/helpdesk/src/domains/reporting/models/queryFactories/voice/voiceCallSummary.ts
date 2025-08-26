@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallSummaryCube,
     VoiceCallSummaryFiltersMembers,
@@ -36,6 +37,7 @@ export const voiceCallSummaryQueryFactory = (
             false,
             VoiceCallSummaryFiltersMembers,
         ),
+        metricName: METRIC_NAMES.VOICE_CALL_SUMMARY,
     }
 }
 

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
@@ -65,6 +66,7 @@ export const messagesSentQueryFactory = (
               order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT,
 })
 
 export const messagesSentTimeSeriesQueryFactory = (
@@ -80,6 +82,7 @@ export const messagesSentTimeSeriesQueryFactory = (
             dateRange: getFilterDateRange(filters.period),
         },
     ],
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_TIME_SERIES,
 })
 
 export const messagesSentMetricPerAgentQueryFactory = perDimensionQueryFactory(
@@ -103,6 +106,8 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
         dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
         filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN,
         ...(sorting
             ? {
                   order: [[HelpdeskMessageMeasure.MessageCount, sorting]],

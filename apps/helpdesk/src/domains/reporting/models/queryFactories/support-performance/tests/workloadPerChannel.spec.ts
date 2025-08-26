@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -38,6 +39,7 @@ describe('workloadPerChannelDistributionQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_WORKLOAD_PER_CHANNEL,
             measures: [TicketMeasure.TicketCount],
             dimensions: [TicketDimension.Channel],
             filters: [

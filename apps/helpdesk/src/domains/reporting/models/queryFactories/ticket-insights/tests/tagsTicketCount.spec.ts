@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -60,6 +61,7 @@ describe('tagsTicketCount query factories', () => {
             const query = tagsTicketCountQueryFactory(statsFilters, timezone)
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketTagsEnrichedDimension.TagId],
                 timezone,
@@ -82,6 +84,7 @@ describe('tagsTicketCount query factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketTagsEnrichedDimension.TagId],
                 timezone,
@@ -109,6 +112,8 @@ describe('tagsTicketCount query factories', () => {
 
             expect(query).toEqual({
                 ...tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_TIME_SERIES,
                 timeDimensions: [
                     {
                         dimension: TicketTagsEnrichedDimension.Timestamp,
@@ -129,6 +134,8 @@ describe('tagsTicketCount query factories', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketTagsEnrichedDimension.TagId],
                 timezone,
@@ -178,6 +185,8 @@ describe('tagsTicketCount query factories', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [],
                 timezone,
@@ -242,6 +251,8 @@ describe('tagsTicketCount query factories', () => {
 
             expect(query).toEqual({
                 ...tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_DRILL_DOWN,
                 dimensions: [TicketDimension.TicketId],
                 filters: [
                     ...tagsTicketCountQueryFactory(
@@ -304,6 +315,8 @@ describe('tagsTicketCount query factories', () => {
 
             expect(query).toEqual({
                 ...tagsTicketCountQueryFactory(filters, timezone, sorting),
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_DRILL_DOWN,
                 dimensions: [TicketDimension.TicketId],
                 filters: [
                     ...tagsTicketCountQueryFactory(filters, timezone, sorting)
@@ -343,6 +356,8 @@ describe('tagsTicketCount query factories', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_DRILL_DOWN,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketDimension.TicketId],
                 timezone,
@@ -413,6 +428,8 @@ describe('tagsTicketCount query factories', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_DRILL_DOWN,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketDimension.TicketId],
                 timezone,
@@ -471,6 +488,8 @@ describe('tagsTicketCount query factories', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_DRILL_DOWN,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [TicketDimension.TicketId],
                 timezone,
@@ -602,6 +621,7 @@ describe('tagsTicketCount query factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [],
                 timezone,
@@ -624,6 +644,7 @@ describe('tagsTicketCount query factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT,
                 measures: [TicketTagsEnrichedMeasure.TicketCount],
                 dimensions: [],
                 timezone,
@@ -655,6 +676,8 @@ describe('tagsTicketCount query factories', () => {
                     timezone,
                     sorting,
                 ),
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_TIME_SERIES,
                 timeDimensions: [
                     {
                         dimension: TicketTagsEnrichedDimension.Timestamp,

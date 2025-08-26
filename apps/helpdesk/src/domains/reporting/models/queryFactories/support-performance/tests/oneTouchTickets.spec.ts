@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -13,7 +14,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     oneTouchTicketsPerAgentQueryFactory,
-    oneTouchTicketsPerTicketQueryFactory,
+    oneTouchTicketsPerTicketDrillDownQueryFactory,
     oneTouchTicketsQueryFactory,
     oneTouchTicketsTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
@@ -64,6 +65,7 @@ describe('OneTouchTickets', () => {
             expect(
                 oneTouchTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -140,6 +142,7 @@ describe('OneTouchTickets', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -213,9 +216,14 @@ describe('OneTouchTickets', () => {
     describe('oneTouchTicketsPerTicketQueryFactory', () => {
         it('should build a query', () => {
             expect(
-                oneTouchTicketsPerTicketQueryFactory(statsFilters, timezone),
+                oneTouchTicketsPerTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
             ).toEqual({
                 ...oneTouchTicketsQueryFactory(statsFilters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
@@ -238,13 +246,15 @@ describe('OneTouchTickets', () => {
             }
 
             expect(
-                oneTouchTicketsPerTicketQueryFactory(
+                oneTouchTicketsPerTicketDrillDownQueryFactory(
                     filters,
                     timezone,
                     sorting,
                 ),
             ).toEqual({
                 ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
@@ -282,6 +292,8 @@ describe('oneTouchTicketsTimeSeriesQueryFactory', () => {
 
         expect(query).toEqual({
             ...oneTouchTicketsQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES,
             timeDimensions: [
                 {
                     dateRange: getFilterDateRange(statsFilters.period),

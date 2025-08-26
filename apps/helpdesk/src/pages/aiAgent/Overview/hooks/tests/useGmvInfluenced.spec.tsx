@@ -10,6 +10,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
@@ -85,6 +86,7 @@ describe('useGmvInfluenced', () => {
             dimensions: [],
             filters: [],
             timeDimensions: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
         })
 
         useGmvInfluencedCtaButtonMock.mockReturnValue(

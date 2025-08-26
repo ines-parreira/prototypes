@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -16,4 +17,5 @@ export const searchRequested = (
         statsFilters,
     ),
     timezone,
+    metricName: METRIC_NAMES.HELP_CENTER_SEARCH_REQUESTED,
 })

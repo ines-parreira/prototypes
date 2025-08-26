@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -27,6 +28,8 @@ export function humanResponseTimeAfterAiHandoffQueryFactory(
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> {
     return {
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF,
         measures: [
             TicketFirstHumanAgentResponseTimeMeasure.MedianFirstHumanAgentResponseTime,
         ],
@@ -70,6 +73,9 @@ export function humanResponseTimeAfterAiHandoffPerAgentQueryFactory(
         TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId,
     ]
 
+    query.metricName =
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_AGENT
+
     return query
 }
 
@@ -86,6 +92,9 @@ export function humanResponseTimeAfterAiHandoffPerChannelQueryFactory(
 
     baseQuery.dimensions = [TicketDimension.Channel]
 
+    baseQuery.metricName =
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_CHANNEL
+
     return baseQuery
 }
 
@@ -101,14 +110,15 @@ export function humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
     )
 
     query.dimensions.push(
-        ...[
-            TicketDimension.TicketId,
-            TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId,
-            TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentResponseTime,
-        ],
+        TicketDimension.TicketId,
+        TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId,
+        TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentResponseTime,
     )
 
     query.limit = DRILLDOWN_QUERY_LIMIT
+
+    query.metricName =
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_DRILL_DOWN
 
     return query
 }

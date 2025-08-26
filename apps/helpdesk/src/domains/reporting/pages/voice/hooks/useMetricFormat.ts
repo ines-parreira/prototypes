@@ -1,5 +1,6 @@
 import { useSessionStorage } from '@repo/hooks'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -33,6 +34,9 @@ export const useMetricFormat = ({
         cleanStatsFilters,
         userTimezone,
         VoiceCallSegment.inboundCalls,
+        undefined,
+        undefined,
+        METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
     )
     const hasTotalCount = percentageOfValue !== undefined
     const { data: allCallsMetric, isFetching: isAllCallsMetricFetching } =

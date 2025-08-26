@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -48,6 +49,8 @@ describe('return mentions per product', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
                     TicketProductsEnrichedDimension.ProductId,
@@ -83,6 +86,8 @@ describe('return mentions per product', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
                     TicketProductsEnrichedDimension.ProductId,
@@ -171,6 +176,8 @@ describe('return mentions per product', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT_DRILL_DOWN,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [TicketDimension.TicketId],
                 timezone,
@@ -209,6 +216,8 @@ describe('return mentions per product', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT_DRILL_DOWN,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [TicketDimension.TicketId],
                 timezone,

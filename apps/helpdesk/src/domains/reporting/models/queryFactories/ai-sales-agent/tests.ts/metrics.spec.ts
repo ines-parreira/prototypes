@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { aiSalesAgentConversationsDefaultFiltersMembers } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
@@ -28,6 +29,8 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
                 'UTC',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN,
             measures: [],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
@@ -73,6 +76,8 @@ describe('totalNumberofSalesOpportunityConvFromAIAgentDrillDownQueryFactory', ()
                 OrderDirection.Asc,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN,
             measures: [],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
@@ -124,6 +129,8 @@ describe('totalNumberOfAutomatedSalesDrillDownQueryFactory', () => {
                 'UTC',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
             measures: [],
             dimensions: [AiSalesAgentConversationsDimension.TicketId],
             filters: [
@@ -171,6 +178,8 @@ describe('totalNumberOfAutomatedSalesDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
             measures: [],
             dimensions: [AiSalesAgentConversationsDimension.TicketId],
             filters: [
@@ -224,6 +233,8 @@ describe('discountCodesOfferedDrillDownQueryFactory', () => {
                 'UTC',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN,
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [AiSalesAgentConversationsDimension.TicketId],
             filters: [
@@ -271,6 +282,8 @@ describe('discountCodesOfferedDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN,
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [AiSalesAgentConversationsDimension.TicketId],
             filters: [
@@ -324,6 +337,8 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
                 'UTC',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER_DRILL_DOWN,
             measures: ['AiSalesAgentOrders.gmv'],
             dimensions: [
                 AiSalesAgentOrdersDimension.TicketId,
@@ -372,6 +387,8 @@ describe('totalNumberOfOrderDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER_DRILL_DOWN,
             measures: ['AiSalesAgentOrders.gmv'],
             dimensions: [
                 AiSalesAgentOrdersDimension.TicketId,
@@ -423,6 +440,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                 'UTC',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
@@ -475,6 +494,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,
@@ -533,6 +554,8 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
                 '123',
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
             measures: ['AiSalesAgentConversations.count'],
             dimensions: [
                 AiSalesAgentConversationsDimension.TicketId,

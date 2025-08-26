@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchMetricPerDimension,
     MetricWithDecile,
@@ -53,6 +54,7 @@ describe('metricsPerProductAndIntent', () => {
         filters: [],
         timezone: 'UTC',
         limit,
+        metricName: METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT,
     }
     const mockResult: MetricWithDecile = {
         data: {

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -49,6 +50,7 @@ export const customerSatisfactionQueryFactory = (
               ],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION,
 })
 
 export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
@@ -70,6 +72,8 @@ export const customerSatisfactionForAIAgentTicketsQueryFactory = ({
     integrationIds?: string[]
     intentIds?: string[] | null
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_FOR_AI_AGENT_TICKETS,
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
     timezone,
@@ -144,6 +148,8 @@ export const customerSatisfactionMetricDrillDownQueryFactory = (
     )
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_TICKET_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

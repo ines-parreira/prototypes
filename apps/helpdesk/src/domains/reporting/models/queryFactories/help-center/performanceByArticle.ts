@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
@@ -32,6 +33,7 @@ export const performanceByArticleQueryFactory = (
         ),
     ],
     order: [[HelpCenterTrackingEventMeasures.ArticleView, OrderDirection.Desc]],
+    metricName: METRIC_NAMES.HELP_CENTER_PERFORMANCE_BY_ARTICLE,
 })
 
 export const performanceByArticleCountQueryFactory = (
@@ -48,4 +50,5 @@ export const performanceByArticleCountQueryFactory = (
             statsFilters,
         ),
     ],
+    metricName: METRIC_NAMES.HELP_CENTER_PERFORMANCE_BY_ARTICLE_COUNT,
 })

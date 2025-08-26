@@ -66,11 +66,11 @@ import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/
 import { messagesPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
 import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
-import { oneTouchTicketsPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
+import { oneTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { openTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/openTickets'
 import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
-import { zeroTouchTicketsPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { zeroTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
     Domain,
@@ -308,7 +308,7 @@ export const OverviewMetricConfig: Record<
         fetchTrend: fetchOneTouchTicketsPercentageMetricTrend,
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: oneTouchTicketsPerTicketQueryFactory,
+        drillDownQuery: oneTouchTicketsPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.ZeroTouchTickets]: {
         title: ZERO_TOUCH_TICKETS_LABEL,
@@ -322,7 +322,7 @@ export const OverviewMetricConfig: Record<
         fetchTrend: fetchZeroTouchTicketsMetricTrend,
         showMetric: false,
         domain: Domain.Ticket,
-        drillDownQuery: zeroTouchTicketsPerTicketQueryFactory,
+        drillDownQuery: zeroTouchTicketsPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.TicketHandleTime]: {
         title: TICKET_HANDLE_TIME_LABEL,

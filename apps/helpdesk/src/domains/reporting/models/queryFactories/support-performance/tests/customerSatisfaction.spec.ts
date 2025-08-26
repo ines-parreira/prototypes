@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -60,6 +61,8 @@ describe('CustomerSatisfaction', () => {
                     timezone,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -108,6 +111,8 @@ describe('CustomerSatisfaction', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -164,6 +169,8 @@ describe('CustomerSatisfaction', () => {
                     statsFilters,
                     timezone,
                 ),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_TICKET_DRILL_DOWN,
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSatisfactionSurveyDimension.SurveyScore,
@@ -205,6 +212,8 @@ describe('CustomerSatisfaction', () => {
                     timezone,
                     sorting,
                 ),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_TICKET_DRILL_DOWN,
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSatisfactionSurveyDimension.SurveyScore,

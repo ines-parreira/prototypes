@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -22,6 +23,7 @@ export const communicationSkillsQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
+    metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS,
     measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
     dimensions: [],
     segments: [],
@@ -57,6 +59,7 @@ export const communicationSkillsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...communicationSkillsQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS_DRILL_DOWN,
     measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TICKET_FIELDS_LIST_LIMIT } from 'domains/reporting/hooks/voice-of-customer/constants'
 import {
     BREAKDOWN_FIELD,
@@ -71,6 +72,7 @@ export const customFieldsTicketCountQueryFactory = (
     sorting?: OrderDirection,
     additionalFilters?: ReportingFilter[],
 ): CustomFieldsReportingQuery => ({
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
     measures: [VALUE_FIELD],
     dimensions: [BREAKDOWN_FIELD],
     timezone,
@@ -125,6 +127,8 @@ export const customFieldsTicketCountWithSortQueryFactory = (
         )
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_WITH_SORT,
         filters: [
             ...baseQueryFilters,
             {
@@ -156,6 +160,8 @@ export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME,
         filters: [...baseQueryFilters, createdTicketFilter(filters)],
     }
 }
@@ -179,6 +185,8 @@ export const customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME,
         filters: [
             ...baseQueryFilters,
             createdTicketFilter(filters),
@@ -207,6 +215,8 @@ export const aiAgentTicketsPerIntentCountQueryFactory = ({
     ticketIds?: string[] | null
 }): ReportingQuery<TicketCustomFieldsCube> => {
     return {
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL,
         measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         timezone,
@@ -275,6 +285,8 @@ export const aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory = ({
     outcomeValueToInclude?: string
 }): ReportingQuery<TicketCustomFieldsCube> => {
     return {
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FROM_TICKET_PER_INTENT_LEVEL,
         measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         timezone,
@@ -337,6 +349,8 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN,
         measures: [],
         filters: [
             ...baseQuery.filters.filter(
@@ -381,6 +395,8 @@ export const customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFact
 
         return {
             ...baseQuery,
+            metricName:
+                METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_PER_TICKET_DRILL_DOWN,
             filters: [...baseQueryFilters, createdTicketFilter(filters)],
         }
     }
@@ -407,6 +423,8 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                 : [`${outcomeFieldId}::`]
 
         return {
+            metricName:
+                METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_DRILL_DOWN,
             measures: [],
             dimensions: [TicketDimension.TicketId],
             timezone,
@@ -478,6 +496,7 @@ export const coverageRateTicketDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName: METRIC_NAMES.AI_AGENT_COVERAGE_RATE_TICKET_DRILL_DOWN,
         measures: [],
         filters: queryFilters,
         dimensions: [TicketDimension.TicketId],
@@ -508,6 +527,8 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,
@@ -539,6 +560,8 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
         customFieldId,
         sorting,
     ),
+    metricName:
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_TIME_SERIES,
     timeDimensions: [
         {
             dimension:
@@ -567,6 +590,8 @@ export const customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
         filters: [...baseQuery.filters, createdTicketFilter(filters)],
     }
 }
@@ -589,6 +614,8 @@ export const customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFa
 
         return {
             ...baseQuery,
+            metricName:
+                METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME_TIME_SERIES,
             filters: [
                 ...baseQuery.filters,
                 createdTicketFilter(filters),
@@ -614,6 +641,7 @@ export const customFieldsTicketTotalCountQueryFactory = ({
     additionalFilters?: ReportingFilter[]
     sorting?: OrderDirection
 }): ReportingQuery<TicketCustomFieldsCube> => ({
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_TOTAL_COUNT,
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [],
     timezone,
@@ -655,6 +683,7 @@ export const customFieldsTicketFactory = (
     additionalFilter?: ReportingFilter,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    metricName: METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_FACTORY,
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketDimension.TicketId],
     timezone,

@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -34,6 +35,7 @@ export const internalComplianceQueryFactory = (
         },
     ],
     timezone,
+    metricName: METRIC_NAMES.AUTO_QA_INTERNAL_COMPLIANCE,
     ...(sorting
         ? {
               order: [
@@ -57,6 +59,7 @@ export const internalComplianceDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...internalComplianceQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_INTERNAL_COMPLIANCE_DRILL_DOWN,
     measures: [TicketQAScoreMeasure.AverageInternalComplianceScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,

@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
     fetchPostReporting,
@@ -36,6 +37,7 @@ describe('Reporting queries', () => {
             filters: [],
             measures: [],
             dimensions: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
         },
     ]
 

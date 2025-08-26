@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -34,6 +35,7 @@ export const resolutionCompletenessQueryFactory = (
         },
     ],
     timezone,
+    metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS,
     ...(sorting
         ? {
               order: [
@@ -58,6 +60,7 @@ export const resolutionCompletenessDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...resolutionCompletenessQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS_DRILL_DOWN,
     measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AutomatedTicketsFilterMember,
     AutomatedTicketsMeasure,
@@ -59,6 +60,8 @@ describe('AI Agent metrics', () => {
                 sorting,
             }),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_CUSTOMER_SATISFACTION_PER_INTENT_LEVEL,
             dimensions: [
                 TicketSatisfactionSurveyDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
@@ -130,6 +133,8 @@ describe('AI Agent metrics', () => {
                 assigneeUserId: 1,
             }),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_CUSTOMER_SATISFACTION_PER_INTENT_LEVEL,
             dimensions: [
                 TicketSatisfactionSurveyDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
@@ -199,6 +204,7 @@ describe('AI Agent metrics', () => {
         expect(
             recommendedResourceQueryFactory(filters, timezone, ['1', '2']),
         ).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
             dimensions: [
                 RecommendedResourcesDimension.TicketId,
                 RecommendedResourcesDimension.RecommendedResourceId,
@@ -232,6 +238,7 @@ describe('AI Agent metrics', () => {
     it('aiAgentTicketsWithIntentQueryFactory without intent and outcome field ids', () => {
         const result = aiAgentTicketsWithIntentQueryFactory(filters, timezone)
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_TICKETS_WITH_INTENT,
             measures: [],
             dimensions: [TicketDimension.TicketId, TicketDimension.CustomField],
             timezone: 'UTC',
@@ -261,6 +268,7 @@ describe('AI Agent metrics', () => {
             'intent1',
         )
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_TICKETS_WITH_INTENT,
             measures: [],
             dimensions: [
                 'TicketEnriched.ticketId',
@@ -304,6 +312,7 @@ describe('AI Agent metrics', () => {
             sorting: OrderDirection.Asc,
         })
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT,
             measures: ['TicketEnriched.ticketCount'],
             dimensions: [],
             timezone: 'UTC',
@@ -378,6 +387,8 @@ describe('AI Agent metrics', () => {
         })
 
         expect(result).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_ALL_TICKETS_FOR_AI_AGENT_TOTAL_COUNT,
             measures: ['TicketEnriched.ticketCount'],
             dimensions: [],
             timezone: 'UTC',
@@ -445,6 +456,7 @@ describe('AI Agent metrics', () => {
             sorting: OrderDirection.Asc,
         })
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_TICKET_COUNT,
             measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
             dimensions: [],
             timezone: 'UTC',
@@ -477,6 +489,7 @@ describe('AI Agent metrics', () => {
             sorting: OrderDirection.Desc,
         })
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_TICKET_COUNT,
             measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
             dimensions: [],
             timezone: 'UTC',
@@ -508,6 +521,7 @@ describe('AI Agent metrics', () => {
             ticketIds: ['1', '2'],
         })
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_TICKET_COUNT,
             measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
             dimensions: [],
             timezone: 'UTC',
@@ -552,6 +566,7 @@ describe('AI Agent metrics', () => {
         })
 
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS,
             measures: [],
             dimensions: [TicketDimension.TicketId],
             timezone: 'UTC',

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     ReportingFilterOperator,
     ReportingParams,
@@ -38,6 +39,7 @@ export const getPageInteractionsCountAfterDate = (
                     values: [filters.afterDate],
                 },
             ],
+            metricName: METRIC_NAMES.CONVERT_PAGE_INTERACTIONS_COUNT,
         },
     ]
 }

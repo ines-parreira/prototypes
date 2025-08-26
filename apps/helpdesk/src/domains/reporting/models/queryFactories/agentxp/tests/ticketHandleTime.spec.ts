@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HandleTimeDimension,
     HandleTimeMeasure,
@@ -58,6 +59,7 @@ describe('ticketHandleTime', () => {
             expect(
                 ticketAverageHandleTimeQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME,
                 dimensions: [],
                 filters: [
                     {
@@ -105,6 +107,7 @@ describe('ticketHandleTime', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME,
                 dimensions: [],
                 filters: [
                     {
@@ -154,6 +157,8 @@ describe('ticketHandleTime', () => {
                     timezone,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN,
                 dimensions: [
                     TicketDimension.TicketId,
                     HandleTimeDimension.TicketHandleTime,
@@ -206,6 +211,8 @@ describe('ticketHandleTime', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN,
                 dimensions: [
                     TicketDimension.TicketId,
                     HandleTimeDimension.TicketHandleTime,
@@ -260,6 +267,8 @@ describe('ticketHandleTime', () => {
                     timezone,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     {
@@ -309,6 +318,8 @@ describe('ticketHandleTime', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     {

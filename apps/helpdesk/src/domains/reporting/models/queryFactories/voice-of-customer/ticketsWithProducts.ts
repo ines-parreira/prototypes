@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -40,6 +41,7 @@ export const ticketsWithProductsQueryFactory = (
               order: [[TicketProductsEnrichedMeasure.TicketCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS,
 })
 
 export const ticketCountPerProductQueryFactory = (
@@ -74,6 +76,8 @@ export const ticketCountForProductDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_PRODUCT_DRILL_DOWN,
         dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
         limit: DRILLDOWN_QUERY_LIMIT,
         order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],

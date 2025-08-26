@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpdeskCustomerMessagesReceivedEnrichedMeasure,
     HelpdeskCustomerMessagesReceivedEnrichedMember,
@@ -47,6 +48,7 @@ describe('messagesReceivedQueryFactory', () => {
         const query = messagesReceivedQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
             measures: [
                 HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
             ],
@@ -89,6 +91,8 @@ describe('messagesReceivedTimeSeriesQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES,
             measures: [
                 HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
             ],
@@ -159,6 +163,7 @@ describe('messagesReceivedMetricPerAgentQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesReceivedQueryFactory(filters, timezone),
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
             dimensions: [TicketDimension.AssigneeUserId],
             order: [
                 [
@@ -244,6 +249,8 @@ describe('messagesReceivedMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesReceivedQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_TICKET_DRILL_DOWN,
             measures: [
                 HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
             ],
@@ -275,6 +282,8 @@ describe('messagesReceivedMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesReceivedMetricPerAgentQueryFactory(filters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_TICKET_DRILL_DOWN,
             measures: [
                 HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
             ],

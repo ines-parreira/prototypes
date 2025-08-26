@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchMultipleMetricsTrends,
     useMultipleMetricsTrends,
@@ -32,6 +33,7 @@ describe('MultipleMetricTrend', () => {
         ],
         dimensions: [],
         filters: [],
+        metricName: METRIC_NAMES.TEST_METRIC,
     }
 
     describe('useMultipleMetricTrend', () => {

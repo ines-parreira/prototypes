@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -45,6 +46,7 @@ describe('messagesPerTicketQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET,
             measures: [TicketMessagesMeasure.MessagesAverage],
             dimensions: [],
             filters: [
@@ -99,6 +101,8 @@ describe('messagesPerTicketDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             ...messagesPerTicketQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -124,6 +128,8 @@ describe('messagesPerTicketDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             ...messagesPerTicketQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

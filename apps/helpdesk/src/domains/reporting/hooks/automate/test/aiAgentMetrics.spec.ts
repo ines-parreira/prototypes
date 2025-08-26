@@ -9,6 +9,7 @@ import {
     useTotalAiAgentTicketsByCustomField,
 } from 'domains/reporting/hooks/automate/aiAgentMetrics'
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -225,6 +226,7 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
+                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
                     measures: [
                         RecommendedResourcesMeasure.NumRecommendedResources,
                     ],
@@ -282,6 +284,7 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
+                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
                     measures: [
                         RecommendedResourcesMeasure.NumRecommendedResources,
                     ],
@@ -332,6 +335,7 @@ describe('aiAgentMetrics', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 {
+                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
                     measures: [
                         RecommendedResourcesMeasure.NumRecommendedResources,
                     ],

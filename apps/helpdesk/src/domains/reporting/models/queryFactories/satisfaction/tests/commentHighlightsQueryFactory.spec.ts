@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { commentHighlightsQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/commentHighlightsQueryFactory'
@@ -31,6 +32,7 @@ describe('commentHighlightsQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_COMMENT_HIGHLIGHTS,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

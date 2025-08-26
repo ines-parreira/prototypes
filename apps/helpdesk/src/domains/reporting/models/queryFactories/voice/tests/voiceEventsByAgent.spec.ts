@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
     VoiceEventsByAgentDimension,
@@ -39,6 +40,7 @@ describe('voice events by agent factories', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [VoiceEventsByAgentDimension.AgentId],
             filters: [
@@ -69,6 +71,7 @@ describe('voice events by agent factories', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [VoiceEventsByAgentDimension.AgentId],
             filters: [
@@ -101,6 +104,7 @@ describe('voice events by agent factories', () => {
         const query = declinedVoiceCallsCountQueryFactory(statsFilters, 'UTC')
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [],
             filters: [
@@ -130,6 +134,8 @@ describe('voice events by agent factories', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [VoiceEventsByAgentDimension.AgentId],
             filters: [
@@ -160,6 +166,8 @@ describe('voice events by agent factories', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [VoiceEventsByAgentDimension.AgentId],
             filters: [
@@ -195,6 +203,7 @@ describe('voice events by agent factories', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT,
             measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             dimensions: [],
             filters: [

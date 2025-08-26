@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
@@ -29,7 +30,14 @@ describe('useVoiceCallCountMetric', () => {
         )
 
         expect(useMetricMock.mock.calls[0]).toEqual([
-            voiceCallCountQueryFactory(statsFilters, 'UTC', undefined),
+            voiceCallCountQueryFactory(
+                statsFilters,
+                'UTC',
+                undefined,
+                undefined,
+                false,
+                METRIC_NAMES.VOICE_CALL_COUNT,
+            ),
         ])
         expect(results.result.current).toEqual({
             data: 0,
@@ -57,6 +65,7 @@ describe('useVoiceCallCountMetric', () => {
                 VoiceCallSegment.inboundCalls,
                 undefined,
                 true,
+                METRIC_NAMES.VOICE_CALL_COUNT,
             ),
         ])
         expect(results.result.current).toEqual({

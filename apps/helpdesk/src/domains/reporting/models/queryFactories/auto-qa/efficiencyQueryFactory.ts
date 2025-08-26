@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -22,6 +23,7 @@ export const efficiencyQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
+    metricName: METRIC_NAMES.AUTO_QA_EFFICIENCY,
     measures: [TicketQAScoreMeasure.AverageEfficiencyScore],
     dimensions: [],
     segments: [],
@@ -52,6 +54,7 @@ export const efficiencyDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...efficiencyQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_EFFICIENCY_DRILL_DOWN,
     measures: [TicketQAScoreMeasure.AverageEfficiencyScore],
     dimensions: [TicketDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,

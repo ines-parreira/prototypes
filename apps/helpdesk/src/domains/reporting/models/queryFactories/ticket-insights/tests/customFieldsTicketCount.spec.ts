@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TICKET_FIELDS_LIST_LIMIT } from 'domains/reporting/hooks/voice-of-customer/constants'
 import {
     BREAKDOWN_FIELD,
@@ -73,6 +74,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
                 measures: [VALUE_FIELD],
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
@@ -113,6 +116,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
                 measures: [VALUE_FIELD],
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
@@ -155,6 +160,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME,
                 measures: [VALUE_FIELD],
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
@@ -213,6 +220,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
                 measures: [VALUE_FIELD],
                 dimensions: [BREAKDOWN_FIELD],
                 timezone,
@@ -284,7 +293,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     timezone,
                     customFieldId,
                 ),
-
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
                 filters: [
@@ -324,6 +334,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     timezone,
                     customFieldId,
                 ),
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
                 filters: [
@@ -509,6 +521,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
                 timezone,
@@ -572,6 +586,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             })
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_TOTAL_COUNT,
                 measures: [
                     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
                 ],
@@ -614,6 +630,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
             })
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_TOTAL_COUNT,
                 measures: [
                     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
                 ],
@@ -679,6 +697,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
                 timezone: mockTimezone,
@@ -972,6 +992,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 })
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FROM_TICKET_PER_INTENT_LEVEL,
                 measures: [
                     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
                 ],
@@ -1023,6 +1045,8 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 })
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FROM_TICKET_PER_INTENT_LEVEL,
                 measures: [
                     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
                 ],

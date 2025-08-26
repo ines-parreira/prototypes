@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketSatisfactionSurveyDimension,
@@ -31,4 +32,5 @@ export const surveyScoresQueryFactory = (
         ...NotSpamNorTrashedTicketsFilter,
     ],
     timezone,
+    metricName: METRIC_NAMES.SATISFACTION_SURVEY_SCORES,
 })

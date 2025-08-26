@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -56,6 +57,7 @@ describe('closedTickets', () => {
             expect(
                 closedTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -104,6 +106,7 @@ describe('closedTickets', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -151,6 +154,7 @@ describe('closedTickets', () => {
             expect(
                 closedTicketsPerChannelQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -199,6 +203,7 @@ describe('closedTickets', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -250,6 +255,8 @@ describe('closedTickets', () => {
                 ),
             ).toEqual({
                 ...closedTicketsPerAgentQueryFactory(statsFilters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
@@ -281,6 +288,8 @@ describe('closedTickets', () => {
                 ),
             ).toEqual({
                 ...closedTicketsPerAgentQueryFactory(filters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,

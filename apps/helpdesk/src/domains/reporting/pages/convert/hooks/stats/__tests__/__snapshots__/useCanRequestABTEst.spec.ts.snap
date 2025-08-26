@@ -27,6 +27,7 @@ exports[`useCanRequestABTEst should return data 1`] = `
           "CampaignOrderEvents.orderCount",
           "CampaignOrderEvents.firstCampaignDisplay",
         ],
+        "metricName": "convert-campaign-ab-test-events",
         "timeDimensions": [],
       },
     ],

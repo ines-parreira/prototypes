@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -27,6 +28,7 @@ export const averageCSATScorePerDimensionQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    metricName: METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
     measures: [
         TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
@@ -60,6 +62,8 @@ export const averageCSATScorePerDimensionTimeSeriesFactory = (
         timezone,
         sorting,
     ),
+    metricName:
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketSatisfactionSurveyDimension.SurveySentDatetime,
@@ -82,6 +86,8 @@ export const averageCSATScorePerDimensionDrillDownQueryFactory =
             timezone,
             sorting,
         ),
+        metricName:
+            METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_DRILL_DOWN,
         dimensions: [TicketDimension.TicketId],
         filters: [
             ...averageCSATScorePerDimensionQueryFactory(

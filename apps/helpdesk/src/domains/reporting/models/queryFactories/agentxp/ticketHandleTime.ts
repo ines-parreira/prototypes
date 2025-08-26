@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HandleTimeCubeWithJoins,
     HandleTimeDimension,
@@ -24,6 +25,7 @@ export const ticketAverageHandleTimeQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
+    metricName: METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME,
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
@@ -44,6 +46,7 @@ export const ticketAverageHandleTimePerAgentQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT,
     measures: [HandleTimeMeasure.AverageHandleTime],
     dimensions: [TicketDimension.AssigneeUserId],
     filters: [
@@ -65,6 +68,7 @@ export const ticketHandleTimeQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
+    metricName: METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME,
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
@@ -85,6 +89,7 @@ export const ticketHandleTimePerTicketDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketHandleTimeQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [
         TicketDimension.TicketId,

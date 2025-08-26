@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -61,6 +62,7 @@ export const openTicketsQueryFactory = (
                 values: [hardPeriodStart],
             },
         ],
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS,
     }
 }
 
@@ -70,6 +72,8 @@ export const openTicketsPerTicketDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...openTicketsQueryFactory(filters, timezone),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     filters: [

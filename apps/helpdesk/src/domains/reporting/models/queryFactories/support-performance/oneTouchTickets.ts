@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketCubeWithJoins,
@@ -44,6 +45,7 @@ export const oneTouchTicketsQueryFactory = (
         ),
     )
     return {
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS,
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timezone,
@@ -83,6 +85,7 @@ export const oneTouchTicketsTimeSeriesQueryFactory = (
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...oneTouchTicketsQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketDimension.ClosedDatetime,
@@ -102,12 +105,14 @@ export const oneTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     CHANNEL_DIMENSION,
 )
 
-export const oneTouchTicketsPerTicketQueryFactory = (
+export const oneTouchTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
     filters: [

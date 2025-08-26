@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
@@ -36,6 +37,7 @@ describe('Automate', () => {
             const query = getAutomationFactory(statsFilters, timezone)
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
                 measures: [...kpi],
                 dimensions: [],
                 filters: [

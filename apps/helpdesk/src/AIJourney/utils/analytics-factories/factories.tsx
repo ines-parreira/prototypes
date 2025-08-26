@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
@@ -41,6 +42,7 @@ export const aiJourneyGmvInfluencedQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_GMV_INFLUENCED,
         measures: [AiSalesAgentOrdersMeasure.Gmv],
         dimensions: [AiSalesAgentOrdersDimension.Currency],
         filters: [
@@ -83,6 +85,7 @@ export const aiJourneyGmvInfluencedTimeSeriesQuery = (
             timezone,
             journeyId,
         ),
+        metricName: METRIC_NAMES.AI_JOURNEY_GMV_INFLUENCED_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentOrdersDimension.PeriodStart,
@@ -115,6 +118,7 @@ export const aiJourneyTotalNumberOfOrderQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_ORDER,
         measures: [AiSalesAgentOrdersMeasure.Count],
         dimensions: [],
         filters: [
@@ -154,6 +158,7 @@ export const aiJourneyTotalNumberOfOrderTimeSeriesQuery = (
             timezone,
             journeyId,
         ),
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_ORDER_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentOrdersDimension.PeriodStart,
@@ -181,6 +186,7 @@ export const aiJourneyTotalNumberOfSalesConversationsQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS,
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [
@@ -218,6 +224,8 @@ export const aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery = (
             timezone,
             journeyId,
         ),
+        metricName:
+            METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentConversationsDimension.PeriodStart,
@@ -245,6 +253,7 @@ export const aiJourneyRepliedMessagesQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES,
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [
@@ -287,6 +296,7 @@ export const aiJourneyRepliedMessagesTimeSeriesQuery = (
             timezone,
             journeyId,
         ),
+        metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentConversationsDimension.PeriodStart,
@@ -314,6 +324,7 @@ export const aiJourneyUniqClicksQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_UNIQ_CLICKS,
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [
@@ -356,6 +367,7 @@ export const aiJourneyUniqClicksTimeSeriesQuery = (
             integrationId,
             journeyId,
         ),
+        metricName: METRIC_NAMES.AI_JOURNEY_UNIQ_CLICKS_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentConversationsDimension.PeriodStart,
@@ -387,6 +399,7 @@ export const aiJourneyTotalMessagesQueryFactory = (
         : []
 
     return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_MESSAGES,
         measures: [AiSalesAgentConversationsMeasure.AiJourneyTotalMessages],
         dimensions: [],
         filters: [...journeyIdFilter, ...baseFilters],

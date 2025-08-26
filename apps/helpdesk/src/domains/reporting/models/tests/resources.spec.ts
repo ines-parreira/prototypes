@@ -1,12 +1,16 @@
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    postEnrichedReporting,
     postReporting,
     QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
     REPORTING_ENDPOINT,
+    REPORTING_ENRICHED_ENDPOINT,
 } from 'domains/reporting/models/resources'
 import {
+    EnrichmentFields,
     ReportingQuery,
     ReportingResponse,
 } from 'domains/reporting/models/types'
@@ -23,6 +27,7 @@ describe('Reporting resources', () => {
         dimensions: [],
         measures: [],
         filters: [],
+        metricName: METRIC_NAMES.TEST_METRIC,
     }
     const resFixture: ReportingResponse<[number]> = {
         query,
@@ -37,6 +42,28 @@ describe('Reporting resources', () => {
     beforeEach(() => {
         mockedAPIClient.reset()
         mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
+        mockedAPIClient
+            .onPost(REPORTING_ENRICHED_ENDPOINT)
+            .reply(200, resFixture)
+    })
+
+    describe('postEnrichedReporting', () => {
+        it('should resolve with the data on success', async () => {
+            const res = await postEnrichedReporting<
+                ReportingResponse<[number]>
+            >(query, [EnrichmentFields.TicketId])
+
+            expect(res.data.data).toEqual(resFixture.data)
+            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
+            const lastRequest = mockedAPIClient.history.post[0]
+            expect(lastRequest.url).toBe(REPORTING_ENRICHED_ENDPOINT)
+            const { metricName, ...rest } = query
+            expect(JSON.parse(lastRequest.data)).toEqual({
+                metric_name: metricName,
+                query: rest,
+                enrichment_fields: [EnrichmentFields.TicketId],
+            })
+        })
     })
 
     describe('postReporting', () => {
@@ -44,6 +71,7 @@ describe('Reporting resources', () => {
             const res = await postReporting<[number]>([query])
 
             expect(res.data.data).toEqual([1])
+            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
         })
 
         it('should reject with an error on success', async () => {

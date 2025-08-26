@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
@@ -42,6 +43,7 @@ const createGmvTimeSeriesQuery = (
             },
         ],
         timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_TIME_SERIES,
         filters: [...baseFilters, ...additionalFilters],
     }
 }
@@ -67,6 +69,7 @@ export const averageOrdersPerDayQuery = (
             },
         ],
         timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_ORDERS_TIME_SERIES,
         filters: baseFilters,
     }
 }

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -18,6 +19,7 @@ export const commentHighlightsQueryFactory = (
     timezone: string,
     surveyScores: string[],
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    metricName: METRIC_NAMES.SATISFACTION_COMMENT_HIGHLIGHTS,
     measures: [],
     dimensions: [
         TicketDimension.TicketId,

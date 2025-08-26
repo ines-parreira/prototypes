@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
@@ -12,11 +13,21 @@ export const useVoiceCallCountTrend = (
     segment?: VoiceCallSegment,
 ) =>
     useMetricTrend(
-        voiceCallCountQueryFactory(filters, timezone, segment),
+        voiceCallCountQueryFactory(
+            filters,
+            timezone,
+            segment,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_TREND,
+        ),
         voiceCallCountQueryFactory(
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             segment,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         ),
     )
 
@@ -26,11 +37,21 @@ export const fetchVoiceCallCountTrend = (
     segment?: VoiceCallSegment,
 ) =>
     fetchMetricTrend(
-        voiceCallCountQueryFactory(filters, timezone, segment),
+        voiceCallCountQueryFactory(
+            filters,
+            timezone,
+            segment,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_TREND,
+        ),
         voiceCallCountQueryFactory(
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             segment,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         ),
     )
 
@@ -43,11 +64,17 @@ export const fetchVoiceCallCountOutboundTrend = (
             filters,
             timezone,
             VoiceCallSegment.outboundCalls,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_OUTBOUND_TREND,
         ),
         voiceCallCountQueryFactory(
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             VoiceCallSegment.outboundCalls,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_OUTBOUND_TREND,
         ),
     )
 
@@ -60,10 +87,16 @@ export const fetchVoiceCallCountInboundTrend = (
             filters,
             timezone,
             VoiceCallSegment.inboundCalls,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
         ),
         voiceCallCountQueryFactory(
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
             VoiceCallSegment.inboundCalls,
+            undefined,
+            undefined,
+            METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
         ),
     )

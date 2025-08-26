@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -37,6 +38,8 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [],
                 timezone,
@@ -76,6 +79,8 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [],
                 timezone,
@@ -117,6 +122,8 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
                     TicketProductsEnrichedDimension.ProductId,
@@ -164,6 +171,8 @@ describe('ticketsWithProducts', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_PRODUCT_DRILL_DOWN,
                 measures: [TicketProductsEnrichedMeasure.TicketCount],
                 dimensions: [
                     TicketDimension.TicketId,

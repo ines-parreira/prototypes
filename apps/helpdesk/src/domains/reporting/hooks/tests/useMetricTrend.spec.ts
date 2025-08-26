@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
     selectMeasure,
@@ -30,6 +31,7 @@ const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
     measures: [TicketMessagesMeasure.MedianFirstResponseTime],
     dimensions: [],
     filters: [],
+    metricName: METRIC_NAMES.TEST_METRIC,
 }
 
 describe('useMetricTrend', () => {

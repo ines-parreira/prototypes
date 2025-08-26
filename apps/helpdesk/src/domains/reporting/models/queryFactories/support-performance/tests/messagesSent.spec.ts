@@ -1,7 +1,9 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
@@ -24,6 +26,7 @@ import {
 import {
     ReportingFilterOperator,
     ReportingGranularity,
+    ReportingQuery,
 } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -47,9 +50,11 @@ describe('messagesSentQueryFactory', () => {
     const timezone = 'someTimeZone'
 
     it('should create a query', () => {
-        const query = messagesSentQueryFactory(statsFilters, timezone)
+        const query: ReportingQuery<HelpdeskMessageCubeWithJoins> =
+            messagesSentQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT,
             measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [],
             filters: [
@@ -106,6 +111,8 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_TIME_SERIES,
             measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [],
             filters: [
@@ -228,6 +235,8 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesSentQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN,
             measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [
                 TicketDimension.TicketId,
@@ -256,6 +265,8 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesSentMetricPerAgentQueryFactory(filters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN,
             measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [TicketDimension.TicketId],
             filters: [

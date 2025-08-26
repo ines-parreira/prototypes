@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     humanResponseTimeAfterAiHandoffDrillDownQueryFactory,
     humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
@@ -29,6 +30,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF,
                 measures: [
                     'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
                 ],
@@ -85,6 +88,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_AGENT,
                 measures: [
                     'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
                 ],
@@ -144,6 +149,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                 )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_CHANNEL,
                 measures: [
                     'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
                 ],
@@ -200,6 +207,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_DRILL_DOWN,
                 measures: [
                     'TicketFirstHumanAgentResponseTime.medianFirstHumanAgentResponseTime',
                 ],

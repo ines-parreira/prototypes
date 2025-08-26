@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -39,6 +40,7 @@ describe('openTicketsTrendQueryFactory', () => {
         const query = openTicketsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS,
             measures: [TicketMeasure.TicketCount],
             dimensions: [],
             filters: [
@@ -89,6 +91,8 @@ describe('openTicketsPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -111,6 +115,8 @@ describe('openTicketsPerTicketQueryFactory', () => {
 
         expect(query).toEqual({
             ...openTicketsQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

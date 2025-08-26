@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -32,6 +33,7 @@ describe('accuracyQueryFactory', () => {
         const query = accuracyQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_ACCURACY,
             measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [],
             segments: [],
@@ -54,6 +56,7 @@ describe('accuracyQueryFactory', () => {
         const query = accuracyQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_ACCURACY,
             measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [],
             segments: [],
@@ -90,6 +93,7 @@ describe('accuracyDrillDownQueryFactory', () => {
         const query = accuracyDrillDownQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_ACCURACY_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [TicketDimension.TicketId],
@@ -117,6 +121,7 @@ describe('accuracyDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_ACCURACY_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageAccuracyScore],
             dimensions: [TicketDimension.TicketId],

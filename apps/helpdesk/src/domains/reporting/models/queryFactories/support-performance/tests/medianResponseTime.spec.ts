@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -64,6 +65,8 @@ describe('medianResponseTime', () => {
                     timezone,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_AGENT,
                 dimensions: [
                     TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
                 ],
@@ -118,6 +121,8 @@ describe('medianResponseTime', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_AGENT,
                 dimensions: [
                     TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
                 ],
@@ -180,6 +185,8 @@ describe('medianResponseTime', () => {
                     timezone,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_CHANNEL,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -232,6 +239,8 @@ describe('medianResponseTime', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_CHANNEL,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -293,6 +302,8 @@ describe('medianResponseTime', () => {
                 ),
             ).toEqual({
                 ...medianResponseTimeQueryFactory(statsFilters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
                 measures: [
                     TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
                 ],
@@ -325,6 +336,8 @@ describe('medianResponseTime', () => {
                 ),
             ).toEqual({
                 ...medianResponseTimeQueryFactory(filters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
                 measures: [
                     TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
                 ],

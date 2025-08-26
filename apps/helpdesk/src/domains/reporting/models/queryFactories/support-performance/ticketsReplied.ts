@@ -1,4 +1,5 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
@@ -71,6 +72,7 @@ export const ticketsRepliedQueryFactory = (
               order: [[HelpdeskMessageMeasure.TicketCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
 })
 
 export const ticketsRepliedTimeSeriesQueryFactory = (
@@ -80,6 +82,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
     sorting?: OrderDirection,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...ticketsRepliedQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES,
     timeDimensions: [
         {
             dimension: HelpdeskMessageDimension.SentDatetime,
@@ -106,6 +109,8 @@ export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
     const baseQuery = ticketsRepliedQueryFactory(filters, timezone, sorting)
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_TICKET_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

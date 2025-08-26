@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketSLACubeWithJoins,
     TicketSLADimension,
@@ -46,6 +47,7 @@ export const satisfiedOrBreachedTicketsQueryFactory = (
               order: [[TicketSLAMeasure.TicketCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS,
 })
 
 export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
@@ -54,6 +56,7 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS_TIME_SERIES,
     filters: [
         ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone).filters,
         {
@@ -77,6 +80,8 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN,
     dimensions: [
         TicketDimension.TicketId,
         TicketSLADimension.TicketId,
@@ -115,6 +120,7 @@ export const breachedTicketsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.SLA_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN,
     dimensions: [
         TicketDimension.TicketId,
         TicketSLADimension.TicketId,

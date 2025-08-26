@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -41,6 +42,7 @@ describe('ticketsCreatedQueryFactory', () => {
         const query = ticketsCreatedQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED,
             measures: [TicketMeasure.TicketCount],
             dimensions: [],
             filters: [
@@ -77,6 +79,7 @@ describe('ticketsCreatedQueryFactory', () => {
         const query = ticketsCreatedQueryFactory(filters, timezone, sorting)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED,
             measures: [TicketMeasure.TicketCount],
             order: [[TicketMeasure.TicketCount, OrderDirection.Asc]],
             dimensions: [],
@@ -135,6 +138,8 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES,
             measures: [TicketMeasure.TicketCount],
             order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
             dimensions: [],
@@ -176,6 +181,8 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES,
             measures: [TicketMeasure.TicketCount],
             order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
             dimensions: [],
@@ -235,6 +242,8 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -257,6 +266,8 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
 
         expect(query).toEqual({
             ...ticketsCreatedQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

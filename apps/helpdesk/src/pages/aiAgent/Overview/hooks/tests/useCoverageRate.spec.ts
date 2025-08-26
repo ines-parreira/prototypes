@@ -2,6 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -51,6 +52,7 @@ describe('useCoverageRate', () => {
             dimensions: [],
             filters: [],
             timeDimensions: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
         })
     })
 

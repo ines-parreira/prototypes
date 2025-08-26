@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
@@ -32,6 +33,7 @@ describe('surveysSentQueryFactory', () => {
         const query = surveysSentQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_SURVEYS_SENT,
             measures: [TicketSatisfactionSurveyMeasure.SentSurveysCount],
             dimensions: [],
             segments: [],
@@ -55,6 +57,7 @@ describe('surveysSentQueryFactory', () => {
         const query = surveysSentQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_SURVEYS_SENT,
             measures: [TicketSatisfactionSurveyMeasure.SentSurveysCount],
             dimensions: [],
             segments: [],
@@ -94,6 +97,8 @@ describe('surveysSentDrillDownQueryFactory', () => {
         const query = surveysSentDrillDownQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_SURVEYS_SENT_PER_TICKET_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.SentSurveysCount],
             dimensions: [TicketDimension.TicketId],
@@ -122,6 +127,8 @@ describe('surveysSentDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_SURVEYS_SENT_PER_TICKET_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.SentSurveysCount],
             dimensions: [TicketDimension.TicketId],

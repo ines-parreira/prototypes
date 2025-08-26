@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -35,6 +36,8 @@ describe('ticketCountPerIntentForProductQueryFactory', () => {
     const productId = '456'
 
     const expectedQuery = {
+        metricName:
+            METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_FOR_PRODUCT,
         measures: ['TicketProductsEnriched.ticketCount'],
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         timezone,
@@ -138,6 +141,8 @@ describe('ticketCountForIntentAndProductDrillDownQueryFactory', () => {
         )
 
         expect(actual).toEqual({
+            metricName:
+                METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_AND_PRODUCT_DRILL_DOWN,
             measures: [TicketProductsEnrichedMeasure.TicketCount],
             dimensions: [TicketDimension.TicketId],
             timezone,
@@ -229,6 +234,7 @@ describe('ticketCountForIntentQueryFactory', () => {
     const sorting = OrderDirection.Desc
 
     const baseQuery = {
+        metricName: METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT,
         measures: [TicketProductsEnrichedMeasure.TicketCount],
         dimensions: [
             TicketProductsEnrichedDimension.ProductId,
@@ -326,6 +332,8 @@ describe('ticketCountForIntentDrillDownQueryFactory', () => {
         )
 
         expect(actual).toEqual({
+            metricName:
+                METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT_DRILL_DOWN,
             measures: [TicketProductsEnrichedMeasure.TicketCount],
             dimensions: [TicketDimension.TicketId],
             timezone,

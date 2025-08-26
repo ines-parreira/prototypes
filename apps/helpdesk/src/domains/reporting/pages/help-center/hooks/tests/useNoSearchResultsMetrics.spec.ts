@@ -1,5 +1,6 @@
 import { renderHook } from '@repo/testing'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -55,6 +56,7 @@ describe('useNoSearchResultsMetrics', () => {
         )
 
         expect(mockUseMetric).toHaveBeenCalledWith({
+            metricName: METRIC_NAMES.HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT,
             dimensions: [],
             filters: [
                 {

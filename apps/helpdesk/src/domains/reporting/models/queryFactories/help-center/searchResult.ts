@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
@@ -40,6 +41,7 @@ export const searchResultTermsQueryFactory = (
             OrderDirection.Desc,
         ],
     ],
+    metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_TERMS,
 })
 
 export const noSearchResultsQueryFactory = (
@@ -62,6 +64,7 @@ export const noSearchResultsQueryFactory = (
             OrderDirection.Desc,
         ],
     ],
+    metricName: METRIC_NAMES.HELP_CENTER_NO_SEARCH_RESULT,
 })
 
 export const searchResultQueryCountFactory = (
@@ -78,6 +81,7 @@ export const searchResultQueryCountFactory = (
         ),
     ],
     segments: [HelpCenterTrackingEventSegment.SearchRequestedOnly],
+    metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_COUNT,
 })
 
 export const noSearchResultsCountQueryFactory = (
@@ -94,12 +98,14 @@ export const noSearchResultsCountQueryFactory = (
             statsFilters,
         ),
     ],
+    metricName: METRIC_NAMES.HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT,
 })
 
 export const searchResultRangeQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-) => ({
+): ReportingQuery<HelpCenterTrackingEventCube> => ({
+    metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_RANGE,
     measures: [HelpCenterTrackingEventMeasures.SearchRequestedCount],
     dimensions: [HelpCenterTrackingEventDimensions.SearchResultRange],
     timezone,
@@ -146,4 +152,5 @@ export const searchQueryClicksQueryFactory = (
         ],
     ],
     segments: [HelpCenterTrackingEventSegment.SearchResultClickedOnly],
+    metricName: METRIC_NAMES.HELP_CENTER_SEARCH_ARTICLES_CLICKED,
 })

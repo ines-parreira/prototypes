@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
@@ -47,6 +48,7 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
               order: [[VoiceEventsByAgentMeasure.VoiceEventsCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
 })
 
 export const declinedVoiceCallsCountQueryFactory = (
@@ -60,6 +62,7 @@ export const declinedVoiceCallsCountQueryFactory = (
         VoiceEventsByAgentSegment.declinedCalls,
     ),
     filters: voiceEventsByAgentDefaultFilters(filters),
+    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
 })
 
 export const transferredInboundVoiceCallsCountPerAgentQueryFactory = (
@@ -67,6 +70,7 @@ export const transferredInboundVoiceCallsCountPerAgentQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<VoiceEventsByAgentCube> => ({
+    metricName: METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [VoiceEventsByAgentDimension.AgentId],
     timezone,
@@ -85,6 +89,7 @@ export const transferredInboundVoiceCallsCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ) => ({
+    metricName: METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT,
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [],
     timezone,

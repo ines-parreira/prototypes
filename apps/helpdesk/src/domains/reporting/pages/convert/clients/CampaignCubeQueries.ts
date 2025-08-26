@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
 import { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/ConvertOrderEventsCube'
 import { FilterOperatorMap } from 'domains/reporting/models/queryFactories/utils'
@@ -138,6 +139,7 @@ export const getCampaignEventsPerformanceData = ({
                 campaignsOperator,
             }),
             segments: [EventsSegment.campaignEventsOnly],
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
         },
     ]
 }
@@ -171,6 +173,7 @@ export const getCampaignOrderPerformanceData = ({
                 campaignIds,
                 campaignsOperator,
             }),
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE,
         },
     ]
 }
@@ -215,6 +218,7 @@ export const getCampaignOrderPerformanceDrillDownData = ({
                 sorting || OrderDirection.Desc,
             ],
         ],
+        metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN,
     }
 }
 
@@ -242,6 +246,7 @@ export const getCampaignEventsOrdersPerformanceData = ({
                 campaignIds,
                 campaignsOperator,
             }),
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE,
         },
     ]
 }
@@ -270,6 +275,7 @@ export const getCampaignEventsTotalsData = ({
                 campaignIds,
                 campaignsOperator,
             }),
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_TOTALS,
         },
     ]
 }
@@ -298,6 +304,7 @@ export const getCampaignOrderTotalsData = ({
                 campaignIds,
                 campaignsOperator,
             }),
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_TOTALS,
         },
     ]
 }
@@ -319,6 +326,7 @@ export const getStoreRevenueTotalData = ({
                 cubeName: Cube.orderConversion,
                 shopName,
             }),
+            metricName: METRIC_NAMES.CONVERT_STORE_REVENUE_TOTAL,
         },
     ]
 }
@@ -351,6 +359,7 @@ export const getRevenueGraphData = ({
                 cubeName: Cube.orderConversion,
                 shopName,
             }),
+            metricName: METRIC_NAMES.CONVERT_REVENUE_GRAPH,
         },
     ]
 }
@@ -387,6 +396,7 @@ export const getRevenueShareGraphData = ({
                 campaignIds,
                 shopName,
             }),
+            metricName: METRIC_NAMES.CONVERT_REVENUE_SHARE_GRAPH,
         },
     ]
 }
@@ -429,6 +439,7 @@ export const getCampaignsPerformanceGraphData = ({
                 campaignIds,
                 shopName,
             }),
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGNS_PERFORMANCE_GRAPH,
         },
     ]
 }
@@ -457,6 +468,7 @@ export const getCampaignABTestEvents = ({
                     Cube.campaignOrderEvents,
                 ),
             ] as CubeFilter[],
+            metricName: METRIC_NAMES.CONVERT_CAMPAIGN_AB_TEST_EVENTS,
         },
     ]
 }
@@ -492,6 +504,7 @@ export const campaignImpressionTimeSeriesQueryFactory = ({
             [CampaignOrderEventsDimension.createdDatatime, OrderDirection.Asc],
         ],
         timezone: timezone,
+        metricName: METRIC_NAMES.CONVERT_CAMPAIGN_IMPRESSION_TIME_SERIES,
     }
 }
 
@@ -524,5 +537,6 @@ export const campaignOrdersTimeSeriesQueryFactory = ({
         }),
         order: [[OrderConversionDimension.createdDatatime, OrderDirection.Asc]],
         timezone: timezone,
+        metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDERS_TIME_SERIES,
     }
 }

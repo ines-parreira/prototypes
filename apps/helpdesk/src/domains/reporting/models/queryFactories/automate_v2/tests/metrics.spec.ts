@@ -1,4 +1,5 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
@@ -32,6 +33,8 @@ describe('Automate metrics', () => {
                     aiAgentUserId,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT,
                 dimensions: [],
                 filters: [
                     {
@@ -67,6 +70,8 @@ describe('Automate metrics', () => {
                     undefined,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT,
                 dimensions: [],
                 filters: [
                     {
@@ -100,6 +105,8 @@ describe('Automate metrics', () => {
                     aiAgentUserId,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_RESOLVED_BY_AI_AGENT,
                 dimensions: [],
                 filters: [
                     {
@@ -135,6 +142,8 @@ describe('Automate metrics', () => {
                     undefined,
                 ),
             ).toEqual({
+                metricName:
+                    METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_RESOLVED_BY_AI_AGENT,
                 dimensions: [],
                 filters: [
                     {
@@ -170,6 +179,7 @@ describe('Automate metrics', () => {
                 timezone,
             )
             expect(result).toEqual({
+                metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
                 dimensions: [],
                 filters: [
                     {

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     WorkflowDatasetDimension,
     WorkflowDatasetFilterMember,
@@ -23,6 +24,7 @@ describe('Workflow metrics', () => {
         it('should count events by workflow id and group by event type', () => {
             expect(workflowDatasetCountQueryFactory(filters, timezone)).toEqual(
                 {
+                    metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_COUNT,
                     dimensions: [WorkflowDatasetDimension.EventType],
                     filters: [
                         {
@@ -51,6 +53,7 @@ describe('Workflow metrics', () => {
     describe('workflowDatasetStepQueryFactory', () => {
         it('should get dropoff for each step by workflow id', () => {
             expect(workflowDatasetStepQueryFactory(filters, timezone)).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_STEP,
                 dimensions: [WorkflowDatasetDimension.FlowStepId],
                 filters: [
                     {
@@ -80,6 +83,7 @@ describe('Workflow metrics', () => {
             expect(
                 workflowDatasetStepCountQueryFactory(filters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_WORKFLOW_DATASET_STEP_COUNT,
                 dimensions: [
                     WorkflowDatasetDimension.EventType,
                     WorkflowDatasetDimension.FlowStepId,

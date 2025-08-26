@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES, MetricName } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
     VoiceCallCube,
@@ -166,6 +167,7 @@ export const connectedCallsListQueryFactory = (
     timezone,
     filters: [...voiceCallDefaultFilters(filters), connectedCallsFilter],
     order: [[order, sorting]],
+    metricName: METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
 })
 
 export const liveDashboardConnectedCallsListQueryFactory = (
@@ -198,6 +200,7 @@ export const waitingTimeCallsListQueryFactory = (
     filters: [...voiceCallDefaultFilters(filters), waitTimeSetFilter],
     segments: withStatisticsDefaultSegment(segment, includeLiveData),
     order: [[order, sorting]],
+    metricName: METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST,
 })
 
 export const liveDashboardWaitingTimeCallsListQueryFactory = (
@@ -227,7 +230,9 @@ export const voiceCallCountQueryFactory = (
     segment?: VoiceCallSegment,
     statusFilter?: VoiceCallDisplayStatus[],
     includeLiveData: boolean = false,
+    metricName: MetricName = METRIC_NAMES.VOICE_CALL_COUNT,
 ) => ({
+    metricName,
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [],
     timezone,
@@ -251,6 +256,7 @@ export const voiceCallCountPerFilteringAgentQueryFactory = (
               order: [[VoiceCallMeasure.VoiceCallCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
 })
 
 export const voiceCallCountPerAgentQueryFactory = (
@@ -263,6 +269,7 @@ export const voiceCallCountPerAgentQueryFactory = (
     timezone,
     segments: withStatisticsDefaultSegment(segment),
     filters: voiceCallDefaultFilters(filters),
+    metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_AGENT,
 })
 
 export const voiceCallListQueryFactory = (
@@ -284,6 +291,7 @@ export const voiceCallListQueryFactory = (
     order: [[order, sorting]],
     limit: limit,
     offset: offset,
+    metricName: METRIC_NAMES.VOICE_CALL_LIST,
 })
 
 export const liveDashBoardVoiceCallListQueryFactory = (
@@ -316,7 +324,8 @@ export const voiceCallAverageTalkTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     includeLiveData: boolean = false,
-) => ({
+): ReportingQuery<VoiceCallCube> => ({
+    metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [],
     timezone,
@@ -340,13 +349,15 @@ export const voiceCallAverageTalkTimePerAgentQueryFactory = (
               order: [[VoiceCallMeasure.VoiceCallAverageTalkTime, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT,
 })
 
 export const voiceCallAverageWaitTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     includeLiveData: boolean = false,
-) => ({
+): ReportingQuery<VoiceCallCube> => ({
+    metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
     measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
     dimensions: [],
     timezone,

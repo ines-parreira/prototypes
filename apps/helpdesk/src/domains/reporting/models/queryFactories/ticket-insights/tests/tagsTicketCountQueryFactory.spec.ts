@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -26,6 +27,7 @@ describe('tagsTicketCountQueryFactory', () => {
         const query = tagsTicketCountQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
             measures: [TicketTagsEnrichedMeasure.TicketCount],
             dimensions: [TicketTagsEnrichedDimension.TagId],
             timezone,
@@ -48,6 +50,7 @@ describe('tagsTicketCountQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
             measures: [TicketTagsEnrichedMeasure.TicketCount],
             dimensions: [TicketTagsEnrichedDimension.TagId],
             timezone,

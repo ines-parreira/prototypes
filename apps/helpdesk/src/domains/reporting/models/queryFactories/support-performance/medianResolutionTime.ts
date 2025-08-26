@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -45,6 +46,7 @@ export const medianResolutionTimeQueryFactory = (
               order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
 })
 
 export const medianResolutionTimeMetricPerAgentQueryFactory =
@@ -65,6 +67,8 @@ export const resolutionTimeMetricPerTicketDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...medianResolutionTimeQueryFactory(filters, timezone),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [
         TicketDimension.TicketId,

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AutomatedTicketsCube,
     AutomatedTicketsFilterMember,
@@ -71,6 +72,8 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
     }
 
     return {
+        metricName:
+            METRIC_NAMES.AI_AGENT_CUSTOMER_SATISFACTION_PER_INTENT_LEVEL,
         measures: [
             TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
             TicketSatisfactionSurveyMeasure.AvgSurveyScore,
@@ -116,6 +119,7 @@ export const recommendedResourceQueryFactory = (
     ticketIds: string[],
     sorting?: OrderDirection,
 ): ReportingQuery<RecommendedResourcesCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
     measures: [RecommendedResourcesMeasure.NumRecommendedResources],
     dimensions: [
         RecommendedResourcesDimension.TicketId,
@@ -146,6 +150,7 @@ export const aiAgentTicketsWithIntentQueryFactory = (
     intentId?: string,
 ): ReportingQuery<TicketCubeWithJoins> => {
     return {
+        metricName: METRIC_NAMES.AI_AGENT_TICKETS_WITH_INTENT,
         measures: [],
         dimensions: [TicketDimension.TicketId, TicketDimension.CustomField],
         timezone,
@@ -213,6 +218,7 @@ export const aiAgentTouchedTicketTotalCountQueryFactory = ({
     ]
 
     return {
+        metricName: METRIC_NAMES.AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT,
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timezone,
@@ -266,6 +272,7 @@ export const allTicketsForAiAgentTotalCountQueryFactory = ({
     integrationIds?: string[]
 }): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     return {
+        metricName: METRIC_NAMES.AI_AGENT_ALL_TICKETS_FOR_AI_AGENT_TOTAL_COUNT,
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
         segments: [],
@@ -330,6 +337,7 @@ export const aiAgentTouchedTicketQueryFactory = ({
     ]
 
     return {
+        metricName: METRIC_NAMES.AI_AGENT_TOUCHED_TICKET,
         measures: [],
         dimensions: [TicketDimension.TicketId],
         timezone,
@@ -387,6 +395,7 @@ export const AiAgentAutomatedInteractionsTicketsQueryFactory = ({
     const customFieldsValuesToMatch = [`${outcomeFieldId}::`]
 
     return {
+        metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS,
         measures: [],
         dimensions: [TicketDimension.TicketId],
         timezone,
@@ -436,6 +445,7 @@ export const aiAgentAutomatedTicketCountQueryFactory = ({
     ticketIds?: string[]
     sorting?: OrderDirection
 }): ReportingQuery<AutomatedTicketsCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_TICKET_COUNT,
     measures: [AutomatedTicketsMeasure.NumAutomatedTickets],
     dimensions: [],
     timezone,

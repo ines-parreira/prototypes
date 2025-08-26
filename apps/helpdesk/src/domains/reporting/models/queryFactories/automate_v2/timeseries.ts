@@ -1,4 +1,5 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AIAgentAutomatedInteractionsCube,
     AIAgentInteractionsBySkillDatasetDimension,
@@ -55,6 +56,7 @@ export const interactionsTimeSeriesQueryFactory = (
         ...automationDatasetDefaultFilters(filters),
         ...automationDatasetAdditionalFilters(filters),
     ],
+    metricName: METRIC_NAMES.AUTOMATE_INTERACTIONS,
 })
 
 export const interactionsByEventTypeTimeSeriesQueryFactory = (
@@ -77,6 +79,7 @@ export const interactionsByEventTypeTimeSeriesQueryFactory = (
         ...automationDatasetDefaultFilters(filters),
         ...automationDatasetAdditionalFilters(filters),
     ],
+    metricName: METRIC_NAMES.AUTOMATE_INTERACTIONS_BY_EVENT_TYPE,
 })
 
 export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
@@ -107,6 +110,8 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
               ]
             : []),
     ],
+    metricName:
+        METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT_TIME_SERIES,
 })
 
 export const AIAgentInteractionsFiltersMembers = {
@@ -137,6 +142,7 @@ export const AIAgentInteractionsBySkillTimeSeriesQueryFactory = (
                 filters,
             ),
         ],
+        metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
     }
 }
 
@@ -166,4 +172,5 @@ export const articleRecommendedInteractionsTimeSeriesQueryFactory = (
             values: [AutomateEventType.ARTICLE_RECOMMENDATION_STARTED],
         },
     ],
+    metricName: METRIC_NAMES.AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS,
 })

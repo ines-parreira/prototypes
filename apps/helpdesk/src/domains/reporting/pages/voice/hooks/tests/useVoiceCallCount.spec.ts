@@ -2,6 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { VoiceCallMeasure } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
@@ -28,7 +29,16 @@ describe('useVoiceCallCount', () => {
         const results = renderHook(() => useVoiceCallCount(statsFilters, 'UTC'))
 
         expect(usePostReportingMock.mock.calls[0]).toEqual([
-            [voiceCallCountQueryFactory(statsFilters, 'UTC', undefined)],
+            [
+                voiceCallCountQueryFactory(
+                    statsFilters,
+                    'UTC',
+                    undefined,
+                    undefined,
+                    undefined,
+                    METRIC_NAMES.VOICE_CALL_COUNT_TABLE,
+                ),
+            ],
             { select: expect.any(Function) },
         ])
         expect(results.result.current).toEqual({

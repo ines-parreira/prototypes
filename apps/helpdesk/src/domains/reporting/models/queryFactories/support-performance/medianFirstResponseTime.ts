@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -50,6 +51,7 @@ export const medianFirstResponseTimeQueryFactory = (
               order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
 })
 
 export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
@@ -58,6 +60,8 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianFirstResponseTimeQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
     dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
 })
 
@@ -67,6 +71,8 @@ export const medianFirstResponseTimeMetricPerChannelQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianFirstResponseTimeQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
     dimensions: [CHANNEL_DIMENSION],
 })
 
@@ -81,6 +87,8 @@ export const firstResponseTimeMetricPerTicketDrillDownQueryFactory = (
     )
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

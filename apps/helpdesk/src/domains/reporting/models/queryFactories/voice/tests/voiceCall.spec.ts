@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
     VoiceCallDimension,
@@ -148,6 +149,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT,
                 measures,
                 dimensions,
                 filters: [
@@ -237,6 +239,7 @@ describe('voice queries factories', () => {
                 )
 
                 expect(query).toEqual({
+                    metricName: METRIC_NAMES.VOICE_CALL_LIST,
                     measures: [VoiceCallMeasure.VoiceCallCount],
                     dimensions: voiceCallListDimensions,
                     filters: [
@@ -275,6 +278,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_LIST,
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 dimensions: voiceCallListDimensions,
                 filters: [
@@ -315,6 +319,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
                 measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
                 dimensions: [],
                 filters: [
@@ -357,6 +362,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
                 measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
                 dimensions: [],
                 filters: [
@@ -494,6 +500,7 @@ describe('voice queries factories', () => {
                 segment,
             )
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
                 dimensions: [VoiceCallDimension.FilteringAgentId],
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 segments: expectedSegments,
@@ -535,6 +542,7 @@ describe('voice queries factories', () => {
                 segment,
             )
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_AGENT,
                 dimensions: [VoiceCallDimension.AgentId],
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 segments: expectedSegments,
@@ -576,6 +584,7 @@ describe('voice queries factories', () => {
                 segment,
             )
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT,
                 dimensions: [VoiceCallDimension.AgentId],
                 measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
                 segments: expectedSegments,
@@ -600,6 +609,7 @@ describe('voice queries factories', () => {
         const query = connectedCallsListQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
             measures: [VoiceCallMeasure.VoiceCallCount],
             dimensions: voiceCallListDimensions,
             timezone,
@@ -645,6 +655,7 @@ describe('voice queries factories', () => {
                 segment,
             )
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST,
                 dimensions: voiceCallListDimensions,
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 timezone,
@@ -688,6 +699,7 @@ describe('voice queries factories', () => {
                 liveDashboardConnectedCallsListQueryFactory(statsFilters)
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 dimensions: voiceCallListDimensions,
                 timezone: 'UTC',
@@ -749,6 +761,7 @@ describe('voice queries factories', () => {
                 liveDashboardWaitingTimeCallsListQueryFactory(statsFilters)
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST,
                 dimensions: voiceCallListDimensions,
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 timezone: 'UTC',
@@ -813,6 +826,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_LIST,
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 dimensions: voiceCallListDimensions,
                 timezone: 'UTC',

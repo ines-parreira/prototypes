@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
@@ -43,6 +44,7 @@ describe('averageScoreQueryFactory', () => {
         const query = averageScoreQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_AVERAGE_SCORE,
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [],
             segments: [],
@@ -66,6 +68,7 @@ describe('averageScoreQueryFactory', () => {
         const query = averageScoreQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_AVERAGE_SCORE,
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [],
             segments: [],
@@ -103,6 +106,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
         const query = averageScoreDrillDownQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_AVERAGE_SCORE_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [TicketDimension.TicketId],
@@ -131,6 +135,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_AVERAGE_SCORE_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
             dimensions: [TicketDimension.TicketId],

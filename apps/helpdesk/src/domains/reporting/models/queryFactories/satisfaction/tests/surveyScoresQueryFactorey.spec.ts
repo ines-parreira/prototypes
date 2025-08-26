@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -28,6 +29,7 @@ describe('surveyScoresQueryFactory', () => {
         const query = surveyScoresQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_SURVEY_SCORES,
             measures: [TicketSatisfactionSurveyMeasure.ScoredSurveysCount],
             dimensions: [TicketSatisfactionSurveyDimension.SurveyScore],
             segments: [],

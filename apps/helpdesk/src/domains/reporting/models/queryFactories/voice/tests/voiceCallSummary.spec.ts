@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallSummaryCube,
     VoiceCallSummaryFiltersMembers,
@@ -72,6 +73,7 @@ describe('voiceCallSummary queries factories', () => {
                 dimensions: [],
                 timezone,
                 filters: mockFilters as any,
+                metricName: METRIC_NAMES.VOICE_CALL_SUMMARY,
             })
 
             expect(voiceCallDefaultFiltersMock).toHaveBeenCalledWith(

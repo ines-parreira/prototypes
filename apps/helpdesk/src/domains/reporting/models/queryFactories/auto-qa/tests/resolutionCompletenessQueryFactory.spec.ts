@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -32,6 +33,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         const query = resolutionCompletenessQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS,
             measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [],
             segments: [],
@@ -58,6 +60,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS,
             measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [],
             segments: [],
@@ -102,6 +105,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [TicketDimension.TicketId],
@@ -129,6 +133,7 @@ describe('resolutionCompletenessDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageResolutionCompletenessScore],
             dimensions: [TicketDimension.TicketId],

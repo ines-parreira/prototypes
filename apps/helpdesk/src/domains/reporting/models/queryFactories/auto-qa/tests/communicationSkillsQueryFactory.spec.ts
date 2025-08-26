@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -32,6 +33,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         const query = communicationSkillsQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS,
             measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [],
             segments: [],
@@ -58,6 +60,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS,
             measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [],
             segments: [],
@@ -99,6 +102,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [TicketDimension.TicketId],
@@ -126,6 +130,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [TicketQAScoreMeasure.AverageCommunicationSkillsScore],
             dimensions: [TicketDimension.TicketId],

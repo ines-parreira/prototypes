@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -47,6 +48,8 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 abVariant,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN,
             dimensions: [
                 OrderConversionDimension.customerId,
                 OrderConversionDimension.orderId,
@@ -103,6 +106,8 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 sorting,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN,
             dimensions: [
                 OrderConversionDimension.customerId,
                 OrderConversionDimension.orderId,

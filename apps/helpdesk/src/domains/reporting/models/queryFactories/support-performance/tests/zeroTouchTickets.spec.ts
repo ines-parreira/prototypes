@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMeasure,
@@ -13,7 +14,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     zeroTouchTicketsPerAgentQueryFactory,
-    zeroTouchTicketsPerTicketQueryFactory,
+    zeroTouchTicketsPerTicketDrillDownQueryFactory,
     zeroTouchTicketsQueryFactory,
     zeroTouchTicketsTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
@@ -64,6 +65,7 @@ describe('zeroTouchTickets', () => {
             expect(
                 zeroTouchTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -137,6 +139,7 @@ describe('zeroTouchTickets', () => {
                     sorting,
                 ),
             ).toEqual({
+                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -210,9 +213,14 @@ describe('zeroTouchTickets', () => {
     describe('zeroTouchTicketsPerTicketQueryFactory', () => {
         it('should build a query', () => {
             expect(
-                zeroTouchTicketsPerTicketQueryFactory(statsFilters, timezone),
+                zeroTouchTicketsPerTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
             ).toEqual({
                 ...zeroTouchTicketsQueryFactory(statsFilters, timezone),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
@@ -232,13 +240,15 @@ describe('zeroTouchTickets', () => {
             const filters = { ...statsFilters, agents }
 
             expect(
-                zeroTouchTicketsPerTicketQueryFactory(
+                zeroTouchTicketsPerTicketDrillDownQueryFactory(
                     filters,
                     timezone,
                     sorting,
                 ),
             ).toEqual({
                 ...zeroTouchTicketsQueryFactory(filters, timezone, sorting),
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     TicketDimension.TicketId,
@@ -276,6 +286,8 @@ describe('zeroTouchTicketsTimeSeriesQueryFactory', () => {
 
         expect(query).toEqual({
             ...zeroTouchTicketsQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES,
             timeDimensions: [
                 {
                     dateRange: getFilterDateRange(statsFilters.period),

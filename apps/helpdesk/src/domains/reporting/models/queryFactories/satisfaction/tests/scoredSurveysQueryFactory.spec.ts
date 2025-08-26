@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { scoredSurveysQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/scoredSurveysQueryFactory'
@@ -28,6 +29,7 @@ describe('scoredSurveysQueryFactory', () => {
         const query = scoredSurveysQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_SCORED_SURVEYS,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -64,6 +66,7 @@ describe('scoredSurveysQueryFactory', () => {
         const query = scoredSurveysQueryFactory(statsFilters, timezone, limit)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SATISFACTION_SCORED_SURVEYS,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

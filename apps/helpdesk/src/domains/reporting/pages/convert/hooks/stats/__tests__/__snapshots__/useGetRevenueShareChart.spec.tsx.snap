@@ -34,6 +34,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "measures": [
           "OrderConversion.campaignSales",
         ],
+        "metricName": "convert-revenue-share-graph",
         "order": [
           [
             "OrderConversion.createdDatetime",
@@ -82,6 +83,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "measures": [
           "OrderConversion.gmv",
         ],
+        "metricName": "convert-revenue-graph",
         "order": [
           [
             "OrderConversion.createdDatetime",

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -78,6 +79,8 @@ export const sentimentsTicketCountPerProductQueryFactory = (
         timezone,
         filters,
         order: sorting ? [[TICKET_COUNT_MEASURE, sorting]] : undefined,
+        metricName:
+            METRIC_NAMES.VOICE_OF_CUSTOMER_SENTIMENTS_TICKET_COUNT_PER_PRODUCT,
     }
 }
 

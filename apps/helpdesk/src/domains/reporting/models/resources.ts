@@ -41,7 +41,7 @@ const getReportQueryErrorHandler =
         throw error
     }
 
-export const post =
+const post =
     (path: string) =>
     async <TData>(payload: unknown) => {
         return await client.post<ReportingResponse<TData>>(path, payload, {
@@ -49,7 +49,7 @@ export const post =
         })
     }
 
-export const enrichedPost =
+const enrichedPost =
     (path: string) =>
     async <TData>(payload: unknown) => {
         return await client.post<TData>(path, payload, {
@@ -59,17 +59,22 @@ export const enrichedPost =
 
 export const postReporting = <TData, TCube extends Cube = Cube>(
     queries: ReportingParams<TCube>,
-) =>
-    post(REPORTING_ENDPOINT)<TData>({
-        query: queries,
+) => {
+    const { metricName, ...query } = queries[0]
+    return post(REPORTING_ENDPOINT)<TData>({
+        query: [query],
+        metric_name: metricName,
     }).catch(getReportQueryErrorHandler({ query: JSON.stringify(queries) }))
+}
 
 export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
     query: ReportingQuery<TCube>,
     enrichmentFields: EnrichmentFields[],
-) =>
-    enrichedPost(REPORTING_ENRICHED_ENDPOINT)<TData>({
-        query,
+) => {
+    const { metricName, ...baseQuery } = query
+    return enrichedPost(REPORTING_ENRICHED_ENDPOINT)<TData>({
+        query: baseQuery,
+        metric_name: metricName,
         enrichment_fields: enrichmentFields,
     }).catch(
         getReportQueryErrorHandler({
@@ -77,3 +82,4 @@ export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
             enrichmentFields: JSON.stringify(enrichmentFields),
         }),
     )
+}

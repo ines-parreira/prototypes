@@ -2,6 +2,7 @@ import moment from 'moment/moment'
 
 import { QueryFiltersItemOperator } from '@gorgias/helpdesk-types'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketSLADimension,
     TicketSLAMeasure,
@@ -49,6 +50,8 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN,
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [TicketSLAMeasure.TicketCount],
                 filters: [
@@ -128,6 +131,8 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             )
 
             expect(query).toEqual({
+                metricName:
+                    METRIC_NAMES.SLA_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN,
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [TicketSLAMeasure.TicketCount],
                 filters: [

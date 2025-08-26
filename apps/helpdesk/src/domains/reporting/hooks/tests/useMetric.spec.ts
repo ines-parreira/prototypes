@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
 import {
     TicketMessagesCube,
@@ -26,6 +27,7 @@ describe('Metric', () => {
         measures: [TicketMessagesMeasure.MedianFirstResponseTime],
         dimensions: [],
         filters: [],
+        metricName: METRIC_NAMES.TEST_METRIC,
     }
 
     describe('useMetric', () => {
@@ -128,6 +130,7 @@ describe('Metric', () => {
             measures: [TicketMessagesMeasure.MedianFirstResponseTime],
             dimensions: [],
             filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
         }
         const rawResponseValue = 12
         const rawResponse = [

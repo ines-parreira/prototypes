@@ -2,6 +2,7 @@ import { UseQueryResult } from '@tanstack/react-query'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
@@ -63,6 +64,7 @@ export const useFetchInfluencedOrders = ({
 
     const query: ReportingQuery<AiSalesAgentOrdersCube> = isQueryEnabled
         ? {
+              metricName: METRIC_NAMES.AI_AGENT_INFLUENCED_ORDERS,
               measures: [],
               dimensions: [
                   AiSalesAgentOrdersDimension.OrderId,
@@ -108,7 +110,12 @@ export const useFetchInfluencedOrders = ({
               ].filter((value): value is NonNullable<typeof value> => !!value),
               limit: 100,
           }
-        : { measures: [], dimensions: [], filters: [] }
+        : {
+              measures: [],
+              dimensions: [],
+              filters: [],
+              metricName: METRIC_NAMES.AI_AGENT_INFLUENCED_ORDERS,
+          }
 
     return usePostReporting<
         InfluencedOrderDataFromCube[],

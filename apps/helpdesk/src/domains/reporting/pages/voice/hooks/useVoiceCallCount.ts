@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallMeasure,
     VoiceCallSegment,
@@ -18,9 +19,21 @@ export const useVoiceCallCount = (
     const { data } = usePostReporting<
         { [VoiceCallMeasure.VoiceCallCount]: string }[],
         { [VoiceCallMeasure.VoiceCallCount]: string }[]
-    >([voiceCallCountQueryFactory(filters, timezone, segment, statusFilter)], {
-        select: (results) => results.data?.data,
-    })
+    >(
+        [
+            voiceCallCountQueryFactory(
+                filters,
+                timezone,
+                segment,
+                statusFilter,
+                undefined,
+                METRIC_NAMES.VOICE_CALL_COUNT_TABLE,
+            ),
+        ],
+        {
+            select: (results) => results.data?.data,
+        },
+    )
     const total = data ? parseInt(data[0][VoiceCallMeasure.VoiceCallCount]) : 0
 
     return {

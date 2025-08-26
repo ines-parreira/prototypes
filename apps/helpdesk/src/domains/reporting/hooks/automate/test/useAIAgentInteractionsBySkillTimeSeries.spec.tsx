@@ -4,6 +4,7 @@ import {
     fetchAIAgentInteractionsDatasetBySkillTimeSeries,
     useAIAgentInteractionsBySkillTimeSeries,
 } from 'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
@@ -85,6 +86,7 @@ describe('useAIAgentInteractionsBySkillTimeSeries', () => {
         )
 
         expect(result).toEqual({
+            metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
             dimensions: [
                 AIAgentInteractionsBySkillDatasetDimension.BillableType,
             ],

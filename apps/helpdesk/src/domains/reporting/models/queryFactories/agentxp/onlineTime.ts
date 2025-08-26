@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
@@ -17,6 +18,7 @@ export const onlineTimeQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<AgentTimeTrackingCube> => ({
+    metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
     measures: [AgentTimeTrackingMeasure.OnlineTime],
     dimensions: [],
     timezone,

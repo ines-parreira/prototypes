@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
@@ -76,6 +77,7 @@ export const averageOrderValueQueryFactory = (
             ),
         ],
         timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_AVERAGE_ORDER_VALUE,
     }
 }
 
@@ -97,6 +99,7 @@ export const averageOrderValuePreviewQueryFactory = (
             ),
         ],
         timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_AVERAGE_ORDER_VALUE_INFLUENCED,
     }
 }
 
@@ -113,6 +116,7 @@ export const gmvUSDQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_USD,
 })
 
 export const gmvUSDInfluencedQueryFactory = (
@@ -134,6 +138,7 @@ export const gmvUSDInfluencedQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_USD_INFLUENCED,
 })
 
 export const gmvInfluencedQueryFactory = (
@@ -165,6 +170,7 @@ export const gmvInfluencedQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
 })
 
 export const gmvQueryFactory = (
@@ -180,6 +186,7 @@ export const gmvQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GMV,
 })
 
 export const totalNumberOfOrderQueryFactory = (
@@ -211,6 +218,7 @@ export const totalNumberOfOrderQueryFactory = (
             ...baseFilters,
         ],
         timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER,
     }
 }
 
@@ -220,6 +228,7 @@ export const totalNumberOfOrderDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     ...totalNumberOfOrderQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER_DRILL_DOWN,
     dimensions: [
         AiSalesAgentOrdersDimension.TicketId,
         AiSalesAgentOrdersDimension.OrderId,
@@ -244,6 +253,8 @@ export const totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory =
         sorting?: OrderDirection,
     ): ReportingQuery<AiSalesAgentConversationsCube> => ({
         ...totalNumberOfSalesConversationsQueryFactory(filters, timezone),
+        metricName:
+            METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN,
         dimensions: [
             AiSalesAgentConversationsDimension.TicketId,
             AiSalesAgentConversationsDimension.Outcome,
@@ -280,6 +291,7 @@ export const totalNumberOfSalesConversationsQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS,
 })
 
 export const totalNumberOfAutomatedSalesQueryFactory = (
@@ -306,6 +318,7 @@ export const totalNumberOfAutomatedSalesQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES,
 })
 
 export const totalNumberOfAutomatedSalesDrillDownQueryFactory = (
@@ -314,6 +327,8 @@ export const totalNumberOfAutomatedSalesDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...totalNumberOfAutomatedSalesQueryFactory(filters, timezone),
+    metricName:
+        METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
     measures: [],
     dimensions: [AiSalesAgentConversationsDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -360,6 +375,7 @@ export const totalNumberProductRecommendationsQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS,
 })
 
 export const totalNumberProductRecommendationsDrillDownQueryFactory = (
@@ -373,6 +389,8 @@ export const totalNumberProductRecommendationsDrillDownQueryFactory = (
         timezone,
         productId,
     ),
+    metricName:
+        METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN,
     dimensions: [
         AiSalesAgentConversationsDimension.TicketId,
         AiSalesAgentConversationsDimension.ProductIds,
@@ -400,6 +418,7 @@ export const totalProductClicksQueryFactory = (
         ...clicksDefaultFilters(filters),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_UNIQUE_CLICKS,
 })
 
 export const productClicksQueryFactory = (
@@ -417,6 +436,7 @@ export const productClicksQueryFactory = (
         ...clicksDefaultFilters(filters),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS,
 })
 
 export const totalProductBoughtQueryFactory = (
@@ -442,6 +462,7 @@ export const totalProductBoughtQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT,
 })
 
 export const productBoughtQueryFactory = (
@@ -467,6 +488,7 @@ export const productBoughtQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_BOUGHT,
 })
 
 export const productRecommendationsQueryFactory = (
@@ -495,6 +517,7 @@ export const productRecommendationsQueryFactory = (
     order: [[AiSalesAgentConversationsMeasure.Count, OrderDirection.Desc]],
     limit: 25,
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_PRODUCT_RECOMMENDATIONS_COUNT,
 })
 
 export const topProductRecommendationsQueryFactory = (
@@ -513,6 +536,7 @@ export const topProductRecommendationsQueryFactory = (
     order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
     limit: 10, // fetch more just in case
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_TOP_PRODUCT_RECOMMENDATIONS,
 })
 
 export const topLocationsRecommendationsQueryFactory = (
@@ -530,6 +554,7 @@ export const topLocationsRecommendationsQueryFactory = (
         ],
         order: [[AiSalesAgentOrdersMeasure.Count, OrderDirection.Desc]],
         limit: 4,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_TOP_LOCATIONS,
     }
 }
 
@@ -557,6 +582,7 @@ export const discountCodesOfferedQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED,
 })
 
 export const discountCodesOfferedDrillDownQueryFactory = (
@@ -565,6 +591,7 @@ export const discountCodesOfferedDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...discountCodesOfferedQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN,
     dimensions: [AiSalesAgentConversationsDimension.TicketId],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
@@ -600,6 +627,7 @@ export const discountCodesAppliedQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_APPLIED,
 })
 
 export const discountCodesAverageQueryFactory = (
@@ -626,6 +654,7 @@ export const discountCodesAverageQueryFactory = (
         ),
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_AVERAGE,
 })
 
 export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
@@ -642,12 +671,14 @@ export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
         ...baseAISalesAgentConversationsFilters,
     ],
     timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY,
 })
 
 export const repeatRateQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrderCustomersCube> => ({
+    metricName: METRIC_NAMES.AI_SALES_AGENT_REPEAT_RATE,
     measures: [
         AiSalesAgentOrderCustomersMeasure.Count,
         AiSalesAgentOrderCustomersMeasure.RecurringCount,
@@ -667,6 +698,7 @@ export const averageDiscountPercentageQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    metricName: METRIC_NAMES.AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE,
     measures: [AiSalesAgentOrdersMeasure.AverageDiscountPercentage],
     dimensions: [],
     filters: [

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -63,6 +64,7 @@ export const messagesPerTicketQueryFactory = (
             TicketSegment.ClosedTickets,
             TicketMessagesSegment.ConversationStarted,
         ],
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET,
     }
 }
 
@@ -74,6 +76,8 @@ export const messagesPerTicketDrillDownQueryFactory = (
     const baseQuery = messagesPerTicketQueryFactory(filters, timezone)
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

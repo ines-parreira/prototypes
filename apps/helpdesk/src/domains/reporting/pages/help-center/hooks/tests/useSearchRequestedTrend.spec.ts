@@ -1,5 +1,6 @@
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -33,6 +34,7 @@ describe('useSearchRequestedTrend', () => {
 
         expect(mockUseMetricTrend).toHaveBeenCalledWith(
             {
+                metricName: METRIC_NAMES.HELP_CENTER_SEARCH_REQUESTED,
                 dimensions: [],
                 filters: [
                     {
@@ -52,6 +54,7 @@ describe('useSearchRequestedTrend', () => {
                 timezone: timezone,
             },
             {
+                metricName: METRIC_NAMES.HELP_CENTER_SEARCH_REQUESTED,
                 dimensions: [],
                 filters: [
                     {

@@ -29,6 +29,7 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
       "CampaignOrderEvents.totalConversionRate",
       "CampaignOrderEvents.campaignCTR",
     ],
+    "metricName": "convert-campaign-events-orders-performance",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -66,6 +67,7 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
       "CampaignEvents.clicksRate",
       "CampaignEvents.ticketsCreated",
     ],
+    "metricName": "convert-campaign-events-performance",
     "segments": [
       "CampaignEvents.campaignEventsOnly",
     ],
@@ -107,6 +109,7 @@ exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call
       "CampaignOrderEvents.impressions",
       "CampaignOrderEvents.engagement",
     ],
+    "metricName": "convert-campaign-events-totals",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -146,6 +149,7 @@ exports[`Getting Cube queries [Function getCampaignOrderPerformanceData] should 
       "OrderConversion.clickSalesCount",
       "OrderConversion.campaignSalesCount",
     ],
+    "metricName": "convert-campaign-order-performance",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -184,6 +188,7 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
       "OrderConversion.campaignSales",
       "OrderConversion.campaignSalesCount",
     ],
+    "metricName": "convert-campaign-order-totals",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -222,6 +227,7 @@ exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should
       "CampaignOrderEvents.campaignCTR",
       "CampaignOrderEvents.totalConversionRate",
     ],
+    "metricName": "convert-campaigns-performance-graph",
     "order": [
       [
         "CampaignOrderEvents.createdDatetime",
@@ -267,6 +273,7 @@ exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`
     "measures": [
       "OrderConversion.gmv",
     ],
+    "metricName": "convert-revenue-graph",
     "order": [
       [
         "OrderConversion.createdDatetime",
@@ -320,6 +327,7 @@ exports[`Getting Cube queries [Function getRevenueShareGraphData] should call lo
     "measures": [
       "OrderConversion.campaignSales",
     ],
+    "metricName": "convert-revenue-share-graph",
     "order": [
       [
         "OrderConversion.createdDatetime",
@@ -365,6 +373,7 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
     "measures": [
       "OrderConversion.gmv",
     ],
+    "metricName": "convert-store-revenue-total",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -399,6 +408,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsOrde
       "CampaignOrderEvents.totalConversionRate",
       "CampaignOrderEvents.campaignCTR",
     ],
+    "metricName": "convert-campaign-events-orders-performance",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -436,6 +446,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsPerf
       "CampaignEvents.clicksRate",
       "CampaignEvents.ticketsCreated",
     ],
+    "metricName": "convert-campaign-events-performance",
     "segments": [
       "CampaignEvents.campaignEventsOnly",
     ],
@@ -477,6 +488,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsTota
       "CampaignOrderEvents.impressions",
       "CampaignOrderEvents.engagement",
     ],
+    "metricName": "convert-campaign-events-totals",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -516,6 +528,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignOrderPerfo
       "OrderConversion.clickSalesCount",
       "OrderConversion.campaignSalesCount",
     ],
+    "metricName": "convert-campaign-order-performance",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -554,6 +567,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignOrderTotal
       "OrderConversion.campaignSales",
       "OrderConversion.campaignSalesCount",
     ],
+    "metricName": "convert-campaign-order-totals",
     "timezone": "America/San_Francisco",
   },
 ]
@@ -592,6 +606,7 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignsPerforman
       "CampaignOrderEvents.campaignCTR",
       "CampaignOrderEvents.totalConversionRate",
     ],
+    "metricName": "convert-campaigns-performance-graph",
     "order": [
       [
         "CampaignOrderEvents.createdDatetime",
@@ -637,6 +652,7 @@ exports[`Getting Cube queries for with notEquals [Function getRevenueGraphData] 
     "measures": [
       "OrderConversion.gmv",
     ],
+    "metricName": "convert-revenue-graph",
     "order": [
       [
         "OrderConversion.createdDatetime",
@@ -690,6 +706,7 @@ exports[`Getting Cube queries for with notEquals [Function getRevenueShareGraphD
     "measures": [
       "OrderConversion.campaignSales",
     ],
+    "metricName": "convert-revenue-share-graph",
     "order": [
       [
         "OrderConversion.createdDatetime",
@@ -735,6 +752,7 @@ exports[`Getting Cube queries for with notEquals [Function getStoreRevenueTotalD
     "measures": [
       "OrderConversion.gmv",
     ],
+    "metricName": "convert-store-revenue-total",
     "timezone": "America/San_Francisco",
   },
 ]

@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -40,6 +41,7 @@ export const closedTicketsQueryFactory = (
               order: [[TicketMeasure.TicketCount, sorting]],
           }
         : {}),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
 })
 
 export const closedTicketsTimeSeriesQueryFactory = (
@@ -48,6 +50,7 @@ export const closedTicketsTimeSeriesQueryFactory = (
     granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...closedTicketsQueryFactory(filters, timezone),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES,
     timeDimensions: [
         {
             dimension: TicketDimension.ClosedDatetime,
@@ -76,6 +79,8 @@ export const closedTicketsPerTicketDrillDownQueryFactory = (
     const baseQuery = closedTicketsPerAgentQueryFactory(filters, timezone)
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_TICKET_DRILL_DOWN,
         measures: [],
         dimensions: [
             TicketDimension.TicketId,

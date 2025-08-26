@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -60,6 +61,8 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                 timezone,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
             dimensions: [TicketMessagesMember.FirstHelpdeskMessageUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -113,6 +116,8 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                 sorting,
             ),
         ).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
             dimensions: [TicketMessagesMember.FirstHelpdeskMessageUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -194,6 +199,8 @@ describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...medianFirstResponseTimeQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -232,6 +239,8 @@ describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
                 filters,
                 timezone,
             ),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

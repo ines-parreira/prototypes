@@ -1,0 +1,398 @@
+export const METRIC_NAMES = {
+    // AI Agent Insights
+    AI_AGENT_ALL_TICKETS_FOR_AI_AGENT_TOTAL_COUNT:
+        'ai-agent-all-tickets-for-ai-agent-total-count',
+    AI_AGENT_AUTOMATED_INTERACTIONS: 'ai-agent-automated-interactions',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
+        'ai-agent-automated-interactions-tickets',
+    AI_AGENT_AUTOMATED_TICKET_COUNT: 'ai-agent-automated-ticket-count',
+    AI_AGENT_COVERAGE_RATE_TICKET_DRILL_DOWN:
+        'ai-agent-coverage-rate-ticket-drill-down',
+    AI_AGENT_CUSTOMER_SATISFACTION_PER_INTENT_LEVEL:
+        'ai-agent-customer-satisfaction-per-intent-level',
+    AI_AGENT_INFLUENCED_ORDERS: 'ai-agent-influenced-orders',
+    AI_AGENT_RECOMMENDED_RESOURCES: 'ai-agent-recommended-resources',
+    AI_AGENT_TICKET_INTENTS_FOR_TICKETS: 'ai-agent-ticket-intents-for-tickets',
+    AI_AGENT_TICKETS_WITH_INTENT: 'ai-agent-tickets-with-intent',
+    AI_AGENT_TOUCHED_TICKET: 'ai-agent-touched-ticket',
+    AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
+
+    // AI Journey
+    AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
+    AI_JOURNEY_GMV_INFLUENCED_TIME_SERIES:
+        'ai-journey-gmv-influenced-time-series',
+    AI_JOURNEY_REPLIED_MESSAGES: 'ai-journey-replied-messages',
+    AI_JOURNEY_REPLIED_MESSAGES_TIME_SERIES:
+        'ai-journey-replied-messages-time-series',
+    AI_JOURNEY_TOTAL_MESSAGES: 'ai-journey-total-messages',
+    AI_JOURNEY_TOTAL_NUMBER_OF_ORDER: 'ai-journey-total-number-of-order',
+    AI_JOURNEY_TOTAL_NUMBER_OF_ORDER_TIME_SERIES:
+        'ai-journey-total-number-of-order-time-series',
+    AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS:
+        'ai-journey-total-number-of-sales-conversations',
+    AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_TIME_SERIES:
+        'ai-journey-total-number-of-sales-conversations-time-series',
+    AI_JOURNEY_UNIQ_CLICKS: 'ai-journey-uniq-clicks',
+    AI_JOURNEY_UNIQ_CLICKS_TIME_SERIES: 'ai-journey-uniq-clicks-time-series',
+
+    // AI Sales Agent
+    AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:
+        'ai-sales-agent-average-discount-percentage',
+    AI_SALES_AGENT_AVERAGE_ORDER_VALUE: 'ai-sales-agent-average-order-value',
+    AI_SALES_AGENT_AVERAGE_ORDER_VALUE_INFLUENCED:
+        'ai-sales-agent-average-order-value-influenced',
+    AI_SALES_AGENT_DISCOUNT_CODES_APPLIED:
+        'ai-sales-agent-discount-codes-applied',
+    AI_SALES_AGENT_DISCOUNT_CODES_AVERAGE:
+        'ai-sales-agent-discount-codes-average',
+    AI_SALES_AGENT_DISCOUNT_CODES_OFFERED:
+        'ai-sales-agent-discount-codes-offered',
+    AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILLDOWN:
+        'ai-sales-agent-discount-codes-offered-drilldown',
+    AI_SALES_AGENT_GMV: 'ai-sales-agent-gmv',
+    AI_SALES_AGENT_GMV_INFLUENCED: 'ai-sales-agent-gmv-influenced',
+    AI_SALES_AGENT_GMV_TIME_SERIES: 'ai-sales-agent-gmv-time-series',
+    AI_SALES_AGENT_GMV_USD: 'ai-sales-agent-gmv-usd',
+    AI_SALES_AGENT_GMV_USD_INFLUENCED: 'ai-sales-agent-gmv-usd-influenced',
+    AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY:
+        'ai-sales-agent-grouped-sales-opportunity',
+    AI_SALES_AGENT_ORDERS_TIME_SERIES: 'ai-sales-agent-orders-time-series',
+    AI_SALES_AGENT_PRODUCT_BOUGHT: 'ai-sales-agent-product-bought',
+    AI_SALES_AGENT_PRODUCT_CLICKS: 'ai-sales-agent-product-clicks',
+    AI_SALES_AGENT_PRODUCT_RECOMMENDATIONS_COUNT:
+        'ai-sales-agent-product-recommendations-count',
+    AI_SALES_AGENT_REPEAT_RATE: 'ai-sales-agent-repeat-rate',
+    AI_SALES_AGENT_TOP_LOCATIONS: 'ai-sales-agent-top-locations',
+    AI_SALES_AGENT_TOP_PRODUCT_RECOMMENDATIONS:
+        'ai-sales-agent-top-product-recommendations',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES:
+        'ai-sales-agent-total-number-of-automated-sales',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER:
+        'ai-sales-agent-total-number-of-order',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS:
+        'ai-sales-agent-total-number-of-sales-conversations',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN:
+        'ai-sales-agent-total-number-of-sales-conversations-drill-down',
+    AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT: 'ai-sales-agent-total-product-bought',
+    AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS:
+        'ai-sales-agent-total-product-recommendations',
+    AI_SALES_AGENT_UNIQUE_CLICKS: 'ai-sales-agent-unique-clicks',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_ORDER_DRILL_DOWN:
+        'ai-sales-agent-total-number-of-order-drill-down',
+    AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN:
+        'ai-sales-agent-total-number-of-automated-sales-drill-down',
+    AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN:
+        'ai-sales-agent-total-product-recommendations-drill-down',
+    AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN:
+        'ai-sales-agent-discount-codes-offered-drill-down',
+    // Agent Experience
+    AGENTXP_ONLINE_TIME: 'agentxp-online-time',
+    AGENTXP_TICKET_AVERAGE_HANDLE_TIME: 'agentxp-ticket-average-handle-time',
+    AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT:
+        'agentxp-ticket-average-handle-time-per-agent',
+    AGENTXP_TICKET_HANDLE_TIME: 'agentxp-ticket-handle-time',
+    AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN:
+        'agentxp-ticket-handle-time-per-ticket-drill-down',
+
+    // Automation
+    AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL:
+        'automate-ai-agent-interactions-by-skill',
+    AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS:
+        'automate-article-recommendation-interactions',
+    AUTOMATE_AUTOMATION_DATASET: 'automate-automation-dataset',
+    AUTOMATE_BILLABLE_TICKET_DATASET: 'automate-billable-ticket-dataset',
+    AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT:
+        'automate-billable-ticket-dataset-excluding-ai-agent',
+    AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT_TIME_SERIES:
+        'automate-billable-ticket-dataset-excluding-ai-agent-time-series',
+    AUTOMATE_BILLABLE_TICKET_DATASET_RESOLVED_BY_AI_AGENT:
+        'automate-billable-ticket-dataset-resolved-by-ai-agent',
+    AUTOMATE_INTERACTIONS: 'automate-interactions',
+    AUTOMATE_INTERACTIONS_BY_EVENT_TYPE: 'automate-interactions-by-event-type',
+    AUTOMATE_WORKFLOW_DATASET_COUNT: 'automate-workflow-dataset-count',
+    AUTOMATE_WORKFLOW_DATASET_STEP: 'automate-workflow-dataset-step',
+    AUTOMATE_WORKFLOW_DATASET_STEP_COUNT:
+        'automate-workflow-dataset-step-step-count',
+
+    // Auto QA
+    AUTO_QA_ACCURACY: 'auto-qa-accuracy',
+    AUTO_QA_BRAND_VOICE: 'auto-qa-brand-voice',
+    AUTO_QA_COMMUNICATION_SKILLS: 'auto-qa-communication-skills',
+    AUTO_QA_EFFICIENCY: 'auto-qa-efficiency',
+    AUTO_QA_INTERNAL_COMPLIANCE: 'auto-qa-internal-compliance',
+    AUTO_QA_LANGUAGE_PROFICIENCY: 'auto-qa-language-proficiency',
+    AUTO_QA_RESOLUTION_COMPLETENESS: 'auto-qa-resolution-completeness',
+    AUTO_QA_REVIEWED_CLOSED_TICKETS: 'auto-qa-reviewed-closed-tickets',
+    AUTO_QA_RESOLUTION_COMPLETENESS_DRILL_DOWN:
+        'auto-qa-resolution-completeness-drill-down',
+    AUTO_QA_REVIEWED_CLOSED_TICKETS_DRILL_DOWN:
+        'auto-qa-reviewed-closed-tickets-drill-down',
+    AUTO_QA_LANGUAGE_PROFICIENCY_DRILL_DOWN:
+        'auto-qa-language-proficiency-drill-down',
+    AUTO_QA_INTERNAL_COMPLIANCE_DRILL_DOWN:
+        'auto-qa-internal-compliance-drill-down',
+    AUTO_QA_EFFICIENCY_DRILL_DOWN: 'auto-qa-efficiency-drill-down',
+    AUTO_QA_COMMUNICATION_SKILLS_DRILL_DOWN:
+        'auto-qa-communication-skills-drill-down',
+    AUTO_QA_BRAND_VOICE_DRILL_DOWN: 'auto-qa-brand-voice-drill-down',
+    AUTO_QA_ACCURACY_DRILL_DOWN: 'auto-qa-accuracy-drill-down',
+
+    // Convert Campaign functions
+    CONVERT_CAMPAIGN_AB_TEST_EVENTS: 'convert-campaign-ab-test-events',
+    CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE:
+        'convert-campaign-events-orders-performance',
+    CONVERT_CAMPAIGN_EVENTS_PERFORMANCE: 'convert-campaign-events-performance',
+    CONVERT_CAMPAIGN_EVENTS_TOTALS: 'convert-campaign-events-totals',
+    CONVERT_CAMPAIGN_IMPRESSION_TIME_SERIES:
+        'convert-campaign-impression-time-series',
+    CONVERT_CAMPAIGN_ORDER_PERFORMANCE: 'convert-campaign-order-performance',
+    CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN:
+        'convert-campaign-order-performance-drill-down',
+    CONVERT_CAMPAIGN_ORDER_TOTALS: 'convert-campaign-order-totals',
+    CONVERT_CAMPAIGN_ORDERS_TIME_SERIES: 'convert-campaign-orders-time-series',
+    CONVERT_CAMPAIGNS_PERFORMANCE_GRAPH: 'convert-campaigns-performance-graph',
+    CONVERT_PAGE_INTERACTIONS_COUNT: 'page-interactions-metric',
+    CONVERT_REVENUE_GRAPH: 'convert-revenue-graph',
+    CONVERT_REVENUE_SHARE_GRAPH: 'convert-revenue-share-graph',
+    CONVERT_STORE_REVENUE_TOTAL: 'convert-store-revenue-total',
+
+    // Help Center
+    HELP_CENTER_ARTICLE_VIEW: 'help-center-article-view',
+    HELP_CENTER_ARTICLE_VIEW_TIME_SERIES:
+        'help-center-article-view-time-series',
+    HELP_CENTER_NO_SEARCH_RESULT: 'help-center-no-search-result',
+    HELP_CENTER_PERFORMANCE_BY_ARTICLE: 'help-center-performance-by-article',
+    HELP_CENTER_PERFORMANCE_BY_ARTICLE_COUNT:
+        'help-center-performance-by-article-count',
+    HELP_CENTER_SEARCH_ARTICLES_CLICKED: 'help-center-search-articles-clicked',
+    HELP_CENTER_SEARCH_REQUESTED: 'help-center-search-requested',
+    HELP_CENTER_SEARCH_RESULT_COUNT: 'help-center-search-result-count',
+    HELP_CENTER_SEARCH_RESULT_RANGE: 'help-center-search-result-range',
+    HELP_CENTER_SEARCH_RESULT_TERMS: 'help-center-search-result-terms',
+    HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT:
+        'help-center-unique-search-with-no-result',
+
+    // Satisfaction
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION:
+        'satisfaction-average-csat-score-per-dimension',
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_TIME_SERIES:
+        'satisfaction-average-csat-score-per-dimension-time-series',
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_DRILL_DOWN:
+        'satisfaction-average-csat-score-per-dimension-drill-down',
+    SATISFACTION_AVERAGE_SCORE: 'satisfaction-average-score',
+    SATISFACTION_AVERAGE_SCORE_DRILL_DOWN:
+        'satisfaction-average-score-drill-down',
+    SATISFACTION_COMMENT_HIGHLIGHTS: 'satisfaction-comment-highlights',
+    SATISFACTION_RESPONSE_RATE: 'satisfaction-response-rate',
+    SATISFACTION_RESPONSE_RATE_DRILL_DOWN:
+        'satisfaction-response-rate-drill-down',
+    SATISFACTION_SATISFACTION_SCORE: 'satisfaction-satisfaction-score',
+    SATISFACTION_SATISFACTION_SCORE_DRILL_DOWN:
+        'satisfaction-satisfaction-score-drill-down',
+    SATISFACTION_SCORED_SURVEYS: 'satisfaction-scored-surveys',
+    SATISFACTION_SURVEY_SCORES: 'satisfaction-survey-scores',
+
+    // SLA
+    SLA_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN:
+        'sla-breached-tickets-per-ticket-drill-down',
+    SLA_SATISFIED_OR_BREACHED_TICKETS: 'sla-satisfied-or-breached-tickets',
+    SLA_SATISFIED_OR_BREACHED_TICKETS_PER_TICKET_DRILL_DOWN:
+        'sla-satisfied-or-breached-tickets-per-ticket-drill-down',
+    SLA_SATISFIED_OR_BREACHED_TICKETS_TIME_SERIES:
+        'sla-satisfied-or-breached-tickets-time-series',
+
+    // Support Performance
+    SUPPORT_PERFORMANCE_CLOSED_TICKETS: 'support-performance-closed-tickets',
+    SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_TICKET_DRILL_DOWN:
+        'support-performance-closed-tickets-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES:
+        'support-performance-closed-tickets-time-series',
+    SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION:
+        'support-performance-customer-satisfaction',
+    SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_FOR_AI_AGENT_TICKETS:
+        'support-performance-customer-satisfaction-for-ai-agent-tickets',
+    SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_TICKET_DRILL_DOWN:
+        'support-performance-customer-satisfaction-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF:
+        'support-performance-human-response-time-after-ai-handoff',
+    SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_DRILL_DOWN:
+        'support-performance-human-response-time-after-ai-handoff-drill-down',
+    SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_AGENT:
+        'support-performance-human-response-time-after-ai-handoff-per-agent',
+    SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_CHANNEL:
+        'support-performance-human-response-time-after-ai-handoff-per-channel',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME:
+        'support-performance-median-first-response-time',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT:
+        'support-performance-median-first-response-time-per-agent',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL:
+        'support-performance-median-first-response-time-per-channel',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_TICKET_DRILL_DOWN:
+        'support-performance-median-first-response-time-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME:
+        'support-performance-median-resolution-time',
+    SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_TICKET_DRILL_DOWN:
+        'support-performance-median-resolution-time-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME:
+        'support-performance-median-response-time',
+    SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_AGENT:
+        'support-performance-median-response-time-per-agent',
+    SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_CHANNEL:
+        'support-performance-median-response-time-per-channel',
+    SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_TICKET_DRILL_DOWN:
+        'support-performance-median-response-time-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET:
+        'support-performance-messages-per-ticket',
+    SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET_DRILL_DOWN:
+        'support-performance-messages-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MESSAGES_RECEIVED:
+        'support-performance-messages-received',
+    SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_TICKET_DRILL_DOWN:
+        'support-performance-messages-received-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES:
+        'support-performance-messages-received-time-series',
+    SUPPORT_PERFORMANCE_MESSAGES_SENT: 'support-performance-messages-sent',
+    SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN:
+        'support-performance-messages-sent-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_MESSAGES_SENT_TIME_SERIES:
+        'support-performance-messages-sent-time-series',
+    SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS:
+        'support-performance-one-touch-tickets',
+    SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN:
+        'support-performance-one-touch-tickets-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES:
+        'support-performance-one-touch-tickets-time-series',
+    SUPPORT_PERFORMANCE_OPEN_TICKETS: 'support-performance-open-tickets',
+    SUPPORT_PERFORMANCE_OPEN_TICKETS_PER_TICKET_DRILL_DOWN:
+        'support-performance-open-tickets-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_SURVEYS_SENT: 'support-performance-surveys-sent',
+    SUPPORT_PERFORMANCE_SURVEYS_SENT_PER_TICKET_DRILL_DOWN:
+        'support-performance-surveys-sent-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_TICKETS_CREATED: 'support-performance-tickets-created',
+    SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_TICKET_DRILL_DOWN:
+        'support-performance-tickets-created-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES:
+        'support-performance-tickets-created-time-series',
+    SUPPORT_PERFORMANCE_TICKETS_REPLIED: 'support-performance-tickets-replied',
+    SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_TICKET_DRILL_DOWN:
+        'support-performance-tickets-replied-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES:
+        'support-performance-tickets-replied-time-series',
+    SUPPORT_PERFORMANCE_WORKLOAD_PER_CHANNEL:
+        'support-performance-workload-per-channel',
+    SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS:
+        'support-performance-zero-touch-tickets',
+    SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN:
+        'support-performance-zero-touch-tickets-per-ticket-drill-down',
+    SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES:
+        'support-performance-zero-touch-tickets-time-series',
+
+    // Ticket Insights
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT:
+        'ticket-insights-custom-fields-ticket-count',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_TIME_SERIES:
+        'ticket-insights-custom-fields-ticket-count-time-series',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_DRILL_DOWN:
+        'ticket-insights-custom-fields-ticket-count-drill-down',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES:
+        'ticket-insights-custom-fields-ticket-count-on-created-datetime-time-series',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME_TIME_SERIES:
+        'ticket-insights-custom-fields-ticket-count-for-product-on-created-datetime-time-series',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_TOTAL_COUNT:
+        'ticket-insights-custom-fields-ticket-total-count',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_FACTORY:
+        'ticket-insights-custom-fields-ticket-factory',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME:
+        'ticket-insights-custom-fields-ticket-count-for-product-on-created-datetime',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME:
+        'ticket-insights-custom-fields-ticket-count-on-created-datetime',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL:
+        'ticket-insights-custom-fields-ticket-count-per-intent-level',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FROM_TICKET_PER_INTENT_LEVEL:
+        'ticket-insights-custom-fields-ticket-count-from-ticket-per-intent-level',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN:
+        'ticket-insights-custom-fields-ticket-count-per-intent-level-per-ticket-drill-down',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_PER_TICKET_DRILL_DOWN:
+        'ticket-insights-custom-fields-ticket-count-on-created-datetime-per-ticket-drill-down',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_DRILL_DOWN:
+        'ticket-insights-custom-fields-ticket-count-per-intent-level-drill-down',
+    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_WITH_SORT:
+        'ticket-insights-custom-fields-ticket-count-with-sort',
+    TICKET_INSIGHTS_TAGGED_TICKET_COUNT: 'ticket-insights-tagged-ticket-count',
+    TICKET_INSIGHTS_TAGGED_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES:
+        'ticket-insights-tagged-ticket-count-on-created-datetime-time-series',
+    TICKET_INSIGHTS_TAGGED_TICKET_COUNT_TIME_SERIES:
+        'ticket-insights-tagged-ticket-count-time-series',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT: 'ticket-insights-tags-ticket-count',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT_DRILL_DOWN:
+        'ticket-insights-tags-ticket-count-drill-down',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME:
+        'ticket-insights-tags-ticket-count-on-created-datetime',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_DRILL_DOWN:
+        'ticket-insights-tags-ticket-count-on-created-datetime-drill-down',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES:
+        'ticket-insights-tags-ticket-count-on-created-datetime-time-series',
+    TICKET_INSIGHTS_TAGS_TICKET_COUNT_TIME_SERIES:
+        'ticket-insights-tags-ticket-count-time-series',
+
+    // Voice
+    VOICE_CALL_AVERAGE_TALK_TIME: 'voice-call-average-talk-time',
+    VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT:
+        'voice-call-average-talk-time-per-agent',
+    VOICE_CALL_AVERAGE_WAIT_TIME: 'voice-call-average-wait-time',
+    VOICE_CALL_COUNT: 'voice-call-count',
+    VOICE_CALL_COUNT_BY_AGENT: 'voice-call-count-by-agent',
+    VOICE_UNANSWERED_CALLS_BY_AGENT: 'voice-unanswered-calls-by-agent',
+    VOICE_MISSED_CALLS_BY_AGENT: 'voice-missed-calls-by-agent',
+    VOICE_OUTBOUND_CALLS_BY_AGENT: 'voice-outbound-calls-by-agent',
+    VOICE_INBOUND_CALL_BY_AGENT: 'voice-inbound-call-by-agent',
+    VOICE_DECLINED_CALLS_BY_AGENT: 'voice-declined-calls-by-agent',
+    VOICE_ANSWERED_CALLS_BY_AGENT: 'voice-answered-calls-by-agent',
+    VOICE_CALL_COUNT_TREND: 'voice-call-count-trend',
+    VOICE_CALL_COUNT_OUTBOUND_TREND: 'voice-call-count-outbound-trend',
+    VOICE_CALL_COUNT_INBOUND_TREND: 'voice-call-count-inbound-trend',
+    VOICE_CALL_COUNT_TABLE: 'voice-call-count-table',
+    VOICE_ANSWERED_CALLS_BY_AGENT_DRILL_DOWN:
+        'voice-answered-calls-by-agent-drill-down',
+    VOICE_CALL_COUNT_PER_AGENT: 'voice-call-count-per-agent',
+    VOICE_CALL_COUNT_PER_FILTERING_AGENT:
+        'voice-call-count-per-filtering-agent',
+    VOICE_CALL_LIST: 'voice-call-list',
+    VOICE_CALL_SUMMARY: 'voice-call-summary',
+    VOICE_CONNECTED_CALLS_LIST: 'voice-connected-calls-list',
+    VOICE_DECLINED_CALLS_COUNT: 'voice-declined-calls-count',
+    VOICE_DECLINED_CALLS_COUNT_PER_AGENT:
+        'voice-declined-calls-count-per-agent',
+    VOICE_WAITING_TIME_CALLS_LIST: 'voice-waiting-time-calls-list',
+    VOICE_TRANSFERRED_INBOUND_CALLS_COUNT:
+        'voice-transferred-inbound-calls-count',
+    VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT:
+        'voice-transferred-inbound-calls-count-per-agent',
+
+    // Voice of Customer
+    VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT:
+        'voice-of-customer-return-mentions-per-product',
+    VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT_DRILL_DOWN:
+        'voice-of-customer-return-mentions-per-product-drill-down',
+    VOICE_OF_CUSTOMER_SENTIMENTS_TICKET_COUNT_PER_PRODUCT:
+        'voice-of-customer-sentiments-ticket-count-per-product',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT:
+        'voice-of-customer-ticket-count-for-intent',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT_DRILL_DOWN:
+        'voice-of-customer-ticket-count-for-intent-drill-down',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_PRODUCT_DRILL_DOWN:
+        'voice-of-customer-ticket-count-for-product-drill-down',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT:
+        'voice-of-customer-ticket-count-per-intent',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_AND_PRODUCT_DRILL_DOWN:
+        'voice-of-customer-ticket-count-per-intent-and-product-drill-down',
+    VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_FOR_PRODUCT:
+        'voice-of-customer-ticket-count-per-intent-for-product',
+    VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS:
+        'voice-of-customer-tickets-with-products',
+
+    // Test and utility
+    TEST_METRIC: 'test-metric',
+} as const
+
+export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]

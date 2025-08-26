@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMember,
@@ -45,6 +46,8 @@ describe('sentimentsTicketCountPerProduct', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_SENTIMENTS_TICKET_COUNT_PER_PRODUCT,
                 measures: [TICKET_COUNT_MEASURE],
                 dimensions: [
                     TicketProductsEnrichedDimension.ProductId,
@@ -136,6 +139,8 @@ describe('sentimentsTicketCountPerProduct', () => {
             )
 
             const expected = {
+                metricName:
+                    METRIC_NAMES.VOICE_OF_CUSTOMER_SENTIMENTS_TICKET_COUNT_PER_PRODUCT,
                 measures: [TICKET_COUNT_MEASURE],
                 dimensions: [TicketDimension.TicketId],
                 timezone,

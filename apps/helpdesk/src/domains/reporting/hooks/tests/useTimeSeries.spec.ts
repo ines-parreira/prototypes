@@ -2,6 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { AxiosResponse } from 'axios'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -52,6 +53,7 @@ describe('useTimeSeries', () => {
         ],
         dimensions: [],
         filters: [],
+        metricName: METRIC_NAMES.TEST_METRIC,
         timeDimensions: [defaultTimeDimension],
     }
     const defaultData = [
@@ -247,6 +249,7 @@ describe('TimeSeriesPerDimension', () => {
                 values: [customFieldId],
             },
         ],
+        metricName: METRIC_NAMES.TEST_METRIC,
         timeDimensions: [defaultTimeDimension],
     }
     const defaultData = [
@@ -398,6 +401,7 @@ describe('TimeSeriesPerDimension', () => {
                         values: [customFieldId],
                     },
                 ],
+                metricName: METRIC_NAMES.TEST_METRIC,
                 timeDimensions: [defaultTimeDimension],
             }
             const data = [

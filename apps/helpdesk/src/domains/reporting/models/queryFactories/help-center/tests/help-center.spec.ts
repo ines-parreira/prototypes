@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -37,6 +38,7 @@ describe('help center queries factories', () => {
             undefined,
             undefined,
             searchResultRangeQueryFactory,
+            METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_RANGE,
         ],
         [
             'searchResultTermsQueryFactory',
@@ -54,6 +56,7 @@ describe('help center queries factories', () => {
             ],
             [HelpCenterTrackingEventSegment.SearchRequestWithClicks],
             searchResultTermsQueryFactory,
+            METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_TERMS,
         ],
         [
             'noSearchResultsQueryFactory',
@@ -67,6 +70,7 @@ describe('help center queries factories', () => {
             ],
             [HelpCenterTrackingEventSegment.NoSearchResultOnly],
             noSearchResultsQueryFactory,
+            METRIC_NAMES.HELP_CENTER_NO_SEARCH_RESULT,
         ],
         [
             'searchResultQueryCountFactory',
@@ -75,6 +79,7 @@ describe('help center queries factories', () => {
             undefined,
             [HelpCenterTrackingEventSegment.SearchRequestedOnly],
             searchResultQueryCountFactory,
+            METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_COUNT,
         ],
         [
             'noSearchResultsCountQueryFactory',
@@ -83,30 +88,43 @@ describe('help center queries factories', () => {
             undefined,
             [HelpCenterTrackingEventSegment.NoSearchResultOnly],
             noSearchResultsCountQueryFactory,
+            METRIC_NAMES.HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT,
         ],
-    ])('%s', (_testName, measures, dimensions, order, segments, getFactory) => {
-        it('should create a query', () => {
-            const query = getFactory(statsFilters, timezone)
+    ])(
+        '%s',
+        (
+            _testName,
+            measures,
+            dimensions,
+            order,
+            segments,
+            getFactory,
+            expectedMetricName,
+        ) => {
+            it('should create a query', () => {
+                const query = getFactory(statsFilters, timezone)
 
-            expect(query).toEqual({
-                measures,
-                dimensions,
-                filters: [
-                    {
-                        member: HelpCenterTrackingEventMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: HelpCenterTrackingEventMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                ],
-                timezone,
-                order,
-                segments,
+                expect(query).toEqual({
+                    metricName: expectedMetricName,
+                    measures,
+                    dimensions,
+                    filters: [
+                        {
+                            member: HelpCenterTrackingEventMember.PeriodStart,
+                            operator: ReportingFilterOperator.AfterDate,
+                            values: [periodStart],
+                        },
+                        {
+                            member: HelpCenterTrackingEventMember.PeriodEnd,
+                            operator: ReportingFilterOperator.BeforeDate,
+                            values: [periodEnd],
+                        },
+                    ],
+                    timezone,
+                    order,
+                    segments,
+                })
             })
-        })
-    })
+        },
+    )
 })

@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
@@ -51,6 +52,7 @@ describe('ticketsRepliedQueryFactory', () => {
         const query = ticketsRepliedQueryFactory(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
             dimensions: [],
             measures: [HelpdeskMessageMeasure.TicketCount],
             filters: [
@@ -112,6 +114,8 @@ describe('ticketsRepliedTimeSeriesQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES,
             dimensions: [],
             measures: [HelpdeskMessageMeasure.TicketCount],
             filters: [
@@ -187,6 +191,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
         expect(
             ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -256,6 +261,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
                 sorting,
             ),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -353,6 +359,8 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
             ),
         ).toEqual({
             ...ticketsRepliedQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -380,6 +388,8 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
             ),
         ).toEqual({
             ...ticketsRepliedQueryFactory(filters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

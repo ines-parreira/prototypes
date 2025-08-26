@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketDimension,
     TicketMember,
@@ -63,6 +64,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 timezone,
             ),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -111,6 +113,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 sorting,
             ),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -186,6 +189,7 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 timezone,
             ),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
             dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -234,6 +238,7 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 sorting,
             ),
         ).toEqual({
+            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
             dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -310,6 +315,8 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...medianResolutionTimeQueryFactory(statsFilters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
@@ -339,6 +346,8 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
             ),
         ).toEqual({
             ...medianResolutionTimeQueryFactory(filters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_TICKET_DRILL_DOWN,
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,

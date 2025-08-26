@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
@@ -69,6 +70,7 @@ const ticketCountPerIntentQueryFactory = (
         ),
     ],
     order: sorting ? [[sortingField, sorting]] : undefined,
+    metricName: METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT,
 })
 
 export const ticketCountForIntentQueryFactory = (
@@ -89,6 +91,7 @@ export const ticketCountForIntentQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName: METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT,
         limit,
         dimensions: [
             TicketProductsEnrichedDimension.ProductId,
@@ -128,6 +131,9 @@ export const ticketCountPerIntentForProductQueryFactory = (
         values: [String(intentCustomFieldId)],
     })
 
+    baseQuery.metricName =
+        METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_FOR_PRODUCT
+
     return baseQuery
 }
 
@@ -161,6 +167,8 @@ export const ticketCountForIntentAndProductDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_PER_INTENT_AND_PRODUCT_DRILL_DOWN,
         dimensions: [TicketDimension.TicketId],
         limit: DRILLDOWN_QUERY_LIMIT,
         order: sorting
@@ -184,6 +192,8 @@ export const ticketCountForIntentDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.VOICE_OF_CUSTOMER_TICKET_COUNT_FOR_INTENT_DRILL_DOWN,
         filters: [
             ...filters,
             {

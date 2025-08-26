@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -74,6 +75,7 @@ export const ticketsCreatedQueryFactory = (
                 statFiltersWithoutAgents,
             ),
         ],
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED,
         ...(sorting
             ? {
                   order: [[TicketMeasure.TicketCount, sorting]],
@@ -127,6 +129,8 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
             ),
             ...commonFilters,
         ],
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES,
     }
 }
 
@@ -148,4 +152,6 @@ export const ticketsCreatedPerTicketDrillDownQueryFactory = (
               order: [[TicketDimension.CreatedDatetime, sorting]],
           }
         : {}),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_TICKET_DRILL_DOWN,
 })

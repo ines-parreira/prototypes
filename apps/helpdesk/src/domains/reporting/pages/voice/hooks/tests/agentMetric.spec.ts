@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
 import {
     VoiceCallMeasure,
@@ -64,6 +65,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName: METRIC_NAMES.VOICE_CALL_COUNT,
                     dimensions: [],
                     filters: [
                         {
@@ -94,6 +96,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName: METRIC_NAMES.VOICE_UNANSWERED_CALLS_BY_AGENT,
                     dimensions: [],
                     filters: [
                         {
@@ -127,6 +130,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName: METRIC_NAMES.VOICE_MISSED_CALLS_BY_AGENT,
                     dimensions: [],
                     filters: [
                         {
@@ -160,6 +164,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName: METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
                     dimensions: [],
                     filters: [
                         {
@@ -193,6 +198,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
                     dimensions: [],
                     filters: [
                         {
@@ -228,6 +234,8 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
+                    metricName:
+                        METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT,
                     dimensions: [],
                     filters: [
                         {
@@ -275,6 +283,7 @@ describe('metricsPerDimension', () => {
 
                 expect(useMetricMock.mock.calls[0]).toEqual([
                     {
+                        metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
                         dimensions: [],
                         filters: [
                             {
@@ -309,30 +318,35 @@ describe('metricsPerDimension', () => {
                 queryFactory: voiceCallCountQueryFactory,
                 segment: undefined,
                 filter: ignoreCallsWithNoAgentsFilter,
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT,
             },
             {
                 fetch: fetchAnsweredCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
                 segment: VoiceCallSegment.inboundAnsweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
+                metricName: METRIC_NAMES.VOICE_UNANSWERED_CALLS_BY_AGENT,
             },
             {
                 fetch: fetchMissedCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
                 segment: VoiceCallSegment.inboundUnansweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
+                metricName: METRIC_NAMES.VOICE_MISSED_CALLS_BY_AGENT,
             },
             {
                 fetch: fetchOutboundCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
                 segment: VoiceCallSegment.outboundCalls,
                 filter: ignoreCallsWithNoAssignedAgentFilter,
+                metricName: METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
             },
             {
                 fetch: fetchDeclinedCallsMetric,
                 queryFactory: declinedVoiceCallsCountQueryFactory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
+                metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
             },
             {
                 fetch: fetchTransferredInboundCallsMetric,
@@ -342,12 +356,21 @@ describe('metricsPerDimension', () => {
             },
         ])(
             'should use $fetch and $segment',
-            async ({ fetch, queryFactory, segment, filter }) => {
+            async ({ fetch, queryFactory, segment, filter, metricName }) => {
                 await fetch(statsFilters, userTimezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
                     withFilter(
-                        queryFactory(statsFilters, userTimezone, segment),
+                        queryFactory === voiceCallCountQueryFactory
+                            ? queryFactory(
+                                  statsFilters,
+                                  userTimezone,
+                                  segment,
+                                  undefined,
+                                  undefined,
+                                  metricName,
+                              )
+                            : queryFactory(statsFilters, userTimezone, segment),
                         filter,
                     ),
                 )

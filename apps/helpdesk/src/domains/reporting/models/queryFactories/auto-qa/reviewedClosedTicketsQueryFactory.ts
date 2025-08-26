@@ -1,4 +1,5 @@
 import { TicketStatus } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreMeasure,
@@ -34,6 +35,7 @@ export const reviewedClosedTicketsQueryFactory = (
         },
     ],
     timezone,
+    metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS,
     ...(sorting
         ? {
               order: [[TicketQAScoreMeasure.TicketCount, sorting]],
@@ -53,6 +55,7 @@ export const reviewedClosedTicketsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...reviewedClosedTicketsQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS_DRILL_DOWN,
     measures: [
         TicketQAScoreMeasure.QAScoreData,
         TicketQAScoreMeasure.AverageAccuracyScore,

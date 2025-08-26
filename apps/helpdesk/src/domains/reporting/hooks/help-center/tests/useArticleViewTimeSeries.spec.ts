@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import * as useTimeSeries from 'domains/reporting/hooks/useTimeSeries'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -36,6 +37,7 @@ describe('useArticleViewTimeSeries', () => {
         )
 
         expect(mockUseTimeSeries).toHaveBeenCalledWith({
+            metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW_TIME_SERIES,
             dimensions: [],
             filters: [
                 {

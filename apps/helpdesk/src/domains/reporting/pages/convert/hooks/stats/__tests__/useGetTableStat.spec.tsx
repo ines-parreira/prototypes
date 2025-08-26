@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchPostReporting,
     usePostReporting,
@@ -123,6 +124,8 @@ describe('GetTableStat', () => {
         [
             [
                 {
+                    metricName:
+                        METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
                     dimensions: ['CampaignEvents.campaignId'],
                     filters: [
                         {
@@ -159,6 +162,7 @@ describe('GetTableStat', () => {
         [
             [
                 {
+                    metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE,
                     dimensions: ['OrderConversion.campaignId'],
                     filters: [
                         {
@@ -196,6 +200,8 @@ describe('GetTableStat', () => {
         [
             [
                 {
+                    metricName:
+                        METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE,
                     dimensions: ['CampaignOrderEvents.campaignId'],
                     filters: [
                         {
@@ -228,6 +234,7 @@ describe('GetTableStat', () => {
         [
             [
                 {
+                    metricName: METRIC_NAMES.CONVERT_STORE_REVENUE_TOTAL,
                     dimensions: [],
                     filters: [
                         {

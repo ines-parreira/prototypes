@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -50,6 +51,7 @@ export const medianResponseTimeQueryFactory = (
                   ],
               }
             : {}),
+        metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME,
     }
 }
 
@@ -59,6 +61,7 @@ export const medianResponseTimeMetricPerAgentQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianResponseTimeQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_AGENT,
     dimensions: [
         TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId,
     ],
@@ -70,6 +73,8 @@ export const medianResponseTimeMetricPerChannelQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianResponseTimeQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_CHANNEL,
     dimensions: [CHANNEL_DIMENSION],
 })
 
@@ -81,6 +86,8 @@ export const medianResponseTimeMetricPerTicketDrillDownQueryFactory = (
     const baseQuery = medianResponseTimeQueryFactory(filters, timezone)
     return {
         ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
         measures: [
             TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
         ],

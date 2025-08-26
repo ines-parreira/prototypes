@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -46,6 +47,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
     describe('onlineTimeQueryFactory', () => {
         it('should build the query', () => {
             expect(onlineTimeQueryFactory(statsFilters, timezone)).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
                 dimensions: [],
                 filters: [
                     {
@@ -73,6 +75,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 onlineTimeQueryFactory(statsFilters, timezone, sorting),
             ).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
                 dimensions: [],
                 filters: [
                     {
@@ -103,6 +106,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 onlineTimePerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [
                     {
@@ -130,6 +134,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
             ).toEqual({
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [
                     {

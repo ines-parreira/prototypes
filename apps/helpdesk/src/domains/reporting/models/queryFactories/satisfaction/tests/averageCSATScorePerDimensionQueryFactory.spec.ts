@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
@@ -45,6 +46,8 @@ describe('averageCSATScorePerDimensionQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
             measures: [
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
@@ -71,6 +74,8 @@ describe('averageCSATScorePerDimensionQueryFactory', () => {
         )
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
             measures: [
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
@@ -110,6 +115,8 @@ describe('averageCSATScorePerDimensionDrillDownQueryFactory', () => {
         )(statsFilters, timezone)
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
@@ -142,6 +149,8 @@ describe('averageCSATScorePerDimensionDrillDownQueryFactory', () => {
         )(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
+            metricName:
+                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_DRILL_DOWN,
             limit: DRILLDOWN_QUERY_LIMIT,
             measures: [
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,

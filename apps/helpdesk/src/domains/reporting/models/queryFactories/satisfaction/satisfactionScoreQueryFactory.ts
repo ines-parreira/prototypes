@@ -1,3 +1,4 @@
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -23,6 +24,7 @@ export const satisfactionScoreQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
+    metricName: METRIC_NAMES.SATISFACTION_SATISFACTION_SCORE,
     measures: [TicketSatisfactionSurveyMeasure.SatisfactionScore],
     dimensions: [],
     segments: [],
@@ -51,6 +53,7 @@ export const satisfactionScoreDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...satisfactionScoreQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.SATISFACTION_SATISFACTION_SCORE_DRILL_DOWN,
     segments: [TicketSatisfactionSurveySegment.SurveyScored],
     dimensions: [
         TicketDimension.TicketId,

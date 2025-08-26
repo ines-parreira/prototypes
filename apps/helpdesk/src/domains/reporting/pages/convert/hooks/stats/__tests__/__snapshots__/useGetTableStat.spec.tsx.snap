@@ -34,6 +34,7 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
           "CampaignEvents.clicksRate",
           "CampaignEvents.ticketsCreated",
         ],
+        "metricName": "convert-campaign-events-performance",
         "segments": [
           "CampaignEvents.campaignEventsOnly",
         ],
@@ -79,6 +80,7 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
           "OrderConversion.clickSalesCount",
           "OrderConversion.campaignSalesCount",
         ],
+        "metricName": "convert-campaign-order-performance",
         "timezone": "America/Los_Angeles",
       },
     ],
@@ -116,6 +118,7 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
           "CampaignOrderEvents.totalConversionRate",
           "CampaignOrderEvents.campaignCTR",
         ],
+        "metricName": "convert-campaign-events-orders-performance",
         "timezone": "America/Los_Angeles",
       },
     ],
@@ -148,6 +151,7 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
         "measures": [
           "OrderConversion.gmv",
         ],
+        "metricName": "convert-store-revenue-total",
         "timezone": "America/Los_Angeles",
       },
     ],
@@ -244,6 +248,7 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
           "CampaignEvents.clicksRate",
           "CampaignEvents.ticketsCreated",
         ],
+        "metricName": "convert-campaign-events-performance",
         "segments": [
           "CampaignEvents.campaignEventsOnly",
         ],
@@ -289,6 +294,7 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
           "OrderConversion.clickSalesCount",
           "OrderConversion.campaignSalesCount",
         ],
+        "metricName": "convert-campaign-order-performance",
         "timezone": "America/Los_Angeles",
       },
     ],
@@ -326,6 +332,7 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
           "CampaignOrderEvents.totalConversionRate",
           "CampaignOrderEvents.campaignCTR",
         ],
+        "metricName": "convert-campaign-events-orders-performance",
         "timezone": "America/Los_Angeles",
       },
     ],
@@ -358,6 +365,7 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
         "measures": [
           "OrderConversion.gmv",
         ],
+        "metricName": "convert-store-revenue-total",
         "timezone": "America/Los_Angeles",
       },
     ],
