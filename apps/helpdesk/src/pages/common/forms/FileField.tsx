@@ -9,9 +9,10 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
 import { InputType } from 'reactstrap/lib/Input'
 
+import { Button } from '@gorgias/axiom'
+
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

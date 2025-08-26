@@ -12,7 +12,7 @@ import React, {
 import classNames from 'classnames'
 import _toArray from 'lodash/toArray'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import css from './DropZone.less'
 

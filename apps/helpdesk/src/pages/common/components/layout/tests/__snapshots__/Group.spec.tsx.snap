@@ -6,33 +6,33 @@ exports[`<Group /> should render a group of buttons 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper fill primary medium left"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Foo
     </span>
   </button>
   <button
     aria-disabled="false"
-    class="wrapper fill primary medium center"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Bar
     </span>
   </button>
   <button
     aria-disabled="false"
-    class="wrapper fill primary medium right"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Baz
     </span>

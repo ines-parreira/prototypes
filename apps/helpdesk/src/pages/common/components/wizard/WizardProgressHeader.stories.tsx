@@ -2,7 +2,8 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Group from 'pages/common/components/layout/Group'
 
 import Wizard, { WizardContext } from './Wizard'

@@ -13,7 +13,7 @@ import pluralize from 'pluralize'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
@@ -23,7 +23,6 @@ import {
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import { UniqueDiscountOfferCreateModal } from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'

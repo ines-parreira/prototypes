@@ -6,7 +6,7 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import { Form } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -17,7 +17,6 @@ import {
 } from 'models/customerChannel/types'
 import { SourceType } from 'models/ticket/types'
 import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {
     isCustomerDataPresent,

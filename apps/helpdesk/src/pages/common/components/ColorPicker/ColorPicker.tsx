@@ -4,7 +4,8 @@ import { useId } from '@repo/hooks'
 import cn from 'classnames'
 import { Input, Popover, PopoverBody } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 
 import css from './ColorPicker.less'

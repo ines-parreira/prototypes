@@ -61,17 +61,17 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper button fill secondary medium right isAuxiliaryButton"
+        class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           week(s) ago
         </span>
         <i
           aria-hidden="true"
-          class="material-icons icon medium"
+          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
         >
           arrow_drop_down
         </i>

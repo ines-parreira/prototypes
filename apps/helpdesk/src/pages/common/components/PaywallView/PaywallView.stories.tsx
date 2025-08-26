@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import { assetsUrl } from 'utils'
 
 import HeroImageCarousel from '../HeroImageCarousel/HeroImageCarousel'

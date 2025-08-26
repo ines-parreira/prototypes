@@ -1,4 +1,4 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 type Props = {
     className?: string

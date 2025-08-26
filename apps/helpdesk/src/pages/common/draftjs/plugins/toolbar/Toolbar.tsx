@@ -3,6 +3,8 @@ import React, { DragEvent, ReactNode, useState } from 'react'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
+import { Button } from '@gorgias/axiom'
+
 import { UploadType } from 'common/types'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -15,7 +17,6 @@ import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import Button from 'pages/common/components/button/Button'
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'

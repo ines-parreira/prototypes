@@ -400,13 +400,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-1"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -443,13 +443,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-2"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -1666,13 +1666,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-10"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -1709,13 +1709,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-11"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -3166,13 +3166,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-4"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -3209,13 +3209,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-5"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -4636,13 +4636,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-16"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -4679,13 +4679,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-17"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -6106,13 +6106,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-28"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -6149,13 +6149,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-29"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -7576,13 +7576,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-22"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -7619,13 +7619,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-23"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -9148,13 +9148,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-43"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -9191,13 +9191,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-44"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -10414,13 +10414,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-46"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -10457,13 +10457,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-47"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -11847,13 +11847,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-52"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -11890,13 +11890,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-53"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -13521,13 +13521,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-34"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -13564,13 +13564,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-35"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -14787,13 +14787,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_main_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_main_color"
                           id="color-picker-37"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"
@@ -14830,13 +14830,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           aria-label="color-picker-button_conversation_color"
-                          class="wrapper button fill secondary medium"
+                          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                           data-testid="color-picker-button_conversation_color"
                           id="color-picker-38"
                           type="button"
                         >
                           <span
-                            class="content"
+                            class="ui-button-content-a432"
                           >
                             <div
                               class="color"

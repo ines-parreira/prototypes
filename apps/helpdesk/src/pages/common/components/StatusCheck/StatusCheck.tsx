@@ -1,6 +1,6 @@
 import { Col, Row } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import Loader from '../Loader/Loader'
 

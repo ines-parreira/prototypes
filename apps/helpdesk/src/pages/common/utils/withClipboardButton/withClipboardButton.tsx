@@ -3,7 +3,7 @@ import React, { ComponentType, useEffect, useRef, useState } from 'react'
 import { useId } from '@repo/hooks'
 import Clipboard from 'clipboard'
 
-import Button from '../../components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import css from './withClipboardButton.less'
 

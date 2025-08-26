@@ -192,11 +192,11 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
           </button>
           <button
             aria-disabled="false"
-            class="wrapper button fill secondary small"
+            class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <div
                 class="attachment"

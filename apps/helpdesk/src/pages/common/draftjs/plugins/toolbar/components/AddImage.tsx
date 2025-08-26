@@ -2,8 +2,9 @@ import React, { Component, createRef, KeyboardEvent, RefObject } from 'react'
 
 import classnames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import { UploadType } from 'common/types'
-import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import { ActionInjectedProps } from 'pages/common/draftjs/plugins/toolbar/types'
 import { addImage } from 'pages/common/draftjs/plugins/utils'

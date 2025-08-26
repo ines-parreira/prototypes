@@ -2,11 +2,10 @@ import React, { useContext } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'

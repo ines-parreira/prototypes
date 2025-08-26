@@ -10,17 +10,17 @@ exports[`<HeaderTitle /> should render the title 1`] = `
     </span>
     <button
       aria-disabled="false"
-      class="wrapper wrapper ml-3 fill secondary medium"
+      class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon medium"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
       >
         info_outline
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Learn
       </span>

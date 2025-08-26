@@ -2,8 +2,9 @@ import React, { useRef, useState } from 'react'
 
 import { Map } from 'immutable'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import Dropdown, {
     DropdownContext,
 } from 'pages/common/components/dropdown/Dropdown'

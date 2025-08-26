@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 

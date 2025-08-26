@@ -11,9 +11,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'

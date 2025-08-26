@@ -2,7 +2,7 @@ import { ComponentProps, useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import Modal from './Modal'
 import ModalActionsFooter from './ModalActionsFooter'

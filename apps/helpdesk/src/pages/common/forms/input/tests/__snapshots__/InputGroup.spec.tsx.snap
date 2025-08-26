@@ -6,11 +6,11 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper fill secondary medium left isAuxiliaryButton"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Foo
     </span>
@@ -63,22 +63,22 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
   </span>
   <button
     aria-disabled="false"
-    class="wrapper fill secondary medium center isAuxiliaryButton"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Bar
     </span>
   </button>
   <button
     aria-disabled="false"
-    class="wrapper fill secondary medium right isAuxiliaryButton"
+    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Baz
     </span>

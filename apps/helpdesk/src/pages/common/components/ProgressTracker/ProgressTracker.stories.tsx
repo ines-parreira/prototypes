@@ -2,7 +2,8 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
 
 const storyConfig: Meta<typeof ProgressTracker> = {

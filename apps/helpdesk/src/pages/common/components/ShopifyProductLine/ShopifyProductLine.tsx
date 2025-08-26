@@ -5,6 +5,8 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
@@ -16,7 +18,6 @@ import {
     IntegrationDataItem,
     ProductCardDetails,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
 import { transformShopifyProductToProductCardDetails } from 'pages/common/draftjs/plugins/toolbar/utils'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'

@@ -397,18 +397,18 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
       >
         <button
           aria-disabled="false"
-          class="wrapper mr-2 fill primary small"
+          class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
           tabindex="-1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon small"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
           >
             arrow_back
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Back
           </span>

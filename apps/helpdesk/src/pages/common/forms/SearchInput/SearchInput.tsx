@@ -16,9 +16,8 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, { SearchResultType } from 'services/gorgiasApi'

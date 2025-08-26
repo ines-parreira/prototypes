@@ -10,7 +10,8 @@ import React, {
 import { EditorState } from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { fixVideoUrlForReactPlayer, insertLink, insertText } from 'utils'

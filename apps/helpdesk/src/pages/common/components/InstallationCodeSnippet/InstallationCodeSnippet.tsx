@@ -1,6 +1,7 @@
 import { useCopyToClipboard } from '@repo/hooks'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import css from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.less'
 
 type Props = {

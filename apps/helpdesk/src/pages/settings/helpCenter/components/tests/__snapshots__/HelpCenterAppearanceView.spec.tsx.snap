@@ -410,11 +410,11 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="wrapper uploadButton fill secondary medium"
+                  class="ui-button-wrapper-a432 uploadButton ui-button-fill-a432 ui-button-secondary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     <i
                       class="material-icons"
@@ -540,13 +540,13 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   <button
                     aria-disabled="false"
                     aria-label="color-picker-button_accent_color"
-                    class="wrapper button fill secondary medium"
+                    class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
                     data-testid="color-picker-button_accent_color"
                     id="color-picker-4"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <div
                         class="color"

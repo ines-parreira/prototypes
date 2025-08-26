@@ -8,12 +8,13 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
 } from 'config'
-import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import { reportError } from 'utils/errors'

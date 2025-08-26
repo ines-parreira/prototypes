@@ -6,6 +6,8 @@ import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
@@ -19,7 +21,6 @@ import {
 } from 'models/discountCodes/constants'
 import { DiscountCode } from 'models/discountCodes/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

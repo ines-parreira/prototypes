@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
 import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'

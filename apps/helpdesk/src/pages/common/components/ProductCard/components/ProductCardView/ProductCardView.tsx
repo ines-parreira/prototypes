@@ -2,9 +2,10 @@ import React, { useMemo } from 'react'
 
 import cn from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import { getContrastColor } from 'gorgias-design-system/utils'
-import Button from 'pages/common/components/button/Button'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { useIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'

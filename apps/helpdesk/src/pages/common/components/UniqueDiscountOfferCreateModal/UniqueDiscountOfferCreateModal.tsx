@@ -18,7 +18,7 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -31,7 +31,6 @@ import {
 } from 'models/convert/discountOffer/types'
 import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import InputField from 'pages/common/forms/input/InputField'

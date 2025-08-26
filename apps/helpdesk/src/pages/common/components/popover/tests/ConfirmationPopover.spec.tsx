@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import Group from '../../layout/Group'
 import ConfirmationPopover from '../ConfirmationPopover'

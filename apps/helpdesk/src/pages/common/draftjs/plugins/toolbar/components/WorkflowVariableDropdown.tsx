@@ -1,5 +1,7 @@
 import React, { RefObject, useEffect, useMemo, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {
     filterManyVariables,
@@ -9,7 +11,6 @@ import {
     WorkflowVariable,
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

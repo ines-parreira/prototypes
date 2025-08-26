@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from '../../../../../business/types/ticket'
 import * as infobarActions from '../../../../../state/infobar/actions'

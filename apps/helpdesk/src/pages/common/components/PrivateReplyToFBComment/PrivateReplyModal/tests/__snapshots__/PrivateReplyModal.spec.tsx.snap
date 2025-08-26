@@ -67,24 +67,24 @@ exports[`<PrivateReplyModal/> should render the modal 1`] = `
             >
               <button
                 aria-disabled="true"
-                class="wrapper submit send fill primary medium isDisabled"
+                class="ui-button-wrapper-a432 submit send ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
                 id="private-reply-submit"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Send
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="wrapper submit sendAndClose fill secondary medium isDisabled"
+                class="ui-button-wrapper-a432 submit sendAndClose ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
                 id="send-private-reply-and-close-button"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   Send & Close
                 </span>

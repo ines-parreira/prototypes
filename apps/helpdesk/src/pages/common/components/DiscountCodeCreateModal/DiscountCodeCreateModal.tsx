@@ -12,7 +12,7 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { Label } from '@gorgias/axiom'
+import { Button, Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,7 +24,6 @@ import {
     DISCOUNT_USE_TYPE,
 } from 'models/discountCodes/constants'
 import { DiscountCode } from 'models/discountCodes/types'
-import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Errors from 'pages/common/forms/Errors'
 import NumberInput from 'pages/common/forms/input/NumberInput'

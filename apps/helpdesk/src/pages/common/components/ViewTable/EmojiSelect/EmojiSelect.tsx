@@ -10,8 +10,9 @@ import classNames from 'classnames'
 import { BaseEmoji, EmojiData } from 'emoji-mart'
 import { Popover } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
-import Button from 'pages/common/components/button/Button'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'

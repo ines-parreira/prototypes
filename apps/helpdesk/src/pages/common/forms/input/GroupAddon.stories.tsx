@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import GroupAddon from './GroupAddon'
 import InputGroup from './InputGroup'

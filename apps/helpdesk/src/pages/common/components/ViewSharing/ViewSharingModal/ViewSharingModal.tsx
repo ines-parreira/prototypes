@@ -10,11 +10,12 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { View, ViewVisibility } from 'models/view/types'
-import Button from 'pages/common/components/button/Button'
 import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import { notify } from 'state/notifications/actions'

@@ -17,17 +17,17 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
       >
         <button
           aria-disabled="false"
-          class="wrapper ghost secondary medium"
+          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-secondary-a432"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Ticket customer
           </span>
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             arrow_drop_down
           </i>
@@ -95,17 +95,17 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
       >
         <button
           aria-disabled="false"
-          class="wrapper ghost secondary medium"
+          class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-secondary-a432"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Current agent
           </span>
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             arrow_drop_down
           </i>

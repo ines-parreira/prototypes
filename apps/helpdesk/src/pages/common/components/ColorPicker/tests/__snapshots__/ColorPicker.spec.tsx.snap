@@ -9,12 +9,12 @@ exports[`<ColorPicker /> should display popup on button click with default color
   >
     <button
       aria-disabled="false"
-      class="wrapper button fill secondary medium"
+      class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
       id="color-picker-4"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <div
           class="color"
@@ -174,12 +174,12 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
 >
   <button
     aria-disabled="false"
-    class="wrapper button fill secondary medium"
+    class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
     id="color-picker-3"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <div
         class="color"
@@ -203,12 +203,12 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
 >
   <button
     aria-disabled="false"
-    class="wrapper button fill secondary medium"
+    class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
     id="color-picker-2"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <div
         class="color"
@@ -232,12 +232,12 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper button fill secondary medium"
+    class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
     id="color-picker-1"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Pick a color
     </span>

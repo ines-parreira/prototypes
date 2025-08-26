@@ -57,17 +57,17 @@ exports[`ManualInstallationOtherWebsiteTab should render the component 1`] = `
     </code>
     <button
       aria-disabled="false"
-      class="wrapper fill secondary small"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
       type="button"
     >
       <i
         aria-hidden="true"
-        class="material-icons icon small"
+        class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
       >
         content_copy
       </i>
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Copy Code
       </span>

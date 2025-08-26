@@ -1,11 +1,12 @@
 import React, { RefObject, useEffect, useMemo, useState } from 'react'
 
+import { Button } from '@gorgias/axiom'
+
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import {
     GuidanceVariable,
     GuidanceVariableGroup,
 } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
