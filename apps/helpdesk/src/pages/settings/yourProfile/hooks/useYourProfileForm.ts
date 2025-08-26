@@ -6,7 +6,7 @@ import type { SelectFieldOption } from '@gorgias/axiom'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'
-import { ISO639English } from 'constants/languages'
+import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
@@ -123,7 +123,7 @@ export function useYourProfileForm({
     )
 
     const proficientLanguagesOptions = useMemo(() => {
-        const allOptions = Object.entries(ISO639English).map(
+        const allOptions = TranslationSupportedLanguagesInEnglish.map(
             ([code, name]) => ({
                 label: name,
                 value: code,

@@ -15,7 +15,7 @@ import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
 import { FeatureFlagKey } from 'config/featureFlags'
-import { ISO639English } from 'constants/languages'
+import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
 import { useFlag } from 'core/flags'
 import { useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
@@ -57,6 +57,20 @@ const timezoneToOptionMap = new global.Map(
         { value: `(UTC${moment.tz(timezone).format('Z')}) ${timezone}` },
     ]),
 )
+
+const translationLanguageOptions = TranslationSupportedLanguagesInEnglish.map(
+    ([code, name]) => ({
+        icon: undefined,
+        value: code,
+        name: name,
+    }),
+)
+
+const allProficientLanguagesOptions =
+    TranslationSupportedLanguagesInEnglish.map(([code, name]) => ({
+        value: code,
+        label: name,
+    })) as Option[]
 
 type YourProfileViewFunctionalProps = {
     currentUser: Partial<CurrentUser['data']>
@@ -194,25 +208,6 @@ export function YourProfileView({
             })
         },
         [setTheme],
-    )
-
-    const translationLanguageOptions = useMemo(
-        () =>
-            Object.entries(ISO639English).map(([code, name]) => ({
-                icon: undefined,
-                value: code,
-                name: name,
-            })),
-        [],
-    )
-
-    const allProficientLanguagesOptions = useMemo(
-        () =>
-            Object.entries(ISO639English).map(([code, name]) => ({
-                value: code,
-                label: name,
-            })) as Option[],
-        [],
     )
 
     return (

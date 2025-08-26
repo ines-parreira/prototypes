@@ -115,3 +115,12 @@ export const ISO639English = ISO639.reduce((pair: string[][], code) => {
         obj[pair[0]] = pair[1]
         return obj
     }, {})
+
+export const TranslationSupportedLanguagesInEnglish = ISO639.filter(
+    (code) => !code.includes('-'),
+)
+    .reduce((pair: string[][], code) => {
+        pair.push([code, IntlDisplayNames.of(code) as string])
+        return pair
+    }, [])
+    .sort(([, a], [, b]) => a.localeCompare(b))
