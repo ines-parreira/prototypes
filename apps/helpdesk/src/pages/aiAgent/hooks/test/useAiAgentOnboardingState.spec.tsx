@@ -25,7 +25,6 @@ describe('useAiAgentOnboardingState', () => {
 
     beforeEach(() => {
         mockFlags({
-            [FeatureFlagKey.AIAgentWelcomePage]: 'dynamic_odd_static_even',
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
         })
         mockUseStoreConfiguration.mockReturnValue({
