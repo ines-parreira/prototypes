@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { Cadence, cadenceNames } from 'models/billing/types'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
 import TrialTryModal from '../TrialTryModal'
@@ -8,15 +9,15 @@ import TrialTryModal from '../TrialTryModal'
 const mockCurrentPlan = {
     name: 'Basic',
     price: '$50',
-    billingPeriod: 'month',
-    priceTooltipText: 'Billed monthly at $50 per seat',
+    billingPeriod: Cadence.Month,
+    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $50 per seat`,
 } as unknown as PlanDetails
 
 const mockNewPlan = {
     name: 'Pro',
     price: '$100',
-    billingPeriod: 'month',
-    priceTooltipText: 'Billed monthly at $100 per seat',
+    billingPeriod: Cadence.Month,
+    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
 } as unknown as PlanDetails
 
 const defaultProps = {
