@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
 
 import { useFlag } from 'core/flags'
+import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
@@ -139,7 +140,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
         },
@@ -147,7 +148,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
                 { label: 'Feature 2', isError: false },
@@ -161,7 +162,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
         },
@@ -169,7 +170,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
                 { label: 'Feature 2', isError: false },
@@ -220,7 +221,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
         },
@@ -228,7 +229,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
-            billingPeriod: 'month',
+            billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
                 { label: 'Feature 2', isError: false },
