@@ -9,7 +9,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useGetResourceData } from '../useEnrichFeedbackData'
 import { useGetResourcesReasoningMetadata } from '../useGetResourcesReasoningMetadata'
-import { getResourceMetadata } from '../utils'
+import { getResourceMetadata, getResourceType } from '../utils'
 
 jest.mock('../useEnrichFeedbackData', () => ({
     useGetResourceData: jest.fn(),
@@ -21,6 +21,7 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
 
 jest.mock('../utils', () => ({
     getResourceMetadata: jest.fn(),
+    getResourceType: jest.fn(),
 }))
 
 const queryClient = new QueryClient({
@@ -76,6 +77,9 @@ describe('useGetResourcesReasoningMetadata', () => {
             content: resource.title || '',
             url: `/mock/${resource.type}/${resource.id}`,
         }))
+        ;(getResourceType as jest.Mock).mockImplementation(
+            (_resourceId, type) => type,
+        )
     })
 
     it('should process resources correctly and call useGetResourceData with proper parameters when all resource types are present', () => {
@@ -158,13 +162,14 @@ describe('useGetResourcesReasoningMetadata', () => {
                 ids: [300],
                 recordIds: [3, 4, 5],
             },
-            actionIds: ['3', '4', '5', 'action-1'],
+            actionIds: ['action-1'],
             shopName: 'test-store',
             shopType: 'shopify',
             shopIntegrationId: 1,
             productIds: [100, 200],
         })
 
+        expect(getResourceType).toHaveBeenCalledTimes(8)
         expect(getResourceMetadata).toHaveBeenCalledTimes(8)
         expect(result.current?.isLoading).toBe(false)
         expect(result.current?.data).toHaveLength(8)
@@ -688,5 +693,114 @@ describe('useGetResourcesReasoningMetadata', () => {
                 },
             }),
         )
+    })
+
+    it('should handle resourceData with undefined storeWebsiteQuestions and ingestedFiles', () => {
+        const resourceDataWithUndefined = {
+            isLoading: false,
+            articles: [],
+            guidanceArticles: [],
+            sourceItems: [],
+            ingestedFiles: undefined,
+            actions: [],
+            helpCenters: [],
+            storeWebsiteQuestions: undefined,
+            products: [],
+        }
+        ;(useGetResourceData as jest.Mock).mockReturnValue(
+            resourceDataWithUndefined,
+        )
+
+        const storeConfiguration = createMockStoreConfiguration()
+        const resources: KnowledgeReasoningResource[] = [
+            {
+                resourceId: '1',
+                resourceSetId: '100',
+                resourceType: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                resourceTitle: 'External Snippet',
+            },
+        ]
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(getResourceType).toHaveBeenCalledWith(
+            '1',
+            AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+            {
+                storeWebsiteQuestions: [],
+                ingestedFiles: [],
+            },
+        )
+
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current?.data).toHaveLength(1)
+    })
+
+    it('should handle resourceData with defined storeWebsiteQuestions and ingestedFiles', () => {
+        const resourceDataWithValues = {
+            isLoading: false,
+            articles: [],
+            guidanceArticles: [],
+            sourceItems: [],
+            ingestedFiles: [
+                {
+                    id: 1,
+                    title: 'Test File',
+                    ingestionStatus: 'SUCCESSFUL',
+                    ingestionId: 'test-ingestion-1',
+                },
+            ],
+            actions: [],
+            helpCenters: [],
+            storeWebsiteQuestions: [
+                {
+                    article_id: 1,
+                    title: 'Test Question',
+                },
+            ],
+            products: [],
+        }
+        ;(useGetResourceData as jest.Mock).mockReturnValue(
+            resourceDataWithValues,
+        )
+
+        const storeConfiguration = createMockStoreConfiguration()
+        const resources: KnowledgeReasoningResource[] = [
+            {
+                resourceId: '3',
+                resourceSetId: '300',
+                resourceType: AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                resourceTitle: 'External Snippet with Values',
+            },
+        ]
+
+        const { result } = renderHook(
+            () =>
+                useGetResourcesReasoningMetadata({
+                    resources,
+                    storeConfiguration,
+                }),
+            { wrapper },
+        )
+
+        expect(getResourceType).toHaveBeenCalledWith(
+            '3',
+            AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+            {
+                storeWebsiteQuestions:
+                    resourceDataWithValues.storeWebsiteQuestions,
+                ingestedFiles: resourceDataWithValues.ingestedFiles,
+            },
+        )
+
+        expect(result.current?.isLoading).toBe(false)
+        expect(result.current?.data).toHaveLength(1)
     })
 })

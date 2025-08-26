@@ -5,7 +5,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { useGetResourceData } from './useEnrichFeedbackData'
-import { getResourceMetadata } from './utils'
+import { getResourceMetadata, getResourceType } from './utils'
 
 export const useGetResourcesReasoningMetadata = ({
     resources,
@@ -105,6 +105,7 @@ export const useGetResourcesReasoningMetadata = ({
                             Number(resource.resourceId),
                         )
                     }
+                    break
                 case AiAgentKnowledgeResourceTypeEnum.ACTION:
                     if (!acc.actionIds) {
                         acc.actionIds = []
@@ -150,6 +151,17 @@ export const useGetResourcesReasoningMetadata = ({
     return {
         isLoading: resourceData.isLoading,
         data: resources.map((resource) => {
+            const type = getResourceType(
+                resource.resourceId,
+                resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                {
+                    storeWebsiteQuestions:
+                        resourceData.storeWebsiteQuestions ?? [],
+                    ingestedFiles: resourceData.ingestedFiles ?? [],
+                },
+            )
+
+            resource.resourceType = type as typeof resource.resourceType
             return getResourceMetadata(
                 {
                     id: resource.resourceId,
