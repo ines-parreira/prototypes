@@ -61,13 +61,13 @@ export const AiAgentOverview = () => {
     const { isOpen, isLoading, handleModalAction, modalContent } =
         useThankYouModal()
 
-    const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted } =
+    const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted, trialType } =
         useTrialAccess(shopName)
 
     const { storeActivations } = useStoreActivations()
 
     const {
-        startTrial,
+        startTrialDeprecated,
         isLoading: isTrialRevampLoading,
         isTrialModalOpen: isTrialUpgradeModalOpen,
         isSuccessModalOpen,
@@ -78,6 +78,7 @@ export const AiAgentOverview = () => {
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
+        trialType,
     })
 
     /* TODO: [AIFLY-547] remove this when the trial improvement is enabled */
@@ -118,7 +119,7 @@ export const AiAgentOverview = () => {
                         <UpgradePlanModal
                             {...trialModalProps.trialUpgradePlanModal}
                             onClose={closeTrialUpgradeModal}
-                            onConfirm={startTrial}
+                            onConfirm={startTrialDeprecated}
                             onDismiss={onDismissTrialUpgradeModal}
                             isLoading={isTrialRevampLoading}
                             isTrial

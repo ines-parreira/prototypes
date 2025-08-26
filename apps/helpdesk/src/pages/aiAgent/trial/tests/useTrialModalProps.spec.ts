@@ -1656,7 +1656,7 @@ describe('useTrialModalProps', () => {
             const mockRevampStartTrial = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                revampStartTrial: mockRevampStartTrial,
+                startTrial: mockRevampStartTrial,
             } as unknown as UseShoppingAssistantTrialFlowReturn)
 
             const { result } = renderHookWithRouter(() =>

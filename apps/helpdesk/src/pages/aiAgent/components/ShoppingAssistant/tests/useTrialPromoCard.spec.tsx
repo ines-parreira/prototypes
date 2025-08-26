@@ -830,6 +830,7 @@ describe('useTrialPromoCard', () => {
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-account',
                 storeActivations: mockStoreActivations,
+                trialType: TrialType.ShoppingAssistant,
             })
         })
     })

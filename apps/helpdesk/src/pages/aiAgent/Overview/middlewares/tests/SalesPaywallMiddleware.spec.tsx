@@ -15,11 +15,11 @@ import { useModalManager } from 'hooks/useModalManager'
 import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import {
     useTrialEligibility,
     useTrialEligibilityForManualActivationFromFeatureFlag,
 } from 'pages/aiAgent/hooks/useTrialEligibility'
-// Import mocks
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -232,21 +232,9 @@ describe('SalesPaywallMiddleware', () => {
             canStartTrialFromFeatureFlag: false,
             shopName: 'test-shop',
         })
-        mockUseShoppingAssistantTrialFlow.mockReturnValue({
-            startTrial: jest.fn(),
-            isLoading: false,
-            isTrialModalOpen: false,
-            isSuccessModalOpen: false,
-            closeTrialUpgradeModal: jest.fn(),
-            closeSuccessModal: jest.fn(),
-            openTrialUpgradeModal: jest.fn(),
-            openUpgradePlanModal: jest.fn(),
-            closeUpgradePlanModal: jest.fn(),
-            closeManageTrialModal: jest.fn(),
-            isUpgradePlanModalOpen: false,
-            onDismissTrialUpgradeModal: jest.fn(),
-            onDismissUpgradePlanModal: jest.fn(),
-        })
+        mockUseShoppingAssistantTrialFlow.mockReturnValue(
+            getUseShoppingAssistantTrialFlowFixture(),
+        )
         mockUseTrialModalProps.mockReturnValue({
             trialUpgradePlanModal: {
                 title: 'Try the full power of AI Agent for 14 days at no additional cost',
@@ -741,21 +729,11 @@ describe('SalesPaywallMiddleware', () => {
             })
 
             const mockOpenTrialUpgradeModal = jest.fn()
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: mockOpenTrialUpgradeModal,
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+                }),
+            )
 
             // Set up other mocks to hit the upgrade paywall
             setupUseAppSelectorMock({
@@ -834,21 +812,11 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('renders trial upgrade modal when isTrialModalOpen is true', () => {
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: true,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    isTrialModalOpen: true,
+                }),
+            )
 
             renderMiddleware()
 
@@ -860,21 +828,11 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('renders success modal when isSuccessModalOpen is true', () => {
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: true,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    isSuccessModalOpen: true,
+                }),
+            )
 
             renderMiddleware()
 
@@ -886,21 +844,12 @@ describe('SalesPaywallMiddleware', () => {
         it('calls startRevampTrial when trial upgrade modal confirm is clicked', () => {
             const mockStartRevampTrial = jest.fn()
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: mockStartRevampTrial,
-                isLoading: false,
-                isTrialModalOpen: true,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    startTrialDeprecated: mockStartRevampTrial,
+                    isTrialModalOpen: true,
+                }),
+            )
 
             renderMiddleware()
 
@@ -914,21 +863,12 @@ describe('SalesPaywallMiddleware', () => {
         })
 
         it('shows loading state in trial modal when isTrialRevampLoading is true', () => {
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: true,
-                isTrialModalOpen: true,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    isLoading: true,
+                    isTrialModalOpen: true,
+                }),
+            )
 
             renderMiddleware()
 
@@ -1016,21 +956,11 @@ describe('SalesPaywallMiddleware', () => {
                 hasActiveTrial: false,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: mockOpenTrialUpgradeModal,
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+                }),
+            )
 
             renderMiddleware()
 
@@ -1052,21 +982,11 @@ describe('SalesPaywallMiddleware', () => {
                 hasActiveTrial: false,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: mockOpenUpgradePlanModal,
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    openUpgradePlanModal: mockOpenUpgradePlanModal,
+                }),
+            )
 
             const mockUpgradePlan = jest.fn()
             mockUseUpgradePlan.mockReturnValue({
@@ -1099,21 +1019,9 @@ describe('SalesPaywallMiddleware', () => {
                 hasAnyTrialOptedIn: true,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture(),
+            )
 
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlanAsync: mockUpgradePlan,
@@ -1493,7 +1401,7 @@ describe('SalesPaywallMiddleware', () => {
             mockUseActivateAiAgentTrial.mockReturnValue({
                 canStartTrial: false,
                 routes: mockRoutes,
-                startTrial: jest.fn(),
+                startTrialDeprecated: jest.fn(),
                 isLoading: false,
                 canStartTrialFromFeatureFlag: false,
                 shopName: 'test-shop',
@@ -1550,21 +1458,12 @@ describe('SalesPaywallMiddleware', () => {
                 hasAnyTrialOptedIn: true,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: mockCloseUpgradePlanModal,
-                closeManageTrialModal: mockCloseManageTrialModal,
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    closeUpgradePlanModal: mockCloseUpgradePlanModal,
+                    closeManageTrialModal: mockCloseManageTrialModal,
+                }),
+            )
 
             mockUseUpgradePlan.mockReturnValue({
                 upgradePlanAsync: mockUpgradePlan.mockResolvedValue({}),
@@ -1609,21 +1508,11 @@ describe('SalesPaywallMiddleware', () => {
                 hasAnyTrialOptedIn: true,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: mockStartRevampTrial,
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: jest.fn(),
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    startTrialDeprecated: mockStartRevampTrial,
+                }),
+            )
 
             setupUseAppSelectorMock({
                 hasAutomate: true,
@@ -1711,21 +1600,11 @@ describe('SalesPaywallMiddleware', () => {
                 hasAnyTrialOptedIn: false,
             })
 
-            mockUseShoppingAssistantTrialFlow.mockReturnValue({
-                startTrial: jest.fn(),
-                isLoading: false,
-                isTrialModalOpen: false,
-                isSuccessModalOpen: false,
-                closeTrialUpgradeModal: jest.fn(),
-                closeSuccessModal: jest.fn(),
-                openTrialUpgradeModal: jest.fn(),
-                openUpgradePlanModal: mockOpenUpgradePlanModal,
-                closeUpgradePlanModal: jest.fn(),
-                closeManageTrialModal: jest.fn(),
-                isUpgradePlanModalOpen: false,
-                onDismissTrialUpgradeModal: jest.fn(),
-                onDismissUpgradePlanModal: jest.fn(),
-            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    openUpgradePlanModal: mockOpenUpgradePlanModal,
+                }),
+            )
 
             setupUseAppSelectorMock({
                 hasAutomate: true,

@@ -3,8 +3,8 @@ import { UseShoppingAssistantTrialFlowReturn } from '../trial/hooks/useShoppingA
 export const getUseShoppingAssistantTrialFlowFixture = (
     props?: Partial<UseShoppingAssistantTrialFlowReturn>,
 ): UseShoppingAssistantTrialFlowReturn => ({
+    startTrialDeprecated: jest.fn(),
     startTrial: jest.fn(),
-    revampStartTrial: jest.fn(),
     isLoading: false,
     isTrialModalOpen: false,
     isTrialFinishSetupModalOpen: false,

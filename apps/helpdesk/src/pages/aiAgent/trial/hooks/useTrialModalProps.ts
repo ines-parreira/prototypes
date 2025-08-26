@@ -11,6 +11,7 @@ import { Cadence } from 'models/billing/types'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
@@ -246,6 +247,7 @@ const useTrialUpgradePlanModal =
     }
 
 const useNewTrialUpgradePlanModal = (
+    trialType: TrialType,
     storeName?: string,
 ): TrialModalProps['newTrialUpgradePlanModal'] => {
     const planDetails = usePlanDetails()
@@ -259,14 +261,12 @@ const useNewTrialUpgradePlanModal = (
 
     const isMultiStore = allShopifyIntegrations.length > 1
 
-    const {
-        revampStartTrial,
-        onDismissTrialUpgradeModal,
-        closeTrialUpgradeModal,
-    } = useShoppingAssistantTrialFlow({
-        accountDomain,
-        storeActivations,
-    })
+    const { startTrial, onDismissTrialUpgradeModal, closeTrialUpgradeModal } =
+        useShoppingAssistantTrialFlow({
+            accountDomain,
+            storeActivations,
+            trialType,
+        })
     return useMemo(
         () => ({
             ...createPlanModalData(
@@ -284,7 +284,7 @@ const useNewTrialUpgradePlanModal = (
                 "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
             primaryAction: {
                 label: 'Start trial now',
-                onClick: revampStartTrial,
+                onClick: startTrial,
             },
             secondaryAction: {
                 label: 'No, thanks',
@@ -294,7 +294,7 @@ const useNewTrialUpgradePlanModal = (
         }),
         [
             planDetails,
-            revampStartTrial,
+            startTrial,
             onDismissTrialUpgradeModal,
             closeTrialUpgradeModal,
             isMultiStore,
@@ -303,6 +303,7 @@ const useNewTrialUpgradePlanModal = (
 }
 
 const useTrialFinishSetupModal = (
+    trialType: TrialType,
     storeName?: string,
 ): TrialModalProps['trialFinishSetupModal'] => {
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -312,6 +313,7 @@ const useTrialFinishSetupModal = (
     const { closeTrialFinishSetupModal } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
+        trialType,
     })
     return useMemo(
         () => ({
@@ -362,6 +364,7 @@ const useTrialStartedBanner = (
         useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
+            trialType,
         })
 
     const handleManageTrial = useCallback(() => {
@@ -634,7 +637,7 @@ const useTrialEndingModal = (
     )
 }
 
-const useTrialRequestModal = (storeName?: string) => {
+const useTrialRequestModal = (trialType: TrialType, storeName?: string) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const { storeActivations } = useStoreActivations({ storeName })
@@ -642,6 +645,7 @@ const useTrialRequestModal = (storeName?: string) => {
     const { closeTrialRequestModal } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
+        trialType,
     })
 
     const { handleNotifyAdmins, accountAdmins } = useNotifyAdmins(
@@ -671,11 +675,15 @@ export const useTrialModalProps = ({
     pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
     const trialAccess = useTrialAccess(storeName)
+    const trialType = trialAccess.trialType
     const trialMetrics = useTrialMetrics()
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
-    const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(storeName)
-    const trialFinishSetupModal = useTrialFinishSetupModal(storeName)
+    const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(
+        trialType,
+        storeName,
+    )
+    const trialFinishSetupModal = useTrialFinishSetupModal(trialType, storeName)
     const trialActivatedModal = useTrialActivatedModal()
     const trialStartedBanner = useTrialStartedBanner(
         trialMetrics,
@@ -688,7 +696,7 @@ export const useTrialModalProps = ({
     })
     const trialEndingModal = useTrialEndingModal(trialMetrics)
     const trialEndedModal = useTrialEndedModal(trialMetrics)
-    const trialRequestModal = useTrialRequestModal(storeName)
+    const trialRequestModal = useTrialRequestModal(trialType, storeName)
 
     return useMemo(
         () => ({

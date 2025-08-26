@@ -65,6 +65,7 @@ export const useTrialPromoCard = (
     const trialFlow = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
+        trialType: trialAccess.trialType,
     })
 
     // Get trial start date for automation rate filters

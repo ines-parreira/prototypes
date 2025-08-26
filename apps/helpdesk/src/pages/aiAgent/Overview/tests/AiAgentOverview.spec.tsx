@@ -24,6 +24,7 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -131,9 +132,11 @@ describe('AiAgentOverview', () => {
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
         } as any)
-        mockUseTrialAccess.mockReturnValue({
-            canSeeTrialCTA: false,
-        })
+        mockUseTrialAccess.mockReturnValue(
+            createMockTrialAccess({
+                canSeeTrialCTA: false,
+            }),
+        )
 
         mockUseHasNoOnboardedStores.mockReturnValue(false)
 
@@ -303,9 +306,11 @@ describe('AiAgentOverview', () => {
 
     describe('Shopping Assistant Trial', () => {
         it('should not render trial banner when canSeeTrialCTA is false', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: false,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: false,
+                }),
+            )
 
             const { queryByText } = renderComponent()
             expect(
@@ -319,9 +324,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should render trial banner when canSeeTrialCTA is true', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { queryByText } = renderComponent()
             expect(
@@ -338,9 +345,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should toggle isUpgradeTrialModalRevampOpen when Try for X days is clicked and closed', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getByText, queryByText } = renderComponent()
 
@@ -373,9 +382,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should open upgrade trial modal when banner button is clicked', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getAllByText, queryByText } = renderComponent()
 
@@ -397,9 +408,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should display correct pricing and features in trial modal', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getAllByText, queryByText } = renderComponent()
 
@@ -425,9 +438,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should open the correct URL when clicking How Shopping Assistant Accelerates Growth', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
             const originalOpen = window.open
             window.open = jest.fn()
 
@@ -443,9 +458,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should handle multiple banner actions correctly', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getAllByText, getByText, queryByText } = renderComponent()
 
@@ -488,7 +505,7 @@ describe('AiAgentOverview', () => {
         })
 
         it('should not render trial components when canSeeTrialCTA is undefined', () => {
-            mockUseTrialAccess.mockReturnValue({})
+            mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
             const { queryByText } = renderComponent()
             expect(
@@ -502,9 +519,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should display new plan features in trial modal', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getAllByText, queryByText } = renderComponent()
 
@@ -524,7 +543,9 @@ describe('AiAgentOverview', () => {
         })
 
         it('should maintain banner visibility state correctly', () => {
-            const mockReturnValue = { canSeeTrialCTA: true }
+            const mockReturnValue = createMockTrialAccess({
+                canSeeTrialCTA: true,
+            })
             mockUseTrialAccess.mockReturnValue(mockReturnValue)
 
             const { queryByText, rerender } = renderComponent()
@@ -535,10 +556,11 @@ describe('AiAgentOverview', () => {
             ).toBeTruthy()
 
             // Change to not visible
-            mockReturnValue.canSeeTrialCTA = false
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: false,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: false,
+                }),
+            )
 
             rerender(
                 <MemoryRouter>
@@ -557,7 +579,7 @@ describe('AiAgentOverview', () => {
         })
 
         it('should handle edge case where trial access hook returns empty object', () => {
-            mockUseTrialAccess.mockReturnValue({})
+            mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
             const { queryByText } = renderComponent()
             expect(
@@ -571,9 +593,11 @@ describe('AiAgentOverview', () => {
             mockFlags({
                 [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: true,
             })
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { queryByText, getByTestId } = renderComponent()
 
@@ -597,9 +621,11 @@ describe('AiAgentOverview', () => {
         })
 
         it('should call useTrialAccess hook on every render', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: false,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: false,
+                }),
+            )
 
             // Clear any previous calls from beforeEach
             mockUseTrialAccess.mockClear()
@@ -620,9 +646,11 @@ describe('AiAgentOverview', () => {
 
     describe('State Management', () => {
         it('should handle modal state transitions correctly', () => {
-            mockUseTrialAccess.mockReturnValue({
-                canSeeTrialCTA: true,
-            })
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    canSeeTrialCTA: true,
+                }),
+            )
 
             const { getAllByText, getByText, queryByText } = renderComponent()
 

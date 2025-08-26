@@ -685,6 +685,7 @@ describe('TrialProgressModals', () => {
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-domain.com',
                 storeActivations: {},
+                trialType: TrialType.ShoppingAssistant,
             })
         })
     })

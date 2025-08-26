@@ -1,11 +1,13 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager } from 'hooks/useModalManager'
+import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { notify } from 'state/notifications/actions'
@@ -19,6 +21,7 @@ type UseShoppingAssistantTrialFlowProps = {
     storeActivations: Record<string, StoreActivation>
     onUpgradeModalClose?: () => void
     onSuccessModalOpen?: () => void
+    trialType: TrialType
 }
 
 const TRIAL_UPGRADE_MODAL_NAME = 'ShoppingAssistantTrialUpgradeModal'
@@ -27,16 +30,22 @@ const SUCCESS_MODAL_NAME = 'ShoppingAssistantSuccessModal'
 const MANAGE_TRIAL_MODAL_NAME = 'ShoppingAssistantManageTrialModal'
 const TRIAL_FINISH_SETUP_MODAL_NAME = 'ShoppingAssistantTrialFinishSetupModal'
 const TRIAL_REQUEST_MODAL_NAME = 'ShoppingAssistantTrialRequestModal'
+const AI_AGENT_TRIAL_UPGRADE_MODAL_NAME = 'AiAgentTrialUpgradeModal'
+const AI_AGENT_UPGRADE_MODAL_NAME = 'AiAgentUpgradeModal'
+const AI_AGENT_SUCCESS_MODAL_NAME = 'AiAgentSuccessModal'
+const AI_AGENT_MANAGE_TRIAL_MODAL_NAME = 'AiAgentManageTrialModal'
+const AI_AGENT_TRIAL_FINISH_SETUP_MODAL_NAME = 'AiAgentTrialFinishSetupModal'
+const AI_AGENT_TRIAL_REQUEST_MODAL_NAME = 'AiAgentTrialRequestModal'
 
 const NOTIFY_SUCCESS_MESSAGE =
     "We've received your trial extension request! Our team will review it and get back to you within 2 days via email."
 const NOTIFY_ERROR_MESSAGE =
     "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email."
 
-// TODO: [AIFLY-547] remove startTrial
+// TODO: [AIFLY-547] remove startTrialDeprecated
 export type UseShoppingAssistantTrialFlowReturn = {
-    startTrial: () => void
-    revampStartTrial: () => void
+    startTrialDeprecated: () => void
+    startTrial: (optedInForUpgrade?: boolean) => void
     isLoading: boolean
     isTrialModalOpen: boolean
     isTrialFinishSetupModalOpen: boolean
@@ -62,32 +71,68 @@ export type UseShoppingAssistantTrialFlowReturn = {
     closeAllTrialModals: () => void
 }
 
+const MODAL_NAMES: Record<
+    TrialType,
+    {
+        trialUpgradeModalName: string
+        upgradeModalName: string
+        successModalName: string
+        manageTrialModalName: string
+        trialFinishSetupModalName: string
+        trialRequestModalName: string
+    }
+> = {
+    [TrialType.AiAgent]: {
+        trialUpgradeModalName: AI_AGENT_TRIAL_UPGRADE_MODAL_NAME,
+        upgradeModalName: AI_AGENT_UPGRADE_MODAL_NAME,
+        successModalName: AI_AGENT_SUCCESS_MODAL_NAME,
+        manageTrialModalName: AI_AGENT_MANAGE_TRIAL_MODAL_NAME,
+        trialFinishSetupModalName: AI_AGENT_TRIAL_FINISH_SETUP_MODAL_NAME,
+        trialRequestModalName: AI_AGENT_TRIAL_REQUEST_MODAL_NAME,
+    },
+    [TrialType.ShoppingAssistant]: {
+        trialUpgradeModalName: TRIAL_UPGRADE_MODAL_NAME,
+        upgradeModalName: UPGRADE_MODAL_NAME,
+        successModalName: SUCCESS_MODAL_NAME,
+        manageTrialModalName: MANAGE_TRIAL_MODAL_NAME,
+        trialFinishSetupModalName: TRIAL_FINISH_SETUP_MODAL_NAME,
+        trialRequestModalName: TRIAL_REQUEST_MODAL_NAME,
+    },
+}
+
 export const useShoppingAssistantTrialFlow = ({
     accountDomain,
     storeActivations,
     onUpgradeModalClose,
     onSuccessModalOpen,
+    trialType,
 }: UseShoppingAssistantTrialFlowProps): UseShoppingAssistantTrialFlowReturn => {
-    const trialModal = useModalManager(TRIAL_UPGRADE_MODAL_NAME, {
-        autoDestroy: false,
-    })
-    const upgradeModal = useModalManager(UPGRADE_MODAL_NAME, {
-        autoDestroy: false,
-    })
-    const successModal = useModalManager(SUCCESS_MODAL_NAME, {
-        autoDestroy: false,
-    })
-    const manageTrialModal = useModalManager(MANAGE_TRIAL_MODAL_NAME, {
-        autoDestroy: false,
-    })
-    const trialFinishSetupModal = useModalManager(
-        TRIAL_FINISH_SETUP_MODAL_NAME,
-        {
-            autoDestroy: false,
-        },
-    )
+    const isAiAgentTrial = trialType === TrialType.AiAgent
+    const {
+        trialUpgradeModalName,
+        upgradeModalName,
+        successModalName,
+        manageTrialModalName,
+        trialFinishSetupModalName,
+        trialRequestModalName,
+    } = MODAL_NAMES[trialType]
 
-    const trialRequestModal = useModalManager(TRIAL_REQUEST_MODAL_NAME, {
+    const trialModal = useModalManager(trialUpgradeModalName, {
+        autoDestroy: false,
+    })
+    const upgradeModal = useModalManager(upgradeModalName, {
+        autoDestroy: false,
+    })
+    const successModal = useModalManager(successModalName, {
+        autoDestroy: false,
+    })
+    const manageTrialModal = useModalManager(manageTrialModalName, {
+        autoDestroy: false,
+    })
+    const trialFinishSetupModal = useModalManager(trialFinishSetupModalName, {
+        autoDestroy: false,
+    })
+    const trialRequestModal = useModalManager(trialRequestModalName, {
         autoDestroy: false,
     })
 
@@ -104,11 +149,18 @@ export const useShoppingAssistantTrialFlow = ({
     const { mutateAsync: triggerTrialMutation, isLoading } =
         useStartShoppingAssistantTrial({
             onError: () => {
-                trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+                trialModal.closeModal(trialUpgradeModalName)
             },
         })
 
-    const startTrial = () => {
+    const { mutateAsync: triggerAiAgentTrialMutation } =
+        useStartAiAgentTrialMutation({
+            onError: () => {
+                trialModal.closeModal(trialUpgradeModalName)
+            },
+        })
+
+    const startTrialDeprecated = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
         })
@@ -120,8 +172,8 @@ export const useShoppingAssistantTrialFlow = ({
             {
                 onSuccess: () => {
                     // Close upgrade modal and open success modal
-                    trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
-                    successModal.openModal(SUCCESS_MODAL_NAME)
+                    trialModal.closeModal(trialUpgradeModalName)
+                    successModal.openModal(successModalName)
 
                     // Call optional callbacks
                     onUpgradeModalClose?.()
@@ -131,9 +183,10 @@ export const useShoppingAssistantTrialFlow = ({
         )
     }
 
-    const revampStartTrial = () => {
+    const startShoppingAssistantTrial = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
+            trialType: TrialType.ShoppingAssistant,
         })
         triggerTrialMutation(
             {
@@ -143,10 +196,8 @@ export const useShoppingAssistantTrialFlow = ({
             {
                 onSuccess: () => {
                     // Close upgrade modal and open finish setup modal
-                    trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
-                    trialFinishSetupModal.openModal(
-                        TRIAL_FINISH_SETUP_MODAL_NAME,
-                    )
+                    trialModal.closeModal(trialUpgradeModalName)
+                    trialFinishSetupModal.openModal(trialFinishSetupModalName)
 
                     onUpgradeModalClose?.()
                 },
@@ -154,58 +205,76 @@ export const useShoppingAssistantTrialFlow = ({
         )
     }
 
+    const startAiAgentTrial = (optedInForUpgrade?: boolean) => {
+        logEvent(SegmentEvent.PricingModalClicked, {
+            type: 'ai_agent_trial_started',
+            trialType: TrialType.AiAgent,
+        })
+        triggerAiAgentTrialMutation(['shopify', shopName, optedInForUpgrade], {
+            onSuccess: () => {
+                trialModal.closeModal(trialUpgradeModalName)
+                onUpgradeModalClose?.()
+            },
+        })
+    }
+
     const onDismissTrialUpgradeModal = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'current_plan',
+            trialType,
         })
-        trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+        trialModal.closeModal(trialUpgradeModalName)
         onUpgradeModalClose?.()
     }
 
     const closeTrialUpgradeModal = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'closed',
+            trialType,
         })
-        trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
+        trialModal.closeModal(trialUpgradeModalName)
         onUpgradeModalClose?.()
     }
 
     const onDismissUpgradePlanModal = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'current_plan',
+            trialType,
         })
-        upgradeModal.closeModal(UPGRADE_MODAL_NAME)
+        upgradeModal.closeModal(upgradeModalName)
     }
 
     const closeUpgradePlanModal = () => {
-        upgradeModal.closeModal(UPGRADE_MODAL_NAME)
+        upgradeModal.closeModal(upgradeModalName)
     }
 
     const closeManageTrialModal = () => {
-        manageTrialModal.closeModal(MANAGE_TRIAL_MODAL_NAME)
+        manageTrialModal.closeModal(manageTrialModalName)
     }
 
     const closeSuccessModal = () => {
         history.push(routes.customerEngagement)
-        successModal.closeModal(SUCCESS_MODAL_NAME)
+        successModal.closeModal(successModalName)
     }
 
     const openManageTrialModal = () => {
-        manageTrialModal.openModal(MANAGE_TRIAL_MODAL_NAME)
+        manageTrialModal.openModal(manageTrialModalName)
     }
 
     const openTrialUpgradeModal = () => {
         logEvent(SegmentEvent.PricingModalViewed, {
             type: 'Trial',
+            trialType,
         })
-        trialModal.openModal(TRIAL_UPGRADE_MODAL_NAME)
+        trialModal.openModal(trialUpgradeModalName)
     }
 
     const openUpgradePlanModal = (isTrial: boolean) => {
         logEvent(SegmentEvent.PricingModalViewed, {
             type: isTrial ? 'Trial' : 'Upgrade',
+            trialType,
         })
-        upgradeModal.openModal(UPGRADE_MODAL_NAME)
+        upgradeModal.openModal(upgradeModalName)
     }
 
     const onConfirmTrial = () => {
@@ -216,29 +285,42 @@ export const useShoppingAssistantTrialFlow = ({
         }
     }
 
-    const closeTrialFinishSetupModal = () => {
-        history.push(routes.customerEngagement)
-        trialFinishSetupModal.closeModal(TRIAL_FINISH_SETUP_MODAL_NAME)
-    }
+    const closeTrialFinishSetupModal = useCallback(() => {
+        if (isAiAgentTrial) {
+            history.push(routes.perShopOverview)
+        } else {
+            history.push(routes.customerEngagement)
+        }
+        trialFinishSetupModal.closeModal(trialFinishSetupModalName)
+    }, [
+        isAiAgentTrial,
+        routes.perShopOverview,
+        routes.customerEngagement,
+        history,
+        trialFinishSetupModal,
+        trialFinishSetupModalName,
+    ])
 
     const openTrialFinishSetupModal = () => {
-        trialFinishSetupModal.openModal(TRIAL_FINISH_SETUP_MODAL_NAME)
+        trialFinishSetupModal.openModal(trialFinishSetupModalName)
     }
 
     const openTrialRequestModal = () => {
         logEvent(SegmentEvent.PricingModalViewed, {
             type: 'Notify',
+            trialType,
         })
-        trialRequestModal.openModal(TRIAL_REQUEST_MODAL_NAME)
+        trialRequestModal.openModal(trialRequestModalName)
     }
 
     const closeTrialRequestModal = () => {
-        trialRequestModal.closeModal(TRIAL_REQUEST_MODAL_NAME)
+        trialRequestModal.closeModal(trialRequestModalName)
     }
 
     const onRequestTrialExtension = (): Promise<boolean> => {
         logEvent(SegmentEvent.TrialManageTrialExtensionRequestClicked, {
             CTA: 'Request Trial Extension',
+            trialType,
         })
         return notifySlackChannel().then((isSent) => {
             if (isSent) {
@@ -262,23 +344,26 @@ export const useShoppingAssistantTrialFlow = ({
     }
 
     const closeAllTrialModals = () => {
-        trialModal.closeModal(TRIAL_UPGRADE_MODAL_NAME)
-        upgradeModal.closeModal(UPGRADE_MODAL_NAME)
-        successModal.closeModal(SUCCESS_MODAL_NAME)
-        manageTrialModal.closeModal(MANAGE_TRIAL_MODAL_NAME)
-        trialFinishSetupModal.closeModal(TRIAL_FINISH_SETUP_MODAL_NAME)
+        trialModal.closeModal(trialUpgradeModalName)
+        upgradeModal.closeModal(upgradeModalName)
+        successModal.closeModal(successModalName)
+        manageTrialModal.closeModal(manageTrialModalName)
+        trialFinishSetupModal.closeModal(trialFinishSetupModalName)
+        trialRequestModal.closeModal(trialRequestModalName)
     }
 
+    const startTrial = isAiAgentTrial
+        ? startAiAgentTrial
+        : startShoppingAssistantTrial
+
     return {
+        startTrialDeprecated,
         startTrial,
-        revampStartTrial,
         isLoading,
-        isUpgradePlanModalOpen: upgradeModal.isOpen(UPGRADE_MODAL_NAME),
-        isTrialModalOpen: trialModal.isOpen(TRIAL_UPGRADE_MODAL_NAME),
-        isSuccessModalOpen: successModal.isOpen(SUCCESS_MODAL_NAME),
-        isManageTrialModalOpen: manageTrialModal.isOpen(
-            MANAGE_TRIAL_MODAL_NAME,
-        ),
+        isUpgradePlanModalOpen: upgradeModal.isOpen(upgradeModalName),
+        isTrialModalOpen: trialModal.isOpen(trialUpgradeModalName),
+        isSuccessModalOpen: successModal.isOpen(successModalName),
+        isManageTrialModalOpen: manageTrialModal.isOpen(manageTrialModalName),
         closeTrialUpgradeModal,
         onDismissTrialUpgradeModal,
         onDismissUpgradePlanModal,
@@ -292,10 +377,10 @@ export const useShoppingAssistantTrialFlow = ({
         closeTrialFinishSetupModal,
         openTrialFinishSetupModal,
         isTrialFinishSetupModalOpen: trialFinishSetupModal.isOpen(
-            TRIAL_FINISH_SETUP_MODAL_NAME,
+            trialFinishSetupModalName,
         ),
         isTrialRequestModalOpen: trialRequestModal.isOpen(
-            TRIAL_REQUEST_MODAL_NAME,
+            trialRequestModalName,
         ),
         openTrialRequestModal,
         closeTrialRequestModal,

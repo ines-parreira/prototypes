@@ -38,6 +38,7 @@ export const TrialEndingModal = ({
         useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
+            trialType,
         })
 
     const canRequestExtension = canRequestTrialExtension()

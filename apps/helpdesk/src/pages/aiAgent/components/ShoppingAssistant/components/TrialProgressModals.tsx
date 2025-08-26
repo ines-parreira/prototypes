@@ -44,6 +44,7 @@ export const TrialProgressModals = ({
     } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
+        trialType,
     })
 
     const onOptOutClick = () => {

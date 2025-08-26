@@ -9,7 +9,9 @@ import { Router } from 'react-router-dom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
+import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -17,9 +19,10 @@ import { useNotifyTrialExtensionSlackChannel } from '../hooks/useNotifyTrialExte
 import { useShoppingAssistantTrialFlow } from '../hooks/useShoppingAssistantTrialFlow'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
 
-// Mock the useStartShoppingAssistantTrial hook
+// Mock the hooks
 jest.mock('../hooks/useStartShoppingAssistantTrial')
 jest.mock('../hooks/useNotifyTrialExtensionSlackChannel')
+jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useModalManager')
 jest.mock('common/segment')
 jest.mock('hooks/useAppDispatch')
@@ -27,6 +30,9 @@ jest.mock('state/notifications/actions')
 
 const mockUseStartShoppingAssistantTrial = assumeMock(
     useStartShoppingAssistantTrial,
+)
+const mockUseStartAiAgentTrialMutation = assumeMock(
+    useStartAiAgentTrialMutation,
 )
 const mockUseModalManager = assumeMock(useModalManager)
 const mockUseNotifyTrialExtensionSlackChannel = assumeMock(
@@ -38,11 +44,28 @@ const mockUseAppDispatch = assumeMock(useAppDispatch)
 
 const mockDispatch = jest.fn()
 const mockNotifySlackChannel = jest.fn()
+const mockHistoryPush = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
+}))
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}))
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: () => ({
+        routes: {
+            customerEngagement: '/ai-agent/customer-engagement',
+            perShopOverview: '/ai-agent/overview',
+        },
+    }),
 }))
 
 describe('useShoppingAssistantTrialFlow', () => {
@@ -56,11 +79,13 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     let queryClient: QueryClient
     let mockMutateAsync: jest.Mock
+    let mockAiAgentMutateAsync: jest.Mock
     let wrapper: React.FC<{ children: React.ReactNode }>
     let mockModalManager: useModalManagerApi
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockHistoryPush.mockClear()
 
         // Mock modal manager
         mockModalManager = {
@@ -96,10 +121,29 @@ describe('useShoppingAssistantTrialFlow', () => {
             </Router>
         )
 
-        // Mock the mutation
+        // Mock the mutations
         mockMutateAsync = jest.fn()
         mockUseStartShoppingAssistantTrial.mockReturnValue({
             mutateAsync: mockMutateAsync,
+            isLoading: false,
+            mutate: jest.fn(),
+            reset: jest.fn(),
+            isIdle: true,
+            isPaused: false,
+            isSuccess: false,
+            isError: false,
+            data: undefined,
+            error: null,
+            failureCount: 0,
+            failureReason: null,
+            status: 'idle',
+            variables: undefined,
+            context: undefined,
+        })
+
+        mockAiAgentMutateAsync = jest.fn()
+        mockUseStartAiAgentTrialMutation.mockReturnValue({
+            mutateAsync: mockAiAgentMutateAsync,
             isLoading: false,
             mutate: jest.fn(),
             reset: jest.fn(),
@@ -121,16 +165,26 @@ describe('useShoppingAssistantTrialFlow', () => {
         queryClient.clear()
     })
 
+    const renderHookWithDefaults = (
+        overrides: Partial<
+            Parameters<typeof useShoppingAssistantTrialFlow>[0]
+        > = {},
+    ) => {
+        return renderHook(
+            () =>
+                useShoppingAssistantTrialFlow({
+                    accountDomain: mockAccountDomain,
+                    storeActivations: mockStoreActivations,
+                    trialType: TrialType.ShoppingAssistant,
+                    ...overrides,
+                }),
+            { wrapper },
+        )
+    }
+
     describe('initial state', () => {
         it('should have correct initial state', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             expect(result.current.isLoading).toBe(false)
             expect(result.current.isTrialModalOpen).toBe(false)
@@ -140,14 +194,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('modal state management', () => {
         it('should open upgrade modal and log event when openTrialUpgradeModal is called', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             act(() => {
                 result.current.openTrialUpgradeModal()
@@ -160,20 +207,15 @@ describe('useShoppingAssistantTrialFlow', () => {
                 SegmentEvent.PricingModalViewed,
                 {
                     type: 'Trial',
+                    trialType: TrialType.ShoppingAssistant,
                 },
             )
         })
 
         it('should close upgrade modal and call callback when closeUpgradeModal is called', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                        onUpgradeModalClose: mockOnUpgradeModalClose,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+            })
 
             // First open the modal
             act(() => {
@@ -191,18 +233,56 @@ describe('useShoppingAssistantTrialFlow', () => {
             expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
         })
 
+        it('should dismiss upgrade modal and log event when onDismissTrialUpgradeModal is called', () => {
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+            })
+
+            act(() => {
+                result.current.onDismissTrialUpgradeModal()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/pricing-modal-clicked',
+                {
+                    type: 'current_plan',
+                    trialType: TrialType.ShoppingAssistant,
+                },
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialUpgradeModal',
+            )
+            expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should dismiss upgrade modal and log event with AiAgent trial type', () => {
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+                trialType: TrialType.AiAgent,
+            })
+
+            act(() => {
+                result.current.onDismissTrialUpgradeModal()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent/pricing-modal-clicked',
+                {
+                    type: 'current_plan',
+                    trialType: TrialType.AiAgent,
+                },
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'AiAgentTrialUpgradeModal',
+            )
+            expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+        })
+
         it('should close success modal when closeSuccessModal is called', () => {
             // Set up mock to return true for success modal initially
             mockModalManager.isOpen = jest.fn().mockReturnValue(true)
 
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             // Verify success modal is open
             expect(result.current.isSuccessModalOpen).toBe(true)
@@ -220,14 +300,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         it('should open trial finish setup modal when openTrialFinishSetupModal is called', () => {
             mockModalManager.isOpen = jest.fn().mockReturnValue(true)
 
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             expect(result.current.isTrialFinishSetupModalOpen).toBe(true)
 
@@ -242,14 +315,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         })
 
         it('should close all trial modals when closeAllTrialModals is called', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             act(() => {
                 result.current.closeAllTrialModals()
@@ -270,18 +336,44 @@ describe('useShoppingAssistantTrialFlow', () => {
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
                 'ShoppingAssistantTrialFinishSetupModal',
             )
-            expect(mockModalManager.closeModal).toHaveBeenCalledTimes(5)
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialRequestModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledTimes(6)
+        })
+
+        it('should navigate to customer engagement when closeTrialFinishSetupModal is called with ShoppingAssistant trial type', () => {
+            const { result } = renderHookWithDefaults()
+
+            act(() => {
+                result.current.closeTrialFinishSetupModal()
+            })
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/ai-agent/customer-engagement',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialFinishSetupModal',
+            )
+        })
+
+        it('should navigate to overview when closeTrialFinishSetupModal is called with AiAgent trial type', () => {
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+            })
+
+            act(() => {
+                result.current.closeTrialFinishSetupModal()
+            })
+
+            expect(mockHistoryPush).toHaveBeenCalledWith('/ai-agent/overview')
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'AiAgentTrialFinishSetupModal',
+            )
         })
 
         it('should open upgrade plan modal and log trial event when openUpgradePlanModal is called with isTrial=true', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             act(() => {
                 result.current.openUpgradePlanModal(true)
@@ -294,19 +386,13 @@ describe('useShoppingAssistantTrialFlow', () => {
                 SegmentEvent.PricingModalViewed,
                 {
                     type: 'Trial',
+                    trialType: TrialType.ShoppingAssistant,
                 },
             )
         })
 
         it('should open upgrade plan modal and log upgrade event when openUpgradePlanModal is called with isTrial=false', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             act(() => {
                 result.current.openUpgradePlanModal(false)
@@ -319,6 +405,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 SegmentEvent.PricingModalViewed,
                 {
                     type: 'Upgrade',
+                    trialType: TrialType.ShoppingAssistant,
                 },
             )
         })
@@ -326,17 +413,10 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('startTrial functionality', () => {
         it('should call mutateAsync with correct parameters', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             act(() => {
-                result.current.startTrial()
+                result.current.startTrialDeprecated()
             })
 
             expect(mockMutateAsync).toHaveBeenCalledWith(
@@ -349,16 +429,10 @@ describe('useShoppingAssistantTrialFlow', () => {
         })
 
         it('should handle successful trial start', async () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                        onUpgradeModalClose: mockOnUpgradeModalClose,
-                        onSuccessModalOpen: mockOnSuccessModalOpen,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+                onSuccessModalOpen: mockOnSuccessModalOpen,
+            })
 
             // Open upgrade modal first
             act(() => {
@@ -371,7 +445,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Start trial
             act(() => {
-                result.current.startTrial()
+                result.current.startTrialDeprecated()
             })
 
             // Simulate successful mutation
@@ -412,14 +486,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 context: undefined,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             expect(result.current.isLoading).toBe(true)
         })
@@ -427,14 +494,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('callback functions', () => {
         it('should not throw when callbacks are not provided', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             // Should not throw
             expect(() => {
@@ -445,7 +505,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // Start trial and trigger success
             act(() => {
-                result.current.startTrial()
+                result.current.startTrialDeprecated()
             })
 
             const onSuccessCallback = mockMutateAsync.mock.calls[0][1].onSuccess
@@ -459,15 +519,9 @@ describe('useShoppingAssistantTrialFlow', () => {
         })
 
         it('should handle multiple calls to callbacks gracefully', () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                        onUpgradeModalClose: mockOnUpgradeModalClose,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+            })
 
             // Call closeUpgradeModal multiple times
             act(() => {
@@ -485,14 +539,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         it('should handle successful trial extension request', async () => {
             mockNotifySlackChannel.mockResolvedValue(true)
 
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             const success = await act(async () => {
                 return await result.current.onRequestTrialExtension()
@@ -502,6 +549,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 'ai-agent/trial-manage-banner-trial-extension-requested',
                 {
                     CTA: 'Request Trial Extension',
+                    trialType: TrialType.ShoppingAssistant,
                 },
             )
             expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
@@ -518,14 +566,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         it('should handle failed trial extension request', async () => {
             mockNotifySlackChannel.mockResolvedValue(false)
 
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults()
 
             const success = await act(async () => {
                 return await result.current.onRequestTrialExtension()
@@ -535,6 +576,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 'ai-agent/trial-manage-banner-trial-extension-requested',
                 {
                     CTA: 'Request Trial Extension',
+                    trialType: TrialType.ShoppingAssistant,
                 },
             )
             expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
@@ -551,16 +593,10 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('integration', () => {
         it('should handle complete flow from opening modal to successful trial', async () => {
-            const { result } = renderHook(
-                () =>
-                    useShoppingAssistantTrialFlow({
-                        accountDomain: mockAccountDomain,
-                        storeActivations: mockStoreActivations,
-                        onUpgradeModalClose: mockOnUpgradeModalClose,
-                        onSuccessModalOpen: mockOnSuccessModalOpen,
-                    }),
-                { wrapper },
-            )
+            const { result } = renderHookWithDefaults({
+                onUpgradeModalClose: mockOnUpgradeModalClose,
+                onSuccessModalOpen: mockOnSuccessModalOpen,
+            })
 
             // 1. Open upgrade modal
             act(() => {
@@ -572,7 +608,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             // 2. Start trial
             act(() => {
-                result.current.startTrial()
+                result.current.startTrialDeprecated()
             })
 
             // 3. Simulate successful mutation
@@ -598,6 +634,288 @@ describe('useShoppingAssistantTrialFlow', () => {
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
                 'ShoppingAssistantSuccessModal',
             )
+        })
+    })
+
+    describe('AI Agent trial flow', () => {
+        describe('initial state', () => {
+            it('should have correct AI Agent trial initial state', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                expect(result.current.isTrialModalOpen).toBe(false)
+                expect(result.current.isTrialRequestModalOpen).toBe(false)
+            })
+        })
+
+        describe('modal management', () => {
+            it('should open AI Agent trial upgrade modal when openTrialUpgradeModal is called with AiAgent trial type', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.openTrialUpgradeModal()
+                })
+
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+            })
+
+            it('should close AI Agent trial upgrade modal and call callback when closeTrialUpgradeModal is called with AiAgent trial type', () => {
+                const { result } = renderHookWithDefaults({
+                    onUpgradeModalClose: mockOnUpgradeModalClose,
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.closeTrialUpgradeModal()
+                })
+
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+                expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+            })
+
+            it('should open AI Agent trial request modal when openTrialRequestModal is called with AiAgent trial type', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.openTrialRequestModal()
+                })
+
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialRequestModal',
+                )
+            })
+
+            it('should close AI Agent trial request modal when closeTrialRequestModal is called with AiAgent trial type', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.closeTrialRequestModal()
+                })
+
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialRequestModal',
+                )
+            })
+        })
+
+        describe('startTrial functionality for AiAgent trial type', () => {
+            const defaultProps = {
+                accountDomain: mockAccountDomain,
+                storeActivations: mockStoreActivations,
+                trialType: TrialType.AiAgent,
+            }
+
+            const renderHookWithProps = (
+                props: Partial<
+                    Parameters<typeof useShoppingAssistantTrialFlow>[0]
+                >,
+            ) => {
+                return renderHook(
+                    () =>
+                        useShoppingAssistantTrialFlow({
+                            ...defaultProps,
+                            ...props,
+                        }),
+                    { wrapper },
+                )
+            }
+
+            it('should call AI Agent mutation with correct parameters when optedInForUpgrade is true', () => {
+                const { result } = renderHookWithProps({})
+
+                act(() => {
+                    result.current.startTrial(true)
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'Test Store 1', true],
+                    expect.any(Object),
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent/pricing-modal-clicked',
+                    {
+                        type: 'ai_agent_trial_started',
+                        trialType: 'aiAgent',
+                    },
+                )
+            })
+
+            it('should call AI Agent mutation with correct parameters when optedInForUpgrade is false', () => {
+                const { result } = renderHookWithProps({})
+
+                act(() => {
+                    result.current.startTrial(false)
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'Test Store 1', false],
+                    expect.any(Object),
+                )
+            })
+
+            it('should call AI Agent mutation with undefined when no parameter is provided', () => {
+                const { result } = renderHookWithProps({})
+
+                act(() => {
+                    result.current.startTrial()
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'Test Store 1', undefined],
+                    expect.any(Object),
+                )
+            })
+
+            it('should handle successful AI Agent trial start', async () => {
+                const { result } = renderHookWithProps({
+                    onUpgradeModalClose: mockOnUpgradeModalClose,
+                    onSuccessModalOpen: mockOnSuccessModalOpen,
+                })
+
+                // Start AI Agent trial
+                act(() => {
+                    result.current.startTrial(true)
+                })
+
+                // Simulate successful mutation
+                const onSuccessCallback =
+                    mockAiAgentMutateAsync.mock.calls[0][1].onSuccess
+                await act(async () => {
+                    await onSuccessCallback()
+                })
+
+                // Check modal manager calls
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+
+                // Check callbacks were called
+                expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('closeAllTrialModals', () => {
+            it('should close all trial modals including AI Agent modals', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.closeAllTrialModals()
+                })
+
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentUpgradeModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentSuccessModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentManageTrialModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialFinishSetupModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialRequestModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledTimes(6)
+            })
+        })
+
+        describe('integration', () => {
+            it('should handle complete AI Agent trial flow from opening modal to successful trial', async () => {
+                const { result } = renderHookWithDefaults({
+                    onUpgradeModalClose: mockOnUpgradeModalClose,
+                    onSuccessModalOpen: mockOnSuccessModalOpen,
+                    trialType: TrialType.AiAgent,
+                })
+
+                // 1. Open AI Agent upgrade modal
+                act(() => {
+                    result.current.openTrialUpgradeModal()
+                })
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+
+                // 2. Start AI Agent trial
+                act(() => {
+                    result.current.startTrial(true)
+                })
+
+                // 3. Simulate successful mutation
+                const onSuccessCallback =
+                    mockAiAgentMutateAsync.mock.calls[0][1].onSuccess
+                await act(async () => {
+                    await onSuccessCallback()
+                })
+
+                // 4. Verify final state
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+                expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+            })
+
+            it('should handle complete Shopping Assistant trial flow using startTrial', async () => {
+                const { result } = renderHookWithDefaults({
+                    onUpgradeModalClose: mockOnUpgradeModalClose,
+                })
+
+                // 1. Start Shopping Assistant trial using startTrial
+                act(() => {
+                    result.current.startTrial()
+                })
+
+                // 2. Verify correct mutation is called with correct parameters
+                expect(mockMutateAsync).toHaveBeenCalledWith(
+                    {
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    },
+                    expect.any(Object),
+                )
+
+                // 3. Verify correct event is logged
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent/pricing-modal-clicked',
+                    {
+                        type: 'trial_started',
+                        trialType: TrialType.ShoppingAssistant,
+                    },
+                )
+
+                // 4. Simulate successful mutation
+                const onSuccessCallback =
+                    mockMutateAsync.mock.calls[0][1].onSuccess
+                await act(async () => {
+                    await onSuccessCallback()
+                })
+
+                // 5. Verify modal transitions - should close upgrade and open finish setup
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'ShoppingAssistantTrialUpgradeModal',
+                )
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'ShoppingAssistantTrialFinishSetupModal',
+                )
+                expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+            })
         })
     })
 })

@@ -78,6 +78,7 @@ export const SalesPaywallMiddleware =
             hasCurrentStoreTrialOptedOut,
             canNotifyAdmin,
             isLoading: isTrialAccessLoading,
+            trialType,
         } = useTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
@@ -122,7 +123,7 @@ export const SalesPaywallMiddleware =
             : canStartTrialOriginal || canStartTrialFromFeatureFlag
 
         const {
-            startTrial: startRevampTrial,
+            startTrialDeprecated: startRevampTrial,
             isLoading: isTrialRevampLoading,
             isTrialModalOpen,
             isSuccessModalOpen,
@@ -139,6 +140,7 @@ export const SalesPaywallMiddleware =
         } = useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
+            trialType,
         })
 
         const onStartTrialClicked = () => {

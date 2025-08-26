@@ -13,7 +13,6 @@ import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModa
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
@@ -30,7 +29,6 @@ jest.mock('pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal')
 jest.mock('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
-jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
@@ -45,8 +43,6 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('TrialManageWorkflow', () => {
-    const mockOpenManageTrialModal = jest.fn()
-    const mockCloseManageTrialModal = jest.fn()
     const mockWindowOpen = jest.fn()
     const mockLogEvent = jest.fn()
     const mockOptOutMutate = jest.fn()
@@ -102,11 +98,6 @@ describe('TrialManageWorkflow', () => {
             canBookDemo: false,
             canSeeSystemBanner: false,
             canSeeTrialCTA: false,
-        })
-        ;(useShoppingAssistantTrialFlow as jest.Mock).mockReturnValue({
-            openManageTrialModal: mockOpenManageTrialModal,
-            isManageTrialModalOpen: false,
-            closeManageTrialModal: mockCloseManageTrialModal,
         })
         ;(useUpgradePlan as jest.Mock).mockReturnValue({
             upgradePlan: mockUpgradePlan,
