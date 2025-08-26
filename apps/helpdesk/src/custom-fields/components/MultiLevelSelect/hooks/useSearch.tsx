@@ -4,6 +4,7 @@ import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldValue } from 'custom-fields/types'
 
 import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../constants'
+import { fromTreeKey } from '../helpers/buildTreeOfChoices'
 import { getFullValueFromCurrentPath } from '../helpers/getFullValueFromCurrentPath'
 import { ChoicesTree, SearchResults } from '../types'
 
@@ -55,15 +56,18 @@ function searchChoices(
     }
 
     for (const [key, option] of currentChoices.entries()) {
+        const keyWithoutMarker = fromTreeKey(key)
         if (
             typeof option.value === 'string' &&
             option.children.size === 0 &&
             (includeAllValues ||
-                key.toLowerCase().includes(search.toLowerCase()))
+                keyWithoutMarker.toLowerCase().includes(search.toLowerCase()))
         ) {
             searchResults.push({
                 label: getValueLabel(option.value),
-                path: currentPath.join(DROPDOWN_NESTING_FANCY_DELIMITER),
+                path: currentPath
+                    .map(fromTreeKey)
+                    .join(DROPDOWN_NESTING_FANCY_DELIMITER),
                 value: getFullValueFromCurrentPath(currentPath, option.value),
             })
         }

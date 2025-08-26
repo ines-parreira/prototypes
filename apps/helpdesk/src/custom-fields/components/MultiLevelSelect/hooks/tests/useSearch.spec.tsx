@@ -275,5 +275,112 @@ describe('useSearch', () => {
             })
             expect(result.current.valueIsInSearchResults).toEqual(true)
         })
+
+        it('should not include tree markers (::branch, ::leaf) in search result paths', () => {
+            // Create choices with tree markers as they would appear in the actual tree structure
+            const choices = new Map([
+                [
+                    'category1::branch',
+                    {
+                        value: null,
+                        children: new Map([
+                            [
+                                'item1::leaf',
+                                { value: 'item1', children: new Map() },
+                            ],
+                            [
+                                'item2::leaf',
+                                { value: 'item2', children: new Map() },
+                            ],
+                            [
+                                'subcategory::branch',
+                                {
+                                    value: null,
+                                    children: new Map([
+                                        [
+                                            'subitem1::leaf',
+                                            {
+                                                value: 'subitem1',
+                                                children: new Map(),
+                                            },
+                                        ],
+                                        [
+                                            'subitem2::leaf',
+                                            {
+                                                value: 'subitem2',
+                                                children: new Map(),
+                                            },
+                                        ],
+                                    ]),
+                                },
+                            ],
+                        ]),
+                    },
+                ],
+                [
+                    'category2::branch',
+                    {
+                        value: null,
+                        children: new Map([
+                            [
+                                'item3::leaf',
+                                { value: 'item3', children: new Map() },
+                            ],
+                        ]),
+                    },
+                ],
+                [
+                    'standalone::leaf',
+                    { value: 'standalone', children: new Map() },
+                ],
+            ])
+
+            const { result } = renderHook(() =>
+                useSearch({
+                    choices,
+                    dropdownValue: undefined,
+                    isDisabled: false,
+                }),
+            )
+
+            act(() => {
+                result.current.setSearch('item')
+            })
+
+            // Verify that all search results have clean paths without tree markers
+            result.current.searchResults.forEach((searchResult) => {
+                expect(searchResult.path).not.toContain('::branch')
+                expect(searchResult.path).not.toContain('::leaf')
+            })
+
+            // Verify specific expected results
+            expect(result.current.searchResults).toEqual([
+                {
+                    label: 'item1',
+                    path: 'category1',
+                    value: 'category1::item1',
+                },
+                {
+                    label: 'item2',
+                    path: 'category1',
+                    value: 'category1::item2',
+                },
+                {
+                    label: 'subitem1',
+                    path: 'category1 > subcategory',
+                    value: 'category1::subcategory::subitem1',
+                },
+                {
+                    label: 'subitem2',
+                    path: 'category1 > subcategory',
+                    value: 'category1::subcategory::subitem2',
+                },
+                {
+                    label: 'item3',
+                    path: 'category2',
+                    value: 'category2::item3',
+                },
+            ])
+        })
     })
 })
