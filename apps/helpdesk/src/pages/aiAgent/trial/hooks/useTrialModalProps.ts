@@ -366,7 +366,7 @@ const useTrialStartedBanner = (
             logEvent(SegmentEvent.TrialBannerSettingsClicked, {
                 pageName,
             })
-            openUpgradePlanModal()
+            openUpgradePlanModal(false)
         }
     }, [openUpgradePlanModal, pageName, hasAnyTrialOptedIn, upgradePlanAsync])
 

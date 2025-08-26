@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     ModalBodyWrapper,
     ModalHeaderWrapper,
@@ -209,12 +207,6 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
         }
         onConfirm()
     }
-
-    useEffectOnce(() => {
-        logEvent(SegmentEvent.PricingModalViewed, {
-            type: isTrial ? 'Trial' : 'Upgrade',
-        })
-    })
 
     return (
         <ModalWrapper isOpen size="lg" toggle={onClose} fade centered>

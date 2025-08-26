@@ -84,7 +84,11 @@ export const useShoppingAssistantPrimaryCTA = ({
                 TrialEventType.UpgradePlan,
                 TrialType.ShoppingAssistant,
             )
-            await upgradePlanAsync()
+            if (isOptedOut) {
+                trialFlow.openUpgradePlanModal(false)
+            } else {
+                await upgradePlanAsync()
+            }
         },
         disabled: isUpgradePlanLoading,
         isLoading: isUpgradePlanLoading,

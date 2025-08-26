@@ -215,7 +215,7 @@ export const SalesPaywallMiddleware =
                 if (hasAnyTrialOptedIn) {
                     onUpgradeClick()
                 } else {
-                    openUpgradePlanModal()
+                    openUpgradePlanModal(false)
                 }
             } else {
                 showEarlyAccessModal()

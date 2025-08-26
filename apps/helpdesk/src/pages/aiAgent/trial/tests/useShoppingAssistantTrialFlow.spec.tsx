@@ -6,7 +6,7 @@ import { act, renderHook } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-import { logEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
@@ -139,7 +139,7 @@ describe('useShoppingAssistantTrialFlow', () => {
     })
 
     describe('modal state management', () => {
-        it('should open upgrade modal when openUpgradeModal is called', () => {
+        it('should open upgrade modal and log event when openTrialUpgradeModal is called', () => {
             const { result } = renderHook(
                 () =>
                     useShoppingAssistantTrialFlow({
@@ -155,6 +155,12 @@ describe('useShoppingAssistantTrialFlow', () => {
 
             expect(mockModalManager.openModal).toHaveBeenCalledWith(
                 'ShoppingAssistantTrialUpgradeModal',
+            )
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                },
             )
         })
 
@@ -265,6 +271,56 @@ describe('useShoppingAssistantTrialFlow', () => {
                 'ShoppingAssistantTrialFinishSetupModal',
             )
             expect(mockModalManager.closeModal).toHaveBeenCalledTimes(5)
+        })
+
+        it('should open upgrade plan modal and log trial event when openUpgradePlanModal is called with isTrial=true', () => {
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            act(() => {
+                result.current.openUpgradePlanModal(true)
+            })
+
+            expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                'ShoppingAssistantUpgradeModal',
+            )
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                },
+            )
+        })
+
+        it('should open upgrade plan modal and log upgrade event when openUpgradePlanModal is called with isTrial=false', () => {
+            const { result } = renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                    }),
+                { wrapper },
+            )
+
+            act(() => {
+                result.current.openUpgradePlanModal(false)
+            })
+
+            expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                'ShoppingAssistantUpgradeModal',
+            )
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Upgrade',
+                },
+            )
         })
     })
 

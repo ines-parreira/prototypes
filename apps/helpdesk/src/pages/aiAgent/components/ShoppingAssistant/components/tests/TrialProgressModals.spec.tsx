@@ -386,7 +386,7 @@ describe('TrialProgressModals', () => {
                 ).toBeInTheDocument()
             })
 
-            it('should call openTrialUpgradeModal when upgrade button is clicked', async () => {
+            it('should call upgradePlanAsync when upgrade button is clicked', async () => {
                 const user = userEvent.setup()
                 render(<TrialProgressModals />)
 
@@ -396,9 +396,16 @@ describe('TrialProgressModals', () => {
                     )
                 })
 
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    SegmentEvent.PricingModalClicked,
+                    { type: 'upgraded' },
+                )
+                expect(
+                    defaultMockValues.upgradePlan.upgradePlanAsync,
+                ).toHaveBeenCalled()
                 expect(
                     defaultMockValues.shoppingAssistantTrialFlow
-                        .openTrialUpgradeModal,
+                        .closeAllTrialModals,
                 ).toHaveBeenCalled()
             })
         })

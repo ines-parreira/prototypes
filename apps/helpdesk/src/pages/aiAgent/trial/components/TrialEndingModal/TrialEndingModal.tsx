@@ -52,7 +52,7 @@ export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
     }, [])
 
     const onUpgradeClick = useCallback(() => {
-        openUpgradePlanModal()
+        openUpgradePlanModal(false)
         dismissModal()
     }, [openUpgradePlanModal, dismissModal])
 

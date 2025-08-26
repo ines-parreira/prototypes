@@ -11,10 +11,11 @@ import {
     TrialEventType,
     TrialType,
 } from '../types/ShoppingAssistant'
-import { logTrialBannerEvent } from '../utils/eventLogger'
+import { logInTrialEvent, logTrialBannerEvent } from '../utils/eventLogger'
 
 jest.mock('../utils/eventLogger', () => ({
     logTrialBannerEvent: jest.fn(),
+    logInTrialEvent: jest.fn(),
 }))
 
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan', () => ({
@@ -32,6 +33,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const mockLogTrialBannerEvent = logTrialBannerEvent as jest.Mock
+const mockLogInTrialEvent = logInTrialEvent as jest.Mock
 
 // Helper function to create complete UseShoppingAssistantTrialFlowReturn mock objects
 const createMockTrialFlow = (overrides = {}) =>
@@ -451,5 +453,40 @@ describe('useShoppingAssistantPrimaryCTA', () => {
             TrialEventType.Learn,
             TrialType.ShoppingAssistant,
         )
+    })
+
+    it('calls openUpgradePlanModal(false) when upgrade button is clicked for opted out trial', async () => {
+        const mockOpenUpgradePlanModal = jest.fn()
+        const props = {
+            trialAccess: createMockTrialAccess({
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialOptedOut: true,
+                isAdminUser: true,
+            }),
+            trialFlow: createMockTrialFlow({
+                openUpgradePlanModal: mockOpenUpgradePlanModal,
+            }),
+            isDisabled: false,
+            trialMetrics: createMockTrialMetrics(),
+            routeShopName: undefined,
+            firstShopifyIntegration: shopifyIntegration,
+        }
+
+        const { result } = renderHook(() =>
+            useShoppingAssistantPrimaryCTA(props),
+        )
+
+        expect(result.current.variant).toBe(PromoCardVariant.AdminTrialProgress)
+        expect(result.current.button.label).toBe('Upgrade now')
+
+        // Click the upgrade button
+        await result.current?.button?.onClick?.()
+
+        expect(mockLogInTrialEvent).toHaveBeenCalledWith(
+            TrialEventType.UpgradePlan,
+            TrialType.ShoppingAssistant,
+        )
+        expect(mockOpenUpgradePlanModal).toHaveBeenCalledWith(false)
+        expect(mockOpenUpgradePlanModal).toHaveBeenCalledTimes(1)
     })
 })

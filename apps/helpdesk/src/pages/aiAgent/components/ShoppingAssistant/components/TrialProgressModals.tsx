@@ -34,7 +34,6 @@ export const TrialProgressModals = ({
         isManageTrialModalOpen,
         closeManageTrialModal,
         isUpgradePlanModalOpen,
-        openTrialUpgradeModal,
         closeUpgradePlanModal,
         onRequestTrialExtension,
         closeAllTrialModals,
@@ -73,7 +72,7 @@ export const TrialProgressModals = ({
                         earlyAccessPlan
                             ? {
                                   label: 'Upgrade Now',
-                                  onClick: openTrialUpgradeModal,
+                                  onClick: onUpgradeClick,
                               }
                             : undefined
                     }

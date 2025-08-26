@@ -52,7 +52,7 @@ export type UseShoppingAssistantTrialFlowReturn = {
     openTrialUpgradeModal: () => void
     onConfirmTrial: () => void
     openManageTrialModal: () => void
-    openUpgradePlanModal: () => void
+    openUpgradePlanModal: (isTrial: boolean) => void
     closeUpgradePlanModal: () => void
     closeTrialFinishSetupModal: () => void
     openTrialFinishSetupModal: () => void
@@ -195,10 +195,16 @@ export const useShoppingAssistantTrialFlow = ({
     }
 
     const openTrialUpgradeModal = () => {
+        logEvent(SegmentEvent.PricingModalViewed, {
+            type: 'Trial',
+        })
         trialModal.openModal(TRIAL_UPGRADE_MODAL_NAME)
     }
 
-    const openUpgradePlanModal = () => {
+    const openUpgradePlanModal = (isTrial: boolean) => {
+        logEvent(SegmentEvent.PricingModalViewed, {
+            type: isTrial ? 'Trial' : 'Upgrade',
+        })
         upgradeModal.openModal(UPGRADE_MODAL_NAME)
     }
 

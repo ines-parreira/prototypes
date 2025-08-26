@@ -53,6 +53,25 @@ const mockUseAppSelector = useAppSelector as jest.MockedFunction<
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
 
+const mockShoppingAssistantPromoCard = (
+    overrides: Partial<{
+        promoCardContent: PromoCardContent | null
+        trialFlow: UseShoppingAssistantTrialFlowReturn
+        isLoading: boolean
+    }> = {},
+) => {
+    const defaultMock = {
+        promoCardContent: null,
+        trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
+        isLoading: false,
+    }
+
+    mockUseShoppingAssistantPromoCard.mockReturnValue({
+        ...defaultMock,
+        ...overrides,
+    })
+}
+
 const renderComponent = (props?: any) => {
     return render(
         <Provider store={mockStore({})}>
@@ -182,10 +201,8 @@ describe('ShoppingAssistantPromoCard', () => {
 
     describe('Null rendering', () => {
         it('should return null when hook returns null', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: null,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
 
             const { container } = renderComponent()
@@ -201,10 +218,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 return false
             })
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: basePromoContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
 
             const { container } = renderComponent()
@@ -215,9 +230,8 @@ describe('ShoppingAssistantPromoCard', () => {
 
     describe('Loading state', () => {
         it('should return null when isLoading is true', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: basePromoContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
                 isLoading: true,
             })
 
@@ -227,10 +241,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render content when isLoading is false', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: basePromoContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
 
             renderComponent()
@@ -264,10 +276,8 @@ describe('ShoppingAssistantPromoCard', () => {
         }
 
         it('should render trial progress content with progress bar', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -279,10 +289,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render as collapsible card when in trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -292,10 +300,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render upgrade and manage trial buttons', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -308,10 +314,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render video content during trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -321,10 +325,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render AdminTrialProgress component with correct structure', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -359,10 +361,8 @@ describe('ShoppingAssistantPromoCard', () => {
         }
 
         it('should render trial progress content with progress bar but no CTAs', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -374,10 +374,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render as collapsible card when in trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -387,10 +385,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render any action buttons for lead users when no CTA available', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -405,10 +401,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should not render video content during trial progress', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -418,10 +412,8 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         it('should render LeadTrialProgress component with correct structure', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -440,10 +432,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: PromoCardVariant.AdminTrial,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -462,10 +452,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 },
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminDemoContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -485,10 +473,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 shouldShowNotificationIcon: true,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadNotifyContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -503,10 +489,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: PromoCardVariant.Hidden,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: hiddenContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -519,10 +503,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 variant: 'unknown-variant' as PromoCardVariant,
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: unknownContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent()
 
@@ -532,12 +514,11 @@ describe('ShoppingAssistantPromoCard', () => {
 
     describe('Props passing', () => {
         it('should pass className prop to child components', () => {
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: basePromoContent,
                 trialFlow: {
                     isTrialModalOpen: false,
                 } as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent({ className: 'test-class' })
 
@@ -565,10 +546,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 progressText: '5 days left',
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: adminTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent({ className: 'admin-trial-progress' })
 
@@ -600,10 +579,8 @@ describe('ShoppingAssistantPromoCard', () => {
                 progressText: '8 days left',
             }
 
-            mockUseShoppingAssistantPromoCard.mockReturnValue({
+            mockShoppingAssistantPromoCard({
                 promoCardContent: leadTrialProgressContent,
-                trialFlow: {} as UseShoppingAssistantTrialFlowReturn,
-                isLoading: false,
             })
             renderComponent({ className: 'lead-trial-progress' })
 
