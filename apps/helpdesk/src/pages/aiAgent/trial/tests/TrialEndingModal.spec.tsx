@@ -6,6 +6,7 @@ import moment from 'moment'
 import { useFlag } from 'core/flags'
 import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -282,8 +283,13 @@ describe('TrialEndedModal', () => {
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
         mockUseTrialModalProps.mockReturnValue(mockTrialModalProps)
+        mockUseFlag.mockReturnValue(false)
+        mockUseStoreActivations.mockReturnValue(createMockStoreActivations())
+        mockUseShoppingAssistantTrialFlow.mockReturnValue(
+            createMockShoppingAssistantTrialFlow(),
+        )
 
-        // Mock moment to control "now"
+        // Mock moment to control "now" - this is crucial for the date logic tests
         jest.spyOn(moment, 'now').mockReturnValue(
             moment('2023-11-16T00:00:00.000Z').valueOf(),
         )
@@ -303,7 +309,10 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
@@ -322,7 +331,10 @@ describe('TrialEndedModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -340,7 +352,10 @@ describe('TrialEndedModal', () => {
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -352,11 +367,14 @@ describe('TrialEndedModal', () => {
             remainingDays: 0,
             remainingDaysFloat: 0,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
-            optedOutDatetime: undefined, // No opt out
+            optedOutDatetime: null, // No opt out
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -374,16 +392,27 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         const closeButton = screen.getByText('Close')
-        await user.click(closeButton)
+
+        await act(async () => {
+            await user.click(closeButton)
+        })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
             'ai-agent-trial-ended-dismissed',
             'true',
         )
+
+        // Wait for any pending state updates
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
     })
 
     it('should dismiss modal when secondary action is clicked', async () => {
@@ -398,16 +427,27 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         const secondaryButton = screen.getByText('No, thanks')
-        await user.click(secondaryButton)
+
+        await act(async () => {
+            await user.click(secondaryButton)
+        })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
             'ai-agent-trial-ended-dismissed',
             'true',
         )
+
+        // Wait for any pending state updates
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
     })
 
     it('should call empty function when primary action is clicked', async () => {
@@ -422,14 +462,25 @@ describe('TrialEndedModal', () => {
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndedModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndedModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         const primaryButton = screen.getByText('Upgrade to Reactivate')
-        await user.click(primaryButton)
+
+        await act(async () => {
+            await user.click(primaryButton)
+        })
 
         // Should not crash (empty function)
         expect(primaryButton).toBeInTheDocument()
+
+        // Wait for any pending state updates
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
     })
 })
 
@@ -445,6 +496,37 @@ describe('TrialEndingModal', () => {
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             createMockShoppingAssistantTrialFlow(),
         )
+
+        // Mock moment to control "now" - this is crucial for the date logic tests
+        jest.spyOn(moment, 'now').mockReturnValue(
+            moment('2023-11-16T00:00:00.000Z').valueOf(),
+        )
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
+    })
+
+    it('should call useTrialEnding with correct parameters', () => {
+        mockUseTrialEnding.mockReturnValue({
+            trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
+            remainingDays: 1,
+            remainingDaysFloat: 0.5,
+            trialEndDatetime: '2023-11-16T00:00:00.000Z',
+            optedOutDatetime: null,
+        })
+
+        renderWithStoreAndQueryClientProvider(
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
+        )
+
+        expect(mockUseTrialEnding).toHaveBeenCalledWith(
+            mockStoreConfiguration.storeName,
+            TrialType.ShoppingAssistant,
+        )
     })
 
     it('should render modal when trial ends tomorrow and not dismissed', () => {
@@ -453,11 +535,14 @@ describe('TrialEndingModal', () => {
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(screen.getByTestId('trial-manage-modal')).toBeInTheDocument()
@@ -473,11 +558,14 @@ describe('TrialEndingModal', () => {
             remainingDays: 2,
             remainingDaysFloat: 2,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -496,11 +584,14 @@ describe('TrialEndingModal', () => {
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         const { container } = renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -514,20 +605,31 @@ describe('TrialEndingModal', () => {
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         const closeButton = screen.getByText('Close')
-        await user.click(closeButton)
+
+        await act(async () => {
+            await user.click(closeButton)
+        })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
             'ai-agent-trial-ending-tomorrow-dismissed',
             'true',
         )
+
+        // Wait for any pending state updates
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
     })
 
     it('should dismiss modal when primary action (Dismiss) is clicked', async () => {
@@ -538,20 +640,31 @@ describe('TrialEndingModal', () => {
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         renderWithStoreAndQueryClientProvider(
-            <TrialEndingModal storeName={mockStoreConfiguration.storeName} />,
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
         )
 
         const primaryButton = screen.getByText('Dismiss')
-        await user.click(primaryButton)
+
+        await act(async () => {
+            await user.click(primaryButton)
+        })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
             'ai-agent-trial-ending-tomorrow-dismissed',
             'true',
         )
+
+        // Wait for any pending state updates
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0))
+        })
     })
 
     describe('when user has opted out and feature flag is enabled', () => {
@@ -570,6 +683,7 @@ describe('TrialEndingModal', () => {
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -593,6 +707,7 @@ describe('TrialEndingModal', () => {
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -620,13 +735,22 @@ describe('TrialEndingModal', () => {
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
             const extensionButton = screen.getByText('Request Trial Extension')
-            await user.click(extensionButton)
+
+            await act(async () => {
+                await user.click(extensionButton)
+            })
 
             expect(mockOnRequestTrialExtension).toHaveBeenCalled()
+
+            // Wait for any pending state updates
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 0))
+            })
         })
 
         it('should disable extension button and not call onRequestTrialExtension when extension cannot be requested due to cooldown', async () => {
@@ -652,6 +776,7 @@ describe('TrialEndingModal', () => {
             renderWithStoreAndQueryClientProvider(
                 <TrialEndingModal
                     storeName={mockStoreConfiguration.storeName}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -662,9 +787,17 @@ describe('TrialEndingModal', () => {
 
             // Even if we try to click it, the function should not be called
             const user = userEvent.setup()
-            await user.click(extensionButton)
+
+            await act(async () => {
+                await user.click(extensionButton)
+            })
 
             expect(mockOnRequestTrialExtension).not.toHaveBeenCalled()
+
+            // Wait for any pending state updates
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 0))
+            })
         })
     })
 })

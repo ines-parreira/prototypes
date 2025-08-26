@@ -17,7 +17,10 @@ import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManag
 import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import {
+    TrialAccess,
+    useTrialAccess,
+} from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import {
     TrialMetrics,
@@ -331,10 +334,17 @@ const useTrialActivatedModal = () => ({
 
 const useTrialStartedBanner = (
     trialMetrics: TrialMetrics,
+    trialAccess: TrialAccess,
     storeName?: string,
     pageName?: 'Strategy' | 'Engagement',
 ): TrialModalProps['trialStartedBanner'] => {
-    const { remainingDays } = useTrialEnding(storeName ?? '')
+    const {
+        trialType,
+        hasAnyTrialOptedIn,
+        hasCurrentStoreTrialOptedOut,
+        canBookDemo,
+    } = trialAccess
+    const { remainingDays } = useTrialEnding(storeName ?? '', trialType)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations({ storeName })
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
@@ -345,8 +355,7 @@ const useTrialStartedBanner = (
     const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
 
     const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
-    const { canBookDemo, hasCurrentStoreTrialOptedOut, hasAnyTrialOptedIn } =
-        useTrialAccess(storeName)
+
     const accountDomain = currentAccount.get('domain')
 
     const { openManageTrialModal, openUpgradePlanModal } =
@@ -661,6 +670,7 @@ export const useTrialModalProps = ({
     onConfirmTrial?: () => void
     pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
+    const trialAccess = useTrialAccess(storeName)
     const trialMetrics = useTrialMetrics()
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
@@ -669,6 +679,7 @@ export const useTrialModalProps = ({
     const trialActivatedModal = useTrialActivatedModal()
     const trialStartedBanner = useTrialStartedBanner(
         trialMetrics,
+        trialAccess,
         storeName,
         pageName,
     )

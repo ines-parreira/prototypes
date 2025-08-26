@@ -1,14 +1,21 @@
 import { useEffect, useMemo } from 'react'
 
+import moment from 'moment'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import {
+    TrialAccess,
+    useTrialAccess,
+} from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -17,6 +24,7 @@ import {
     PromoCardContent,
     PromoCardVariant,
     TrialEventType,
+    TrialType,
 } from '../types/ShoppingAssistant'
 import { logTrialBannerEvent } from '../utils/eventLogger'
 import { usePrimaryCTA } from './usePrimaryCTA'
@@ -24,14 +32,20 @@ import { useSecondaryCTA } from './useSecondaryCTA'
 import { useTrialDescription } from './useTrialDescription'
 import { useTrialProgress } from './useTrialProgress'
 
-export const useShoppingAssistantPromoCard = (
+export const useTrialPromoCard = (
     shopName: string,
     allShopifyIntegrations: ShopifyIntegration[],
     routeShopName?: string,
 ): {
+    trialAccess: TrialAccess
     promoCardContent: PromoCardContent | null
     trialFlow: ReturnType<typeof useShoppingAssistantTrialFlow>
     isLoading: boolean
+    automationRate?: {
+        value: number
+        prevValue: number
+        isLoading: boolean
+    }
 } => {
     const account = useAppSelector(getCurrentAccountState)
     const accountDomain = account.get('domain')
@@ -44,7 +58,7 @@ export const useShoppingAssistantPromoCard = (
     const trialAccess = useTrialAccess(shopName)
     const { isDisabled } = useNotifyAdmins(shopName)
     const trialMetrics = useTrialMetrics()
-    const trialEnding = useTrialEnding(shopName)
+    const trialEnding = useTrialEnding(shopName, trialAccess.trialType)
     const storeActivations = useStoreActivations({
         storeName: shopName,
     }).storeActivations
@@ -52,6 +66,40 @@ export const useShoppingAssistantPromoCard = (
         accountDomain,
         storeActivations,
     })
+
+    // Get trial start date for automation rate filters
+    const trialStartDate = useMemo(() => {
+        const storeActivation = storeActivations[shopName]
+        if (!storeActivation) return null
+
+        const trialConfig =
+            trialAccess.trialType === TrialType.AiAgent
+                ? storeActivation.configuration.trial
+                : null
+
+        return trialConfig?.startDatetime || null
+    }, [storeActivations, shopName, trialAccess.trialType])
+
+    // Create trial period filters for automation rate
+    const automationRateFilters = useMemo((): StatsFilters | null => {
+        if (!trialStartDate) return null
+
+        return {
+            period: {
+                start_datetime: moment(trialStartDate).startOf('day').format(),
+                end_datetime: moment().endOf('day').format(),
+            },
+        }
+    }, [trialStartDate])
+
+    // Fetch automation rate data for trial period
+    const automationRateData = useAiAgentAutomationRate(
+        automationRateFilters || {
+            period: { start_datetime: '', end_datetime: '' },
+        },
+        'UTC', // Use UTC timezone for consistency
+        undefined, // No integration IDs filter needed for trial context
+    )
 
     const { button: primaryButton, variant } = usePrimaryCTA({
         trialAccess,
@@ -72,6 +120,14 @@ export const useShoppingAssistantPromoCard = (
         trialAccess.canNotifyAdmin,
         trialMetrics,
         isTrialProgress,
+        trialAccess.trialType,
+        automationRateFilters && trialAccess.hasCurrentStoreTrialStarted
+            ? {
+                  value: automationRateData.value || 0,
+                  prevValue: automationRateData.prevValue || 0,
+                  isLoading: automationRateData.isLoading,
+              }
+            : undefined,
     )
     const { progressPercentage, progressText } = useTrialProgress(
         trialEnding.remainingDays,
@@ -88,6 +144,45 @@ export const useShoppingAssistantPromoCard = (
     const promoCardContent = useMemo((): PromoCardContent | null => {
         if (!isFeatureEnabled || !hasAnyAccess) return null
 
+        if (trialAccess.trialType === TrialType.AiAgent) {
+            const title = isTrialProgress
+                ? 'AI Agent trial'
+                : trialAccess.canSeeTrialCTA
+                  ? 'AI Agent'
+                  : 'Try AI Agent for free'
+
+            return {
+                variant,
+                title,
+                description,
+                shouldShowDescriptionIcon,
+                showVideo: !isTrialProgress,
+                shouldShowNotificationIcon: primaryButton.label
+                    .toLowerCase()
+                    .includes('admin'),
+                primaryButton,
+                secondaryButton,
+                videoModalButton:
+                    !isTrialProgress && trialAccess.canSeeTrialCTA
+                        ? {
+                              label: primaryButton.label,
+                              onClick: () => {
+                                  logTrialBannerEvent(
+                                      TrialEventType.StartTrial,
+                                      TrialType.AiAgent,
+                                  )
+                                  trialFlow.openTrialUpgradeModal()
+                              },
+                              disabled: false,
+                          }
+                        : undefined,
+                showProgressBar: isTrialProgress,
+                progressPercentage: isTrialProgress
+                    ? progressPercentage
+                    : undefined,
+                progressText: isTrialProgress ? progressText : undefined,
+            }
+        }
         return {
             variant,
             title: isTrialProgress
@@ -130,6 +225,7 @@ export const useShoppingAssistantPromoCard = (
         progressPercentage,
         progressText,
         trialAccess.canSeeTrialCTA,
+        trialAccess.trialType,
         trialFlow,
     ])
 
@@ -151,8 +247,19 @@ export const useShoppingAssistantPromoCard = (
     }, [trialAccess, promoCardContent])
 
     return {
+        trialAccess,
         promoCardContent,
         trialFlow,
         isLoading: !!(trialMetrics.isLoading || trialAccess.isLoading),
+        automationRate:
+            automationRateFilters &&
+            trialAccess.hasCurrentStoreTrialStarted &&
+            trialAccess.trialType === TrialType.AiAgent
+                ? {
+                      value: automationRateData.value || 0,
+                      prevValue: automationRateData.prevValue || 0,
+                      isLoading: automationRateData.isLoading,
+                  }
+                : undefined,
     }
 }

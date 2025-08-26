@@ -18,7 +18,7 @@ import {
     LeadTrialProgress,
 } from './components'
 import { TrialProgressModals } from './components/TrialProgressModals'
-import { useShoppingAssistantPromoCard } from './hooks/useShoppingAssistantPromoCard'
+import { useTrialPromoCard } from './hooks/useTrialPromoCard'
 import { PromoCardVariant } from './types/ShoppingAssistant'
 import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
 
@@ -53,11 +53,8 @@ export const ShoppingAssistantPromoCard: React.FC<
         promoCardContent: promoContent,
         trialFlow,
         isLoading,
-    } = useShoppingAssistantPromoCard(
-        shopName,
-        allShopifyIntegrations,
-        routeShopName,
-    )
+        trialAccess,
+    } = useTrialPromoCard(shopName, allShopifyIntegrations, routeShopName)
 
     if (isShoppingAssitantDeactivationEnforced || isLoading || !promoContent) {
         return null
@@ -65,8 +62,14 @@ export const ShoppingAssistantPromoCard: React.FC<
 
     const sharedContent = (
         <>
-            <TrialEndedModal storeName={shopName} />
-            <TrialProgressModals storeName={shopName} />
+            <TrialEndedModal
+                storeName={shopName}
+                trialType={trialAccess.trialType}
+            />
+            <TrialProgressModals
+                storeName={shopName}
+                trialType={trialAccess.trialType}
+            />
             <TrialFinishSetupModal
                 {...trialModalProps.trialFinishSetupModal}
                 isOpen={trialFlow.isTrialFinishSetupModalOpen}

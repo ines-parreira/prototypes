@@ -1,16 +1,17 @@
 import moment from 'moment'
 
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 const EMPTY_TRIAL_ENDING = {
     remainingDays: 0,
     remainingDaysFloat: 0,
-    trialEndDatetime: undefined,
-    trialTerminationDatetime: undefined,
-    optedOutDatetime: undefined,
+    trialEndDatetime: null,
+    trialTerminationDatetime: null,
+    optedOutDatetime: null,
 }
 
-export const useTrialEnding = (storeName: string) => {
+export const useTrialEnding = (storeName: string, trialType: TrialType) => {
     const { storeActivations } = useStoreActivations({ storeName })
 
     // Get the specific store activation
@@ -22,12 +23,19 @@ export const useTrialEnding = (storeName: string) => {
     // Use stable date calculation
     const now = moment().startOf('hour')
 
-    const trialStartDatetime =
-        storeActivation.configuration.sales?.trial.startDatetime
-    const trialEndDatetime =
-        storeActivation.configuration.sales?.trial.endDatetime
-    const optedOutDatetime =
-        storeActivation.configuration.sales?.trial.account.optOutDatetime
+    // Get trial configuration based on trial type
+    const trialConfig =
+        trialType === TrialType.AiAgent
+            ? storeActivation.configuration.trial
+            : storeActivation.configuration.sales?.trial
+
+    if (!trialConfig) {
+        return EMPTY_TRIAL_ENDING
+    }
+
+    const trialStartDatetime = trialConfig.startDatetime
+    const trialEndDatetime = trialConfig.endDatetime
+    const optedOutDatetime = trialConfig.account?.optOutDatetime
 
     if (!trialStartDatetime || !trialEndDatetime) {
         return EMPTY_TRIAL_ENDING
@@ -38,8 +46,7 @@ export const useTrialEnding = (storeName: string) => {
     const remainingDays = Math.max(0, Math.round(remainingDaysFloat))
 
     const trialTerminationDatetime =
-        storeActivation.configuration.sales?.trial.account
-            .actualTerminationDatetime
+        trialConfig.account?.actualTerminationDatetime
 
     return {
         remainingDays,

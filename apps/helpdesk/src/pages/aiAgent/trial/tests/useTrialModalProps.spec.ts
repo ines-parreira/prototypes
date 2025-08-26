@@ -119,7 +119,7 @@ describe('useTrialModalProps', () => {
             remainingDaysFloat: 14.0,
             trialEndDatetime: getTrialEndTime(14),
             trialTerminationDatetime: null,
-            optedOutDatetime: undefined,
+            optedOutDatetime: null,
         })
 
         mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
@@ -271,7 +271,7 @@ describe('useTrialModalProps', () => {
             })
         })
 
-        it('should handle missing automate plan', () => {
+        it('should handle missing automate plan by showing $0 price', () => {
             const mockBillingState = {
                 data: {
                     ...trial,
@@ -296,7 +296,7 @@ describe('useTrialModalProps', () => {
             )
         })
 
-        it('should handle missing helpdesk plan', () => {
+        it('should handle missing helpdesk plan by showing $0 helpdesk fee in tooltip', () => {
             const mockBillingState = {
                 data: {
                     ...trial,
@@ -321,7 +321,7 @@ describe('useTrialModalProps', () => {
             ).toContain('$0 helpdesk fee')
         })
 
-        it('should handle null billing state', () => {
+        it('should handle null billing state by showing $0 price and $0 helpdesk fee', () => {
             mockUseBillingState.mockReturnValue({
                 data: null,
             } as any)
@@ -381,7 +381,7 @@ describe('useTrialModalProps', () => {
                 remainingDaysFloat: 7.0,
                 trialEndDatetime: getTrialEndTime(7),
                 trialTerminationDatetime: null,
-                optedOutDatetime: undefined,
+                optedOutDatetime: null,
             })
 
             const { result } = renderHookWithRouter(() =>
@@ -432,7 +432,7 @@ describe('useTrialModalProps', () => {
                 remainingDaysFloat: 3.0,
                 trialEndDatetime: getTrialEndTime(3),
                 trialTerminationDatetime: null,
-                optedOutDatetime: undefined,
+                optedOutDatetime: null,
             })
 
             rerender()
@@ -479,7 +479,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 0.0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -503,7 +503,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: -1.0,
                     trialEndDatetime: getTrialEndTime(-1),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -527,7 +527,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 1.0,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -580,7 +580,7 @@ describe('useTrialModalProps', () => {
                         remainingDaysFloat: remainingDays,
                         trialEndDatetime: getTrialEndTime(remainingDays),
                         trialTerminationDatetime: null,
-                        optedOutDatetime: undefined,
+                        optedOutDatetime: null,
                     })
 
                     const { result } = renderHookWithRouter(() =>
@@ -605,7 +605,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 365.0,
                     trialEndDatetime: getTrialEndTime(365),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
 
                 const { result } = renderHookWithRouter(() =>
@@ -629,7 +629,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 5.0,
                     trialEndDatetime: getTrialEndTime(5),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
 
                 const { result, rerender } = renderHookWithRouter(() =>
@@ -653,7 +653,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 1.0,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
                 rerender()
 
@@ -673,7 +673,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 0.0,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
                 rerender()
 
@@ -703,7 +703,7 @@ describe('useTrialModalProps', () => {
                     remainingDaysFloat: 7.0,
                     trialEndDatetime: getTrialEndTime(7),
                     trialTerminationDatetime: null,
-                    optedOutDatetime: undefined,
+                    optedOutDatetime: null,
                 })
             })
 
@@ -1147,7 +1147,7 @@ describe('useTrialModalProps', () => {
     })
 
     describe('currency formatting', () => {
-        it('should format amounts with different currencies correctly', () => {
+        it('should format amounts with EUR currency correctly in price and tooltip', () => {
             const mockBillingState = {
                 data: {
                     current_plans: {
@@ -1180,7 +1180,7 @@ describe('useTrialModalProps', () => {
             ).toContain('€1 helpdesk fee')
         })
 
-        it('should handle zero amounts correctly', () => {
+        it('should handle zero amounts by showing $0 in price and tooltip', () => {
             const mockBillingState = {
                 data: {
                     current_plans: {
@@ -1549,7 +1549,7 @@ describe('useTrialModalProps', () => {
     })
 
     describe('edge cases', () => {
-        it('should handle undefined early access plan data', () => {
+        it('should handle undefined early access plan data by showing $0 price in new plan', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)

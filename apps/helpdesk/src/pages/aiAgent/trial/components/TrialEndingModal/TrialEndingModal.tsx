@@ -4,6 +4,7 @@ import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
@@ -20,14 +21,18 @@ const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
 
 type TrialEndingModalProps = {
     storeName: string
+    trialType: TrialType
 }
 
-export const TrialEndingModal = ({ storeName }: TrialEndingModalProps) => {
+export const TrialEndingModal = ({
+    storeName,
+    trialType,
+}: TrialEndingModalProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations({ storeName })
     const { trialEndingModal } = useTrialModalProps({ storeName })
     const { remainingDaysFloat, trialEndDatetime, optedOutDatetime } =
-        useTrialEnding(storeName)
+        useTrialEnding(storeName, trialType)
     const accountDomain = currentAccount.get('domain')
     const { openUpgradePlanModal, onRequestTrialExtension } =
         useShoppingAssistantTrialFlow({

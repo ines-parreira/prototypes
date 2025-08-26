@@ -14,12 +14,16 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
+import { TrialType } from '../types/ShoppingAssistant'
+
 export type TrialProgressModalsProps = {
     storeName?: string
+    trialType: TrialType
 }
 
 export const TrialProgressModals = ({
     storeName,
+    trialType,
 }: TrialProgressModalsProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations()
@@ -101,7 +105,9 @@ export const TrialProgressModals = ({
                 />
             )}
 
-            {storeName && <TrialEndingModal storeName={storeName} />}
+            {storeName && (
+                <TrialEndingModal storeName={storeName} trialType={trialType} />
+            )}
         </>
     )
 }

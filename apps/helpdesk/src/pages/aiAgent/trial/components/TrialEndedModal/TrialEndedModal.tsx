@@ -2,16 +2,25 @@ import { useCallback, useState } from 'react'
 
 import moment from 'moment'
 
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
 const TRIAL_ENDED_DISMISSED_KEY = 'ai-agent-trial-ended-dismissed'
 
-export const TrialEndedModal = ({ storeName }: { storeName: string }) => {
+export const TrialEndedModal = ({
+    storeName,
+    trialType,
+}: {
+    storeName: string
+    trialType: TrialType
+}) => {
     const { trialEndedModal } = useTrialModalProps({ storeName })
-    const { trialTerminationDatetime, optedOutDatetime } =
-        useTrialEnding(storeName)
+    const { trialTerminationDatetime, optedOutDatetime } = useTrialEnding(
+        storeName,
+        trialType,
+    )
 
     const [isModalDismissed, setIsModalDismissed] = useState(
         () => localStorage.getItem(TRIAL_ENDED_DISMISSED_KEY) === 'true',

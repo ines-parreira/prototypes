@@ -12,6 +12,7 @@ import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShop
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
+import { TrialType } from '../../types/ShoppingAssistant'
 import { TrialProgressModals } from '../TrialProgressModals'
 
 jest.mock('react-router-dom', () => ({
@@ -308,7 +309,9 @@ describe('TrialProgressModals', () => {
 
     describe('when no modals should be open', () => {
         it('should render nothing when no modal conditions are met', () => {
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             expect(
                 screen.queryByText('Manage Shopping Assistant trial'),
@@ -327,7 +330,12 @@ describe('TrialProgressModals', () => {
 
     describe('when storeName is provided', () => {
         it('should render TrialEndingModal', () => {
-            render(<TrialProgressModals storeName="Test Store" />)
+            render(
+                <TrialProgressModals
+                    storeName="Test Store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(
                 screen.getByText('Trial Ending Modal for Test Store'),
@@ -344,7 +352,9 @@ describe('TrialProgressModals', () => {
         })
 
         it('should render TrialManageModal with correct props', () => {
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             expect(
                 screen.getByText('Manage Shopping Assistant trial'),
@@ -379,7 +389,11 @@ describe('TrialProgressModals', () => {
             })
 
             it('should show upgrade button', () => {
-                render(<TrialProgressModals />)
+                render(
+                    <TrialProgressModals
+                        trialType={TrialType.ShoppingAssistant}
+                    />,
+                )
 
                 expect(
                     screen.getByRole('button', { name: 'Upgrade Now' }),
@@ -388,7 +402,11 @@ describe('TrialProgressModals', () => {
 
             it('should call upgradePlanAsync when upgrade button is clicked', async () => {
                 const user = userEvent.setup()
-                render(<TrialProgressModals />)
+                render(
+                    <TrialProgressModals
+                        trialType={TrialType.ShoppingAssistant}
+                    />,
+                )
 
                 await act(async () => {
                     await user.click(
@@ -412,7 +430,11 @@ describe('TrialProgressModals', () => {
 
         describe('when early access plan is not available', () => {
             it('should not show upgrade button', () => {
-                render(<TrialProgressModals />)
+                render(
+                    <TrialProgressModals
+                        trialType={TrialType.ShoppingAssistant}
+                    />,
+                )
 
                 expect(
                     screen.queryByRole('button', { name: 'Upgrade Now' }),
@@ -422,7 +444,9 @@ describe('TrialProgressModals', () => {
 
         it('should call closeManageTrialModal when close button is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(screen.getByRole('button', { name: 'Close' }))
@@ -436,7 +460,9 @@ describe('TrialProgressModals', () => {
 
         it('should open opt out modal when opt out button is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -461,7 +487,9 @@ describe('TrialProgressModals', () => {
         })
 
         it('should render UpgradePlanModal', () => {
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             expect(screen.getByText('Upgrade Plan Modal')).toBeInTheDocument()
             expect(
@@ -474,7 +502,9 @@ describe('TrialProgressModals', () => {
 
         it('should call closeUpgradePlanModal when close button is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(screen.getByRole('button', { name: 'Close' }))
@@ -488,7 +518,9 @@ describe('TrialProgressModals', () => {
 
         it('should call closeUpgradePlanModal when dismiss button is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -504,7 +536,9 @@ describe('TrialProgressModals', () => {
 
         it('should handle upgrade confirmation with segment tracking', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -523,7 +557,9 @@ describe('TrialProgressModals', () => {
 
         it('should close modals after successful upgrade', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -548,7 +584,11 @@ describe('TrialProgressModals', () => {
             })
 
             it('should show loading state on confirm button', () => {
-                render(<TrialProgressModals />)
+                render(
+                    <TrialProgressModals
+                        trialType={TrialType.ShoppingAssistant}
+                    />,
+                )
 
                 const confirmButton = screen.getByRole('button', {
                     name: 'Loading...',
@@ -569,7 +609,9 @@ describe('TrialProgressModals', () => {
 
         it('should render opt out modal after clicking opt out', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -582,7 +624,9 @@ describe('TrialProgressModals', () => {
 
         it('should call onRequestTrialExtension when request extension button is clicked', async () => {
             const user = userEvent.setup()
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             await act(async () => {
                 await user.click(
@@ -605,7 +649,12 @@ describe('TrialProgressModals', () => {
 
     describe('when storeName prop is provided', () => {
         it('should pass storeName to useTrialModalProps hook', () => {
-            render(<TrialProgressModals storeName="My Store" />)
+            render(
+                <TrialProgressModals
+                    trialType={TrialType.ShoppingAssistant}
+                    storeName="My Store"
+                />,
+            )
 
             expect(mockUseTrialModalProps).toHaveBeenCalledWith({
                 storeName: 'My Store',
@@ -613,7 +662,12 @@ describe('TrialProgressModals', () => {
         })
 
         it('should render TrialEndingModal with storeName', () => {
-            render(<TrialProgressModals storeName="My Store" />)
+            render(
+                <TrialProgressModals
+                    trialType={TrialType.ShoppingAssistant}
+                    storeName="My Store"
+                />,
+            )
 
             expect(
                 screen.getByText('Trial Ending Modal for My Store'),
@@ -623,7 +677,9 @@ describe('TrialProgressModals', () => {
 
     describe('when useShoppingAssistantTrialFlow is called', () => {
         it('should be called with correct parameters', () => {
-            render(<TrialProgressModals />)
+            render(
+                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+            )
 
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({
                 accountDomain: 'test-domain.com',
