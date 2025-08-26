@@ -125,5 +125,46 @@ describe('<SearchInput/>', () => {
                 expect(container.firstChild).toMatchSnapshot()
             })
         })
+
+        it('should use getKey function to generate unique keys for dropdown items', async () => {
+            const mockGetKey = jest.fn(
+                (result: ResultType) => `custom-key-${result.id}`,
+            )
+
+            render(
+                <SearchInput
+                    endpoint={endpoint}
+                    renderResult={Result}
+                    getKey={mockGetKey}
+                />,
+            )
+
+            const results: ResultType[] = [
+                { id: 1, subResults: [] },
+                { id: 2, subResults: [] },
+                { id: 3, subResults: [] },
+            ]
+            mockServer.onGet(endpoint).reply(200, { data: results })
+
+            const input = screen.getByRole('textbox')
+            userEvent.click(input)
+            userEvent.paste(input, 'test')
+
+            await waitFor(() => {
+                expect(mockGetKey).toHaveBeenCalledTimes(3)
+                expect(mockGetKey).toHaveBeenCalledWith({
+                    id: 1,
+                    subResults: [],
+                })
+                expect(mockGetKey).toHaveBeenCalledWith({
+                    id: 2,
+                    subResults: [],
+                })
+                expect(mockGetKey).toHaveBeenCalledWith({
+                    id: 3,
+                    subResults: [],
+                })
+            })
+        })
     })
 })

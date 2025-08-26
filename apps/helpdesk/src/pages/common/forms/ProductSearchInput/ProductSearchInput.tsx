@@ -12,6 +12,26 @@ import SearchInput, {
 } from '../SearchInput/SearchInput'
 import Result, { Props as ResultProps } from './Result'
 
+interface Props<
+    ItemType extends IntegrationDataItem<unknown>,
+    Variant extends SearchResultType,
+> extends Pick<
+        SearchInputProps<ItemType, Variant>,
+        'renderResultsAppendix' | 'renderResultItemProps'
+    > {
+    className?: string
+    autoFocus?: boolean
+    searchOnFocus?: boolean
+    getKey?: (item: ItemType) => string
+    onVariantClicked: (item: ItemType, variant: Variant) => void
+    dataMappers: {
+        variantsPath: (item: ItemType) => Variant[]
+        product: (item: ItemType) => ResultProps
+        variants: (item: ItemType, variant: Variant) => ResultProps
+    }
+    hasError?: boolean
+}
+
 export default function ProductSearchInput<
     ItemType extends IntegrationDataItem<unknown>,
     Variant extends SearchResultType,
@@ -24,21 +44,8 @@ export default function ProductSearchInput<
     hasError = false,
     renderResultsAppendix,
     renderResultItemProps,
-}: {
-    className?: string
-    autoFocus?: boolean
-    searchOnFocus?: boolean
-    onVariantClicked: (item: ItemType, variant: Variant) => void
-    dataMappers: {
-        variantsPath: (item: ItemType) => Variant[]
-        product: (item: ItemType) => ResultProps
-        variants: (item: ItemType, variant: Variant) => ResultProps
-    }
-    hasError?: boolean
-} & Pick<
-    SearchInputProps<ItemType, Variant>,
-    'renderResultsAppendix' | 'renderResultItemProps'
->) {
+    getKey,
+}: Props<ItemType, Variant>) {
     const { integrationId } = useContext(IntegrationContext)
 
     const handleProductClicked = useCallback(
@@ -83,6 +90,7 @@ export default function ProductSearchInput<
             hasError={hasError}
             renderResultsAppendix={renderResultsAppendix}
             renderResultItemProps={renderResultItemProps}
+            getKey={getKey}
         />
     )
 }

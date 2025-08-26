@@ -21,6 +21,11 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
       >
         Result
       </div>
+      <div
+        data-testid="ProductSearchInput_getKey_result"
+      >
+        123
+      </div>
     </div>
     <div
       data-testid="AddCustomItemPopover"

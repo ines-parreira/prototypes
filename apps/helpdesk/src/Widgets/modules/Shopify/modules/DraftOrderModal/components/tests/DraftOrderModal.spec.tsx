@@ -77,7 +77,10 @@ const mockShopifyInvoicePayloadFixture = shopifyInvoicePayloadFixture
 jest.mock(
     'pages/common/forms/ProductSearchInput/ProductSearchInput',
     () =>
-        ({ onVariantClicked }: ComponentProps<typeof ProductSearchInput>) => {
+        ({
+            onVariantClicked,
+            getKey,
+        }: ComponentProps<typeof ProductSearchInput>) => {
             const item = mockIntegrationDataItemProductFixture()
             const variant = item.data.variants[0]
 
@@ -91,6 +94,11 @@ jest.mock(
                     >
                         Result
                     </div>
+                    {getKey && (
+                        <div data-testid="ProductSearchInput_getKey_result">
+                            {getKey(item)}
+                        </div>
+                    )}
                 </div>
             )
         },
@@ -603,5 +611,26 @@ describe('<DraftOrderModal/>', () => {
         fireEvent.click(getByTestId('Modal'))
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
+    })
+
+    it('should pass getKey prop to ProductSearchInput that returns external_id', () => {
+        const draftOrder = initDraftOrderPayload(customer, order, products)
+        const payload = getDuplicateOrderPayload(draftOrder)
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
+                <IntegrationContext.Provider value={integrationContextValue}>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </IntegrationContext.Provider>
+            </CustomerContext.Provider>,
+        )
+
+        const getKeyResult = getByTestId('ProductSearchInput_getKey_result')
+        const item = integrationDataItemProductFixture()
+
+        expect(getKeyResult).toHaveTextContent(item.external_id)
     })
 })

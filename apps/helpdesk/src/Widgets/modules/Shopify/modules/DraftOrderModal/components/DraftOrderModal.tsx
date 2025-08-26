@@ -269,6 +269,7 @@ export function DraftOrderModalContainer({
             <div className={css.formHeader}>
                 <ProductSearchInput
                     className={css.searchInput}
+                    getKey={(item) => item.external_id}
                     onVariantClicked={(
                         item: IntegrationDataItem<Product>,
                         variant: Variant,

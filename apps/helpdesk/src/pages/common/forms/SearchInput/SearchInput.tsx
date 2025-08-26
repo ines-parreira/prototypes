@@ -52,6 +52,7 @@ export type Props<ResultType, SubResultType> = {
         disabled?: boolean
         disabledReason?: string
     }
+    getKey?: (item: ResultType) => string
 }
 
 type State<ResultType extends SearchResultType, SubResultType> = {
@@ -329,10 +330,12 @@ export default class SearchInput<
             ? results.map((result, index) => {
                   const itemProps = renderResultItemProps?.({ result })
                   const disabled = itemProps?.disabled
-
+                  const itemKey = this.props.getKey
+                      ? this.props.getKey(result)
+                      : `result-${result.id}`
                   return (
                       <DropdownItem
-                          key={`result-${result.id}`}
+                          key={itemKey}
                           onMouseEnter={() =>
                               this.setState({ hoveredIndex: index })
                           }
