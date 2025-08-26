@@ -1,5 +1,5 @@
 export const ACTIONS_DESCRIPTION_INTRO =
-    'Actions enable AI Agent to perform tasks with your 3rd party apps such as cancel order, edit shipping address, and more.'
+    'Actions allow AI Agent to perform tasks with your 3rd party apps such as canceling orders and editing shipping addresses.'
 
 export const ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER =
     'Actions can currently be performed by AI Agent on Email, and cannot yet be performed by AI Agent on Chat.'

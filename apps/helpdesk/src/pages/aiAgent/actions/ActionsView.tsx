@@ -21,7 +21,6 @@ import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCa
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 import {
-    ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER,
     ACTIONS_DESCRIPTION_INTRO,
     EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION,
 } from './constants'
@@ -94,10 +93,9 @@ const ActionsView = () => {
                     <div className={css.actionsListContainer}>
                         <div className={css.actionListDescription}>
                             <div data-candu-id="custom-action-view-header">
-                                {ACTIONS_DESCRIPTION_INTRO}
-                                When enabled, you can preview Actions in the{' '}
-                                <Link to={routes.test}>test area</Link>.{' '}
-                                {ACTIONS_DESCRIPTION_CURRENT_STATE_DISCLAIMER}
+                                {ACTIONS_DESCRIPTION_INTRO} When enabled, you
+                                can preview Actions in the{' '}
+                                <Link to={routes.test}>test area</Link>.
                             </div>
                             <div className={css.actionButtons}>
                                 <CreateCustomActionButton />
