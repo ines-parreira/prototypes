@@ -2,7 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import InputField from 'pages/common/forms/input/InputField'
 
 import { MigrationProvider } from '../../types'

@@ -5,7 +5,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormGroup } from 'reactstrap'
 import isURL, { IsURLOptions } from 'validator/lib/isURL'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,7 +15,6 @@ import {
     LocalSocialNavigationLink,
     NavigationLink,
 } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'

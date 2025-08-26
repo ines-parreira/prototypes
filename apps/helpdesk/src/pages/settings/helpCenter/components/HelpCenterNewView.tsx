@@ -9,12 +9,11 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
 import { CreateHelpCenterDto, LocaleCode } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

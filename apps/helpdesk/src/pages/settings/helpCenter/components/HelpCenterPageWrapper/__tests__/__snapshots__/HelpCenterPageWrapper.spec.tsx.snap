@@ -65,12 +65,12 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
           <button
             aria-disabled="false"
             aria-label="help center preview"
-            class="wrapper fill secondary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
             id="preview-help-center"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <i
                 class="material-icons"

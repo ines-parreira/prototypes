@@ -4,10 +4,11 @@ import { AxiosError } from 'axios'
 import { fromJS, Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'

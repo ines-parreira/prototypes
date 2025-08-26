@@ -73,11 +73,11 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
                 <div>
                   <button
                     aria-disabled="false"
-                    class="wrapper fill secondary small"
+                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       Replace File
                     </span>
@@ -103,22 +103,22 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
         >
           <button
             aria-disabled="false"
-            class="wrapper fill secondary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Cancel
             </span>
           </button>
           <button
             aria-disabled="false"
-            class="wrapper fill primary medium"
+            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Import File
             </span>

@@ -1,6 +1,4 @@
-import { Tooltip } from '@gorgias/axiom'
-
-import Button from 'pages/common/components/button/Button'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { LinkEntity, LinkItem, LinkItemEventHandlers } from './LinkItem'
 

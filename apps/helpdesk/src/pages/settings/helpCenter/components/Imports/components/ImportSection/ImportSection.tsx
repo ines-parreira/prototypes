@@ -7,12 +7,11 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import { Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import settingsCss from 'pages/settings/settings.less'

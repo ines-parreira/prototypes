@@ -3,9 +3,10 @@ import { get } from 'lodash'
 import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

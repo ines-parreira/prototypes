@@ -1,4 +1,4 @@
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import { fileIsTooBig, MAXIMUM_FILE_SIZE_MB } from '../../utils'
 

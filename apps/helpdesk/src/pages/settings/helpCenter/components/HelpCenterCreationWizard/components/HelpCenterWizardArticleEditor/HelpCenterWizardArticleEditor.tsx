@@ -1,10 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,

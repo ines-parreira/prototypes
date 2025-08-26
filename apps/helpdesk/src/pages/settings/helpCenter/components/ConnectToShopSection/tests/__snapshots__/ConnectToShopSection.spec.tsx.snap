@@ -17,11 +17,11 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
     </p>
     <button
       aria-disabled="false"
-      class="wrapper fill secondary medium"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Connect
       </span>

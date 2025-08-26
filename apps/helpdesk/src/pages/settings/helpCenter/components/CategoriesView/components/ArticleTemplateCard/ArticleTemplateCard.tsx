@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ArticleTemplate } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 
 import { ArticleTemplateModal } from '../ArticleTemplateModal/ArticleTemplateModal'
 import { ARTICLE_TEMPLATE_CATEGORIES } from './constants'

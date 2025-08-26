@@ -1,8 +1,7 @@
 import { useHistory } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { assetsUrl } from 'utils'
 

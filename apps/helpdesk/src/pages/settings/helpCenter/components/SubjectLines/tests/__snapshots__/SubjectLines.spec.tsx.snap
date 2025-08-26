@@ -138,11 +138,11 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
     >
       <button
         aria-disabled="false"
-        class="wrapper button fill secondary medium"
+        class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons"
@@ -183,11 +183,11 @@ exports[`<SubjectLines /> should render the component with no subject lines and 
     >
       <button
         aria-disabled="false"
-        class="wrapper button fill secondary medium"
+        class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons"

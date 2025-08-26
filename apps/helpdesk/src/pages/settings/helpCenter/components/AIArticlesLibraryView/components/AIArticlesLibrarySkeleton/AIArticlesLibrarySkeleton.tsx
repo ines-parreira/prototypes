@@ -1,6 +1,4 @@
-import { Skeleton } from '@gorgias/axiom'
-
-import Button from 'pages/common/components/button/Button'
+import { Button, Skeleton } from '@gorgias/axiom'
 
 import listCss from '../AIArticlesLibraryList/AIArticlesLibraryList.less'
 import previewCss from '../AIArticlesLibraryPreview/AIArticlesLibraryPreview.less'

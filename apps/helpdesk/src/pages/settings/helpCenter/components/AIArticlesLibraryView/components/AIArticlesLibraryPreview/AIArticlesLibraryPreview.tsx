@@ -1,12 +1,11 @@
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { AIArticle } from 'models/helpCenter/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'

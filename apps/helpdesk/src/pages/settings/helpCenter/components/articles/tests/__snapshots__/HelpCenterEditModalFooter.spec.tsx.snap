@@ -20,12 +20,12 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           >
             <button
               aria-disabled="false"
-              class="wrapper fill primary medium left"
+              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
               color="primary"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Save & Publish
               </span>
@@ -79,11 +79,11 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         </div>
         <button
           aria-disabled="false"
-          class="wrapper fill secondary medium"
+          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Discard changes
           </span>
@@ -144,11 +144,11 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
       </div>
       <button
         aria-disabled="false"
-        class="wrapper deleteButton fill secondary medium"
+        class="ui-button-wrapper-a432 deleteButton ui-button-fill-a432 ui-button-secondary-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons"

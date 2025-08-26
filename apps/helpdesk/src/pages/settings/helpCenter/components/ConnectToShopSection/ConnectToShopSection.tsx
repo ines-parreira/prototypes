@@ -3,14 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import store from 'assets/img/icons/store.svg'
 import { useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectStore, {

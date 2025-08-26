@@ -9,8 +9,9 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { VisibilityStatus } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import { objKeys } from 'utils'
 
 import css from './SelectVisibilityStatus.less'

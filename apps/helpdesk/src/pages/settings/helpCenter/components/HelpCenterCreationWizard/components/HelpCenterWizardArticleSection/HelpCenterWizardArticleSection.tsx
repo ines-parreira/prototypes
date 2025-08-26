@@ -2,13 +2,12 @@ import React, { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Skeleton, Tooltip } from '@gorgias/axiom'
+import { Button, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import {
     ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'

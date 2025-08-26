@@ -515,11 +515,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
           >
             <button
               aria-disabled="false"
-              class="wrapper actionsButton fill primary medium"
+              class="ui-button-wrapper-a432 actionsButton ui-button-fill-a432 ui-button-primary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 <i
                   class="material-icons mr-2"
@@ -531,11 +531,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
             </button>
             <button
               aria-disabled="false"
-              class="wrapper actionsButton fill secondary medium"
+              class="ui-button-wrapper-a432 actionsButton ui-button-fill-a432 ui-button-secondary-a432"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 Close
               </span>
@@ -656,11 +656,11 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
           />
           <button
             aria-disabled="false"
-            class="wrapper w-100 fill primary medium"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Start migrating
             </span>
@@ -1057,11 +1057,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="wrapper w-100 fill primary medium isDisabled"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1091,7 +1091,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
               </span>
             </svg>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Loading
             </span>
@@ -1301,11 +1301,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="wrapper w-100 fill primary medium isDisabled"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1335,7 +1335,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
               </span>
             </svg>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Loading
             </span>
@@ -1455,11 +1455,11 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
           />
           <button
             aria-disabled="true"
-            class="wrapper w-100 fill primary medium isDisabled"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 spinner"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1489,7 +1489,7 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
               </span>
             </svg>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Start migrating
             </span>
@@ -1835,11 +1835,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper optionButton fill primary medium"
+                class="ui-button-wrapper-a432 optionButton ui-button-fill-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons mr-2"
@@ -1860,11 +1860,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper optionButton fill destructive medium"
+                class="ui-button-wrapper-a432 optionButton ui-button-fill-a432 ui-button-destructive-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons mr-2"
@@ -1883,11 +1883,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="wrapper w-100 fill secondary medium"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-secondary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               End migration
             </span>
@@ -2096,11 +2096,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
           />
           <button
             aria-disabled="false"
-            class="wrapper w-100 fill primary medium"
+            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Finish
             </span>

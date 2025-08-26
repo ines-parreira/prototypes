@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 
 import css from './CloseModal.less'

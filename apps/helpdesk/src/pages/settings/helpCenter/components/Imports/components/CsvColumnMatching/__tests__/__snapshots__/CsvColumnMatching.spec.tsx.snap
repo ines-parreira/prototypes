@@ -3679,22 +3679,22 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
   >
     <button
       aria-disabled="false"
-      class="wrapper mr-2 fill primary medium"
+      class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Confirm Import
       </span>
     </button>
     <button
       aria-disabled="false"
-      class="wrapper fill secondary medium"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Cancel
       </span>

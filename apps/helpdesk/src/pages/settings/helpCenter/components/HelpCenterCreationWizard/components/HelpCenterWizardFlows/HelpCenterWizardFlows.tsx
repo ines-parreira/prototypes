@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Skeleton } from '@gorgias/axiom'
+import { Button, Skeleton } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import WorkflowsFeatureList, {
@@ -12,7 +12,6 @@ import { ChannelLanguage } from 'pages/automate/common/types'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import { useHelpCenterFlows } from '../../hooks/useHelpCenterFlows'

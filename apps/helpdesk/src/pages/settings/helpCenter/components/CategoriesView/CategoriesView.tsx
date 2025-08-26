@@ -1,12 +1,13 @@
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ArticleTemplate, HelpCenter } from 'models/helpCenter/types'
 import { Banner } from 'pages/common/components/Banner'
-import Button from 'pages/common/components/button/Button'
 import {
     CategoriesTable,
     CategoriesTableProps,

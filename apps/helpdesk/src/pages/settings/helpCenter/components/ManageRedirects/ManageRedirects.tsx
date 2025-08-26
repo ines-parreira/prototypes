@@ -2,7 +2,8 @@ import React, { Fragment } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
+
 import InputField from 'pages/common/forms/input/InputField'
 
 import { isProduction, isStaging } from '../../../../../utils/environment'

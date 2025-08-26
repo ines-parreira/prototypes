@@ -4,13 +4,14 @@ import { keyBy as _keyBy } from 'lodash'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
 import { HelpCenter, Locale } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import settingsCss from 'pages/settings/settings.less'
 import { helpCenterCreated } from 'state/entities/helpCenter/helpCenters'

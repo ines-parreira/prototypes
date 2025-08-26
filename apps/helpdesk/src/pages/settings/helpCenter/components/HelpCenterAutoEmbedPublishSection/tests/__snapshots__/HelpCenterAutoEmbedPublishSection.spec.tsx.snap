@@ -27,12 +27,12 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
     </div>
     <button
       aria-disabled="true"
-      class="wrapper fill primary medium isDisabled"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Embed Help Center
       </span>
@@ -106,12 +106,12 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
     </div>
     <button
       aria-disabled="true"
-      class="wrapper fill primary medium isDisabled"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Embed Help Center
       </span>
@@ -147,12 +147,12 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
     </div>
     <button
       aria-disabled="false"
-      class="wrapper fill primary medium"
+      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         Embed Help Center
       </span>

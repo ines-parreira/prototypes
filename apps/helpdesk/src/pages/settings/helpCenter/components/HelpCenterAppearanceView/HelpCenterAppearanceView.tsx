@@ -6,12 +6,13 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
-import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import {

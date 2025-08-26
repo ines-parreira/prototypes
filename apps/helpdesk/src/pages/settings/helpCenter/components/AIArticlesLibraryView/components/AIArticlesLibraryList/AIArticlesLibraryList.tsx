@@ -2,11 +2,12 @@ import { Dispatch, SetStateAction, useMemo, useRef } from 'react'
 
 import { useEffectOnce, useKey } from '@repo/hooks'
 
+import { Button } from '@gorgias/axiom'
+
 import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 
 import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../constants'
 import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'

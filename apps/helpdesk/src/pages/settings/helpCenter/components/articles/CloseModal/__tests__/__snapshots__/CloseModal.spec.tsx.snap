@@ -58,11 +58,11 @@ exports[`<CloseModal /> matches snapshot 1`] = `
               >
                 <button
                   aria-disabled="false"
-                  class="wrapper discardBtn ghost primary medium"
+                  class="ui-button-wrapper-a432 discardBtn ui-button-ghost-a432 ui-button-primary-a432"
                   type="button"
                 >
                   <span
-                    class="content"
+                    class="ui-button-content-a432"
                   >
                     Discard label
                   </span>
@@ -70,22 +70,22 @@ exports[`<CloseModal /> matches snapshot 1`] = `
                 <div>
                   <button
                     aria-disabled="false"
-                    class="wrapper fill secondary medium"
+                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       Edit label
                     </span>
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper ml-3 confirmBtn fill primary medium"
+                    class="ui-button-wrapper-a432 ml-3 confirmBtn ui-button-fill-a432 ui-button-primary-a432"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       Save label
                     </span>

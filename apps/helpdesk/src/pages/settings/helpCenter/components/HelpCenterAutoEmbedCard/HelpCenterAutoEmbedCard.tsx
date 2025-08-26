@@ -4,12 +4,11 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, Tooltip } from '@gorgias/axiom'
+import { Badge, Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import { linkToShopifyIntegration } from 'pages/settings/contactForm/utils/navigation'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

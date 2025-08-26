@@ -3,9 +3,10 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
 
+import { Button } from '@gorgias/axiom'
+
 import { Locale, LocaleCode } from 'models/helpCenter/types'
 import { BadgeItemProps } from 'pages/common/components/BadgetItem'
-import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

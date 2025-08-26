@@ -2,13 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { Link, NavLink, Route, Switch, useHistory } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { PRODUCT_BANNER_KEY } from 'hooks/useProductBannerStorage'
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

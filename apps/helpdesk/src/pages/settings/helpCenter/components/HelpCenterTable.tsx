@@ -4,13 +4,14 @@ import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
+import { Button } from '@gorgias/axiom'
+
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
     Locale,
 } from 'models/helpCenter/types'
-import Button from 'pages/common/components/button/Button'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

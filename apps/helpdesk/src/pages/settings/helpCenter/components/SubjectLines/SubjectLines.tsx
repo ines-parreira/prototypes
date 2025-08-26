@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import _uniqueId from 'lodash/uniqueId'
 
+import { Button } from '@gorgias/axiom'
+
 import { UpdateSubjectLinesProps } from 'models/contactForm/types'
-import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import SubjectLine, { SubjectLineProps } from '../SubjectLine/SubjectLine'
