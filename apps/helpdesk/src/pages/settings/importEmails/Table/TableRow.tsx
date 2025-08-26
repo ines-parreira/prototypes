@@ -35,7 +35,7 @@ export const TableRow = ({ importItem }: TableRowProps) => {
             >
                 <div className={css.importStats}>
                     <span>
-                        {importItem.stats?.total_tickets_created?.toLocaleString() ||
+                        {importItem.stats?.total_messages_imported?.toLocaleString() ||
                             0}{' '}
                         emails
                     </span>

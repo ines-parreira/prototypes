@@ -85,7 +85,7 @@ describe('TableRow', () => {
 
             renderTableRow(importItem)
 
-            expect(screen.getByText('5,432 emails')).toBeInTheDocument()
+            expect(screen.getByText('5,000 emails')).toBeInTheDocument()
             expect(
                 screen.getByText('Dec 1, 2024 – Jan 15, 2025'),
             ).toBeInTheDocument()
@@ -94,8 +94,7 @@ describe('TableRow', () => {
         it('formats large email counts with commas', () => {
             const importItem = createMockImportItem({
                 stats: {
-                    total_messages_imported: 5000,
-                    total_tickets_created: 5432,
+                    total_messages_imported: 5432,
                 },
             })
 
@@ -120,7 +119,6 @@ describe('TableRow', () => {
         it('handles zero email count', () => {
             const importItem = createMockImportItem({
                 stats: {
-                    total_tickets_created: 0,
                     total_messages_imported: 0,
                 },
             })
@@ -130,24 +128,10 @@ describe('TableRow', () => {
             expect(screen.getByText('0 emails')).toBeInTheDocument()
         })
 
-        it('handles null total_tickets_created and falls back to 0', () => {
+        it('handles undefined total_messages_imported and falls back to 0', () => {
             const importItem = createMockImportItem({
                 stats: {
-                    total_tickets_created: null as any,
-                    total_messages_imported: 100,
-                },
-            })
-
-            renderTableRow(importItem)
-
-            expect(screen.getByText('0 emails')).toBeInTheDocument()
-        })
-
-        it('handles undefined total_tickets_created and falls back to 0', () => {
-            const importItem = createMockImportItem({
-                stats: {
-                    total_tickets_created: undefined as any,
-                    total_messages_imported: 100,
+                    total_messages_imported: undefined,
                 },
             })
 
@@ -159,41 +143,13 @@ describe('TableRow', () => {
         it('formats very large numbers with proper locale formatting', () => {
             const importItem = createMockImportItem({
                 stats: {
-                    total_tickets_created: 1234567890,
-                    total_messages_imported: 1000000,
+                    total_messages_imported: 1234567890,
                 },
             })
 
             renderTableRow(importItem)
 
             expect(screen.getByText('1,234,567,890 emails')).toBeInTheDocument()
-        })
-
-        it('handles decimal numbers by using toLocaleString formatting', () => {
-            const importItem = createMockImportItem({
-                stats: {
-                    total_tickets_created: 1500.75,
-                    total_messages_imported: 2000,
-                },
-            })
-
-            renderTableRow(importItem)
-
-            // toLocaleString() will format this as "1,500.75" in most locales
-            expect(screen.getByText('1,500.75 emails')).toBeInTheDocument()
-        })
-
-        it('handles negative numbers (edge case)', () => {
-            const importItem = createMockImportItem({
-                stats: {
-                    total_tickets_created: -5,
-                    total_messages_imported: 100,
-                },
-            })
-
-            renderTableRow(importItem)
-
-            expect(screen.getByText('-5 emails')).toBeInTheDocument()
         })
     })
 
@@ -318,8 +274,7 @@ describe('TableRow', () => {
                 id: 123,
                 provider_identifier: 'complete@test.com',
                 stats: {
-                    total_tickets_created: 9876,
-                    total_messages_imported: 12000,
+                    total_messages_imported: 9876,
                 },
                 import_window_start: '2025-02-01T00:00:00Z',
                 import_window_end: '2025-02-28T23:59:59Z',
