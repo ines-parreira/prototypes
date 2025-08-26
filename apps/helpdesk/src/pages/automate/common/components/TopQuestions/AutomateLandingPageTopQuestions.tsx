@@ -54,7 +54,7 @@ const TopQuestionsSectionWithFilters = ({
     const viewedOnPage = useTopQuestionsViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
-        'automate-overview',
+        'ai-agent-overview',
         batchDatetime,
     )
 

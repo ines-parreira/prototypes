@@ -95,7 +95,7 @@ describe('<AutomateStatsNavbar />', () => {
 
         const links = getAllByRole('link')
 
-        expect(links[0]).toHaveAttribute('href', '/app/stats/automate-overview')
+        expect(links[0]).toHaveAttribute('href', '/app/stats/ai-agent-overview')
         expect(links[0].textContent).toEqual('Overview')
         expect(links[1]).toHaveAttribute('href', '/app/stats/automate-ai-agent')
         expect(links[1].textContent).toEqual('AI Agent')

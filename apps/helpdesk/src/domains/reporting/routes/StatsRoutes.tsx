@@ -416,9 +416,16 @@ export const StatsRoutes = () => {
                 <ProtectedRoute
                     path={`${path}/${STATS_ROUTES.AUTOMATE_OVERVIEW}`}
                 >
+                    <Redirect
+                        to={`${path}/${STATS_ROUTES.AI_AGENT_OVERVIEW}`}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.AI_AGENT_OVERVIEW}`}
+                >
                     <Route
                         exact
-                        path={`${path}/${STATS_ROUTES.AUTOMATE_OVERVIEW}`}
+                        path={`${path}/${STATS_ROUTES.AI_AGENT_OVERVIEW}`}
                         render={() => (
                             <App
                                 content={AutomateStatsPaywall}

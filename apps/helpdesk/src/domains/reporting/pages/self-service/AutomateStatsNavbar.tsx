@@ -19,7 +19,7 @@ import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { STATS_ROUTES } from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 
-const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
+const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
 const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
 const AI_SALES_AGENT_PATH = `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`

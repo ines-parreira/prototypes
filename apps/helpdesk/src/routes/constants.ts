@@ -14,6 +14,7 @@ export const STATS_ROUTES = {
     AI_SALES_AGENT_OVERVIEW: 'ai-sales-agent/overview',
     AUTOMATE_AI_AGENTS: 'automate-ai-agent',
     AUTOMATE_OVERVIEW: 'automate-overview',
+    AI_AGENT_OVERVIEW: 'ai-agent-overview',
     CONVERT_CAMPAIGNS: 'convert/campaigns',
     DASHBOARDS_NEW: 'dashboard/new',
     DASHBOARDS_PAGE: 'dashboard/:id',

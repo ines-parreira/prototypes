@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import { ClassValue } from 'classnames/types'
@@ -33,6 +33,8 @@ type BaseProps = {
     buttonClassName?: ClassValue
     // Hide the selected store from the dropdown options
     hideSelectedFromDropdown?: boolean
+    // Enable dynamic height calculation for dropdown
+    enableDynamicHeight?: boolean
 }
 
 type PropsWithAllOption = BaseProps & {
@@ -76,8 +78,10 @@ export default function StoreSelector({
     singleStoreInline = false,
     buttonClassName,
     hideSelectedFromDropdown = false,
+    enableDynamicHeight = false,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
+    const [dropdownMaxHeight, setDropdownMaxHeight] = useState<number>(400)
     const targetRef = useRef<HTMLButtonElement | null>(null)
 
     const inlineNameRef = useRef<HTMLSpanElement>(null)
@@ -91,6 +95,41 @@ export default function StoreSelector({
         buttonNameRef,
         selected?.name ?? '',
     )
+
+    useEffect(() => {
+        if (!enableDynamicHeight) return
+
+        const calculateMaxHeight = () => {
+            if (targetRef.current && isOpen) {
+                const buttonRect = targetRef.current.getBoundingClientRect()
+                const windowHeight = window.innerHeight
+                const spaceBelow = windowHeight - buttonRect.bottom
+                const spaceAbove = buttonRect.top
+
+                const padding = 20
+                const maxAvailableHeight =
+                    Math.max(spaceBelow, spaceAbove) - padding
+
+                const calculatedHeight = Math.min(
+                    600,
+                    Math.max(140, maxAvailableHeight),
+                )
+                setDropdownMaxHeight(calculatedHeight)
+            }
+        }
+
+        calculateMaxHeight()
+
+        if (isOpen) {
+            window.addEventListener('resize', calculateMaxHeight)
+            window.addEventListener('scroll', calculateMaxHeight)
+
+            return () => {
+                window.removeEventListener('resize', calculateMaxHeight)
+                window.removeEventListener('scroll', calculateMaxHeight)
+            }
+        }
+    }, [isOpen, enableDynamicHeight])
 
     const handleClickButton = useCallback(() => {
         setIsOpen((o) => !o)
@@ -238,7 +277,16 @@ export default function StoreSelector({
                 matchTriggerWidth
             >
                 {withSearch && <DropdownSearch autoFocus />}
-                <DropdownBody className={css.dropdownBody}>
+                <DropdownBody
+                    className={css.dropdownBody}
+                    style={
+                        enableDynamicHeight
+                            ? {
+                                  maxHeight: `${dropdownMaxHeight}px`,
+                              }
+                            : undefined
+                    }
+                >
                     {withAllOption && (
                         <>
                             <DropdownItem

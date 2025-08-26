@@ -142,7 +142,7 @@ export const KpiSection = ({
             return ''
         }
 
-        return `/app/stats/${STATS_ROUTES.AUTOMATE_OVERVIEW}`
+        return `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
     }, [isLoading])
 
     if (isLoading || !aiAgentUserId) {

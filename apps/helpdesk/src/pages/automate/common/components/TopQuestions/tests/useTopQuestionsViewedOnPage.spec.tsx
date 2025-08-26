@@ -27,7 +27,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -43,7 +43,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -54,7 +54,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store2IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -63,7 +63,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -77,7 +77,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -88,7 +88,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter2Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -97,7 +97,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -111,7 +111,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -131,7 +131,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -145,7 +145,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -165,7 +165,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -174,7 +174,7 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateLater,
         ])
 
@@ -188,7 +188,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -204,7 +204,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -220,7 +220,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -236,7 +236,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -252,7 +252,7 @@ describe('useTopQuestionsViewedOnPage', () => {
                 initialProps: [
                     store1IntegrationId,
                     helpCenter1Id,
-                    'automate-overview',
+                    'ai-agent-overview',
                     dateNow,
                 ],
             },
@@ -261,14 +261,14 @@ describe('useTopQuestionsViewedOnPage', () => {
         rerender([
             store2IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
         rerender([
             store1IntegrationId,
             helpCenter1Id,
-            'automate-overview',
+            'ai-agent-overview',
             dateNow,
         ])
 
@@ -276,15 +276,15 @@ describe('useTopQuestionsViewedOnPage', () => {
             initialProps: [
                 store1IntegrationId,
                 helpCenter1Id,
-                'automate-overview',
+                'ai-agent-overview',
                 dateNow,
             ],
         })
 
         expect(localStorage.getItem('gorgias-aao-top-questions')).toEqual(
             '\
-{"key-100-10":{"viewedOnPages":["automate-overview"],"latestBatchDatetime":"2022-02-10T08:00:00.000Z"},\
-"key-200-10":{"viewedOnPages":["automate-overview"],"latestBatchDatetime":"2022-02-10T08:00:00.000Z"}}',
+{"key-100-10":{"viewedOnPages":["ai-agent-overview"],"latestBatchDatetime":"2022-02-10T08:00:00.000Z"},\
+"key-200-10":{"viewedOnPages":["ai-agent-overview"],"latestBatchDatetime":"2022-02-10T08:00:00.000Z"}}',
         )
 
         jest.setSystemTime(date2YearsLater)
@@ -293,7 +293,7 @@ describe('useTopQuestionsViewedOnPage', () => {
             initialProps: [
                 store1IntegrationId,
                 helpCenter1Id,
-                'automate-overview',
+                'ai-agent-overview',
                 dateNow,
             ],
         })

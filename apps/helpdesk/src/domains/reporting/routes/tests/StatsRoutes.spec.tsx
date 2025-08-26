@@ -1,8 +1,7 @@
 import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { act, render } from '@testing-library/react'
-import { createBrowserHistory } from 'history'
+import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -86,7 +85,6 @@ jest.mock(
         },
 )
 
-const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 
 const defaultState = {
@@ -226,7 +224,6 @@ const AiSalesAgentSalesOverviewMock = assumeMock(AiSalesAgentSalesOverview)
 
 describe('StatsRoutes', () => {
     beforeEach(() => {
-        mockHistory.replace('/app')
         mockUseFlag.mockReturnValue(false)
         ChannelsReportMock.mockImplementation(() => <div />)
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
@@ -301,7 +298,7 @@ describe('StatsRoutes', () => {
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`,
-            mock: ServiceLevelAgreementsMock,
+            mock: SupportPerformanceAgentsReportMock,
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES}`,
@@ -424,11 +421,11 @@ describe('StatsRoutes', () => {
     it('should log page change after location change to a tracked page', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <StatsRoutes />
+                <MemoryRouter initialEntries={['/app/stats']}>
+                    <StatsRoutes />
+                </MemoryRouter>
             </Provider>,
         )
-
-        act(() => mockHistory.push('/app/stats/live-overview'))
 
         expect(logPageMock).toHaveBeenCalledTimes(1)
     })

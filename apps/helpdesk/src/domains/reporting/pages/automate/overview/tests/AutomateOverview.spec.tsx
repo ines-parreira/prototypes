@@ -83,7 +83,7 @@ jest.mock('react-router-dom', () => ({
     useLocation: () =>
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         ({
-            pathname: '/app/stats/automate-overview',
+            pathname: '/app/stats/ai-agent-overview',
         }) as any,
 }))
 

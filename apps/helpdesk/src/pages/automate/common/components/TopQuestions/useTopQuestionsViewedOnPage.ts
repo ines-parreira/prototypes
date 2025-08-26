@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useEffectOnce, useLocalStorage, usePrevious } from '@repo/hooks'
 import { fromPairs } from 'lodash'
 
-export type PagesWithTopQuestions = 'automate-overview' | 'all-recommendations'
+export type PagesWithTopQuestions = 'ai-agent-overview' | 'all-recommendations'
 
 export const useTopQuestionsViewedOnPage = (
     storeIntegrationId: number,

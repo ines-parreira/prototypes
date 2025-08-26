@@ -59,7 +59,7 @@ const AutomateLandingPageDashboardV2 = ({ filters }: Props) => {
     )
 
     const handleViewFullReport = () => {
-        history.push(`/app/stats/automate-overview?source=automate`)
+        history.push(`/app/stats/ai-agent-overview?source=automate`)
     }
 
     const isLoading =

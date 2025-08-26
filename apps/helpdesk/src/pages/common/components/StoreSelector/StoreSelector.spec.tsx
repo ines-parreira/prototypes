@@ -613,6 +613,275 @@ describe('StoreSelector', () => {
         })
     })
 
+    describe('enableDynamicHeight prop', () => {
+        beforeEach(() => {
+            Element.prototype.getBoundingClientRect = jest.fn(() => ({
+                x: 0,
+                y: 100,
+                width: 200,
+                height: 40,
+                top: 100,
+                right: 200,
+                bottom: 140,
+                left: 0,
+                toJSON: jest.fn(),
+            }))
+
+            Object.defineProperty(window, 'innerHeight', {
+                writable: true,
+                configurable: true,
+                value: 800,
+            })
+        })
+
+        afterEach(() => {
+            jest.restoreAllMocks()
+        })
+
+        it('calculates dropdown height dynamically when enableDynamicHeight is true', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2)
+
+                const optionParent = options[0].parentElement
+                expect(optionParent).toBeInTheDocument()
+
+                const style = optionParent?.getAttribute('style')
+                expect(style).toContain('max-height')
+                expect(style).toMatch(/max-height:\s*\d+px/)
+            })
+        })
+
+        it('does not set inline maxHeight style when enableDynamicHeight is false', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight={false}
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2)
+
+                const optionParent = options[0].parentElement
+                expect(optionParent).toBeInTheDocument()
+
+                const style = optionParent?.getAttribute('style')
+                expect(style).toBeNull()
+            })
+        })
+
+        it('adjusts dropdown height when window resizes with enableDynamicHeight', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(2)
+            })
+
+            act(() => {
+                window.innerHeight = 600
+                window.dispatchEvent(new Event('resize'))
+            })
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(2)
+            })
+        })
+
+        it('removes event listeners when dropdown closes with enableDynamicHeight', async () => {
+            const user = userEvent.setup()
+            const removeEventListenerSpy = jest.spyOn(
+                window,
+                'removeEventListener',
+            )
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+
+            await act(() => user.click(button))
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(2)
+            })
+
+            await act(() => user.click(button))
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option')).toHaveLength(0)
+            })
+
+            expect(removeEventListenerSpy).toHaveBeenCalledWith(
+                'resize',
+                expect.any(Function),
+            )
+            expect(removeEventListenerSpy).toHaveBeenCalledWith(
+                'scroll',
+                expect.any(Function),
+            )
+        })
+
+        it('adds event listeners when dropdown opens with enableDynamicHeight', async () => {
+            const user = userEvent.setup()
+            const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(2)
+            })
+
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'resize',
+                expect.any(Function),
+            )
+            expect(addEventListenerSpy).toHaveBeenCalledWith(
+                'scroll',
+                expect.any(Function),
+            )
+        })
+
+        it('clamps dropdown height between minimum and maximum values', async () => {
+            const user = userEvent.setup()
+
+            window.innerHeight = 200
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2)
+
+                const optionParent = options[0].parentElement
+                expect(optionParent).toBeInTheDocument()
+
+                const style = optionParent?.getAttribute('style') || ''
+                expect(style).toContain('max-height')
+                // Should be clamped to at least 140px (3 digits minimum)
+                expect(style).toMatch(/max-height:\s*\d{3,}px/)
+            })
+        })
+
+        it('calculates height based on available space below and above button', async () => {
+            const user = userEvent.setup()
+
+            // Position button near bottom of viewport
+            Element.prototype.getBoundingClientRect = jest.fn(() => ({
+                x: 0,
+                y: 700,
+                width: 200,
+                height: 40,
+                top: 700,
+                right: 200,
+                bottom: 740,
+                left: 0,
+                toJSON: jest.fn(),
+            }))
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const options = screen.getAllByRole('option')
+                expect(options).toHaveLength(2)
+
+                const optionParent = options[0].parentElement
+                expect(optionParent).toBeInTheDocument()
+
+                const style = optionParent?.getAttribute('style') || ''
+                expect(style).toContain('max-height')
+                expect(style).toMatch(/max-height:\s*\d+px/)
+            })
+        })
+
+        it('does not calculate height when dropdown is closed', () => {
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    enableDynamicHeight
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            expect(button).toBeInTheDocument()
+
+            expect(
+                Element.prototype.getBoundingClientRect,
+            ).not.toHaveBeenCalled()
+        })
+    })
+
     describe('single store behavior', () => {
         const mockSingleIntegration = [mockShopifyIntegration]
 

@@ -77,6 +77,7 @@ export const ActionDrivenNavigation = () => {
                             getShopNameFromStoreIntegration(integration),
                         )
                     }
+                    enableDynamicHeight
                     fullWidth
                     singleStoreInline
                     buttonClassName={css.storeSelectorButton}

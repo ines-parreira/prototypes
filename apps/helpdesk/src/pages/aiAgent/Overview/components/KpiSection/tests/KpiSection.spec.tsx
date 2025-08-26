@@ -241,7 +241,7 @@ describe('KpiSection', () => {
 
             // Check that the link has the correct href
             const link = reportButton.closest('a')
-            expect(link).toHaveAttribute('href', '/app/stats/automate-overview')
+            expect(link).toHaveAttribute('href', '/app/stats/ai-agent-overview')
         })
     })
 })

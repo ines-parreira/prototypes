@@ -86,7 +86,7 @@ export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
     {
         id: ReportsIDs.AutomateOverviewReportConfig,
         reportName: PAGE_TITLE_AUTOMATE_PAYWALL,
-        reportPath: STATS_ROUTES.AUTOMATE_OVERVIEW,
+        reportPath: STATS_ROUTES.AI_AGENT_OVERVIEW,
         charts: {
             [AutomateOverviewChart.AutomationRateKPIChart]: {
                 chartComponent: AutomationRateKPIChart,
