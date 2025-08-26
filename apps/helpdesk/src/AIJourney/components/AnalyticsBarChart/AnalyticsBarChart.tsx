@@ -6,7 +6,7 @@ import moment from 'moment'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     formatMetricValue,
-    MetricTrendFormat,
+    MetricValueFormat,
 } from 'domains/reporting/pages/common/utils'
 
 import { Tooltip } from '../Tooltip/Tooltip'
@@ -15,7 +15,7 @@ import css from './AnalyticsBarChart.less'
 
 type AnalyticsBarChartProps = {
     data: TimeSeriesDataItem[]
-    metricFormat: MetricTrendFormat
+    metricFormat: MetricValueFormat
     currency?: string
     period: {
         start: string

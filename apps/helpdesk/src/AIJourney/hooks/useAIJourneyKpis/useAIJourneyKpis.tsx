@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
@@ -30,7 +30,7 @@ export type MetricProps = {
     prevValue?: number | null | undefined
     series?: TimeSeriesDataItem[]
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-    metricFormat: MetricTrendFormat
+    metricFormat: MetricValueFormat
     currency?: string
     isLoading: boolean
     drilldown?: DrillDownMetric

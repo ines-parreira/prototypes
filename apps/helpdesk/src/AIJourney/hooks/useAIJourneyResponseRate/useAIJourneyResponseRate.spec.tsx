@@ -114,7 +114,7 @@ describe('useAIJourneyResponseRate', () => {
             currency: 'USD',
             isLoading: false,
             interpretAs: 'more-is-better',
-            metricFormat: 'percent',
+            metricFormat: 'percent-precision-1',
             prevValue: 40,
             series: [
                 {
@@ -155,7 +155,7 @@ describe('useAIJourneyResponseRate', () => {
             interpretAs: 'more-is-better',
             isLoading: true,
             label: 'Response Rate',
-            metricFormat: 'percent',
+            metricFormat: 'percent-precision-1',
             prevValue: 0,
             value: 0,
             series: [],

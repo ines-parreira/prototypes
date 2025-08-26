@@ -210,6 +210,7 @@ export type MetricValueFormat =
     | 'integer'
     | 'duration'
     | 'percent'
+    | 'percent-precision-1'
     | 'percent-refined'
     | 'decimal-to-percent'
     | 'decimal-to-percent-precision-1'
@@ -259,6 +260,12 @@ export const formatMetricValue = (
 
     if (format === 'percent') {
         return `${metricToDecimal(value)}%`
+    }
+
+    if (format === 'percent-precision-1') {
+        return `${metricToDecimal(value, {
+            maximumFractionDigits: 1,
+        })}%`
     }
 
     if (format === 'percent-refined') {

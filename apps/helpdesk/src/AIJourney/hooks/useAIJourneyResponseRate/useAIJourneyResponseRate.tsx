@@ -147,7 +147,7 @@ export const useAIJourneyResponseRate = (
         prevValue: responseRatePrevValue,
         series: conversionRateTimeSeries,
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'percent-precision-1',
         currency,
         isLoading:
             isFetchingRepliedMessages ||

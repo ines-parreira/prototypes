@@ -145,7 +145,7 @@ export const useClickThroughRate = (
         prevValue: clickThroughRateValueDataPrevValue,
         series: clickThroughRateTimeSeries,
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'percent-precision-1',
         currency,
         isLoading:
             isFetchingTotalUniqClicks ||

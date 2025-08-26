@@ -143,7 +143,7 @@ export const useAIJourneyConversionRate = (
         prevValue: conversionRatePrevValue,
         series: conversionRateTimeSeries,
         interpretAs: 'more-is-better',
-        metricFormat: 'percent',
+        metricFormat: 'percent-precision-1',
         isLoading:
             isFetchingtotalContactsEnrolled ||
             isFetchingTotalOrders ||

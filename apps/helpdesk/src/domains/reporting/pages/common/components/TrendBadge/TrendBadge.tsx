@@ -9,7 +9,7 @@ import { TrendIcon } from 'domains/reporting/pages/common/components/TrendIcon'
 import {
     formatMetricTrend,
     formatMetricValue,
-    MetricTrendFormat,
+    MetricValueFormat,
 } from 'domains/reporting/pages/common/utils'
 
 const getTooltipText = (prevValue: string, period: string) => (
@@ -32,7 +32,7 @@ type Props = {
     tooltipData?: {
         period: string
     }
-    metricFormat?: MetricTrendFormat
+    metricFormat?: MetricValueFormat
     currency?: string
     size?: 'sm' | 'md'
 }

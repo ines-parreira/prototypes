@@ -258,6 +258,12 @@ describe('stats components utils', () => {
             expect(formatMetricValue(123456.789, 'percent')).toBe('123,456.79%')
         })
 
+        it('should format and round value up to one decimal places and render as percentage when format is "percent-precision-1"', () => {
+            expect(formatMetricValue(123456.789, 'percent-precision-1')).toBe(
+                '123,456.8%',
+            )
+        })
+
         it('should format value up to one decimal place and representing percentage when format is "decimal-to-percent-precision-1"', () => {
             expect(
                 formatMetricValue(123456.789, 'decimal-to-percent-precision-1'),

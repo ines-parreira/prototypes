@@ -77,7 +77,7 @@ describe('useClickThroughRate', () => {
             currency: 'USD',
             isLoading: false,
             interpretAs: 'more-is-better',
-            metricFormat: 'percent',
+            metricFormat: 'percent-precision-1',
             prevValue: 100,
             series: [
                 {
@@ -116,7 +116,7 @@ describe('useClickThroughRate', () => {
             interpretAs: 'more-is-better',
             isLoading: true,
             label: 'Click Through Rate',
-            metricFormat: 'percent',
+            metricFormat: 'percent-precision-1',
             prevValue: 0,
             value: 0,
             series: [],
