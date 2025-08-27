@@ -1,3 +1,4 @@
+import { Edge } from '@xyflow/react'
 import { cloneDeep } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -292,4 +293,21 @@ export const insertVoiceConvergenceNodes = (
         createIntermediaryNode,
         insertIntermediaryNode,
     )
+}
+
+export function getEdgeProps(
+    edge: Edge,
+    nodes: VoiceFlowNode[],
+): { weight?: number; height?: number } {
+    const sourceStep = nodes.find((node) => node.id === edge.source)
+
+    switch (sourceStep?.type) {
+        // short edges, that bring the elements closer together
+        case VoiceFlowNodeType.IvrMenu:
+        case VoiceFlowNodeType.TimeSplitConditional:
+        case VoiceFlowNodeType.Intermediary:
+            return { weight: 50, height: 12 }
+        default:
+            return { weight: 1, height: 24 }
+    }
 }

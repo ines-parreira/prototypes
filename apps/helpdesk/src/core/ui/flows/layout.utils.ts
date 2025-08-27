@@ -5,10 +5,14 @@ const NODE_WIDTH_DEFAULT = 228
 const NODE_HEIGHT_DEFAULT = 56
 const EDGE_HEIGHT_DEFAULT = 56
 
-export function getLayoutedElements(
-    nodes: Node[],
+export function getLayoutedElements<TNode extends Node>(
+    nodes: TNode[],
     edges: Edge[],
-): { nodes: Node[]; edges: Edge[] } {
+    getEdgeProps?: (
+        edge: Edge,
+        nodes: TNode[],
+    ) => { weight?: number; height?: number },
+): { nodes: TNode[]; edges: Edge[] } {
     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}))
     g.setGraph({
         rankdir: 'TB', // top-bottom
@@ -16,10 +20,16 @@ export function getLayoutedElements(
     })
 
     edges.forEach((edge) =>
-        g.setEdge(edge.source, edge.target, {
-            weight: 1,
-            height: EDGE_HEIGHT_DEFAULT,
-        }),
+        g.setEdge(
+            edge.source,
+            edge.target,
+            getEdgeProps
+                ? getEdgeProps(edge, nodes)
+                : {
+                      weight: 1,
+                      height: EDGE_HEIGHT_DEFAULT,
+                  },
+        ),
     )
     nodes.forEach((node) =>
         g.setNode(node.id, {

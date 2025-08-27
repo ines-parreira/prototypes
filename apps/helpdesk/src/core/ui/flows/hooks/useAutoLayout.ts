@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 
 import {
+    Edge,
+    Node,
     ReactFlowState,
     useNodesInitialized,
     useReactFlow,
@@ -11,18 +13,35 @@ import { getLayoutedElements } from '../layout.utils'
 
 const nodeCountSelector = (state: ReactFlowState) => state.nodeLookup.size
 
-export function useAutoLayout() {
+export function useAutoLayout<TNode extends Node>(
+    getEdgeProps?: (
+        edge: Edge,
+        nodes: TNode[],
+    ) => { weight?: number; height?: number },
+): void {
     const nodeCount = useStore(nodeCountSelector)
     const nodesInitialized = useNodesInitialized()
-    const { getNodes, getEdges, setNodes, setEdges } = useReactFlow()
+    const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<TNode>()
 
     useEffect(() => {
         if (nodeCount > 0) {
             const nodes = getNodes()
             const edges = getEdges()
-            const { nodes: newNodes } = getLayoutedElements(nodes, edges)
+            const { nodes: newNodes } = getLayoutedElements(
+                nodes,
+                edges,
+                getEdgeProps,
+            )
 
             setNodes(newNodes)
         }
-    }, [nodeCount, getNodes, getEdges, setNodes, setEdges, nodesInitialized])
+    }, [
+        nodeCount,
+        getNodes,
+        getEdges,
+        setNodes,
+        setEdges,
+        nodesInitialized,
+        getEdgeProps,
+    ])
 }

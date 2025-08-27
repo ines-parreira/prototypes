@@ -1,3 +1,5 @@
+import { Edge } from '@xyflow/react'
+
 import {
     mockIvrMenuStep,
     mockPlayMessageStep,
@@ -16,6 +18,7 @@ import {
     IntermediaryNode,
     IvrMenuNode,
     IvrOptionNode,
+    PlayMessageNode,
     SendToVoicemailNode,
     TimeSplitConditionalNode,
     VoiceFlowNode,
@@ -25,6 +28,7 @@ import {
     createIvrOptionNode,
     createTimeSplitOptionNode,
     findConvergencePointsInVoiceFlow,
+    getEdgeProps,
     getNextNodes,
     isVoiceFlowStep,
     transformToReactFlowNodes,
@@ -533,6 +537,104 @@ describe('utils', () => {
             const result = findConvergencePointsInVoiceFlow(nodes)
 
             expect(result).toEqual([])
+        })
+    })
+
+    describe('getEdgeProps', () => {
+        it('should return short edge props for IvrMenu source', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'ivr-node',
+                target: 'target-node',
+            }
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: 'ivr-node',
+                    type: VoiceFlowNodeType.IvrMenu,
+                    data: mockIvrMenuStep(),
+                    position: { x: 0, y: 0 },
+                } as IvrMenuNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 50, height: 12 })
+        })
+
+        it('should return short edge props for TimeSplitConditional source', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'time-split-node',
+                target: 'target-node',
+            }
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: 'time-split-node',
+                    type: VoiceFlowNodeType.TimeSplitConditional,
+                    data: mockTimeSplitConditionalStep(),
+                    position: { x: 0, y: 0 },
+                } as TimeSplitConditionalNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 50, height: 12 })
+        })
+
+        it('should return short edge props for Intermediary source', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'intermediary-node',
+                target: 'target-node',
+            }
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: 'intermediary-node',
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: {
+                        next_step_id: 'target-node',
+                        convergingNodes: ['node1', 'node2'],
+                    },
+                    position: { x: 0, y: 0 },
+                } as IntermediaryNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 50, height: 12 })
+        })
+
+        it('should return default edge props for PlayMessage source', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'play-message-node',
+                target: 'target-node',
+            }
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: 'play-message-node',
+                    type: VoiceFlowNodeType.PlayMessage,
+                    data: mockPlayMessageStep(),
+                    position: { x: 0, y: 0 },
+                } as PlayMessageNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 1, height: 24 })
+        })
+
+        it('should return default edge props when source node is not found', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'non-existent-node',
+                target: 'target-node',
+            }
+            const nodes: VoiceFlowNode[] = []
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 1, height: 24 })
         })
     })
 })

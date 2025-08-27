@@ -66,7 +66,11 @@ describe('useAutoLayout', () => {
             ),
         })
 
-        expect(getLayoutedElementsSpy).toHaveBeenCalledWith(nodes, edges)
+        expect(getLayoutedElementsSpy).toHaveBeenCalledWith(
+            nodes,
+            edges,
+            undefined,
+        )
         expect(onNodesChange).toHaveBeenCalledWith([
             {
                 id: '1',

@@ -23,7 +23,7 @@ import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
 import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
 import { VoiceFlowNode } from './types'
-import { getNextNodes, transformToReactFlowNodes } from './utils'
+import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge } from './VoiceFlowEdge'
 
 const nodeTypes = {
@@ -49,7 +49,7 @@ export function VoiceFlow({ flow }: VoiceFlowProps) {
     const [nodes, setNodes, onNodesChange] = useNodesState<VoiceFlowNode>([])
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
 
-    useAutoLayout()
+    useAutoLayout(getEdgeProps)
 
     useEffect(() => {
         const newNodes = transformToReactFlowNodes(flow)
