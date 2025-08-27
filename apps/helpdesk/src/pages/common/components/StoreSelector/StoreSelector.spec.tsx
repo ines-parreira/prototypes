@@ -3,9 +3,17 @@ import React from 'react'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { THEME_NAME } from '@gorgias/design-tokens'
+
+import * as themeHooks from '../../../../core/theme'
 import { IntegrationType } from '../../../../models/integration/constants'
 import { StoreIntegration } from '../../../../models/integration/types'
 import StoreSelector from './StoreSelector'
+
+jest.mock('../../../../core/theme', () => ({
+    ...jest.requireActual('../../../../core/theme'),
+    useTheme: jest.fn(),
+}))
 
 const mockShopifyIntegration = {
     id: 1,
@@ -23,9 +31,18 @@ const mockIntegrations = [mockShopifyIntegration, mockBigCommerceIntegration]
 
 describe('StoreSelector', () => {
     const mockOnChange = jest.fn()
+    const mockUseTheme = themeHooks.useTheme as jest.MockedFunction<
+        typeof themeHooks.useTheme
+    >
 
     beforeEach(() => {
         jest.clearAllMocks()
+        // Default mock for useTheme - Light theme
+        mockUseTheme.mockReturnValue({
+            name: THEME_NAME.Light,
+            resolvedName: THEME_NAME.Light,
+            tokens: {} as any,
+        })
     })
 
     describe('basic functionality', () => {
@@ -1027,6 +1044,173 @@ describe('StoreSelector', () => {
 
             // Should have dropdown arrow for single store with withAllOption
             expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+        })
+    })
+
+    describe('classic theme override', () => {
+        it('applies dark dropdown styles when applyClassicThemeOverride is true and theme is classic', async () => {
+            const user = userEvent.setup()
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Classic,
+                resolvedName: THEME_NAME.Classic,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    applyClassicThemeOverride
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).toContain('darkDropdown')
+            })
+        })
+
+        it('does not apply dark dropdown styles when applyClassicThemeOverride is false', async () => {
+            const user = userEvent.setup()
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Classic,
+                resolvedName: THEME_NAME.Classic,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    applyClassicThemeOverride={false}
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).not.toContain('darkDropdown')
+            })
+        })
+
+        it('does not apply dark dropdown styles when theme is not classic', async () => {
+            const user = userEvent.setup()
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Light,
+                resolvedName: THEME_NAME.Light,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    applyClassicThemeOverride
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).not.toContain('darkDropdown')
+            })
+        })
+
+        it('applies dark dropdown styles only when both conditions are met', async () => {
+            const user = userEvent.setup()
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Light,
+                resolvedName: THEME_NAME.Light,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    applyClassicThemeOverride
+                />,
+            )
+
+            const buttonLight = screen.getByRole('button')
+            await act(() => user.click(buttonLight))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).not.toContain('darkDropdown')
+            })
+
+            await act(() => user.click(buttonLight))
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Dark,
+                resolvedName: THEME_NAME.Dark,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                    applyClassicThemeOverride
+                />,
+            )
+
+            const buttonDark = screen.getAllByRole('button')[1]
+            await act(() => user.click(buttonDark))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).not.toContain('darkDropdown')
+            })
+        })
+
+        it('does not apply dark dropdown styles by default when prop is not provided', async () => {
+            const user = userEvent.setup()
+
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Classic,
+                resolvedName: THEME_NAME.Classic,
+                tokens: {} as any,
+            })
+
+            render(
+                <StoreSelector
+                    integrations={mockIntegrations}
+                    selected={mockShopifyIntegration}
+                    onChange={mockOnChange}
+                />,
+            )
+
+            const button = screen.getByRole('button')
+            await act(() => user.click(button))
+
+            await waitFor(() => {
+                const dropdown = document.querySelector('.dropdown')
+                expect(dropdown).toBeInTheDocument()
+                expect(dropdown?.className).not.toContain('darkDropdown')
+            })
         })
     })
 })

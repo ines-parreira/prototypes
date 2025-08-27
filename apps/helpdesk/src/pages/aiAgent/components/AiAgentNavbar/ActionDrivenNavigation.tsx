@@ -82,6 +82,7 @@ export const ActionDrivenNavigation = () => {
                     singleStoreInline
                     buttonClassName={css.storeSelectorButton}
                     hideSelectedFromDropdown
+                    applyClassicThemeOverride
                 />
             </div>
 

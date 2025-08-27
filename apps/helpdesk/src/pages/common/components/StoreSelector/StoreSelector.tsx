@@ -4,10 +4,12 @@ import classNames from 'classnames'
 import { ClassValue } from 'classnames/types'
 
 import { Button, Separator, Tooltip } from '@gorgias/axiom'
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 
+import { useTheme } from '../../../../core/theme'
 import { StoreIntegration } from '../../../../models/integration/types'
 import { useIsTruncated } from '../../hooks/useIsTruncated'
 import Dropdown from '../dropdown/Dropdown'
@@ -35,6 +37,8 @@ type BaseProps = {
     hideSelectedFromDropdown?: boolean
     // Enable dynamic height calculation for dropdown
     enableDynamicHeight?: boolean
+    // Apply dark theme styles to dropdown when using classic theme
+    applyClassicThemeOverride?: boolean
 }
 
 type PropsWithAllOption = BaseProps & {
@@ -79,10 +83,12 @@ export default function StoreSelector({
     buttonClassName,
     hideSelectedFromDropdown = false,
     enableDynamicHeight = false,
+    applyClassicThemeOverride = false,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const [dropdownMaxHeight, setDropdownMaxHeight] = useState<number>(400)
     const targetRef = useRef<HTMLButtonElement | null>(null)
+    const theme = useTheme()
 
     const inlineNameRef = useRef<HTMLSpanElement>(null)
     const buttonNameRef = useRef<HTMLSpanElement>(null)
@@ -275,6 +281,12 @@ export default function StoreSelector({
                 onToggle={setIsOpen}
                 value={selected?.id || null}
                 matchTriggerWidth
+                className={classNames(
+                    css.dropdown,
+                    applyClassicThemeOverride &&
+                        theme.resolvedName === THEME_NAME.Classic &&
+                        css.darkDropdown,
+                )}
             >
                 {withSearch && <DropdownSearch autoFocus />}
                 <DropdownBody
