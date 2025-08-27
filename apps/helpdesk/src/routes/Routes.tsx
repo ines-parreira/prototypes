@@ -171,7 +171,7 @@ export function AppRoutes() {
                 component={RedirectToAiAgentRoutes}
             />
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
-            <Route path={`${path}/ai-journey`} component={AiJourneyRoutes} />
+            <Route path={`${path}/ai-journey`} render={AiJourneyRoutes} />
             <Route path={`${path}/convert`}>
                 <ConvertRoutes />
             </Route>
