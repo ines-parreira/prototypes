@@ -178,31 +178,30 @@ export const TicketSummaryButton = forwardRef<
         },
         ref,
     ) => {
+        const props = {
+            'aria-label': 'Summarize',
+            size: 'small' as const,
+            intent: 'secondary' as const,
+            onClick,
+            ref,
+            className,
+            'data-candu-trigger-summary': true,
+        }
         return (
             <>
                 {displayLabel ? (
                     <Button
-                        size="small"
-                        intent="secondary"
+                        {...props}
                         fillStyle="fill"
                         leadingIcon={leadingIcon}
-                        onClick={onClick}
-                        ref={ref}
-                        className={className}
-                        data-candu-trigger-summary
                     >
                         Summarize
                     </Button>
                 ) : (
                     <IconButton
-                        size="small"
-                        intent="secondary"
+                        {...props}
                         fillStyle="ghost"
                         icon={leadingIcon}
-                        onClick={onClick}
-                        ref={ref}
-                        className={className}
-                        data-candu-trigger-summary
                     />
                 )}
             </>

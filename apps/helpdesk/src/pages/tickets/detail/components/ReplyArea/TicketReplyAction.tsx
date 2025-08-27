@@ -11,7 +11,6 @@ import { Label } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getIconFromActionType } from 'models/macroAction/helpers'
 import { MacroActionName } from 'models/macroAction/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
@@ -388,9 +387,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     render() {
-        const { flags, remove, ticketId, className } = this.props
-        const isTicketPriorityEnabled =
-            !!flags?.[FeatureFlagKey.TicketAllowPriorityUsage]
+        const { remove, ticketId, className } = this.props
         const action = this.getAction()
 
         let type = action.get('name')
@@ -399,14 +396,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         if (template && template.integrationType) {
             type = template.integrationType
         }
-
-        if (
-            !isTicketPriorityEnabled &&
-            action.get('name') === MacroActionName.SetPriority
-        ) {
-            return null
-        }
-
         const icon = template?.icon
             ? template.icon
             : getIconFromActionType(type)

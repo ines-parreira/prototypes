@@ -7,9 +7,7 @@ import { JobType, TicketPriority } from '@gorgias/helpdesk-types'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { Item } from 'components/Dropdown'
 import { Popover } from 'components/Popover'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Update } from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -33,7 +31,6 @@ import css from './style.less'
 const getActions = (
     hasUserRole: boolean,
     isActiveViewTrashView: boolean,
-    isPriorityEnabled?: boolean,
 ): Record<string, Job> => ({
     tag: {
         label: 'Add tag',
@@ -76,17 +73,13 @@ const getActions = (
     macro: {
         label: 'Apply macro',
     },
-    ...(isPriorityEnabled
-        ? {
-              priority: {
-                  label: 'Change priority',
-                  type: JobType.UpdateTicket,
-                  params: (item?: Item | null) => ({
-                      updates: { priority: item!.name! as TicketPriority },
-                  }),
-              },
-          }
-        : {}),
+    priority: {
+        label: 'Change priority',
+        type: JobType.UpdateTicket,
+        params: (item?: Item | null) => ({
+            updates: { priority: item!.name! as TicketPriority },
+        }),
+    },
     ...(hasUserRole
         ? {
               export_tickets: {
@@ -181,12 +174,7 @@ export default function MoreActions({
         [currentUser],
     )
     const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
-    const isPriorityEnabled = useFlag(FeatureFlagKey.TicketAllowPriorityUsage)
-    const actions = getActions(
-        hasAgentRole,
-        isActiveViewTrashView,
-        isPriorityEnabled,
-    )
+    const actions = getActions(hasAgentRole, isActiveViewTrashView)
     const dropdownItems = getDropdownItems(actions)
 
     const toggle = useCallback((value: boolean) => {

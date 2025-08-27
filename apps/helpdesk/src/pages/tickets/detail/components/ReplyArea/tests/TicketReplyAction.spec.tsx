@@ -5,7 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FORM_CONTENT_TYPE } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { integrationsState } from 'fixtures/integrations'
 import { MacroActionName } from 'models/macroAction/types'
 
@@ -25,9 +24,6 @@ describe('<TicketReplyAction />', () => {
         ticketId: 1,
         updateActionArgsOnApplied: jest.fn(),
         appNode: null,
-        flags: {
-            [FeatureFlagKey.TicketAllowPriorityUsage]: true,
-        },
     }
 
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {
@@ -147,25 +143,5 @@ describe('<TicketReplyAction />', () => {
         )
 
         expect(screen.getByText(new RegExp(priority, 'i'))).toBeInTheDocument()
-    })
-
-    it('should not display priority-select when feature flag is disabled', () => {
-        const { container } = render(
-            <Provider
-                store={mockStore({ integrations: fromJS(integrationsState) })}
-            >
-                <TicketReplyActionContainer
-                    {...minProps}
-                    flags={{
-                        [FeatureFlagKey.TicketAllowPriorityUsage]: false,
-                    }}
-                    action={fromJS({
-                        name: MacroActionName.SetPriority,
-                    })}
-                />
-            </Provider>,
-        )
-
-        expect(container.firstChild).toBeNull()
     })
 })

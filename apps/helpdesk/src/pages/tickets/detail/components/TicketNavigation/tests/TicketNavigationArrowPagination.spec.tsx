@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -134,9 +134,8 @@ describe('TicketNavigationArrowPagination', () => {
         expect(nextArrow).toBeInTheDocument
     })
 
-    it('should render separator when TicketAllowPriorityUsage flag is enabled and arrows are displayed', () => {
+    it('should render separator when arrows are displayed', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
-        mockUseFlag.mockReturnValue(true)
 
         const { container } = render(
             <TicketNavigationArrowPagination ticketId={ticketId} />,
@@ -147,20 +146,5 @@ describe('TicketNavigationArrowPagination', () => {
 
         const separator = container.querySelector('[class*="separator"]')
         expect(separator).toBeInTheDocument()
-    })
-
-    it('should not render separator when TicketAllowPriorityUsage flag is disabled even if arrows are displayed', () => {
-        mockUseIsTicketNavigationAvailable.mockReturnValue(true)
-        mockUseFlag.mockReturnValue(false)
-
-        const { container } = render(
-            <TicketNavigationArrowPagination ticketId={ticketId} />,
-        )
-
-        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
-        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
-
-        const separator = container.querySelector('[class*="separator"]')
-        expect(separator).not.toBeInTheDocument()
     })
 })

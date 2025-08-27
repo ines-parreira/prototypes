@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ArrowPagination } from 'pages/common/components/Paginations'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
@@ -29,10 +27,6 @@ export default function TicketNavigationArrowPagination({ ticketId }: Props) {
         [activeView],
     )
 
-    const setPriorityFlagEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-    )
-
     const paginationItemPreviousId = 'pagination-item-arrow-previous'
     const paginationItemNextId = 'pagination-item-arrow-next'
 
@@ -52,9 +46,7 @@ export default function TicketNavigationArrowPagination({ ticketId }: Props) {
         <>
             {shouldDisplayTicketArrows && (
                 <>
-                    {setPriorityFlagEnabled && (
-                        <div className={css.separator} />
-                    )}
+                    <div className={css.separator} />
                     <ArrowPagination
                         className={css.arrowPaginationWrapper}
                         classNameItem={css.paginationItemWrapper}

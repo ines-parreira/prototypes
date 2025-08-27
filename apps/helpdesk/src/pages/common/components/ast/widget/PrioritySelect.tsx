@@ -2,8 +2,6 @@ import { List } from 'immutable'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Select from './ReactSelect'
@@ -16,14 +14,6 @@ type Props = {
 
 function PrioritySelect({ onChange, value, className }: Props) {
     const schemas = useAppSelector((state) => state.schemas)
-    const hasTicketPriorityEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-        false,
-    )
-
-    if (!hasTicketPriorityEnabled) {
-        return null
-    }
 
     const options = (
         schemas.getIn([

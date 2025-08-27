@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
@@ -127,26 +125,13 @@ describe('<Preview />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render preview for setting priority when feature flag is enabled', () => {
-        const props = {
-            flags: {
-                [FeatureFlagKey.TicketAllowPriorityUsage]: true,
-            },
-        }
-        render(<Preview {...props} actions={[setPriorityAction]} />)
+    it('should render preview for setting priority', () => {
+        render(<Preview {...defaultProps} actions={[setPriorityAction]} />)
 
         expect(screen.getByText('Set priority:')).toBeInTheDocument()
         expect(
             screen.getByText(setPriorityAction.arguments.priority!),
         ).toBeInTheDocument()
-    })
-
-    it('should not render priority preview when feature flag is disabled', () => {
-        const { container } = render(
-            <Preview {...defaultProps} actions={[setPriorityAction]} />,
-        )
-
-        expect(container.textContent).not.toContain('Set priority:')
     })
 
     it('should render action preview for adding tags', () => {

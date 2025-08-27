@@ -397,12 +397,7 @@ describe('Ticket', () => {
             priority,
         })
 
-        it('should display priority badge when feature flag is enabled and ticket has priority', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === 'ticket-allow-priority-usage') return true
-                return false
-            })
-
+        it('should display priority badge when ticket has priority', () => {
             render(
                 <Ticket
                     {...defaultProps}
@@ -415,30 +410,7 @@ describe('Ticket', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not display priority badge when feature flag is disabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === 'ticket-allow-priority-usage') return false
-                return false
-            })
-
-            render(
-                <Ticket
-                    {...defaultProps}
-                    ticket={ticketWithPriority(TicketPriority.High)}
-                />,
-            )
-
-            expect(
-                screen.queryByText(`priority: ${TicketPriority.High}`),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not display priority badge when feature flag is enabled but ticket has no priority', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === 'ticket-allow-priority-usage') return true
-                return false
-            })
-
+        it('should not display priority badge when ticket has no priority', () => {
             render(
                 <Ticket
                     {...defaultProps}

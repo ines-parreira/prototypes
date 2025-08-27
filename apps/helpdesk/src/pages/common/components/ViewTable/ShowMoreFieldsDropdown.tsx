@@ -10,10 +10,7 @@ import {
 } from 'reactstrap'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { ViewField } from 'models/view/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -33,9 +30,6 @@ const ShowMoreFieldsDropdown = ({
     shouldStoreFieldConfig,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const hasPriorityFilteringEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-    )
 
     const computePosition = _throttle((data: any) => {
         const toggleRect = data.instance.reference.getBoundingClientRect()
@@ -116,12 +110,6 @@ const ShowMoreFieldsDropdown = ({
                     const setVisibility = (value: boolean) =>
                         handleFieldVisibility(field.get('name'), value)
 
-                    if (
-                        fieldName === ViewField.Priority &&
-                        !hasPriorityFilteringEnabled
-                    ) {
-                        return null
-                    }
                     return (
                         <DropdownItem
                             key={field.get('name')}

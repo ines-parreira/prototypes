@@ -15,9 +15,7 @@ import { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import useSelection from 'ticket-list-view/hooks/useSelection'
-import useSortOrder, {
-    sortOrderOptions,
-} from 'ticket-list-view/hooks/useSortOrder'
+import useSortOrder from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import { TicketPartial } from 'ticket-list-view/types'
 
@@ -41,8 +39,6 @@ const useSelectionMock = assumeMock(useSelection)
 
 jest.mock('ticket-list-view/hooks/useSortOrder')
 const useSortOrderMock = useSortOrder as jest.Mock
-const mockSortOrderOptions = sortOrderOptions as jest.Mock
-mockSortOrderOptions.mockReturnValue([])
 
 jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock

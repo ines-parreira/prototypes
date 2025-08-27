@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -176,18 +176,7 @@ describe('<MemberExpression/>', () => {
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()
     })
 
-    it('should not show the priority option when the flag is not enabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        const { getByText, queryByText } = render(
-            <MemberExpressionContainer {...minProps} />,
-        )
-
-        fireEvent.click(getByText('Ticket'))
-        expect(queryByText('Priority')).not.toBeInTheDocument()
-    })
-
-    it('should show the priority option when the flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should show the priority option', () => {
         const { getByText, queryByText } = render(
             <MemberExpressionContainer {...minProps} />,
         )

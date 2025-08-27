@@ -6,8 +6,6 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
@@ -29,11 +27,6 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
         ? actionsConfig[value]?.name
         : 'Select action'
 
-    const setPriorityFlagEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-        false,
-    )
-
     return (
         <UncontrolledButtonDropdown className="ActionSelect">
             <DropdownToggle className="mr-1" type="button" caret>
@@ -41,10 +34,6 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
             </DropdownToggle>
             <DropdownMenu>
                 {Object.entries(actionsConfig).map(([action, config], i) => {
-                    if (action === 'setPriority' && !setPriorityFlagEnabled) {
-                        return null
-                    }
-
                     return config?.type === 'system' &&
                         !(rule.get('type') === 'system') ? null : (
                         <DropdownItem

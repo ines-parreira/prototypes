@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -108,7 +108,6 @@ const setTeamAssignee = {
 const flags = {
     [FeatureFlagKey.MacroResponseTextCcBcc]: true,
     [FeatureFlagKey.MacroForwardByEmail]: true,
-    [FeatureFlagKey.TicketAllowPriorityUsage]: true,
 }
 
 mockFlags(flags)

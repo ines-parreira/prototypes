@@ -18,7 +18,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
@@ -52,7 +51,6 @@ jest.mock('core/theme', () => ({
 const useThemeMock = jest.mocked(useTheme)
 
 const logEventMock = assumeMock(logEvent)
-const useFlagMock = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -129,7 +127,6 @@ describe('TicketListActions component', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        useFlagMock.mockReturnValue(false) // Default to disabled for priority feature
         useThemeMock.mockReturnValue({
             name: THEME_NAME.Light,
             resolvedName: THEME_NAME.Light,
@@ -751,46 +748,6 @@ describe('TicketListActions component', () => {
     })
 
     describe('priority dropdown functionality', () => {
-        beforeEach(() => {
-            useFlagMock.mockReturnValue(true) // Enable priority feature
-        })
-
-        it('should render priority dropdown when feature flag is enabled', () => {
-            render(
-                <Provider store={store}>
-                    <TicketListActions
-                        {...props}
-                        selectedItemsIds={fromJS([1])}
-                    />
-                </Provider>,
-            )
-
-            // Open more dropdown
-            fireEvent.click(screen.getByText('More'))
-
-            expect(screen.getByText('Change priority')).toBeInTheDocument()
-        })
-
-        it('should not render priority dropdown when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false) // Disable priority feature
-
-            render(
-                <Provider store={store}>
-                    <TicketListActions
-                        {...props}
-                        selectedItemsIds={fromJS([1])}
-                    />
-                </Provider>,
-            )
-
-            // Open more dropdown
-            fireEvent.click(screen.getByText('More'))
-
-            expect(
-                screen.queryByText('Change priority'),
-            ).not.toBeInTheDocument()
-        })
-
         it('should open priority dropdown when clicking change priority', async () => {
             const user = userEvent.setup()
 
@@ -803,13 +760,9 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            // Open more dropdown
             await user.click(screen.getByText('More'))
-
-            // Click change priority
             await user.click(screen.getByText('Change priority'))
 
-            // Should show priority dropdown
             expect(
                 screen.getByText('PriorityDropdownMenuMock'),
             ).toBeInTheDocument()
@@ -827,13 +780,8 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            // Open more dropdown
             await user.click(screen.getByText('More'))
-
-            // Click change priority
             await user.click(screen.getByText('Change priority'))
-
-            // Click back
             await user.click(screen.getByText('Back'))
 
             // Should be back in more dropdown
@@ -855,13 +803,8 @@ describe('TicketListActions component', () => {
                 </Provider>,
             )
 
-            // Open more dropdown
             await user.click(screen.getByText('More'))
-
-            // Click change priority
             await user.click(screen.getByText('Change priority'))
-
-            // Click on priority option
             await user.click(screen.getByText('PriorityDropdownMenuMock'))
 
             expect(mockedCreateJobTicket).toHaveBeenCalledWith(

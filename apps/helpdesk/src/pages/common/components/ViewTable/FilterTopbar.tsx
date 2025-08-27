@@ -382,10 +382,6 @@ export const FilterTopbar = ({
     )
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const hasPriorityFilteringEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-    )
-
     const isFilterViewsByStoreEnabled = useFlag(
         FeatureFlagKey.FilterViewsByStore,
     )
@@ -400,13 +396,6 @@ export const FilterTopbar = ({
                     }
 
                     const fieldName: string = field.get('name')
-
-                    if (
-                        fieldName === ViewField.Priority &&
-                        !hasPriorityFilteringEnabled
-                    ) {
-                        return false
-                    }
 
                     if (
                         fieldName === ViewField.Feedback &&
@@ -431,7 +420,6 @@ export const FilterTopbar = ({
                 .sortBy((field) => field.get('title')),
         [
             config,
-            hasPriorityFilteringEnabled,
             isFilterViewsByStoreEnabled,
             isSearch,
             isTicketFieldsViewFilterEnabled,

@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
 import * as Segment from 'common/segment'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import { notify } from 'state/notifications/actions'
@@ -24,11 +23,6 @@ const mockSetFieldVisibility = setFieldVisibility as jest.Mock
 
 jest.mock('state/notifications/actions')
 const mockNotify = notify as jest.Mock
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.Mock
 
 describe('ShowMoreFieldsDropdown', () => {
     let defaultProps: any
@@ -194,17 +188,9 @@ describe('ShowMoreFieldsDropdown', () => {
         })
     })
 
-    it('should render Priority filter when FF is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should render Priority filter', () => {
         renderComponent()
 
         expect(screen.getByText('Priority')).toBeInTheDocument()
-    })
-
-    it('should not render Priority filter when FF is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        renderComponent()
-
-        expect(screen.queryByText('Priority')).not.toBeInTheDocument()
     })
 })

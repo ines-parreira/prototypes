@@ -1,21 +1,12 @@
-import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
-
 import PrioritySelect from '../PrioritySelect'
 
 const mockStore = configureMockStore([thunk])
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-
-const useFlagMock = assumeMock(useFlag)
 
 describe('<PrioritySelect />', () => {
     const mockSchemas = fromJS({
@@ -42,23 +33,12 @@ describe('<PrioritySelect />', () => {
         className: 'test-class',
     }
 
-    beforeEach(() => {
-        useFlagMock.mockReturnValue(true)
-    })
-
     const renderComponent = (props = {}) =>
         render(
             <Provider store={store}>
                 <PrioritySelect {...defaultProps} {...props} />
             </Provider>,
         )
-
-    it('should not render when the flag is off', () => {
-        useFlagMock.mockReturnValue(false)
-        const { container } = renderComponent()
-
-        expect(container.firstChild).toBeNull()
-    })
 
     it('should call onChange when selecting a different priority', () => {
         renderComponent()

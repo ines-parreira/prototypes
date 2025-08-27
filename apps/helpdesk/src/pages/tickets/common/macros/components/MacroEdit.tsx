@@ -143,10 +143,8 @@ export class MacroEdit extends Component<Props> {
 
     renderNewActionMenu = ({
         isMacroForwardByEmailEnabled,
-        isTicketAllowPriorityUsageEnabled,
     }: {
         isMacroForwardByEmailEnabled: boolean
-        isTicketAllowPriorityUsageEnabled: boolean
     }) => {
         const ticketActions = ACTION_TEMPLATES.filter(
             (template) =>
@@ -154,10 +152,8 @@ export class MacroEdit extends Component<Props> {
         )
             .filter(
                 ({ name }) =>
-                    (isMacroForwardByEmailEnabled ||
-                        name !== MacroActionName.ForwardByEmail) &&
-                    (isTicketAllowPriorityUsageEnabled ||
-                        name !== MacroActionName.SetPriority),
+                    isMacroForwardByEmailEnabled ||
+                    name !== MacroActionName.ForwardByEmail,
             )
             // remove actions that have already been used
             // except for SetCustomFieldValue which is allowed multiple times
@@ -466,9 +462,6 @@ export class MacroEdit extends Component<Props> {
         const isMacroForwardByEmailEnabled =
             !!flags[FeatureFlagKey.MacroForwardByEmail]
 
-        const isTicketAllowPriorityUsageEnabled =
-            !!flags[FeatureFlagKey.TicketAllowPriorityUsage]
-
         if (!currentMacro || !Object.keys(currentMacro).length) return null
 
         // external actions with externalType grouped by externalType
@@ -519,12 +512,9 @@ export class MacroEdit extends Component<Props> {
                     {this.props.actions
                         ?.filter(
                             (action: Map<any, any>) =>
-                                (isMacroForwardByEmailEnabled ||
-                                    action.get('name') !==
-                                        MacroActionName.ForwardByEmail) &&
-                                (isTicketAllowPriorityUsageEnabled ||
-                                    action.get('name') !==
-                                        MacroActionName.SetPriority),
+                                isMacroForwardByEmailEnabled ||
+                                action.get('name') !==
+                                    MacroActionName.ForwardByEmail,
                         )
                         .map(
                             (action: Map<any, any>, index) =>
@@ -545,7 +535,6 @@ export class MacroEdit extends Component<Props> {
                             </DropdownToggle>
                             {this.renderNewActionMenu({
                                 isMacroForwardByEmailEnabled,
-                                isTicketAllowPriorityUsageEnabled,
                             })}
                         </UncontrolledButtonDropdown>
 

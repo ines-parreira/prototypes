@@ -163,12 +163,8 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetPriority(
-        isTicketAllowPriorityUsageEnabled: boolean,
-        setPriorityAction?: MacroAction,
-    ) {
-        if (!setPriorityAction || !isTicketAllowPriorityUsageEnabled)
-            return null
+    renderSetPriority(setPriorityAction?: MacroAction) {
+        if (!setPriorityAction) return null
 
         return (
             <div className={css.macroData}>
@@ -391,9 +387,6 @@ class Preview extends Component<Props> {
         const isMacroForwardByEmailEnabled =
             !!flags[FeatureFlagKey.MacroForwardByEmail]
 
-        const isTicketAllowPriorityUsageEnabled =
-            !!flags[FeatureFlagKey.TicketAllowPriorityUsage]
-
         const findAction = (actionName: string) =>
             actions.find((action) => action?.name === actionName)
 
@@ -401,7 +394,6 @@ class Preview extends Component<Props> {
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(findAction(MacroActionName.SetStatus))}
                 {this.renderSetPriority(
-                    isTicketAllowPriorityUsageEnabled,
                     findAction(MacroActionName.SetPriority),
                 )}
                 {this.renderSnoozeTicket(

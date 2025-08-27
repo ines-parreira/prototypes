@@ -64,7 +64,6 @@ export default function Ticket({
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
         false,
     )
-    const hasTicketPriority = useFlag(FeatureFlagKey.TicketAllowPriorityUsage)
 
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
@@ -167,7 +166,7 @@ export default function Ticket({
                                             {ticket.channel}
                                         </Tooltip>
                                     </span>
-                                    {hasTicketPriority && !!ticket.priority && (
+                                    {!!ticket.priority && (
                                         <PriorityLabel
                                             priority={ticket.priority}
                                             displayLabel={false}

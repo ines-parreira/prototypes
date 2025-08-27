@@ -16,9 +16,7 @@ import { JobType } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { Popover } from 'components/Popover'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
@@ -79,9 +77,6 @@ export const TicketListActions = ({
     const areFiltersValid = useAppSelector(getAreFiltersValid)
     const activeView = useAppSelector(getActiveView)
     const viewCount = useAppSelector(getViewCount(activeView.get('id')))
-    const hasPriorityFilteringEnabled = useFlag(
-        FeatureFlagKey.TicketAllowPriorityUsage,
-    )
 
     const tickets = useAppSelector(getTickets)
 
@@ -618,17 +613,15 @@ export const TicketListActions = ({
                         Mark as unread
                     </DropdownItemInternal>
                 )}
-                {hasPriorityFilteringEnabled && (
-                    <DropdownItemInternal
-                        option={{
-                            label: 'Change priority',
-                            value: 'change-priority',
-                        }}
-                        onClick={() => toggleDropdown(ActionDropdown.Priority)}
-                    >
-                        Change priority
-                    </DropdownItemInternal>
-                )}
+                <DropdownItemInternal
+                    option={{
+                        label: 'Change priority',
+                        value: 'change-priority',
+                    }}
+                    onClick={() => toggleDropdown(ActionDropdown.Priority)}
+                >
+                    Change priority
+                </DropdownItemInternal>
                 {hasAgentRole && (
                     <>
                         <DropdownItemInternal
