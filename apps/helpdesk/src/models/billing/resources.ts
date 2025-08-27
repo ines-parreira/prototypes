@@ -4,7 +4,6 @@ import {
     BillingState,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
-    ICard,
     SubscriptionCycle,
 } from 'models/billing/types'
 import {
@@ -79,9 +78,6 @@ export const updateBillingContact = (
         '/api/billing/contact/',
         billingContact,
     )
-
-export const getCreditCard = () =>
-    client.get<ICard | Record<string, never>>('/api/billing/credit-card/')
 
 export async function getEarlyAccessAutomatePlan() {
     const res = await client.get<{ plan?: AutomateEarlyAccessPlan | null }>(

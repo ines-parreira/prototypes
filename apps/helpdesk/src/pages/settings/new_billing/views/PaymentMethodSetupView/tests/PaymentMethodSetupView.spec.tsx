@@ -161,7 +161,6 @@ describe('PaymentMethodSetupView', () => {
     })
 
     it("shouldn't render Stripe elements if the setup intent's client secret isn't available", async () => {
-        mockedServer.onGet('/api/billing/credit-card/').reply(200, {})
         mockedServer.onGet('/api/billing/contact/').reply(200, { shipping: {} })
 
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({

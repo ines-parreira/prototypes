@@ -122,7 +122,6 @@ export type SubscriptionCycle = {
     downgrade_scheduled: boolean
     downgrades?: {
         current_plan_id: PlanId
-        scheduled_plan_id: PlanId | null
         scheduled_plan: Plan | null
     }[]
 }
@@ -241,10 +240,3 @@ export type BillingState = {
 }
 
 export type CouponForSales = string[]
-
-export interface ICard {
-    brand: string
-    last4: string
-    exp_month: number
-    exp_year: number
-}
