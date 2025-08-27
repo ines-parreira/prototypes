@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 45,
-    "totalUsages": 680,
-    "reportGeneratedAt": "2025-08-26T11:27:02.574Z"
+    "totalUsages": 666,
+    "reportGeneratedAt": "2025-08-27T14:45:09.129Z"
   },
   "entries": [
     {
@@ -264,7 +264,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 163,
+          "usageCount": 151,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -373,12 +373,6 @@
               "apps/helpdesk/src/pages/automate/workflows/hooks/useLanguagesMismatchWarnings.tsx",
               "apps/helpdesk/src/pages/automate/workflows/hooks/useWorkflowChannelSupport.ts",
               "apps/helpdesk/src/pages/automate/workflows/tests/WorkflowsView.spec.tsx",
-              "apps/helpdesk/src/pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner.tsx",
-              "apps/helpdesk/src/pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration.ts",
-              "apps/helpdesk/src/pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal.tsx",
-              "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Customer.tsx",
-              "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget.tsx",
-              "apps/helpdesk/src/pages/common/hooks/useIsConvertSubscriber.ts",
               "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
               "apps/helpdesk/src/pages/integrations/integration/Integration.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationListItem.tsx",
@@ -403,11 +397,6 @@
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useChatMigrationBanner.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration.tsx",
-              "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/ContactFormAutoEmbedPublishSection.tsx",
-              "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormManualEmbedCard/useContactFormManualEmbedTabs.tsx",
-              "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/CategoriesView/CategoriesView.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterAutoEmbedPublishSection/HelpCenterAutoEmbedPublishSection.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/steps/HelpCenterCreationWizardStepArticles.tsx",
@@ -416,7 +405,6 @@
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNavigation.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPageWrapper/HelpCenterPageWrapper.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPageWrapper/__tests__/HelpCenterPageWrapper.spec.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterTable.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/ImportSection.tsx",
@@ -1059,7 +1047,7 @@
           }
         },
         {
-          "usageCount": 24,
+          "usageCount": 23,
           "name": "Button",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-04",
@@ -1087,7 +1075,6 @@
               "apps/helpdesk/src/pages/common/components/button/DropdownButton.tsx",
               "apps/helpdesk/src/pages/common/components/button/IconButton.tsx",
               "apps/helpdesk/src/pages/common/components/button/tests/Button.spec.tsx",
-              "apps/helpdesk/src/pages/common/components/popover/ConfirmationPopover.tsx",
               "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariablePicker.tsx",
               "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.tsx",
@@ -1099,7 +1086,7 @@
           ]
         },
         {
-          "usageCount": 22,
+          "usageCount": 21,
           "name": "ToggleInput",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2025-03-25",
@@ -1127,7 +1114,6 @@
               "apps/helpdesk/src/pages/settings/helpCenter/components/UpdateToggle/UpdateToggle.tsx",
               "apps/helpdesk/src/pages/settings/new_billing/components/AutoUpgradeToggle/AutoUpgradeToggle.tsx",
               "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleRow.tsx",
-              "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/DefaultRuleEditor.tsx",
               "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/ManagedRuleEditor.tsx",
               "apps/helpdesk/src/pages/settings/yourProfile/components/ForwardingCallsPreferences.tsx"
             ]
