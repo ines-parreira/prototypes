@@ -324,11 +324,15 @@ export const createExportDrillDownJob = createAsyncThunk<
     ) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
-
+        const { metricName, ...restQuery } = query
         try {
             const response = await createJob({
                 type: jobType,
-                params: { reporting_query: query, context: context },
+                params: {
+                    reporting_query: restQuery,
+                    metric_name: `${metricName}_drill_down_export`,
+                    context: context,
+                },
             })
             void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
 

@@ -79,8 +79,9 @@ export type DrillDownReportingQuery = ReportingQuery<
 >
 
 export type ReportingQueryJobParams = {
-    reporting_query: DrillDownReportingQuery
+    reporting_query: Omit<DrillDownReportingQuery, 'metricName'>
     context?: JobContext
+    metric_name?: string
 }
 
 export type Job = {

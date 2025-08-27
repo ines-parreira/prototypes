@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
 import { User } from 'config/types/user'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -175,7 +176,13 @@ describe('drillDownSlice', () => {
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportTicketDrilldown,
-                params: { reporting_query: exampleQuery },
+                params: {
+                    reporting_query: {
+                        ...exampleQuery,
+                        metricName: undefined,
+                    },
+                    metric_name: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+                },
             })
         })
 
@@ -204,7 +211,11 @@ describe('drillDownSlice', () => {
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportConvertCampaignSalesDrilldown,
-                params: { reporting_query: exampleQuery, context },
+                params: {
+                    reporting_query: { ...exampleQuery, metricName: undefined },
+                    context,
+                    metric_name: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+                },
             })
         })
 
