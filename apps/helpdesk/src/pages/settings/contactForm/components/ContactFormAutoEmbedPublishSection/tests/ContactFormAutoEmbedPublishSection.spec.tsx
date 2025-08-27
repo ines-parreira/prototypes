@@ -1,14 +1,11 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { PageEmbedmentFixture } from 'pages/settings/contactForm/fixtures/pageEmbedment'
 import { useGetShopifyPages } from 'pages/settings/contactForm/queries'
@@ -20,6 +17,10 @@ import { CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../Contact
 import ContactFormAutoEmbedPublishSection, {
     ContactFormAutoEmbedPublishSectionProps,
 } from '../ContactFormAutoEmbedPublishSection'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('../../../queries', () => {
     const originalModule: Record<string, unknown> =
@@ -80,12 +81,6 @@ const contactFormWithShop = {
     shop_name: 'test-shop',
 }
 
-const mockFeatureFlagValue = (returnValue: boolean) => {
-    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-        [FeatureFlagKey.ContactFormAutoEmbed]: returnValue,
-    }))
-}
-
 const renderView = (
     ui: JSX.Element,
     { state }: { state: Partial<RootState> },
@@ -102,7 +97,7 @@ const renderView = (
 
 describe('<ContactFormAutoEmbedPublishSection />', () => {
     it('renders null if the feature flag is not active', () => {
-        mockFeatureFlagValue(false)
+        mockUseFlag.mockReturnValue(false)
 
         const { container } = renderView(
             <ContactFormAutoEmbedPublishSection {...defaultProps} />,
@@ -116,7 +111,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
 
     describe('Contact Form - not connected to any stores', () => {
         it('should render correct section', () => {
-            mockFeatureFlagValue(true)
+            mockUseFlag.mockReturnValue(true)
 
             const { container } = renderView(
                 <ContactFormAutoEmbedPublishSection
@@ -157,7 +152,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
 
     describe('Contact Form - connected to a non-shopify store', () => {
         it('should render correct section', () => {
-            mockFeatureFlagValue(true)
+            mockUseFlag.mockReturnValue(true)
 
             const { container } = renderView(
                 <ContactFormAutoEmbedPublishSection
@@ -203,7 +198,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
     describe('Contact Form - connected to a shopify store', () => {
         describe('when update permissions not needed', () => {
             it('should render correct section', () => {
-                mockFeatureFlagValue(true)
+                mockUseFlag.mockReturnValue(true)
 
                 const { container } = renderView(
                     <ContactFormAutoEmbedPublishSection
@@ -232,7 +227,7 @@ describe('<ContactFormAutoEmbedPublishSection />', () => {
             })
 
             it('should render correct section when store has embedments already', () => {
-                mockFeatureFlagValue(true)
+                mockUseFlag.mockReturnValue(true)
 
                 const { container } = renderView(
                     <ContactFormAutoEmbedPublishSection

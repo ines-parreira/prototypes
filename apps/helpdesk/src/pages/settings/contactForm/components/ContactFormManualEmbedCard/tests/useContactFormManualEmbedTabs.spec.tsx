@@ -1,11 +1,14 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 
-import { FeatureFlagKey } from '../../../../../../config/featureFlags'
 import { useContactFormManualEmbedInstructionsCardState } from '../useContactFormManualEmbedTabs'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 
@@ -23,9 +26,7 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
 
     describe('Contact auto embed flag is INACTIVE', () => {
         beforeEach(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.ContactFormAutoEmbed]: false,
-            }))
+            mockUseFlag.mockReturnValue(false)
         })
 
         it('should return the "any other website" instructions card state - ', () => {
@@ -41,9 +42,7 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
 
     describe('Contact auto embed flag is ACTIVE', () => {
         beforeEach(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.ContactFormAutoEmbed]: true,
-            }))
+            mockUseFlag.mockReturnValue(true)
         })
 
         it('should return "both" instructions card state when not connected to any store', () => {

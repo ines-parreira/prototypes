@@ -2,11 +2,12 @@ import React, { ComponentProps } from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -29,12 +30,10 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
-const mockUseFlags = jest.mocked(useFlags)
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
@@ -193,8 +192,10 @@ describe('<HelpCenterPageWrapper />', () => {
 
     it('renders the connect store warning button when shop is not connected', () => {
         mockGetHasAutomate.mockReturnValue(true)
-        mockUseFlags.mockReturnValue({
-            ChangeAutomateSettingButtomPosition: false,
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChangeAutomateSettingButtomPosition)
+                return false
+            return defaultValue
         })
 
         const helpCenter = {

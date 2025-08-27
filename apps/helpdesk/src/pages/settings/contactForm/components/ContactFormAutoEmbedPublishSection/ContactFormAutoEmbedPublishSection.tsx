@@ -1,6 +1,5 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { ContactForm, ContactFormPageEmbedment } from 'models/contactForm/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
@@ -18,8 +17,10 @@ const ContactFormAutoEmbedPublishSection = (
 ) => {
     const { contactFormShopName, contactFormId, pageEmbedments } = props
 
-    const isAutoEmbedFlagActive =
-        useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
+    const isAutoEmbedFlagActive = useFlag(
+        FeatureFlagKey.ContactFormAutoEmbed,
+        false,
+    )
 
     const { integrationId, needScopeUpdate } = useShopifyIntegrationAndScope(
         contactFormShopName ?? '',

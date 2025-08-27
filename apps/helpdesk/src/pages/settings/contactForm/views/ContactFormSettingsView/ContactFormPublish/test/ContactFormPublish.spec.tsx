@@ -3,12 +3,11 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import { ContactForm } from 'models/contactForm/types'
@@ -23,6 +22,10 @@ import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSett
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('../../../../queries', () => {
     const originalModule: Record<string, unknown> = jest.requireActual(
@@ -122,9 +125,7 @@ describe('ContactFormPublish', () => {
 
     describe('Contact Form Auto Embed - "ContactFormAutoEmbed" Feature Flag', () => {
         it('should display the right component if disabled', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.ContactFormAutoEmbed]: false,
-            }))
+            mockUseFlag.mockReturnValue(false)
 
             renderView({ state: defaultState })
 
@@ -134,9 +135,7 @@ describe('ContactFormPublish', () => {
         })
 
         it('should display the right component if active', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.ContactFormAutoEmbed]: true,
-            }))
+            mockUseFlag.mockReturnValue(true)
 
             renderView({ state: defaultState })
 

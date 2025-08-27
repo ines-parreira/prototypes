@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Link,
     NavLink,
@@ -17,6 +16,7 @@ import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -69,8 +69,9 @@ const ContactFormSettingsView = (): JSX.Element => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
 
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     useEffect(() => {
         if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)

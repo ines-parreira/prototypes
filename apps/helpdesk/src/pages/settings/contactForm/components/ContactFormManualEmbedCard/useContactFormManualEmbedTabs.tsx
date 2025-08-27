@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     InstructionTab,
@@ -136,8 +135,7 @@ export const useContactFormManualEmbedInstructionsCardState = (
     code: string,
     shopName: string | null,
 ): InstructionsCardState => {
-    const isAutoEmbedFlagActive =
-        useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
+    const isAutoEmbedFlagActive = useFlag(FeatureFlagKey.ContactFormAutoEmbed)
 
     const shopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName ?? ''),

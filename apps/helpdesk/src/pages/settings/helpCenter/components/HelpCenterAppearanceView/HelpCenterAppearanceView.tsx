@@ -2,13 +2,13 @@ import React, { createRef, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import axios from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
 import { Button } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
@@ -101,8 +101,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
         return bannerText !== (translation?.banner_text || '')
     }, [bannerText, translation])
 
-    const isHelpCenterOnePagerEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
+    const isHelpCenterOnePagerEnabled = useFlag(
+        FeatureFlagKey.HelpCenterOnePager,
+    )
 
     useEffect(() => {
         if (helpCenter.theme && isHelpCenterTheme(helpCenter.theme)) {
