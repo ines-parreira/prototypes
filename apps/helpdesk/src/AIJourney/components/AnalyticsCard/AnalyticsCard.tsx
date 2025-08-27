@@ -4,8 +4,8 @@ import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
 import {
-    CartAbandonedJourneyConfigurationApiDTO,
     JourneyApiDTO,
+    JourneyDetailApiDTO,
     JourneyStatusEnum,
 } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
@@ -24,12 +24,13 @@ import { NotificationStatus } from 'state/notifications/types'
 import { EmptyState } from './components/EmptyState/EmptyState'
 import { Footer } from './components/Footer/Footer'
 import { MoreOptions } from './components/MoreOptions/MoreOptions'
+import { TotalMessagesSentCard } from './components/TotalMessagesSentCard/TotalMessagesSentCard'
 
 import css from './AnalyticsCard.less'
 
 type AnalyticsCardProps = {
     analyticsData: MetricProps[]
-    journeyConfigurations?: CartAbandonedJourneyConfigurationApiDTO
+    journeyData?: JourneyDetailApiDTO
     integrationId?: number
     currentIntegration?: Integration
     abandonedCartJourney: Omit<JourneyApiDTO, 'created_datetime'>
@@ -43,7 +44,7 @@ type AnalyticsCardProps = {
 export const AnalyticsCard = ({
     period,
     analyticsData,
-    journeyConfigurations,
+    journeyData,
     integrationId,
     abandonedCartJourney,
     totalSent,
@@ -74,6 +75,11 @@ export const AnalyticsCard = ({
     const analyticsContentClass = classNames(css.analyticsContent, {
         [css['analyticsContent--empty']]: isEmpty,
     })
+
+    const { configuration: journeyConfigurations, meta: journeyMeta } =
+        journeyData || {}
+
+    const { ticket_view_id: ticketViewId } = journeyMeta || {}
 
     const {
         offer_discount: isDiscountEnabled,
@@ -140,12 +146,15 @@ export const AnalyticsCard = ({
                         )}
                     </>
                 )}
+                <TotalMessagesSentCard
+                    totalSent={totalSent}
+                    ticketViewId={ticketViewId}
+                />
             </div>
             {!isEmpty && (
                 <Footer
                     isDiscountEnabled={isDiscountEnabled}
                     maxDiscount={maxDiscount}
-                    totalSent={totalSent}
                 />
             )}
         </div>

@@ -12,7 +12,7 @@ import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAb
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
 import { useIntegrations } from 'AIJourney/providers'
-import { useJourneyConfiguration, useJourneys } from 'AIJourney/queries'
+import { useJourneyData, useJourneys } from 'AIJourney/queries'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import {
     formatMetricTrend,
@@ -33,7 +33,10 @@ const digestContent = (
         Over the last 30 days, your Abandoned Cart Journey recovered{' '}
         <b>{revenueVariation}</b>, converting at{' '}
         <b>{conversionVariationContent}</b>, with{' '}
-        <b>{messagesSent} messages sent</b>.{' '}
+        <b>
+            {messagesSent} {messagesSent === '1' ? 'message' : 'messages'} sent
+        </b>
+        .{' '}
         {(!hasDiscount || !hasMaxFollowUpMessages) && (
             <>
                 To drive more revenue, consider enabling the{' '}
@@ -95,10 +98,12 @@ export const Performance = () => {
     const abandonedCartJourney = merchantAiJourneys?.find(
         (journey) => journey.type === 'cart_abandoned',
     )
-    const { data: journeyParams, isLoading: isLoadingJourneyParams } =
-        useJourneyConfiguration(abandonedCartJourney?.id, {
-            enabled: !!currentIntegration?.id && !!abandonedCartJourney?.id,
+    const { data: journeyData, isLoading: isLoadingJourneyParams } =
+        useJourneyData(abandonedCartJourney?.id, {
+            enabled: !!integrationId && !!abandonedCartJourney?.id,
         })
+
+    const { configuration: journeyParams } = journeyData || {}
 
     const totalMessagesSent = useAIJourneyTotalMessages(
         abandonedCartJourney?.id,
@@ -234,7 +239,7 @@ export const Performance = () => {
                         <AnalyticsCard
                             period={period}
                             analyticsData={journeyMetrics}
-                            journeyConfigurations={journeyParams}
+                            journeyData={journeyData}
                             integrationId={integrationId}
                             abandonedCartJourney={abandonedCartJourney}
                             totalSent={formattedTotalMessagesSent}

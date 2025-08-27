@@ -6,7 +6,7 @@ import { getJourneyDetails } from '@gorgias/convert-client'
 import { useAccessToken } from 'AIJourney/providers'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
-import { useJourneyConfiguration } from './useJourneyConfiguration'
+import { useJourneyData } from './useJourneyData'
 
 jest.mock('@gorgias/convert-client', () => ({
     getJourneyDetails: jest.fn(),
@@ -25,7 +25,7 @@ const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
-describe('useJourneyConfiguration', () => {
+describe('useJourneyData', () => {
     let queryClient: QueryClient
 
     const createWrapper = () => {
@@ -61,11 +61,14 @@ describe('useJourneyConfiguration', () => {
 
         mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails.mockResolvedValue({
-            data: { configuration: mockConfiguration },
+            data: {
+                configuration: { ...mockConfiguration },
+                meta: { ticket_view_id: 123 },
+            },
         })
 
         const { result } = renderHook(
-            () => useJourneyConfiguration('journey-id', { enabled: true }),
+            () => useJourneyData('journey-id', { enabled: true }),
             { wrapper: createWrapper() },
         )
 
@@ -76,7 +79,10 @@ describe('useJourneyConfiguration', () => {
             baseURL: 'http://mocked-base-url',
             headers: { Authorization: 'mock-access-token' },
         })
-        expect(result.current.data).toEqual(mockConfiguration)
+        expect(result.current.data).toEqual({
+            configuration: { ...mockConfiguration },
+            meta: { ticket_view_id: 123 },
+        })
     })
 
     it('should handle errors when fetching journey configuration', async () => {
@@ -86,7 +92,7 @@ describe('useJourneyConfiguration', () => {
         mockGetJourneyDetails.mockRejectedValue(mockError)
 
         const { result } = renderHook(
-            () => useJourneyConfiguration('journey-id', { enabled: true }),
+            () => useJourneyData('journey-id', { enabled: true }),
             { wrapper: createWrapper() },
         )
 
@@ -100,7 +106,7 @@ describe('useJourneyConfiguration', () => {
         mockUseAccessToken.mockReturnValue(null)
 
         const { result } = renderHook(
-            () => useJourneyConfiguration('journey-id', { enabled: true }),
+            () => useJourneyData('journey-id', { enabled: true }),
             { wrapper: createWrapper() },
         )
 
@@ -116,7 +122,7 @@ describe('useJourneyConfiguration', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
 
         const { result } = renderHook(
-            () => useJourneyConfiguration(undefined, { enabled: true }),
+            () => useJourneyData(undefined, { enabled: true }),
             { wrapper: createWrapper() },
         )
 
@@ -132,7 +138,7 @@ describe('useJourneyConfiguration', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
 
         const { result } = renderHook(
-            () => useJourneyConfiguration('journey-id', { enabled: false }),
+            () => useJourneyData('journey-id', { enabled: false }),
             { wrapper: createWrapper() },
         )
 
@@ -161,14 +167,14 @@ describe('useJourneyConfiguration', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails
             .mockResolvedValueOnce({
-                data: { configuration: mockConfiguration1 },
+                data: { configuration: { ...mockConfiguration1 } },
             })
             .mockResolvedValueOnce({
-                data: { configuration: mockConfiguration2 },
+                data: { configuration: { ...mockConfiguration2 } },
             })
 
         const { result, rerender } = renderHook(
-            ({ journeyId }) => useJourneyConfiguration(journeyId),
+            ({ journeyId }) => useJourneyData(journeyId),
             {
                 wrapper: createWrapper(),
                 initialProps: { journeyId: 'journey-1' },
@@ -176,12 +182,16 @@ describe('useJourneyConfiguration', () => {
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockConfiguration1)
+        expect(result.current.data).toEqual({
+            configuration: { ...mockConfiguration1 },
+        })
 
         rerender({ journeyId: 'journey-2' })
 
         await waitFor(() =>
-            expect(result.current.data).toEqual(mockConfiguration2),
+            expect(result.current.data).toEqual({
+                configuration: { ...mockConfiguration2 },
+            }),
         )
 
         expect(mockGetJourneyDetails).toHaveBeenCalledTimes(2)
@@ -200,17 +210,17 @@ describe('useJourneyConfiguration', () => {
     it('should handle empty configuration data', async () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails.mockResolvedValue({
-            data: { configuration: null },
+            data: { configuration: {} },
         })
 
         const { result } = renderHook(
-            () => useJourneyConfiguration('journey-id', { enabled: true }),
+            () => useJourneyData('journey-id', { enabled: true }),
             { wrapper: createWrapper() },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
         expect(mockGetJourneyDetails).toHaveBeenCalledTimes(1)
-        expect(result.current.data).toBeNull()
+        expect(result.current.data).toEqual({ configuration: {} })
     })
 })

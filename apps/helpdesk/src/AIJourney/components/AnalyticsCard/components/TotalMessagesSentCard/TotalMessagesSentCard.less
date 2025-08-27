@@ -1,0 +1,42 @@
+:local {
+    .totalMessagesSentCard {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: var(--layout-spacing-s);
+        border: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-0);
+        box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.05);
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+        font-size: 14px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .totalMessages {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+        align-items: center;
+    }
+
+    .redirectIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+
+        border-radius: var(--layout-spacing-s);
+        border: 1px solid var(--neutral-grey-2);
+        height: 32px;
+        width: 32px;
+        padding: var(--layout-spacing-xxs);
+        cursor: pointer;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
+
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+}

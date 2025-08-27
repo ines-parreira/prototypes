@@ -5,7 +5,11 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
-import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
+import {
+    JourneyDetailApiDTO,
+    JourneyStatusEnum,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { appQueryClient } from 'api/queryClient'
@@ -82,12 +86,26 @@ const mockAbandonedCartJourney = {
     created_datetime: '2023-01-01T00:00:00Z',
 }
 
-const mockJourneyConfigurations = {
-    max_follow_up_messages: null,
-    sms_sender_number: '+18668918539',
-    sms_sender_integration_id: 131157,
-    offer_discount: true,
-    max_discount_percent: 22,
+const mockJourneyData = {
+    id: '01JZAPAD606K1JSKNHC8KVA4BD',
+    type: 'cart_abandoned',
+    account_id: 6069,
+    store_integration_id: 33858,
+    store_name: 'artemisathletix',
+    store_type: 'shopify',
+    state: 'active',
+    message_instructions: '',
+    created_datetime: '2025-07-04T12:24:29.121874',
+    meta: {
+        ticket_view_id: 2099726,
+    },
+    configuration: {
+        max_follow_up_messages: null,
+        sms_sender_number: '+18668918539',
+        sms_sender_integration_id: 131157,
+        offer_discount: true,
+        max_discount_percent: 22,
+    },
 }
 
 const cleanStatsFilters = {
@@ -121,11 +139,16 @@ describe('<AnalyticsCard />', () => {
                         period={period}
                         analyticsData={data}
                         abandonedCartJourney={mockAbandonedCartJourney}
-                        journeyConfigurations={{
-                            ...mockJourneyConfigurations,
-                            offer_discount: false,
-                            max_discount_percent: 0,
-                        }}
+                        journeyData={
+                            {
+                                ...mockJourneyData,
+                                configuration: {
+                                    ...mockJourneyData.configuration,
+                                    offer_discount: false,
+                                    max_discount_percent: 0,
+                                },
+                            } as JourneyDetailApiDTO
+                        }
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -148,11 +171,16 @@ describe('<AnalyticsCard />', () => {
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Paused,
                         }}
-                        journeyConfigurations={{
-                            ...mockJourneyConfigurations,
-                            offer_discount: false,
-                            max_discount_percent: 0,
-                        }}
+                        journeyData={
+                            {
+                                ...mockJourneyData,
+                                configuration: {
+                                    ...mockJourneyData.configuration,
+                                    offer_discount: false,
+                                    max_discount_percent: 0,
+                                },
+                            } as JourneyDetailApiDTO
+                        }
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -172,7 +200,7 @@ describe('<AnalyticsCard />', () => {
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Paused,
                         }}
-                        journeyConfigurations={mockJourneyConfigurations}
+                        journeyData={mockJourneyData as JourneyDetailApiDTO}
                     />
                 </Provider>
             </QueryClientProvider>,

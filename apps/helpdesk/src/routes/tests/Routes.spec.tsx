@@ -185,7 +185,7 @@ jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
     useCreateNewJourney: jest.fn(),
-    useJourneyConfiguration: jest.fn(),
+    useJourneyData: jest.fn(),
     useUpdateJourney: jest.fn(),
     useSmsIntegrations: jest.fn(),
     useTestSms: jest.fn(),
@@ -196,7 +196,7 @@ const useListProductsMock = assumeMock(useListProducts)
 
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
-    .useJourneyConfiguration as jest.Mock
+    .useJourneyData as jest.Mock
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)

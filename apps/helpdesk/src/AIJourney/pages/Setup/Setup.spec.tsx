@@ -50,7 +50,7 @@ jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
     useCreateNewJourney: jest.fn(),
-    useJourneyConfiguration: jest.fn(),
+    useJourneyData: jest.fn(),
     useUpdateJourney: jest.fn(),
     useSmsIntegrations: jest.fn(),
 }))
@@ -59,7 +59,7 @@ const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseSmsIntegrations = require('AIJourney/queries')
     .useSmsIntegrations as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
-    .useJourneyConfiguration as jest.Mock
+    .useJourneyData as jest.Mock
 const mockUseCreateNewJourney = require('AIJourney/queries')
     .useCreateNewJourney as jest.Mock
 const mockUseUpdateJourney = require('AIJourney/queries')
@@ -152,11 +152,13 @@ describe('<Setup />', () => {
 
         mockUseJourneyConfiguration.mockImplementation(() => ({
             data: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '415-111-111',
-                sms_sender_integration_id: 1,
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
             },
             isError: false,
             isLoading: false,
@@ -192,11 +194,13 @@ describe('<Setup />', () => {
 
         mockUseJourneyConfiguration.mockImplementation(() => ({
             data: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '(415)-111-111',
-                sms_sender_integration_id: 1,
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '(415)-111-111',
+                    sms_sender_integration_id: 1,
+                },
             },
             isError: false,
             isLoading: false,
@@ -224,10 +228,12 @@ describe('<Setup />', () => {
     it('should update state when journeyParams is fetched', async () => {
         mockUseJourneyConfiguration.mockImplementation(() => ({
             data: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                discount_code_message_threshold: 2,
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    discount_code_message_threshold: 2,
+                },
             },
             isError: false,
             isLoading: false,
@@ -351,11 +357,13 @@ describe('<Setup />', () => {
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 1,
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
                 },
                 isError: false,
                 isLoading: false,
@@ -735,11 +743,13 @@ describe('<Setup />', () => {
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 2,
-                    offer_discount: true,
-                    max_discount_percent: 15,
-                    sms_sender_number: '+1 555-123-4567',
-                    sms_sender_integration_id: 1,
+                    configuration: {
+                        max_follow_up_messages: 2,
+                        offer_discount: true,
+                        max_discount_percent: 15,
+                        sms_sender_number: '+1 555-123-4567',
+                        sms_sender_integration_id: 1,
+                    },
                 },
                 isError: false,
                 isLoading: false,
@@ -809,11 +819,13 @@ describe('<Setup />', () => {
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 2,
-                    offer_discount: true,
-                    max_discount_percent: 15,
-                    sms_sender_number: '+1 555-123-4567',
-                    sms_sender_integration_id: 1,
+                    configuration: {
+                        max_follow_up_messages: 2,
+                        offer_discount: true,
+                        max_discount_percent: 15,
+                        sms_sender_number: '+1 555-123-4567',
+                        sms_sender_integration_id: 1,
+                    },
                 },
                 isError: false,
                 isLoading: false,
@@ -870,11 +882,13 @@ describe('<Setup />', () => {
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 2,
-                    offer_discount: true,
-                    max_discount_percent: 15,
-                    sms_sender_number: '+1 555-123-4567',
-                    sms_sender_integration_id: 1,
+                    configuration: {
+                        max_follow_up_messages: 2,
+                        offer_discount: true,
+                        max_discount_percent: 15,
+                        sms_sender_number: '+1 555-123-4567',
+                        sms_sender_integration_id: 1,
+                    },
                 },
                 isError: false,
                 isLoading: false,
@@ -1080,12 +1094,14 @@ describe('<Setup />', () => {
 
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 1,
-                    discount_code_message_threshold: 2,
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 2,
+                    },
                 },
                 isError: false,
                 isLoading: false,

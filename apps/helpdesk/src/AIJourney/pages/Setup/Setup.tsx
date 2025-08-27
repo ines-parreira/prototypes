@@ -10,7 +10,7 @@ import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useIntegrations } from 'AIJourney/providers'
 import {
     useCreateNewJourney,
-    useJourneyConfiguration,
+    useJourneyData,
     useJourneys,
 } from 'AIJourney/queries'
 import { FeatureFlagKey } from 'config/featureFlags'
@@ -68,10 +68,12 @@ export const Setup = () => {
         (journey) => journey.type === 'cart_abandoned',
     )
 
-    const { data: journeyParams, isLoading: isLoadingJourneyConfiguration } =
-        useJourneyConfiguration(abandonedCartJourney?.id, {
+    const { data: journeyData, isLoading: isLoadingJourneyConfiguration } =
+        useJourneyData(abandonedCartJourney?.id, {
             enabled: !!integrationId && !!abandonedCartJourney?.id,
         })
+
+    const { configuration: journeyParams } = journeyData || {}
 
     const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList(
         storeConfiguration?.monitoredSmsIntegrations ?? [],
@@ -130,7 +132,7 @@ export const Setup = () => {
     }, [abandonedCartJourney])
 
     const handleDiscountToggle = () => {
-        setIsDiscountEnabled((prev) => !prev)
+        setIsDiscountEnabled((prev: boolean) => !prev)
     }
 
     const handleMaximumDiscountChange = (newValue: string) => {

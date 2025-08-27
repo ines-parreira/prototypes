@@ -43,7 +43,7 @@ jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
     useCreateNewJourney: jest.fn(),
-    useJourneyConfiguration: jest.fn(),
+    useJourneyData: jest.fn(),
     useUpdateJourney: jest.fn(),
     useSmsIntegrations: jest.fn(),
     useTestSms: jest.fn(),
@@ -53,7 +53,7 @@ const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseSmsIntegrations = require('AIJourney/queries')
     .useSmsIntegrations as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
-    .useJourneyConfiguration as jest.Mock
+    .useJourneyData as jest.Mock
 const mockUseIntegrations = require('AIJourney/providers')
     .useIntegrations as jest.Mock
 const mockUseCreateNewJourney = require('AIJourney/queries')
