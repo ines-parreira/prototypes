@@ -1,8 +1,8 @@
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -44,7 +44,7 @@ const getRequiresScriptTagMigration = ({
 
 const useStoresRequiringScriptTagMigration = () => {
     const hasScriptTagFeatureFlagOn: boolean =
-        useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
+        useFlag(FeatureFlagKey.ShopifyIntegrationScopeScriptTag) ?? false
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
 

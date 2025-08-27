@@ -1,12 +1,12 @@
-import React, { ComponentType, ReactNode } from 'react'
+import { ComponentType, ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { initialState } from 'state/billing/reducers'
@@ -25,10 +25,15 @@ const hookOptions = {
     )) as ComponentType,
 }
 
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+
 describe('useIsConvertSubscriber()', () => {
     describe('flag is undefined', () => {
         it('returns false', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
+            mockUseFlag.mockImplementation((key, defaultValue) => {
+                return defaultValue
+            })
 
             const { result } = renderHook(
                 () => useIsConvertSubscriber(),
@@ -40,9 +45,12 @@ describe('useIsConvertSubscriber()', () => {
 
     describe('flag is defined', () => {
         it('returns the value of the flag', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.RevenueBetaTesters]: true,
-            }))
+            mockUseFlag.mockImplementation((key, defaultValue) => {
+                if (key === FeatureFlagKey.RevenueBetaTesters) {
+                    return true
+                }
+                return defaultValue
+            })
 
             const { result } = renderHook(
                 () => useIsConvertSubscriber(),

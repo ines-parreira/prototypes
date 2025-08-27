@@ -1,11 +1,11 @@
-import React, { ReactNode, useContext } from 'react'
+import { ReactNode, useContext } from 'react'
 
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     BigCommerceActionType,
@@ -44,8 +44,9 @@ function AfterTitle({ source }: AfterTitleProps) {
     }
 
     let actions: Array<InfobarAction> = []
-    const bigcommerceCreateOrderAccessFlags =
-        useFlags()[FeatureFlagKey.BigCommerceCreateOrder]
+    const bigcommerceCreateOrderAccessFlags = useFlag(
+        FeatureFlagKey.BigCommerceCreateOrder,
+    )
     if (bigcommerceCreateOrderAccessFlags) {
         actions = [
             {

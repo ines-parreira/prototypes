@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -10,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import history from 'pages/history'
 
@@ -20,16 +18,24 @@ jest.mock(
     '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration',
 )
 
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+
 const mockStore = configureMockStore([thunk])
 
 const oneHourInMilliseconds = 60 * 60 * 1000
 
 describe('<ScriptTagMigrationModal />', () => {
     it('should show modal if period is over', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatScopeUpdateModal]: oneHourInMilliseconds,
-            [FeatureFlagKey.ChatScopeUpdateDueDate]: 'Scary Deadline',
-        }))
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatScopeUpdateModal) {
+                return oneHourInMilliseconds
+            }
+            if (key === FeatureFlagKey.ChatScopeUpdateDueDate) {
+                return 'Scary Deadline'
+            }
+            return defaultValue
+        })
 
         Storage.prototype.getItem = () =>
             String(new Date().getTime() - 2 * oneHourInMilliseconds)
@@ -61,10 +67,15 @@ describe('<ScriptTagMigrationModal />', () => {
     })
 
     it('should hide modal if period is over but no stores require permission updates', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatScopeUpdateModal]: oneHourInMilliseconds,
-            [FeatureFlagKey.ChatScopeUpdateDueDate]: 'Scary Deadline',
-        }))
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatScopeUpdateModal) {
+                return oneHourInMilliseconds
+            }
+            if (key === FeatureFlagKey.ChatScopeUpdateDueDate) {
+                return 'Scary Deadline'
+            }
+            return defaultValue
+        })
 
         Storage.prototype.getItem = () =>
             String(new Date().getTime() - 2 * oneHourInMilliseconds)
@@ -96,10 +107,15 @@ describe('<ScriptTagMigrationModal />', () => {
     })
 
     it('should hide modal if period is not over yet', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatScopeUpdateModal]: oneHourInMilliseconds,
-            [FeatureFlagKey.ChatScopeUpdateDueDate]: 'Scary Deadline',
-        }))
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatScopeUpdateModal) {
+                return oneHourInMilliseconds
+            }
+            if (key === FeatureFlagKey.ChatScopeUpdateDueDate) {
+                return 'Scary Deadline'
+            }
+            return defaultValue
+        })
 
         Storage.prototype.getItem = () =>
             String(new Date().getTime() - oneHourInMilliseconds / 2)

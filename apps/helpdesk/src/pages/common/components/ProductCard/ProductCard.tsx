@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import { darken, getLuminance, lighten } from 'color2k'

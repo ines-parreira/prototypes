@@ -1,14 +1,14 @@
-import React, { ReactNode, useContext, useState } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getBigCommerceDraftOrderUrl } from 'models/integration/resources/bigcommerce'
@@ -119,8 +119,9 @@ type AfterTitleProps = {
 export function AfterTitle({ isEditing, source }: AfterTitleProps) {
     const dispatch = useAppDispatch()
     const { integrationId } = useContext(IntegrationContext)
-    const bigcommerceRefundOrderAccessFlags =
-        useFlags()[FeatureFlagKey.BigCommerceRefundOrder]
+    const bigcommerceRefundOrderAccessFlags = useFlag(
+        FeatureFlagKey.BigCommerceRefundOrder,
+    )
     const [draftOrderUrl, setDraftOrderUrl] = useState(
         source.get('draft_order_url') || '',
     )

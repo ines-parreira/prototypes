@@ -1,14 +1,12 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 
 import useStoresRequiringScriptTagMigration from '../hooks/useStoresRequiringScriptTagMigration'
@@ -18,13 +16,25 @@ jest.mock('../hooks/useStoresRequiringScriptTagMigration')
 
 const mockStore = configureMockStore([thunk])
 
-jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.ChatScopeReinstallOnShopifyCallback]: true,
-    [FeatureFlagKey.ChatScopeUpdateBanner]: true,
-    [FeatureFlagKey.ChatScopeUpdateDueDate]: 'Scary Deadline',
-}))
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 describe('<ScriptTagMigrationBanner />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatScopeReinstallOnShopifyCallback) {
+                return true
+            }
+            if (key === FeatureFlagKey.ChatScopeUpdateBanner) {
+                return true
+            }
+            if (key === FeatureFlagKey.ChatScopeUpdateDueDate) {
+                return 'Scary Deadline'
+            }
+            return defaultValue
+        })
+    })
+
     it('should contain only re-install link for a single store', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [

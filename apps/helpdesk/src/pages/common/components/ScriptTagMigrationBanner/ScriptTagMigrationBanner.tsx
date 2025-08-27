@@ -1,10 +1,10 @@
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -14,14 +14,17 @@ import { isAdmin } from 'utils'
 import useStoresRequiringScriptTagMigration from './hooks/useStoresRequiringScriptTagMigration'
 
 const ScriptTagMigrationBanner = () => {
-    const migrationDueDate: string | undefined =
-        useFlags()[FeatureFlagKey.ChatScopeUpdateDueDate]
+    const migrationDueDate: string | undefined = useFlag(
+        FeatureFlagKey.ChatScopeUpdateDueDate,
+    )
 
-    const showMigrationBanner: boolean | undefined =
-        useFlags()[FeatureFlagKey.ChatScopeUpdateBanner]
+    const showMigrationBanner: boolean | undefined = useFlag(
+        FeatureFlagKey.ChatScopeUpdateBanner,
+    )
 
-    const reinstallsOnShopifyCallback: boolean | undefined =
-        useFlags()[FeatureFlagKey.ChatScopeReinstallOnShopifyCallback]
+    const reinstallsOnShopifyCallback: boolean | undefined = useFlag(
+        FeatureFlagKey.ChatScopeReinstallOnShopifyCallback,
+    )
 
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
