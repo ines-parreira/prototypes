@@ -71,11 +71,15 @@ export const ProductRecommendationRuleCard = ({
             title: 'Promote products',
             description: 'Choose products to prioritize in recommendations.',
             badge: { label: '\u2605 Promoted', type: 'light-success' as const },
+            selectionDrawerTitle: 'Select products to promote',
+            selectedDrawerTitle: 'All promoted products',
         },
         exclude: {
             title: 'Exclude products',
             description: 'Choose products to exclude from recommendations.',
             badge: { label: 'Excluded', type: 'light-error' as const },
+            selectionDrawerTitle: 'Select products to exclude',
+            selectedDrawerTitle: 'All excluded products',
         },
     }
 
@@ -121,7 +125,7 @@ export const ProductRecommendationRuleCard = ({
                 isOpen={isDrawerOpen}
                 isLoading={isLoadingAllProducts}
                 hasImages={true}
-                title="Add products"
+                title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="products"
                 ruleType="product"
                 selectedItemIds={productIds}
@@ -139,7 +143,7 @@ export const ProductRecommendationRuleCard = ({
             />
 
             <SelectedItemsDrawer
-                title="All products"
+                title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="products"
                 ruleType="product"
                 items={mapProducts(selectedProducts)}

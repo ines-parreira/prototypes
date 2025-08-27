@@ -62,11 +62,15 @@ export const VendorRecommendationRuleCard = ({
             title: 'Promote vendors',
             description: 'Choose vendors to prioritize in recommendations.',
             badge: { label: '\u2605 Promoted', type: 'light-success' as const },
+            selectionDrawerTitle: 'Select vendors to promote',
+            selectedDrawerTitle: 'All promoted vendors',
         },
         exclude: {
             title: 'Exclude vendors',
             description: 'Choose vendors to exclude from recommendations.',
             badge: { label: 'Excluded', type: 'light-error' as const },
+            selectionDrawerTitle: 'Select vendors to exclude',
+            selectedDrawerTitle: 'All excluded vendors',
         },
     }
 
@@ -100,7 +104,7 @@ export const VendorRecommendationRuleCard = ({
                 isOpen={isDrawerOpen}
                 isLoading={isLoadingAllVendors}
                 hasImages={false}
-                title="Add vendors"
+                title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="vendors"
                 ruleType="vendor"
                 selectedItemIds={vendors}
@@ -123,7 +127,7 @@ export const VendorRecommendationRuleCard = ({
             />
 
             <SelectedItemsDrawer
-                title="All vendors"
+                title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="vendors"
                 ruleType="vendor"
                 items={selectedVendors}

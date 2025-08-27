@@ -64,11 +64,15 @@ export const TagRecommendationRuleCard = ({
             title: 'Promote tags',
             description: 'Choose tags to prioritize in recommendations.',
             badge: { label: '\u2605 Promoted', type: 'light-success' as const },
+            selectionDrawerTitle: 'Select tags to promote',
+            selectedDrawerTitle: 'All promoted tags',
         },
         exclude: {
             title: 'Exclude tags',
             description: 'Choose tags to exclude from recommendations.',
             badge: { label: 'Excluded', type: 'light-error' as const },
+            selectionDrawerTitle: 'Select tags to exclude',
+            selectedDrawerTitle: 'All excluded tags',
         },
     }
 
@@ -100,7 +104,7 @@ export const TagRecommendationRuleCard = ({
                 isOpen={isDrawerOpen}
                 isLoading={isLoadingAllTags}
                 hasImages={false}
-                title="Add tags"
+                title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="tags"
                 ruleType="tag"
                 selectedItemIds={tags}
@@ -123,7 +127,7 @@ export const TagRecommendationRuleCard = ({
             />
 
             <SelectedItemsDrawer
-                title="All tags"
+                title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="tags"
                 ruleType="tag"
                 items={selectedTags}
