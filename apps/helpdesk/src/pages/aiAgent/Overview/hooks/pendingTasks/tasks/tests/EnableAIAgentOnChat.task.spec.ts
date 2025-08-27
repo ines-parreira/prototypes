@@ -1,5 +1,3 @@
-import { FocusActivationModal } from 'pages/aiAgent/Activation/utils'
-
 import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
 import { ChatIntegrationsStatusDataFixture } from '../../tests/ChatIntegrationsStatusData.fixture'
 import { EnableAIAgentOnChatTask } from '../EnableAIAgentOnChat.task'
@@ -90,12 +88,11 @@ describe('EnableAIAgentOnChat', () => {
 
         beforeEach(() => {
             routes.aiAgentRoutes = {
-                overview: '/ai-agent/overview',
-                settingsChannels: '/ai-agent/settings/channels',
+                deployChat: '/app/ai-agent/shopify/bakehouse-store/deploy/chat',
             } as any
         })
 
-        it('should generate URL with activation modal when activation is enabled', () => {
+        it('should always generate deploy/chat URL', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
                     .withConnectedChatIntegrations([1])
@@ -117,11 +114,12 @@ describe('EnableAIAgentOnChat', () => {
                 routes,
             )
 
-            const expectedUrl = `/ai-agent/overview?${FocusActivationModal.buildSearchParam(storeName)}`
-            expect(task.featureUrl).toBe(expectedUrl)
+            expect(task.featureUrl).toBe(
+                '/app/ai-agent/shopify/bakehouse-store/deploy/chat',
+            )
         })
 
-        it('should generate settings channels URL when activation is disabled', () => {
+        it('should generate deploy/chat URL regardless of activation state', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
                     .withConnectedChatIntegrations([1])
@@ -143,7 +141,9 @@ describe('EnableAIAgentOnChat', () => {
                 routes,
             )
 
-            expect(task.featureUrl).toBe('/ai-agent/settings/channels')
+            expect(task.featureUrl).toBe(
+                '/app/ai-agent/shopify/bakehouse-store/deploy/chat',
+            )
         })
     })
 })

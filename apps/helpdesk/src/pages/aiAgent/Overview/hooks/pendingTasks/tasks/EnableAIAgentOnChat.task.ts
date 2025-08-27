@@ -1,7 +1,4 @@
-import {
-    FocusActivationModal,
-    getAiSalesAgentEmailEnabledFlag,
-} from 'pages/aiAgent/Activation/utils'
+import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
@@ -50,15 +47,10 @@ export class EnableAIAgentOnChatTask extends Task {
 
     protected getFeatureUrl({
         routes: { aiAgentRoutes },
-        data,
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        if (data.isActivationEnabled) {
-            const { storeName } = data.aiAgentStoreConfiguration
-            return `${aiAgentRoutes.overview}?${FocusActivationModal.buildSearchParam(storeName)}`
-        }
-        return aiAgentRoutes.settingsChannels
+        return aiAgentRoutes.deployChat
     }
 }

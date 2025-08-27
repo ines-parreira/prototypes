@@ -1,5 +1,3 @@
-import { FocusActivationModal } from 'pages/aiAgent/Activation/utils'
-
 import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
 import { EnableAIAgentOnEmailTask } from '../EnableAIAgentOnEmail.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
@@ -82,12 +80,12 @@ describe('EnableAIAgentOnEmail', () => {
 
         beforeEach(() => {
             routes.aiAgentRoutes = {
-                overview: '/ai-agent/overview',
-                settingsChannels: '/ai-agent/settings/channels',
+                deployEmail:
+                    '/app/ai-agent/shopify/bakehouse-store/deploy/email',
             } as any
         })
 
-        it('should generate URL with activation modal when activation is enabled', () => {
+        it('should always generate deploy/email URL', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
                     .withConnectedEmailIntegrations({
@@ -107,11 +105,12 @@ describe('EnableAIAgentOnEmail', () => {
                 routes,
             )
 
-            const expectedUrl = `/ai-agent/overview?${FocusActivationModal.buildSearchParam(storeName)}`
-            expect(task.featureUrl).toBe(expectedUrl)
+            expect(task.featureUrl).toBe(
+                '/app/ai-agent/shopify/bakehouse-store/deploy/email',
+            )
         })
 
-        it('should generate settings channels URL when activation is disabled', () => {
+        it('should generate deploy/email URL regardless of activation state', () => {
             const aiAgentStoreConfiguration =
                 AiAgentStoreConfigurationFixture.start()
                     .withConnectedEmailIntegrations({
@@ -131,7 +130,9 @@ describe('EnableAIAgentOnEmail', () => {
                 routes,
             )
 
-            expect(task.featureUrl).toBe('/ai-agent/settings/channels')
+            expect(task.featureUrl).toBe(
+                '/app/ai-agent/shopify/bakehouse-store/deploy/email',
+            )
         })
     })
 })
