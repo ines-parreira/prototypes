@@ -61,6 +61,10 @@ export const OpportunitiesLayout = () => {
         }
     }
 
+    const selectCertainOpportunity = (index: number) => {
+        setSelectedOpportunity(opportunities[index])
+    }
+
     const handleArchiveArticle = (articleKey: string) => {
         markArticleAsReviewed(articleKey, 'archive')
 
@@ -82,6 +86,7 @@ export const OpportunitiesLayout = () => {
                     opportunities={opportunities}
                     isLoading={isLoading}
                     onSelectOpportunity={setSelectedOpportunity}
+                    selectedOpportunity={selectedOpportunity}
                 />
                 <OpportunitiesContent
                     key={selectedOpportunity?.id}
@@ -93,6 +98,7 @@ export const OpportunitiesLayout = () => {
                     onPublish={handlePublishArticle}
                     markArticleAsReviewed={markArticleAsReviewed}
                     opportunities={opportunities}
+                    selectCertainOpportunity={selectCertainOpportunity}
                 />
             </div>
         </div>

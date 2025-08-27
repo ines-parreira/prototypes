@@ -30,6 +30,7 @@ import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
+import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
 
 import css from './OpportunitiesContent.less'
@@ -47,6 +48,7 @@ interface OpportunitiesContentProps {
         reviewAction: ArticleTemplateReviewAction,
     ) => void
     opportunities?: Opportunity[]
+    selectCertainOpportunity?: (index: number) => void
 }
 
 export const OpportunitiesContent = ({
@@ -58,6 +60,7 @@ export const OpportunitiesContent = ({
     onPublish,
     markArticleAsReviewed,
     opportunities,
+    selectCertainOpportunity,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -204,6 +207,11 @@ export const OpportunitiesContent = ({
                 </h3>
                 {selectedOpportunity && (
                     <div className={css.headerActions}>
+                        <OpportunitiesNavigation
+                            opportunities={opportunities}
+                            selectedOpportunity={selectedOpportunity}
+                            selectCertainOpportunity={selectCertainOpportunity}
+                        />
                         <Button
                             intent="secondary"
                             fillStyle="ghost"

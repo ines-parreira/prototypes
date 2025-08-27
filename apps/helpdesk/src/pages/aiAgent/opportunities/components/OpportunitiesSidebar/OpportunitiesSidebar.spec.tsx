@@ -155,6 +155,7 @@ describe('OpportunitiesSidebar', () => {
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
+                selectedOpportunity={mockOpportunities[0]}
             />,
         )
 

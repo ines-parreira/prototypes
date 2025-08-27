@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -12,27 +12,23 @@ interface OpportunitiesSidebarProps {
     opportunities: Opportunity[]
     isLoading?: boolean
     onSelectOpportunity: (opportunity: Opportunity | null) => void
+    selectedOpportunity?: Opportunity | null
 }
 
 export const OpportunitiesSidebar = ({
     opportunities,
     isLoading = false,
     onSelectOpportunity,
+    selectedOpportunity,
 }: OpportunitiesSidebarProps) => {
-    const [selectedCard, setSelectedCard] = useState<string | null>(
-        opportunities.length > 0 ? opportunities[0].id : null,
-    )
-
     useEffect(() => {
         if (opportunities.length > 0) {
             const initialOpportunity = opportunities[0]
-            setSelectedCard(initialOpportunity.id)
             onSelectOpportunity(initialOpportunity)
         }
     }, [opportunities, onSelectOpportunity])
 
     const handleSelectCard = (opportunityId: string) => {
-        setSelectedCard(opportunityId)
         const opportunity = opportunities.find(
             (opp) => opp.id === opportunityId,
         )
@@ -80,7 +76,8 @@ export const OpportunitiesSidebar = ({
                                         title={opportunity.title}
                                         type={opportunity.type}
                                         selected={
-                                            selectedCard === opportunity.id
+                                            selectedOpportunity?.id ===
+                                            opportunity.id
                                         }
                                         onSelect={() =>
                                             handleSelectCard(opportunity.id)
