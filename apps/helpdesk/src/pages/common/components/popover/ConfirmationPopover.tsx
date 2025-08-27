@@ -12,15 +12,16 @@ import classnames from 'classnames'
 import _get from 'lodash/get'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
+import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+
 import { useAppNode } from 'appNode'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
 import css from './ConfirmationPopover.less'
 
 type Props = {
-    buttonProps?: Omit<ButtonProps, 'children'>
-    cancelButtonProps?: Omit<ButtonProps, 'children'>
+    buttonProps?: Omit<ButtonComponentProps, 'children'>
+    cancelButtonProps?: Omit<ButtonComponentProps, 'children'>
     children: (props: {
         uid: string
         onDisplayConfirmation: (event?: SyntheticEvent) => void
