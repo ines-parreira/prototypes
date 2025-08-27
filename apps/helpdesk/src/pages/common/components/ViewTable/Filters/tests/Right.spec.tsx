@@ -1,7 +1,7 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { Expression, Identifier } from 'estree'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -204,6 +204,56 @@ describe('<Right />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render MultiSelectField for priority field with ArrayExpression', async () => {
+        render(
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    operator={{
+                        name: 'eq',
+                        type: 'Identifier',
+                    }}
+                    node={{
+                        type: 'ArrayExpression',
+                        elements: [
+                            {
+                                type: 'Literal',
+                                value: 'high',
+                                raw: "'high'",
+                            },
+                            {
+                                type: 'Literal',
+                                value: 'medium',
+                                raw: "'medium'",
+                            },
+                        ],
+                    }}
+                    field={fromJS({
+                        name: 'priority',
+                        title: 'Priority',
+                        filter: {
+                            enum: [
+                                { value: 'low', label: 'Low' },
+                                { value: 'medium', label: 'Medium' },
+                                { value: 'high', label: 'High' },
+                            ],
+                        },
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('Low'))
+        })
+
+        expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
+            'low',
+        ])
+    })
+
     describe('custom field expression tests', () => {
         const baseCustomFieldProps = {
             operator: {
@@ -224,17 +274,17 @@ describe('<Right />', () => {
         }
 
         it('should set rendered custom field value on mount', () => {
-            const { getByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
                 </Provider>,
             )
 
-            expect(getByText('Value: "foo"')).toBeInTheDocument()
+            expect(screen.getByText('Value: "foo"')).toBeInTheDocument()
         })
 
         it('should set rendered custom field values for Array expression on mount', () => {
-            const { getByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -258,11 +308,11 @@ describe('<Right />', () => {
                 </Provider>,
             )
 
-            expect(getByText('Value: ["foo","bar"]')).toBeInTheDocument()
+            expect(screen.getByText('Value: ["foo","bar"]')).toBeInTheDocument()
         })
 
         it('should set displayed custom field value as undefined on update if node does not provide a value', () => {
-            const { rerender, queryByText } = render(
+            const { rerender } = render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
                 </Provider>,
@@ -282,23 +332,26 @@ describe('<Right />', () => {
                 </Provider>,
             )
 
-            expect(queryByText('Value: "foo"')).not.toBeInTheDocument()
+            expect(screen.queryByText('Value: "foo"')).not.toBeInTheDocument()
         })
 
-        it('should handle custom field value change', () => {
-            const { getByText, container } = render(
+        it('should handle custom field value change', async () => {
+            const user = userEvent.setup()
+            const { container } = render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
                 </Provider>,
             )
 
-            userEvent.click(container.firstChild as Element)
+            await act(async () => {
+                await user.click(container.firstChild as Element)
+            })
 
-            expect(getByText('Value: "baz"')).toBeInTheDocument()
+            expect(screen.getByText('Value: "baz"')).toBeInTheDocument()
         })
 
         it('should handle custom field custom display value', () => {
-            const { getByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -322,11 +375,13 @@ describe('<Right />', () => {
                 </Provider>,
             )
 
-            expect(getByText('Custom: 2 fields selected')).toBeInTheDocument()
+            expect(
+                screen.getByText('Custom: 2 fields selected'),
+            ).toBeInTheDocument()
         })
 
         it('should return empty string for custom field custom display value if value is empty', () => {
-            const { queryByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -339,12 +394,12 @@ describe('<Right />', () => {
                 </Provider>,
             )
 
-            expect(queryByText(/Custom:/)).not.toBeInTheDocument()
+            expect(screen.queryByText(/Custom:/)).not.toBeInTheDocument()
         })
     })
 
     it('should render plain danger button when no field is present, but a value is passed in node', () => {
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer
                     {...minProps}
@@ -354,7 +409,7 @@ describe('<Right />', () => {
             </Provider>,
         )
 
-        expect(getByText('true')).toHaveClass('btn-outline-danger')
+        expect(screen.getByText('true')).toHaveClass('btn-outline-danger')
     })
 
     it('should render nothing when no field is present and no value is passed in node', () => {
@@ -381,13 +436,13 @@ describe('<Right />', () => {
         const field = fromJS({ name: 'dummy_field', title: 'Dummy' })
         const props = { ...minProps, field, node }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByText('Me (current user)')).toBeInTheDocument()
+        expect(screen.getByText('Me (current user)')).toBeInTheDocument()
     })
 
     it('should render integration label for single integration', () => {
@@ -411,13 +466,13 @@ describe('<Right />', () => {
         }
         const customProps = { ...props, integrations }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...customProps} />
             </Provider>,
         )
 
-        expect(getByText('Test Integration')).toBeInTheDocument()
+        expect(screen.getByText('Test Integration')).toBeInTheDocument()
     })
 
     it('should render MultiSelectField for integrations when node is ArrayExpression', () => {
@@ -440,13 +495,13 @@ describe('<Right />', () => {
         }
         const customProps = { ...props, integrations }
 
-        const { getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...customProps} />
             </Provider>,
         )
 
-        expect(getByTestId('multi-select-field')).toBeInTheDocument()
+        expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
     })
 
     it('should render team name for AssigneeTeam', () => {
@@ -464,13 +519,13 @@ describe('<Right />', () => {
             teams: fromJS([team]),
         }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByText('Support Team')).toBeInTheDocument()
+        expect(screen.getByText('Support Team')).toBeInTheDocument()
     })
 
     it('should render agent name for Assignee', () => {
@@ -485,13 +540,13 @@ describe('<Right />', () => {
             teams: fromJS([]),
         }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByText('Agent Smith')).toBeInTheDocument()
+        expect(screen.getByText('Agent Smith')).toBeInTheDocument()
     })
 
     it('should render customer label', () => {
@@ -499,13 +554,13 @@ describe('<Right />', () => {
         const node = { raw: "'99'", type: 'Literal', value: '99' } as Expression
         const props = { ...minProps, field: customerField, node }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByText('Customer #99')).toBeInTheDocument()
+        expect(screen.getByText('Customer #99')).toBeInTheDocument()
     })
 
     it('should render language display name', () => {
@@ -513,13 +568,13 @@ describe('<Right />', () => {
         const node = { raw: "'en'", type: 'Literal', value: 'en' } as Expression
         const props = { ...minProps, field: languageField, node }
 
-        const { getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByText('English')).toBeInTheDocument()
+        expect(screen.getByText('English')).toBeInTheDocument()
     })
 
     it('should render TimedeltaPicker for datetime field with timedelta operator', () => {
@@ -541,13 +596,13 @@ describe('<Right />', () => {
             node,
         } as any
 
-        const { getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByTestId('timedelta-picker')).toBeInTheDocument()
+        expect(screen.getByTestId('timedelta-picker')).toBeInTheDocument()
     })
 
     it('should render FilterMultiSelectField for Tags', () => {
@@ -561,13 +616,15 @@ describe('<Right />', () => {
         } as Expression
         const props = { ...minProps, field: tagsField, node }
 
-        const { getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByTestId('filter-multi-select-field')).toBeInTheDocument()
+        expect(
+            screen.getByTestId('filter-multi-select-field'),
+        ).toBeInTheDocument()
     })
 
     it('should render MultiSelectField for Channel when node is ArrayExpression', () => {
@@ -584,13 +641,13 @@ describe('<Right />', () => {
         } as Expression
         const props = { ...minProps, field: channelField, node }
 
-        const { getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByTestId('multi-select-field')).toBeInTheDocument()
+        expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
     })
 
     it('should render MultiSelectField for CSATScore', () => {
@@ -605,13 +662,13 @@ describe('<Right />', () => {
         } as Expression
         const props = { ...minProps, field: csatField, node }
 
-        const { getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByTestId('multi-select-field')).toBeInTheDocument()
+        expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
     })
 
     it('should render MultiSelectField for Feedback', () => {
@@ -632,23 +689,24 @@ describe('<Right />', () => {
         } as Expression
         const props = { ...minProps, field: feedbackField, node }
 
-        const { getByTestId, getByText } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
-        expect(getByTestId('multi-select-field')).toBeInTheDocument()
-        expect(getByText('Source used - negative')).toBeInTheDocument()
-        expect(getByText('Source used - positive')).toBeInTheDocument()
-        fireEvent.click(getByText('Source used - negative'))
+        expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
+        expect(screen.getByText('Source used - negative')).toBeInTheDocument()
+        expect(screen.getByText('Source used - positive')).toBeInTheDocument()
+        fireEvent.click(screen.getByText('Source used - negative'))
 
         expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
             'KNOWLEDGE_THUMBS_DOWN',
         ])
     })
 
-    it('should render default clickable dropdown and toggle FilterDropdown', () => {
+    it('should render default clickable dropdown and toggle FilterDropdown', async () => {
+        const user = userEvent.setup()
         const otherField = fromJS({ name: 'other_field', title: 'Other Field' })
         const node = {
             raw: "'default'",
@@ -657,20 +715,22 @@ describe('<Right />', () => {
         } as Expression
         const props = { ...minProps, field: otherField, node }
 
-        const { getByText, queryByTestId, getByTestId } = render(
+        render(
             <Provider store={store}>
                 <RightContainer {...props} />
             </Provider>,
         )
 
         // The default branch renders a button with the node value.
-        const button = getByText('default')
+        const button = screen.getByText('default')
         expect(button).toBeInTheDocument()
         // Initially, the dropdown is not rendered.
-        expect(queryByTestId('filter-dropdown')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('filter-dropdown')).not.toBeInTheDocument()
         // Click to toggle dropdown
-        userEvent.click(button)
-        expect(getByTestId('filter-dropdown')).toBeInTheDocument()
+        await act(async () => {
+            await user.click(button)
+        })
+        expect(screen.getByTestId('filter-dropdown')).toBeInTheDocument()
     })
 
     it('should call _selectFirstOption when node value is empty and field has one option', () => {
@@ -742,17 +802,17 @@ describe('<Right />', () => {
                 ],
             }
 
-            const { getByTestId, getByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer {...props} />
                 </Provider>,
             )
 
-            expect(getByTestId('multi-select-field')).toBeInTheDocument()
-            expect(getByText('Store 1')).toBeInTheDocument()
-            expect(getByText('Store 2')).toBeInTheDocument()
+            expect(screen.getByTestId('multi-select-field')).toBeInTheDocument()
+            expect(screen.getByText('Store 1')).toBeInTheDocument()
+            expect(screen.getByText('Store 2')).toBeInTheDocument()
 
-            fireEvent.click(getByText('Store 1'))
+            fireEvent.click(screen.getByText('Store 1'))
             expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
                 1,
             ])
@@ -784,13 +844,13 @@ describe('<Right />', () => {
                 ],
             }
 
-            const { getByText } = render(
+            render(
                 <Provider store={store}>
                     <RightContainer {...props} />
                 </Provider>,
             )
 
-            expect(getByText('Store 1')).toBeInTheDocument()
+            expect(screen.getByText('Store 1')).toBeInTheDocument()
         })
     })
 })
