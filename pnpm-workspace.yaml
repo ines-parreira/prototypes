@@ -1,6 +1,7 @@
 packages:
   - 'config'
   - 'apps/**'
+  - 'packages/**'
   - 'domains/**'
   - 'core/**'
   - 'utils/**'

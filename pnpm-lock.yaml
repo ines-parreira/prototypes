@@ -1602,6 +1602,54 @@ importers:
         specifier: catalog:test
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
 
+  packages/feature-flags:
+    devDependencies:
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@testing-library/dom':
+        specifier: catalog:test
+        version: 10.4.0
+      '@testing-library/jest-dom':
+        specifier: catalog:test
+        version: 6.5.0
+      '@testing-library/react':
+        specifier: catalog:test
+        version: 14.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: catalog:test
+        version: 14.5.2(@testing-library/dom@10.4.0)
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: catalog:prettier
+        version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      '@types/react':
+        specifier: catalog:react
+        version: 18.2.67
+      '@types/react-dom':
+        specifier: catalog:react
+        version: 18.2.22
+      '@vitest/coverage-v8':
+        specifier: catalog:test
+        version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0))
+      oxlint:
+        specifier: catalog:oxlint
+        version: 1.11.2
+      prettier:
+        specifier: catalog:prettier
+        version: 3.6.2
+      react:
+        specifier: catalog:react
+        version: 18.2.0
+      react-dom:
+        specifier: catalog:react
+        version: 18.2.0(react@18.2.0)
+      typescript:
+        specifier: catalog:typescript
+        version: 5.3.3
+      vitest:
+        specifier: catalog:test
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.0)
+
   utils/testing:
     devDependencies:
       '@repo/config':
