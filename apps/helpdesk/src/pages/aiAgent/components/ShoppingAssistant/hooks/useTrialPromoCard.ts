@@ -56,7 +56,7 @@ export const useTrialPromoCard = (
     )
 
     const trialAccess = useTrialAccess(shopName)
-    const { isDisabled } = useNotifyAdmins(shopName)
+    const { isDisabled } = useNotifyAdmins(shopName, trialAccess.trialType)
     const trialMetrics = useTrialMetrics()
     const trialEnding = useTrialEnding(shopName, trialAccess.trialType)
     const storeActivations = useStoreActivations({

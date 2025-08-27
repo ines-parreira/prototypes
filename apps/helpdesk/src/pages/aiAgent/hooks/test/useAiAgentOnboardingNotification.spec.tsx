@@ -890,13 +890,190 @@ describe('useAiAgentOnboardingNotification', () => {
             },
         )
 
-        act(() => {
-            result.current.handleOnTriggerTrialRequestNotification()
+        await act(async () => {
+            await result.current.handleOnTriggerTrialRequestNotification(
+                AiAgentNotificationType.AiAgentTrialRequest,
+            )
         })
 
         expect(mockGetOnboardingNotificationState).toHaveBeenCalledWith(
             ACCOUNT_DOMAIN,
             SHOP_NAME,
         )
+    })
+
+    it('should trigger trial request notification when feature flag is enabled', async () => {
+        mockUseOnboardingnotificationState.mockReturnValue({
+            onboardingNotificationState: {
+                ...mockedOnboardingNotificationState,
+                onboardingState: AiAgentOnboardingState.FullyOnboarded,
+            },
+            isLoading: false,
+        })
+
+        const mockOnboardingState = getOnboardingNotificationStateFixture({
+            shopName: SHOP_NAME,
+        })
+
+        mockGetOnboardingNotificationState.mockResolvedValue({
+            data: {
+                onboardingNotificationState: mockOnboardingState,
+            },
+        })
+
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            await result.current.handleOnTriggerTrialRequestNotification(
+                AiAgentNotificationType.AiAgentTrialRequest,
+            )
+        })
+
+        expect(mockGetOnboardingNotificationState).toHaveBeenCalledWith(
+            ACCOUNT_DOMAIN,
+            SHOP_NAME,
+        )
+        expect(mockUpsertOnboardingNotificationState).toHaveBeenCalled()
+    })
+
+    it('should not trigger trial request notification when feature flag is disabled', async () => {
+        mockFlags({
+            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
+        })
+
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            await result.current.handleOnTriggerTrialRequestNotification(
+                AiAgentNotificationType.AiAgentTrialRequest,
+            )
+        })
+
+        expect(mockGetOnboardingNotificationState).not.toHaveBeenCalled()
+        expect(logEventSpy).not.toHaveBeenCalled()
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger trial request notification when shopName is not provided', async () => {
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: undefined }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            await result.current.handleOnTriggerTrialRequestNotification(
+                AiAgentNotificationType.AiAgentTrialRequest,
+            )
+        })
+
+        expect(mockGetOnboardingNotificationState).not.toHaveBeenCalled()
+        expect(logEventSpy).not.toHaveBeenCalled()
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
+    })
+
+    it('should trigger shopping assistant trial request notification with correct parameters', async () => {
+        const mockOnboardingState = getOnboardingNotificationStateFixture({
+            shopName: SHOP_NAME,
+        })
+
+        mockGetOnboardingNotificationState.mockResolvedValue({
+            data: {
+                onboardingNotificationState: mockOnboardingState,
+            },
+        })
+
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            await result.current.handleOnTriggerTrialRequestNotification(
+                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+            )
+        })
+
+        expect(mockGetOnboardingNotificationState).toHaveBeenCalledWith(
+            ACCOUNT_DOMAIN,
+            SHOP_NAME,
+        )
+        expect(logEventSpy).toHaveBeenCalledWith(NotificationEvent, {
+            command_type: 'send-notification',
+            notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
+            notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
+            idempotency_key: expect.stringContaining(
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${AiAgentNotificationType.AiShoppingAssistantTrialRequest}+${user.id}`,
+            ),
+            notification_data: {
+                ai_agent_notification_type:
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                shop_name: SHOP_NAME,
+                shop_type: 'shopify',
+                agent_id: user.id,
+            },
+            cancellation_key: `cancel:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${AiAgentNotificationType.AiShoppingAssistantTrialRequest}+${user.id}`,
+        })
+        expect(mockUpsertOnboardingNotificationState).toHaveBeenCalled()
+    })
+
+    it('should handle error when getOnboardingNotificationState fails', async () => {
+        mockGetOnboardingNotificationState.mockRejectedValueOnce(
+            new Error('API Error'),
+        )
+
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        await act(async () => {
+            await expect(
+                result.current.handleOnTriggerTrialRequestNotification(
+                    AiAgentNotificationType.AiAgentTrialRequest,
+                ),
+            ).rejects.toThrow('API Error')
+        })
+
+        expect(mockGetOnboardingNotificationState).toHaveBeenCalledWith(
+            ACCOUNT_DOMAIN,
+            SHOP_NAME,
+        )
+        expect(mockUpsertOnboardingNotificationState).not.toHaveBeenCalled()
     })
 })

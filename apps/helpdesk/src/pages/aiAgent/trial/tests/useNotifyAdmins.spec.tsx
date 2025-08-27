@@ -4,11 +4,16 @@ import { fromJS } from 'immutable'
 
 import { useCreateAiShoppingAssistantTrialRequest } from '@gorgias/helpdesk-queries'
 
-import { isLessThan24HoursAgo } from 'automate/notifications/utils'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import {
+    isLessThan24HoursAgo,
+    isTrialNotificationOfType,
+} from 'automate/notifications/utils'
 import { account } from 'fixtures/account'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { getAccountAdminsJS } from 'state/agents/selectors'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -24,6 +29,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 
 jest.mock('automate/notifications/utils', () => ({
     isLessThan24HoursAgo: jest.fn(),
+    isTrialNotificationOfType: jest.fn(),
 }))
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -63,10 +69,12 @@ const mockAccountAdmins = [
 
 const mockDispatch = jest.fn()
 const mockHandleOnTriggerTrialRequestNotification = jest.fn()
+const mockHandleOnTriggerAiAgentTrialRequestNotification = jest.fn()
 const mockCreateAiShoppingAssistantTrialRequest = jest.fn()
 const mockOnSuccess = jest.fn()
 
 const mockIsLessThan24HoursAgo = assumeMock(isLessThan24HoursAgo)
+const mockIsTrialNotificationOfType = assumeMock(isTrialNotificationOfType)
 
 const SHOP_NAME = 'test-shop'
 const ADDITIONAL_NOTE = 'Please review this request'
@@ -75,6 +83,8 @@ const defaultUseAiAgentOnboardingNotification = {
     ...defaultUseAiAgentOnboardingNotificationFixture(),
     handleOnTriggerTrialRequestNotification:
         mockHandleOnTriggerTrialRequestNotification,
+    handleOnTriggerAiAgentTrialRequestNotification:
+        mockHandleOnTriggerAiAgentTrialRequestNotification,
 }
 
 describe('useNotifyAdmins', () => {
@@ -88,123 +98,250 @@ describe('useNotifyAdmins', () => {
             mutate: mockCreateAiShoppingAssistantTrialRequest,
         } as any)
         mockIsLessThan24HoursAgo.mockReturnValue(false)
-    })
 
-    it('should return initial state correctly', () => {
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-
-        expect(result.current.isLoading).toBe(false)
-        expect(result.current.isDisabled).toBe(false)
-        expect(result.current.accountAdmins).toEqual(mockAccountAdmins)
-        expect(typeof result.current.handleNotifyAdmins).toBe('function')
-    })
-
-    it('should disable notifications if user has already requested within 24 hours', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: {
-                ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
-                trialRequestNotification: [
-                    {
-                        userId: user.id,
-                        receivedDatetime: '2025-01-01T00:00:00Z',
-                    },
-                ],
-            },
-        })
-        mockIsLessThan24HoursAgo.mockReturnValue(true)
-
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-        expect(result.current.isDisabled).toBe(true)
-    })
-
-    it('should enable notifications if user has not requested within 24 hours', () => {
-        mockUseAiAgentOnboardingNotification.mockReturnValue({
-            ...defaultUseAiAgentOnboardingNotification,
-            onboardingNotificationState: {
-                ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
-                trialRequestNotification: [
-                    {
-                        userId: user.id,
-                        receivedDatetime: '2025-01-01T00:00:00Z',
-                    },
-                ],
-            },
-        })
-        mockIsLessThan24HoursAgo.mockReturnValue(false)
-
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-
-        expect(result.current.isDisabled).toBe(false)
-    })
-
-    it('should notify admins when handleNotifyAdmins is called', () => {
-        mockNotify.mockReturnValue(mockDispatch)
-
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-
-        act(() => {
-            result.current.handleNotifyAdmins()
-        })
-
-        expect(
-            mockHandleOnTriggerTrialRequestNotification,
-        ).toHaveBeenCalledTimes(1)
-        expect(mockCreateAiShoppingAssistantTrialRequest).toHaveBeenCalledWith({
-            data: {
-                account_id: account.id,
-                current_user_id: user.id,
-                shop_name: SHOP_NAME,
-                additional_note: undefined,
-            },
-        })
-        expect(mockNotify).toHaveBeenCalledWith({
-            message:
-                'Your request to Shopping Assistant trial has been sent to all Gorgias admins.',
-            status: NotificationStatus.Success,
-        })
-        expect(mockDispatch).toHaveBeenCalled()
-    })
-
-    it('should notify admins with additional note when handleNotifyAdmins is called', () => {
-        mockNotify.mockReturnValue(mockDispatch)
-
-        const { result } = renderHook(() => useNotifyAdmins(SHOP_NAME))
-
-        act(() => {
-            result.current.handleNotifyAdmins(ADDITIONAL_NOTE)
-        })
-
-        expect(
-            mockHandleOnTriggerTrialRequestNotification,
-        ).toHaveBeenCalledTimes(1)
-        expect(mockCreateAiShoppingAssistantTrialRequest).toHaveBeenCalledWith({
-            data: {
-                account_id: account.id,
-                current_user_id: user.id,
-                shop_name: SHOP_NAME,
-                additional_note: ADDITIONAL_NOTE,
-            },
-        })
-        expect(mockNotify).toHaveBeenCalledWith({
-            message:
-                'Your request to Shopping Assistant trial has been sent to all Gorgias admins.',
-            status: NotificationStatus.Success,
-        })
-        expect(mockDispatch).toHaveBeenCalled()
-    })
-
-    it('should call onSuccess callback when provided', () => {
-        mockNotify.mockReturnValue(mockDispatch)
-
-        const { result } = renderHook(() =>
-            useNotifyAdmins(SHOP_NAME, mockOnSuccess),
+        // Mock isTrialNotificationOfType to return true for matching trial types
+        mockIsTrialNotificationOfType.mockImplementation(
+            (request, trialType) =>
+                request.trialType === trialType ||
+                (!request.trialType &&
+                    trialType === TrialType.ShoppingAssistant),
         )
+    })
 
-        act(() => {
-            result.current.handleNotifyAdmins()
+    describe('Shopping Assistant trial type', () => {
+        it('should return initial state correctly', () => {
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
+            )
+
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.isDisabled).toBe(false)
+            expect(result.current.accountAdmins).toEqual(mockAccountAdmins)
+            expect(typeof result.current.handleNotifyAdmins).toBe('function')
         })
 
-        expect(mockOnSuccess).toHaveBeenCalledTimes(1)
+        it('should disable notifications if user has already requested within 24 hours', () => {
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotification,
+                onboardingNotificationState: {
+                    ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                    trialRequestNotification: [
+                        {
+                            userId: user.id,
+                            receivedDatetime: '2025-01-01T00:00:00Z',
+                            trialType: TrialType.ShoppingAssistant,
+                        },
+                    ],
+                },
+            })
+            mockIsLessThan24HoursAgo.mockReturnValue(true)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
+            )
+            expect(result.current.isDisabled).toBe(true)
+        })
+
+        it('should enable notifications if user has not requested within 24 hours', () => {
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotification,
+                onboardingNotificationState: {
+                    ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                    trialRequestNotification: [
+                        {
+                            userId: user.id,
+                            receivedDatetime: '2025-01-01T00:00:00Z',
+                            trialType: TrialType.ShoppingAssistant,
+                        },
+                    ],
+                },
+            })
+            mockIsLessThan24HoursAgo.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
+            )
+
+            expect(result.current.isDisabled).toBe(false)
+        })
+
+        it('should notify admins when handleNotifyAdmins is called', () => {
+            mockNotify.mockReturnValue(mockDispatch)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
+            )
+
+            act(() => {
+                result.current.handleNotifyAdmins()
+            })
+
+            expect(
+                mockHandleOnTriggerTrialRequestNotification,
+            ).toHaveBeenCalledTimes(1)
+            expect(
+                mockCreateAiShoppingAssistantTrialRequest,
+            ).toHaveBeenCalledWith({
+                data: {
+                    account_id: account.id,
+                    current_user_id: user.id,
+                    shop_name: SHOP_NAME,
+                    additional_note: undefined,
+                },
+            })
+            expect(mockNotify).toHaveBeenCalledWith({
+                message:
+                    'Your request to access the Shopping Assistant trial has been sent to all Gorgias admins.',
+                status: NotificationStatus.Success,
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        it('should notify admins with additional note when handleNotifyAdmins is called', () => {
+            mockNotify.mockReturnValue(mockDispatch)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
+            )
+
+            act(() => {
+                result.current.handleNotifyAdmins(ADDITIONAL_NOTE)
+            })
+
+            expect(
+                mockHandleOnTriggerTrialRequestNotification,
+            ).toHaveBeenCalledTimes(1)
+            expect(
+                mockCreateAiShoppingAssistantTrialRequest,
+            ).toHaveBeenCalledWith({
+                data: {
+                    account_id: account.id,
+                    current_user_id: user.id,
+                    shop_name: SHOP_NAME,
+                    additional_note: ADDITIONAL_NOTE,
+                },
+            })
+            expect(mockNotify).toHaveBeenCalledWith({
+                message:
+                    'Your request to access the Shopping Assistant trial has been sent to all Gorgias admins.',
+                status: NotificationStatus.Success,
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        it('should call onSuccess callback when provided', () => {
+            mockNotify.mockReturnValue(mockDispatch)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(
+                    SHOP_NAME,
+                    TrialType.ShoppingAssistant,
+                    mockOnSuccess,
+                ),
+            )
+
+            act(() => {
+                result.current.handleNotifyAdmins()
+            })
+
+            expect(mockOnSuccess).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('AI Agent trial type', () => {
+        it('should return initial state correctly', () => {
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.AiAgent),
+            )
+
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.isDisabled).toBe(false)
+            expect(result.current.accountAdmins).toEqual(mockAccountAdmins)
+            expect(typeof result.current.handleNotifyAdmins).toBe('function')
+        })
+
+        it('should disable notifications if user has already requested AI Agent within 24 hours', () => {
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotification,
+                onboardingNotificationState: {
+                    ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                    trialRequestNotification: [
+                        {
+                            userId: user.id,
+                            receivedDatetime: '2025-01-01T00:00:00Z',
+                            trialType: TrialType.AiAgent,
+                        },
+                    ],
+                },
+            })
+            mockIsLessThan24HoursAgo.mockReturnValue(true)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.AiAgent),
+            )
+            expect(result.current.isDisabled).toBe(true)
+        })
+
+        it('should enable notifications if user has not requested AI Agent within 24 hours', () => {
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotification,
+                onboardingNotificationState: {
+                    ...defaultUseAiAgentOnboardingNotification.onboardingNotificationState,
+                    trialRequestNotification: [
+                        {
+                            userId: user.id,
+                            receivedDatetime: '2025-01-01T00:00:00Z',
+                            trialType: TrialType.AiAgent,
+                        },
+                    ],
+                },
+            })
+            mockIsLessThan24HoursAgo.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.AiAgent),
+            )
+
+            expect(result.current.isDisabled).toBe(false)
+        })
+
+        it('should notify admins when handleNotifyAdmins is called for AI Agent', () => {
+            mockNotify.mockReturnValue(mockDispatch)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.AiAgent),
+            )
+
+            act(() => {
+                result.current.handleNotifyAdmins()
+            })
+
+            expect(
+                mockHandleOnTriggerTrialRequestNotification,
+            ).toHaveBeenCalledWith(AiAgentNotificationType.AiAgentTrialRequest)
+            expect(
+                mockCreateAiShoppingAssistantTrialRequest,
+            ).not.toHaveBeenCalled()
+            expect(mockNotify).toHaveBeenCalledWith({
+                message:
+                    'Your request to access the AI Agent trial has been sent to all Gorgias admins.',
+                status: NotificationStatus.Success,
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        it('should call onSuccess callback when provided for AI Agent', () => {
+            mockNotify.mockReturnValue(mockDispatch)
+
+            const { result } = renderHook(() =>
+                useNotifyAdmins(SHOP_NAME, TrialType.AiAgent, mockOnSuccess),
+            )
+
+            act(() => {
+                result.current.handleNotifyAdmins()
+            })
+
+            expect(mockOnSuccess).toHaveBeenCalledTimes(1)
+        })
     })
 })

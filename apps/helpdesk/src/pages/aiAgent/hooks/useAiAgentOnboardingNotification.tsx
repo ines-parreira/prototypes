@@ -129,8 +129,10 @@ export const useAiAgentOnboardingNotification = ({
             }
 
             if (
-                aiAgentNotificationType ===
-                    AiAgentNotificationType.AiShoppingAssistantTrialRequest &&
+                [
+                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
+                    AiAgentNotificationType.AiAgentTrialRequest,
+                ].includes(aiAgentNotificationType) &&
                 !agentId
             ) {
                 return
@@ -350,40 +352,41 @@ export const useAiAgentOnboardingNotification = ({
         shopName,
     ])
 
-    const handleOnTriggerTrialRequestNotification = useCallback(async () => {
-        if (!isAiAgentOnboardingNotificationEnabled || !shopName) return
+    const handleOnTriggerTrialRequestNotification = useCallback(
+        async (notificationType: AiAgentNotificationType) => {
+            if (!isAiAgentOnboardingNotificationEnabled || !shopName) return
 
-        const { data } = await getOnboardingNotificationState(
-            accountDomain,
+            const { data } = await getOnboardingNotificationState(
+                accountDomain,
+                shopName,
+            )
+
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType: notificationType,
+                isCancel: false,
+                agentId: currentUser.get('id'),
+            })
+
+            const payload = getNotificationReceivedDatetimePayload(
+                {
+                    ai_agent_notification_type: notificationType,
+                    shop_name: shopName,
+                    shop_type: 'shopify',
+                    agent_id: currentUser.get('id'),
+                },
+                data.onboardingNotificationState,
+            )
+
+            void handleOnSave(payload)
+        },
+        [
+            handleOnSendOrCancelNotification,
+            isAiAgentOnboardingNotificationEnabled,
             shopName,
-        )
-
-        handleOnSendOrCancelNotification({
-            aiAgentNotificationType:
-                AiAgentNotificationType.AiShoppingAssistantTrialRequest,
-            isCancel: false,
-            agentId: currentUser.get('id'),
-        })
-
-        const payload = getNotificationReceivedDatetimePayload(
-            {
-                ai_agent_notification_type:
-                    AiAgentNotificationType.AiShoppingAssistantTrialRequest,
-                shop_name: shopName,
-                shop_type: 'shopify',
-                agent_id: currentUser.get('id'),
-            },
-            data.onboardingNotificationState,
-        )
-
-        void handleOnSave(payload)
-    }, [
-        handleOnSendOrCancelNotification,
-        isAiAgentOnboardingNotificationEnabled,
-        shopName,
-        currentUser,
-        accountDomain,
-    ])
+            currentUser,
+            accountDomain,
+        ],
+    )
 
     return {
         isAdmin,

@@ -104,7 +104,10 @@ export const SalesPaywallMiddleware =
 
         const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
-        const { isDisabled: isNotifyAdminDisabled } = useNotifyAdmins(shopName)
+        const { isDisabled: isNotifyAdminDisabled } = useNotifyAdmins(
+            shopName,
+            trialType,
+        )
 
         const {
             canStartTrial: canStartTrialOriginal,

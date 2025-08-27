@@ -650,6 +650,7 @@ const useTrialRequestModal = (trialType: TrialType, storeName?: string) => {
 
     const { handleNotifyAdmins, accountAdmins } = useNotifyAdmins(
         storeName,
+        trialType,
         closeTrialRequestModal,
     )
     return useMemo(

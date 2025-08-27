@@ -1,3 +1,4 @@
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
@@ -223,6 +224,7 @@ export enum AiAgentOnboardingState {
 export type TrialRequestNotification = {
     userId: number
     receivedDatetime: string
+    trialType?: TrialType
 }
 
 export type OnboardingNotificationState = {

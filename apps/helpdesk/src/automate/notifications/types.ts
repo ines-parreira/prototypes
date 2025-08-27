@@ -6,6 +6,7 @@ export enum AiAgentNotificationType {
     FirstAiAgentTicket = 'first-ai-agent-ticket',
     ScrapingProcessingFinished = 'scraping-processing-finished',
     AiShoppingAssistantTrialRequest = 'ai-shopping-assistant-trial-request',
+    AiAgentTrialRequest = 'ai-agent-trial-request',
 }
 
 export type AiAgentNotificationPayload = {
