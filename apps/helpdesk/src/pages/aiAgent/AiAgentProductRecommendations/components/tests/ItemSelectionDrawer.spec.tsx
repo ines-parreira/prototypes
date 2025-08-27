@@ -53,7 +53,7 @@ const renderComponent = (
         isOpen = true,
         isLoading = false,
         hasImages = true,
-        title = 'Add products',
+        title = 'Select products',
         selectedItemIds = [],
         itemLabelPlural = 'products',
         ruleType = 'product',
@@ -110,7 +110,7 @@ describe('ItemSelectionDrawer', () => {
     it('should render the component correctly when visible', () => {
         const screen = renderComponent()
 
-        expect(screen.queryByText('Add products')).toBeInTheDocument()
+        expect(screen.queryByText('Select products')).toBeInTheDocument()
         expect(
             screen.getByPlaceholderText('Search products'),
         ).toBeInTheDocument()
@@ -131,7 +131,7 @@ describe('ItemSelectionDrawer', () => {
             isLoading: true,
         })
 
-        expect(screen.queryByText('Add products')).toBeInTheDocument()
+        expect(screen.queryByText('Select products')).toBeInTheDocument()
         expect(
             screen.getByPlaceholderText('Search products'),
         ).toBeInTheDocument()

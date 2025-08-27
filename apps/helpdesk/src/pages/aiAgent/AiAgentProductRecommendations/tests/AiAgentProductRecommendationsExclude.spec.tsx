@@ -271,7 +271,7 @@ describe('AiAgentProductRecommendationsExclude', () => {
     it('should update products correctly', () => {
         const screen = renderComponent()
 
-        const addButton = queryAllByTextAccessible(screen, 'Add products')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Select products')[0]
         fireEvent.click(addButton)
 
         // Remove product
@@ -397,7 +397,7 @@ describe('AiAgentProductRecommendationsExclude', () => {
     it('should update tags correctly', () => {
         const screen = renderComponent()
 
-        const addButton = queryAllByTextAccessible(screen, 'Add tags')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Select tags')[0]
         fireEvent.click(addButton)
 
         // Remove tag
@@ -524,7 +524,7 @@ describe('AiAgentProductRecommendationsExclude', () => {
     it('should update vendors correctly', () => {
         const screen = renderComponent()
 
-        const addButton = queryAllByTextAccessible(screen, 'Add vendors')[0]
+        const addButton = queryAllByTextAccessible(screen, 'Select vendors')[0]
         fireEvent.click(addButton)
 
         // Remove vendor

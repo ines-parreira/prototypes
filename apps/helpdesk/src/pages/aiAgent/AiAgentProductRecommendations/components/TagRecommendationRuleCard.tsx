@@ -87,7 +87,7 @@ export const TagRecommendationRuleCard = ({
                 badge={typeMap[type].badge}
                 type={type}
                 addButton={{
-                    label: 'Add tags',
+                    label: 'Select tags',
                     onClick: () => setIsDrawerOpen(true),
                 }}
                 itemLabelSingular="tag"

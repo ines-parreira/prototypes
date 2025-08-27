@@ -85,7 +85,7 @@ export const VendorRecommendationRuleCard = ({
                 badge={typeMap[type].badge}
                 type={type}
                 addButton={{
-                    label: 'Add vendors',
+                    label: 'Select vendors',
                     onClick: () => setIsDrawerOpen(true),
                 }}
                 itemLabelSingular="vendor"

@@ -80,7 +80,7 @@ const renderComponent = (
                 badge={{ label: 'Excluded', type: 'light-error' }}
                 type="exclude"
                 addButton={{
-                    label: 'Add Products',
+                    label: 'Select products',
                     onClick: mockOnAddButtonClick,
                 }}
                 itemLabelSingular={itemLabelSingular}
@@ -118,7 +118,7 @@ describe('RecommendationRuleCard', () => {
         const badges = screen.getAllByText('Excluded')
         expect(badges).toHaveLength(4)
 
-        const button = screen.getByRole('button', { name: 'Add Products' })
+        const button = screen.getByRole('button', { name: 'Select products' })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-disabled', 'false')
 
@@ -150,7 +150,7 @@ describe('RecommendationRuleCard', () => {
         ).toBeInTheDocument()
         expect(screen.queryByText('8 products')).not.toBeInTheDocument()
 
-        const button = screen.getByRole('button', { name: 'Add Products' })
+        const button = screen.getByRole('button', { name: 'Select products' })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-disabled', 'true')
 
@@ -201,7 +201,7 @@ describe('RecommendationRuleCard', () => {
     it('should handle clicks on add button correctly', () => {
         const screen = renderComponent()
 
-        const button = screen.getByRole('button', { name: 'Add Products' })
+        const button = screen.getByRole('button', { name: 'Select products' })
         fireEvent.click(button)
 
         expect(mockOnAddButtonClick).toHaveBeenCalledTimes(1)

@@ -102,7 +102,7 @@ export const ProductRecommendationRuleCard = ({
                 badge={typeMap[type].badge}
                 type={type}
                 addButton={{
-                    label: 'Add products',
+                    label: 'Select products',
                     onClick: () => setIsDrawerOpen(true),
                 }}
                 itemLabelSingular="product"
