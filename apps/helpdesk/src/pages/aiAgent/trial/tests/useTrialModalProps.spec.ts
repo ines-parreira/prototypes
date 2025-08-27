@@ -215,7 +215,7 @@ describe('useTrialModalProps', () => {
                     title: 'AI Agent',
                     description: 'Provide best-in-class automated support',
                     price: '$180',
-                    billingPeriod: `${Cadence.Month}`,
+                    billingPeriod: Cadence.Month,
                     features: [
                         {
                             isError: false,
@@ -241,7 +241,7 @@ describe('useTrialModalProps', () => {
                     description:
                         'Add powerful conversion features to your support flow',
                     price: '$30',
-                    billingPeriod: `${Cadence.Month} after trial ends`,
+                    billingPeriod: Cadence.Month,
                     features: [
                         {
                             isError: false,

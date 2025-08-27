@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
+import { Cadence } from 'models/billing/types'
 import {
     ModalBodyWrapper,
     ModalHeaderWrapper,
@@ -19,7 +20,7 @@ export type PlanDetails = {
     title: string
     description: string
     price: string
-    billingPeriod: string
+    billingPeriod: Cadence
     priceTooltipText?: string
     features: {
         label: string
@@ -60,6 +61,7 @@ const PlanSection: React.FC<{
     onTermsChange,
     buttonIntent = 'primary',
     isLoading = false,
+    isTrial = false,
     hasAttemptedSubmit = false,
 }) => {
     const tooltipId = `${isNewPlan ? 'new' : 'current'}-plan-price-tooltip`
@@ -96,6 +98,7 @@ const PlanSection: React.FC<{
                 <div className={css.priceLabel}>{plan.price}</div>
                 <div className={css.priceDescription}>
                     / {plan.billingPeriod}
+                    {isTrial ? ' after trial ends' : ''}
                 </div>
                 {plan.priceTooltipText && (
                     <>

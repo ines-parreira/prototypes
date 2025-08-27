@@ -405,6 +405,9 @@ describe('AiAgentOverview', () => {
             // Verify modal content is displayed
             expect(queryByText('AI Agent')).toBeTruthy()
             expect(queryByText('Keep current plan')).toBeTruthy()
+            expect(
+                queryByText('after trial ends', { exact: false }),
+            ).toBeTruthy()
         })
 
         it('should display correct pricing and features in trial modal', () => {

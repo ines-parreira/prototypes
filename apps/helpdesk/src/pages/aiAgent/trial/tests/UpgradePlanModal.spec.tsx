@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { Cadence } from 'models/billing/types'
+
 import {
     PlanDetails,
     UpgradePlanModal,
@@ -12,7 +14,7 @@ describe('UpgradePlanModal', () => {
         title: 'Current Plan',
         description: 'Your existing plan features',
         price: '$299',
-        billingPeriod: 'month',
+        billingPeriod: Cadence.Month,
         features: [
             { label: 'Feature 1', isError: false },
             { label: 'Feature 2', isError: false },
@@ -25,7 +27,7 @@ describe('UpgradePlanModal', () => {
         title: 'Premium Plan',
         description: 'Unlock advanced features',
         price: '$599',
-        billingPeriod: 'month after trial ends',
+        billingPeriod: Cadence.Month,
         priceTooltipText: 'Price includes all premium features',
         features: [
             { label: 'Premium Feature 1', isError: false },
@@ -70,14 +72,30 @@ describe('UpgradePlanModal', () => {
         expect(screen.getByText('$299')).toBeInTheDocument()
     })
 
-    it('should render price information correctly', () => {
+    it('should render price information correctly (in trial)', () => {
+        render(<UpgradePlanModal {...defaultProps} isTrial />)
+
+        // Check that both prices are present (but not within specific sections due to complex DOM structure)
+        expect(screen.getByText('$599')).toBeInTheDocument()
+        expect(
+            screen.getByText(`/ ${Cadence.Month} after trial ends`),
+        ).toBeInTheDocument()
+        expect(screen.getByText('$299')).toBeInTheDocument()
+        expect(screen.getByText(`/ ${Cadence.Month}`)).toBeInTheDocument()
+    })
+
+    it('should render price information correctly (not in trial)', () => {
         render(<UpgradePlanModal {...defaultProps} />)
 
         // Check that both prices are present (but not within specific sections due to complex DOM structure)
         expect(screen.getByText('$599')).toBeInTheDocument()
-        expect(screen.getByText('/ month after trial ends')).toBeInTheDocument()
         expect(screen.getByText('$299')).toBeInTheDocument()
-        expect(screen.getByText('/ month')).toBeInTheDocument()
+
+        const billingPeriods = screen.getAllByText(`/ ${Cadence.Month}`)
+        expect(billingPeriods).toHaveLength(2)
+        billingPeriods.forEach((element) => {
+            expect(element).toBeInTheDocument()
+        })
     })
 
     it('should render features for both plans', () => {

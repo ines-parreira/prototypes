@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
+import { Cadence, cadenceNames } from 'models/billing/types'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
 import TrialTryModal from './TrialTryModal'
@@ -32,15 +31,15 @@ type Story = StoryObj<typeof TrialTryModal>
 const currentPlan = {
     name: 'Basic',
     price: '$50',
-    billingPeriod: 'month',
-    priceTooltipText: 'Billed monthly at $50 per seat',
+    billingPeriod: Cadence.Month,
+    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $50 per seat`,
 } as unknown as PlanDetails
 
 const newPlan = {
     name: 'Pro',
     price: '$100',
-    billingPeriod: 'month',
-    priceTooltipText: 'Billed monthly at $100 per seat',
+    billingPeriod: Cadence.Month,
+    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
 } as unknown as PlanDetails
 
 const TRIAL_TITLE = 'Unlock new AI Agent skills at no extra cost'

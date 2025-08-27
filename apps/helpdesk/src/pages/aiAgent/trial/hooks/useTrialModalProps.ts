@@ -150,7 +150,6 @@ const createPlanModalData = (
     title: string,
     planDetails: PlanDetails,
     buttonTexts: { current: string; new: string },
-    isTrial = false,
     isMultiStore = false,
 ) => ({
     title,
@@ -183,7 +182,7 @@ const createPlanModalData = (
         title: 'AI Agent + Shopping Assistant',
         description: 'Add powerful conversion features to your support flow',
         price: planDetails.earlyAccessPlanAmount,
-        billingPeriod: `${planDetails.earlyAccessPlanCadence}${isTrial ? ' after trial ends' : ''}`,
+        billingPeriod: planDetails.earlyAccessPlanCadence,
         features: [
             {
                 label: 'Everything in your current plan',
@@ -240,7 +239,6 @@ const useTrialUpgradePlanModal =
                         current: 'Keep current plan',
                         new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                     },
-                    true,
                 ),
             [planDetails],
         )
@@ -276,7 +274,6 @@ const useNewTrialUpgradePlanModal = (
                     current: 'Keep current plan',
                     new: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                 },
-                false,
                 isMultiStore,
             ),
             title: 'Unlock new AI Agent skills at no extra cost',
