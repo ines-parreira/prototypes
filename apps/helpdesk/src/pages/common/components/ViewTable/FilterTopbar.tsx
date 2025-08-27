@@ -59,6 +59,7 @@ import withCancellableRequest, {
 } from 'pages/common/utils/withCancellableRequest'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     viewCreated,
@@ -379,6 +380,7 @@ export const FilterTopbar = ({
     const isAIAgentFeedbackFilterEnabled = useFlag(
         FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
     )
+    const hasAutomate = useAppSelector(getHasAutomate)
 
     const hasPriorityFilteringEnabled = useFlag(
         FeatureFlagKey.TicketAllowPriorityUsage,
@@ -408,7 +410,7 @@ export const FilterTopbar = ({
 
                     if (
                         fieldName === ViewField.Feedback &&
-                        !isAIAgentFeedbackFilterEnabled
+                        (!hasAutomate || !isAIAgentFeedbackFilterEnabled)
                     ) {
                         return false
                     }
@@ -434,6 +436,7 @@ export const FilterTopbar = ({
             isSearch,
             isTicketFieldsViewFilterEnabled,
             isAIAgentFeedbackFilterEnabled,
+            hasAutomate,
         ],
     )
 

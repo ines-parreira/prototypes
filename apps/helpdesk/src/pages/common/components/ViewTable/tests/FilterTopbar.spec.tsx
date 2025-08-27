@@ -18,6 +18,7 @@ import SearchRankScenarioContext from 'pages/common/components/SearchRankScenari
 import { FilterTopbar } from 'pages/common/components/ViewTable/FilterTopbar'
 import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { getHasAutomate } from 'state/billing/selectors'
 import { viewCreated, viewUpdated } from 'state/entities/views/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { initialState as ticketNavbarInitialState } from 'state/ui/ticketNavbar/reducer'
@@ -51,6 +52,11 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock
+
+jest.mock('state/billing/selectors', () => ({
+    getHasAutomate: jest.fn(),
+}))
+const mockGetHasAutomate = getHasAutomate as unknown as jest.Mock
 
 const createViewWithFilters = (filters: string) => ({
     ...viewFixture,
@@ -93,6 +99,7 @@ const defaultState = {
     ui: {
         ticketNavbar: ticketNavbarInitialState,
     },
+    billing: fromJS({}),
 } as Partial<RootState>
 
 const submitViewMock: jest.SpyInstance = submitView as jest.MockedFunction<
@@ -136,12 +143,15 @@ beforeEach(() => {
 
     mockUseSplitTicketViewMock.mockReturnValue({ isEnabled: false })
     mockUseCustomFieldDefinitions.mockReturnValue({})
+    mockGetHasAutomate.mockReturnValue(true)
+    mockUseFlag.mockReturnValue(false)
 })
 
 afterEach(() => {
     ;(utils.getDefaultOperator as unknown as jest.SpyInstance).mockRestore()
     globalDataNow.mockRestore()
     fetchViewItemsMock.mockRestore()
+    jest.clearAllMocks()
 })
 
 const minProps = {
@@ -774,6 +784,7 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should not render priority filter when FF is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
         render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
@@ -783,7 +794,7 @@ describe('<FilterTopbar />', () => {
         const addFilterButton = screen.getByLabelText('Add filter')
         fireEvent.click(addFilterButton)
 
-        expect(screen.queryByText('Priority')).toBeInTheDocument()
+        expect(screen.queryByText('Priority')).not.toBeInTheDocument()
     })
 
     it('should render priority filter when FF is enabled', () => {
@@ -829,11 +840,12 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should not render feedback filter when FF is disabled', () => {
-        mockUseFlag.mockImplementation((f) =>
-            f === FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters
-                ? false
-                : true,
+        mockUseFlag.mockImplementation(
+            (f) =>
+                f !==
+                FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
         )
+        mockGetHasAutomate.mockReturnValue(true)
 
         render(
             <Provider store={mockStore(defaultState)}>
@@ -847,8 +859,30 @@ describe('<FilterTopbar />', () => {
         expect(screen.queryByText('AI Agent feedback')).not.toBeInTheDocument()
     })
 
-    it('should render feedback filter when FF is enabled', () => {
+    it('should not render feedback filter when hasAutomate is false', () => {
+        mockUseFlag.mockImplementation(
+            (f) =>
+                f ===
+                FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
+        )
+        mockGetHasAutomate.mockReturnValue(false)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>,
+        )
+
+        const addFilterButton = screen.getByLabelText('Add filter')
+        fireEvent.click(addFilterButton)
+
+        expect(screen.queryByText('AI Agent feedback')).not.toBeInTheDocument()
+    })
+
+    it('should render feedback filter when FF is enabled and hasAutomate is true', () => {
         mockUseFlag.mockReturnValue(true)
+        mockGetHasAutomate.mockReturnValue(true)
+
         render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
