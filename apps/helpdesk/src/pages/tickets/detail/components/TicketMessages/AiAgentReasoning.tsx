@@ -183,7 +183,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                             ReasoningResponseType.TASK,
                     )
 
-                const responseReasoningContent = outcomeReasoning?.value
+                const responseReasoningContent = responseReasoning?.value
                     ? `${responseReasoning?.value}\n\n&nbsp;\n\n`
                     : ''
                 const fullDetailsReasoningContent = fullDetailsReasoning.length
