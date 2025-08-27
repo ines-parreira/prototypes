@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -8,7 +10,7 @@ import {
     mockListTicketTranslationsHandler,
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
-import { UserSettingType } from '@gorgias/helpdesk-types'
+import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
@@ -16,15 +18,19 @@ import { useFlag } from 'core/flags'
 import { CurrentUser } from '../translations/useCurrentUserPreferredLanguage'
 import { useTicketsTranslatedProperties } from '../translations/useTicketsTranslatedProperties'
 
+// Mock the feature flag hook
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseFlag = jest.mocked(useFlag)
 
+// Server setup
 const server = setupServer()
+const queryClient = appQueryClient
 
-const preferences = {
+// Mock data constants
+const mockPreferences = {
     id: 1,
     type: UserSettingType.Preferences,
     data: {
@@ -37,31 +43,56 @@ const preferences = {
     },
 }
 
-const languagePreferences = {
+const mockLanguagePreferencesEnglish = {
     type: UserSettingType.LanguagePreferences,
     data: {
-        primary: 'en',
-        proficient: ['fr'],
+        primary: Language.En,
+        proficient: [Language.Fr],
     },
 }
 
-const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
+const mockLanguagePreferencesFrench = {
+    type: UserSettingType.LanguagePreferences,
+    data: {
+        primary: Language.Fr,
+        proficient: [Language.En],
+    },
+}
+
+// Default mock handlers - declared at top level for reuse
+const mockGetCurrentUserEnglish = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({
         ...data,
-        settings: [preferences, languagePreferences],
+        settings: [mockPreferences, mockLanguagePreferencesEnglish],
     } as CurrentUser['data']),
 )
+
+const mockGetCurrentUserFrench = mockGetCurrentUserHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        settings: [mockPreferences, mockLanguagePreferencesFrench],
+    } as CurrentUser['data']),
+)
+
+const mockGetCurrentUserNoLanguage = mockGetCurrentUserHandler(
+    async ({ data }) =>
+        HttpResponse.json({
+            ...data,
+            language: undefined,
+            settings: [mockPreferences],
+        } as CurrentUser['data']),
+)
+
 const mockListTicketTranslations = mockListTicketTranslationsHandler()
 
-const localHandlers = [
-    mockGetCurrentUser.handler,
+// Default handlers for common scenarios
+const defaultHandlers = [
+    mockGetCurrentUserEnglish.handler,
     mockListTicketTranslations.handler,
 ]
 
-const wrapper = ({ children }: { children?: React.ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
-        {children}
-    </QueryClientProvider>
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
 beforeAll(() => {
@@ -69,14 +100,14 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    server.use(...localHandlers)
-    mockUseFlag.mockClear()
-    appQueryClient.clear()
+    jest.clearAllMocks()
+    queryClient.clear()
+    mockUseFlag.mockReturnValue(true)
+    server.use(...defaultHandlers)
 })
 
 afterEach(() => {
     server.resetHandlers()
-    appQueryClient.clear()
 })
 
 afterAll(() => {
@@ -84,6 +115,34 @@ afterAll(() => {
 })
 
 describe('useTicketsTranslatedProperties', () => {
+    describe('hook structure and basic functionality', () => {
+        it('should return the correct structure', () => {
+            const { result } = renderHook(
+                () => useTicketsTranslatedProperties({ ticket_ids: [] }),
+                { wrapper },
+            )
+
+            expect(result.current).toEqual({
+                translationMap: expect.any(Object),
+                isInitialLoading: expect.any(Boolean),
+                updateTicketTranslatedSubject: expect.any(Function),
+            })
+        })
+
+        it('should handle loading state correctly', async () => {
+            const { result } = renderHook(
+                () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.isInitialLoading).toBe(false)
+            })
+
+            expect(typeof result.current.isInitialLoading).toBe('boolean')
+        })
+    })
+
     describe('when feature flag is disabled', () => {
         it('should return empty translation map and isInitialLoading false', async () => {
             mockUseFlag.mockReturnValue(false)
@@ -103,10 +162,6 @@ describe('useTicketsTranslatedProperties', () => {
     })
 
     describe('when feature flag is enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
         it('should return empty translation map when ticket_ids is empty', async () => {
             const { result } = renderHook(
                 () => useTicketsTranslatedProperties({ ticket_ids: [] }),
@@ -226,14 +281,7 @@ describe('useTicketsTranslatedProperties', () => {
         })
 
         it('should not fetch when preferred language is undefined', async () => {
-            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    language: undefined,
-                    settings: [],
-                } as CurrentUser['data']),
-            )
-            server.use(handler)
+            server.use(mockGetCurrentUserNoLanguage.handler)
 
             const { result } = renderHook(
                 () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
@@ -616,6 +664,151 @@ describe('useTicketsTranslatedProperties', () => {
             })
         })
 
+        describe('language handling', () => {
+            it('should handle different primary languages', async () => {
+                const mockTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                    subject: 'Sujet traduit',
+                    excerpt: 'Extrait traduit',
+                })
+
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [mockTranslation],
+                        }),
+                )
+                server.use(mockGetCurrentUserFrench.handler, handler)
+
+                const { result } = renderHook(
+                    () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
+                    { wrapper },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: mockTranslation,
+                    })
+                })
+            })
+
+            it('should handle mixed ticket ID types (numbers and undefined)', async () => {
+                const mockTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
+
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [mockTranslation],
+                        }),
+                )
+                server.use(handler)
+
+                const { result } = renderHook(
+                    () =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: [123, undefined, 456, undefined],
+                        }),
+                    { wrapper },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: mockTranslation,
+                    })
+                })
+            })
+        })
+
+        describe('performance and stability', () => {
+            it('should maintain stable query keys for sorted ticket IDs', async () => {
+                const mockTranslation1 = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
+                const mockTranslation2 = mockTicketTranslationCompact({
+                    ticket_id: 456,
+                    ticket_translation_id: '456-translation',
+                })
+
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [mockTranslation1, mockTranslation2],
+                        }),
+                )
+                server.use(handler)
+
+                const { result: result1 } = renderHook(
+                    () =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: [456, 123],
+                        }),
+                    { wrapper },
+                )
+
+                const { result: result2 } = renderHook(
+                    () =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: [123, 456],
+                        }),
+                    { wrapper },
+                )
+
+                await waitFor(() => {
+                    expect(result1.current.translationMap).toEqual({
+                        123: mockTranslation1,
+                        456: mockTranslation2,
+                    })
+                })
+
+                await waitFor(() => {
+                    expect(result2.current.translationMap).toEqual({
+                        123: mockTranslation1,
+                        456: mockTranslation2,
+                    })
+                })
+            })
+
+            it('should handle rapid state changes without errors', async () => {
+                const mockTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                })
+
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [mockTranslation],
+                        }),
+                )
+                server.use(handler)
+
+                const { result, rerender } = renderHook(
+                    ({ ticketIds }: { ticketIds: number[] }) =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: ticketIds,
+                        }),
+                    {
+                        wrapper,
+                        initialProps: { ticketIds: [123] },
+                    },
+                )
+
+                rerender({ ticketIds: [456] })
+                rerender({ ticketIds: [123, 456] })
+                rerender({ ticketIds: [] })
+                rerender({ ticketIds: [123] })
+
+                await waitFor(() => {
+                    expect(typeof result.current.translationMap).toBe('object')
+                })
+            })
+        })
+
         describe('query enablement conditions', () => {
             it('should not fetch when ticket_ids array is empty even with valid language', async () => {
                 let requestMade = false
@@ -645,16 +838,6 @@ describe('useTicketsTranslatedProperties', () => {
             })
 
             it('should not fetch when feature flag is enabled but no preferred language', async () => {
-                const { handler } = mockGetCurrentUserHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            language: undefined,
-                            settings: [],
-                        } as CurrentUser['data']),
-                )
-                server.use(handler)
-
                 let requestMade = false
                 const translationHandler = mockListTicketTranslationsHandler(
                     async ({ data }) => {
@@ -665,7 +848,10 @@ describe('useTicketsTranslatedProperties', () => {
                         })
                     },
                 )
-                server.use(translationHandler.handler)
+                server.use(
+                    mockGetCurrentUserNoLanguage.handler,
+                    translationHandler.handler,
+                )
 
                 const { result } = renderHook(
                     () => useTicketsTranslatedProperties({ ticket_ids: [123] }),

@@ -1,14 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { isNumber } from 'lodash'
+import { chunk, isNumber } from 'lodash'
 
 import type { DomainEvent } from '@gorgias/events'
-import { useRequestTicketTranslation } from '@gorgias/helpdesk-queries'
+import {
+    useRequestTicketMessageTranslation,
+    useRequestTicketTranslation,
+} from '@gorgias/helpdesk-queries'
 import { Language } from '@gorgias/helpdesk-types'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import { sleep } from 'hooks/integrations/phone/utils'
 import { TicketMessage } from 'models/ticket/types'
+import { isInternalNote } from 'tickets/common/utils'
 import {
     DisplayedContent,
     FetchingState,
@@ -16,6 +21,7 @@ import {
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import { useCurrentUserPreferredLanguage } from '../useCurrentUserPreferredLanguage'
+import { useTicketsTranslatedProperties } from '../useTicketsTranslatedProperties'
 import { useTicketTranslations } from '../useTicketTranslations'
 import { useTicketMessageTranslationCompleteEventHandler } from './useTicketMessageTranslationCompleteEventHandler'
 import { useTicketMessageTranslationFailedEventHandler } from './useTicketMessageTranslationFailedEventHandler'
@@ -27,6 +33,9 @@ type UseLiveTicketTranslationsUpdatesParams = {
     ticketLanguage?: Language
     ticketMessages?: TicketMessage[]
 }
+
+const createTicketSubjectRequestId = (ticketId: number, primary: Language) =>
+    `${ticketId}-${primary}`
 
 const createRequestId = (
     ticketId: number,
@@ -40,7 +49,7 @@ const createRequestId = (
         .join('-')}-${primary}`
 
 export const useLiveTicketTranslationsUpdates = ({
-    ticketId = 0,
+    ticketId,
     ticketLanguage,
     ticketMessages = [],
 }: UseLiveTicketTranslationsUpdatesParams) => {
@@ -96,35 +105,114 @@ export const useLiveTicketTranslationsUpdates = ({
         ],
     )
 
-    /**
-     * Ticket translations
-     */
-    const pendingRequestsRef = useRef<Set<string>>(new Set())
-    const hasSetInitialTicketMessageDisplayRef = useRef<
-        Record<number, boolean>
-    >({ [ticketId]: false })
     const { primary, languagesNotToTranslateFor } =
         useCurrentUserPreferredLanguage()
+
+    /**
+     * Ticket subject translations
+     */
+    const pendingTicketSubjectRequestsRef = useRef<Set<string>>(new Set())
+
+    const { translationMap, isInitialLoading } = useTicketsTranslatedProperties(
+        {
+            ticket_ids: [ticketId],
+        },
+    )
+
+    const { mutate: requestTicketTranslation } = useRequestTicketTranslation()
+
+    const shouldGenerateTicketSubjectTranslation = useMemo(() => {
+        if (!hasMessagesTranslation) return false
+
+        if (!ticketId || !ticketLanguage || !primary) return false
+
+        if (languagesNotToTranslateFor.includes(ticketLanguage)) return false
+
+        if (isInitialLoading) return false
+
+        if (translationMap[ticketId]?.subject) return false
+
+        const requestId = createTicketSubjectRequestId(ticketId, primary)
+
+        return !pendingTicketSubjectRequestsRef.current.has(requestId)
+    }, [
+        ticketId,
+        ticketLanguage,
+        languagesNotToTranslateFor,
+        primary,
+        hasMessagesTranslation,
+        isInitialLoading,
+        translationMap,
+    ])
+
+    const generateTicketSubjectTranslation = useCallback(() => {
+        if (!primary || !ticketId) return
+
+        const requestId = createTicketSubjectRequestId(ticketId, primary)
+        pendingTicketSubjectRequestsRef.current.add(requestId)
+
+        requestTicketTranslation({
+            data: {
+                ticket_id: ticketId,
+                language: primary,
+            },
+        })
+    }, [ticketId, primary, requestTicketTranslation])
+
+    useEffect(
+        function triggerInitialTicketTranslationGeneration() {
+            if (shouldGenerateTicketSubjectTranslation) {
+                generateTicketSubjectTranslation()
+            }
+        },
+        [
+            shouldGenerateTicketSubjectTranslation,
+            generateTicketSubjectTranslation,
+        ],
+    )
+
+    /**
+     * Ticket messagestranslations
+     */
+    const pendingTicketMessageRequestsRef = useRef<Set<string>>(new Set())
+    const hasSetInitialTicketMessageDisplayRef = useRef<
+        Record<number, boolean>
+    >({ [ticketId ?? 0]: false })
+
     const { setTicketMessageTranslationDisplay } =
         useTicketMessageTranslationDisplay()
 
     const { data: ticketTranslations } = useTicketTranslations({
         ticket_id: ticketId,
     })
-
-    const { mutate: requestTicketTranslation } = useRequestTicketTranslation()
+    const { mutateAsync: generateTicketMessageTranslation } =
+        useRequestTicketMessageTranslation()
 
     const messagesWithNoTranslation = useMemo(
         () =>
-            ticketMessages.filter((message) => {
-                if (!message.id) return false
+            ticketMessages
+                .filter((message) => {
+                    if (!message.id) return false
 
-                const messageTranslation = ticketTranslations?.data.data.find(
-                    (translation) =>
-                        translation.ticket_message_id === message.id,
-                )
-                return !messageTranslation
-            }),
+                    // We don't want to generate translations for internal notes
+                    if (message?.source && isInternalNote(message.source.type))
+                        return false
+
+                    const messageTranslation =
+                        ticketTranslations?.data.data.find(
+                            (translation) =>
+                                translation.ticket_message_id === message.id,
+                        )
+                    return !messageTranslation
+                })
+                // Sort messages by created_datetime in descending order
+                // This is to ensure that the most recent messages are translated first
+                // since they're the most likely to be looked at first
+                .sort(
+                    (a, b) =>
+                        new Date(b.created_datetime).getTime() -
+                        new Date(a.created_datetime).getTime(),
+                ),
         [ticketMessages, ticketTranslations],
     )
 
@@ -157,7 +245,7 @@ export const useLiveTicketTranslationsUpdates = ({
 
         const requestId = createRequestId(ticketId, ticketMessages, primary)
 
-        return !pendingRequestsRef.current.has(requestId)
+        return !pendingTicketMessageRequestsRef.current.has(requestId)
     }, [
         ticketId,
         ticketLanguage,
@@ -169,41 +257,51 @@ export const useLiveTicketTranslationsUpdates = ({
         messagesWithNoTranslation,
     ])
 
-    const generateTicketTranslations = useCallback(() => {
-        if (!primary) return
+    const generateTicketMessagesTranslations = useCallback(async () => {
+        if (!primary || !ticketId) return
 
         const requestId = createRequestId(ticketId, ticketMessages, primary)
-        pendingRequestsRef.current.add(requestId)
+        pendingTicketMessageRequestsRef.current.add(requestId)
 
-        requestTicketTranslation({
-            data: {
-                ticket_id: ticketId,
-                language: primary,
-            },
-        })
-
-        const messagesWithNoTranslationToUpdate = messagesWithNoTranslation.map(
-            (message) => ({
+        // We chunk the messages to avoid overwhelming the API with too many requests at once
+        // with batches of 5 messages at a time with a 250ms delay between each batch
+        const chunks = chunk(messagesWithNoTranslation, 5)
+        for (const chunk of chunks) {
+            const messagesWithNoTranslationToUpdate = chunk.map((message) => ({
                 messageId: message.id!,
                 display: DisplayedContent.Original,
                 fetchingState: FetchingState.Loading,
                 hasRegeneratedOnce: false,
-            }),
-        )
+            }))
 
-        setTicketMessageTranslationDisplay(messagesWithNoTranslationToUpdate)
+            await Promise.all(
+                messagesWithNoTranslationToUpdate.map(async (message) => {
+                    await generateTicketMessageTranslation({
+                        data: {
+                            language: primary,
+                            ticket_message_id: message.messageId!,
+                        },
+                    })
+                }),
+            )
+
+            setTicketMessageTranslationDisplay(
+                messagesWithNoTranslationToUpdate,
+            )
+            await sleep(250)
+        }
     }, [
         ticketId,
         ticketMessages,
         primary,
-        requestTicketTranslation,
-        setTicketMessageTranslationDisplay,
         messagesWithNoTranslation,
+        setTicketMessageTranslationDisplay,
+        generateTicketMessageTranslation,
     ])
 
     useEffect(
         function initializeTicketMessageDisplay() {
-            if (messagesWithTranslation.length === 0) return
+            if (messagesWithTranslation.length === 0 || !ticketId) return
             if (hasSetInitialTicketMessageDisplayRef.current[ticketId]) return
 
             const messagesWithTranslationToUpdate = messagesWithTranslation.map(
@@ -222,18 +320,20 @@ export const useLiveTicketTranslationsUpdates = ({
     )
 
     useEffect(
-        function triggerTicketTranslationsGeneration() {
+        function triggerTicketMessagesTranslationsGeneration() {
             if (shouldGenerateTicketTranslations) {
-                generateTicketTranslations()
+                generateTicketMessagesTranslations()
             }
         },
-        [shouldGenerateTicketTranslations, generateTicketTranslations],
+        [shouldGenerateTicketTranslations, generateTicketMessagesTranslations],
     )
 
     return {
         handleTicketMessageTranslationEvents,
         // These two are exposed for testing purposes
-        generateTicketTranslations,
+        shouldGenerateTicketSubjectTranslation,
+        generateTicketSubjectTranslation,
+        generateTicketMessagesTranslations,
         shouldGenerateTicketTranslations,
     }
 }

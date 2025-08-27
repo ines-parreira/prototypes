@@ -6,7 +6,7 @@ import { useFlag } from 'core/flags'
 import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
 
 type TicketTranslationsParams = {
-    ticket_id: number
+    ticket_id?: number
 }
 
 export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
@@ -15,7 +15,8 @@ export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
 
     return useListTicketMessageTranslations(
         {
-            ticket_id,
+            // The query enabled will prevent the query from being called with undefined ticket_id
+            ticket_id: ticket_id as number,
             language: primary as string,
         },
         {

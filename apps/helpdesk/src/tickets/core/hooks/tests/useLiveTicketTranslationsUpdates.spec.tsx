@@ -9,6 +9,8 @@ import type { DomainEvent } from '@gorgias/events'
 import {
     mockGetCurrentUserHandler,
     mockListTicketMessageTranslationsHandler,
+    mockRequestTicketMessageTranslationHandler,
+    mockRequestTicketTranslationHandler,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
@@ -23,6 +25,10 @@ import {
 
 import { CurrentUser } from '../translations/useCurrentUserPreferredLanguage'
 import { useLiveTicketTranslationsUpdates } from '../translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
+
+type UseLiveTicketTranslationsUpdatesParams = Parameters<
+    typeof useLiveTicketTranslationsUpdates
+>[0]
 
 // Mock the feature flag hook
 jest.mock('core/flags', () => ({
@@ -103,13 +109,29 @@ const mockTicketMessages: TicketMessage[] = [
         ticket_id: 123,
         body_text: 'Hello world',
         from_agent: false,
+        created_datetime: '2024-01-01T10:00:00Z',
     } as TicketMessage,
     {
         id: 102,
         ticket_id: 123,
         body_text: 'How can I help?',
         from_agent: true,
+        created_datetime: '2024-01-01T11:00:00Z',
     } as TicketMessage,
+]
+
+const mockTicketMessagesWithInternalNote: TicketMessage[] = [
+    {
+        id: 103,
+        ticket_id: 123,
+        body_text: 'Internal note',
+        from_agent: true,
+        created_datetime: '2024-01-01T12:00:00Z',
+        source: {
+            type: 'internal-note',
+        } as any,
+    } as TicketMessage,
+    ...mockTicketMessages,
 ]
 
 // Mock handlers - declared at top level for reuse
@@ -217,45 +239,36 @@ const mockListTranslationsComplete = mockListTicketMessageTranslationsHandler(
         }),
 )
 
-// Helper to create request ticket translation mock handler
-const createMockRequestTicketTranslationHandler = () => {
-    let requestPromiseResolve: ((req: any) => void) | null = null
-    let capturedRequest: any = null
+// Default mock handlers - declared at top level for reuse
+const mockRequestTicketTranslation = mockRequestTicketTranslationHandler()
+const mockRequestMessageTranslation =
+    mockRequestTicketMessageTranslationHandler()
 
-    const handler = http.post(
-        '/api/ticket-translations/request',
-        async ({ request }) => {
-            capturedRequest = request
-            if (requestPromiseResolve) {
-                requestPromiseResolve(request)
-            }
-            return HttpResponse.json({ success: true })
-        },
-    )
+// Mock handler for ticket translations (for subject translations)
+const mockListTicketTranslationsEmpty = http.get(
+    '/api/ticket-translations',
+    () => {
+        return HttpResponse.json({
+            data: [],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+                total_resources: 0,
+            },
+            object: 'list',
+            uri: '/api/ticket-translations',
+        })
+    },
+)
 
-    const waitForRequest = () => {
-        return (callback: (request: any) => Promise<void>) => {
-            return new Promise<void>((resolve) => {
-                // If request already captured, use it immediately
-                if (capturedRequest) {
-                    callback(capturedRequest).then(() => resolve())
-                } else {
-                    requestPromiseResolve = async (request) => {
-                        await callback(request)
-                        resolve()
-                    }
-                }
-            })
-        }
-    }
-
-    return {
-        handler,
-        waitForRequest,
-    }
-}
-
-const mockRequestTranslation = createMockRequestTicketTranslationHandler()
+// Default handlers for common scenarios
+const defaultHandlers = [
+    mockGetCurrentUserEnglish.handler,
+    mockListTranslationsEmpty.handler,
+    mockListTicketTranslationsEmpty,
+    mockRequestTicketTranslation.handler,
+    mockRequestMessageTranslation.handler,
+]
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -267,6 +280,7 @@ beforeEach(() => {
     mockUseFlag.mockReturnValue(true)
     mockSetTicketMessageTranslationDisplay.mockClear()
     mockGetTicketMessageTranslationDisplay.mockClear()
+    server.use(...defaultHandlers)
 })
 
 afterEach(() => {
@@ -290,11 +304,6 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('useLiveTicketTranslationsUpdates', () => {
     describe('hook structure and basic functionality', () => {
         it('should return the correct structure', () => {
-            server.use(
-                mockGetCurrentUserEnglish.handler,
-                mockListTranslationsEmpty.handler,
-            )
-
             const { result } = renderHook(
                 () =>
                     useLiveTicketTranslationsUpdates({
@@ -307,22 +316,17 @@ describe('useLiveTicketTranslationsUpdates', () => {
 
             expect(result.current).toEqual({
                 handleTicketMessageTranslationEvents: expect.any(Function),
-                generateTicketTranslations: expect.any(Function),
+                generateTicketMessagesTranslations: expect.any(Function),
                 shouldGenerateTicketTranslations: expect.any(Boolean),
+                shouldGenerateTicketSubjectTranslation: expect.any(Boolean),
+                generateTicketSubjectTranslation: expect.any(Function),
             })
         })
     })
 
     describe('translation generation', () => {
-        it('should call requestTicketTranslation with correct parameters when generating translations', async () => {
-            const mockRequestHandler =
-                createMockRequestTicketTranslationHandler()
-
-            server.use(
-                mockGetCurrentUserFrench.handler,
-                mockListTranslationsEmpty.handler,
-                mockRequestHandler.handler,
-            )
+        it('should generate translations automatically when ticket message translations loaded', async () => {
+            server.use(mockGetCurrentUserFrench.handler)
 
             renderHook(
                 () =>
@@ -334,38 +338,80 @@ describe('useLiveTicketTranslationsUpdates', () => {
                 { wrapper },
             )
 
-            // The hook automatically triggers translation when conditions are met
-            // So we need to wait for the automatic request
-            await waitFor(
-                () => {
-                    expect(
-                        mockSetTicketMessageTranslationDisplay,
-                    ).toHaveBeenCalledWith([
-                        {
-                            messageId: 101,
-                            display: DisplayedContent.Original,
-                            fetchingState: FetchingState.Loading,
-                            hasRegeneratedOnce: false,
-                        },
-                        {
-                            messageId: 102,
-                            display: DisplayedContent.Original,
-                            fetchingState: FetchingState.Loading,
-                            hasRegeneratedOnce: false,
-                        },
-                    ])
-                },
-                { timeout: 3000 },
+            // Wait for message translation requests to be made
+            const waitForFirstRequest =
+                mockRequestMessageTranslation.waitForRequest(server)
+            await waitForFirstRequest(async (request: any) => {
+                const body = await request.json()
+                expect(body).toMatchObject({
+                    ticket_message_id: expect.any(Number),
+                    language: Language.Fr,
+                })
+            })
+        })
+
+        it('should call requestTicketTranslation for ticket subject when no translation exists', async () => {
+            server.use(mockGetCurrentUserFrench.handler)
+
+            renderHook(
+                () =>
+                    useLiveTicketTranslationsUpdates({
+                        ticketId: 123,
+                        ticketLanguage: Language.En,
+                        ticketMessages: mockTicketMessages,
+                    }),
+                { wrapper },
             )
 
-            // Verify the request was made with correct parameters
-            const waitForRequestCallback = mockRequestHandler.waitForRequest()
-            await waitForRequestCallback(async (request) => {
+            // Verify the ticket subject translation request was made
+            const waitForRequestCallback =
+                mockRequestTicketTranslation.waitForRequest(server)
+            await waitForRequestCallback(async (request: any) => {
                 const body = await request.json()
                 expect(body).toEqual({
                     ticket_id: 123,
                     language: Language.Fr,
                 })
+            })
+        })
+
+        it('should not generate message translations for internal notes', async () => {
+            server.use(mockGetCurrentUserFrench.handler)
+
+            renderHook(
+                () =>
+                    useLiveTicketTranslationsUpdates({
+                        ticketId: 123,
+                        ticketLanguage: Language.En,
+                        ticketMessages: mockTicketMessagesWithInternalNote,
+                    }),
+                { wrapper },
+            )
+
+            // Wait and verify that only non-internal messages get translation display updates
+            await waitFor(
+                () => {
+                    expect(
+                        mockSetTicketMessageTranslationDisplay,
+                    ).toHaveBeenCalledWith(
+                        expect.not.arrayContaining([
+                            expect.objectContaining({
+                                messageId: 103, // Internal note should not be included
+                            }),
+                        ]),
+                    )
+                },
+                { timeout: 3000 },
+            )
+
+            // Verify only 2 messages (non-internal) get translations
+            await waitFor(() => {
+                const calls = mockSetTicketMessageTranslationDisplay.mock.calls
+                const allMessages = calls.flatMap((call) => call[0])
+                const uniqueMessageIds = new Set(
+                    allMessages.map((m: any) => m.messageId),
+                )
+                expect(uniqueMessageIds.has(103)).toBe(false)
             })
         })
 
@@ -392,7 +438,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
 
             act(() => {
-                result.current.generateTicketTranslations()
+                result.current.generateTicketMessagesTranslations()
             })
 
             expect(
@@ -477,7 +523,6 @@ describe('useLiveTicketTranslationsUpdates', () => {
             server.use(
                 mockGetCurrentUserFrench.handler,
                 mockListTranslationsWithData.handler,
-                mockRequestTranslation.handler, // Prevent unhandled requests
             )
 
             renderHook(
@@ -510,11 +555,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
         })
 
         it('should not initialize if no messages have translations', async () => {
-            server.use(
-                mockGetCurrentUserEnglish.handler,
-                mockListTranslationsEmpty.handler,
-                mockRequestTranslation.handler, // Add handler to prevent unhandled requests
-            )
+            // Default handlers are already loaded in beforeEach
 
             renderHook(
                 () =>
@@ -756,6 +797,75 @@ describe('useLiveTicketTranslationsUpdates', () => {
         })
     })
 
+    describe('language preferences and translation logic', () => {
+        it('should respect proficient languages and not translate', async () => {
+            const mockUserWithProficientLanguage = mockGetCurrentUserHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.Fr,
+                                    proficient: [Language.En], // User is proficient in English
+                                },
+                            },
+                        ],
+                    } as CurrentUser['data']),
+            )
+
+            server.use(mockUserWithProficientLanguage.handler)
+
+            const { result } = renderHook(
+                () =>
+                    useLiveTicketTranslationsUpdates({
+                        ticketId: 123,
+                        ticketLanguage: Language.En, // Ticket is in English
+                        ticketMessages: mockTicketMessages,
+                    }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.shouldGenerateTicketTranslations).toBe(
+                    false,
+                )
+            })
+        })
+
+        it('should handle language preference updates dynamically', async () => {
+            server.use(mockGetCurrentUserEnglish.handler)
+
+            const { result, rerender } = renderHook(
+                (props: Partial<UseLiveTicketTranslationsUpdatesParams> = {}) =>
+                    useLiveTicketTranslationsUpdates({
+                        ticketId: 123,
+                        ticketLanguage: Language.Fr,
+                        ticketMessages: mockTicketMessages,
+                        ...props,
+                    }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.shouldGenerateTicketTranslations).toBe(
+                    false,
+                )
+            })
+
+            server.use(mockGetCurrentUserFrench.handler)
+            rerender()
+
+            await waitFor(() => {
+                expect(result.current.shouldGenerateTicketTranslations).toBe(
+                    false,
+                )
+            })
+        })
+    })
+
     describe('edge cases', () => {
         it('should handle undefined ticketId', async () => {
             server.use(mockGetCurrentUserEnglish.handler)
@@ -831,14 +941,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
         })
 
         it('should automatically trigger translation generation when conditions are met', async () => {
-            const mockRequestHandler =
-                createMockRequestTicketTranslationHandler()
-
-            server.use(
-                mockGetCurrentUserFrench.handler,
-                mockListTranslationsEmpty.handler,
-                mockRequestHandler.handler,
-            )
+            server.use(mockGetCurrentUserFrench.handler)
 
             renderHook(
                 () =>
@@ -850,26 +953,27 @@ describe('useLiveTicketTranslationsUpdates', () => {
                 { wrapper },
             )
 
-            // Should automatically trigger translation generation
-            const waitForRequestCallback = mockRequestHandler.waitForRequest()
-            await waitForRequestCallback(async (request) => {
+            // Should automatically trigger ticket subject translation generation
+            const waitForRequestCallback =
+                mockRequestTicketTranslation.waitForRequest(server)
+            await waitForRequestCallback(async (request: any) => {
                 const body = await request.json()
                 expect(body).toEqual({
                     ticket_id: 123,
                     language: Language.Fr,
                 })
             })
+
+            // Should also trigger message translations
+            await waitFor(() => {
+                expect(
+                    mockSetTicketMessageTranslationDisplay,
+                ).toHaveBeenCalled()
+            })
         })
 
         it('should prevent duplicate requests for same ticketId and messages', async () => {
-            const mockRequestHandler =
-                createMockRequestTicketTranslationHandler()
-
-            server.use(
-                mockGetCurrentUserFrench.handler,
-                mockListTranslationsEmpty.handler,
-                mockRequestHandler.handler,
-            )
+            server.use(mockGetCurrentUserFrench.handler)
 
             const { result } = renderHook(
                 () =>
@@ -890,11 +994,62 @@ describe('useLiveTicketTranslationsUpdates', () => {
 
             // Try to generate again - should not make another request
             act(() => {
-                result.current.generateTicketTranslations()
+                result.current.generateTicketMessagesTranslations()
             })
 
             // The shouldGenerateTicketTranslations should remain false
             expect(result.current.shouldGenerateTicketTranslations).toBe(false)
+        })
+
+        it('should chunk messages and process them in batches', async () => {
+            // Create more than 5 messages to test chunking
+            const manyMessages: TicketMessage[] = Array.from(
+                { length: 12 },
+                (_, i) =>
+                    ({
+                        id: 200 + i,
+                        ticket_id: 123,
+                        body_text: `Message ${i}`,
+                        from_agent: i % 2 === 0,
+                        created_datetime: new Date(
+                            2024,
+                            0,
+                            1,
+                            10,
+                            i,
+                        ).toISOString(),
+                    }) as TicketMessage,
+            )
+
+            server.use(mockGetCurrentUserFrench.handler)
+
+            renderHook(
+                () =>
+                    useLiveTicketTranslationsUpdates({
+                        ticketId: 123,
+                        ticketLanguage: Language.En,
+                        ticketMessages: manyMessages,
+                    }),
+                { wrapper },
+            )
+
+            // Wait for translations to be triggered
+            await waitFor(
+                () => {
+                    // Should be called 3 times (12 messages / 5 per chunk = 3 chunks)
+                    expect(
+                        mockSetTicketMessageTranslationDisplay,
+                    ).toHaveBeenCalledTimes(3)
+
+                    // Each call should have at most 5 messages
+                    const calls =
+                        mockSetTicketMessageTranslationDisplay.mock.calls
+                    expect(calls[0][0].length).toBe(5)
+                    expect(calls[1][0].length).toBe(5)
+                    expect(calls[2][0].length).toBe(2)
+                },
+                { timeout: 5000 },
+            )
         })
     })
 })

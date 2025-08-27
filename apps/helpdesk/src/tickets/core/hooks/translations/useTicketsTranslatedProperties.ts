@@ -57,6 +57,7 @@ export function useTicketsTranslatedProperties({
         },
         {
             query: {
+                refetchOnWindowFocus: false,
                 enabled: isQueryEnabled,
             },
         },
