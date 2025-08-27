@@ -1,4 +1,4 @@
-import React, {
+import {
     ForwardedRef,
     forwardRef,
     useCallback,
@@ -17,6 +17,8 @@ import _getIn from 'lodash/get'
 import moment from 'moment'
 import { FormGroup, Label } from 'reactstrap'
 
+import { ToggleField } from '@gorgias/axiom'
+
 import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,7 +28,6 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { ErrorsContext } from 'pages/common/components/ast/Errors'
 import { updateCodeAst } from 'pages/common/components/ast/utils'
 import TextInput from 'pages/common/forms/input/TextInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import { ruleCreated } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
@@ -291,9 +292,9 @@ const DefaultRuleEditor = (
             />
             <div className={commonCss.toggleButtonContainer}>
                 <span>
-                    <ToggleInput
-                        isToggled={!ruleDraft.deactivated_datetime}
-                        onClick={toggleActivation}
+                    <ToggleField
+                        value={!ruleDraft.deactivated_datetime}
+                        onChange={toggleActivation}
                         isDisabled={!hasAgentPrivileges}
                     />
                 </span>

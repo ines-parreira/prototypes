@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react'
+import { Component, ReactNode } from 'react'
 
 import { ArrayExpression, Expression, Identifier, Literal } from 'estree'
 import { fromJS, List, Map, Seq } from 'immutable'
@@ -9,9 +9,8 @@ import moment from 'moment-timezone'
 import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
 
-import { StoreMapping } from '@gorgias/helpdesk-queries'
+import { StoreMapping } from '@gorgias/helpdesk-types'
 
-import { timedeltaOperators } from 'config/rules'
 import { DateAndTimeFormatting, TimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
@@ -34,6 +33,7 @@ import {
     getMessagingAndAppIntegrations,
     getStoreIntegrations,
 } from 'state/integrations/selectors'
+import { isTimedeltaOperator } from 'state/rules/types'
 import { getTags } from 'state/tags/selectors'
 import { humanizeChannel, humanizeCSATScore } from 'state/ticket/utils'
 import { RootState } from 'state/types'
@@ -72,7 +72,6 @@ type State = {
     dropdownOpen: boolean
     renderedCustomFieldValue?: CustomFieldValue | CustomFieldValue[] | undefined
 }
-
 export class RightContainer extends Component<Props, State> {
     static defaultProps: Pick<Props, 'empty'> = {
         empty: false,
@@ -345,7 +344,7 @@ export class RightContainer extends Component<Props, State> {
         } else if (
             ((field.get('path') as string) || '').endsWith('_datetime')
         ) {
-            if (timedeltaOperators.includes(operator.name)) {
+            if (isTimedeltaOperator(operator.name)) {
                 return (
                     <TimedeltaPicker
                         className={css.timedeltaPicker}

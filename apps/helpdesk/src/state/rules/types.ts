@@ -98,6 +98,11 @@ export enum TimedeltaOperator {
     LTETimedelta = 'lteTimedelta',
 }
 
+export const isTimedeltaOperator = (
+    operator: string,
+): operator is TimedeltaOperator =>
+    Object.values(TimedeltaOperator).includes(operator as TimedeltaOperator)
+
 export enum DatetimeOperator {
     GTE = 'gte',
     LTE = 'lte',

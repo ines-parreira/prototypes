@@ -284,21 +284,19 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
-                for="toggle-button-16"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="toggle-button-16"
-                  name="toggle-button-16"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
+                <div />
               </label>
             </div>
           </span>
@@ -649,21 +647,19 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
-                for="toggle-button-10"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="toggle-button-10"
-                  name="toggle-button-10"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
+                <div />
               </label>
             </div>
           </span>
@@ -1000,21 +996,19 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
-                for="toggle-button-5"
+                class="ui-label-label-3864 ui-togglefield-label-52f1"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="input"
+                  class="ui-togglefield-input-52f1"
                   disabled=""
-                  id="toggle-button-5"
-                  name="toggle-button-5"
                   type="checkbox"
                 />
                 <div
-                  class="slider"
+                  class="ui-togglefield-slider-52f1"
                 />
+                <div />
               </label>
             </div>
           </span>

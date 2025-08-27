@@ -1,4 +1,4 @@
-import React, { Component, ComponentProps } from 'react'
+import { ComponentProps, useCallback, useEffect, useState } from 'react'
 
 import { EditorState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
@@ -6,39 +6,37 @@ import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
-import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
 import { InputType } from 'reactstrap/lib/Input'
 
 import { UploadType } from 'common/types'
-import {
-    DateAndTimeFormatting,
-    DateTimeResultFormatType,
-} from 'constants/datetime'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
-import { humanizeChannel } from 'state/ticket/utils'
-import { formatDatetime, getLanguageDisplayName, humanizeString } from 'utils'
-
-import { BASIC_OPERATORS } from '../../../../config'
+import { BASIC_OPERATORS } from 'config'
 import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
-    timedeltaOperators,
-} from '../../../../config/rules'
-import { IntegrationType } from '../../../../models/integration/types'
-import { makeHasIntegrationOfTypes } from '../../../../state/integrations/selectors'
-import { RuleOperation } from '../../../../state/rules/types'
-import { RootState } from '../../../../state/types'
-import { stringToDatetime } from '../../../../utils/date'
-import { convertToHTML, getPlainText } from '../../../../utils/editor'
-import { removeSuffix } from '../../../../utils/string'
-import DatePicker from '../../../common/forms/DatePicker'
-import { RuleItemActions } from '../../../settings/rules/types'
-import MultiSelectField from '../../forms/MultiSelectField'
-import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
-import TimedeltaPicker from '../../forms/TimedeltaPicker'
+} from 'config/rules'
+import {
+    DateAndTimeFormatting,
+    DateTimeResultFormatType,
+} from 'constants/datetime'
+import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/types'
+import DatePicker from 'pages/common/forms/DatePicker'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
+import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import { isTimedeltaOperator, RuleOperation } from 'state/rules/types'
+import { humanizeChannel } from 'state/ticket/utils'
+import { formatDatetime, getLanguageDisplayName, humanizeString } from 'utils'
+import { stringToDatetime } from 'utils/date'
+import { convertToHTML, getPlainText } from 'utils/editor'
+import { removeSuffix } from 'utils/string'
+
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import CustomFieldIdInput from './widget/CustomFieldIdInput'
@@ -64,15 +62,15 @@ type Property = {
     }
 }
 
-type OwnProps = {
+type Props = {
     rule: Map<any, any>
     value: any
     parent: List<any>
     schemas?: Map<any, any>
     actions: RuleItemActions
     leftsiblings?: List<any>
-    config: Record<string, unknown>
-    properties: Array<Property>
+    config?: Record<string, unknown>
+    properties?: Array<Property>
     className?: string
     compact?: boolean
 }
@@ -82,678 +80,676 @@ export type WidgetOption = {
     value: string
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-type State = {
+type TextFieldState = {
     textFieldPropIndex: number
     textFieldParent: Array<string>
 }
 
-export class Widget extends Component<Props, State> {
-    static defaultProps: Pick<Props, 'config' | 'properties'> = {
-        config: {},
-        properties: [],
+const getTextField = (
+    config: Record<string, unknown>,
+    parent: List<any>,
+    properties: Array<Property>,
+): TextFieldState => {
+    const textFieldParent = parent.slice(0, -3).toJS()
+    const textFieldPropIndex = properties.findIndex((property) => {
+        return property.key.name === config.textField
+    })
+    return {
+        textFieldPropIndex: textFieldPropIndex,
+        textFieldParent: textFieldParent.concat([
+            textFieldPropIndex,
+            'value',
+            'value',
+        ]),
     }
+}
 
-    constructor(props: Props) {
-        super(props)
-        const { config, parent, properties } = props
-
-        // Concerns rich fields of Actions:
-        // We get the property of the text field if the current field is a rich field and has a text version.
-        // E.g: current field is: `sendEmail.body_html`. We get `sendEmail.body_text` property
-        // to automatically update its value when the html version changes.
-        if (config.widget === 'rich-field' && config.textField && properties) {
-            this.state = this._getTextField(config, parent, properties)
-        }
-    }
-
-    _getTextField = (
-        config: Record<string, unknown>,
-        parent: List<any>,
-        properties: Array<Property>,
-    ) => {
-        const textFieldParent = parent.slice(0, -3)
-        const textFieldPropIndex = properties.findIndex((property) => {
-            return property.key.name === config.textField
-        })
-        return {
-            textFieldPropIndex: textFieldPropIndex,
-            textFieldParent: textFieldParent.concat([
-                textFieldPropIndex,
-                'value',
-                'value',
-            ]),
-        } as unknown as State
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        const { config, parent, properties } = nextProps
-        // update text field state when props changes
-        if (config.widget === 'rich-field' && config.textField) {
-            this.setState(this._getTextField(config, parent, properties))
-        }
-    }
-
-    _handleChange = (value: any) => {
-        const { actions, parent } = this.props
-
-        let newValue = value
-
-        // transform the array of string to an array of AST Literal object
-        if (_isArray(newValue)) {
-            newValue = newValue.map((val: string | number) => ({
-                type: 'Literal',
-                raw: `'${val}'`,
-                value: val,
-            }))
-        }
-
-        if (typeof newValue === 'number' && !isNaN(newValue) && newValue < 0) {
-            const absValue = Math.abs(newValue)
-            newValue = absValue
-        }
-
-        return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
-    }
-
-    _input = (
-        value: any,
-        type: InputType = 'text',
-        caseInsensitive = false,
-    ) => {
-        const { config = {}, className, compact } = this.props
-
-        return (
-            <DEPRECATED_InputField
-                className={className}
-                type={type}
-                label={config.name as string}
-                value={value}
-                onChange={this._handleChange}
-                placeholder={(config.placeholder as string) || ''}
-                required={(config.required as boolean) || false}
-                inline={compact || false}
-                min="0"
-                caseInsensitive={caseInsensitive}
-            />
-        )
-    }
-
-    _textarea = (value: any) => {
-        const { config = {}, className } = this.props
-
-        return (
-            <DEPRECATED_InputField
-                className={className}
-                type="textarea"
-                rows="8"
-                label={config.name as string}
-                value={value}
-                onChange={this._handleChange}
-                placeholder={(config.placeholder as string) || ''}
-                required={(config.required as boolean) || false}
-            />
-        )
-    }
-
-    _onRichFieldChange = (editorState: EditorState) => {
-        const contentState = editorState.getCurrentContent()
-        const { actions, parent } = this.props
-        const { textFieldParent } = this.state
-
-        // fill the text field with the text version
-        let ast
-        if (textFieldParent) {
-            ast = actions.modifyCodeAST(
-                textFieldParent as any,
-                getPlainText(contentState),
-                RuleOperation.Update,
-            )
-        }
-
-        return actions.modifyCodeAST(
-            parent,
-            convertToHTML(contentState),
-            RuleOperation.Update,
-            ast,
-        )
-    }
-
-    _richField = (html: any) => {
-        const { config = {}, properties, hasIntegrationOfTypes } = this.props
-        const { textFieldPropIndex } = this.state
-        const value = {
-            text: properties[textFieldPropIndex].value.value,
-            html: html,
-        }
-
-        const variableTypes = ['current_user', 'ticket.customer']
-
-        if (hasIntegrationOfTypes(IntegrationType.Shopify)) {
-            variableTypes.push('shopify')
-        }
-
-        if (hasIntegrationOfTypes(IntegrationType.Recharge)) {
-            variableTypes.push('recharge')
-        }
-
-        if (hasIntegrationOfTypes(IntegrationType.Magento2)) {
-            variableTypes.push('magento2')
-        }
-
-        if (hasIntegrationOfTypes(IntegrationType.BigCommerce)) {
-            variableTypes.push('bigcommerce')
-        }
-
-        return (
-            <RichFieldWithVariables
-                allowExternalChanges
-                label={config.name as string}
-                value={value}
-                onChange={this._onRichFieldChange as any}
-                placeholder={(config.placeholder as string) || ''}
-                isRequired={(config.required as boolean) || false}
-                variableTypes={variableTypes}
-                uploadType={config.uploadType as UploadType | undefined}
-            />
-        )
-    }
-
-    _datetimeSelect = (
-        datetime: string,
-        datetimeFormat: DateTimeResultFormatType,
-    ) => {
-        const date = datetime ? stringToDatetime(datetime) : null
-        return (
-            <div className="widget d-inline-block">
-                {date ? (
-                    <DatePicker
-                        initialSettings={{
-                            endDate: date,
-                            startDate: date,
-                        }}
-                        onSubmit={(date) => {
-                            this._handleChange(date.toISOString())
-                        }}
-                    >
-                        <div>
-                            <Input
-                                value={
-                                    date
-                                        ? formatDatetime(
-                                              date,
-                                              datetimeFormat,
-                                          ).toString()
-                                        : ''
-                                }
-                                placeholder="Choose a date..."
-                            />
-                        </div>
-                    </DatePicker>
-                ) : null}
-            </div>
-        )
-    }
-
-    _timedeltaSelect = (value: any) => {
-        return (
-            <div className="widget d-inline-block">
-                <TimedeltaPicker
-                    className={css.timedeltaPicker}
-                    value={value}
-                    min={1}
-                    onChange={this._handleChange as any}
-                />
-            </div>
-        )
-    }
-
-    _snoozePicker = (value: any) => {
-        const units = [
-            { label: 'minute(s)', value: 'm' },
-            { label: 'hour(s)', value: 'h' },
-            { label: 'day(s)', value: 'd' },
-        ]
-
-        return (
-            <div className="widget d-inline-block">
-                <TimedeltaPicker
-                    className={css.timedeltaPicker}
-                    value={value}
-                    min={1}
-                    units={units}
-                    onChange={this._handleChange as any}
-                />
-            </div>
-        )
-    }
-
-    _resolveLeft(left: List<any>, schemas: Map<any, any>): List<any> {
-        // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
-        const path = []
-        for (const item of left.toJS()) {
-            path.push(item)
-            const schema = schemas.getIn(path) as Map<any, any>
-
-            if (schema) {
-                let ref = ''
-                if (schema.get('type') === 'array') {
-                    ref = schema.getIn(['items', '$ref'])
-                } else if (schema.has('$ref')) {
-                    ref = schema.get('$ref')
-                }
-
-                if (ref) {
-                    const def = ref.split('/')[2]
-                    // get the remaining path
-                    const newLeft = List(['definitions', def, 'properties'])
-                    const newRight = List(drop(left.toJS(), path.length))
-                    return this._resolveLeft(
-                        newLeft.concat(newRight) as List<any>,
-                        schemas,
-                    )
-                }
+const Widget = ({
+    rule,
+    value,
+    parent,
+    schemas,
+    actions,
+    leftsiblings,
+    config = {},
+    properties = [],
+    className,
+    compact,
+}: Props) => {
+    const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
+    const datetimeFormat = useAppSelector((state) =>
+        getDateAndTimeFormatter(state)(
+            DateAndTimeFormatting.CompactDateWithTime,
+        ),
+    )
+    // State for rich field text field handling
+    const [textFieldState, setTextFieldState] = useState<TextFieldState | null>(
+        () => {
+            if (
+                config.widget === 'rich-field' &&
+                config.textField &&
+                properties
+            ) {
+                return getTextField(config, parent, properties)
             }
-        }
-        return left
-    }
-
-    render() {
-        const {
-            leftsiblings,
-            schemas,
-            value,
-            rule,
-            parent,
-            className,
-            config,
-            datetimeFormat,
-        } = this.props
-
-        // todo should depend on triggers (should be described in schemas)
-        const rootObjects = ['ticket', 'message']
-
-        if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
             return null
+        },
+    )
+
+    // Update text field state when props change (equivalent to UNSAFE_componentWillReceiveProps)
+    useEffect(() => {
+        if (config.widget === 'rich-field' && config.textField) {
+            setTextFieldState(getTextField(config, parent, properties))
         }
+    }, [config, parent, properties])
 
-        const left = this._resolveLeft(leftsiblings, schemas)
-        // widget data used for rendering
-        const widget: {
-            type: string
-            value: any
-            description: string
-            options: (string | WidgetOption)[]
-            multiple?: boolean
-            deprecatedOptions?: string[]
-            hiddenOptions?: string[]
-        } = {
-            type: 'select',
-            value,
-            description: '',
-            options: [],
-        }
+    const handleChange = useCallback(
+        (value: any) => {
+            let newValue = value
 
-        let caseInsensitive = false
+            // transform the array of string to an array of AST Literal object
+            if (_isArray(newValue)) {
+                newValue = newValue.map((val: string | number) => ({
+                    type: 'Literal',
+                    raw: `'${val}'`,
+                    value: val,
+                }))
+            }
 
-        if (left.size === 1 && left.get(0) === 'definitions') {
-            // we are at the root here, only allow some values
-            widget.options = rootObjects
-        } else if (left.last() === 'properties') {
-            // properties are special because they are defining the props
-            // that available on the top level objects: ticket, event, etc..
-            const props = (
-                schemas.getIn(left) as Map<any, any>
-            ).toJS() as Record<string, unknown>
-            for (const key of Object.keys(props)) {
-                const prop = props[key] as Record<string, any>
+            if (
+                typeof newValue === 'number' &&
+                !isNaN(newValue) &&
+                newValue < 0
+            ) {
+                const absValue = Math.abs(newValue)
+                newValue = absValue
+            }
 
-                // only show props that have a meta value or a refs
-                //eslint-disable-next-line no-prototype-builtins
-                if (prop.hasOwnProperty('meta')) {
-                    // hide prop if it is hidden in rules and not used
-                    if (
-                        _get(prop, ['meta', 'rules', 'hide']) === true &&
-                        key !== widget.value
-                    ) {
-                        continue
+            return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
+        },
+        [actions, parent],
+    )
+
+    const input = useCallback(
+        (value: any, type: InputType = 'text', caseInsensitive = false) => {
+            return (
+                <DEPRECATED_InputField
+                    className={className}
+                    type={type}
+                    label={config.name as string}
+                    value={value}
+                    onChange={handleChange}
+                    placeholder={(config.placeholder as string) || ''}
+                    required={(config.required as boolean) || false}
+                    inline={compact || false}
+                    min="0"
+                    caseInsensitive={caseInsensitive}
+                />
+            )
+        },
+        [className, config, compact, handleChange],
+    )
+
+    const textarea = useCallback(
+        (value: any) => {
+            return (
+                <DEPRECATED_InputField
+                    className={className}
+                    type="textarea"
+                    rows="8"
+                    label={config.name as string}
+                    value={value}
+                    onChange={handleChange}
+                    placeholder={(config.placeholder as string) || ''}
+                    required={(config.required as boolean) || false}
+                />
+            )
+        },
+        [className, config, handleChange],
+    )
+
+    const onRichFieldChange = useCallback(
+        (editorState: EditorState) => {
+            const contentState = editorState.getCurrentContent()
+
+            // fill the text field with the text version
+            let ast
+            if (textFieldState?.textFieldParent) {
+                ast = actions.modifyCodeAST(
+                    List(textFieldState.textFieldParent),
+                    getPlainText(contentState),
+                    RuleOperation.Update,
+                )
+            }
+
+            return actions.modifyCodeAST(
+                parent,
+                convertToHTML(contentState),
+                RuleOperation.Update,
+                ast,
+            )
+        },
+        [actions, parent, textFieldState],
+    )
+
+    const richField = useCallback(
+        (html: any) => {
+            const value = {
+                text: properties[textFieldState?.textFieldPropIndex || 0]?.value
+                    .value,
+                html: html,
+            }
+
+            const variableTypes = ['current_user', 'ticket.customer']
+
+            if (hasIntegrationOfTypes(IntegrationType.Shopify)) {
+                variableTypes.push('shopify')
+            }
+
+            if (hasIntegrationOfTypes(IntegrationType.Recharge)) {
+                variableTypes.push('recharge')
+            }
+
+            if (hasIntegrationOfTypes(IntegrationType.Magento2)) {
+                variableTypes.push('magento2')
+            }
+
+            if (hasIntegrationOfTypes(IntegrationType.BigCommerce)) {
+                variableTypes.push('bigcommerce')
+            }
+
+            return (
+                <RichFieldWithVariables
+                    allowExternalChanges
+                    label={config.name as string}
+                    value={value}
+                    onChange={onRichFieldChange as any}
+                    placeholder={(config.placeholder as string) || ''}
+                    isRequired={(config.required as boolean) || false}
+                    variableTypes={variableTypes}
+                    uploadType={config.uploadType as UploadType | undefined}
+                />
+            )
+        },
+        [
+            config,
+            properties,
+            textFieldState,
+            hasIntegrationOfTypes,
+            onRichFieldChange,
+        ],
+    )
+
+    const datetimeSelect = useCallback(
+        (datetime: string, datetimeFormat: DateTimeResultFormatType) => {
+            const date = datetime ? stringToDatetime(datetime) : null
+            return (
+                <div className="widget d-inline-block">
+                    {date ? (
+                        <DatePicker
+                            initialSettings={{
+                                endDate: date,
+                                startDate: date,
+                            }}
+                            onSubmit={(date) => {
+                                handleChange(date.toISOString())
+                            }}
+                        >
+                            <div>
+                                <Input
+                                    value={
+                                        date
+                                            ? formatDatetime(
+                                                  date,
+                                                  datetimeFormat,
+                                              ).toString()
+                                            : ''
+                                    }
+                                    placeholder="Choose a date..."
+                                />
+                            </div>
+                        </DatePicker>
+                    ) : null}
+                </div>
+            )
+        },
+        [handleChange, datetimeFormat],
+    )
+
+    const timedeltaSelect = useCallback(
+        (value: any) => {
+            return (
+                <div className="widget d-inline-block">
+                    <TimedeltaPicker
+                        className={css.timedeltaPicker}
+                        value={value}
+                        min={1}
+                        onChange={handleChange as any}
+                    />
+                </div>
+            )
+        },
+        [handleChange],
+    )
+
+    const snoozePicker = useCallback(
+        (value: any) => {
+            const units = [
+                { label: 'minute(s)', value: 'm' },
+                { label: 'hour(s)', value: 'h' },
+                { label: 'day(s)', value: 'd' },
+            ]
+
+            return (
+                <div className="widget d-inline-block">
+                    <TimedeltaPicker
+                        className={css.timedeltaPicker}
+                        value={value}
+                        min={1}
+                        units={units}
+                        onChange={handleChange as any}
+                    />
+                </div>
+            )
+        },
+        [handleChange],
+    )
+
+    const resolveLeft = useCallback(
+        (left: List<any>, schemas: Map<any, any>): List<any> => {
+            // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
+            const path = []
+            for (const item of left.toJS()) {
+                path.push(item)
+                const schema = schemas.getIn(path) as Map<any, any>
+
+                if (schema) {
+                    let ref = ''
+                    if (schema.get('type') === 'array') {
+                        ref = schema.getIn(['items', '$ref'])
+                    } else if (schema.has('$ref')) {
+                        ref = schema.get('$ref')
                     }
 
-                    widget.options.push({
-                        value: key,
-                        label:
-                            _get(prop, ['meta', 'rules', 'label']) ||
-                            humanizeString(
-                                removeSuffix(key, '_datetime'),
-                            ).toLowerCase(),
-                    })
-                    widget.description = prop.description
-                    //eslint-disable-next-line no-prototype-builtins
-                } else if (prop.hasOwnProperty('$ref')) {
-                    widget.options.push({
-                        value: key,
-                        label: humanizeString(key).toLowerCase(),
-                    })
-                    widget.description = ''
+                    if (ref) {
+                        const def = ref.split('/')[2]
+                        // get the remaining path
+                        const newLeft = List(['definitions', def, 'properties'])
+                        const newRight = List(drop(left.toJS(), path.length))
+                        return resolveLeft(
+                            newLeft.concat(newRight) as List<any>,
+                            schemas,
+                        )
+                    }
                 }
             }
-        } else if (left.last() === 'operators') {
-            // operators are using simple select widget, all we need is the options
-            let operators = schemas.getIn(left) as Map<any, any>
+            return left
+        },
+        [],
+    )
 
-            // TODO(@VictorXunS): Remove this when self_service_flow variables are in schemas
-            if (left.includes('self_service_flow')) {
-                operators = fromJS(BASIC_OPERATORS)
-            }
+    // todo should depend on triggers (should be described in schemas)
+    const rootObjects = ['ticket', 'message']
 
-            if (operators) {
-                // exclude deprecated operators which are not already used
-                operators = operators.filter(
-                    (ope: any, operatorName: string) => {
-                        if (deprecatedOperators.includes(operatorName)) {
-                            return deprecatedOperators.includes(widget.value)
-                        }
-                        return true
-                    },
-                ) as Map<any, any>
-                widget.options = operators.toJS()
-            }
-        } else if (left.first() === 'actions') {
-            if (config.widget) {
-                widget.type = config.widget as string
-            } else {
-                widget.type = `${left.last() as string}-select`
-            }
-        } else {
-            // all other properties
-            const right = schemas.getIn(left) as Map<any, any>
-            const calleeName = rule.getIn(
-                (
-                    parent.slice(0, -3).concat(['callee', 'name']) as List<any>
-                ).insert(0, 'code_ast'),
-            )
-            widget.type = right
-                ? (right.getIn(['meta', 'rules', 'widget']) as string)
-                : 'input'
+    if (!(schemas && schemas.size && leftsiblings && leftsiblings.size)) {
+        return null
+    }
 
-            // display a multi select field in case current attribute is an array AND
-            // it's has no specific input AND callee is a collection operator
-            if (
-                _isArray(widget.value) &&
-                (!widget.type || widget.type === 'input') &&
-                collectionOperators.includes(calleeName)
-            ) {
-                widget.type = 'multi-select'
-            }
+    const left = resolveLeft(leftsiblings, schemas)
+    // widget data used for rendering
+    const widget: {
+        type: string
+        value: any
+        description: string
+        options: (string | WidgetOption)[]
+        multiple?: boolean
+        deprecatedOptions?: string[]
+        hiddenOptions?: string[]
+    } = {
+        type: 'select',
+        value,
+        description: '',
+        options: [],
+    }
 
-            // current properties is a tag field so we used the specific
-            if (
-                leftsiblings.join('.').includes('Ticket.properties.tags.name')
-            ) {
-                widget.type = 'tags-select'
-                widget.multiple = collectionOperators.includes(calleeName)
-            }
+    let caseInsensitive = false
 
-            if (
-                caseInsensitiveOperators.includes(calleeName) &&
-                widget.type !== 'tags-select'
-            ) {
-                caseInsensitive = true
-            }
+    if (left.size === 1 && left.get(0) === 'definitions') {
+        // we are at the root here, only allow some values
+        widget.options = rootObjects
+    } else if (left.last() === 'properties') {
+        // properties are special because they are defining the props
+        // that available on the top level objects: ticket, event, etc..
+        const props = (schemas.getIn(left) as Map<any, any>).toJS() as Record<
+            string,
+            unknown
+        >
+        for (const key of Object.keys(props)) {
+            const prop = props[key] as Record<string, any>
 
-            if (left.includes('order_management_flow')) {
-                widget.type = 'self-service-order-management-flow-select'
-            }
-            if (left.includes('store_integration_id')) {
-                widget.type = 'self-service-store-integration-select'
-            }
-
-            if (right) {
-                const options: string[] = (
-                    right.getIn(['meta', 'enum'], List([])) as List<string>
-                ).toJS()
-
-                widget.options = options
-
-                // Handle special cases for ticket channel and language.
-                switch (left.last()) {
-                    case 'channel':
-                        widget.options = options.map((option: string) => ({
-                            value: option,
-                            label: humanizeChannel(option),
-                        }))
-                        break
-                    case 'language':
-                        widget.options = options.map((option: string) => ({
-                            value: option,
-                            label: getLanguageDisplayName(option) || option,
-                        }))
-                        break
-                    default:
-                        break
+            // only show props that have a meta value or a refs
+            //eslint-disable-next-line no-prototype-builtins
+            if (prop.hasOwnProperty('meta')) {
+                // hide prop if it is hidden in rules and not used
+                if (
+                    _get(prop, ['meta', 'rules', 'hide']) === true &&
+                    key !== widget.value
+                ) {
+                    continue
                 }
 
-                widget.hiddenOptions = (
-                    right.getIn(
-                        ['meta', 'rules', 'hidden_options'],
-                        List([]),
-                    ) as List<string>
-                ).toJS()
-
-                widget.deprecatedOptions = (
-                    right.getIn(
-                        ['meta', 'rules', 'deprecated_options'],
-                        List([]),
-                    ) as List<string>
-                ).toJS()
-
-                widget.description = right.get('description')
+                widget.options.push({
+                    value: key,
+                    label:
+                        _get(prop, ['meta', 'rules', 'label']) ||
+                        humanizeString(
+                            removeSuffix(key, '_datetime'),
+                        ).toLowerCase(),
+                })
+                widget.description = prop.description
+                //eslint-disable-next-line no-prototype-builtins
+            } else if (prop.hasOwnProperty('$ref')) {
+                widget.options.push({
+                    value: key,
+                    label: humanizeString(key).toLowerCase(),
+                })
+                widget.description = ''
             }
         }
+    } else if (left.last() === 'operators') {
+        // operators are using simple select widget, all we need is the options
+        let operators = schemas.getIn(left) as Map<any, any>
 
-        const operatorName = rule.getIn(
+        // TODO(@VictorXunS): Remove this when self_service_flow variables are in schemas
+        if (left.includes('self_service_flow')) {
+            operators = fromJS(BASIC_OPERATORS)
+        }
+
+        if (operators) {
+            // exclude deprecated operators which are not already used
+            operators = operators.filter((ope: any, operatorName: string) => {
+                if (deprecatedOperators.includes(operatorName)) {
+                    return deprecatedOperators.includes(widget.value)
+                }
+                return true
+            }) as Map<any, any>
+            widget.options = operators.toJS()
+        }
+    } else if (left.first() === 'actions') {
+        if (config.widget) {
+            widget.type = config.widget as string
+        } else {
+            widget.type = `${left.last() as string}-select`
+        }
+    } else {
+        // all other properties
+        const right = schemas.getIn(left) as Map<any, any>
+        const calleeName = rule.getIn(
             (
                 parent.slice(0, -3).concat(['callee', 'name']) as List<any>
             ).insert(0, 'code_ast'),
         )
-        const isOperatorRelative = timedeltaOperators.includes(operatorName)
+        widget.type = right
+            ? (right.getIn(['meta', 'rules', 'widget']) as string)
+            : 'input'
 
-        if (widget.type === 'datetime-select' && isOperatorRelative) {
-            widget.type = 'timedelta-select'
+        // display a multi select field in case current attribute is an array AND
+        // it's has no specific input AND callee is a collection operator
+        if (
+            _isArray(widget.value) &&
+            (!widget.type || widget.type === 'input') &&
+            collectionOperators.includes(calleeName)
+        ) {
+            widget.type = 'multi-select'
         }
 
-        switch (widget.type) {
-            case 'intents-select':
-                return (
-                    <IntentsSentimentsSelect
-                        options={widget.options as string[]}
-                        hiddenOptions={widget.hiddenOptions}
-                        deprecatedOptions={widget.deprecatedOptions}
-                        singular="intent"
-                        plural="intents"
-                        className={className}
-                        values={widget.value}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'sentiments-select':
-                return (
-                    <IntentsSentimentsSelect
-                        options={widget.options as string[]}
-                        hiddenOptions={widget.hiddenOptions}
-                        deprecatedOptions={widget.deprecatedOptions}
-                        className={className}
-                        values={widget.value}
-                        onChange={this._handleChange}
-                        singular="sentiment"
-                        plural="sentiments"
-                    />
-                )
-            case 'multi-select':
-                return (
-                    <MultiSelectField
-                        className={`${className || ''} Text`}
-                        values={widget.value}
-                        singular="word"
-                        plural="words"
-                        showSymbolOnSpaces
-                        allowCustomValues
-                        onChange={this._handleChange as any}
-                        caseInsensitive={caseInsensitive}
-                    />
-                )
-            case 'select':
-                return (
-                    <Select
-                        {...(widget as unknown as ComponentProps<
-                            typeof Select
-                        >)}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'status-select':
-                return (
-                    <StatusSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'priority-select':
-                return (
-                    <PrioritySelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'tags-select':
-                return (
-                    <TagsSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                        caseInsensitive={caseInsensitive}
-                        multiple={
-                            _isUndefined(widget.multiple)
-                                ? true
-                                : widget.multiple
-                        }
-                    />
-                )
-            case 'macro-select':
-                return (
-                    <MacroSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'assignee_user-select':
-                return (
-                    <AssigneeUserSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                        allowUnassign={!operatorName}
-                    />
-                )
-            case 'assignee_team-select':
-                return (
-                    <AssigneeTeamSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                        allowUnassign={!operatorName}
-                    />
-                )
-            case 'integration-select':
-                return (
-                    <IntegrationSelect
-                        {...widget}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'self-service-order-management-flow-select':
-                return (
-                    <SelfServiceFlowSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                        flowType={'order-management'}
-                    />
-                )
-            case 'self-service-store-integration-select':
-                return (
-                    <SelfServiceStoreIntegrationSelect
-                        {...widget}
-                        className={className}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'custom_field-select':
-                return (
-                    <CustomFieldSelect
-                        {...widget}
-                        className={className}
-                        value={widget.value}
-                        onChange={this._handleChange}
-                    />
-                )
-            case 'custom_field-input': {
-                const customFieldId = this.props.properties[0].value.value // A custom field input is always preceded by a custom field select
-                if (!customFieldId) {
-                    return null
-                }
-                return (
-                    <CustomFieldIdInput
-                        {...widget}
-                        customFieldId={customFieldId}
-                        className={className}
-                        value={widget.value}
-                        onChange={this._handleChange}
-                    />
-                )
+        // current properties is a tag field so we used the specific
+        if (leftsiblings.join('.').includes('Ticket.properties.tags.name')) {
+            widget.type = 'tags-select'
+            widget.multiple = collectionOperators.includes(calleeName)
+        }
+
+        if (
+            caseInsensitiveOperators.includes(calleeName) &&
+            widget.type !== 'tags-select'
+        ) {
+            caseInsensitive = true
+        }
+
+        if (left.includes('order_management_flow')) {
+            widget.type = 'self-service-order-management-flow-select'
+        }
+        if (left.includes('store_integration_id')) {
+            widget.type = 'self-service-store-integration-select'
+        }
+
+        if (right) {
+            const options: string[] = (
+                right.getIn(['meta', 'enum'], List([])) as List<string>
+            ).toJS()
+
+            widget.options = options
+
+            // Handle special cases for ticket channel and language.
+            switch (left.last()) {
+                case 'channel':
+                    widget.options = options.map((option: string) => ({
+                        value: option,
+                        label: humanizeChannel(option),
+                    }))
+                    break
+                case 'language':
+                    widget.options = options.map((option: string) => ({
+                        value: option,
+                        label: getLanguageDisplayName(option) || option,
+                    }))
+                    break
+                default:
+                    break
             }
-            case 'csat-select':
-                return (
-                    <Select
-                        {...widget}
-                        value={'★'.repeat(widget.value)}
-                        options={['★', '★★', '★★★', '★★★★', '★★★★★']}
-                        className={className}
-                        onChange={(value: string) =>
-                            this._handleChange(value.length)
-                        }
-                    />
-                )
 
-            case 'snooze-picker':
-                return this._snoozePicker(value)
-            case 'textarea':
-                return this._textarea(value)
-            case 'rich-field':
-                return this._richField(value)
-            case 'datetime-select':
-                return this._datetimeSelect(value, datetimeFormat)
-            case 'timedelta-select':
-                return this._timedeltaSelect(value)
-            case 'number-input':
-                return this._input(value, 'number')
-            case 'input':
-            default:
-                return this._input(value, 'text', caseInsensitive)
+            widget.hiddenOptions = (
+                right.getIn(
+                    ['meta', 'rules', 'hidden_options'],
+                    List([]),
+                ) as List<string>
+            ).toJS()
+
+            widget.deprecatedOptions = (
+                right.getIn(
+                    ['meta', 'rules', 'deprecated_options'],
+                    List([]),
+                ) as List<string>
+            ).toJS()
+
+            widget.description = right.get('description')
         }
+    }
+
+    const operatorName = rule.getIn(
+        (parent.slice(0, -3).concat(['callee', 'name']) as List<any>).insert(
+            0,
+            'code_ast',
+        ),
+    )
+    const isOperatorRelative = isTimedeltaOperator(operatorName)
+
+    if (widget.type === 'datetime-select' && isOperatorRelative) {
+        widget.type = 'timedelta-select'
+    }
+
+    switch (widget.type) {
+        case 'intents-select':
+            return (
+                <IntentsSentimentsSelect
+                    options={widget.options as string[]}
+                    hiddenOptions={widget.hiddenOptions}
+                    deprecatedOptions={widget.deprecatedOptions}
+                    singular="intent"
+                    plural="intents"
+                    className={className}
+                    values={widget.value}
+                    onChange={handleChange}
+                />
+            )
+        case 'sentiments-select':
+            return (
+                <IntentsSentimentsSelect
+                    options={widget.options as string[]}
+                    hiddenOptions={widget.hiddenOptions}
+                    deprecatedOptions={widget.deprecatedOptions}
+                    className={className}
+                    values={widget.value}
+                    onChange={handleChange}
+                    singular="sentiment"
+                    plural="sentiments"
+                />
+            )
+        case 'multi-select':
+            return (
+                <MultiSelectField
+                    className={`${className || ''} Text`}
+                    values={widget.value}
+                    singular="word"
+                    plural="words"
+                    showSymbolOnSpaces
+                    allowCustomValues
+                    onChange={handleChange as any}
+                    caseInsensitive={caseInsensitive}
+                />
+            )
+        case 'select':
+            return (
+                <Select
+                    {...(widget as unknown as ComponentProps<typeof Select>)}
+                    className={className}
+                    onChange={handleChange}
+                />
+            )
+        case 'status-select':
+            return (
+                <StatusSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                />
+            )
+        case 'priority-select':
+            return (
+                <PrioritySelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                />
+            )
+        case 'tags-select':
+            return (
+                <TagsSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                    caseInsensitive={caseInsensitive}
+                    multiple={
+                        _isUndefined(widget.multiple) ? true : widget.multiple
+                    }
+                />
+            )
+        case 'macro-select':
+            return (
+                <MacroSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                />
+            )
+        case 'assignee_user-select':
+            return (
+                <AssigneeUserSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                    allowUnassign={!operatorName}
+                />
+            )
+        case 'assignee_team-select':
+            return (
+                <AssigneeTeamSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                    allowUnassign={!operatorName}
+                />
+            )
+        case 'integration-select':
+            return <IntegrationSelect {...widget} onChange={handleChange} />
+        case 'self-service-order-management-flow-select':
+            return (
+                <SelfServiceFlowSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                    flowType={'order-management'}
+                />
+            )
+        case 'self-service-store-integration-select':
+            return (
+                <SelfServiceStoreIntegrationSelect
+                    {...widget}
+                    className={className}
+                    onChange={handleChange}
+                />
+            )
+        case 'custom_field-select':
+            return (
+                <CustomFieldSelect
+                    {...widget}
+                    className={className}
+                    value={widget.value}
+                    onChange={handleChange}
+                />
+            )
+        case 'custom_field-input': {
+            const customFieldId = properties[0].value.value // A custom field input is always preceded by a custom field select
+            if (!customFieldId) {
+                return null
+            }
+            return (
+                <CustomFieldIdInput
+                    {...widget}
+                    customFieldId={customFieldId}
+                    className={className}
+                    value={widget.value}
+                    onChange={handleChange}
+                />
+            )
+        }
+        case 'csat-select':
+            return (
+                <Select
+                    {...widget}
+                    value={'★'.repeat(widget.value)}
+                    options={['★', '★★', '★★★', '★★★★', '★★★★★']}
+                    className={className}
+                    onChange={(value: string) => handleChange(value.length)}
+                />
+            )
+
+        case 'snooze-picker':
+            return snoozePicker(value)
+        case 'textarea':
+            return textarea(value)
+        case 'rich-field':
+            return richField(value)
+        case 'datetime-select':
+            return datetimeSelect(value, datetimeFormat)
+        case 'timedelta-select':
+            return timedeltaSelect(value)
+        case 'number-input':
+            return input(value, 'number')
+        case 'input':
+        default:
+            return input(value, 'text', caseInsensitive)
     }
 }
 
-const connector = connect((state: RootState) => ({
-    hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
-    datetimeFormat: getDateAndTimeFormatter(state)(
-        DateAndTimeFormatting.CompactDateWithTime,
-    ),
-}))
-
-export default connector(Widget)
+export default Widget

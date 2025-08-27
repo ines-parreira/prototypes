@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
@@ -34,6 +32,18 @@ const defaultState = {
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
+
+jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () =>
+    jest.fn(() => <div>CustomFieldSelect</div>),
+)
+
+jest.mock('pages/common/components/ast/widget/PrioritySelect', () =>
+    jest.fn(() => <div>PrioritySelect</div>),
+)
+
+jest.mock('pages/common/components/ast/widget/SelfServiceFlowSelect', () =>
+    jest.fn(() => <div>SelfServiceFlowSelect</div>),
+)
 
 const useFlagMock = assumeMock(useFlag)
 useFlagMock.mockReturnValue(true)
@@ -370,9 +380,7 @@ describe('<Widget />', () => {
                 </Provider>,
             )
 
-            enumValues.forEach((value) => {
-                expect(screen.getByText(value)).toBeInTheDocument()
-            })
+            expect(screen.getByText('PrioritySelect')).toBeInTheDocument()
         })
     })
 
@@ -479,6 +487,454 @@ describe('<Widget />', () => {
             expect(
                 screen.getByText(getLanguageDisplayName(language) as string),
             ).toBeInTheDocument()
+        })
+    })
+
+    it('should render number input field for number type', () => {
+        const value = 42
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    leftsiblings={fromJS([
+                        'definitions',
+                        'RechargeSubscription',
+                        'properties',
+                        'order_interval_frequency',
+                    ])}
+                    value={value}
+                    rule={rule}
+                />
+            </Provider>,
+        )
+        const input = screen.getByDisplayValue(value.toString())
+
+        expect(input).toHaveAttribute('type', 'number')
+    })
+
+    it('should handle negative number values by converting to positive', () => {
+        const value = 5
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    leftsiblings={fromJS([
+                        'definitions',
+                        'RechargeSubscription',
+                        'properties',
+                        'order_interval_frequency',
+                    ])}
+                    value={value}
+                    rule={rule}
+                />
+            </Provider>,
+        )
+
+        fireEvent.change(screen.getByDisplayValue(value), {
+            target: { value: '-10' },
+        })
+
+        expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(
+            commonProps.parent,
+            10,
+            'UPDATE',
+        )
+    })
+
+    it('should render snooze picker with custom units', () => {
+        const value = '2h'
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    config={{ widget: 'snooze-picker' }}
+                    leftsiblings={fromJS([
+                        'actions',
+                        'snoozeTicket',
+                        'snooze_timedelta',
+                    ])}
+                    value={value}
+                    rule={rule}
+                />
+            </Provider>,
+        )
+        expect(screen.getByText('minute(s)')).toBeInTheDocument()
+        expect(screen.getAllByText('hour(s)')).toHaveLength(2)
+        expect(screen.getByText('day(s)')).toBeInTheDocument()
+        expect(screen.getByDisplayValue(2)).toHaveAttribute('type', 'number')
+    })
+
+    it('should render custom field select for custom_field-select type', () => {
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    rule={rule}
+                    config={{ widget: 'custom_field-select' }}
+                    leftsiblings={fromJS([
+                        'actions',
+                        'setCustomFieldValue',
+                        'custom_field_id',
+                    ])}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('CustomFieldSelect')).toBeInTheDocument()
+    })
+
+    it('should return null when custom field input has no custom field ID', () => {
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        const { container } = render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    rule={rule}
+                    config={{ widget: 'custom_field-input' }}
+                    leftsiblings={fromJS([
+                        'actions',
+                        'setCustomFieldValue',
+                        'value',
+                    ])}
+                    properties={[
+                        {
+                            key: { name: 'custom_field_id' },
+                            value: { value: null },
+                        },
+                    ]}
+                />
+            </Provider>,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    describe('Widget type determination based on leftsiblings path', () => {
+        it('should handle properties path and show props with meta or $ref', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            const schemasWithProps = fromJS({
+                definitions: {
+                    Ticket: {
+                        properties: {
+                            subject: {
+                                meta: {
+                                    rules: {
+                                        label: 'Ticket Subject',
+                                    },
+                                },
+                                description: 'The ticket subject',
+                            },
+                            status: {
+                                $ref: '#/definitions/Status',
+                            },
+                        },
+                    },
+                },
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        schemas={schemasWithProps}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Ticket Subject')).toBeInTheDocument()
+            expect(screen.getByText('status')).toBeInTheDocument()
+        })
+
+        it('should handle operators path and filter deprecated operators', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            const schemasWithOperators = fromJS({
+                definitions: {
+                    Ticket: {
+                        operators: {
+                            eq: { label: 'Equals' },
+                            neq: { label: 'Not Equals' },
+                            contains: {
+                                label: 'Deprecated',
+                            },
+                        },
+                    },
+                },
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        schemas={schemasWithOperators}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'operators',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Equals')).toBeInTheDocument()
+            expect(screen.getByText('Not Equals')).toBeInTheDocument()
+            expect(screen.queryByText('Deprecated')).not.toBeInTheDocument()
+        })
+
+        it('should handle actions path and set widget type from config', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        schemas={fromJS({
+                            ..._schemas,
+                            definitions: {
+                                Ticket: {
+                                    properties: {
+                                        assignee_user_id: {
+                                            meta: {
+                                                rules: {
+                                                    label: 'assignee user',
+                                                    widget: 'assignee_user-select',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        })}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'assignee_user_id',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText(/Loading agents/)).toBeInTheDocument()
+        })
+
+        it('should handle actions path and generate widget type from last element', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'actions',
+                            'setPriority',
+                            'priority',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('PrioritySelect')).toBeInTheDocument()
+        })
+
+        it('should handle multi-select type for array values with collection operators', () => {
+            const value = ['tag1', 'tag2']
+            const rule = fromJS({
+                code_ast: astCodeContains,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        value={value}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'tags',
+                            'name',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText(value[0])).toBeInTheDocument()
+            expect(screen.getByText(value[1])).toBeInTheDocument()
+            expect(
+                screen.getByPlaceholderText('Add tags...'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle order management flow and store integration paths', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'order_management_flow',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('SelfServiceFlowSelect'),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide properties when meta.rules.hide is true and not current value', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            const schemasWithHiddenProps = fromJS({
+                definitions: {
+                    Ticket: {
+                        properties: {
+                            visible_prop: {
+                                meta: {
+                                    rules: {
+                                        label: 'Visible Property',
+                                    },
+                                },
+                            },
+                            hidden_prop: {
+                                meta: {
+                                    rules: {
+                                        hide: true,
+                                        label: 'Hidden Property',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        schemas={schemasWithHiddenProps}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Visible Property')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Hidden Property'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should handle case insensitive operators for non-tag fields', () => {
+            const rule = fromJS({
+                code_ast: astCodeContains,
+            })
+            const value = 'Valuuuue'
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'subject',
+                        ])}
+                        value={value}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByDisplayValue(value)).toBeInTheDocument()
+        })
+
+        it('should handle store integration path for self-service', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'store_integration_id',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Select an option')).toBeInTheDocument()
+        })
+
+        it('should use BASIC_OPERATORS for self_service_flow operators', () => {
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        leftsiblings={fromJS([
+                            'definitions',
+                            'Ticket',
+                            'properties',
+                            'self_service_flow',
+                            'operators',
+                        ])}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Select an option')).toBeInTheDocument()
         })
     })
 })

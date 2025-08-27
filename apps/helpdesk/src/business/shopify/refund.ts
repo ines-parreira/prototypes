@@ -70,7 +70,7 @@ export function distributeRefund(
 export function aggregateMaximumRefundableByGateway(
     refund: Map<any, any>,
 ): Map<string, number> {
-    const transactions = refund.get('transactions', List()) as List<any>
+    const transactions = refund.get('transactions', List())
     const amounts = transactions.reduce(
         (gateways: Map<string, number> = Map(), transaction: Map<any, any>) => {
             const maximum_refundable: string =
@@ -92,7 +92,7 @@ export function getTransactionToRefund(
     refund: Map<any, any>,
     amount: number,
 ): List<any> {
-    const transactions = refund.get('transactions', List()) as List<any>
+    const transactions = refund.get('transactions', List())
     const buckets = aggregateMaximumRefundableByGateway(refund)
 
     const gateways = buckets.keySeq()
