@@ -1,0 +1,29 @@
+:local {
+    .skeleton {
+        width: 75%;
+
+        .skeletonSubject {
+            height: 32px;
+            width: 100%;
+            background-color: var(--neutral-grey-2);
+            border-radius: 4px;
+            :global {
+                animation: animate-pulse 2s infinite;
+            }
+        }
+    }
+}
+
+:global {
+    @keyframes animate-pulse {
+        0% {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0.5;
+        }
+    }
+}

@@ -19,12 +19,14 @@ import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLangua
 
 type TicketPropertiesTranslationsParams = {
     ticket_ids: (number | undefined)[]
+    ticketsRequiresTranslations?: boolean
 }
 
 type TranslationMap = Record<number, TicketTranslationCompact>
 
 export function useTicketsTranslatedProperties({
-    ticket_ids,
+    ticket_ids = [],
+    ticketsRequiresTranslations = true,
 }: TicketPropertiesTranslationsParams) {
     const queryClient = useQueryClient()
     const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
@@ -42,17 +44,20 @@ export function useTicketsTranslatedProperties({
         [ticket_ids],
     )
 
-    const { data: translations } = useListTicketTranslations(
+    const isQueryEnabled =
+        hasMessagesTranslations &&
+        ticketsRequiresTranslations &&
+        Boolean(primary) &&
+        stableTicketIds.length > 0
+
+    const { data: translations, isInitialLoading } = useListTicketTranslations(
         {
             language: primary as string,
             ticket_ids: stableTicketIds,
         },
         {
             query: {
-                enabled:
-                    hasMessagesTranslations &&
-                    Boolean(primary) &&
-                    stableTicketIds.length > 0,
+                enabled: isQueryEnabled,
             },
         },
     )
@@ -142,12 +147,14 @@ export function useTicketsTranslatedProperties({
     if (!hasMessagesTranslations) {
         return {
             translationMap: {},
+            isInitialLoading: isQueryEnabled && isInitialLoading,
             updateTicketTranslatedSubject,
         }
     }
 
     return {
         translationMap,
+        isInitialLoading: isQueryEnabled && isInitialLoading,
         updateTicketTranslatedSubject,
     }
 }
