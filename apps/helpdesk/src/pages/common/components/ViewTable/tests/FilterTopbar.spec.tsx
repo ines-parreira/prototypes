@@ -783,21 +783,7 @@ describe('<FilterTopbar />', () => {
         expect(queryByText('1 tickets')).not.toBeInTheDocument()
     })
 
-    it('should not render priority filter when FF is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <FilterTopbar {...minProps} />
-            </Provider>,
-        )
-
-        const addFilterButton = screen.getByLabelText('Add filter')
-        fireEvent.click(addFilterButton)
-
-        expect(screen.queryByText('Priority')).not.toBeInTheDocument()
-    })
-
-    it('should render priority filter when FF is enabled', () => {
+    it('should render priority filter', () => {
         mockUseFlag.mockReturnValue(true)
         render(
             <Provider store={mockStore(defaultState)}>

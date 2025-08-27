@@ -218,11 +218,7 @@ describe('<AnalyticsCard />', () => {
                             period={period}
                             analyticsData={data}
                             abandonedCartJourney={mockAbandonedCartJourney}
-                            journeyConfigurations={{
-                                ...mockJourneyConfigurations,
-                                offer_discount: false,
-                                max_discount_percent: 0,
-                            }}
+                            journeyData={mockJourneyData as JourneyDetailApiDTO}
                             integrationId={12345}
                         />
                     </Provider>
@@ -268,11 +264,7 @@ describe('<AnalyticsCard />', () => {
                                 ...mockAbandonedCartJourney,
                                 state: JourneyStatusEnum.Paused,
                             }}
-                            journeyConfigurations={{
-                                ...mockJourneyConfigurations,
-                                offer_discount: false,
-                                max_discount_percent: 0,
-                            }}
+                            journeyData={mockJourneyData as JourneyDetailApiDTO}
                             integrationId={12345}
                         />
                     </Provider>
