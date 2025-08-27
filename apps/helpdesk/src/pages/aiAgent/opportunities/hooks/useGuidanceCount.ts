@@ -1,29 +1,23 @@
-import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 
 interface UseGuidanceCountOptions {
     guidanceHelpCenterId: number
+    shopName: string
 }
 
 export const useGuidanceCount = ({
     guidanceHelpCenterId,
+    shopName,
 }: UseGuidanceCountOptions) => {
-    const queryParams: Paths.ListArticles.QueryParameters = {
-        version_status: 'latest_draft',
-        per_page: 1,
-    }
-
-    const { data, isLoading } = useGetHelpCenterArticleList(
-        guidanceHelpCenterId,
-        queryParams,
-        {
-            refetchOnWindowFocus: false,
-            staleTime: 10 * 60 * 1000, // 10 minutes in milliseconds
-        },
-    )
+    const { guidanceUsed, isLoadingGuidanceArticleList } =
+        useGuidanceAiSuggestions({
+            helpCenterId: guidanceHelpCenterId,
+            shopName,
+            query: '',
+        })
 
     return {
-        guidanceCount: data?.meta.item_count || 0,
-        isLoading,
+        guidanceCount: guidanceUsed?.length || 0,
+        isLoading: isLoadingGuidanceArticleList,
     }
 }

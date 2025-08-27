@@ -18,6 +18,9 @@ const createMockStore = (initialState = {}) => {
                 viewLanguage: 'en-US',
             },
         },
+        integrations: {
+            data: [],
+        },
         ...initialState,
     })
 }
@@ -73,9 +76,53 @@ jest.mock('models/helpCenter/queries', () => ({
         isLoading: false,
     })),
     useGetHelpCenterArticleList: jest.fn(() => ({
-        data: { meta: { item_count: 5 } },
+        data: {
+            data: [
+                {
+                    id: 1,
+                    template_key: 'template-1',
+                    translation: {
+                        title: 'Article 1',
+                        content: 'Content 1',
+                        locale: 'en-US',
+                        visibility_status: 'PUBLIC',
+                        updated_datetime: '2024-01-01T00:00:00Z',
+                    },
+                },
+                {
+                    id: 2,
+                    template_key: 'template-2',
+                    translation: {
+                        title: 'Article 2',
+                        content: 'Content 2',
+                        locale: 'en-US',
+                        visibility_status: 'PUBLIC',
+                        updated_datetime: '2024-01-01T00:00:00Z',
+                    },
+                },
+            ],
+            meta: { item_count: 2, total_count: 2 },
+        },
         isLoading: false,
     })),
+}))
+
+jest.mock('models/aiAgent/queries', () => ({
+    useGetAIGeneratedGuidances: jest.fn(() => ({
+        data: [],
+        isLoading: false,
+    })),
+    aiGeneratedGuidanceKeys: {
+        listWithStore: jest.fn(() => ['aiGuidances']),
+    },
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
+
+jest.mock('state/integrations/selectors', () => ({
+    getStoreIntegrations: jest.fn(() => []),
 }))
 
 jest.mock(
@@ -91,7 +138,13 @@ jest.mock(
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'en-US'),
+    default: jest.fn((selector) => {
+        // Return empty integrations array for getStoreIntegrations selector
+        if (selector && typeof selector === 'function') {
+            return []
+        }
+        return 'en-US'
+    }),
 }))
 
 jest.mock('state/ui/helpCenter', () => ({
@@ -291,6 +344,9 @@ describe('AiAgentOpportunities', () => {
                 helpCenter: {
                     viewLanguage: 'fr-FR',
                 },
+            },
+            integrations: {
+                data: [],
             },
         })
 

@@ -130,7 +130,8 @@ export const OpportunitiesContent = ({
     }, [])
     const { guidanceCount, isLoading: isLoadingGuidanceCount } =
         useGuidanceCount({
-            guidanceHelpCenterId: helpCenterId,
+            guidanceHelpCenterId,
+            shopName,
         })
 
     const { routes } = useAiAgentNavigation({ shopName })
@@ -263,8 +264,8 @@ export const OpportunitiesContent = ({
                                             >
                                                 Guidance
                                             </a>
-                                            . To save this Guidance, you delete
-                                            an existing one.
+                                            . To save this Guidance, you must
+                                            delete or disable an existing one.
                                         </div>
                                     </Tooltip>
                                 )}

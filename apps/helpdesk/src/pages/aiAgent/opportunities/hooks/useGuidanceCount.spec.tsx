@@ -2,31 +2,32 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import configureStore from 'redux-mock-store'
 
-import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 
 import { useGuidanceCount } from './useGuidanceCount'
 
-jest.mock('models/helpCenter/queries')
+jest.mock('pages/aiAgent/hooks/useGuidanceAiSuggestions')
 
-const mockUseGetHelpCenterArticleList =
-    useGetHelpCenterArticleList as jest.MockedFunction<
-        typeof useGetHelpCenterArticleList
+const mockUseGuidanceAiSuggestions =
+    useGuidanceAiSuggestions as jest.MockedFunction<
+        typeof useGuidanceAiSuggestions
     >
 
-const createMockArticleListResponse = (itemCount: number) => ({
-    data: [],
-    meta: {
-        item_count: itemCount,
-        total_count: itemCount,
-        page: 1,
-        per_page: 1,
-    },
-})
+const mockStore = configureStore([])
+
+const createMockGuidanceArticles = (count: number) =>
+    Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        title: `Article ${i + 1}`,
+        visibility: 'PUBLIC' as const,
+    }))
 
 describe('useGuidanceCount', () => {
     let queryClient: QueryClient
+    let store: ReturnType<typeof mockStore>
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -37,30 +38,39 @@ describe('useGuidanceCount', () => {
                 },
             },
         })
+        store = mockStore({})
     })
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        </Provider>
     )
 
     it('should return guidance count and loading state', () => {
-        const mockData = createMockArticleListResponse(42)
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: mockData,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+        const mockGuidanceArticles = createMockGuidanceArticles(42)
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: mockGuidanceArticles,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: mockGuidanceArticles,
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: true,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 123 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 123,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -68,56 +78,61 @@ describe('useGuidanceCount', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should call useGetHelpCenterArticleList with correct parameters', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: false,
-            status: 'loading',
+    it('should call useGuidanceAiSuggestions with correct parameters', () => {
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: true,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const helpCenterId = 456
+        const shopName = 'test'
 
         renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: helpCenterId }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: helpCenterId,
+                    shopName: shopName,
+                }),
             { wrapper },
         )
 
-        const expectedQueryParams: Paths.ListArticles.QueryParameters = {
-            version_status: 'latest_draft',
-            per_page: 1,
-        }
-
-        expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
-            helpCenterId,
-            expectedQueryParams,
-            {
-                refetchOnWindowFocus: false,
-                staleTime: 10 * 60 * 1000,
-            },
-        )
+        expect(mockUseGuidanceAiSuggestions).toHaveBeenCalledWith({
+            helpCenterId: helpCenterId,
+            shopName: shopName,
+            query: '',
+        })
     })
 
-    it('should return 0 when data is undefined', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+    it('should return 0 when guidanceUsed is undefined', () => {
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: undefined,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 789 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 789,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -125,24 +140,27 @@ describe('useGuidanceCount', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return 0 when meta.item_count is undefined', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: {
-                data: [],
-                meta: {} as any,
-            },
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+    it('should return 0 when guidanceUsed is empty', () => {
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 111 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 111,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -151,20 +169,26 @@ describe('useGuidanceCount', () => {
     })
 
     it('should handle loading state correctly', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: true,
-            isSuccess: false,
-            status: 'loading',
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: true,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 222 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 222,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -173,20 +197,26 @@ describe('useGuidanceCount', () => {
     })
 
     it('should handle error state gracefully', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-            error: new Error('Failed to fetch'),
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: false,
-            status: 'error',
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 333 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 333,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -195,21 +225,27 @@ describe('useGuidanceCount', () => {
     })
 
     it('should handle large item counts', () => {
-        const mockData = createMockArticleListResponse(9999)
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: mockData,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+        const mockGuidanceArticles = createMockGuidanceArticles(9999)
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: mockGuidanceArticles,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: mockGuidanceArticles,
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: true,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 444 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 444,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -218,38 +254,46 @@ describe('useGuidanceCount', () => {
     })
 
     it('should update when data changes', async () => {
-        const initialData = createMockArticleListResponse(5)
-        const updatedData = createMockArticleListResponse(10)
+        const initialArticles = createMockGuidanceArticles(5)
+        const updatedArticles = createMockGuidanceArticles(10)
 
-        mockUseGetHelpCenterArticleList.mockReturnValueOnce({
-            data: initialData,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+        mockUseGuidanceAiSuggestions.mockReturnValueOnce({
+            guidanceUsed: initialArticles,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: initialArticles,
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: true,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result, rerender } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 555 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 555,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
         expect(result.current.guidanceCount).toBe(5)
 
-        mockUseGetHelpCenterArticleList.mockReturnValueOnce({
-            data: updatedData,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+        mockUseGuidanceAiSuggestions.mockReturnValueOnce({
+            guidanceUsed: updatedArticles,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: updatedArticles,
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: true,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         rerender()
@@ -259,48 +303,58 @@ describe('useGuidanceCount', () => {
         })
     })
 
-    it('should set correct query options', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: false,
-            status: 'loading',
+    it('should pass empty query string to useGuidanceAiSuggestions', () => {
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
-        renderHook(() => useGuidanceCount({ guidanceHelpCenterId: 666 }), {
-            wrapper,
-        })
+        renderHook(
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 666,
+                    shopName: 'test',
+                }),
+            {
+                wrapper,
+            },
+        )
 
-        const lastCallArgs = mockUseGetHelpCenterArticleList.mock.calls[0]
-        const queryOptions = lastCallArgs[2]
+        const lastCallArgs = mockUseGuidanceAiSuggestions.mock.calls[0][0]
 
-        expect(queryOptions).toEqual({
-            refetchOnWindowFocus: false,
-            staleTime: 600000,
-        })
+        expect(lastCallArgs.query).toBe('')
     })
 
     it('should handle zero item count', () => {
-        const mockData = createMockArticleListResponse(0)
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: mockData,
-            isLoading: false,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: true,
-            status: 'success',
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: true,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
         const { result } = renderHook(
-            () => useGuidanceCount({ guidanceHelpCenterId: 777 }),
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 777,
+                    shopName: 'test',
+                }),
             { wrapper },
         )
 
@@ -308,45 +362,72 @@ describe('useGuidanceCount', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should use per_page of 1 for efficiency', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: false,
-            status: 'loading',
+    it('should correctly count only PUBLIC visibility articles', () => {
+        const mixedArticles = [
+            { id: 1, title: 'Article 1', visibility: 'PUBLIC' as const },
+            { id: 2, title: 'Article 2', visibility: 'PRIVATE' as const },
+            { id: 3, title: 'Article 3', visibility: 'PUBLIC' as const },
+            { id: 4, title: 'Article 4', visibility: 'PUBLIC' as const },
+        ]
+        const publicArticles = mixedArticles.filter(
+            (a) => a.visibility === 'PUBLIC',
+        )
+
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: publicArticles,
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: mixedArticles,
+            isLoadingAiGuidances: false,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: true,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
-        renderHook(() => useGuidanceCount({ guidanceHelpCenterId: 888 }), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 888,
+                    shopName: 'test',
+                }),
+            {
+                wrapper,
+            },
+        )
 
-        const queryParams = mockUseGetHelpCenterArticleList.mock.calls[0][1]
-        expect(queryParams.per_page).toBe(1)
+        expect(result.current.guidanceCount).toBe(3)
     })
 
-    it('should only request latest_draft version status', () => {
-        mockUseGetHelpCenterArticleList.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-            error: null,
-            refetch: jest.fn(),
-            isRefetching: false,
-            isFetching: false,
-            isSuccess: false,
-            status: 'loading',
+    it('should handle mixed loading states correctly', () => {
+        mockUseGuidanceAiSuggestions.mockReturnValue({
+            guidanceUsed: [],
+            isLoadingGuidanceArticleList: false,
+            guidanceArticles: [],
+            isLoadingAiGuidances: true,
+            guidanceAISuggestions: [],
+            isAllAIGuidancesUsed: false,
+            isEmptyStateNoAIGuidances: false,
+            isEmptyStateAIGuidances: false,
+            isGuidancesOnly: false,
+            isGuidancesAndAIGuidances: false,
+            invalidateAiGuidances: jest.fn(),
         } as any)
 
-        renderHook(() => useGuidanceCount({ guidanceHelpCenterId: 999 }), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () =>
+                useGuidanceCount({
+                    guidanceHelpCenterId: 999,
+                    shopName: 'test',
+                }),
+            {
+                wrapper,
+            },
+        )
 
-        const queryParams = mockUseGetHelpCenterArticleList.mock.calls[0][1]
-        expect(queryParams.version_status).toBe('latest_draft')
+        expect(result.current.guidanceCount).toBe(0)
+        expect(result.current.isLoading).toBe(false)
     })
 })
