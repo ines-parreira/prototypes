@@ -236,7 +236,6 @@ export const Performance = () => {
                             analyticsData={journeyMetrics}
                             journeyConfigurations={journeyParams}
                             integrationId={integrationId}
-                            currentIntegration={currentIntegration}
                             abandonedCartJourney={abandonedCartJourney}
                             totalSent={formattedTotalMessagesSent}
                             key={abandonedCartJourney?.id}

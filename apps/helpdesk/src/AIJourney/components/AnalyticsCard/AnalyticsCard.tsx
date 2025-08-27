@@ -45,7 +45,6 @@ export const AnalyticsCard = ({
     analyticsData,
     journeyConfigurations,
     integrationId,
-    currentIntegration,
     abandonedCartJourney,
     totalSent,
 }: AnalyticsCardProps) => {
@@ -83,17 +82,19 @@ export const AnalyticsCard = ({
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        currentIntegration,
         abandonedCartJourney,
     })
 
     const handleUpdateJourneyState = useCallback(async () => {
         try {
-            const { data: newData } = await handleUpdate(
-                journeyState === JourneyStatusEnum.Active
-                    ? JourneyStatusEnum.Paused
-                    : JourneyStatusEnum.Active,
-            )
+            const { data: newData } = await handleUpdate({
+                journeyState:
+                    journeyState === JourneyStatusEnum.Active
+                        ? JourneyStatusEnum.Paused
+                        : JourneyStatusEnum.Active,
+                journeyMessageInstructions:
+                    abandonedCartJourney.message_instructions,
+            })
             setJourneyState(newData.state)
         } catch (error) {
             void dispatch(
@@ -103,7 +104,12 @@ export const AnalyticsCard = ({
                 }),
             )
         }
-    }, [journeyState, dispatch, handleUpdate])
+    }, [
+        journeyState,
+        dispatch,
+        handleUpdate,
+        abandonedCartJourney.message_instructions,
+    ])
 
     const totalRevenue = analyticsData.find(
         (data) => data.label === 'Total Revenue',

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
-import { Integration } from '@gorgias/helpdesk-types'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,16 +23,10 @@ jest.mock('state/notifications/actions', () => ({
 
 const params = {
     integrationId: 1,
-    currentIntegration: {
-        id: 1,
-        name: 'Test Integration',
-        type: 'email',
-    } as Integration,
     abandonedCartJourney: { id: 'journey-id' },
     followUpValue: 3,
     isDiscountEnabled: true,
     discountValue: '10',
-    journeyMessageInstructions: 'Test instructions',
     phoneNumberValue: {
         phone_number: '+1234567890',
         integrations: [{ type: 'sms', id: 'sms-id' }],
@@ -83,7 +77,10 @@ describe('useJourneyUpdateHandler', () => {
         })
 
         await act(async () => {
-            await result.current.handleUpdate()
+            await result.current.handleUpdate({
+                journeyState: JourneyStatusEnum.Active,
+                journeyMessageInstructions: 'Test instructions',
+            })
         })
 
         expect(mockMutateAsync).toHaveBeenCalledWith({
@@ -110,9 +107,11 @@ describe('useJourneyUpdateHandler', () => {
         })
 
         await act(async () => {
-            await expect(result.current.handleUpdate()).rejects.toThrow(
-                'Test error',
-            )
+            await expect(
+                result.current.handleUpdate({
+                    journeyState: JourneyStatusEnum.Active,
+                }),
+            ).rejects.toThrow('Test error')
         })
 
         expect(mockDispatch).toHaveBeenCalledWith(
@@ -123,10 +122,32 @@ describe('useJourneyUpdateHandler', () => {
         )
     })
 
-    it('should throw an error if required parameters are missing', async () => {
+    it('should throw an error if integrationId missing', async () => {
         const params = {
             integrationId: undefined,
-            currentIntegration: undefined,
+            abandonedCartJourney: { id: 'journey-id' },
+        }
+
+        const { result } = renderHook(() => useJourneyUpdateHandler(params), {
+            wrapper: createWrapper(),
+        })
+
+        await act(async () => {
+            await expect(
+                result.current.handleUpdate({
+                    journeyState: JourneyStatusEnum.Active,
+                }),
+            ).rejects.toThrow(
+                'Missing integration information: ID: undefined, journey ID: journey-id',
+            )
+        })
+
+        expect(mockMutateAsync).not.toHaveBeenCalled()
+    })
+
+    it('should throw an error if abandonedCartJourney missing', async () => {
+        const params = {
+            integrationId: 1,
             abandonedCartJourney: undefined,
         }
 
@@ -135,8 +156,12 @@ describe('useJourneyUpdateHandler', () => {
         })
 
         await act(async () => {
-            await expect(result.current.handleUpdate()).rejects.toThrow(
-                'Missing integration information: ID: undefined, name: undefined, journey ID: undefined',
+            await expect(
+                result.current.handleUpdate({
+                    journeyState: JourneyStatusEnum.Active,
+                }),
+            ).rejects.toThrow(
+                'Missing integration information: ID: 1, journey ID: undefined',
             )
         })
 
@@ -144,27 +169,22 @@ describe('useJourneyUpdateHandler', () => {
     })
 
     it('should send journeyMessageInstructions as empty string when input value is null', async () => {
-        const paramsWithEmptyMessageInstructions = {
-            ...params,
-            journeyMessageInstructions: null as unknown as string,
-        }
-
-        const { result } = renderHook(
-            () => useJourneyUpdateHandler(paramsWithEmptyMessageInstructions),
-            {
-                wrapper: createWrapper(),
-            },
-        )
+        const { result } = renderHook(() => useJourneyUpdateHandler(params), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
-            await result.current.handleUpdate()
+            await result.current.handleUpdate({
+                journeyState: JourneyStatusEnum.Active,
+                journeyMessageInstructions: null,
+            })
         })
 
         expect(mockMutateAsync).toHaveBeenCalledWith({
             journeyId: 'journey-id',
             params: {
                 state: 'active',
-                message_instructions: '',
+                message_instructions: null,
             },
             journeyConfigs: {
                 max_follow_up_messages: 3,

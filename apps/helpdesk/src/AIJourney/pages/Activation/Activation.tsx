@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
@@ -89,7 +90,6 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        currentIntegration,
         abandonedCartJourney,
     })
 
@@ -148,7 +148,11 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const handleContinue = async () => {
         try {
-            await handleUpdate()
+            await handleUpdate({
+                journeyState: JourneyStatusEnum.Active,
+                journeyMessageInstructions:
+                    abandonedCartJourney?.message_instructions,
+            })
             setIsVisible(false)
             setTimeout(() => {
                 history.push(`/app/ai-journey/${shopName}/performance`)

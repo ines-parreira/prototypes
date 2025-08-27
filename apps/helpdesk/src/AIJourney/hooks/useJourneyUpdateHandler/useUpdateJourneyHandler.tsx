@@ -6,7 +6,6 @@ import {
     CartAbandonedJourneyConfigurationApiDTO,
     JourneyStatusEnum,
 } from '@gorgias/convert-client'
-import { Integration } from '@gorgias/helpdesk-types'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -16,26 +15,22 @@ import { NotificationStatus } from 'state/notifications/types'
 
 type UseJourneyActionsParams = {
     integrationId?: number
-    currentIntegration?: Integration
     abandonedCartJourney?: { id: string }
     followUpValue?: number
     isDiscountEnabled?: boolean
     discountValue?: string
     phoneNumberValue?: NewPhoneNumber
     discountCodeThresholdValue?: number
-    journeyMessageInstructions?: string
 }
 
 export const useJourneyUpdateHandler = ({
     integrationId,
-    currentIntegration,
     abandonedCartJourney,
     followUpValue,
     isDiscountEnabled,
     discountValue,
     phoneNumberValue,
     discountCodeThresholdValue,
-    journeyMessageInstructions,
 }: UseJourneyActionsParams) => {
     const queryClient = useQueryClient()
 
@@ -43,15 +38,17 @@ export const useJourneyUpdateHandler = ({
     const updateJourney = useUpdateJourney()
 
     const handleUpdate = useCallback(
-        async (journeyState?: JourneyStatusEnum) => {
+        async ({
+            journeyState,
+            journeyMessageInstructions,
+        }: {
+            journeyState: JourneyStatusEnum
+            journeyMessageInstructions?: string | null
+        }) => {
             try {
-                if (
-                    !integrationId ||
-                    !currentIntegration?.name ||
-                    !abandonedCartJourney?.id
-                ) {
+                if (!integrationId || !abandonedCartJourney?.id) {
                     throw new Error(
-                        `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}, journey ID: ${abandonedCartJourney?.id}`,
+                        `Missing integration information: ID: ${integrationId}, journey ID: ${abandonedCartJourney?.id}`,
                     )
                 }
 
@@ -79,8 +76,8 @@ export const useJourneyUpdateHandler = ({
                 const requestBody = {
                     journeyId: abandonedCartJourney.id,
                     params: {
-                        state: journeyState ?? JourneyStatusEnum.Active,
-                        message_instructions: journeyMessageInstructions || '',
+                        state: journeyState,
+                        message_instructions: journeyMessageInstructions,
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }
@@ -88,7 +85,7 @@ export const useJourneyUpdateHandler = ({
                 const updateJourneyMutate =
                     await updateJourney.mutateAsync(requestBody)
 
-                queryClient.invalidateQueries(['journeys', integrationId])
+                await queryClient.invalidateQueries(['journeys', integrationId])
 
                 return updateJourneyMutate
             } catch (error) {
@@ -103,14 +100,12 @@ export const useJourneyUpdateHandler = ({
         },
         [
             integrationId,
-            currentIntegration,
             abandonedCartJourney,
             followUpValue,
             isDiscountEnabled,
             discountValue,
             phoneNumberValue,
             discountCodeThresholdValue,
-            journeyMessageInstructions,
             updateJourney,
             dispatch,
             queryClient,

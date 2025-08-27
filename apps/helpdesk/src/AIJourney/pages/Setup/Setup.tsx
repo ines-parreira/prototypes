@@ -191,7 +191,6 @@ export const Setup = () => {
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        currentIntegration,
         abandonedCartJourney,
         followUpValue: numberOfMessageValue - 1,
         isDiscountEnabled,
@@ -200,13 +199,15 @@ export const Setup = () => {
         discountCodeThresholdValue: isDiscountEnabled
             ? discountCodeThreshold
             : undefined,
-        journeyMessageInstructions,
     })
 
     const handleContinue = async () => {
         try {
             if (abandonedCartJourney) {
-                await handleUpdate()
+                await handleUpdate({
+                    journeyState: abandonedCartJourney.state,
+                    journeyMessageInstructions,
+                })
             } else {
                 await handleCreate()
             }

@@ -1,7 +1,9 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -27,6 +29,13 @@ jest.mock('domains/reporting/state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
 )
+
+const mockHandleUpdate = jest.fn()
+jest.mock('AIJourney/hooks', () => ({
+    useJourneyUpdateHandler: () => ({
+        handleUpdate: mockHandleUpdate,
+    }),
+}))
 
 const period = {
     start: '1970-01-01T00:00:00+00:00',
@@ -97,6 +106,11 @@ describe('<AnalyticsCard />', () => {
             cleanStatsFilters,
             granularity: ReportingGranularity.Day,
         })
+
+        mockHandleUpdate.mockClear()
+        mockHandleUpdate.mockResolvedValue({
+            data: { state: JourneyStatusEnum.Paused },
+        })
     })
 
     it('renders active status with correct badge and icon', () => {
@@ -165,5 +179,98 @@ describe('<AnalyticsCard />', () => {
         )
         expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
         expect(screen.queryByTestId('discount-card')).not.toBeInTheDocument()
+    })
+
+    it('should call handleUpdate with correct parameters when clicking pause/activate button', async () => {
+        render(
+            <MemoryRouter>
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore({})}>
+                        <AnalyticsCard
+                            period={period}
+                            analyticsData={data}
+                            abandonedCartJourney={mockAbandonedCartJourney}
+                            journeyConfigurations={{
+                                ...mockJourneyConfigurations,
+                                offer_discount: false,
+                                max_discount_percent: 0,
+                            }}
+                            integrationId={12345}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            </MemoryRouter>,
+        )
+
+        const moreButton = screen.getByLabelText('Open options')
+        act(() => {
+            userEvent.click(moreButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Pause')).toBeInTheDocument()
+        })
+
+        const pauseButton = screen.getByText('Pause')
+        act(() => {
+            userEvent.click(pauseButton)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalledWith({
+                journeyState: JourneyStatusEnum.Paused,
+                journeyMessageInstructions: undefined,
+            })
+        })
+    })
+
+    it('should call handleUpdate with correct parameters when clicking activate button', async () => {
+        mockHandleUpdate.mockResolvedValue({
+            data: { state: JourneyStatusEnum.Active },
+        })
+
+        render(
+            <MemoryRouter>
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore({})}>
+                        <AnalyticsCard
+                            period={period}
+                            analyticsData={data}
+                            abandonedCartJourney={{
+                                ...mockAbandonedCartJourney,
+                                state: JourneyStatusEnum.Paused,
+                            }}
+                            journeyConfigurations={{
+                                ...mockJourneyConfigurations,
+                                offer_discount: false,
+                                max_discount_percent: 0,
+                            }}
+                            integrationId={12345}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            </MemoryRouter>,
+        )
+
+        const moreButton = screen.getByLabelText('Open options')
+        act(() => {
+            userEvent.click(moreButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Activate')).toBeInTheDocument()
+        })
+
+        const activateButton = screen.getByText('Activate')
+        act(() => {
+            userEvent.click(activateButton)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalledWith({
+                journeyState: JourneyStatusEnum.Active,
+                journeyMessageInstructions: undefined,
+            })
+        })
     })
 })
