@@ -8,8 +8,6 @@ import { Col, Row } from 'reactstrap'
 import { Button, CheckBoxField, Label, Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Alert from 'pages/common/components/Alert/Alert'
@@ -45,15 +43,6 @@ const isNumber = (value?: number): value is number => typeof value === 'number'
 
 const TicketAssignment = () => {
     const dispatch = useAppDispatch()
-    const isExceedingMaxAgentCapacityEnabled = useFlag(
-        FeatureFlagKey.CanExceedMaxAgentCapacity,
-        false,
-    )
-
-    const isAssignTicketToLastAgentEnabled = useFlag(
-        FeatureFlagKey.AssignTicketToLastAgentResponder,
-        false,
-    )
 
     const teams = useAppSelector(getTeams)
     const ticketAssignmentSettings = useAppSelector(getTicketAssignmentSettings)
@@ -198,18 +187,9 @@ const TicketAssignment = () => {
                     assignment_channels: assignmentChannels,
                     max_user_chat_ticket: chatTicketsLimit,
                     max_user_non_chat_ticket: nonChatTicketsLimit,
-                    ...(isExceedingMaxAgentCapacityEnabled
-                        ? {
-                              can_exceed_max_agent_capacity:
-                                  canExceedMaxAgentCapacity,
-                          }
-                        : {}),
-                    ...(isAssignTicketToLastAgentEnabled
-                        ? {
-                              auto_assign_ticket_to_responding_agent:
-                                  assignTicketToLastAgent,
-                          }
-                        : {}),
+                    can_exceed_max_agent_capacity: canExceedMaxAgentCapacity,
+                    auto_assign_ticket_to_responding_agent:
+                        assignTicketToLastAgent,
                 } as AccountSettingTicketAssignment['data'],
             }),
         )
@@ -308,57 +288,49 @@ const TicketAssignment = () => {
                                             }
                                         />
                                     </div>
-                                    {isExceedingMaxAgentCapacityEnabled && (
-                                        <div className={settingsCss.mb16}>
-                                            <CheckBoxField
-                                                label=" Allow reopened tickets to exceed agent's max capacity"
-                                                name="can_exceed_max_agent_capacity"
-                                                value={
-                                                    canExceedMaxAgentCapacity
-                                                }
-                                                onChange={(value: boolean) =>
-                                                    setCanExceedMaxAgentCapacity(
-                                                        value,
-                                                    )
-                                                }
-                                                caption={
-                                                    <span>
-                                                        Reopened tickets will
-                                                        exceed an agent&apos;s
-                                                        max capacity as defined
-                                                        in{' '}
-                                                        <i>
-                                                            Auto-assignment
-                                                            limits
-                                                        </i>{' '}
-                                                        settings below
-                                                    </span>
-                                                }
-                                            />
-                                        </div>
-                                    )}
-                                    {isAssignTicketToLastAgentEnabled && (
-                                        <div className={settingsCss.mb16}>
-                                            <CheckBoxField
-                                                label=" Assign ticket to last responding agent"
-                                                name="auto_assign_ticket_to_responding_agent"
-                                                value={assignTicketToLastAgent}
-                                                onChange={(value: boolean) =>
-                                                    setAssignTicketToLastAgent(
-                                                        value,
-                                                    )
-                                                }
-                                                caption={
-                                                    <span>
-                                                        Tickets will be
-                                                        automatically assigned
-                                                        to the agent that last
-                                                        responded to that ticket
-                                                    </span>
-                                                }
-                                            />
-                                        </div>
-                                    )}
+                                    <div className={settingsCss.mb16}>
+                                        <CheckBoxField
+                                            label=" Allow reopened tickets to exceed agent's max capacity"
+                                            name="can_exceed_max_agent_capacity"
+                                            value={canExceedMaxAgentCapacity}
+                                            onChange={(value: boolean) =>
+                                                setCanExceedMaxAgentCapacity(
+                                                    value,
+                                                )
+                                            }
+                                            caption={
+                                                <span>
+                                                    Reopened tickets will exceed
+                                                    an agent&apos;s max capacity
+                                                    as defined in{' '}
+                                                    <i>
+                                                        Auto-assignment limits
+                                                    </i>{' '}
+                                                    settings below
+                                                </span>
+                                            }
+                                        />
+                                    </div>
+                                    <div className={settingsCss.mb16}>
+                                        <CheckBoxField
+                                            label=" Assign ticket to last responding agent"
+                                            name="auto_assign_ticket_to_responding_agent"
+                                            value={assignTicketToLastAgent}
+                                            onChange={(value: boolean) =>
+                                                setAssignTicketToLastAgent(
+                                                    value,
+                                                )
+                                            }
+                                            caption={
+                                                <span>
+                                                    Tickets will be
+                                                    automatically assigned to
+                                                    the agent that last
+                                                    responded to that ticket
+                                                </span>
+                                            }
+                                        />
+                                    </div>
                                     <div className={settingsCss.mb32}>
                                         <Label
                                             className={classNames(
