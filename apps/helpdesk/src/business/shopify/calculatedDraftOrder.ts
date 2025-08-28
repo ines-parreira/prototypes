@@ -73,7 +73,12 @@ export function getCalculateDraftOrderPayload(
         shippingLine: !!shippingLine
             ? {
                   price: shippingLine.get('price'),
-                  shippingRateHandle: shippingLine.get('handle'),
+                  shippingRateHandle:
+                      shippingLine.get('handle') ||
+                      'custom_shipping_rate_handler',
+                  // we're hard coding a value here if it does not exist
+                  // because having null/undefined/'' makes the
+                  // response not return the availableShippingRates at all for when duplicating an order
                   title: shippingLine.get('title'),
               }
             : null,
