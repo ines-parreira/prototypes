@@ -184,7 +184,6 @@ export const TicketSummaryButton = forwardRef<
             intent: 'secondary' as const,
             onClick,
             ref,
-            className,
             'data-candu-trigger-summary': true,
         }
         return (
@@ -202,6 +201,7 @@ export const TicketSummaryButton = forwardRef<
                         {...props}
                         fillStyle="ghost"
                         icon={leadingIcon}
+                        className={cn(css.button, className)}
                     />
                 )}
             </>

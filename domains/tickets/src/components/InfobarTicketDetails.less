@@ -1,7 +1,28 @@
 :local {
     .container {
-        height: 52px;
+        padding: var(--spacing-md);
         border-bottom: 1px solid var(--border-neutral-default);
         background: var(--white);
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        color: var(--content-neutral-secondary);
+
+        h2 {
+            margin: 0;
+            color: var(--content-neutral-default);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+        }
     }
 }

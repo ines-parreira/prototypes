@@ -147,13 +147,20 @@
 }
 
 :local {
-    div {
-        &.popover {
-            padding: 0;
-            border: none !important;
-            background: transparent;
-            border-radius: 12px;
-        }
+    .button.button.button {
+        border: 1px solid transparent;
+        background:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
+                padding-box,
+            @gradient-light border-box;
+        color: var(--content-neutral-default);
+    }
+
+    .popover {
+        padding: 0;
+        border: none !important;
+        background: transparent;
+        border-radius: 12px;
     }
 
     .container {

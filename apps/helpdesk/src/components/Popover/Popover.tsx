@@ -7,6 +7,7 @@ import {
     flip,
     FloatingArrow,
     FloatingFocusManager,
+    FloatingPortal,
     offset,
     OffsetOptions,
     Placement,
@@ -86,41 +87,47 @@ export default function Popover({
     }, [target, refs])
 
     return isOpen ? (
-        <FloatingFocusManager context={context} modal={false}>
-            <div
-                className={cn(css.popover, css[theme.resolvedName], className)}
-                ref={refs.setFloating}
-                style={floatingStyles}
-                {...getFloatingProps()}
-            >
-                {showArrow && (
-                    <FloatingArrow
-                        className={css.arrow}
-                        fill={theme.tokens.Neutral.Grey_0.value}
-                        {...(theme.resolvedName === THEME_NAME.Dark && {
-                            stroke: theme.tokens.Neutral.Grey_2.value,
-                            strokeWidth: 1,
-                        })}
-                        ref={arrowRef}
-                        context={context}
-                    />
-                )}
-                <div className={css.content}>{children}</div>
-                {footer ?? (
-                    <Button
-                        intent="secondary"
-                        size="small"
-                        className={cn(css.button, buttonClassName)}
-                        {...buttonProps}
-                        onClick={(event) => {
-                            setIsOpen(false)
-                            onButtonClick?.(event)
-                        }}
-                    >
-                        {buttonText}
-                    </Button>
-                )}
-            </div>
-        </FloatingFocusManager>
+        <FloatingPortal>
+            <FloatingFocusManager context={context} modal={false}>
+                <div
+                    className={cn(
+                        css.popover,
+                        css[theme.resolvedName],
+                        className,
+                    )}
+                    ref={refs.setFloating}
+                    style={floatingStyles}
+                    {...getFloatingProps()}
+                >
+                    {showArrow && (
+                        <FloatingArrow
+                            className={css.arrow}
+                            fill={theme.tokens.Neutral.Grey_0.value}
+                            {...(theme.resolvedName === THEME_NAME.Dark && {
+                                stroke: theme.tokens.Neutral.Grey_2.value,
+                                strokeWidth: 1,
+                            })}
+                            ref={arrowRef}
+                            context={context}
+                        />
+                    )}
+                    <div className={css.content}>{children}</div>
+                    {footer ?? (
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            className={cn(css.button, buttonClassName)}
+                            {...buttonProps}
+                            onClick={(event) => {
+                                setIsOpen(false)
+                                onButtonClick?.(event)
+                            }}
+                        >
+                            {buttonText}
+                        </Button>
+                    )}
+                </div>
+            </FloatingFocusManager>
+        </FloatingPortal>
     ) : null
 }

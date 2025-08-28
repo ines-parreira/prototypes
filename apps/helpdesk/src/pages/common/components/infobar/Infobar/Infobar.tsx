@@ -29,6 +29,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import MergeCustomersContainer from 'pages/common/components/MergeCustomers/MergeCustomersContainer'
 import Search from 'pages/common/components/Search'
 import history from 'pages/history'
+import TicketSummaryPopover from 'pages/tickets/detail/components/TicketSummaryPopover'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
 import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
@@ -238,7 +239,13 @@ export const Infobar = ({
             })}
         >
             <div className={css.infobarContent}>
-                {hasUIVisionMS1 && <InfobarTicketDetails />}
+                {hasUIVisionMS1 && (
+                    <InfobarTicketDetails
+                        ticketSummaryIcon={
+                            <TicketSummaryPopover displayLabel={false} />
+                        }
+                    />
+                )}
                 <div className={css.infobarSearchWrapper}>
                     <Search
                         className={css.infobarSearch}

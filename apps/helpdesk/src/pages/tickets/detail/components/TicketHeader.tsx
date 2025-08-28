@@ -90,6 +90,7 @@ const TicketHeader = ({
         getShouldDisplayAuditLogEvents,
     )
     const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     const { primary, languagesNotToTranslateFor } =
         useCurrentUserPreferredLanguage()
@@ -427,7 +428,7 @@ const TicketHeader = ({
                                 onUpdate={handleSnoozeTicket}
                             />
                         )}
-                        {enableAITicketSummary && (
+                        {!hasUIVisionMS1 && enableAITicketSummary && (
                             <TicketSummaryPopover displayLabel={false} />
                         )}
                         {isUpdate && (
