@@ -43,6 +43,7 @@ jest.mock('../GuidanceVariableDropdown', () => {
 })
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     Tooltip: jest.fn(({ children }) => (
         <div data-testid="tooltip">{children}</div>
     )),
@@ -137,9 +138,9 @@ describe('GuidanceVariablePicker', () => {
     it('disables the button when disabled prop is true', () => {
         render(<GuidanceVariablePicker {...defaultProps} disabled={true} />)
 
-        const button = screen.getByTestId('button')
-        expect(button).toHaveAttribute('data-disabled', 'true')
-        expect(button).toBeDisabled()
+        const button = screen.getByRole('button', { name: /\{\+\} variables/i })
+
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('passes variableDropdownProps to GuidanceVariableDropdown', () => {

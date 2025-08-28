@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
 
-import { Skeleton, Tooltip } from '@gorgias/axiom'
+import { Button, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
@@ -22,7 +22,6 @@ import {
     CustomFieldValue,
 } from 'custom-fields/types'
 import useAppSelector from 'hooks/useAppSelector'
-import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'

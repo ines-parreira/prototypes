@@ -2,12 +2,11 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
 import { logEvent, SegmentEvent } from 'common/segment'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

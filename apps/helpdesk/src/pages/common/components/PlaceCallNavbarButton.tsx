@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {
@@ -17,7 +17,6 @@ import useMicrophonePermissions from 'pages/integrations/integration/components/
 import { isDesktopDevice, isDeviceReady } from 'utils/device'
 import { isMacOs } from 'utils/platform'
 
-import Button from './button/Button'
 import ButtonIconLabel from './button/ButtonIconLabel'
 import DeactivatedViewIcon from './DeactivatedViewIcon'
 import ShortcutIcon from './ShortcutIcon/ShortcutIcon'

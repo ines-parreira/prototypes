@@ -9,9 +9,10 @@ import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
 
+import { Button } from '@gorgias/axiom'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { NotificationCenterEventTypes } from 'common/segment/types'
-import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

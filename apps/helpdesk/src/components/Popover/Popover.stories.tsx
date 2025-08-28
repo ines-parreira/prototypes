@@ -2,7 +2,7 @@ import React, { ComponentProps, useRef, useState } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import Button from 'pages/common/components/button/Button'
+import { Button } from '@gorgias/axiom'
 
 import Popover from './Popover'
 

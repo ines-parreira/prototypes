@@ -96,8 +96,11 @@ describe('Dimension', () => {
                 ticketId={1}
             />,
         )
-        const content = container.getElementsByClassName('content')[0]
-        fireEvent.click(content)
+        const content = document.querySelector(
+            'button[area-label="expand_accuracy"]',
+        )
+
+        fireEvent.click(content!)
         const textArea = container.getElementsByClassName('textarea')[0]
         fireEvent.focus(textArea)
         expect(

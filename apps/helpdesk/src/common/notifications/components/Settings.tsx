@@ -9,9 +9,8 @@ import React, {
 import { useMouseRelease } from '@repo/hooks'
 import cn from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Button, LoadingSpinner } from '@gorgias/axiom'
 
-import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { notificationSounds } from 'services'

@@ -3,10 +3,11 @@ import React, { PureComponent, ReactNode } from 'react'
 import { Emoji } from 'emoji-mart'
 import { Card, CardBody, Collapse } from 'reactstrap'
 
+import { Button } from '@gorgias/axiom'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 
 import { reportError } from '../utils/errors'
-import Button from './common/components/button/Button'
 
 import css from './ErrorBoundary.less'
 

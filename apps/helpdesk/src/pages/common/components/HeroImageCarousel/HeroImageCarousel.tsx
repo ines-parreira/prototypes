@@ -3,9 +3,9 @@ import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import _isString from 'lodash/isString'
 
-import Slider, { SliderRef } from 'utils/wrappers/Slider'
+import { Button } from '@gorgias/axiom'
 
-import Button from '../button/Button'
+import Slider, { SliderRef } from 'utils/wrappers/Slider'
 
 import css from './HeroImageCarousel.less'
 
