@@ -14,12 +14,33 @@ export function useAxiomMigration() {
         false,
     )
 
+    const [isHighlightingTokens, setHighlightingTokens] = useLocalStorage(
+        'axiom-highlight-legacy-tokens',
+        false,
+    )
+
     const onToggle = useCallback(() => {
         setIsEnabled((s) => !s)
     }, [setIsEnabled])
 
+    const onToggleTokenHighlighting = useCallback(() => {
+        setHighlightingTokens((s) => !s)
+    }, [setHighlightingTokens])
+
     return useMemo(
-        () => ({ hasFlag, isEnabled, onToggle }),
-        [hasFlag, isEnabled, onToggle],
+        () => ({
+            hasFlag,
+            isEnabled,
+            isHighlightingTokens,
+            onToggle,
+            onToggleTokenHighlighting,
+        }),
+        [
+            hasFlag,
+            isEnabled,
+            isHighlightingTokens,
+            onToggle,
+            onToggleTokenHighlighting,
+        ],
     )
 }

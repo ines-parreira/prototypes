@@ -4,6 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
+import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 import { renderWithRouter } from 'utils/testing'
 
@@ -68,7 +69,15 @@ jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
 jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
     jest.fn(() => <div>ImpersonatedBanner</div>),
 )
-
+jest.mock('hooks/useAxiomMigration', () => ({
+    useAxiomMigration: jest.fn().mockReturnValue({
+        hasFlag: true,
+        isEnabled: true,
+        isHighlightingTokens: false,
+        onToggle: jest.fn(),
+        onToggleTokenHighlighting: jest.fn(),
+    }),
+}))
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useApplyTheme: jest.fn(),
@@ -83,6 +92,10 @@ jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
 jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
+
+const mockUseAxiomMigration = useAxiomMigration as jest.MockedFunction<
+    typeof useAxiomMigration
+>
 
 describe('App component', () => {
     beforeEach(() => {
@@ -184,5 +197,65 @@ describe('App component', () => {
     it('should call the `useRedirectDeprecatedTicketRoutes` hook', () => {
         renderWithRouter(<App>boop</App>)
         expect(useRedirectDeprecatedTicketRoutes).toHaveBeenCalledWith()
+    })
+
+    describe('Axiom migration', () => {
+        it('should not include the axiom class if the flag is disabled', () => {
+            mockUseAxiomMigration.mockReturnValue({
+                hasFlag: false,
+                isEnabled: false,
+                isHighlightingTokens: false,
+                onToggle: jest.fn(),
+                onToggleTokenHighlighting: jest.fn(),
+            })
+
+            const { container } = renderWithRouter(<App>boop</App>)
+            const child = container.firstChild as HTMLElement
+            expect(child.classList.contains('axiom')).toBe(false)
+        })
+
+        it('should not include the axiom class if the toggle is disabled', () => {
+            mockUseAxiomMigration.mockReturnValue({
+                hasFlag: true,
+                isEnabled: false,
+                isHighlightingTokens: false,
+                onToggle: jest.fn(),
+                onToggleTokenHighlighting: jest.fn(),
+            })
+
+            const { container } = renderWithRouter(<App>boop</App>)
+            const child = container.firstChild as HTMLElement
+            expect(child.classList.contains('axiom')).toBe(false)
+        })
+
+        it('should render the Axiom migration toggle if the flag is enabled', () => {
+            mockUseAxiomMigration.mockReturnValue({
+                hasFlag: true,
+                isEnabled: true,
+                isHighlightingTokens: false,
+                onToggle: jest.fn(),
+                onToggleTokenHighlighting: jest.fn(),
+            })
+
+            const { container } = renderWithRouter(<App>boop</App>)
+            const child = container.firstChild as HTMLElement
+            expect(child.classList.contains('axiom')).toBe(true)
+        })
+
+        it('should render the Axiom token highlighting toggle if the flag is enabled and the token highlighting is enabled', () => {
+            mockUseAxiomMigration.mockReturnValue({
+                hasFlag: true,
+                isEnabled: true,
+                isHighlightingTokens: true,
+                onToggle: jest.fn(),
+                onToggleTokenHighlighting: jest.fn(),
+            })
+
+            const { container } = renderWithRouter(<App>boop</App>)
+            const child = container.firstChild as HTMLElement
+            expect(child.classList.contains('axiomHighlightLegacyTokens')).toBe(
+                true,
+            )
+        })
     })
 })

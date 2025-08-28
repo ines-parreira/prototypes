@@ -89,7 +89,9 @@ const Root = ({ store }: Props) => {
                     initialIsOpen={false}
                     position="bottom-left"
                     panelPosition="bottom"
-                    toggleButtonProps={{ style: { marginLeft: '40px' } }}
+                    toggleButtonProps={{
+                        style: { marginLeft: '54px', marginBottom: '15px' },
+                    }}
                 />
             )}
         </QueryClientProvider>

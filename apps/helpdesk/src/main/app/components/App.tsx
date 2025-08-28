@@ -18,6 +18,7 @@ import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
+import AxiomMigrationHighlightTokensToggle from 'pages/common/components/AxiomMigrationHighlightTokensToggle'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
@@ -46,8 +47,11 @@ type Props = {
 }
 
 export default function App({ children }: Props) {
-    const { hasFlag: hasAxiomMigration, isEnabled: isAxiomEnabled } =
-        useAxiomMigration()
+    const {
+        hasFlag: hasAxiomMigration,
+        isEnabled: isAxiomEnabled,
+        isHighlightingTokens: isAxiomHighlightingTokens,
+    } = useAxiomMigration()
     const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -81,6 +85,10 @@ export default function App({ children }: Props) {
         <AppNode
             className={cn({
                 axiom: hasAxiomMigration && isAxiomEnabled,
+                axiomHighlightLegacyTokens:
+                    hasAxiomMigration &&
+                    isAxiomEnabled &&
+                    isAxiomHighlightingTokens,
                 classic: theme.resolvedName === THEME_NAME.Classic,
                 globalNav: hasGlobalNav,
                 uiVisionMilestone1: hasUIVisionMS1,
@@ -117,6 +125,7 @@ export default function App({ children }: Props) {
                 <KeyboardHelp />
                 {hasPhone && <PhoneIntegrationBar />}
                 <OutOfRecoveryCodesModal />
+                <AxiomMigrationHighlightTokensToggle />
             </UIKitRootNodeProvider>
         </AppNode>
     )
