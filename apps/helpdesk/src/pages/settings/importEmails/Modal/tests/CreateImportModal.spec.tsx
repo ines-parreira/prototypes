@@ -386,9 +386,9 @@ describe('CreateImportModal', () => {
             const endDate = urlParams.get('import_window_end')
             expect(startDate).toBeTruthy()
             expect(endDate).toBeTruthy()
-            // Dates should be in YYYY-MM-DD format
-            expect(startDate).toMatch(/\d{4}-\d{2}-\d{2}/)
-            expect(endDate).toMatch(/\d{4}-\d{2}-\d{2}/)
+            // Dates should be in MMM D, YYYY format
+            expect(startDate).toMatch(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/)
+            expect(endDate).toMatch(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/)
         })
 
         it('should call onClose after successful submission', async () => {

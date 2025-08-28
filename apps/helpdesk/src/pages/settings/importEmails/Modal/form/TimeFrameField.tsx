@@ -32,7 +32,9 @@ export const TimeFrameField = ({
                 onSubmit={(startDate, endDate) => {
                     setIsTimespanSelectorOpen(false)
                     setTimeframe(
-                        `${startDate.format('YYYY-MM-DD')} to ${endDate.format('YYYY-MM-DD')}`,
+                        `${startDate.format(
+                            'MMM D, YYYY',
+                        )} to ${endDate.format('MMM D, YYYY')}`,
                     )
                 }}
                 onCancel={() => {
