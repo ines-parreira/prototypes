@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'

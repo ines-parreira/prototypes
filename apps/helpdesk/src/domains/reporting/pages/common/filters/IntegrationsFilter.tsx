@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -81,7 +82,7 @@ export function IntegrationsFilter({
             }))
     }, [value, integrations])
 
-    const integrationOptionGroups = () => {
+    const integrationOptionGroups = useMemo(() => {
         return [
             {
                 options: integrations.map((integration) => ({
@@ -91,7 +92,7 @@ export function IntegrationsFilter({
                 })),
             },
         ]
-    }
+    }, [integrations])
 
     const handleFilterValuesChange = useCallback(
         (values: number[]) => {
@@ -124,6 +125,8 @@ export function IntegrationsFilter({
         }
     }
 
+    const clientSideFilter = useClientSideFilterSearch(integrationOptionGroups)
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
@@ -133,6 +136,7 @@ export function IntegrationsFilter({
             LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
@@ -142,11 +146,15 @@ export function IntegrationsFilter({
             selectedOptions={getSelectedIntegrations()}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}
-            filterOptionGroups={integrationOptionGroups()}
+            filterOptionGroups={clientSideFilter.result}
+            search={clientSideFilter.value}
+            onSearch={clientSideFilter.onSearch}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    integrations.map((integration) => integration.id),
+                    clientSideFilter.result[0].options.map((option) =>
+                        Number(option.value),
+                    ),
                 )
             }}
             onRemoveAll={() => {

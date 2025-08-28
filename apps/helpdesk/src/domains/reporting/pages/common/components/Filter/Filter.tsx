@@ -45,6 +45,7 @@ import FilterName from 'pages/common/forms/FilterInput/FilterName'
 import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 
 type Props = {
+    search?: string
     className?: string
     filterName: string
     filterOptionGroups: FilterOptionGroup[]
@@ -103,6 +104,7 @@ const WithInfiniteScroll = ({
 }
 
 const Filter = ({
+    search,
     className,
     filterName,
     filterOptionGroups,
@@ -225,7 +227,13 @@ const Filter = ({
                         onChange={onChangeLogicalOperator}
                     />
                 )}
-                {showSearch && <DropdownSearch autoFocus onChange={onSearch} />}
+                {showSearch && (
+                    <DropdownSearch
+                        autoFocus
+                        value={search}
+                        onChange={onSearch}
+                    />
+                )}
                 {showQuickSelect && (
                     <DropdownQuickSelect
                         addLabel={FILTER_SELECT_ALL_LABEL}

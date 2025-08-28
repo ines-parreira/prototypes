@@ -138,6 +138,7 @@ export enum FeatureFlagKey {
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
     ReportingDashboardResizeCharts = 'reporting-dashboard-resize-charts',
     ReportingHrtAi = 'linear.project_reporting-hrt-ai.hrt-ai',
+    ReportingImprovementFilterSearch = 'linear.task_CRMREP-4361.feature-improvement-filter-search',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

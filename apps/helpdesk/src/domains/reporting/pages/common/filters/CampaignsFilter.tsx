@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import noop from 'lodash/noop'
 
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     FilterKey,
@@ -105,6 +106,8 @@ export default function CampaignsFilter({
         }
     }
 
+    const clientSideFilter = useClientSideFilterSearch(campaignsOptionGroups)
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
@@ -114,19 +117,24 @@ export default function CampaignsFilter({
             LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
         <Filter
+            search={clientSideFilter.value}
             filterName={FilterLabels[FilterKey.Campaigns]}
             filterErrors={{ warningType }}
             selectedOptions={getSelectedCampaigns}
             logicalOperators={[]}
-            filterOptionGroups={campaignsOptionGroups}
+            filterOptionGroups={clientSideFilter.result}
+            onSearch={clientSideFilter.onSearch}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    campaigns.map((campaign) => campaign.id),
+                    clientSideFilter.result[0].options.map(
+                        (campaign) => campaign.value,
+                    ),
                 )
             }}
             onRemoveAll={() => {

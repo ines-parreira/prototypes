@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import { StoreIntegration, useListStores } from '@gorgias/helpdesk-queries'
 
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -127,12 +128,15 @@ export default function MultiStoreFilter({
         [dispatchUpdate, value.values],
     )
 
+    const clientSideFilter = useClientSideFilterSearch(multiStoreOptionGroups)
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.Stores, LogicalOperatorLabel[value.operator])
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
@@ -142,11 +146,15 @@ export default function MultiStoreFilter({
             selectedOptions={multiStores}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}
-            filterOptionGroups={multiStoreOptionGroups}
+            filterOptionGroups={clientSideFilter.result}
+            search={clientSideFilter.value}
+            onSearch={clientSideFilter.onSearch}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    stores.map((store) => store.store_integration_id),
+                    clientSideFilter.result[0].options.map((store) =>
+                        Number(store.value),
+                    ),
                 )
             }}
             onRemoveAll={() => {

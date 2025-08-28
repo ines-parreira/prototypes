@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -57,6 +58,9 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
+const TEAMS_TITLE = 'Teams'
+const USERS_TITLE = 'Users'
+
 export default function AgentsFilter({
     value = emptyFilter,
     dispatchUpdate,
@@ -87,7 +91,7 @@ export default function AgentsFilter({
 
     const filterOptions = [
         {
-            title: 'Teams',
+            title: TEAMS_TITLE,
             options: [
                 ...teams.map((team) => ({
                     ...team,
@@ -95,8 +99,10 @@ export default function AgentsFilter({
                 })),
             ],
         },
-        { title: 'Users', options: agents },
+        { title: USERS_TITLE, options: agents },
     ]
+
+    const clientSideFilter = useClientSideFilterSearch(filterOptions)
 
     const getSelectedItems = useCallback(() => {
         const agentsInValue = () =>
@@ -173,6 +179,7 @@ export default function AgentsFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.Agents, LogicalOperatorLabel[value.operator])
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
@@ -182,11 +189,17 @@ export default function AgentsFilter({
             selectedOptions={getSelectedItems()}
             selectedLogicalOperator={value.operator}
             logicalOperators={agentsFilterLogicalOperators}
-            filterOptionGroups={filterOptions}
+            search={clientSideFilter.value}
+            onSearch={clientSideFilter.onSearch}
+            filterOptionGroups={clientSideFilter.result}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
+                const agentsGroup = clientSideFilter.result.find(
+                    (group) => group.title === USERS_TITLE,
+                )!
+
                 handleFilterValuesChange(
-                    agents.map((agent) => Number(agent.value)),
+                    agentsGroup.options.map((agent) => Number(agent.value)),
                 )
             }}
             onRemoveAll={() => {

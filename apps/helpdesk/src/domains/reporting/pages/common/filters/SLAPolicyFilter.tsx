@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -88,6 +89,10 @@ export const SLAPolicyFilter = ({
         [handleFilterValuesChange, selectedPolicies],
     )
 
+    const clientSideFilter = useClientSideFilterSearch([
+        { options: filterOptions },
+    ])
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
@@ -97,18 +102,25 @@ export const SLAPolicyFilter = ({
             LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
         <Filter
             filterName={FilterLabels[FilterKey.SlaPolicies]}
-            filterOptionGroups={[{ options: filterOptions }]}
+            filterOptionGroups={clientSideFilter.result}
+            search={clientSideFilter.value}
+            onSearch={clientSideFilter.onSearch}
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
             logicalOperators={[]}
             onChangeLogicalOperator={_noop}
             onSelectAll={() => {
-                handleFilterValuesChange(policies.map((policy) => policy.uuid))
+                handleFilterValuesChange(
+                    clientSideFilter.result[0].options.map(
+                        (policy) => policy.value,
+                    ),
+                )
             }}
             onRemoveAll={() => {
                 handleFilterValuesChange([])

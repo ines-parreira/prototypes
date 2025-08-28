@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { getCustomFieldValueSerializer } from 'domains/reporting/models/queryFactories/utils'
 import {
     CustomFieldFilter,
@@ -145,6 +146,8 @@ export default function CustomFieldsFilter({
         }
     }
 
+    const clientSideFilter = useClientSideFilterSearch([{ options }])
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
@@ -155,18 +158,23 @@ export default function CustomFieldsFilter({
             LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
         <Filter
             filterName={filterName}
-            filterOptionGroups={[{ options }]}
+            search={clientSideFilter.value}
+            onSearch={clientSideFilter.onSearch}
+            filterOptionGroups={clientSideFilter.result}
             selectedOptions={selectedOptions}
             logicalOperators={customFieldsFilterLogicalOperators}
             selectedLogicalOperator={value.operator}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
-                handleFilterValuesChange(options.map((tag) => tag.value))
+                handleFilterValuesChange(
+                    clientSideFilter.result[0].options.map((tag) => tag.value),
+                )
             }}
             onRemoveAll={() => {
                 handleFilterValuesChange([])

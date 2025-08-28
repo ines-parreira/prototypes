@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import isString from 'lodash/isString'
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
@@ -64,6 +65,16 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
+function normalizeChannelsById(channels: Channel[]) {
+    return channels.reduce<Record<Channel['id'], Channel>>(
+        (result, channel) => {
+            result[channel.id] = channel
+            return result
+        },
+        {},
+    )
+}
+
 export function ChannelsFilter({
     value = emptyFilter,
     dispatchUpdate,
@@ -79,7 +90,7 @@ export function ChannelsFilter({
     const channels = filterChannels(getChannels(), channelsFilter).filter(
         (channel) => channel?.slug !== TicketChannel.InternalNote,
     )
-    const allChannelsSlugs = channels.map((channel) => channel.slug)
+    const normalizedChannels = normalizeChannelsById(channels)
 
     const getSelectedChannels = () => {
         return channels
@@ -87,7 +98,7 @@ export function ChannelsFilter({
             .map((channel) => ({ label: channel.name, value: channel.id }))
     }
 
-    const channelOptionGroups = () => {
+    const channelOptionGroups = useMemo(() => {
         return [
             {
                 options: channels.map((channel) => ({
@@ -96,10 +107,10 @@ export function ChannelsFilter({
                 })),
             },
         ]
-    }
+    }, [channels])
 
     const onOptionChange = (opt: DropdownOption) => {
-        const channel = channels.find((channel) => channel.id === opt.value)
+        const channel = normalizedChannels[opt.value]
 
         if (channel) {
             if (value.values.includes(channel.slug)) {
@@ -138,6 +149,8 @@ export function ChannelsFilter({
         [dispatchUpdate, value.values],
     )
 
+    const clientSideFilter = useClientSideFilterSearch(channelOptionGroups)
+
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
@@ -147,6 +160,7 @@ export function ChannelsFilter({
             LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
+        clientSideFilter.onClear()
     }
 
     return (
@@ -156,9 +170,21 @@ export function ChannelsFilter({
             selectedOptions={getSelectedChannels()}
             selectedLogicalOperator={value.operator}
             logicalOperators={channelsFilterLogicalOperators}
-            filterOptionGroups={channelOptionGroups()}
+            search={clientSideFilter.value}
+            filterOptionGroups={clientSideFilter.result}
+            onSearch={clientSideFilter.onSearch}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
+                const allChannelsSlugs =
+                    clientSideFilter.result[0].options.reduce<string[]>(
+                        (result, option) => {
+                            const channel = normalizedChannels[option.value]
+                            if (channel) result.push(channel.slug)
+                            return result
+                        },
+                        [],
+                    )
+
                 handleFilterValuesChange(allChannelsSlugs)
             }}
             onRemoveAll={() => {
