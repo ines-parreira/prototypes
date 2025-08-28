@@ -38,7 +38,7 @@ describe('TicketInfobarNavigation', () => {
     it('should render the "AI Feedback" tab when the `hasAIFeedback` prop is true', () => {
         render(<TicketInfobarNavigation hasAIFeedback />)
 
-        const button = screen.getByLabelText('ai')
+        const button = screen.getByLabelText('ai-agent-feedback')
         expect(button).toBeInTheDocument()
     })
 
@@ -56,7 +56,7 @@ describe('TicketInfobarNavigation', () => {
     it('should change to the "Customer" tab when that icon is clicked', async () => {
         render(<TicketInfobarNavigation />)
 
-        const button = screen.getByLabelText('user').closest('button')
+        const button = screen.getByLabelText('customer-info').closest('button')
         await userEvent.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
@@ -65,7 +65,9 @@ describe('TicketInfobarNavigation', () => {
     it('should change to the "AI Feedback" tab when that icon is clicked', async () => {
         render(<TicketInfobarNavigation hasAIFeedback />)
 
-        const button = screen.getByLabelText('ai').closest('button')
+        const button = screen
+            .getByLabelText('ai-agent-feedback')
+            .closest('button')
         await userEvent.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)

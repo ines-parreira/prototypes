@@ -30,7 +30,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
             },
             {
                 name: TicketInfobarTab.Customer,
-                icon: 'user',
+                icon: 'customer-info',
                 onClick: () => {
                     onChangeTab(TicketInfobarTab.Customer)
                 },
@@ -39,7 +39,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                 ? [
                       {
                           name: TicketInfobarTab.AIFeedback,
-                          icon: 'ai',
+                          icon: 'ai-agent-feedback',
                           onClick: () => {
                               onChangeTab(TicketInfobarTab.AIFeedback)
                           },
