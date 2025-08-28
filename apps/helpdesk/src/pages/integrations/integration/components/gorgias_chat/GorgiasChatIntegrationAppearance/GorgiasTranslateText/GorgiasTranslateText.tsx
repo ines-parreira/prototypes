@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { get, set } from 'lodash'
 import { connect } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
@@ -23,6 +22,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -136,10 +136,12 @@ function GorgiasTranslateText({
         },
     )
 
-    const renameContactFormEnabled =
-        useFlags()[FeatureFlagKey.ChatRenameContactForm]
-    const privacyPolicyDisclaimerFeatureFlagEnabled =
-        useFlags()[FeatureFlagKey.ChatPrivacyPolicyDisclaimer]
+    const renameContactFormEnabled = useFlag(
+        FeatureFlagKey.ChatRenameContactForm,
+    )
+    const privacyPolicyDisclaimerFeatureFlagEnabled = useFlag(
+        FeatureFlagKey.ChatPrivacyPolicyDisclaimer,
+    )
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
 

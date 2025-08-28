@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
@@ -20,8 +20,9 @@ export const CustomizeToneOfVoiceBlock = ({ integrationId }: Props) => {
             (integrationId && { id: integrationId }) || {},
         )
     }, [integrationId])
-    const renameContactFormEnabled =
-        useFlags()[FeatureFlagKey.ChatRenameContactForm]
+    const renameContactFormEnabled = useFlag(
+        FeatureFlagKey.ChatRenameContactForm,
+    )
 
     return (
         <Alert

@@ -5,11 +5,11 @@ import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import classnames from 'classnames'
 import { List } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import noise from 'assets/img/integrations/noise.svg'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
@@ -143,10 +143,12 @@ const ChatIntegrationPreview = (props: Props) => {
         useMainColorOutsideBusinessHours,
     } = props
 
-    const isControlBotLabelEnabled =
-        useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
-    const isControlUseMainColorOutsideBusinessHoursEnabled =
-        useFlags()[FeatureFlagKey.ChatControlOutsideBusinessHoursColor]
+    const isControlBotLabelEnabled = useFlag(
+        FeatureFlagKey.ChatControlBotLabelVisibility,
+    )
+    const isControlUseMainColorOutsideBusinessHoursEnabled = useFlag(
+        FeatureFlagKey.ChatControlOutsideBusinessHoursColor,
+    )
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
 

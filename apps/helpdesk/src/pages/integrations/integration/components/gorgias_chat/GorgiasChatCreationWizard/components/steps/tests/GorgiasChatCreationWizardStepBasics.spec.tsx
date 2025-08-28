@@ -2,13 +2,12 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
@@ -17,6 +16,9 @@ import Wizard from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
 import GorgiasChatCreationWizardStepBasics from '../GorgiasChatCreationWizardStepBasics'
+
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
@@ -221,9 +223,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     })
 
     it('should include languages when creating chat', () => {
-        mockFlags({
-            [FeatureFlagKey.ChatMultiLanguages]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
                 <Provider store={mockStore(mockStoreState)}>
@@ -250,9 +250,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     })
 
     it('should include languages when updating chat', () => {
-        mockFlags({
-            [FeatureFlagKey.ChatMultiLanguages]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>

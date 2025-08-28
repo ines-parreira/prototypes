@@ -1,8 +1,8 @@
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
+import { useFlag } from 'core/flags'
 import { THEME_NAME } from 'core/theme'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
@@ -52,8 +52,9 @@ const CustomizedChatLauncher: React.FC<Props> = ({
     hideButton,
     isClosed,
 }) => {
-    const isLauncherCustomizationEnabled =
-        useFlags()[FeatureFlagKey.ChatLauncherCustomization]
+    const isLauncherCustomizationEnabled = useFlag(
+        FeatureFlagKey.ChatLauncherCustomization,
+    )
 
     if (mainFontFamily !== GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT) {
         addLinkToDownloadFonts([mainFontFamily])

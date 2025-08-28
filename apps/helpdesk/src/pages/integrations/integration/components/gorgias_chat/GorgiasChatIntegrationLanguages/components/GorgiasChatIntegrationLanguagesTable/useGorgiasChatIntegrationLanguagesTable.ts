@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import {
@@ -12,6 +11,7 @@ import {
     mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
@@ -43,7 +43,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
     loading,
 }: UseGorgiasChatIntegrationLanguagesTableProps) => {
     const [languages, setLanguages] = useState<LanguageItem[]>([])
-    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
+    const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
 
     const languagesAvailable = useMemo(
         () =>

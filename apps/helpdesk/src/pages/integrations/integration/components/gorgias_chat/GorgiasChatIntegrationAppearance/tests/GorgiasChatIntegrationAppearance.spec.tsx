@@ -3,7 +3,6 @@ import React, { ComponentProps } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -18,6 +17,7 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
 import { user } from 'fixtures/users'
 import {
@@ -43,6 +43,9 @@ const defaultState = {
     }),
     entities: entitiesInitialState,
 } as unknown as RootState
+
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
@@ -126,10 +129,17 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             escape: realCSS?.escape,
         }
 
-        mockFlags({
-            [FeatureFlagKey.ChatEnableTranslationEdit]: true,
-            [FeatureFlagKey.ChatControlBotLabelVisibility]: true,
-            [FeatureFlagKey.ChatControlOutsideBusinessHoursColor]: true,
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatEnableTranslationEdit) {
+                return true
+            }
+            if (key === FeatureFlagKey.ChatControlBotLabelVisibility) {
+                return true
+            }
+            if (key === FeatureFlagKey.ChatControlOutsideBusinessHoursColor) {
+                return true
+            }
+            return defaultValue
         })
     })
 
@@ -736,8 +746,11 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
         })
 
         it('should render inputs for header logo and avatar logo', () => {
-            mockFlags({
-                [FeatureFlagKey.ChatHeaderPictureStyle]: true,
+            mockUseFlag.mockImplementation((key, defaultValue) => {
+                if (key === FeatureFlagKey.ChatHeaderPictureStyle) {
+                    return true
+                }
+                return defaultValue
             })
 
             const { container } = render(

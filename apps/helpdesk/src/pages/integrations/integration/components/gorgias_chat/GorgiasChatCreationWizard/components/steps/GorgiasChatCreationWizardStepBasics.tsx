@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { Button, Label, Tooltip } from '@gorgias/axiom'
@@ -28,6 +27,7 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
+import { useFlag } from 'core/flags'
 import { Label as DesignSystemLabel } from 'gorgias-design-system/Input/Label'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -148,9 +148,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
-    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
+    const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
 
     const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
         Map<any, any> | false

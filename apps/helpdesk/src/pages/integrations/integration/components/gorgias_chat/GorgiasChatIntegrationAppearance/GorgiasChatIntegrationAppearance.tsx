@@ -3,7 +3,6 @@ import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { produce } from 'immer'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { set } from 'lodash'
 import _cloneDeep from 'lodash/cloneDeep'
 import _defaults from 'lodash/defaults'
@@ -45,6 +44,7 @@ import {
     LanguageItem,
 } from 'config/integrations/gorgias_chat'
 import { LanguageChat } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
     GorgiasChatAvatarImageType,
@@ -238,21 +238,24 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const integrationChat = integration.toJS() as GorgiasChatIntegration
     const chatApplicationId = integrationChat?.meta?.app_id
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
-    const chatBackgroundColorStyleEnabled =
-        useFlags()[FeatureFlagKey.ChatBackgroundColorStyle]
-    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
-    const viewTranslateEdit =
-        useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
-    const shouldShowLauncherCustomization =
-        useFlags()[FeatureFlagKey.ChatLauncherCustomization]
-    const isChatHeaderPictureStyleEnabled =
-        useFlags()[FeatureFlagKey.ChatHeaderPictureStyle]
-    const isControlBotLabelEnabled =
-        useFlags()[FeatureFlagKey.ChatControlBotLabelVisibility]
-    const isControlUseMainColorOutsideBusinessHoursEnabled =
-        useFlags()[FeatureFlagKey.ChatControlOutsideBusinessHoursColor]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
+    const chatBackgroundColorStyleEnabled = useFlag(
+        FeatureFlagKey.ChatBackgroundColorStyle,
+    )
+    const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
+    const viewTranslateEdit = useFlag(FeatureFlagKey.ChatEnableTranslationEdit)
+    const shouldShowLauncherCustomization = useFlag(
+        FeatureFlagKey.ChatLauncherCustomization,
+    )
+    const isChatHeaderPictureStyleEnabled = useFlag(
+        FeatureFlagKey.ChatHeaderPictureStyle,
+    )
+    const isControlBotLabelEnabled = useFlag(
+        FeatureFlagKey.ChatControlBotLabelVisibility,
+    )
+    const isControlUseMainColorOutsideBusinessHoursEnabled = useFlag(
+        FeatureFlagKey.ChatControlOutsideBusinessHoursColor,
+    )
 
     const storeIntegrations = storeIntegrationsProp as List<Map<any, any>>
 
