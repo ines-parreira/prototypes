@@ -17,6 +17,8 @@ import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { IntermediaryNode } from './nodes/IntermediaryNode'
+import { IvrMenuNode } from './nodes/IvrMenuNode'
+import { IvrOptionNode } from './nodes/IvrOptionNode'
 import { PlayMessageNode } from './nodes/PlayMessageNode'
 import { SendToSMSNode } from './nodes/SendToSMSNode'
 import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
@@ -28,6 +30,8 @@ import { VoiceFlowEdge } from './VoiceFlowEdge'
 
 const nodeTypes = {
     [VoiceFlowNodeType.IncomingCall]: IncomingCallNode,
+    [VoiceFlowNodeType.IvrMenu]: IvrMenuNode,
+    [VoiceFlowNodeType.IvrOption]: IvrOptionNode,
     [VoiceFlowNodeType.EndCall]: EndCallNode,
     [VoiceFlowNodeType.PlayMessage]: PlayMessageNode,
     [VoiceFlowNodeType.SendToVoicemail]: SendToVoicemailNode,

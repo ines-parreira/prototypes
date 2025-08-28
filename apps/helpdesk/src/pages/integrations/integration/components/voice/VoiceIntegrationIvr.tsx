@@ -14,7 +14,7 @@ import {
 } from 'models/integration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { updatePhoneIvrConfiguration } from 'pages/integrations/integration/components/phone/actions'
-import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray'
+import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import settingsCss from 'pages/settings/settings.less'
 

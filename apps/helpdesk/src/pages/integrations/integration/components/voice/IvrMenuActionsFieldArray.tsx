@@ -1,88 +1,85 @@
-import classnames from 'classnames'
-import { produce } from 'immer'
+import { Box, Button } from '@gorgias/axiom'
+import { BranchOptions } from '@gorgias/helpdesk-types'
 
-import { Button } from '@gorgias/axiom'
+import { useFieldArray, useWatch } from 'core/forms'
 
-import {
-    IvrForwardCallMenuAction,
-    IvrMenuAction,
-    IvrMenuActionType,
-} from 'models/integration/types'
-
-import IvrMenuActionField from './IvrMenuActionField'
-
-import css from './VoiceIntegrationIvr.less'
+import { END_CALL_NODE } from './flows/constants'
+import { IvrMenuActionFieldItem } from './IvrMenuActionsFieldItem'
 
 type Props = {
-    value: IvrMenuAction[]
-    onChange: (value: IvrMenuAction[]) => void
+    name: string
+    onAddOption?: (option: BranchOptions) => void
+    onRemoveOption?: (optionIndex: number) => void
 }
 
-const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
-    const { value, onChange } = props
+export function IvrMenuActionsFieldArray({
+    name,
+    onAddOption,
+    onRemoveOption,
+}: Props): JSX.Element {
+    const { fields, insert, remove } = useFieldArray({
+        name,
+    })
+    const fieldValue = useWatch({ name })
 
-    const addAction = () => {
-        const digit = (value.length + 1).toString()
-        const newAction: IvrForwardCallMenuAction = {
-            digit,
-            action: IvrMenuActionType.ForwardToExternalNumber,
-            forward_call: {
-                phone_number: '',
-            },
+    const handleAddOption = () => {
+        const nextAvailableDigit = getNextAvailableDigit(fieldValue)
+
+        if (nextAvailableDigit) {
+            const newOption: BranchOptions = {
+                branch_name: '',
+                input_digit: nextAvailableDigit,
+                // TODO update
+                next_step_id: END_CALL_NODE.id,
+            }
+            insert(Number(nextAvailableDigit) - 1, newOption)
+            onAddOption?.(newOption)
         }
-
-        onChange([...value, newAction])
     }
 
-    const removeAction = (index: number) => {
-        onChange(
-            produce(value, (draft) => {
-                draft.splice(index, 1)
-                draft.map(
-                    (action, index) => (action.digit = (index + 1).toString()),
-                )
-            }),
-        )
-    }
-
-    const updateAction = (index: number, action: IvrMenuAction) => {
-        onChange(
-            produce(value, (draft) => {
-                draft[index] = action
-            }),
-        )
+    const handleRemoveOption = (index: number) => {
+        remove(index)
+        onRemoveOption?.(index)
     }
 
     return (
-        <div>
-            <h4 className={classnames(css.header, css.inner)}>Menu options</h4>
-            <p>
-                Options are triggered by Dialpad and route calls to team
-                members, SMS or external phone number
-            </p>
-
-            {value.map((action: IvrMenuAction, index: number) => {
+        <Box
+            gap="var(--layout-spacing-s)"
+            flexDirection="column"
+            alignItems="flex-start"
+        >
+            {fields.map((field, index) => {
                 return (
-                    <div key={index}>
-                        <IvrMenuActionField
-                            value={action}
-                            onChange={(action) => updateAction(index, action)}
-                            onRemove={() => removeAction(index)}
-                        />
-                    </div>
+                    <IvrMenuActionFieldItem
+                        key={field.id}
+                        index={index}
+                        name={name}
+                        onRemove={() => handleRemoveOption(index)}
+                        isRemovable={fields.length > 2}
+                    />
                 )
             })}
-            {value.length < 9 && (
+            {fields.length < 9 && (
                 <Button
                     intent="secondary"
-                    onClick={addAction}
+                    onClick={handleAddOption}
                     leadingIcon="add"
                 >
                     Add option
                 </Button>
             )}
-        </div>
+        </Box>
     )
 }
 
-export default IvrMenuActionsFieldArray
+const getNextAvailableDigit = (
+    branchOptions: BranchOptions[],
+): string | null => {
+    const digits = branchOptions.map((option) => option.input_digit)
+    for (let i = 1; i <= 9; i++) {
+        if (!digits.includes(i.toString())) {
+            return i.toString()
+        }
+    }
+    return null
+}

@@ -16,11 +16,11 @@ import {
 import { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import IvrMenuActionsFieldArray from '../IvrMenuActionsFieldArray'
+import IvrMenuActionsFieldArray from '../DEPRECATED_IvrMenuActionsFieldArray'
 
 const mockStore = configureMockStore([thunk])
 
-describe('<IvrMenuActionsFieldArray />', () => {
+describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {
     const onChange: jest.MockedFunction<(value: IvrMenuAction[]) => void> =
         jest.fn()
 

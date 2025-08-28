@@ -1,5 +1,7 @@
 import { Node } from '@xyflow/react'
 
+import { VoiceFlowNodeType } from 'pages/integrations/integration/components/voice/flows/constants'
+
 import {
     buildIncomingEdgesMap,
     createFlowGraph,
@@ -377,6 +379,29 @@ describe('findPathFromRoot', () => {
             getNextNodes,
         )
         expect(result).toEqual(['start', 'decision', 'branch-a'])
+    })
+
+    it('should find path when there are only 2 nodes', () => {
+        const nodes = [
+            {
+                id: 'parent',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    next: 'child',
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'child',
+                type: VoiceFlowNodeType.IvrMenu,
+                data: {
+                    next: undefined,
+                },
+                position: { x: 100, y: 100 },
+            },
+        ]
+        const result = findPathFromRoot(nodes, 'parent', 'child', getNextNodes)
+        expect(result).toEqual(['parent', 'child'])
     })
 
     it('should return null if target is unreachable', () => {

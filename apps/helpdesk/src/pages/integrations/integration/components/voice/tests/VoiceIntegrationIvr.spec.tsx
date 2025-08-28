@@ -19,7 +19,7 @@ import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 
 const mockStore = configureMockStore([thunk])
 jest.mock(
-    'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray',
+    'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray',
     () => () => <div>test actions</div>,
 )
 
