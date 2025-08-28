@@ -355,13 +355,20 @@ export const IntentTableWithDefaultState = ({
     const paginatedIntents = useAppSelector(getPaginatedIntents)
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
-    const shouldRemoveButtonBorder =
+    const shouldUseNoPagination =
         paginatedIntents &&
-        paginatedIntents?.allIntents.length <= paginatedIntents.perPage &&
-        paginatedIntents.intents.length !== 0
+        paginatedIntents?.allIntents.length <= paginatedIntents.perPage
+
+    const shouldRemoveButtonBorder =
+        shouldUseNoPagination && paginatedIntents.intents.length !== 0
 
     return (
-        <div className={intentTableCss.chartContainer}>
+        <div
+            className={classNames(intentTableCss.chartContainer, {
+                [intentTableCss.chartContainerNoPagination]:
+                    shouldUseNoPagination,
+            })}
+        >
             <ChartCard
                 title={tableTitle}
                 hint={tableHint}

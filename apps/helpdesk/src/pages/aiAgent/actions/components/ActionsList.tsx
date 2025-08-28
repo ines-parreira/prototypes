@@ -98,7 +98,7 @@ export default function ActionsList({ actions }: Props) {
         <StoreTrackstarProvider storeName={shopName} storeType={shopType}>
             <StoreAppsProvider storeName={shopName} storeType={shopType}>
                 <GuidanceReferenceProvider actions={sortedActions}>
-                    <TableWrapper>
+                    <TableWrapper className={css.tableWrapper}>
                         <TableHead>
                             <HeaderCellProperty
                                 title="ACTION NAME"

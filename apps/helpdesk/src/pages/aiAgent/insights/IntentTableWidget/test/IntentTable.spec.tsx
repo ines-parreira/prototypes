@@ -247,6 +247,32 @@ describe('Intent Table components', () => {
             expect(screen.getByText('Intent')).toBeInTheDocument()
         })
 
+        it('do not show pagination when total equals perPage', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                perPage: 2,
+            }
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: { paginatedIntents: paginatedIntents },
+                    },
+                },
+            })
+
+            renderWithProvider(
+                <IntentTable
+                    paginatedIntents={paginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            expect(screen.queryByText('1')).toBeNull()
+            expect(screen.getByText('Intent')).toBeInTheDocument()
+        })
+
         it('do not show customer satisfaction drilldown when agentId is not present', () => {
             const store = mockStore({
                 ...initialState,
@@ -348,6 +374,96 @@ describe('Intent Table components', () => {
             fireEvent.click(expandIcons[0])
 
             expect(screen.getByText('order/track/details')).toBeInTheDocument()
+        })
+
+        it('adds and removes header shadow on horizontal scroll', () => {
+            const store = mockStore(initialState)
+
+            const { container } = renderWithProvider(
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const tableWrapper = container.querySelector(
+                '.tableWrapper',
+            ) as HTMLDivElement
+            expect(tableWrapper).toBeTruthy()
+            const scrollContainer = tableWrapper.parentElement as HTMLDivElement
+            expect(scrollContainer).toBeTruthy()
+
+            const headerEl = screen.getByText(
+                TableLabels[IntentTableColumn.IntentName],
+            ) as HTMLElement
+
+            const hasWithShadow = (el: HTMLElement) => {
+                let node: HTMLElement | null = el
+                while (node) {
+                    if (
+                        typeof (node as HTMLElement).className === 'string' &&
+                        (node as HTMLElement).className.includes('withShadow')
+                    ) {
+                        return true
+                    }
+                    node = node.parentElement
+                }
+                return false
+            }
+
+            expect(hasWithShadow(headerEl)).toBe(false)
+
+            // Scroll right: should add shadow on first header cell
+            scrollContainer.scrollLeft = 50
+            fireEvent.scroll(scrollContainer)
+            expect(hasWithShadow(headerEl)).toBe(true)
+
+            // Scroll back to start: should remove shadow
+            scrollContainer.scrollLeft = 0
+            fireEvent.scroll(scrollContainer)
+            expect(hasWithShadow(headerEl)).toBe(false)
+        })
+
+        it('renders children skeleton with child-width path when loading after expand', () => {
+            // Force children loading state
+            useIntentQueryMock.mockReturnValue({ data: [], isLoading: true })
+
+            // Mock widths so we can assert which path is used
+            const configModule = require('pages/aiAgent/insights/IntentTableWidget/IntentTableConfig')
+            const childWidthSpy = jest
+                .spyOn(configModule, 'getChildrenSkeletonColumnWidth')
+                .mockReturnValue(200)
+            const parentWidthSpy = jest
+                .spyOn(configModule, 'getColumnWidth')
+                .mockReturnValue(100)
+
+            const store = mockStore(initialState)
+
+            const { container } = renderWithProvider(
+                <IntentTable
+                    paginatedIntents={defaultPaginatedIntents}
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            // Expand first row to trigger lazy load skeleton (intentLevel + 1 branch)
+            const expandIcons = screen.getAllByText('arrow_right')
+            expect(expandIcons.length).toBeGreaterThan(0)
+            fireEvent.click(expandIcons[0])
+
+            const skeleton = container.querySelector(
+                '.skeletonWrapper',
+            ) as HTMLDivElement
+            expect(skeleton).toBeTruthy()
+            // Skeleton width should be childWidth - 36 = 164px when using children path
+            expect(skeleton.getAttribute('style') || '').toMatch(
+                /width:\s*164px/i,
+            )
+
+            parentWidthSpy.mockRestore()
+            childWidthSpy.mockRestore()
         })
     })
     describe('LoadingTableRows', () => {
@@ -530,6 +646,298 @@ describe('Intent Table components', () => {
             expect(
                 screen.queryByText('Test Description'),
             ).not.toBeInTheDocument()
+        })
+
+        it('applies chartContainerNoPagination class when all intents fit in one page', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                allIntents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                ],
+                intents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                ],
+                perPage: 10,
+            } as unknown as PaginatedIntents
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            const { container } = renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const divs = container.querySelectorAll('div')
+            let chartContainer: HTMLDivElement | null = null
+            divs.forEach((div) => {
+                if (div.className && div.className.includes('chartContainer')) {
+                    chartContainer = div as HTMLDivElement
+                }
+            })
+
+            expect(chartContainer).toBeTruthy()
+            expect(chartContainer!.className).toMatch(/chartContainer/)
+            expect(chartContainer!.className).toMatch(
+                /chartContainerNoPagination/,
+            )
+        })
+
+        it('does not apply chartContainerNoPagination class when pagination is needed', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                allIntents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                    {
+                        id: 'order::return',
+                        [IntentTableColumn.IntentName]: 'order/return',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 15,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.0,
+                    },
+                ],
+                intents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                ],
+                perPage: 2,
+            } as unknown as PaginatedIntents
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            const { container } = renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const divs = container.querySelectorAll('div')
+            let chartContainer: HTMLDivElement | null = null
+            divs.forEach((div) => {
+                if (div.className && div.className.includes('chartContainer')) {
+                    chartContainer = div as HTMLDivElement
+                }
+            })
+
+            expect(chartContainer).toBeTruthy()
+            expect(chartContainer!.className).toMatch(/chartContainer/)
+            expect(chartContainer!.className).not.toMatch(
+                /chartContainerNoPagination/,
+            )
+        })
+
+        it('does not apply chartContainerNoPagination class when paginatedIntents is null', () => {
+            useAppSelectorMock.mockReturnValue(null)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: null,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            const { container } = renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const divs = container.querySelectorAll('div')
+            let chartContainer: HTMLDivElement | null = null
+            divs.forEach((div) => {
+                if (div.className && div.className.includes('chartContainer')) {
+                    chartContainer = div as HTMLDivElement
+                }
+            })
+
+            expect(chartContainer).toBeTruthy()
+            expect(chartContainer!.className).toMatch(/chartContainer/)
+            expect(chartContainer!.className).not.toMatch(
+                /chartContainerNoPagination/,
+            )
+        })
+
+        it('applies chartContainerNoPagination class when intents length equals perPage', () => {
+            const paginatedIntents = {
+                ...defaultPaginatedIntents,
+                allIntents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                ],
+                intents: [
+                    {
+                        id: 'order::track',
+                        [IntentTableColumn.IntentName]: 'order/track',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 10,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 4.5,
+                    },
+                    {
+                        id: 'order::cancel',
+                        [IntentTableColumn.IntentName]: 'order/cancel',
+                        [IntentTableColumn.SuccessRateUpliftOpportunity]: 20,
+                        [IntentTableColumn.AvgCustomerSatisfaction]: 3.8,
+                    },
+                ],
+                perPage: 2,
+            } as unknown as PaginatedIntents
+
+            useAppSelectorMock.mockReturnValue(paginatedIntents)
+            useStatsFiltersMock.mockReturnValue({
+                cleanStatsFilters: filters,
+                userTimezone,
+            } as unknown as ReturnType<typeof useStatsFilters>)
+            const store = mockStore({
+                ...initialState,
+                ui: {
+                    stats: {
+                        insightsSlice: {
+                            paginatedIntents: paginatedIntents,
+                            isSortingLoading: false,
+                            sorting: {
+                                field: IntentTableColumn.SuccessRateUpliftOpportunity,
+                                direction: 'desc',
+                                isLoading: false,
+                            },
+                        },
+                    },
+                },
+            })
+
+            const { container } = renderWithProvider(
+                <IntentTableWithDefaultState
+                    tableTitle="Test Table"
+                    intentLevel={INTENT_LEVEL}
+                />,
+                store,
+            )
+
+            const divs = container.querySelectorAll('div')
+            let chartContainer: HTMLDivElement | null = null
+            divs.forEach((div) => {
+                if (div.className && div.className.includes('chartContainer')) {
+                    chartContainer = div as HTMLDivElement
+                }
+            })
+
+            expect(chartContainer).toBeTruthy()
+            expect(chartContainer!.className).toMatch(/chartContainer/)
+            expect(chartContainer!.className).toMatch(
+                /chartContainerNoPagination/,
+            )
+
+            // Also verify no pagination numbers are rendered
+            expect(screen.queryByText('1')).toBeNull()
         })
     })
 })

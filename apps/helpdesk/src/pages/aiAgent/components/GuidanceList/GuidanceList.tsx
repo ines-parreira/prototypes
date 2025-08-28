@@ -121,7 +121,11 @@ export const GuidanceList = ({
     }, [currentStoreIntegrationId, storeIntegrations])
 
     return (
-        <TableWrapper>
+        <TableWrapper
+            className={classNames({
+                [css.tableWrapper]: guidanceArticles.length > 0,
+            })}
+        >
             <TableHead>
                 <HeaderCellProperty
                     title="Guidance name"
