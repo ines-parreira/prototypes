@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import {
@@ -70,7 +68,7 @@ describe('BillingScheduledDowngrades', () => {
         expect(getByText(type)).toBeInTheDocument()
         const date = 'March 31st 2023'
         expect(getByText(date)).toBeInTheDocument()
-        const counter = '300 tickets/month'
+        const counter = `300 tickets/${basicMonthlyHelpdeskPlan.cadence}`
         expect(getByText(counter)).toBeInTheDocument()
     })
 
