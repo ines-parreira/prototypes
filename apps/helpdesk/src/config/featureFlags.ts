@@ -32,6 +32,7 @@ export enum FeatureFlagKey {
     AiAgentSupportActionInGuidance = 'ai-agent-support-action-in-guidance',
     AiJourneyCustomInstructions = 'ai-journey-custom-instructions',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
+    AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
