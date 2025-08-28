@@ -45,7 +45,11 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
+import {
+    canSend,
+    getIsTranslationPending,
+    getNewMessageSource,
+} from 'state/newMessage/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import {
@@ -95,6 +99,7 @@ export const TicketDetailContainer = ({
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
+    isTranslationPending,
     newMessage,
     newMessageSource,
     prepareTicketMessage,
@@ -425,7 +430,9 @@ export const TicketDetailContainer = ({
                         e.stopImmediatePropagation()
                     }
 
-                    void submit({})
+                    if (!isTranslationPending) {
+                        void submit({})
+                    }
                 },
             },
             SUBMIT_CLOSE_TICKET: {
@@ -434,7 +441,10 @@ export const TicketDetailContainer = ({
                         e.preventDefault()
                         e.stopImmediatePropagation()
                     }
-                    void submit({ status: TicketStatus.Closed })
+
+                    if (!isTranslationPending) {
+                        void submit({ status: TicketStatus.Closed })
+                    }
                 },
             },
         })
@@ -672,6 +682,7 @@ const connector = connect(
         ticket: state.ticket,
         newMessage: state.newMessage,
         canSendMessage: canSend(state),
+        isTranslationPending: getIsTranslationPending(state),
         newMessageSource: getNewMessageSource(state),
     }),
     {

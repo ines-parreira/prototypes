@@ -22,6 +22,7 @@ import {
 import {
     canSend as getCanSend,
     hasContent as getHasContent,
+    getIsTranslationPending,
 } from 'state/newMessage/selectors'
 import { hasContentlessAction as getHasContentlessAction } from 'state/ticket/selectors'
 
@@ -72,6 +73,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
     const ticket = useAppSelector((state) => state.ticket)
+    const isTranslationPending = useAppSelector(getIsTranslationPending)
 
     const tip = useMemo(() => _sample(TIPS), [])
 
@@ -112,6 +114,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const text = hasContent || !hasContentlessAction ? 'Send' : 'Apply Macro'
 
     const showConfirm = !hasTitle && !isUpdating && !hasSetSubjectAction
+    const isButtonDisabled = !canSend || isTranslationPending
 
     return (
         <div
@@ -130,7 +133,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         id="submit-button"
                         type="submit"
                         className="mr-2"
-                        isDisabled={!canSend}
+                        isDisabled={isButtonDisabled}
                         tabIndex={5}
                         isLoading={isLoading}
                     >
@@ -142,7 +145,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         type="submit"
                         confirmationContent={titleConfirmation}
                         className="mr-2"
-                        isDisabled={!canSend}
+                        isDisabled={isButtonDisabled}
                         tabIndex={5}
                         isLoading={isLoading}
                     >
@@ -165,7 +168,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         id="submit-and-close-button"
                         type="submit"
                         intent="secondary"
-                        isDisabled={!canSend}
+                        isDisabled={isButtonDisabled}
                         onClick={() => {
                             trackSendAndClosedClicked()
                             setTicketStatus(TicketStatus.Closed)
@@ -180,7 +183,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         type="submit"
                         confirmationContent={titleConfirmation}
                         intent="secondary"
-                        isDisabled={!canSend}
+                        isDisabled={isButtonDisabled}
                         onConfirm={() => {
                             trackSendAndClosedClicked()
                             setTicketStatus(TicketStatus.Closed)

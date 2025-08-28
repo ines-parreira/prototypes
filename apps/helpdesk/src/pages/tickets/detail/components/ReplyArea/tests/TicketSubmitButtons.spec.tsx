@@ -193,4 +193,34 @@ describe('<TicketSubmitButtons />', () => {
 
         expect(queryByText(/ConfirmButtonMock/)).not.toBeInTheDocument()
     })
+
+    it('should disable buttons when translation is pending', () => {
+        const { getAllByRole } = render(
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: 'abc',
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        state: {
+                            isTranslationPending: true,
+                        },
+                    }),
+                })}
+            >
+                <TicketSubmitButtons setTicketStatus={jest.fn()} />
+            </Provider>,
+        )
+
+        const buttons = getAllByRole('button', { name: /Send/ })
+
+        expect(buttons[0]).toBeDisabled()
+        expect(buttons[1]).toBeDisabled()
+    })
 })

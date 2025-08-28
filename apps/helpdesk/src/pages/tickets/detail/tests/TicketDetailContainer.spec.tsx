@@ -1336,6 +1336,50 @@ describe('TicketDetailContainer component', () => {
         expect(minProps.submitTicket).not.toHaveBeenCalled()
     })
 
+    it('should not call ticket submit if translation is pending', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                        isTranslationPending={true}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            },
+        )
+
+        makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
+
+        expect(minProps.submitTicket).not.toHaveBeenCalled()
+    })
+
+    it('should not call ticket submit & close if translation is pending', () => {
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                        isTranslationPending={true}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            },
+        )
+
+        makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_CLOSE_TICKET')
+
+        expect(minProps.submitTicket).not.toHaveBeenCalled()
+    })
+
     it('should call setRecentItem on mount', () => {
         const mockCustomer = {
             id: 1,
