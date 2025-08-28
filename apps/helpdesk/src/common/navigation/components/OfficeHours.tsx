@@ -37,6 +37,7 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
                 logEvent(SegmentEvent.MenuUserLinkClicked, {
                     link: 'office-hours',
                     user_email: currentUser.get('email'),
+                    user_role: currentUser.getIn(['role', 'name']),
                 })
                 onToggleDropdown()
             }}

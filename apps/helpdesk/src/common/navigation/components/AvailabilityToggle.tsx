@@ -32,6 +32,7 @@ export default function AvailabilityToggle() {
         logEvent(SegmentEvent.MenuUserLinkClicked, {
             link: 'available-on-off',
             user_email: currentUser.get('email'),
+            user_role: currentUser.getIn(['role', 'name']),
         })
         void dispatch(submitSetting(newPreferences.toJS(), false))
     }, [currentUserPreferences, dispatch, currentUser])

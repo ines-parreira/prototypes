@@ -95,6 +95,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'your-profile',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -162,6 +163,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'referral-program',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -179,6 +181,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'log-out',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             logActivityEvent(ActivityEvents.UserClosedApp)
                             void unregisterAppActivityTrackerHooks()
@@ -216,6 +219,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'helpdocs',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -237,6 +241,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiaswebinars',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -261,6 +266,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiasacademy',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -282,6 +288,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'gorgiascommunity',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -304,6 +311,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'keyboard-shortcuts',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -338,6 +346,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'latest-updates',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             window.noticeable.do(
                                 'widget:open',
@@ -362,6 +371,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'roadmap',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}
@@ -380,6 +390,7 @@ export default function UserMenu({ onClose }: Props) {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'service-status',
                                 user_email: currentUser.get('email'),
+                                user_role: currentUser.getIn(['role', 'name']),
                             })
                             onClose()
                         }}

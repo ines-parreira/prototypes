@@ -90,6 +90,9 @@ describe('UserMenu', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 email: 'test@example.com',
+                role: {
+                    name: 'admin',
+                },
             }),
         )
     })
@@ -134,6 +137,7 @@ describe('UserMenu', () => {
             {
                 link,
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(onClose).toHaveBeenCalledWith()
@@ -150,6 +154,7 @@ describe('UserMenu', () => {
             {
                 link: 'log-out',
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
 
@@ -191,6 +196,7 @@ describe('UserMenu', () => {
             {
                 link,
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(onClose).toHaveBeenCalledWith()
@@ -212,6 +218,7 @@ describe('UserMenu', () => {
             {
                 link: 'keyboard-shortcuts',
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(onClose).toHaveBeenCalledWith()
@@ -246,6 +253,7 @@ describe('UserMenu', () => {
             {
                 link: 'latest-updates',
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(window.noticeable.do).toHaveBeenCalledWith(
@@ -269,6 +277,7 @@ describe('UserMenu', () => {
             {
                 link,
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(onClose).toHaveBeenCalledWith()

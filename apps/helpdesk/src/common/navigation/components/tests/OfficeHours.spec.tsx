@@ -53,6 +53,9 @@ describe('OfficeHours', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 email: 'test@example.com',
+                role: {
+                    name: 'admin',
+                },
             }),
         )
 
@@ -105,6 +108,7 @@ describe('OfficeHours', () => {
             {
                 link: 'office-hours',
                 user_email: 'test@example.com',
+                user_role: 'admin',
             },
         )
         expect(onToggle).toHaveBeenCalledWith()

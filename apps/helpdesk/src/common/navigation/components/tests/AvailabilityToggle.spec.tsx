@@ -56,6 +56,9 @@ describe('AvailabilityToggle', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 email: 'test@example.com',
+                role: {
+                    name: 'admin',
+                },
             }),
         )
     })
@@ -76,7 +79,11 @@ describe('AvailabilityToggle', () => {
         fireEvent.click(getByRole('switch'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            { link: 'available-on-off', user_email: 'test@example.com' },
+            {
+                link: 'available-on-off',
+                user_email: 'test@example.com',
+                user_role: 'admin',
+            },
         )
         expect(submitSetting).toHaveBeenCalledWith(
             { data: { available: false } },
