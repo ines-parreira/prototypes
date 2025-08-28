@@ -10,7 +10,7 @@ import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
 import useTicketIds from '../hooks/useTicketIds'
-import { SortField, TicketPartial } from '../types'
+import { TicketPartial } from '../types'
 import usePrevNextTicketId from './usePrevNextTicketId'
 import useScrollOffset from './useScrollOffset'
 import useStaleTickets from './useStaleTickets'
@@ -115,23 +115,9 @@ export default function useTickets(
 
     const tickets = partials.map((partial) => data[partial.id] || partial)
 
-    const sortField = useMemo(
-        () => sortOrder.split(':')[0] as SortField,
-        [sortOrder],
-    )
-
-    const latestDatetime = useMemo(() => {
-        const lastVisiblePartial = visiblePartials[visiblePartials.length - 1]
-        if (!lastVisiblePartial || !data[lastVisiblePartial.id]) {
-            return null
-        }
-
-        return data[lastVisiblePartial.id][sortField] || Infinity
-    }, [data, sortField, visiblePartials])
-
     useEffect(() => {
-        setLatest(endIndex, latestDatetime)
-    }, [endIndex, latestDatetime, setLatest])
+        setLatest(endIndex)
+    }, [endIndex, setLatest])
 
     const ticketIds = useTicketIds(tickets)
 

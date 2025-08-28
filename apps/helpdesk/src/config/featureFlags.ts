@@ -85,7 +85,6 @@ export enum FeatureFlagKey {
     DefaultEmailAddress = 'default-email-address',
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
-    DTPCursorPolling = 'linear.project_ability-to-dictate-priority-of-tickets.frontend',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

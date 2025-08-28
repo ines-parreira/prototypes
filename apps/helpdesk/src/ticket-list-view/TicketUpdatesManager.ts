@@ -15,9 +15,7 @@ const PAGE_LIMIT = 25
 const POLLING_INTERVAL = 5000
 
 export default class TicketUpdatesManager {
-    private cursorPolling = false
     private isPaused: boolean = false
-    private latestDatetime: number | string | null = null
     private latestIndex = 0
     private listener: Listener | null = null
     private loading = false
@@ -27,14 +25,9 @@ export default class TicketUpdatesManager {
     private tickets: TicketPartial[] = []
     private viewId: number
 
-    constructor(
-        viewId: number,
-        sortOrder: SearchTicketsOrderBy,
-        cursorPolling = false,
-    ) {
+    constructor(viewId: number, sortOrder: SearchTicketsOrderBy) {
         this.viewId = viewId
         this.sortOrder = sortOrder
-        this.cursorPolling = cursorPolling
     }
 
     async loadMore() {
@@ -61,9 +54,8 @@ export default class TicketUpdatesManager {
         this.isPaused = false
     }
 
-    setLatest = (index: number, datetime: number | string | null) => {
+    setLatest = (index: number) => {
         this.latestIndex = index
-        this.latestDatetime = datetime
     }
 
     subscribe(listener: Listener): Unsubscribe {
@@ -97,19 +89,13 @@ export default class TicketUpdatesManager {
     }
 
     private async getTicketsUpToLatest() {
-        const datetime = this.latestDatetime
         const cursor = this.tickets[this.latestIndex]?.cursor
 
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
                 getViewTicketUpdates(this.viewId, {
                     order_by: this.sortOrder,
-                    up_to_cursor: this.cursorPolling ? cursor : undefined,
-                    up_to_datetime: this.cursorPolling
-                        ? undefined
-                        : datetime === Infinity
-                          ? undefined
-                          : datetime,
+                    up_to_cursor: cursor,
                 }),
             queryKey: viewItemsDefinitionKeys.updates(this.viewId),
         })
@@ -152,7 +138,8 @@ export default class TicketUpdatesManager {
         // additionally, ES can only return up to 300 results at a time, after this
         // the splicing we do up ahead becomes unreliable, so we want to pause updates
         // whenever the index > 299 as well.
-        if (!this.latestDatetime || this.latestIndex > 299) return
+        const latestCursor = this.tickets[this.latestIndex]?.cursor
+        if (!latestCursor || this.latestIndex > 299) return
 
         this.loading = true
 
