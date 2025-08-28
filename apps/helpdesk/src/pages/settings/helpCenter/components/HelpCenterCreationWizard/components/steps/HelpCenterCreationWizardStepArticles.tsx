@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     ArticleTemplateType,
     HelpCenter,
@@ -89,8 +88,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     ])
 
     //TODO: remove this flag when AI articles are released, no matter if they are enabled for all merchants or not. It should be hidden until it's QAed.
-    const isAIArticlesEnabled =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
+    const isAIArticlesEnabled = useFlag(FeatureFlagKey.ObservabilityAIArticles)
 
     const isAutomate = automateType === HelpCenterAutomateType.AUTOMATE
 

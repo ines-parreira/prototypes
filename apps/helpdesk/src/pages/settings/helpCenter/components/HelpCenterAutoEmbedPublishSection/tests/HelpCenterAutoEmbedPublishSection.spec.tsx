@@ -1,12 +1,11 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
 import { RootState, StoreDispatch } from 'state/types'
@@ -18,6 +17,10 @@ import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCent
 import HelpCenterAutoEmbedPublishSection, {
     HelpCenterAutoEmbedPublishSectionProps,
 } from '../HelpCenterAutoEmbedPublishSection'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('../../../queries', () => {
     const originalModule: Record<string, unknown> =
@@ -78,12 +81,6 @@ const helpCenterWithShop = {
     shop_name: 'test-shop',
 }
 
-const mockFeatureFlagValue = (returnValue: boolean) => {
-    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-        [FeatureFlagKey.HelpCenterAutoEmbed]: returnValue,
-    }))
-}
-
 const renderView = (
     ui: JSX.Element,
     { state }: { state: Partial<RootState> },
@@ -100,7 +97,7 @@ const renderView = (
 
 describe('<HelpCenterAutoEmbedPublishSection />', () => {
     it('renders null if the feature flag is not active', () => {
-        mockFeatureFlagValue(false)
+        mockUseFlag.mockReturnValue(false)
 
         const { container } = renderView(
             <HelpCenterAutoEmbedPublishSection {...defaultProps} />,
@@ -114,7 +111,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
 
     describe('Help Center - not connected to any stores', () => {
         it('should not fetch Shopify pages', () => {
-            mockFeatureFlagValue(true)
+            mockUseFlag.mockReturnValue(true)
 
             renderView(
                 <HelpCenterAutoEmbedPublishSection
@@ -140,7 +137,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
 
     describe('Help Center - connected to a non-shopify store', () => {
         it('should render correct section', () => {
-            mockFeatureFlagValue(true)
+            mockUseFlag.mockReturnValue(true)
 
             const { container } = renderView(
                 <HelpCenterAutoEmbedPublishSection
@@ -186,7 +183,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
     describe('Help Center - connected to a shopify store', () => {
         describe('when update permissions not needed', () => {
             it('should render correct section', () => {
-                mockFeatureFlagValue(true)
+                mockUseFlag.mockReturnValue(true)
 
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
@@ -215,7 +212,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
             })
 
             it('should render correct section when store has embedments already', () => {
-                mockFeatureFlagValue(true)
+                mockUseFlag.mockReturnValue(true)
 
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
@@ -289,7 +286,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
 
         describe('when update permissions needed', () => {
             it('should render correct section', () => {
-                mockFeatureFlagValue(true)
+                mockUseFlag.mockReturnValue(true)
 
                 const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection

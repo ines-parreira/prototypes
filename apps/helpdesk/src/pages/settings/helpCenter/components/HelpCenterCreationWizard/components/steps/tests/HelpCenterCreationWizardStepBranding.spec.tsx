@@ -1,14 +1,11 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React from 'react'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
@@ -23,6 +20,10 @@ import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),
@@ -130,9 +131,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
     })
 
     it('should update help center layout', () => {
-        mockFlags({
-            [FeatureFlagKey.HelpCenterOnePager]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         renderComponent()
         fireEvent.click(screen.getByText('1 page layout'))

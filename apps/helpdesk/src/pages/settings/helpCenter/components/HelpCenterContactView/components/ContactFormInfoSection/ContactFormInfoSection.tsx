@@ -2,12 +2,12 @@ import React, { useCallback, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailContactInfoDto } from 'models/helpCenter/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -51,8 +51,9 @@ const ContactFormInfoSection = () => {
 
     const { description } = contactInfo.email
 
-    const isSubjectLinesAvailable =
-        useFlags()[FeatureFlagKey.HelpCenterSubjectLines]
+    const isSubjectLinesAvailable = useFlag(
+        FeatureFlagKey.HelpCenterSubjectLines,
+    )
 
     const [isAlertAcknowledged, setIsAlertAcknowledged] = useLocalStorage(
         CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,

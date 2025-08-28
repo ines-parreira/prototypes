@@ -1,8 +1,7 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { Label } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     HelpCenter,
@@ -54,8 +53,9 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     )
     const brandLogo = useFileUpload()
 
-    const isHelpCenterOnePagerEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
+    const isHelpCenterOnePagerEnabled = useFlag(
+        FeatureFlagKey.HelpCenterOnePager,
+    )
 
     const handlePrimaryColorChange = (primaryColor: string) => {
         handleFormUpdate({ primaryColor })

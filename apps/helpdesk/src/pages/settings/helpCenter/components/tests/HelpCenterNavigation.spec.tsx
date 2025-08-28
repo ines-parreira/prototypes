@@ -2,10 +2,10 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { TicketChannel } from 'business/types/ticket'
 import * as segment from 'common/segment'
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -51,9 +51,9 @@ jest.mock('react-router-dom', () => {
     }
 })
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlags = useFlag as jest.MockedFunction<typeof useFlag>
 const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
     typeof getHasAutomate
 >

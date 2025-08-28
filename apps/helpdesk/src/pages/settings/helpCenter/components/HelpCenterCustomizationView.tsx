@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormGroup } from 'reactstrap'
 import isURL, { IsURLOptions } from 'validator/lib/isURL'
 
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -58,8 +58,9 @@ export const HelpCenterCustomizationView = () => {
     const [logoHyperlinkErrMessage, setLogoHyperlinkErrMessage] =
         useState<string>('')
 
-    const isHelpCenterLogoHyperlinkEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.HelpCenterLogoHyperlink]
+    const isHelpCenterLogoHyperlinkEnabled = useFlag(
+        FeatureFlagKey.HelpCenterLogoHyperlink,
+    )
     const isURLOptions: IsURLOptions = {
         require_host: true,
     }

@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -110,8 +110,9 @@ export const useHelpCenterCreationWizard = (
     helpCenter: HelpCenter | undefined,
     step: HelpCenterCreationWizardStep,
 ): HelpCenterWizardOutput => {
-    const isHelpCenterOnePagerEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
+    const isHelpCenterOnePagerEnabled = useFlag(
+        FeatureFlagKey.HelpCenterOnePager,
+    )
     const accountCurrentDomain = useAppSelector(getCurrentDomain)
     const dispatch = useAppDispatch()
     const enableArticleRecommendation = useEnableArticleRecommendation()

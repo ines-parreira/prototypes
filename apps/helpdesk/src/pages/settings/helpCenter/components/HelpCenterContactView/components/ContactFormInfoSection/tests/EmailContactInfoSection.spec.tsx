@@ -2,13 +2,12 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
@@ -20,6 +19,10 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
 import ContactFormInfoSection from '../ContactFormInfoSection'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -118,17 +121,8 @@ const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
 )
 
 describe('<ContactFormInfoSection />', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.HelpCenterSubjectLines]: false,
-        })
-    })
-
     it('should render the component with the subject lines component', () => {
-        mockFlags({
-            [FeatureFlagKey.HelpCenterSubjectLines]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         renderWithRouter(
             <DefaultProviders>

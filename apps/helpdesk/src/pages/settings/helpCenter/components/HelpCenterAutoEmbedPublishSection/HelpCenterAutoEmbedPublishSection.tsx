@@ -1,6 +1,5 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
@@ -24,8 +23,7 @@ const HelpCenterAutoEmbedPublishSection = (
 ) => {
     const { helpCenterShopName, helpCenterId, pageEmbedments } = props
 
-    const isAutoEmbedFlagActive =
-        useFlags()[FeatureFlagKey.HelpCenterAutoEmbed] ?? false
+    const isAutoEmbedFlagActive = useFlag(FeatureFlagKey.HelpCenterAutoEmbed)
 
     const { integrationId, needScopeUpdate } = useShopifyIntegrationAndScope(
         helpCenterShopName ?? '',

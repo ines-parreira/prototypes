@@ -1,12 +1,12 @@
 import React, { ReactNode, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useHistory } from 'react-router-dom'
 
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenter } from 'models/helpCenter/types'
@@ -83,8 +83,9 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         dispatch(changeViewLanguage(validLocaleCode(value)))
     }
 
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     const onDiscard = () => {
         dispatch(changeViewLanguage(locale))

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink, useHistory } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
@@ -36,8 +36,9 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
 
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     const showAILibraryTab = useHasAccessToAILibrary()
 
