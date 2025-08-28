@@ -7,6 +7,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {
+    CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     INITIAL_FORM_VALUES,
     ToneOfVoice,
@@ -42,9 +43,12 @@ export const ToneOfVoiceFormComponent = ({
     aiAgentPreviewTicketViewId,
     ...props
 }: ToneOfVoiceFormComponentProps) => {
-    const trialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const flags = useFlags()
+    const trialModeAvailable = flags[FeatureFlagKey.AiAgentTrialMode]
     const isFollowUpAiAgentPreviewModeEnabled =
-        useFlags()[FeatureFlagKey.FollowUpAiAgentPreviewMode]
+        flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
+    const isExtendedToneOfVoiceLimitEnabled =
+        flags[FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit]
 
     const shouldFocusTextArea = React.useRef(false)
     const {
@@ -76,7 +80,11 @@ export const ToneOfVoiceFormComponent = ({
     }
 
     const isCustomLanguageEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentCustomLanguage]
+        flags[FeatureFlagKey.AiAgentCustomLanguage]
+
+    const maxToneOfVoiceLength = isExtendedToneOfVoiceLimitEnabled
+        ? CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH
+        : CUSTOM_TONE_OF_VOICE_MAX_LENGTH
 
     const handleCustomToneOfVoiceChange = (newValue: unknown) => {
         if (typeof newValue !== 'string') return
@@ -145,7 +153,7 @@ export const ToneOfVoiceFormComponent = ({
                                     label="Customize Tone of Voice"
                                     autoRowHeight={true}
                                     placeholder="Custom tone of voice"
-                                    maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
+                                    maxLength={maxToneOfVoiceLength}
                                     value={
                                         customToneOfVoiceGuidance ??
                                         INITIAL_FORM_VALUES.customToneOfVoiceGuidance

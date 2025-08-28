@@ -2,6 +2,7 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
 import {
     AiAgentChannel,
+    CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
@@ -307,6 +308,121 @@ describe('store-configuration-validation', () => {
             ).toThrow(
                 StoreConfigurationValidationMessage.CustomToneOfVoiceLength,
             )
+        })
+
+        it('should allow custom tone of voice within extended limit when feature flag is enabled', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                toneOfVoice: ToneOfVoice.Custom,
+                customToneOfVoiceGuidance: 'a'.repeat(
+                    CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH,
+                ),
+            }
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        isExtendedToneOfVoiceLimitEnabled: true,
+                    },
+                ),
+            ).not.toThrow()
+        })
+
+        it('should throw error when custom tone exceeds extended limit and feature flag is enabled', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                toneOfVoice: ToneOfVoice.Custom,
+                customToneOfVoiceGuidance: 'a'.repeat(
+                    CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH + 1,
+                ),
+            }
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        isExtendedToneOfVoiceLimitEnabled: true,
+                    },
+                ),
+            ).toThrow(
+                StoreConfigurationValidationMessage.CustomToneOfVoiceLengthExtended,
+            )
+        })
+
+        it('should validate extended limit for custom tone when toneOfVoice is not set', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                toneOfVoice: null,
+                customToneOfVoiceGuidance: 'a'.repeat(
+                    CUSTOM_TONE_OF_VOICE_MAX_LENGTH + 500,
+                ),
+            }
+
+            // Should fail with standard limit
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        isExtendedToneOfVoiceLimitEnabled: false,
+                    },
+                ),
+            ).toThrow()
+
+            // Should pass with extended limit
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        isExtendedToneOfVoiceLimitEnabled: true,
+                    },
+                ),
+            ).not.toThrow()
+        })
+
+        it('should throw wizard-specific error message when tone exceeds limit in wizard mode', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                wizard: {
+                    ...WIZARD_FORM_VALUES,
+                    completedDatetime: '2021-01-01T00:00:00',
+                },
+                toneOfVoice: ToneOfVoice.Custom,
+                customToneOfVoiceGuidance: 'a'.repeat(
+                    CUSTOM_TONE_OF_VOICE_MAX_LENGTH + 1,
+                ),
+            }
+            expect(() =>
+                getValidStoreConfigurationFormValues(
+                    formValues,
+                    [],
+                    false,
+                    false,
+                    undefined,
+                    {
+                        ...DEFAULT_OPTIONS,
+                        isExtendedToneOfVoiceLimitEnabled: false,
+                    },
+                ),
+            ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
         })
 
         it('should throw an error if no help center selected and public urls is empty when wizard finished and this is onboarding page', () => {

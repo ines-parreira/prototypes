@@ -13,6 +13,7 @@ export enum FeatureFlagKey {
     AiAgentSms = 'ai-agent-for-sms',
     AiAgentFilesAndUrlsKnowledgeVisibilityButton = 'ai-agent-files-and-urls-knowledge-visibility-button',
     AiAgentCustomLanguage = 'ai-agent-custom-language',
+    AiAgentExtendedToneOfVoiceLimit = 'ai-agent-extended-tone-of-voice-limit',
     AiAgentExpandingTrialExperienceForAll = 'linear.expanding-trial-experience-of-ai-agent-for-all-customers',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',

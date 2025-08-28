@@ -60,10 +60,13 @@ export const useConfigurationForm = ({
         [chatChannels],
     )
 
+    const flags = useFlags()
     const isAiAgentChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChat]
+        flags[FeatureFlagKey.AiAgentChat]
     const hasAiAgentNewActivationXp =
-        !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
+        !!flags[FeatureFlagKey.AiAgentNewActivationXp]
+    const isExtendedToneOfVoiceLimitEnabled =
+        !!flags[FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit]
 
     const defaultValues = useMemo(() => {
         const monitoredChatIntegrations =
@@ -190,6 +193,7 @@ export const useConfigurationForm = ({
                     isAiAgentChatEnabled,
                     configurationPage,
                     hasAiAgentNewActivationXp,
+                    isExtendedToneOfVoiceLimitEnabled,
                 },
             )
         } catch (error) {

@@ -4,6 +4,7 @@ import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 import { hasSuccessfullySyncedOnce } from '../AiAgentScrapedDomainContent/utils'
 import {
     AiAgentChannel,
+    CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
     EXCLUDED_TOPIC_MAX_LENGTH,
     MAX_EXCLUDED_TOPICS,
@@ -22,6 +23,7 @@ export enum StoreConfigurationValidationMessage {
     TagsEmpty = 'Tags must have a name and description',
     CustomToneOfVoiceEmpty = 'Custom tone of voice cannot be empty',
     CustomToneOfVoiceLength = `Custom tone of voice should be less than ${CUSTOM_TONE_OF_VOICE_MAX_LENGTH} characters`,
+    CustomToneOfVoiceLengthExtended = `Custom tone of voice should be less than ${CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH} characters`,
     HelpCenterEmpty = 'Select a Help Center or add at least one public URL',
     EmailIntegrationError = 'Please select at least 1 email integration for AI Agent to use or disable AI Agent for email to proceed.',
     ChatIntegrationError = 'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
@@ -74,6 +76,7 @@ export const getValidStoreConfigurationFormValues = (
         configurationPage?: ConfigurationPage
         isAiAgentChatEnabled: boolean | undefined
         hasAiAgentNewActivationXp?: boolean
+        isExtendedToneOfVoiceLimitEnabled?: boolean
     },
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
@@ -198,15 +201,23 @@ export const getValidStoreConfigurationFormValues = (
         }
     }
 
+    const maxToneOfVoiceLength = opts.isExtendedToneOfVoiceLimitEnabled
+        ? CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH
+        : CUSTOM_TONE_OF_VOICE_MAX_LENGTH
+
     if (
         (!formValues.toneOfVoice ||
             formValues.toneOfVoice === ToneOfVoice.Custom) &&
         formValues.customToneOfVoiceGuidance &&
-        formValues.customToneOfVoiceGuidance.length >
-            CUSTOM_TONE_OF_VOICE_MAX_LENGTH
+        formValues.customToneOfVoiceGuidance.length > maxToneOfVoiceLength
     ) {
+        const errorMessage = opts.isExtendedToneOfVoiceLimitEnabled
+            ? StoreConfigurationValidationMessage.CustomToneOfVoiceLengthExtended
+            : StoreConfigurationValidationMessage.CustomToneOfVoiceLength
         throw new Error(
-            StoreConfigurationValidationMessage.CustomToneOfVoiceLength,
+            formValues.wizard
+                ? StoreConfigurationValidationMessage.FieldsMissing
+                : errorMessage,
         )
     }
 

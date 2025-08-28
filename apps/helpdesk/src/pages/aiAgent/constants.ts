@@ -35,6 +35,7 @@ export const EMAIL = 'Email'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
+export const CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH = 3000
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
 export const MAX_EXCLUDED_TOPICS = 10
 
