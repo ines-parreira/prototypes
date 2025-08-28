@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
@@ -21,7 +19,9 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import Widget from 'Widgets/modules/Widget'
 
-import InfobarWidgets from '../InfobarWidgets'
+import InfobarWidgets, {
+    findHTTPIntegrationRelatedWidget,
+} from '../InfobarWidgets'
 import Placeholder from '../widgets/Placeholder'
 
 const middlewares = [thunk]
@@ -372,6 +372,48 @@ describe('InfobarWidgets component', () => {
         ).toEqual(baseWidgets.size)
     })
 
+    it('should not display standalone widget twice when it has an existing http integration id ', () => {
+        const standaloneWidgets = fromJS([
+            {
+                id: 3,
+                type: STANDALONE_WIDGET_TYPE,
+                integration_id: httpIntegrationId,
+                context: WidgetEnvironment.Ticket,
+                template: {
+                    type: 'wrapper',
+                    widgets: [
+                        {
+                            path: '',
+                            type: 'card',
+                            title: 'Standalone',
+                            widgets: [],
+                        },
+                    ],
+                },
+                order: 0,
+            },
+        ]) as List<Map<string, unknown>>
+
+        render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{ isEditing: false }}>
+                    <InfobarWidgets
+                        widgets={standaloneWidgets}
+                        context={WidgetEnvironment.Ticket}
+                        source={baseSource}
+                        displayTabs
+                    />
+                </EditionContext.Provider>
+            </Provider>,
+        )
+
+        expect(mockedWidget.mock.calls.length).toEqual(1)
+
+        expect(mockedWidget.mock.calls[0][0].widget.get('type')).toEqual(
+            STANDALONE_WIDGET_TYPE,
+        )
+    })
+
     // This test here is only to ensure we don't break the memoization set before starting
     // the recursion in the InfobarWidget component
     it('should not rerender all widgets if some unrelated data changes in ticket object', () => {
@@ -407,5 +449,163 @@ describe('InfobarWidgets component', () => {
             </Provider>,
         )
         expect(mockedWidget.mock.calls.length).toBe(0)
+    })
+})
+
+describe('findHTTPIntegrationRelatedWidget', () => {
+    it('should find a widget with matching HTTP integration ID', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([
+            {
+                id: 1,
+                type: IntegrationType.Shopify,
+                integration_id: '456',
+            },
+            {
+                id: 2,
+                type: IntegrationType.Http,
+                integration_id: 123,
+            },
+            {
+                id: 3,
+                type: IntegrationType.Http,
+                integration_id: '789',
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeDefined()
+        expect(result?.get('id')).toBe(2)
+        expect(result?.get('integration_id')).toBe(123)
+    })
+
+    it('should return undefined when no widget matches the HTTP integration ID', () => {
+        const httpIntegrationId = '999'
+        const widgets = fromJS([
+            {
+                id: 1,
+                type: IntegrationType.Shopify,
+                integration_id: '456',
+            },
+            {
+                id: 2,
+                type: IntegrationType.Http,
+                integration_id: '123',
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should exclude standalone widgets even if integration ID matches', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([
+            {
+                id: 1,
+                type: STANDALONE_WIDGET_TYPE,
+                integration_id: 123,
+            },
+            {
+                id: 2,
+                type: IntegrationType.Http,
+                integration_id: '456',
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should match when integration IDs are different types but same value', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([
+            {
+                id: 1,
+                type: IntegrationType.Http,
+                integration_id: 123, // number
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId, // string
+            widgets,
+        )
+
+        expect(result).toBeDefined()
+        expect(result?.get('id')).toBe(1)
+    })
+
+    it('should handle empty widget list', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should handle widgets with undefined integration_id', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([
+            {
+                id: 1,
+                type: IntegrationType.Http,
+                // integration_id is undefined
+            },
+            {
+                id: 2,
+                type: IntegrationType.Http,
+                integration_id: '123',
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeDefined()
+        expect(result?.get('id')).toBe(2)
+    })
+
+    it('should handle undefined widgets or widgets with undefined type', () => {
+        const httpIntegrationId = '123'
+        const widgets = fromJS([
+            undefined,
+            {
+                id: 1,
+                // type is undefined
+                integration_id: '123',
+            },
+            {
+                id: 2,
+                type: IntegrationType.Http,
+                integration_id: '456',
+            },
+        ]) as List<Map<string, unknown>>
+
+        const result = findHTTPIntegrationRelatedWidget(
+            httpIntegrationId,
+            widgets,
+        )
+
+        expect(result).toBeDefined()
+        expect(result?.get('id')).toBe(1)
     })
 })

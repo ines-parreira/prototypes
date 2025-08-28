@@ -329,11 +329,9 @@ function getPreparedDisplayList({
             }
 
             if (integration?.type === IntegrationType.Http) {
-                widget = widgets.find(
-                    (widget) =>
-                        (
-                            widget?.get('integration_id') as string
-                        )?.toString() === integration?.id.toString(),
+                widget = findHTTPIntegrationRelatedWidget(
+                    integrationId,
+                    widgets,
                 )
             } else {
                 widget = widgets.find(
@@ -405,4 +403,18 @@ function getPreparedDisplayList({
     return preparedDisplayList.sort((a, b) =>
         compare(a.widget.get('order'), b.widget.get('order')),
     )
+}
+
+export function findHTTPIntegrationRelatedWidget(
+    HTTPIntegrationId: string,
+    widgets: List<Map<string, unknown>>,
+) {
+    return widgets.find((widget) => {
+        if (!widget) return false
+        return (
+            (widget.get('integration_id') as string)?.toString() ===
+                HTTPIntegrationId &&
+            widget.get('type') !== STANDALONE_WIDGET_TYPE
+        )
+    })
 }
