@@ -39,7 +39,11 @@ const createMockTrialFlow = (overrides = {}) =>
 const createMockTrialMetrics = (overrides = {}) => ({
     gmvInfluenced: '$0.00',
     gmvInfluencedRate: 0,
-    automationRate: 0,
+    automationRate: {
+        value: 0,
+        prevValue: 0,
+        isLoading: false,
+    },
     isLoading: false,
     ...overrides,
 })
@@ -59,7 +63,11 @@ describe('useAiAgentPrimaryCTA', () => {
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
             trialMetrics: createMockTrialMetrics({
-                automationRate: 0.03,
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
                 isLoading: false,
             }),
             routeShopName: undefined,
@@ -89,7 +97,11 @@ describe('useAiAgentPrimaryCTA', () => {
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
             trialMetrics: createMockTrialMetrics({
-                automationRate: 0.11, // Above 0.1 threshold
+                automationRate: {
+                    value: 0.11, // Above 0.1 threshold
+                    prevValue: 0.1,
+                    isLoading: false,
+                },
                 isLoading: false,
             }),
             routeShopName: undefined,
@@ -119,7 +131,11 @@ describe('useAiAgentPrimaryCTA', () => {
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
             trialMetrics: createMockTrialMetrics({
-                automationRate: 0.03,
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
                 isLoading: false,
             }),
             routeShopName: undefined,
@@ -149,7 +165,11 @@ describe('useAiAgentPrimaryCTA', () => {
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
             trialMetrics: createMockTrialMetrics({
-                automationRate: 0.03,
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
                 isLoading: false,
             }),
             routeShopName: undefined,
@@ -177,7 +197,11 @@ describe('useAiAgentPrimaryCTA', () => {
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
             trialMetrics: createMockTrialMetrics({
-                automationRate: 0.03,
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
                 isLoading: false,
             }),
             routeShopName: undefined,

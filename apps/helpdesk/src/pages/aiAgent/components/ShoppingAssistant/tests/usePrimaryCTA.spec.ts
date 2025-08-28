@@ -27,7 +27,11 @@ const createMockTrialFlow = (overrides = {}) =>
 const createMockTrialMetrics = (overrides = {}) => ({
     gmvInfluenced: '$0.00',
     gmvInfluencedRate: 0,
-    automationRate: 0,
+    automationRate: {
+        value: 0,
+        prevValue: 0,
+        isLoading: false,
+    },
     isLoading: false,
     ...overrides,
 })

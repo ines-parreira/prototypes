@@ -15,7 +15,6 @@ import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarl
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
-import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -38,7 +37,6 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
-jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
 jest.mock('pages/aiAgent/Activation/hooks/useEarlyAccessModalState')
 
 const mockLogEvent = assumeMock(logEvent)
@@ -52,7 +50,6 @@ const mockUseShoppingAssistantTrialFlow = assumeMock(
 const mockUseTrialAccess = assumeMock(useTrialAccess)
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
-const mockUseAiAgentAutomationRate = assumeMock(useAiAgentAutomationRate)
 
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -175,6 +172,7 @@ describe('useTrialPromoCard', () => {
             gmvInfluenced: '$1,250',
             gmvInfluencedRate: 0.3,
             isLoading: false,
+            automationRate: undefined,
         })
     })
 
@@ -967,6 +965,7 @@ describe('useTrialPromoCard', () => {
                 gmvInfluenced: '$5,250',
                 gmvInfluencedRate: 0.75,
                 isLoading: false,
+                automationRate: undefined,
             })
 
             const { result } = renderHook(
@@ -1748,6 +1747,7 @@ describe('useTrialPromoCard', () => {
                 gmvInfluenced: '$1,250',
                 gmvInfluencedRate: 0.3,
                 isLoading: true,
+                automationRate: undefined,
             })
 
             const { result } = renderHook(
@@ -1780,198 +1780,6 @@ describe('useTrialPromoCard', () => {
             )
 
             expect(result.current?.isLoading).toBe(true)
-        })
-    })
-
-    describe('automation rate functionality', () => {
-        beforeEach(() => {
-            // Reset mocks
-            mockUseAiAgentAutomationRate.mockClear()
-
-            // Mock store activations with trial configuration
-            mockUseStoreActivations.mockReturnValue({
-                storeActivations: {
-                    'first-shop': {
-                        ...storeActivationFixture({ storeName: 'first-shop' }),
-                        configuration: {
-                            ...storeActivationFixture({
-                                storeName: 'first-shop',
-                            }).configuration,
-                            trial: {
-                                startDatetime: '2024-01-01T00:00:00Z',
-                                endDatetime: '2024-01-15T00:00:00Z',
-                                account: {
-                                    optInDatetime: '2024-01-01T00:00:00Z',
-                                    optOutDatetime: null,
-                                    plannedUpgradeDatetime: null,
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
-                            },
-                        },
-                    },
-                },
-                progressPercentage: 0,
-                isFetchLoading: false,
-                isSaveLoading: false,
-                changeSales: jest.fn(),
-                changeSupport: jest.fn(),
-                changeSupportChat: jest.fn(),
-                changeSupportEmail: jest.fn(),
-                saveStoreConfigurations: jest.fn(),
-                migrateToNewPricing: jest.fn(),
-                endTrial: jest.fn(),
-                activation: jest.fn(() => ({
-                    canActivate: jest.fn(() => ({
-                        isLoading: false,
-                        isDisabled: false,
-                    })),
-                    activate: jest.fn(),
-                    isActivating: false,
-                })),
-            })
-
-            mockUseTrialAccess.mockReturnValue({
-                ...baseTrialAccess,
-                trialType: TrialType.AiAgent,
-                hasCurrentStoreTrialStarted: true,
-                hasCurrentStoreTrialExpired: false,
-            })
-
-            mockUseAiAgentAutomationRate.mockReturnValue({
-                value: 0.75,
-                prevValue: 0.65,
-                isLoading: false,
-                title: 'AI Agent Automation Rate',
-                hint: {
-                    title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-                },
-                metricFormat: 'decimal-to-percent-precision-1',
-                'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
-            })
-        })
-
-        it('should fetch automation rate data when trial has started', () => {
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
-            )
-
-            expect(mockUseAiAgentAutomationRate).toHaveBeenCalledWith(
-                {
-                    period: {
-                        start_datetime: '2024-01-01T00:00:00Z',
-                        end_datetime: expect.stringMatching(
-                            /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/,
-                        ),
-                    },
-                },
-                'UTC',
-                undefined,
-            )
-
-            expect(result.current.automationRate).toEqual({
-                value: 0.75,
-                prevValue: 0.65,
-                isLoading: false,
-            })
-        })
-
-        it('should return undefined automation rate when trial has not started', () => {
-            // Reset the mock to return no data
-            mockUseAiAgentAutomationRate.mockReturnValue({
-                value: 0,
-                prevValue: 0,
-                isLoading: false,
-                title: 'AI Agent Automation Rate',
-                hint: {
-                    title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-                },
-                metricFormat: 'decimal-to-percent-precision-1',
-                'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
-            })
-
-            mockUseTrialAccess.mockReturnValue({
-                ...baseTrialAccess,
-                trialType: TrialType.AiAgent,
-                hasCurrentStoreTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-            })
-
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
-            )
-
-            expect(result.current.automationRate).toBeUndefined()
-        })
-
-        it('should return undefined automation rate for shopping assistant trial type', () => {
-            mockUseTrialAccess.mockReturnValue({
-                ...baseTrialAccess,
-                trialType: TrialType.ShoppingAssistant,
-                hasCurrentStoreTrialStarted: true,
-                hasCurrentStoreTrialExpired: false,
-            })
-
-            // Mock store activations with sales trial configuration
-            mockUseStoreActivations.mockReturnValue({
-                storeActivations: {
-                    'first-shop': {
-                        ...storeActivationFixture({ storeName: 'first-shop' }),
-                        configuration: {
-                            ...storeActivationFixture({
-                                storeName: 'first-shop',
-                            }).configuration,
-                            sales: {
-                                trial: {
-                                    startDatetime: '2024-01-01T00:00:00Z',
-                                    endDatetime: '2024-01-15T00:00:00Z',
-                                    account: {
-                                        optInDatetime: '2024-01-01T00:00:00Z',
-                                        optOutDatetime: null,
-                                        plannedUpgradeDatetime: null,
-                                        actualUpgradeDatetime: null,
-                                        actualTerminationDatetime: null,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-                progressPercentage: 0,
-                isFetchLoading: false,
-                isSaveLoading: false,
-                changeSales: jest.fn(),
-                changeSupport: jest.fn(),
-                changeSupportChat: jest.fn(),
-                changeSupportEmail: jest.fn(),
-                saveStoreConfigurations: jest.fn(),
-                migrateToNewPricing: jest.fn(),
-                endTrial: jest.fn(),
-                activation: jest.fn(() => ({
-                    canActivate: jest.fn(() => ({
-                        isLoading: false,
-                        isDisabled: false,
-                    })),
-                    activate: jest.fn(),
-                    isActivating: false,
-                })),
-            })
-
-            const { result } = renderHook(
-                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
-                {
-                    wrapper: createWrapper(),
-                },
-            )
-
-            // Shopping Assistant trials should not return automation rate data
-            expect(result.current.automationRate).toBeUndefined()
         })
     })
 
@@ -2028,18 +1836,6 @@ describe('useTrialPromoCard', () => {
                 canNotifyAdmin: false,
                 hasCurrentStoreTrialStarted: false,
                 hasCurrentStoreTrialExpired: false,
-            })
-
-            mockUseAiAgentAutomationRate.mockReturnValue({
-                value: 0.75,
-                prevValue: 0.65,
-                isLoading: false,
-                title: 'AI Agent Automation Rate',
-                hint: {
-                    title: 'Automated interactions from AI Agent as a percent of all customer interactions.',
-                },
-                metricFormat: 'decimal-to-percent-precision-1',
-                'data-candu-id': 'ai-agent-overview-kpi-automation-rate',
             })
         })
 

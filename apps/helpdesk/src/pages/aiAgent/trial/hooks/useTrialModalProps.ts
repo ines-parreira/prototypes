@@ -10,7 +10,11 @@ import {
 import { Cadence } from 'models/billing/types'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import {
+    AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,
+    SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
+    SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
+} from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
@@ -52,6 +56,18 @@ export const EXTERNAL_URLS = {
     AI_AGENT_TRIAL_BOOK_DEMO:
         'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
 } as const
+
+export const SHOPPING_ASSISTANT_ADVANTAGES = [
+    '10% average order value',
+    '62% conversion rate',
+    '1.5% revenue',
+]
+
+export const AI_AGENT_ADVANTAGES = [
+    '60% support inquiries',
+    '35% faster ticket handling',
+    '62% conversion rate',
+]
 
 export type TrialModalProps = {
     trialUpgradePlanModal: Pick<
@@ -265,7 +281,41 @@ const useNewTrialUpgradePlanModal = (
             storeActivations,
             trialType,
         })
-    return useMemo(
+
+    const aiAgentProps = useMemo(
+        () => ({
+            ...createPlanModalData(
+                '',
+                planDetails,
+                {
+                    current: '',
+                    new: '',
+                },
+                isMultiStore,
+            ),
+            title: 'Try AI Agent for free',
+            subtitle:
+                'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
+            primaryAction: {
+                label: 'Start Free Trial Now',
+                onClick: startTrial,
+            },
+            secondaryAction: {
+                label: 'No, thanks',
+                onClick: onDismissTrialUpgradeModal,
+            },
+            onClose: closeTrialUpgradeModal,
+        }),
+        [
+            planDetails,
+            startTrial,
+            onDismissTrialUpgradeModal,
+            closeTrialUpgradeModal,
+            isMultiStore,
+        ],
+    )
+
+    const shoppingAssistantProps = useMemo(
         () => ({
             ...createPlanModalData(
                 'Unlock new AI Agent skills at no extra cost',
@@ -297,6 +347,10 @@ const useNewTrialUpgradePlanModal = (
             isMultiStore,
         ],
     )
+
+    return trialType === TrialType.AiAgent
+        ? aiAgentProps
+        : shoppingAssistantProps
 }
 
 const useTrialFinishSetupModal = (
@@ -417,7 +471,10 @@ const useTrialStartedBanner = (
     }, [canBookDemo, earlyAccessPlan, handleUpgradePlan, isUpgradePlanLoading])
 
     const description = useMemo(() => {
-        if (gmvInfluencedRate > 0.005) {
+        if (
+            gmvInfluencedRate >
+            SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
+        ) {
             return `So far, it's influenced ${gmvInfluenced} of GMV for your store.`
         }
         return `Increase conversion by +50% by setting up your sales strategy and customer engagement tactics.`
@@ -497,9 +554,12 @@ const useTrialAlertBanner = ({
 }
 
 const useTrialEndedModal = (
+    trialType: TrialType,
     trialMetrics: TrialMetrics,
 ): TrialModalProps['trialEndedModal'] => {
-    const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
+    const isAiAgentTrial = trialType === TrialType.AiAgent
+    const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
+    const automationRateValue = automationRate?.value ?? 0
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const earlyAccessPlanPrice =
         (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
@@ -512,33 +572,83 @@ const useTrialEndedModal = (
     const difference = earlyAccessPlanPrice - currentPlanAmount
     const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
 
-    const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
+    const hasSignificantGmvImpact =
+        gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
+    const hasSignificantAutomationRateImpact =
+        automationRateValue > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD
+
+    const hasSignificantImpact = isAiAgentTrial
+        ? hasSignificantAutomationRateImpact
+        : hasSignificantGmvImpact
+
+    const title = useMemo(() => {
+        return hasSignificantImpact
+            ? 'Your trial has ended — and it made an impact.'
+            : "Your trial ended — but it's just the beginning."
+    }, [hasSignificantImpact])
 
     const description = useMemo(() => {
-        if (gmvInfluencedRate > 0.005) {
+        if (isAiAgentTrial) {
+            if (hasSignificantAutomationRateImpact) {
+                return React.createElement('span', {}, [
+                    'AI Agent drove ',
+                    React.createElement(
+                        'strong',
+                        { key: 'automationRate' },
+                        automationRateValue,
+                    ),
+                    ' automation rate. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                ])
+            }
+            return 'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
+        }
+
+        if (hasSignificantGmvImpact) {
             return React.createElement('span', {}, [
                 'Shopping Assistant drove ',
                 React.createElement('strong', { key: 'gmv' }, gmvInfluenced),
                 ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
             ])
         }
+
         return 'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
-    }, [gmvInfluenced, gmvInfluencedRate])
+    }, [
+        isAiAgentTrial,
+        hasSignificantGmvImpact,
+        gmvInfluenced,
+        hasSignificantAutomationRateImpact,
+        automationRateValue,
+    ])
 
     const advantages = useMemo(() => {
-        if (hasSignificantGmvImpact) {
-            return [`${gmvInfluenced} GMV uplift`]
+        if (isAiAgentTrial) {
+            return hasSignificantAutomationRateImpact
+                ? [`${automationRateValue} automation rate`]
+                : [...AI_AGENT_ADVANTAGES]
         }
-        return [
-            '10% average order value',
-            '62% conversion rate',
-            '1.5% revenue',
-        ]
-    }, [gmvInfluenced, hasSignificantGmvImpact])
+
+        return hasSignificantGmvImpact
+            ? [`${gmvInfluenced} GMV uplift`]
+            : [...SHOPPING_ASSISTANT_ADVANTAGES]
+    }, [
+        isAiAgentTrial,
+        hasSignificantAutomationRateImpact,
+        automationRateValue,
+        hasSignificantGmvImpact,
+        gmvInfluenced,
+    ])
 
     const secondaryDescription = useMemo(() => {
         const increaseAmount = formatAmount(difference, currency)
-        if (gmvInfluencedRate > 0.005) {
+
+        if (isAiAgentTrial) {
+            if (hasSignificantAutomationRateImpact) {
+                return `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
+            }
+            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+        }
+
+        if (hasSignificantGmvImpact) {
             if (difference > 0) {
                 return `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
             }
@@ -548,30 +658,30 @@ const useTrialEndedModal = (
             return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
         }
         return `Typical results achieved by merchants. The price of your plan remains the same after the upgrade.`
-    }, [difference, currency, gmvInfluencedRate, cadence])
+    }, [
+        isAiAgentTrial,
+        hasSignificantAutomationRateImpact,
+        hasSignificantGmvImpact,
+        difference,
+        currency,
+        cadence,
+    ])
 
-    return useMemo(
-        () => ({
-            title: hasSignificantGmvImpact
-                ? 'Your trial has ended — and it made an impact.'
-                : 'Your trial ended — but it’s just the beginning.',
-            description,
-            secondaryDescription,
-            advantages,
-        }),
-        [
-            hasSignificantGmvImpact,
-            description,
-            secondaryDescription,
-            advantages,
-        ],
-    )
+    return {
+        title,
+        description,
+        secondaryDescription,
+        advantages,
+    }
 }
 
 const useTrialEndingModal = (
+    trialType: TrialType,
     trialMetrics: TrialMetrics,
 ): TrialModalProps['trialEndingModal'] => {
-    const { gmvInfluenced, gmvInfluencedRate } = trialMetrics
+    const isAiAgentTrial = trialType === TrialType.AiAgent
+    const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
+    const automationRateValue = automationRate?.value ?? 0
     const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
     const earlyAccessPlanPrice =
         (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
@@ -582,12 +692,34 @@ const useTrialEndingModal = (
     const currency = currentPlan?.currency ?? 'USD'
 
     const difference = earlyAccessPlanPrice - currentPlanAmount
-    const hasSignificantGmvImpact = gmvInfluencedRate > 0.005
+    const hasSignificantGmvImpact =
+        gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
+    const hasSignificantAutomationRateImpact =
+        automationRateValue > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD
     const hasPriceIncrease = difference > 0
     const increaseAmount = formatAmount(difference, currency)
     const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
 
+    const title = isAiAgentTrial
+        ? 'AI Agent trial ends tomorrow'
+        : 'Shopping Assistant trial ends tomorrow'
+
     const description = useMemo(() => {
+        if (isAiAgentTrial) {
+            if (hasSignificantAutomationRateImpact) {
+                return React.createElement('span', {}, [
+                    'AI Agent drove ',
+                    React.createElement(
+                        'strong',
+                        { key: 'automationRate' },
+                        automationRateValue,
+                    ),
+                    " automation rate. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
+                ])
+            }
+            return `Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
+        }
+
         if (hasSignificantGmvImpact) {
             return React.createElement('span', {}, [
                 'Shopping Assistant drove ',
@@ -596,20 +728,40 @@ const useTrialEndingModal = (
             ])
         }
         return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
-    }, [gmvInfluenced, hasSignificantGmvImpact])
+    }, [
+        isAiAgentTrial,
+        hasSignificantAutomationRateImpact,
+        automationRateValue,
+        gmvInfluenced,
+        hasSignificantGmvImpact,
+    ])
 
     const advantages = useMemo(() => {
-        if (hasSignificantGmvImpact) {
-            return [`${gmvInfluenced} GMV uplift`]
+        if (isAiAgentTrial) {
+            return hasSignificantAutomationRateImpact
+                ? [`${automationRateValue} automation rate`]
+                : [...AI_AGENT_ADVANTAGES]
         }
-        return [
-            '10% average order value',
-            '62% conversion rate',
-            '1.5% revenue',
-        ]
-    }, [gmvInfluenced, hasSignificantGmvImpact])
+
+        return hasSignificantGmvImpact
+            ? [`${gmvInfluenced} GMV uplift`]
+            : [...SHOPPING_ASSISTANT_ADVANTAGES]
+    }, [
+        isAiAgentTrial,
+        hasSignificantAutomationRateImpact,
+        automationRateValue,
+        hasSignificantGmvImpact,
+        gmvInfluenced,
+    ])
 
     const secondaryDescription = useMemo(() => {
+        if (isAiAgentTrial) {
+            if (hasSignificantAutomationRateImpact) {
+                return `With the upgrade, your plan will increase by ${increaseAmount}/${cadence}.`
+            }
+            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+        }
+
         if (hasSignificantGmvImpact) {
             const priceMessage = hasPriceIncrease
                 ? `your plan will increase by ${increaseAmount}/${cadence}`
@@ -621,20 +773,25 @@ const useTrialEndingModal = (
             ? `After upgrading, your plan will increase by ${increaseAmount}/${cadence}`
             : 'The price of your plan remains the same after the upgrade'
         return `Typical results achieved by merchants. ${priceMessage}.`
-    }, [hasSignificantGmvImpact, hasPriceIncrease, increaseAmount, cadence])
+    }, [
+        isAiAgentTrial,
+        hasSignificantAutomationRateImpact,
+        hasSignificantGmvImpact,
+        hasPriceIncrease,
+        increaseAmount,
+        cadence,
+    ])
 
-    return useMemo(
-        () => ({
-            title: 'Shopping Assistant trial ends tomorrow',
-            description,
-            secondaryDescription,
-            advantages,
-        }),
-        [description, secondaryDescription, advantages],
-    )
+    return {
+        title,
+        description,
+        secondaryDescription,
+        advantages,
+    }
 }
 
 const useTrialRequestModal = (trialType: TrialType, storeName?: string) => {
+    const isAiAgentTrial = trialType === TrialType.AiAgent
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const { storeActivations } = useStoreActivations({ storeName })
@@ -650,16 +807,20 @@ const useTrialRequestModal = (trialType: TrialType, storeName?: string) => {
         trialType,
         closeTrialRequestModal,
     )
+
     return useMemo(
         () => ({
-            title: 'Request your admin to start trial',
-            subtitle:
-                'Your Gorgias admins will be notified of your request to start Shopping Assistant trial via both email and an in-app notification.',
+            title: isAiAgentTrial
+                ? 'Request your admin to activate AI Agent trial'
+                : 'Request your admin to start trial',
+            subtitle: isAiAgentTrial
+                ? 'Your Gorgias admins will be notified of your request via both email and an in-app notification.'
+                : 'Your Gorgias admins will be notified of your request to start Shopping Assistant trial via both email and an in-app notification.',
             primaryCTALabel: 'Notify Admins',
             accountAdmins,
             onPrimaryAction: handleNotifyAdmins,
         }),
-        [handleNotifyAdmins, accountAdmins],
+        [handleNotifyAdmins, accountAdmins, isAiAgentTrial],
     )
 }
 
@@ -674,7 +835,7 @@ export const useTrialModalProps = ({
 }): TrialModalProps => {
     const trialAccess = useTrialAccess(storeName)
     const trialType = trialAccess.trialType
-    const trialMetrics = useTrialMetrics()
+    const trialMetrics = useTrialMetrics(trialType, storeName)
     const upgradePlanModal = useUpgradePlanModal()
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
     const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(
@@ -692,8 +853,8 @@ export const useTrialModalProps = ({
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
-    const trialEndingModal = useTrialEndingModal(trialMetrics)
-    const trialEndedModal = useTrialEndedModal(trialMetrics)
+    const trialEndingModal = useTrialEndingModal(trialType, trialMetrics)
+    const trialEndedModal = useTrialEndedModal(trialType, trialMetrics)
     const trialRequestModal = useTrialRequestModal(trialType, storeName)
 
     return useMemo(

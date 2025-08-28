@@ -1,15 +1,11 @@
 import { useEffect, useMemo } from 'react'
 
-import moment from 'moment'
-
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import {
@@ -57,7 +53,7 @@ export const useTrialPromoCard = (
 
     const trialAccess = useTrialAccess(shopName)
     const { isDisabled } = useNotifyAdmins(shopName, trialAccess.trialType)
-    const trialMetrics = useTrialMetrics()
+    const trialMetrics = useTrialMetrics(trialAccess.trialType, shopName)
     const trialEnding = useTrialEnding(shopName, trialAccess.trialType)
     const storeActivations = useStoreActivations({
         storeName: shopName,
@@ -67,40 +63,6 @@ export const useTrialPromoCard = (
         storeActivations,
         trialType: trialAccess.trialType,
     })
-
-    // Get trial start date for automation rate filters
-    const trialStartDate = useMemo(() => {
-        const storeActivation = storeActivations[shopName]
-        if (!storeActivation) return null
-
-        const trialConfig =
-            trialAccess.trialType === TrialType.AiAgent
-                ? storeActivation.configuration.trial
-                : null
-
-        return trialConfig?.startDatetime || null
-    }, [storeActivations, shopName, trialAccess.trialType])
-
-    // Create trial period filters for automation rate
-    const automationRateFilters = useMemo((): StatsFilters | null => {
-        if (!trialStartDate) return null
-
-        return {
-            period: {
-                start_datetime: moment(trialStartDate).startOf('day').format(),
-                end_datetime: moment().endOf('day').format(),
-            },
-        }
-    }, [trialStartDate])
-
-    // Fetch automation rate data for trial period
-    const automationRateData = useAiAgentAutomationRate(
-        automationRateFilters || {
-            period: { start_datetime: '', end_datetime: '' },
-        },
-        'UTC', // Use UTC timezone for consistency
-        undefined, // No integration IDs filter needed for trial context
-    )
 
     const { button: primaryButton, variant } = usePrimaryCTA({
         trialAccess,
@@ -122,13 +84,6 @@ export const useTrialPromoCard = (
         trialMetrics,
         isTrialProgress,
         trialAccess.trialType,
-        automationRateFilters && trialAccess.hasCurrentStoreTrialStarted
-            ? {
-                  value: automationRateData.value || 0,
-                  prevValue: automationRateData.prevValue || 0,
-                  isLoading: automationRateData.isLoading,
-              }
-            : undefined,
     )
     const { progressPercentage, progressText } = useTrialProgress(
         trialEnding.remainingDays,
@@ -252,15 +207,6 @@ export const useTrialPromoCard = (
         promoCardContent,
         trialFlow,
         isLoading: !!(trialMetrics.isLoading || trialAccess.isLoading),
-        automationRate:
-            automationRateFilters &&
-            trialAccess.hasCurrentStoreTrialStarted &&
-            trialAccess.trialType === TrialType.AiAgent
-                ? {
-                      value: automationRateData.value || 0,
-                      prevValue: automationRateData.prevValue || 0,
-                      isLoading: automationRateData.isLoading,
-                  }
-                : undefined,
+        automationRate: trialMetrics.automationRate,
     }
 }

@@ -62,7 +62,7 @@ export const useAiAgentPrimaryCTA = ({
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
         useUpgradePlan()
 
-    const automationRate = trialMetrics.automationRate
+    const automationRate = trialMetrics.automationRate?.value ?? 0
     const automationAboveThreshold =
         automationRate != null &&
         automationRate > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD

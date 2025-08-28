@@ -11,6 +11,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 
@@ -29,6 +31,7 @@ jest.mock(
     }),
 )
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
 
 const mockFetchMetricPerDimension = assumeMock(fetchMetricPerDimension)
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -41,6 +44,7 @@ const mockedUseCurrency = assumeMock(useCurrency)
 const mockFormatAmount = jest.requireMock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils',
 ).formatAmount
+const mockUseAiAgentAutomationRate = assumeMock(useAiAgentAutomationRate)
 
 const mocksStore = {
     getState: () => ({}),
@@ -111,6 +115,10 @@ describe('useTrialMetrics', () => {
                         endDatetime: '2023-11-15T00:00:00.000Z',
                     },
                 },
+                trial: {
+                    startDatetime: '2023-11-01T00:00:00.000Z',
+                    endDatetime: '2023-11-15T00:00:00.000Z',
+                },
             },
         },
         'store-2': {
@@ -122,6 +130,10 @@ describe('useTrialMetrics', () => {
                         endDatetime: '2023-11-20T00:00:00.000Z',
                     },
                 },
+                trial: {
+                    startDatetime: '2023-11-01T00:00:00.000Z',
+                    endDatetime: '2023-11-20T00:00:00.000Z',
+                },
             },
         },
     }
@@ -132,8 +144,11 @@ describe('useTrialMetrics', () => {
         { id: 3, name: 'store-3', type: IntegrationType.Magento2 },
     ]
 
-    const renderHookWithWrapper = () => {
-        return renderHook(() => useTrialMetrics(), {
+    const renderHookWithWrapper = (
+        trialType: TrialType = TrialType.ShoppingAssistant,
+        shopName?: string,
+    ) => {
+        return renderHook(() => useTrialMetrics(trialType, shopName), {
             wrapper: ({ children }) => (
                 <Provider store={mocksStore}>
                     <QueryClientProvider client={appQueryClient}>
@@ -168,6 +183,12 @@ describe('useTrialMetrics', () => {
                 },
             },
         } as any)
+
+        mockUseAiAgentAutomationRate.mockReturnValue({
+            value: 0.75,
+            prevValue: 0.65,
+            isLoading: false,
+        })
 
         mockFormatAmount.mockReturnValue('$4,500')
     })
@@ -375,6 +396,90 @@ describe('useTrialMetrics', () => {
 
             await waitFor(() => {
                 expect(result.current.gmvInfluencedRate).toBe(0)
+            })
+        })
+    })
+
+    describe('automation rate functionality', () => {
+        it('should return automation rate when trialType is AiAgent and shopName is provided', async () => {
+            mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
+            const { result } = renderHookWithWrapper(
+                TrialType.AiAgent,
+                'store-1',
+            )
+
+            await waitFor(() => {
+                expect(result.current.automationRate).toEqual({
+                    value: 0.75,
+                    prevValue: 0.65,
+                    isLoading: false,
+                })
+            })
+        })
+
+        it('should return undefined automation rate when trialType is not AiAgent', async () => {
+            const { result } = renderHookWithWrapper(
+                TrialType.ShoppingAssistant,
+                'store-1',
+            )
+
+            await waitFor(() => {
+                expect(result.current.automationRate).toBeUndefined()
+            })
+        })
+
+        it('should return undefined automation rate when shopName is not provided', async () => {
+            const { result } = renderHookWithWrapper(TrialType.AiAgent)
+
+            await waitFor(() => {
+                expect(result.current.automationRate).toBeUndefined()
+            })
+        })
+
+        it('should return undefined automation rate when store has no trial configuration', async () => {
+            const storeActivationsWithoutTrial = {
+                'store-1': {
+                    name: 'store-1',
+                    configuration: {
+                        sales: {},
+                    },
+                },
+            }
+
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: storeActivationsWithoutTrial,
+                isFetchLoading: false,
+            } as any)
+
+            const { result } = renderHookWithWrapper(
+                TrialType.AiAgent,
+                'store-1',
+            )
+
+            await waitFor(() => {
+                expect(result.current.automationRate).toBeUndefined()
+            })
+        })
+
+        it('should handle loading state for automation rate', async () => {
+            mockUseAiAgentAutomationRate.mockReturnValue({
+                value: 0,
+                prevValue: 0,
+                isLoading: true,
+            })
+
+            const { result } = renderHookWithWrapper(
+                TrialType.AiAgent,
+                'store-1',
+            )
+
+            await waitFor(() => {
+                expect(result.current.automationRate).toEqual({
+                    value: 0,
+                    prevValue: 0,
+                    isLoading: true,
+                })
+                expect(result.current.isLoading).toBe(true)
             })
         })
     })

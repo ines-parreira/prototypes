@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
+import moment from 'moment'
 import { shallowEqual } from 'react-redux'
 
 import {
@@ -15,10 +16,13 @@ import {
     gmvInfluencedQueryFactory,
     gmvQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculateRate } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { getTimeFilters } from 'pages/aiAgent/trial/utils/getTimeFilters'
 import { formatAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
@@ -29,12 +33,19 @@ export type TrialMetrics = {
     gmvInfluenced: string
     gmvInfluencedRate: number
     isLoading: boolean
-    automationRate?: number
+    automationRate?: {
+        value: number
+        prevValue: number
+        isLoading: boolean
+    }
 }
 
 const REFETCH_INTERVAL_MS = 5 * 60 * 1000 // 5 minutes
 
-export const useTrialMetrics = (): TrialMetrics => {
+export const useTrialMetrics = (
+    trialType: TrialType,
+    shopName?: string,
+): TrialMetrics => {
     const storeIntegrations = useAppSelector(
         getIntegrationsByTypes([
             IntegrationType.Shopify,
@@ -43,7 +54,9 @@ export const useTrialMetrics = (): TrialMetrics => {
         ]),
         shallowEqual,
     )
-    const { storeActivations } = useStoreActivations()
+    const { storeActivations } = useStoreActivations(
+        shopName ? { storeName: shopName } : undefined,
+    )
 
     const storeIds = useMemo(() => {
         if (!storeActivations || !storeIntegrations) {
@@ -139,9 +152,55 @@ export const useTrialMetrics = (): TrialMetrics => {
         return calculateRate(gmvInfluenced, gmvTotal)
     }, [gmvInfluenced, gmvTotal])
 
+    const trialStartDate = useMemo(() => {
+        if (!storeActivations || !shopName) return null
+
+        const storeActivation = storeActivations[shopName]
+        if (!storeActivation) return null
+
+        const trialConfig =
+            trialType === TrialType.AiAgent
+                ? storeActivation.configuration.trial
+                : null
+
+        return trialConfig?.startDatetime || null
+    }, [storeActivations, shopName, trialType])
+
+    const automationRateFilters = useMemo((): StatsFilters | null => {
+        if (!trialStartDate) return null
+
+        return {
+            period: {
+                start_datetime: moment(trialStartDate).startOf('day').format(),
+                end_datetime: moment().endOf('day').format(),
+            },
+        }
+    }, [trialStartDate])
+
+    const automationRateData = useAiAgentAutomationRate(
+        automationRateFilters || {
+            period: { start_datetime: '', end_datetime: '' },
+        },
+        timezone,
+        undefined,
+    )
+
     return {
         gmvInfluenced: formatAmount(currency, gmvInfluenced),
         gmvInfluencedRate,
-        isLoading: isGmvInfluencedFetching || isGmvFetching,
+        isLoading:
+            isGmvInfluencedFetching ||
+            isGmvFetching ||
+            automationRateData.isLoading,
+        automationRate:
+            automationRateFilters &&
+            trialType === TrialType.AiAgent &&
+            trialStartDate
+                ? {
+                      value: automationRateData.value || 0,
+                      prevValue: automationRateData.prevValue || 0,
+                      isLoading: automationRateData.isLoading,
+                  }
+                : undefined,
     }
 }

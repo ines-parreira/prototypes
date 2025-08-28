@@ -8,6 +8,7 @@ describe('useTrialDescription', () => {
     const createTrialMetrics = (overrides = {}) => ({
         gmvInfluenced: '$1,000',
         gmvInfluencedRate: 0.1,
+        automationRate: undefined,
         isLoading: false,
         ...overrides,
     })
@@ -200,13 +201,12 @@ describe('useTrialDescription', () => {
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
+                automationRate: {
+                    value: 0.075, // 7.5%
+                    prevValue: 0.065,
+                    isLoading: false,
+                },
             })
-
-            const automationRate = {
-                value: 0.075, // 7.5%
-                prevValue: 0.065,
-                isLoading: false,
-            }
 
             const { result } = renderHook(() =>
                 useTrialDescription(
@@ -214,7 +214,6 @@ describe('useTrialDescription', () => {
                     trialMetrics,
                     isTrialProgress,
                     TrialType.AiAgent,
-                    automationRate,
                 ),
             )
 
@@ -229,13 +228,12 @@ describe('useTrialDescription', () => {
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
+                automationRate: {
+                    value: 0.003, // 0.3% (below 0.5% threshold)
+                    prevValue: 0.002,
+                    isLoading: false,
+                },
             })
-
-            const automationRate = {
-                value: 0.003, // 0.3% (below 0.5% threshold)
-                prevValue: 0.002,
-                isLoading: false,
-            }
 
             const { result } = renderHook(() =>
                 useTrialDescription(
@@ -243,7 +241,6 @@ describe('useTrialDescription', () => {
                     trialMetrics,
                     isTrialProgress,
                     TrialType.AiAgent,
-                    automationRate,
                 ),
             )
 
@@ -258,13 +255,12 @@ describe('useTrialDescription', () => {
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
+                automationRate: {
+                    value: 0.075, // 7.5%
+                    prevValue: 0.065,
+                    isLoading: true, // Loading state
+                },
             })
-
-            const automationRate = {
-                value: 0.075, // 7.5%
-                prevValue: 0.065,
-                isLoading: true, // Loading state
-            }
 
             const { result } = renderHook(() =>
                 useTrialDescription(
@@ -272,7 +268,6 @@ describe('useTrialDescription', () => {
                     trialMetrics,
                     isTrialProgress,
                     TrialType.AiAgent,
-                    automationRate,
                 ),
             )
 
@@ -287,6 +282,7 @@ describe('useTrialDescription', () => {
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
+                automationRate: undefined,
             })
 
             const { result } = renderHook(() =>

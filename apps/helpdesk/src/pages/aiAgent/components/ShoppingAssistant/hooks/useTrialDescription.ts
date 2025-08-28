@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+
 import {
     AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
@@ -9,23 +11,15 @@ import { TrialType } from '../types/ShoppingAssistant'
 
 export const useTrialDescription = (
     canNotifyAdmin: boolean,
-    trialMetrics: {
-        gmvInfluenced: string
-        gmvInfluencedRate: number
-        isLoading: boolean
-    },
+    trialMetrics: TrialMetrics,
     isTrialProgress: boolean,
     trialType: TrialType,
-    automationRate?: {
-        value: number
-        prevValue: number
-        isLoading: boolean
-    },
 ): {
     description: string
     shouldShowDescriptionIcon: boolean
 } => {
-    const { gmvInfluenced, gmvInfluencedRate, isLoading } = trialMetrics
+    const { gmvInfluenced, gmvInfluencedRate, automationRate, isLoading } =
+        trialMetrics
 
     return useMemo(() => {
         // AI Agent trial type logic

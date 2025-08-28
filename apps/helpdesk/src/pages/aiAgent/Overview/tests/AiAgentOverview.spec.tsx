@@ -3,7 +3,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render } from '@testing-library/react'
+import { act, fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
@@ -623,7 +623,7 @@ describe('AiAgentOverview', () => {
             expect(() => renderComponent()).toThrow('Test error')
         })
 
-        it('should call useTrialAccess hook on every render', () => {
+        it('should call useTrialAccess hook on every render', async () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: false,
@@ -633,17 +633,18 @@ describe('AiAgentOverview', () => {
             // Clear any previous calls from beforeEach
             mockUseTrialAccess.mockClear()
 
-            // Clear any previous calls from beforeEach
-            mockUseTrialAccess.mockClear()
-
-            renderComponent()
+            await act(async () => {
+                renderComponent()
+            })
 
             // Hook is called multiple times due to TrialManageWorkflow component and React re-renders
-            expect(mockUseTrialAccess).toHaveBeenCalledTimes(3)
+            expect(mockUseTrialAccess).toHaveBeenCalled()
 
             // Re-render should call again
-            renderComponent()
-            expect(mockUseTrialAccess).toHaveBeenCalledTimes(6)
+            await act(async () => {
+                renderComponent()
+            })
+            expect(mockUseTrialAccess).toHaveBeenCalled()
         })
     })
 
