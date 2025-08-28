@@ -353,6 +353,7 @@ export type Order = {
     subtotal_price: string
     total_tax: string
     total_price: string
+    currency: string
     taxes_included: boolean
     discount_applications: DiscountApplication[]
     refunds: Refund[]

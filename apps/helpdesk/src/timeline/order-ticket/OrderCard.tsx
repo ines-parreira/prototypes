@@ -2,6 +2,7 @@ import cn from 'classnames'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import { Order } from 'constants/integrations/types/shopify'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import CardHeaderIcon from './CardHeaderIcon'
 import OrderStatusBadge from './OrderStatusBadge'
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const OrderCard = ({ className, order, displayedDate }: Props) => {
+    const moneySymbol = getMoneySymbol(order.currency, true)
     return (
         <div className={cn(css.card, className)}>
             <CardHeaderIcon src={logo} alt="Shopify" />
@@ -29,7 +31,10 @@ const OrderCard = ({ className, order, displayedDate }: Props) => {
                     <span className={css.date}>{displayedDate}</span>
                 </div>
                 <ul className={css.orderTicketFields}>
-                    <li>${order.total_price}</li>
+                    <li>
+                        {moneySymbol}
+                        {order.total_price}
+                    </li>
                     <span className={css.separator}>•</span>
                     <li>{`${order.line_items.length} items`}</li>
                     <span className={css.separator}>•</span>

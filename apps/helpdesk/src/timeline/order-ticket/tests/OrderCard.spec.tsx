@@ -36,6 +36,17 @@ describe('OrderCard', () => {
         expect(screen.getByText('$299.99')).toBeInTheDocument()
     })
 
+    it.each([
+        ['EUR', '€'],
+        ['GBP', '£'],
+        ['CAD', '$'],
+        ['AUD', '$'],
+    ])(`should render correct money symbol for %s`, (currency, symbol) => {
+        const props = { ...defaultProps, order: { ...mockOrder, currency } }
+        render(<OrderCard {...props} />)
+        expect(screen.getByText(`${symbol}299.99`)).toBeInTheDocument()
+    })
+
     it('should render order items count', () => {
         render(<OrderCard {...defaultProps} />)
 

@@ -73,6 +73,7 @@ const mockOrder: Order = {
     subtotal_price: '10.00',
     total_tax: '0.00',
     total_price: '10.00',
+    currency: 'USD',
     taxes_included: false,
     discount_applications: [],
     refunds: [],
