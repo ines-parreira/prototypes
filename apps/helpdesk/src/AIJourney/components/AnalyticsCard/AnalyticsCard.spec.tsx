@@ -189,26 +189,6 @@ describe('<AnalyticsCard />', () => {
         expect(screen.getByTestId('discount-card')).toBeInTheDocument()
     })
 
-    it('should not render discount card when discount is already enabled', () => {
-        render(
-            <QueryClientProvider client={appQueryClient}>
-                <Provider store={mockStore({})}>
-                    <AnalyticsCard
-                        period={period}
-                        analyticsData={data}
-                        abandonedCartJourney={{
-                            ...mockAbandonedCartJourney,
-                            state: JourneyStatusEnum.Paused,
-                        }}
-                        journeyData={mockJourneyData as JourneyDetailApiDTO}
-                    />
-                </Provider>
-            </QueryClientProvider>,
-        )
-        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
-        expect(screen.queryByTestId('discount-card')).not.toBeInTheDocument()
-    })
-
     it('should call handleUpdate with correct parameters when clicking pause/activate button', async () => {
         render(
             <MemoryRouter>

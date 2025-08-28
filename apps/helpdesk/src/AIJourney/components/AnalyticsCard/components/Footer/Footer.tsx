@@ -1,28 +1,28 @@
 import { CartAbandonedJourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
+import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+
 import css from './Footer.less'
 
 type FooterProps = {
     isDiscountEnabled?: boolean
     maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
+    totalRevenue?: MetricProps
 }
 
-export const Footer = ({ isDiscountEnabled, maxDiscount }: FooterProps) => {
+export const Footer = ({
+    isDiscountEnabled,
+    maxDiscount,
+    totalRevenue,
+}: FooterProps) => {
     return (
         <div className={css.footer}>
-            {isDiscountEnabled && (
-                <div className={css.discountInfo}>
-                    <div className={css.discountInfoIcon}>
-                        <i
-                            style={{ fontSize: '12px' }}
-                            className="material-icons-outlined"
-                        >
-                            star
-                        </i>
-                    </div>
-                    Discount {maxDiscount}%
-                </div>
-            )}
+            <DiscountCard
+                totalRevenue={totalRevenue}
+                isDiscountEnabled={isDiscountEnabled}
+                maxDiscount={maxDiscount}
+            />
         </div>
     )
 }

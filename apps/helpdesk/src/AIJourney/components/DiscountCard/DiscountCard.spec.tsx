@@ -53,4 +53,15 @@ describe('<DiscountCard />', () => {
             '/app/ai-journey/test-store/conversation-setup',
         )
     })
+
+    it('renders max discount when discount is enabled', () => {
+        renderDiscountCard({
+            isDiscountEnabled: true,
+            maxDiscount: 10,
+        })
+
+        expect(
+            screen.getByText('Discount code included is 10%'),
+        ).toBeInTheDocument()
+    })
 })

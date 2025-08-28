@@ -11,7 +11,6 @@ import {
 import { Integration } from '@gorgias/helpdesk-types'
 
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
-import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import greenLightningIcon from 'assets/img/ai-journey/green-lightning.svg'
@@ -141,9 +140,6 @@ export const AnalyticsCard = ({
                 ) : (
                     <>
                         <AnalyticsData data={analyticsData} period={period} />
-                        {!isDiscountEnabled && (
-                            <DiscountCard totalRevenue={totalRevenue} />
-                        )}
                     </>
                 )}
                 <TotalMessagesSentCard
@@ -155,6 +151,7 @@ export const AnalyticsCard = ({
                 <Footer
                     isDiscountEnabled={isDiscountEnabled}
                     maxDiscount={maxDiscount}
+                    totalRevenue={totalRevenue}
                 />
             )}
         </div>
