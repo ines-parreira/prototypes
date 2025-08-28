@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 
 import { RealtimeProvider } from '@gorgias/realtime'
 
@@ -310,5 +310,154 @@ describe('RealtimeAppProvider', () => {
         rerender(<RealtimeAppProvider>foo</RealtimeAppProvider>)
 
         expect(mockResetErrorCount).toHaveBeenCalled()
+    })
+
+    describe('onNetworkUp handler', () => {
+        it('should reset error count and remove banner when network comes up', () => {
+            const mockResetErrorCount = jest.fn()
+            const mockRemoveBanner = jest.fn()
+            mockUseErrorThreshold.mockReturnValue({
+                incrementErrorCount: jest.fn(),
+                resetErrorCount: mockResetErrorCount,
+            })
+            mockUseBanners.mockReturnValue({
+                addBanner: jest.fn(),
+                removeBanner: mockRemoveBanner,
+            })
+
+            render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+            act(() => {
+                MockRealtimeProvider.mock.calls[0][0].onNetworkUp()
+            })
+
+            expect(mockResetErrorCount).toHaveBeenCalled()
+            expect(mockRemoveBanner).toHaveBeenCalledWith(
+                BannerCategories.REALTIME_CONNECTIVITY,
+                'realtime-connectivity-banner',
+            )
+        })
+
+        it('should not reset error count even when realtime is disabled', () => {
+            const mockResetErrorCount = jest.fn()
+            const mockRemoveBanner = jest.fn()
+            mockUseErrorThreshold.mockReturnValue({
+                incrementErrorCount: jest.fn(),
+                resetErrorCount: mockResetErrorCount,
+            })
+            mockUseBanners.mockReturnValue({
+                addBanner: jest.fn(),
+                removeBanner: mockRemoveBanner,
+            })
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.PubNubRealtime) {
+                    return false
+                }
+                return true
+            })
+
+            render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+            act(() => {
+                MockRealtimeProvider.mock.calls[0][0].onNetworkUp()
+            })
+
+            expect(mockResetErrorCount).not.toHaveBeenCalled()
+            expect(mockRemoveBanner).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('onNetworkDown handler', () => {
+        it('should reset error count and display banner without logging when network goes down', () => {
+            const mockResetErrorCount = jest.fn()
+            const mockAddBanner = jest.fn()
+            mockUseErrorThreshold.mockReturnValue({
+                incrementErrorCount: jest.fn(),
+                resetErrorCount: mockResetErrorCount,
+            })
+            mockUseBanners.mockReturnValue({
+                addBanner: mockAddBanner,
+                removeBanner: jest.fn(),
+            })
+
+            render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+            act(() => {
+                MockRealtimeProvider.mock.calls[0][0].onNetworkDown()
+            })
+
+            expect(mockResetErrorCount).toHaveBeenCalled()
+            expect(mockAddBanner).toHaveBeenCalledWith({
+                category: BannerCategories.REALTIME_CONNECTIVITY,
+                type: AlertBannerTypes.Critical,
+                message: `Can't connect to realtime updates. Please consult the debugging guide.`,
+                instanceId: 'realtime-connectivity-banner',
+                CTA: {
+                    type: 'action',
+                    text: 'View debugging guide',
+                    onClick: expect.any(Function),
+                },
+            })
+            expect(mockLogEvent).not.toHaveBeenCalled()
+        })
+
+        it('should not reset error count and display banner without logging when network goes down and realtime is disabled', () => {
+            const mockResetErrorCount = jest.fn()
+            const mockAddBanner = jest.fn()
+            mockUseErrorThreshold.mockReturnValue({
+                incrementErrorCount: jest.fn(),
+                resetErrorCount: mockResetErrorCount,
+            })
+            mockUseBanners.mockReturnValue({
+                addBanner: mockAddBanner,
+                removeBanner: jest.fn(),
+            })
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.PubNubRealtime) {
+                    return false
+                }
+                return true
+            })
+
+            render(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+            act(() => {
+                MockRealtimeProvider.mock.calls[0][0].onNetworkDown()
+            })
+
+            expect(mockResetErrorCount).not.toHaveBeenCalled()
+            expect(mockAddBanner).not.toHaveBeenCalled()
+            expect(mockLogEvent).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should not increment error count when PN network is down', () => {
+        const mockIncrementErrorCount = jest.fn()
+        mockUseErrorThreshold.mockReturnValue({
+            incrementErrorCount: mockIncrementErrorCount,
+            resetErrorCount: jest.fn(),
+        })
+
+        const { rerender } = render(
+            <RealtimeAppProvider>foo</RealtimeAppProvider>,
+        )
+
+        act(() => {
+            MockRealtimeProvider.mock.calls[0][0].onNetworkDown()
+        })
+
+        rerender(<RealtimeAppProvider>foo</RealtimeAppProvider>)
+
+        act(() => {
+            MockRealtimeProvider.mock.calls[
+                MockRealtimeProvider.mock.calls.length - 1
+            ][0].onErrorStatus({
+                statusCode: '400',
+                operation: 'foo',
+                category: 'PNNetworkIssuesCategory',
+            })
+        })
+
+        expect(mockIncrementErrorCount).not.toHaveBeenCalled()
     })
 })

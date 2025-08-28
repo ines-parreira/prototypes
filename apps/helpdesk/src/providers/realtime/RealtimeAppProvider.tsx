@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import { isObject, isString, toPlainObject } from 'lodash'
@@ -40,29 +40,36 @@ const REALTIME_ERROR_THRESHOLD = 20
 const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     const isCatchPNErrorsEnabled = useFlag(FeatureFlagKey.CatchPNErrors)
     const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
+    const [isPNNetworkUp, setIsPNNetworkUp] = useState(true)
 
     const { addBanner, removeBanner } = useBanners()
 
-    const displayRealtimeConnectivityBanner = useCallback(() => {
-        logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed)
-        addBanner({
-            category: BannerCategories.REALTIME_CONNECTIVITY,
-            type: AlertBannerTypes.Critical,
-            message: `Can't connect to realtime updates. Please consult the debugging guide.`,
-            instanceId: REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID,
-            CTA: {
-                type: 'action',
-                text: 'View debugging guide',
-                onClick: () => {
-                    logEvent(SegmentEvent.RealtimeConnectivityBannerDocsClicked)
-                    window.open(
-                        'https://docs.gorgias.com/en-US/common-account-errors-486968#cant-connect-to-real-time-updates',
-                        '_blank',
-                    )
+    const displayRealtimeConnectivityBanner = useCallback(
+        (shouldLogEvent: boolean = true) => {
+            shouldLogEvent &&
+                logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed)
+            addBanner({
+                category: BannerCategories.REALTIME_CONNECTIVITY,
+                type: AlertBannerTypes.Critical,
+                message: `Can't connect to realtime updates. Please consult the debugging guide.`,
+                instanceId: REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID,
+                CTA: {
+                    type: 'action',
+                    text: 'View debugging guide',
+                    onClick: () => {
+                        logEvent(
+                            SegmentEvent.RealtimeConnectivityBannerDocsClicked,
+                        )
+                        window.open(
+                            'https://docs.gorgias.com/en-US/common-account-errors-486968#cant-connect-to-real-time-updates',
+                            '_blank',
+                        )
+                    },
                 },
-            },
-        })
-    }, [addBanner])
+            })
+        },
+        [addBanner],
+    )
 
     const { incrementErrorCount, resetErrorCount } = useErrorThreshold(
         REALTIME_ERROR_THRESHOLD,
@@ -85,6 +92,7 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
         (status: RealtimeStatus, pnSdkVersion?: string) => {
             status.category === 'PNNetworkIssuesCategory' &&
                 isRealtimeEnabled &&
+                isPNNetworkUp &&
                 incrementErrorCount()
 
             let message: undefined | string
@@ -110,10 +118,15 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
                     extra: { status: toPlainObject(status) },
                 })
         },
-        [isRealtimeEnabled, isCatchPNErrorsEnabled, incrementErrorCount],
+        [
+            isRealtimeEnabled,
+            isCatchPNErrorsEnabled,
+            incrementErrorCount,
+            isPNNetworkUp,
+        ],
     )
 
-    const handleReconnectStatus = useCallback(() => {
+    const resetErrorCountAndRemoveBanner = useCallback(() => {
         removeBanner(
             BannerCategories.REALTIME_CONNECTIVITY,
             REALTIME_CONNECTIVITY_BANNER_INSTANCE_ID,
@@ -124,6 +137,21 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
     useUpdateEffect(() => {
         resetErrorCount()
     }, [isRealtimeEnabled, resetErrorCount])
+
+    const handleNetworkUp = useCallback(() => {
+        if (isRealtimeEnabled) {
+            setIsPNNetworkUp(true)
+            resetErrorCountAndRemoveBanner()
+        }
+    }, [isRealtimeEnabled, resetErrorCountAndRemoveBanner])
+
+    const handleNetworkDown = useCallback(() => {
+        if (isRealtimeEnabled) {
+            setIsPNNetworkUp(false)
+            resetErrorCount()
+            displayRealtimeConnectivityBanner(false)
+        }
+    }, [displayRealtimeConnectivityBanner, isRealtimeEnabled, resetErrorCount])
 
     return (
         <RealtimeProvider
@@ -137,7 +165,9 @@ const RealtimeAppProvider = ({ children }: RealtimeAppProviderProps) => {
             subscriptionWorkerLogVerbosity={isLoggingEnabled}
             retryConfiguration={realtimeRetryPolicy}
             onErrorStatus={handleErrorStatus}
-            onReconnectStatus={handleReconnectStatus}
+            onReconnectStatus={resetErrorCountAndRemoveBanner}
+            onNetworkUp={handleNetworkUp}
+            onNetworkDown={handleNetworkDown}
             logLevel={logLevel as number}
         >
             {children}
