@@ -277,3 +277,19 @@ export const getNewMessageDiscountCodes = createImmutableSelector(
         (state.getIn(['state', 'inserted_discounts']) as List<any>) ||
         fromJS([]),
 )
+
+// Translation state selectors
+export const getOriginalContentState = createSelector(
+    getNewMessageState,
+    (state) => state.getIn(['state', 'originalContentState']),
+)
+
+export const hasTranslation = createSelector(
+    getNewMessageState,
+    (state) => !!state.getIn(['state', 'originalContentState']),
+)
+
+export const getIsTranslationPending = createSelector(
+    getNewMessageState,
+    (state) => state.getIn(['state', 'isTranslationPending'], false),
+)

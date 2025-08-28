@@ -27,13 +27,12 @@ const Button = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
                 ref={ref}
                 className={classnames(css.button, {
                     [css.isActive]: props.isActive,
+                    [css.isDisabled]: props.isDisabled,
                 })}
                 intent="secondary"
                 onClick={(e: MouseEvent) => {
                     e.preventDefault()
-                    if (!props.isDisabled) {
-                        props.onToggle()
-                    }
+                    props.onToggle()
                 }}
                 onMouseDown={(e: MouseEvent) => e.preventDefault()}
                 size="small"
@@ -41,6 +40,7 @@ const Button = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
             >
                 {props.icon}
             </IconButton>
+
             <Tooltip
                 autohide={false}
                 delay={100}

@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { EditorState } from 'draft-js'
 
 export enum ActionName {
+    Translate = 'TRANSLATE',
     Bold = 'BOLD',
     Italic = 'ITALIC',
     Underline = 'UNDERLINE',
@@ -27,6 +28,7 @@ export type EditorStateGetter = () => EditorState
 export type ActionInjectedProps = {
     getEditorState: EditorStateGetter
     setEditorState: EditorStateSetter
+    isDisabled?: boolean
 }
 
 export type Config = {

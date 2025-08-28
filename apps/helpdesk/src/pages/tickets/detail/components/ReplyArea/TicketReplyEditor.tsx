@@ -26,8 +26,10 @@ import { isNewChannel } from 'services/channels'
 import { getOtherAgents } from 'state/agents/selectors'
 import { addAttachments, setResponseText } from 'state/newMessage/actions'
 import {
+    getIsTranslationPending,
     getNewMessageAttachments,
     getNewMessageType,
+    hasTranslation,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
 import { notify } from 'state/notifications/actions'
@@ -282,7 +284,8 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
     }
 
     getButtons = () => {
-        const { attachments, newMessage, newMessageType } = this.props
+        const { attachments, newMessage, newMessageType, hasTranslation } =
+            this.props
         let attachmentsMask: string
 
         if (
@@ -337,6 +340,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     id="attachments-input"
                     type="file"
                     multiple
+                    disabled={hasTranslation}
                     onChange={(event) => {
                         event.target.files &&
                             this.handleFiles(
@@ -374,6 +378,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             shouldDisplayQuickReply,
             replyAreaHeader,
             handleTypingActivity,
+            hasTranslation,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -445,8 +450,17 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             attachmentsMask = 'image/*|video/*'
         }
 
+        if (!isInternalNote(newMessageType)) {
+            displayedActions.unshift(ActionName.Translate)
+        }
+
         return (
-            <div className={css.component}>
+            <div
+                className={classnames(css.component, {
+                    [css.isReadOnly]:
+                        hasTranslation || this.props.isTranslationPending,
+                })}
+            >
                 <TicketRichField
                     className={classnames(css.richField, {
                         [css.isInternal]: !isNewMessagePublic,
@@ -472,11 +486,15 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         this.handleFiles(files, attachmentsMask)
                     }
                     tabIndex={4}
-                    readOnly={newMessage.getIn([
-                        '_internal',
-                        'loading',
-                        'submitMessage',
-                    ])}
+                    readOnly={
+                        newMessage.getIn([
+                            '_internal',
+                            'loading',
+                            'submitMessage',
+                        ]) ||
+                        hasTranslation ||
+                        this.props.isTranslationPending
+                    }
                     {...mentionProps}
                     placeholder="Click here to reply, or press r."
                     notify={notify}
@@ -507,6 +525,8 @@ const connector = connect(
         agents: getOtherAgents(state),
         attachments: getNewMessageAttachments(state),
         isNewMessagePublic: isNewMessagePublic(state),
+        hasTranslation: hasTranslation(state),
+        isTranslationPending: getIsTranslationPending(state),
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         predictionContext: getContext(state),

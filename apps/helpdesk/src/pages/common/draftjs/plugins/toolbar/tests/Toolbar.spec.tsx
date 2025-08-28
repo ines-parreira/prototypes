@@ -39,6 +39,8 @@ jest.mock('../components', () => {
 
 const mockUseFlag = useFlag as jest.Mock
 
+jest.mock('hooks/useAppSelector')
+
 describe('Toolbar', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> &
         Omit<ComponentProps<typeof Toolbar>, 'getEditorState'> = {

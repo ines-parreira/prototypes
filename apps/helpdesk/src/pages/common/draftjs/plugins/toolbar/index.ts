@@ -27,6 +27,10 @@ export const isDisplayedAction = (
     displayedActions?: ActionName[] | null,
 ) => {
     if (!displayedActions) {
+        // Translate should only be shown when explicitly included
+        if (name === ActionName.Translate) {
+            return false
+        }
         return true
     }
 

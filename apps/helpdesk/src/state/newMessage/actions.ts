@@ -1549,3 +1549,14 @@ export const restoreNewMessageDraft = createAction<
 export const restoreNewMessageBodyText = createAction<MessageContext>(
     constants.RESTORE_NEW_MESSAGE_BODY_TEXT,
 )
+
+export const setTranslationState = createAction<{
+    translatedContentState: ContentState
+}>(constants.SET_TRANSLATION_STATE)
+
+export const clearTranslationState = createAction(
+    constants.CLEAR_TRANSLATION_STATE,
+)
+export const setTranslationPending = createAction<boolean>(
+    constants.SET_TRANSLATION_PENDING,
+)

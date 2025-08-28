@@ -57,6 +57,7 @@ export type ReplyAreaState = {
     appliedMacro: Map<any, any> | null
     firstNewMessage: boolean
     inserted_discounts: DiscountCode[]
+    isTranslationPending: boolean
 }
 
 export type Ticket = {

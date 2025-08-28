@@ -2276,6 +2276,33 @@ describe('actions', () => {
         })
     })
 
+    describe('translation actions', () => {
+        it('creates SET_TRANSLATION_STATE action', () => {
+            const contentState = ContentState.createFromText('Translated text')
+            const action = actions.setTranslationState({
+                translatedContentState: contentState,
+            })
+
+            expect(action.type).toBe(types.SET_TRANSLATION_STATE)
+            expect(action.payload).toEqual({
+                translatedContentState: contentState,
+            })
+        })
+
+        it('creates CLEAR_TRANSLATION_STATE action', () => {
+            const action = actions.clearTranslationState()
+
+            expect(action.type).toBe(types.CLEAR_TRANSLATION_STATE)
+        })
+
+        it('creates SET_TRANSLATION_PENDING action with payload', () => {
+            const action = actions.setTranslationPending(true)
+
+            expect(action.type).toBe(types.SET_TRANSLATION_PENDING)
+            expect(action.payload).toBe(true)
+        })
+    })
+
     describe('setActiveCustomerAsReceiver', () => {
         it('should set email receiver based on active customer', () => {
             store = mockStore({

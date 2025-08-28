@@ -72,4 +72,39 @@ describe('ButtonPopover', () => {
         screen.getByText('Button').click()
         expect(onClose).not.toHaveBeenCalled()
     })
+
+    it('should automatically close popover when disabled ', () => {
+        const onClose = jest.fn()
+        const { rerender } = render(
+            <ButtonPopover
+                toggleGuard={jest.fn()}
+                onClose={onClose}
+                onOpen={jest.fn()}
+                isOpen={true}
+                isDisabled={false}
+                name="test"
+                icon="test"
+            >
+                <div>Button</div>
+            </ButtonPopover>,
+        )
+
+        expect(onClose).not.toHaveBeenCalled()
+
+        rerender(
+            <ButtonPopover
+                toggleGuard={jest.fn()}
+                onClose={onClose}
+                onOpen={jest.fn()}
+                isOpen={true}
+                isDisabled={true}
+                name="test"
+                icon="test"
+            >
+                <div>Button</div>
+            </ButtonPopover>,
+        )
+
+        expect(onClose).toHaveBeenCalled()
+    })
 })

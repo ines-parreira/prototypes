@@ -80,6 +80,7 @@ const initialReplyAreaState: ReplyAreaState = {
     appliedMacro: null,
     firstNewMessage: true,
     inserted_discounts: [],
+    isTranslationPending: false,
 }
 
 export const initialState: NewMessageState = fromJS({
@@ -108,6 +109,8 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
         .setIn(['state', 'contentState'], ContentState.createFromText(''))
         .setIn(['state', 'selectionState'], null)
         .setIn(['state', 'inserted_discounts'], fromJS([]))
+        .deleteIn(['state', 'originalContentState'])
+        .setIn(['state', 'isTranslationPending'], false)
 }
 
 export default function reducer(
@@ -396,13 +399,30 @@ export default function reducer(
             const { messages, sourceType } = action
             const channel = getChannelFromSourceType(sourceType!, messages!)
 
-            return state
+            let newState = state
                 .setIn(['newMessage', 'channel'], channel)
                 .setIn(['newMessage', 'source', 'type'], sourceType)
                 .setIn(
                     ['newMessage', 'public'],
                     isPublic(sourceType as TicketMessageSourceType),
                 )
+
+            if (sourceType === TicketMessageSourceType.InternalNote) {
+                const originalContent = newState.getIn([
+                    'state',
+                    'originalContentState',
+                ]) as ContentState
+
+                if (originalContent) {
+                    newState = newState
+                        .setIn(['state', 'contentState'], originalContent)
+                        .deleteIn(['state', 'originalContentState'])
+                        // Force the editor to update with the original content
+                        .setIn(['state', 'forceUpdate'], true)
+                }
+            }
+
+            return newState
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_EXTRA: {
@@ -416,6 +436,11 @@ export default function reducer(
         }
 
         case types.SET_RESPONSE_TEXT: {
+            // don't allow editing if ticket translation is active (originalContentState exists)
+            if (state.getIn(['state', 'originalContentState'])) {
+                return state
+            }
+
             const prevContentState = state.getIn([
                 'state',
                 'contentState',
@@ -741,6 +766,45 @@ export default function reducer(
         case types.SET_NEW_MESSAGE_ACTIONS: {
             const newActions = fromJS(action.payload as MacroAction[])
             return state.setIn(['newMessage', 'actions'], newActions)
+        }
+
+        case types.SET_TRANSLATION_STATE: {
+            const { translatedContentState } = action.payload as {
+                translatedContentState: ContentState
+            }
+
+            // store original content state before replacing with translation
+            const currentState = state.getIn([
+                'state',
+                'contentState',
+            ]) as ContentState
+
+            return state
+                .setIn(['state', 'originalContentState'], currentState)
+                .setIn(['state', 'contentState'], translatedContentState)
+        }
+
+        case types.CLEAR_TRANSLATION_STATE: {
+            const originalContent = state.getIn([
+                'state',
+                'originalContentState',
+            ]) as ContentState
+
+            // restore original content if it exists
+            if (originalContent) {
+                state = state
+                    .setIn(['state', 'contentState'], originalContent)
+                    .deleteIn(['state', 'originalContentState'])
+            }
+
+            return state
+        }
+
+        case types.SET_TRANSLATION_PENDING: {
+            return state.setIn(
+                ['state', 'isTranslationPending'],
+                action.payload,
+            )
         }
 
         default:

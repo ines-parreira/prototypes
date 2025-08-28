@@ -24,7 +24,7 @@ import css from './AddVideo.less'
 
 type Props = ActionInjectedProps
 
-const AddVideo = ({ getEditorState, setEditorState }: Props) => {
+const AddVideo = ({ getEditorState, setEditorState, isDisabled }: Props) => {
     const {
         canAddVideoPlayer,
         canAddVideoLink,
@@ -112,6 +112,7 @@ const AddVideo = ({ getEditorState, setEditorState }: Props) => {
             icon="video_library"
             name="Insert video"
             isOpen={isOpen}
+            isDisabled={isDisabled}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}
             className={css.popover}

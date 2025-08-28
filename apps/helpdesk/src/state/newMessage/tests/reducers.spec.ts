@@ -34,6 +34,162 @@ describe('new message reducer', () => {
         )
     })
 
+    describe('translation state management', () => {
+        it('handles SET_TRANSLATION_STATE action', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            const stateWithContent = initialState.setIn(
+                ['state', 'contentState'],
+                originalContent,
+            )
+
+            const action = {
+                type: types.SET_TRANSLATION_STATE,
+                payload: {
+                    translatedContentState: translatedContent,
+                },
+            }
+
+            const newState = reducer(stateWithContent, action)
+
+            expect(newState.getIn(['state', 'originalContentState'])).toEqual(
+                originalContent,
+            )
+            expect(newState.getIn(['state', 'contentState'])).toEqual(
+                translatedContent,
+            )
+        })
+
+        it('handles CLEAR_TRANSLATION_STATE action when original content exists', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            const stateWithTranslation = initialState
+                .setIn(['state', 'contentState'], translatedContent)
+                .setIn(['state', 'originalContentState'], originalContent)
+
+            const action = {
+                type: types.CLEAR_TRANSLATION_STATE,
+            }
+
+            const newState = reducer(stateWithTranslation, action)
+
+            expect(newState.getIn(['state', 'contentState'])).toEqual(
+                originalContent,
+            )
+            expect(
+                newState.getIn(['state', 'originalContentState']),
+            ).toBeUndefined()
+        })
+
+        it('handles CLEAR_TRANSLATION_STATE action when no original content exists', () => {
+            const action = {
+                type: types.CLEAR_TRANSLATION_STATE,
+            }
+
+            const newState = reducer(initialState, action)
+
+            expect(newState).toEqual(initialState)
+        })
+
+        it('clears translation state when switching to internal note', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            const stateWithTranslation = initialState
+                .setIn(['state', 'contentState'], translatedContent)
+                .setIn(['state', 'originalContentState'], originalContent)
+                .setIn(
+                    ['newMessage', 'source', 'type'],
+                    TicketMessageSourceType.Email,
+                )
+
+            const action = {
+                type: types.NEW_MESSAGE_SET_SOURCE_TYPE,
+                channel: TicketChannel.InternalNote,
+                sourceType: TicketMessageSourceType.InternalNote,
+            }
+
+            const newState = reducer(stateWithTranslation, action)
+
+            expect(newState.getIn(['state', 'contentState'])).toEqual(
+                originalContent,
+            )
+            expect(
+                newState.getIn(['state', 'originalContentState']),
+            ).toBeUndefined()
+            expect(newState.getIn(['state', 'forceUpdate'])).toBe(true)
+        })
+
+        it('prevents editing when translation is active (SET_RESPONSE_TEXT)', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+            const newContent = ContentState.createFromText('New text')
+
+            const stateWithTranslation = initialState
+                .setIn(['state', 'contentState'], translatedContent)
+                .setIn(['state', 'originalContentState'], originalContent)
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: newContent,
+                }),
+            }
+
+            const newState = reducer(stateWithTranslation, action)
+
+            expect(newState.getIn(['state', 'contentState'])).toEqual(
+                translatedContent,
+            )
+            expect(newState.getIn(['state', 'originalContentState'])).toEqual(
+                originalContent,
+            )
+        })
+
+        it('handles SET_TRANSLATION_PENDING action', () => {
+            const action = {
+                type: types.SET_TRANSLATION_PENDING,
+                payload: true,
+            }
+
+            const newState = reducer(initialState, action)
+
+            expect(newState.getIn(['state', 'isTranslationPending'])).toBe(true)
+        })
+
+        it('clears translation state when message is submitted', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            const stateWithTranslation = initialState
+                .setIn(['state', 'contentState'], translatedContent)
+                .setIn(['state', 'originalContentState'], originalContent)
+                .setIn(['state', 'isTranslationPending'], true)
+
+            const action = {
+                type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                message: { channel: 'email' } as any,
+                resetMessage: false,
+            }
+
+            const newState = reducer(stateWithTranslation, action)
+
+            expect(
+                newState.getIn(['state', 'originalContentState']),
+            ).toBeUndefined()
+            expect(newState.getIn(['state', 'isTranslationPending'])).toBe(
+                false,
+            )
+        })
+    })
+
     it('should return new state with attachment loading to true', () => {
         const expected = initialState.setIn(
             ['_internal', 'loading', 'addAttachment'],
@@ -854,6 +1010,7 @@ describe('new message reducer', () => {
                 dirty: true,
                 cacheAdded: true,
                 inserted_discounts: [],
+                isTranslationPending: false,
             }
         }
 

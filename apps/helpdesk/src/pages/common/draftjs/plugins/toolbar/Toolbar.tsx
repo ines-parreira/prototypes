@@ -1,4 +1,4 @@
-import React, { DragEvent, ReactNode, useState } from 'react'
+import React, { DragEvent, ReactNode, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
@@ -8,6 +8,7 @@ import { Button } from '@gorgias/axiom'
 import { UploadType } from 'common/types'
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     GuidanceVariable,
     GuidanceVariableList,
@@ -21,6 +22,10 @@ import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/typ
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
+import {
+    getIsTranslationPending,
+    hasTranslation as hasTranslationSelector,
+} from 'state/newMessage/selectors'
 import { insertText } from 'utils'
 
 import GuidanceVariablePicker from './components/GuidanceVariablePicker'
@@ -35,6 +40,7 @@ import {
     BulletedList,
     Italic,
     OrderedList,
+    Translate,
     Underline,
 } from './components/index'
 import WorkflowVariablePicker from './components/WorkflowVariablePicker'
@@ -69,8 +75,18 @@ type Props = {
     getGuidanceVariables?: () => GuidanceVariableList
 } & ActionInjectedProps
 
-const renderButton = (button: ReactNode, index: number) => (
-    <Button className={css.button} key={index} intent="secondary" size="small">
+const renderButton = (
+    button: ReactNode,
+    index: number,
+    isDisabled: boolean,
+) => (
+    <Button
+        key={index}
+        className={css.button}
+        intent="secondary"
+        size="small"
+        isDisabled={isDisabled}
+    >
         {button}
     </Button>
 )
@@ -104,6 +120,11 @@ const Toolbar = ({
 
     const areActionsInGuidanceEnabled: boolean = useFlag(
         FeatureFlagKey.AiAgentSupportActionInGuidance,
+        false,
+    )
+
+    const isTranslationEnabled = useFlag(
+        FeatureFlagKey.MessagesTranslations,
         false,
     )
 
@@ -176,7 +197,18 @@ const Toolbar = ({
     const isActionDisplayed = (name: ActionName) =>
         isDisplayedAction(name, displayedActions)
 
-    const actionsProps = { getEditorState, setEditorState }
+    const hasTranslation = useAppSelector(hasTranslationSelector)
+    const isTranslationPending = useAppSelector(getIsTranslationPending)
+    const isTranslationActive = useMemo(
+        () => hasTranslation || isTranslationPending,
+        [hasTranslation, isTranslationPending],
+    )
+
+    const actionsProps = {
+        getEditorState,
+        setEditorState,
+        isDisabled: isTranslationActive,
+    }
 
     return (
         <div
@@ -190,6 +222,8 @@ const Toolbar = ({
             {quickReply && <div className={css.quickReply}> {quickReply} </div>}
             <div className={css.actionsWrapper}>
                 <div className={css.actions}>
+                    {isActionDisplayed(ActionName.Translate) &&
+                        isTranslationEnabled && <Translate {...actionsProps} />}
                     {isActionDisplayed(ActionName.Bold) && (
                         <Bold {...actionsProps} />
                     )}
@@ -253,7 +287,9 @@ const Toolbar = ({
                         <OrderedList {...actionsProps} />
                     )}
 
-                    {buttons?.map(renderButton)}
+                    {buttons?.map((button, index) =>
+                        renderButton(button, index, isTranslationActive),
+                    )}
 
                     <div className={css.hoverOverlay}>
                         Add files as attachments

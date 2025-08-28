@@ -351,9 +351,9 @@ export class AddLinkContainer extends Component<Props> {
             <Popover
                 icon="link"
                 name="Insert link"
-                isActive={!!this._getSelectedLinkEntityKey()}
                 tour={tour}
                 isOpen={this.props.isOpen}
+                isDisabled={this.props.isDisabled}
                 onOpen={this._onPopoverOpen}
                 onClose={this.props.onClose}
                 toggleGuard={this._flowVariablesDisablePopoverToggle}

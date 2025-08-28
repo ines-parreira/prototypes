@@ -50,6 +50,7 @@ export default class AddEmoji extends Component<Props, State> {
                 icon="insert_emoticon"
                 name="Insert emoji"
                 isOpen={this.state.isOpen}
+                isDisabled={this.props.isDisabled}
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}
             >

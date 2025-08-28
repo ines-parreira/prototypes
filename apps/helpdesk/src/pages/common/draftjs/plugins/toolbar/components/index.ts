@@ -9,6 +9,7 @@ export { default as AddVideo } from './AddVideo'
 export { default as AddEmoji } from './AddEmoji'
 export { default as AddProductLink } from './AddProductLink'
 export { default as AddDiscountCode } from './AddDiscountCode'
+export { default as Translate } from './Translate'
 
 export const Bold = decorateComponentWithProps(InlineStyle, {
     icon: 'format_bold',

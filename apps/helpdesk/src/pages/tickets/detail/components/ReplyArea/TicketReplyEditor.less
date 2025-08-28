@@ -3,6 +3,12 @@
         min-height: 127px;
     }
 
+    &.isReadOnly {
+        :global(.public-DraftEditor-content) {
+            cursor: not-allowed;
+        }
+    }
+
     :global(.rich-textarea-wrapper) {
         padding: 1px 0;
         border: none;

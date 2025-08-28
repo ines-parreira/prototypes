@@ -20,6 +20,7 @@ const InlineStyle = ({
     setEditorState,
     style,
     isBlockType,
+    isDisabled = false,
 }: Props) => {
     const isActive = useMemo(() => {
         const editorState = getEditorState()
@@ -63,7 +64,7 @@ const InlineStyle = ({
             name={name}
             icon={icon}
             isActive={isActive}
-            isDisabled={false}
+            isDisabled={isDisabled}
             onToggle={isBlockType ? toggleBlockType : onToggle}
         />
     )

@@ -1,3 +1,4 @@
+import { ContentState } from 'draft-js'
 import { fromJS, List } from 'immutable'
 
 import { RootState } from 'state/types'
@@ -294,6 +295,52 @@ describe('new message selectors', () => {
 
         it('should return empty array for the initial state', () => {
             expect(selectors.getNewMessageDiscountCodes(state)).toBe(fromJS([]))
+        })
+    })
+
+    describe('translation selectors', () => {
+        describe('getOriginalContentState()', () => {
+            it('should return original content state when translation is active', () => {
+                const originalContent =
+                    ContentState.createFromText('Original text')
+
+                state.newMessage = state.newMessage.setIn(
+                    ['state', 'originalContentState'],
+                    originalContent,
+                )
+
+                expect(selectors.getOriginalContentState(state)).toBe(
+                    originalContent,
+                )
+            })
+        })
+
+        describe('hasTranslation()', () => {
+            it('should return false when there is no translation in state', () => {
+                expect(selectors.hasTranslation(state)).toBe(false)
+            })
+
+            it('should return true when there is translation in state', () => {
+                state.newMessage = state.newMessage.setIn(
+                    ['state', 'originalContentState'],
+                    true,
+                )
+            })
+        })
+
+        describe('getIsTranslationPending()', () => {
+            it('should return false when translation is not pending', () => {
+                expect(selectors.getIsTranslationPending(state)).toBe(false)
+            })
+
+            it('should return true when translation is pending', () => {
+                state.newMessage = state.newMessage.setIn(
+                    ['state', 'isTranslationPending'],
+                    true,
+                )
+
+                expect(selectors.getIsTranslationPending(state)).toBe(true)
+            })
         })
     })
 })

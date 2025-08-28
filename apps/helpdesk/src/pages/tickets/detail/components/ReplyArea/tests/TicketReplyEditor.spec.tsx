@@ -54,6 +54,8 @@ describe('TicketReplyEditor component', () => {
         notify: jest.fn(),
         setResponseText: jest.fn(),
         handleTypingActivity: jest.fn(),
+        hasTranslation: false,
+        isTranslationPending: false,
     }
 
     it('should render empty ticket', () => {

@@ -101,6 +101,7 @@ Hi! How are you?",
     "forceFocus": false,
     "forceUpdate": true,
     "inserted_discounts": [],
+    "isTranslationPending": false,
     "selectionState": null,
   },
 }
@@ -154,6 +155,7 @@ exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should not add t
     "forceFocus": false,
     "forceUpdate": false,
     "inserted_discounts": [],
+    "isTranslationPending": false,
     "selectionState": null,
   },
 }

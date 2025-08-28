@@ -35,7 +35,11 @@ import css from './AddDiscountCode.less'
 
 type Props = ActionInjectedProps
 
-const AddDiscountCode = ({ getEditorState, setEditorState }: Props) => {
+const AddDiscountCode = ({
+    getEditorState,
+    setEditorState,
+    isDisabled,
+}: Props) => {
     const {
         canAddDiscountCodeLink,
         onInsertDiscountCodeOpen,
@@ -170,6 +174,7 @@ const AddDiscountCode = ({ getEditorState, setEditorState }: Props) => {
             name="Insert Discount Code"
             tour={tour}
             isOpen={isOpen}
+            isDisabled={isDisabled}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}
         >

@@ -51,6 +51,12 @@ export default function ButtonPopover({
         tour ? !!tour.text : false,
     )
 
+    useEffect(() => {
+        if (isDisabled && isOpen) {
+            onClose()
+        }
+    }, [isDisabled, isOpen, onClose])
+
     const handleButtonToggle = useCallback(() => {
         if (isTourOpen) {
             setIsTourOpen(false)

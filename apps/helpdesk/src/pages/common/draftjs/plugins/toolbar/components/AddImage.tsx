@@ -106,6 +106,7 @@ export default class AddImage extends Component<Props, State> {
                 icon="insert_photo"
                 name="Insert image"
                 isOpen={this.state.isOpen}
+                isDisabled={this.props.isDisabled}
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}
             >

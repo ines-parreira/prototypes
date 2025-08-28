@@ -43,7 +43,11 @@ export type ProductCardAttachment = {
     }
 }
 
-const AddProductLink = ({ getEditorState, setEditorState }: Props) => {
+const AddProductLink = ({
+    getEditorState,
+    setEditorState,
+    isDisabled,
+}: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
@@ -167,6 +171,7 @@ const AddProductLink = ({ getEditorState, setEditorState }: Props) => {
             name="Insert Shopify Product"
             tour={tour}
             isOpen={isOpen}
+            isDisabled={isDisabled}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}
         >
