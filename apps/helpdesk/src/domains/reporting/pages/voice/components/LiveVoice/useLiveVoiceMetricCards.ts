@@ -1,10 +1,9 @@
 import { ComponentProps } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
@@ -25,7 +24,7 @@ export default function useLiveVoiceMetricCards(
     isLoadingVoiceCalls: boolean,
     filters: StatsFilters,
 ): MetricCardProps[] {
-    const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     const isFilteringByAgent = !isFilterEmpty(filters.agents)
 
     const liveInQueueVoiceCallListMetric = {

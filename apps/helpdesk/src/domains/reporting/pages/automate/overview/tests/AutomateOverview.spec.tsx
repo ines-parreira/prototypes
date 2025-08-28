@@ -4,7 +4,6 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -149,9 +148,8 @@ const BarChartMock = assumeMock(BarChart)
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend',
@@ -302,11 +300,13 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockFlags({
-            [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
-            [FeatureFlagKey.AutomateAIAgentInteractions]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
+                return true
+            if (flag === FeatureFlagKey.AutomateAIAgentInteractions) return true
+
+            return false
         })
-        ;(useFlag as jest.Mock).mockReturnValue(false)
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
             automatedInteractionTrend,
@@ -424,8 +424,10 @@ describe('<AutomateOverview />', () => {
 
     describe('Filters Panel', () => {
         it('should display new filters panel when the feature flag is enabled', async () => {
-            mockFlags({
-                [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
+                    return true
+                return false
             })
             const store = mockStore(defaultState)
             render(
@@ -452,8 +454,10 @@ describe('<AutomateOverview />', () => {
         })
 
         it('should display new filters panel without Channels filter if feature flag is disabled', async () => {
-            mockFlags({
-                [FeatureFlagKey.AutomateOverviewChannelsFilter]: false,
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
+                    return false
+                return false
             })
             const store = mockStore(defaultState)
             render(
@@ -904,8 +908,10 @@ describe('<AutomateOverview />', () => {
 
     describe('TimeSavedByAgentsKPI', () => {
         beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.ObservabilityTicketTimeToHandle]: true,
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ObservabilityTicketTimeToHandle)
+                    return true
+                return false
             })
 
             TimeSavedByAgentsKPIChartMock.mockImplementation(() => <div />)
@@ -926,14 +932,17 @@ describe('<AutomateOverview />', () => {
 
     describe('AI Agent KPI Charts', () => {
         beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
-                [FeatureFlagKey.AutomateAIAgentInteractions]: true,
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
+                    return true
+                if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
+                    return true
+                return false
             })
         })
 
         it('should render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is enabled', () => {
-            ;(useFlag as jest.Mock).mockReturnValue(true)
+            useFlagMock.mockReturnValue(true)
 
             const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
@@ -953,8 +962,6 @@ describe('<AutomateOverview />', () => {
         })
 
         it('should render AI Agent KPI charts regardless of ActionDrivenAiAgentNavigation flag', () => {
-            ;(useFlag as jest.Mock).mockReturnValue(false)
-
             const { queryByText, getAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>

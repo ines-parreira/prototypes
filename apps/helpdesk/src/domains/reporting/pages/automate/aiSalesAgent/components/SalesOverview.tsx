@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
 import { useGridSize } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
@@ -9,6 +8,7 @@ import { Banner, Button, Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'
@@ -36,8 +36,9 @@ const SalesOverview = () => {
     const history = useHistory()
     const location = useLocation()
     const getGridCellSize = useGridSize()
-    const isDiscountSectionVisible: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isDiscountSectionVisible = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
     const { shopName } = useParams<{
         shopName: string
     }>()

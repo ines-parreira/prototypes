@@ -2,12 +2,11 @@ import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
 import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
@@ -33,6 +32,9 @@ const renderComponent = (
         />,
     )
 }
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('utils/date')
@@ -152,7 +154,7 @@ describe('LiveVoiceMetrics', () => {
     )
 
     it('should display last updated info', () => {
-        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+        useFlagMock.mockReturnValue(true)
 
         useLiveVoiceMetricCardsMock.mockReturnValue([
             {

@@ -1,10 +1,10 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'domains/reporting/pages/ticket-insights/tags/AllUsedTagsTableChart'
@@ -36,8 +36,8 @@ import {
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper',
@@ -86,10 +86,7 @@ describe('<Tags>', () => {
         TopUsedTagsChartMock.mockImplementation(componentMock)
         TagsReportDownloadDataButtonMock.mockImplementation(componentMock)
         TagsActionMenuMock.mockImplementation(componentMock)
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
-            [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
-        })
+        useFlagsMock.mockReturnValue(false)
         useDownloadTagsReportDataMock.mockReturnValue({
             download: jest.fn(),
             isLoading: false,
@@ -158,8 +155,13 @@ describe('<Tags>', () => {
     })
 
     it('should render TagActionsMenu when feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
+        useFlagsMock.mockImplementation((flag) => {
+            if (
+                flag ===
+                FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport
+            )
+                return true
+            return false
         })
 
         renderWithStore(<Tags />, defaultState)
@@ -169,9 +171,7 @@ describe('<Tags>', () => {
     })
 
     it('should render TagsReportDownloadDataButton when feature flag is disabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
-        })
+        useFlagsMock.mockReturnValue(false)
 
         renderWithStore(<Tags />, defaultState)
 

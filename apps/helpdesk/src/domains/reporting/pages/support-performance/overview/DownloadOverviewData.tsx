@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { saveZippedFiles } from 'utils/file'
@@ -11,17 +10,17 @@ import { saveZippedFiles } from 'utils/file'
 const DOWNLOAD_BUTTON_TITLE = 'Download Performance Overview Data'
 
 export const DownloadOverviewData = () => {
-    const isDeferredLoadingEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
+    const isDeferredLoadingEnabled = useFlag<boolean | null>(
+        FeatureFlagKey.AnalyticsDeferredLoadingExperiment,
+        null,
+    )
 
     const [fetchingEnabled, setFetchingEnable] = useState(
-        isDeferredLoadingEnabled === undefined
-            ? false
-            : !isDeferredLoadingEnabled,
+        isDeferredLoadingEnabled === null ? false : !isDeferredLoadingEnabled,
     )
     useEffect(() => {
         setFetchingEnable(
-            isDeferredLoadingEnabled === undefined
+            isDeferredLoadingEnabled === null
                 ? false
                 : !isDeferredLoadingEnabled,
         )

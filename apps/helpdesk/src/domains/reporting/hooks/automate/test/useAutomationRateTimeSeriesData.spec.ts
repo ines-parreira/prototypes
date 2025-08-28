@@ -1,9 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { getMockData } from 'domains/reporting/hooks/automate/test/useAutomationDataset.spec'
 import {
     fetchAutomationDatasetTimeSeries,
@@ -21,6 +21,9 @@ import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/aut
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/automate/timeSeries')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
@@ -138,8 +141,13 @@ describe('useAutomationRateTimeSeriesData', () => {
         })
 
         it('should use NonFilteredDenominator InAutomationRate when the flag is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate]: true,
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+                )
+                    return true
+                return false
             })
 
             const { result } = renderHook(() =>

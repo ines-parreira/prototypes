@@ -1,18 +1,18 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
     AgentStatusCategory,
     groupAgentsByStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
@@ -31,7 +31,7 @@ const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)
 
 describe('LiveVoiceAgentsList', () => {
     beforeEach(() => {
-        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+        useFlagMock.mockReturnValue(true)
         useAgentsOnlineStatusMock.mockReturnValue({
             onlineAgents: {},
         })
@@ -190,7 +190,7 @@ describe('LiveVoiceAgentsList', () => {
     })
 
     it('should not take into account the online statuses with FF off', () => {
-        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: false })
+        useFlagMock.mockReturnValue(false)
 
         groupAgentsByStatusMock.mockReturnValue({
             [AgentStatusCategory.Busy]: [{ id: 1, name: 'Agent 1' }],

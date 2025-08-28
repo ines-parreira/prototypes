@@ -1,6 +1,5 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTagResultsSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import {
@@ -24,13 +23,10 @@ import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 export const useTicketCountPerTag = () => {
-    const featureFlags = useFlags()
+    const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
+        FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
+    )
     const [tagResultsSelection] = useTagResultsSelection()
-
-    const isReportingFilteringAndCalculationsTagsReportEnabled =
-        !!featureFlags[
-            FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport
-        ]
 
     const dispatch = useAppDispatch()
 

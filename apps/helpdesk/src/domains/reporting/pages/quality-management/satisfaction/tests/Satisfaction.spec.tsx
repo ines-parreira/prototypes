@@ -1,10 +1,9 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AverageScorePerDimensionTrendChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import AverageSurveyScoreDonutChart from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
@@ -35,6 +34,9 @@ import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
@@ -109,9 +111,7 @@ describe('<Satisfaction>', () => {
     } as RootState
 
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: true,
-        })
+        useFlagMock.mockReturnValue(true)
         SatisfactionScoreTrendCardMock.mockImplementation(componentMock)
         ResponseRateTrendCardMock.mockImplementation(componentMock)
         SurveysSentTrendCardMock.mockImplementation(componentMock)

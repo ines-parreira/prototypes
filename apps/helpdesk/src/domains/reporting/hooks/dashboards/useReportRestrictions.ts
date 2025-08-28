@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { AutomateAiAgentsReportConfig } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'
 import { AutomateOverviewChart } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
@@ -20,18 +19,22 @@ import { isTeamLead } from 'utils'
 export type RestrictionsMap = Record<string, boolean | undefined>
 
 export const useReportRestrictions = () => {
-    const isNewSatisfactionReportEnabled =
-        useFlags()[FeatureFlagKey.NewSatisfactionReport]
-    const isHelpCenterAnalyticsEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const isAiAgentStatsPageEnabled =
-        useFlags()[FeatureFlagKey.AIAgentStatsPage]
-    const isStandaloneSalesOverviewEnabled =
-        useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
-    const isReportingVoiceOfCustomerEnabled =
-        useFlags()[FeatureFlagKey.ReportingVoiceOfCustomer]
-    const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
+    const isNewSatisfactionReportEnabled = useFlag(
+        FeatureFlagKey.NewSatisfactionReport,
+    )
+    const isHelpCenterAnalyticsEnabled = useFlag(
+        FeatureFlagKey.HelpCenterAnalytics,
+    )
+    const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
+    const isStandaloneSalesOverviewEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
+    const isReportingVoiceOfCustomerEnabled = useFlag(
+        FeatureFlagKey.ReportingVoiceOfCustomer,
+    )
+    const isAutomateAIAgentInteractionsEnabled = useFlag(
+        FeatureFlagKey.AutomateAIAgentInteractions,
+    )
 
     const user = useAppSelector(getCurrentUser)
     const hasAutomate = useAppSelector(getHasAutomate)

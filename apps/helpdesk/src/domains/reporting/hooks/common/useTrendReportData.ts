@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -23,12 +22,9 @@ export const useTrendReportData = (
         title: string
     }[],
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate:
-        | boolean
-        | undefined =
-        useFlags()[
-            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-        ]
+    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
+        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
+    )
     const aiAgentUserId = useAIAgentUserId()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,

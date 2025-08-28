@@ -1,13 +1,13 @@
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
@@ -26,6 +26,9 @@ import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     return jest.fn(() => {
@@ -112,8 +115,9 @@ describe('StatsNavbarViewV2', () => {
     })
 
     it('should render the link to the Help Center Stats when having access to the feature', () => {
-        mockFlags({
-            [FeatureFlagKey.HelpCenterAnalytics]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.HelpCenterAnalytics) return true
+            return false
         })
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
@@ -202,8 +206,9 @@ describe('StatsNavbarViewV2', () => {
     })
 
     it('should render the link to the New Satisfaction Report', () => {
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.NewSatisfactionReport) return true
+            return false
         })
 
         const { container } = renderWithRouter(
@@ -220,8 +225,9 @@ describe('StatsNavbarViewV2', () => {
     })
 
     it('should render only the New Satisfaction Report when new-satisfaction-report is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.NewSatisfactionReport) return true
+            return false
         })
 
         const { getAllByText } = renderWithRouter(
@@ -282,8 +288,9 @@ describe('StatsNavbarViewV2', () => {
             }),
         }
 
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.NewSatisfactionReport) return true
+            return false
         })
 
         const { container } = renderWithRouter(
@@ -322,8 +329,9 @@ describe('StatsNavbarViewV2', () => {
             }),
         }
 
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: false,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.NewSatisfactionReport) return false
+            return false
         })
 
         const { container } = renderWithRouter(

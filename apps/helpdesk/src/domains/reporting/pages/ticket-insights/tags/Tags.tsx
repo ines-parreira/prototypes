@@ -1,7 +1,7 @@
 import { useGridSize } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
@@ -18,17 +18,15 @@ import {
 import { TagsReportDownloadDataButton } from 'domains/reporting/pages/ticket-insights/tags/TagsReportDownloadDataButton'
 
 export function Tags() {
-    const featureFlags = useFlags()
-
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
 
-    const isReportingFilteringAndCalculationsTagsReportEnabled =
-        !!featureFlags[
-            FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport
-        ]
-    const isReportingExtendFieldAndTagEnabled =
-        !!featureFlags[FeatureFlagKey.ReportingExtendFieldAndTag]
+    const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
+        FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
+    )
+    const isReportingExtendFieldAndTagEnabled = useFlag(
+        FeatureFlagKey.ReportingExtendFieldAndTag,
+    )
 
     return (
         <div className="full-width">

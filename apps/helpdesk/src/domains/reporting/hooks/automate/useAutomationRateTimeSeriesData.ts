@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     automationRate,
     automationRateUnfilteredDenominator,
@@ -27,12 +26,9 @@ export const useAutomationRateTimeSeriesData = (
     timezone: string,
     granularity: ReportingGranularity,
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate:
-        | boolean
-        | undefined =
-        useFlags()[
-            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-        ]
+    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
+        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
+    )
     const aiAgentUserId = useAIAgentUserId()
     const onlyPeriodFilter = useMemo(
         () => ({ [FilterKey.Period]: filters.period }),

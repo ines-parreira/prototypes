@@ -3,7 +3,6 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
@@ -182,10 +181,6 @@ jest.mock(
     }),
 )
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 
@@ -194,8 +189,6 @@ jest.mock('models/billing/queries', () => ({
 }))
 
 const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
-
-const mockUseFlags = useFlags as jest.Mock
 
 describe('AiSalesAgentSalesOverview', () => {
     const baseState = {
@@ -236,8 +229,9 @@ describe('AiSalesAgentSalesOverview', () => {
         jest.clearAllMocks()
         mockUseFirstStoreWithAiSalesDataState.isLoading = false
         mockUseFirstStoreWithAiSalesDataState.storeId = 123
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantEnabled) return false
+            return false
         })
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
         mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
@@ -272,9 +266,6 @@ describe('AiSalesAgentSalesOverview', () => {
         // Mock mockUseTrialAccess
         mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
-        // Mock useFlag
-        mockUseFlag.mockReturnValue(false)
-
         // Mock useSalesTrialRevampMilestone
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
 
@@ -303,8 +294,9 @@ describe('AiSalesAgentSalesOverview', () => {
     })
 
     it('should render discount section when feature flag is enabled', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantEnabled) return true
+            return false
         })
 
         renderComponent()
@@ -312,9 +304,7 @@ describe('AiSalesAgentSalesOverview', () => {
     })
 
     it('should not render discount section when feature flag is disabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         renderComponent()
         expect(screen.queryByText('Discounts')).not.toBeInTheDocument()
@@ -419,7 +409,11 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should not show paywall when isAiSalesAlphaDemoUser is true regardless of other conditions', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseFlag.mockReturnValue(true) // isAiSalesAlphaDemoUser = true
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AiSalesAgentBypassPlanCheck)
+                    return true
+                return false
+            })
 
             renderComponent()
 
@@ -431,7 +425,7 @@ describe('AiSalesAgentSalesOverview', () => {
         it('should show paywall when isAiSalesAlphaDemoUser is false and other conditions are not met', () => {
             mockUseCanUseAiSalesAgent.mockReturnValue(false)
             mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
-            mockUseFlag.mockReturnValue(false) // isAiSalesAlphaDemoUser = false
+            mockUseFlag.mockReturnValue(false)
 
             renderComponent()
 

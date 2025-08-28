@@ -1,6 +1,5 @@
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     getAutomationRateTrend,
     getAutomationRateUnfilteredDenominatorTrend,
@@ -24,12 +23,9 @@ export const useAutomationRateTrend = (
     filters: StatsFilters,
     timezone: string,
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate:
-        | boolean
-        | undefined =
-        useFlags()[
-            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-        ]
+    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
+        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
+    )
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,

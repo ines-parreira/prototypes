@@ -1,9 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
@@ -14,6 +13,9 @@ import { filterLiveCallsByStatus } from 'domains/reporting/pages/voice/component
 import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/hooks/useSummaryMetric')
@@ -64,7 +66,7 @@ const filters: StatsFilters = {
 describe('useLiveVoiceMetricCards', () => {
     beforeEach(() => {
         filterLiveCallsByStatusMock.mockReturnValue(sampleLiveVoiceCalls)
-        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+        useFlagMock.mockReturnValue(true)
     })
 
     it.each([

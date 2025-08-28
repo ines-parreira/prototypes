@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useLast28daysForAutomateRedirect } from 'domains/reporting/hooks/automate/useLast28daysForAutomateRedirect'
@@ -36,12 +36,15 @@ export default function AutomateOverviewContent() {
 
     const [noActivityAlert, setNoActivityAlert] = useState(true)
     const [hide72HourAlert, set72HoursAlert] = useState(false)
-    const isAutomateOverviewChannelsFilter: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
-    const isTicketTimeToHandleEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
-    const isAutomateAIAgentInteractionsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateAIAgentInteractions]
+    const isAutomateOverviewChannelsFilter = useFlag(
+        FeatureFlagKey.AutomateOverviewChannelsFilter,
+    )
+    const isTicketTimeToHandleEnabled = useFlag(
+        FeatureFlagKey.ObservabilityTicketTimeToHandle,
+    )
+    const isAutomateAIAgentInteractionsEnabled = useFlag(
+        FeatureFlagKey.AutomateAIAgentInteractions,
+    )
 
     const isDurationLast3Days = useMemo(() => {
         const startDateTime = moment(statsFilters.period.start_datetime)

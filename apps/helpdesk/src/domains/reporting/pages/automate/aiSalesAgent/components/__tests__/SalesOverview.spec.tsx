@@ -3,11 +3,10 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import SalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -22,7 +21,6 @@ import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData')
 jest.mock(
@@ -63,7 +61,8 @@ const mockHistoryReplace = jest.fn()
 
 const queryClient = mockQueryClient()
 
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 
 describe('<SalesOverview />', () => {
     const defaultState = {
@@ -125,9 +124,7 @@ describe('<SalesOverview />', () => {
     }
 
     beforeEach(() => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
+        useFlagsMock.mockReturnValue(true)
         mockUseFirstStoreWithAiSalesData.mockReturnValue({
             isLoading: false,
             storeId: 1,
@@ -182,9 +179,7 @@ describe('<SalesOverview />', () => {
         })
 
         it('should not render discount section when feature flag is disabled', async () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-            })
+            useFlagsMock.mockReturnValue(false)
             renderComponent({ path })
             await waitFor(() => {
                 expect(screen.queryByText(/Discounts/i)).not.toBeInTheDocument()

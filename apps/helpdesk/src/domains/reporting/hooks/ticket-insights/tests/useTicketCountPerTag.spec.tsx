@@ -1,11 +1,10 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { filterTimeDataWithSelectedTags } from 'domains/reporting/hooks/ticket-insights/helpers'
 import { useTicketCountPerTag } from 'domains/reporting/hooks/ticket-insights/useTicketCountPerTag'
@@ -31,8 +30,8 @@ import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import { RootState, StoreDispatch } from 'state/types'
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const useTagsTicketCountTimeSeriesMock = assumeMock(
@@ -159,9 +158,7 @@ describe('useTicketCountPerTag', () => {
             isLoading: false,
         } as any)
 
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: false,
-        } as any)
+        useFlagsMock.mockReturnValue(false)
     })
 
     it('should return formatted data and dateTimes', () => {
@@ -235,9 +232,7 @@ describe('useTicketCountPerTag', () => {
     })
 
     it('should apply the new percent calculations when the feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
-        } as any)
+        useFlagsMock.mockReturnValue(true)
 
         const { result } = renderHook(() => useTicketCountPerTag(), {
             wrapper: ({ children }) => (
@@ -259,9 +254,7 @@ describe('useTicketCountPerTag', () => {
     })
 
     it('should return defaults when no data and the feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
-        } as any)
+        useFlagsMock.mockReturnValue(true)
 
         useTotalTaggedTicketCountTimeSeriesMock.mockReturnValue({
             data: undefined,

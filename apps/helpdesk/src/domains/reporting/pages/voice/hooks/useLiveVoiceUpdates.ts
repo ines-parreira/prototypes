@@ -6,7 +6,6 @@ import {
     useRef,
 } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { omit } from 'lodash'
 
 import { DomainEvent } from '@gorgias/events'
@@ -21,6 +20,7 @@ import { AgentStatus } from '@gorgias/helpdesk-types'
 import { ChannelNameOptions, useAccountId } from '@gorgias/realtime'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     addVoiceCallToLiveCallsQueryCache,
     getWrapUpStatusesThatShouldExpire,
@@ -39,7 +39,7 @@ const CHANNEL_NAME = 'stats.liveVoice'
 export const useLiveVoiceUpdates = (
     params?: ListLiveCallQueueVoiceCallsParams,
 ) => {
-    const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     // Use ref instead of state to avoid race conditions
     const voiceCallIdToSidRef = useRef<Record<number, string>>({})
     const processedEvents = useRef<Set<string>>(new Set())

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useEffect, useState } from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
@@ -18,17 +17,17 @@ export const WorkloadPerChannelChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const isDeferredLoadingEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
+    const isDeferredLoadingEnabled = useFlag<boolean | null>(
+        FeatureFlagKey.AnalyticsDeferredLoadingExperiment,
+        null,
+    )
 
     const [enabled, setEnabled] = useState(
-        isDeferredLoadingEnabled === undefined
-            ? false
-            : !isDeferredLoadingEnabled,
+        isDeferredLoadingEnabled === null ? false : !isDeferredLoadingEnabled,
     )
     useEffect(() => {
         setEnabled(
-            isDeferredLoadingEnabled === undefined
+            isDeferredLoadingEnabled === null
                 ? false
                 : !isDeferredLoadingEnabled,
         )

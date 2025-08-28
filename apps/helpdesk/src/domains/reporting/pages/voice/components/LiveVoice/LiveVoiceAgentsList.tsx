@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react'
-
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useMemo } from 'react'
 
 import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {
@@ -26,11 +25,11 @@ type Props = {
 }
 
 export default function LiveVoiceAgentsList({ agents }: Props) {
-    const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const isLiveUpdatesEnabled = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     const { onlineAgents } = useAgentsOnlineStatus()
 
     const data: WithChildren<Data>[] = useMemo(() => {
-        const agentsWithOnlineStatus = useLiveUpdates
+        const agentsWithOnlineStatus = isLiveUpdatesEnabled
             ? recomputeAgentsWithOnlineStatusChange(agents, onlineAgents)
             : agents
         const categories = groupAgentsByStatus(agentsWithOnlineStatus)
@@ -57,7 +56,7 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
 
             return categoryRowData
         })
-    }, [agents, onlineAgents, useLiveUpdates])
+    }, [agents, onlineAgents, isLiveUpdatesEnabled])
 
     return (
         <TableWrapper>

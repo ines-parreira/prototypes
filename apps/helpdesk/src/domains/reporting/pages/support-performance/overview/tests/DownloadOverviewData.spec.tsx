@@ -1,15 +1,15 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
 import { saveZippedFiles } from 'utils/file'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -24,9 +24,7 @@ const saveZippedFilesMock = assumeMock(saveZippedFiles)
 describe('DownloadOverviewData', () => {
     const reportFileName = 'someFileName'
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
-        }))
+        useFlagMock.mockReturnValue(false)
         useDownloadOverViewDataMock.mockReturnValue({
             files: {},
             fileName: 'someFileName',
@@ -49,9 +47,7 @@ describe('DownloadOverviewData', () => {
 
     describe('AnalyticsDeferredLoadingExperiment', () => {
         it('should call data hooks with deferred fetching enabled when the flag is off', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
-            }))
+            useFlagMock.mockReturnValue(false)
 
             render(<DownloadOverviewData />)
 
@@ -59,9 +55,7 @@ describe('DownloadOverviewData', () => {
         })
 
         it('should call data hooks with deferred fetching disabled when the flag is on', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: true,
-            }))
+            useFlagMock.mockReturnValue(true)
 
             render(<DownloadOverviewData />)
 

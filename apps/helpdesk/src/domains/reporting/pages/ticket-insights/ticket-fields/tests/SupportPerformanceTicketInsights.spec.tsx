@@ -2,12 +2,11 @@ import { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -78,8 +77,8 @@ const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 const componentMock = jest.fn(() => <div />)
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 jest.mock('domains/reporting/services/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
 jest.mock(
@@ -121,9 +120,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
         TicketFieldsActionMenuMock.mockImplementation(componentMock)
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingExtendFieldAndTag]: false,
-        })
+        useFlagsMock.mockReturnValue(false)
         useCustomFieldsReportDataMock.mockReturnValue({
             download: downloadActionMock,
             isLoading: false,
@@ -165,9 +162,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
     })
 
     it('should render TagActionsMenu when feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingExtendFieldAndTag]: true,
-        })
+        useFlagsMock.mockReturnValue(true)
 
         render(
             <Provider store={mockStore(defaultState)}>

@@ -1,15 +1,12 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { AgentPerformanceHeatmapSwitch } from 'domains/reporting/pages/support-performance/agents/AgentPerformanceHeatmapSwitch'
 import { AgentsEditColumns } from 'domains/reporting/pages/support-performance/agents/AgentsEditColumns'
 import {
@@ -30,8 +27,8 @@ const AgentPerformanceHeatmapSwitchMock = assumeMock(
     AgentPerformanceHeatmapSwitch,
 )
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore([thunk])
 
@@ -41,7 +38,7 @@ describe('<AgentsPerformanceCardExtra />', () => {
     beforeEach(() => {
         AgentsEditColumnsMock.mockImplementation(componentMock)
         AgentPerformanceHeatmapSwitchMock.mockImplementation(componentMock)
-        useFlagsMock.mockReturnValue({})
+        useFlagsMock.mockReturnValue(false)
     })
 
     it('should render the HeatmapSwitch and Edit Columns', () => {
@@ -73,9 +70,7 @@ describe('<AgentsPerformanceCardExtra />', () => {
     })
 
     it('should pass canduId when feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport]: true,
-        })
+        useFlagsMock.mockReturnValue(true)
 
         render(
             <Provider

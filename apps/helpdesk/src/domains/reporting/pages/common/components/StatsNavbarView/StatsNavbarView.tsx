@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { Navigation } from 'components/Navigation/Navigation'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
 import css from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView.less'
@@ -23,7 +22,6 @@ import {
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-type FeatureFlag = boolean | undefined
 type AutoQANavBarLinkProps = {
     isAvailable: boolean
 }
@@ -36,8 +34,9 @@ export function StatsNavbarView() {
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     const isTeamLeadOrAdmin = isTeamLead(user)
-    const isNewSatisfactionReportEnabled: FeatureFlag =
-        useFlags()[FeatureFlagKey.NewSatisfactionReport]
+    const isNewSatisfactionReportEnabled = useFlag(
+        FeatureFlagKey.NewSatisfactionReport,
+    )
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAutomate,

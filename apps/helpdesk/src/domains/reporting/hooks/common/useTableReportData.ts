@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
-
 import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
@@ -51,12 +49,9 @@ export const useTables = (
     granularity: ReportingGranularity,
     fetchTables: { title: string; fetchTable: ReportFetch }[],
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate:
-        | boolean
-        | undefined =
-        useFlags()[
-            FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-        ]
+    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
+        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
+    )
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )

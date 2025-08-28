@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { DomainEvent } from '@gorgias/events'
 import {
@@ -13,8 +12,11 @@ import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useAccountId } from '@gorgias/realtime'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@gorgias/helpdesk-queries', () => {
     return {
@@ -59,7 +61,7 @@ describe('useLiveVoiceUpdates', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: true })
+        useFlagMock.mockReturnValue(true)
 
         jest.useFakeTimers()
         jest.setSystemTime(mockedDate)
@@ -265,7 +267,7 @@ describe('useLiveVoiceUpdates', () => {
         } as DomainEvent
 
         it('should not do anything if live updates are disabled', () => {
-            mockFlags({ [FeatureFlagKey.UseLiveVoiceUpdates]: false })
+            useFlagMock.mockReturnValue(false)
 
             const mockOldData = {
                 data: {

@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
@@ -18,6 +18,9 @@ import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 
 const mockStore = configureMockStore<RootState>([])
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('useReportRestrictions', () => {
     const defaultState = {
@@ -72,8 +75,9 @@ describe('useReportRestrictions', () => {
         it.each(Object.keys(HelpCenterReportConfig.charts))(
             'should allow Help Center charts when the flag is on',
             (chartId: string) => {
-                mockFlags({
-                    [FeatureFlagKey.HelpCenterAnalytics]: true,
+                useFlagMock.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.HelpCenterAnalytics) return true
+                    return false
                 })
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),
@@ -121,8 +125,10 @@ describe('useReportRestrictions', () => {
         it.each(Object.keys(SatisfactionReportConfig.charts))(
             'should allow Satisfaction charts when the flag is on',
             (chartId: string) => {
-                mockFlags({
-                    [FeatureFlagKey.NewSatisfactionReport]: true,
+                useFlagMock.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.NewSatisfactionReport)
+                        return true
+                    return false
                 })
                 const { result } = renderHook(
                     () => useIsChartRestricted(chartId),

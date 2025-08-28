@@ -3,13 +3,11 @@ import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { logPageChange } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import AutomateAiAgentStatsReport from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
@@ -96,9 +94,7 @@ const defaultState = {
     billing: initialState.mergeDeep(billingFixtures.billingState),
 }
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
+jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)
 
 jest.mock('react-router-dom', () => ({
@@ -365,12 +361,6 @@ describe('StatsRoutes', () => {
             mock: AiSalesAgentSalesOverviewMock,
         },
     ])('should render %p page', ({ route, mock }) => {
-        mockFlags({
-            [FeatureFlagKey.NewSatisfactionReport]: true,
-            [FeatureFlagKey.AIAgentStatsPage]: true,
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
-
         render(
             <Provider store={mockStore(defaultState)}>
                 <MemoryRouter initialEntries={[route]}>

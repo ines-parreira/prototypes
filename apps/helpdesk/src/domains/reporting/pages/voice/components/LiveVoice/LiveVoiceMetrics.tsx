@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { FeatureFlagKey } from 'config/featureFlags'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
+import { useFlag } from 'core/flags'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
@@ -29,7 +29,7 @@ export default function LiveVoiceMetrics({
     isLoadingVoiceCalls,
     cleanStatsFilters,
 }: Props) {
-    const useLiveUpdates = useFlags()[FeatureFlagKey.UseLiveVoiceUpdates]
+    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
 
     const {
         data: { timezone },

@@ -1,9 +1,9 @@
 import { ComponentType, ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +15,7 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import { VOICE_OVERVIEW_PAGE_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import * as billingFixtures from 'fixtures/billing'
@@ -22,6 +23,9 @@ import { user } from 'fixtures/users'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'pages/App',
@@ -136,8 +140,9 @@ describe('<StatsRoutes/>', () => {
     })
 
     it('should make AI Agent Stats route available if feature flag is enabled', async () => {
-        mockFlags({
-            [FeatureFlagKey.AIAgentStatsPage]: true,
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AIAgentStatsPage) return true
+            return false
         })
 
         const { findByText } = renderStatsRoutes()
@@ -148,9 +153,7 @@ describe('<StatsRoutes/>', () => {
     })
 
     it('should not make AI Agent Stats route available if feature flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AIAgentStatsPage]: false,
-        })
+        useFlagMock.mockReturnValue(false)
 
         const { container } = renderStatsRoutes()
 

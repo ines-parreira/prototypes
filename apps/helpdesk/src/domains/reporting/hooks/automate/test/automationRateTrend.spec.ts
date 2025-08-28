@@ -1,8 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
 import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
@@ -27,6 +27,9 @@ import {
     useAutomationRateTrend,
 } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
@@ -197,8 +200,13 @@ describe('AutomationRateTrend', () => {
         })
 
         it('should calculate data with NonFilteredDenominator when the flag is on', () => {
-            mockFlags({
-                [FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate]: true,
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
+                )
+                    return true
+                return false
             })
             const { result } = renderHook(() =>
                 useAutomationRateTrend(statsFilters, timezone),
