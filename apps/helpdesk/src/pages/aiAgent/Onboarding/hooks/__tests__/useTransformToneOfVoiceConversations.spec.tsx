@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { OnboardingData } from 'models/aiAgent/types'

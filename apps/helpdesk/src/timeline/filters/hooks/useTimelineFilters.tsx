@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '../../../config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from '../../../core/flags'
 import { SORT_OPTIONS, SORT_OPTIONS_WITH_ORDERS } from '../../constants'
 import {

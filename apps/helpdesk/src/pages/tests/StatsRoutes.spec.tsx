@@ -1,5 +1,6 @@
 import { ComponentType, ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -14,7 +15,6 @@ import {
     NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { VOICE_OVERVIEW_PAGE_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -8,7 +9,6 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'

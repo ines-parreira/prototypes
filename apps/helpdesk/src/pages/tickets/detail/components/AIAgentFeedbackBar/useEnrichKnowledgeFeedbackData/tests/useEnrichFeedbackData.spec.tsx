@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestionSnippets,

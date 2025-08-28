@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'

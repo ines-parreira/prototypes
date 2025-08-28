@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -16,7 +17,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
 
 import { useTicketMessageTranslations } from '../translations/useTicketMessageTranslations'
 

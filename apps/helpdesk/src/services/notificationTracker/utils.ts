@@ -1,4 +1,5 @@
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { getLDClient } from 'utils/launchDarkly'
 
 export const checkIfAiAgentOnboardingNotificationIsEnabled = async () => {

@@ -1,12 +1,12 @@
 import React, { ComponentType } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'

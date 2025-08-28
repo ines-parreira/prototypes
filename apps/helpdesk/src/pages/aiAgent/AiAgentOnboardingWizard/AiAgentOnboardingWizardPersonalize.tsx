@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
 import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     HeaderType,

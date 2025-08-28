@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import hash from 'object-hash'
 
@@ -13,7 +14,6 @@ import {
     getNotificationReceivedDatetimePayload,
 } from 'automate/notifications/utils'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

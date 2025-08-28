@@ -8,6 +8,7 @@ import {
     useState,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import {
     useAsyncFn,
     usePrevious,
@@ -32,7 +33,6 @@ import {
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getConfigByName } from 'config/views'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

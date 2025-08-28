@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { Card } from '@gorgias/analytics-ui-kit'
 import { Button, IconButton, Label } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

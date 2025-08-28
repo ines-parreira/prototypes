@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import AiSalesAgentOverviewDownloadButton from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'

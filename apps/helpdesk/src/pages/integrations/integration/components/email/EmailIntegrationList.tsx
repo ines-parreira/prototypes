@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { List, Map } from 'immutable'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import IconLink from 'core/ui/components/IconLink'

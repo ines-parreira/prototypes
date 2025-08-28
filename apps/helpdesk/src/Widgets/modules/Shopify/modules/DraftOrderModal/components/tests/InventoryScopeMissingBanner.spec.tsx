@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 

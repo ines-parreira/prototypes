@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'
 import { fetchRecommendedResourcesTimeSeries } from 'domains/reporting/hooks/automate/timeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'

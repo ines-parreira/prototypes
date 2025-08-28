@@ -1,11 +1,11 @@
 import React, { FC, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Article, HelpCenter } from 'models/helpCenter/types'
 import DropdownButton from 'pages/common/components/button/DropdownButton'

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'

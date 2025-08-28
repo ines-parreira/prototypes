@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
 import _pick from 'lodash/pick'
@@ -14,7 +15,6 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { RecentItems } from 'hooks/useRecentItems/constants'

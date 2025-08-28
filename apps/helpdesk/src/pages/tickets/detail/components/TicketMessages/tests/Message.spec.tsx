@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -14,7 +15,6 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { MacroActionName } from 'models/macroAction/types'
 import { ActionStatus, TicketMessage } from 'models/ticket/types'
 import {

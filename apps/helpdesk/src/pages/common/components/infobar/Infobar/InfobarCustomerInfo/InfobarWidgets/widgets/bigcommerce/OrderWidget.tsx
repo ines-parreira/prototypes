@@ -1,5 +1,6 @@
 import { ReactNode, useContext, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import { Map } from 'immutable'
@@ -7,7 +8,6 @@ import { Map } from 'immutable'
 import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

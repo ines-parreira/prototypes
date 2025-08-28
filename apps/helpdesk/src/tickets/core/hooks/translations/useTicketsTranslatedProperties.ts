@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 import { isNumber } from 'lodash'
 
@@ -10,7 +11,6 @@ import {
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import { KeyPrefixes } from './constants'

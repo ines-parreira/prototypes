@@ -1,5 +1,6 @@
 import React, { createElement, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -16,7 +17,6 @@ import { Container } from 'reactstrap'
 import { Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE } from 'config/user'
 import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'

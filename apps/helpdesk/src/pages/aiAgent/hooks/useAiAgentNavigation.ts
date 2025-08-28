@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ANALYZE,
     CHAT,

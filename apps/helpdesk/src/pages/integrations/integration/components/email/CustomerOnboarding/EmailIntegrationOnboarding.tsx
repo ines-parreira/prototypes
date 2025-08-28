@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
 import { Button } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { isEnterprise } from 'models/billing/utils'

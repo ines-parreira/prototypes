@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -10,7 +11,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useFlag } from 'core/flags'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'

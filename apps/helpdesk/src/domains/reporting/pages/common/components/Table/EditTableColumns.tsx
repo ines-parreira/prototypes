@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDeepEffect } from '@repo/hooks'
 import classNames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
@@ -9,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import css from 'domains/reporting/pages/common/components/Table/EditColumns.less'
 import { EditColumnsItem } from 'domains/reporting/pages/common/components/Table/EditColumnsItem'

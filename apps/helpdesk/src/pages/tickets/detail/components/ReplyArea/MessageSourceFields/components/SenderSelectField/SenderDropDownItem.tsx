@@ -1,4 +1,5 @@
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import { Sender } from 'hooks/useOutboundChannels'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

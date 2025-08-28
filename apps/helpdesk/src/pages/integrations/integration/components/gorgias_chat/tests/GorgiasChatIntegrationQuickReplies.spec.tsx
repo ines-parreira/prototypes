@@ -1,12 +1,12 @@
 import React, { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { billingState } from 'fixtures/billing'
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'

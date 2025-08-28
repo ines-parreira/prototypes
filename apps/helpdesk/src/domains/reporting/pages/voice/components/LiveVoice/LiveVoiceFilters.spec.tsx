@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { cleanup, render } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     FilterComponentKey,

@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useMutation } from '@tanstack/react-query'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

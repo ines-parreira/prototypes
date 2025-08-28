@@ -1,5 +1,6 @@
 import { ComponentProps, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
@@ -12,7 +13,6 @@ import {
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AgentWithStatus } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { getCallSid } from 'hooks/integrations/phone/utils'

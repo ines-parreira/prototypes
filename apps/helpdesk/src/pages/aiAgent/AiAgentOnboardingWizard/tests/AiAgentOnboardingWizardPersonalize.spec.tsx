@@ -2,6 +2,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -11,7 +12,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'

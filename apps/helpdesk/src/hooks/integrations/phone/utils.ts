@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 import crypto from 'crypto'
 import { pick } from 'lodash'
@@ -16,7 +17,6 @@ import {
     desktopNotify,
     requestNotificationPermission,
 } from 'common/notifications'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     acceptCall,
     cancelCall,

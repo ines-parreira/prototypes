@@ -1,5 +1,6 @@
 import React, { Component, ComponentClass, ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
@@ -15,7 +16,6 @@ import {
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { ACTION_TEMPLATES, ActionTemplateExecution } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import { Attachment } from 'models/ticket/types'

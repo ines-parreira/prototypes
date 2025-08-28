@@ -1,5 +1,6 @@
 import { Component, ComponentClass, ComponentProps, ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
 import { withLDConsumer } from 'launchdarkly-react-client-sdk'
@@ -9,7 +10,6 @@ import { File, MacroAction, TicketPriority } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionTemplateExecution } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { CustomField } from 'custom-fields/types'
 import { getIconFromActionType } from 'models/macroAction/helpers'

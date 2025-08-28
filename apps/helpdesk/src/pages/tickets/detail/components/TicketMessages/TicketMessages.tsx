@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Moment } from 'moment'
@@ -7,7 +8,6 @@ import { Moment } from 'moment'
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import {

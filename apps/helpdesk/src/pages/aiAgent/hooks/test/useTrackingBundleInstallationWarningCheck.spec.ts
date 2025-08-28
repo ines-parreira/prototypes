@@ -1,8 +1,8 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,

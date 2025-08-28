@@ -1,10 +1,8 @@
-import React from 'react'
-
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
@@ -12,11 +10,6 @@ import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
 
 // Mock dependencies
 jest.mock('core/flags')
-jest.mock('config/featureFlags', () => ({
-    FeatureFlagKey: {
-        LiquidTemplateStep: 'LiquidTemplateStep',
-    },
-}))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
     default: () => ({
@@ -86,7 +79,7 @@ jest.mock(
                 const {
                     useVisualBuilderContext,
                 } = require('pages/automate/workflows/hooks/useVisualBuilder')
-                const { FeatureFlagKey } = require('config/featureFlags')
+                const { FeatureFlagKey } = require('@repo/feature-flags')
 
                 const liquidTemplateFlag = useFlag(
                     FeatureFlagKey.LiquidTemplateStep,

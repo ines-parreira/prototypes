@@ -1,11 +1,11 @@
 import React, { useMemo, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import _omit from 'lodash/omit'
 
 import { IconButton, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'

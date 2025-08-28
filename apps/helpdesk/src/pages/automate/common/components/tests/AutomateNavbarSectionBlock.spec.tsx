@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import { Theme } from 'core/theme/types'
 import { account } from 'fixtures/account'

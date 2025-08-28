@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
 import noop from 'lodash/noop'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { FilterOptionGroup } from 'domains/reporting/pages/types'
 

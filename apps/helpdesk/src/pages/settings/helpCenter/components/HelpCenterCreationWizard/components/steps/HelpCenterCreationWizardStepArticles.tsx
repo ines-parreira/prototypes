@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import {
     ArticleTemplateType,

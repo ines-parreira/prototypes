@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'

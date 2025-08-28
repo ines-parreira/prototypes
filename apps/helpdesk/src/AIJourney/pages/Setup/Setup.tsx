@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -13,7 +14,6 @@ import {
     useJourneyData,
     useJourneys,
 } from 'AIJourney/queries'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

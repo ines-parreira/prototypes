@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { getHasAutomate } from 'state/billing/selectors'
 import { renderWithRouter } from 'utils/testing'

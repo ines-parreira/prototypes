@@ -2,6 +2,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -14,7 +15,6 @@ import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import {
     AiAgentOnboardingState,

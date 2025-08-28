@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'

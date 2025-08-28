@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { History } from 'history'
 import {
     Redirect,
@@ -15,7 +16,6 @@ import { CompatRoute } from 'react-router-dom-v5-compat'
 import { AiJourneyRoutes } from 'AIJourney/routes'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logPageChange } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'

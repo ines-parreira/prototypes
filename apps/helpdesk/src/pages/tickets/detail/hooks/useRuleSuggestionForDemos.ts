@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan, getHasAutomate } from 'state/billing/selectors'

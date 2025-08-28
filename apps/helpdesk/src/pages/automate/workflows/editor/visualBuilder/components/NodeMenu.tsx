@@ -11,10 +11,10 @@ import React, {
     useState,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import _isNil from 'lodash/isNil'
 import { DropdownItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'

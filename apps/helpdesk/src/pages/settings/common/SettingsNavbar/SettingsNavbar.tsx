@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { BrowserRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'

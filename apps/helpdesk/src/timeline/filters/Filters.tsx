@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 
 import { FilterKey, InteractionFilterType, Range } from '../types'

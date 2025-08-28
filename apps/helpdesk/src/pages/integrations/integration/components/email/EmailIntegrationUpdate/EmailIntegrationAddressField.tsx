@@ -1,8 +1,9 @@
 import { useCallback, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { Button, Label, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -38,7 +39,7 @@ function EmailIntegrationAddressField({ integration }: Props) {
                 id: currentSetting?.id,
                 type: AccountSettingType.DefaultIntegration,
                 data: {
-                    ...(currentSetting?.data ?? {}),
+                    ...currentSetting?.data,
                     email: integration.id,
                 },
             }),

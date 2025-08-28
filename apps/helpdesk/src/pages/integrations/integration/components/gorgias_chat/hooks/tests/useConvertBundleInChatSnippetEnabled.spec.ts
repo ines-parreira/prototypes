@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import { useConvertBundleInChatSnippetEnabled } from '../useConvertBundleInChatSnippetEnabled'

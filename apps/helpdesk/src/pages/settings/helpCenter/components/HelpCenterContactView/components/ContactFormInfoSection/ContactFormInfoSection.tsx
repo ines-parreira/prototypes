@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

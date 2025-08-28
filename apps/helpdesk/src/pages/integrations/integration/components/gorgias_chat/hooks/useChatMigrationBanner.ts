@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {

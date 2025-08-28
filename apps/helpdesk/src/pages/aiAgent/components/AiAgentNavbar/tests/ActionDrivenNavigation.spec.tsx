@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { StoreIntegration } from 'models/integration/types'
 

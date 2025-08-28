@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ulid } from 'ulidx'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'

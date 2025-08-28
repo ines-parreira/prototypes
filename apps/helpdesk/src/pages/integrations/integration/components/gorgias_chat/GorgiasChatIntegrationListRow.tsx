@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -12,7 +13,6 @@ import dotNeutral from 'assets/img/icons/dot-neutral.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import dotWarning from 'assets/img/icons/dot-warning.svg'
 import warningIcon from 'assets/img/icons/warning.svg'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageUI,

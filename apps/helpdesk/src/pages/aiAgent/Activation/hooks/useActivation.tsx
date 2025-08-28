@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocation } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useNotify } from 'hooks/useNotify'

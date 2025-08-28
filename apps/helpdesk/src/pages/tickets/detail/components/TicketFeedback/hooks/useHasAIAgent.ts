@@ -1,5 +1,6 @@
 /* istanbul ignore file */
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'

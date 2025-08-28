@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { Skeleton } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'

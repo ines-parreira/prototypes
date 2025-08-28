@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { VoiceAgentsDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/voice/constants/voiceAgents'

@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { PageSection } from 'config/pages'
 import {
     paywallConfigs as defaultPaywallConfigs,

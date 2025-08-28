@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useMutation } from '@tanstack/react-query'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment/moment'
 
 import { AttachmentEnum } from 'common/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'

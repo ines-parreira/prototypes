@@ -1,10 +1,10 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'

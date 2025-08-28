@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 
 import { IconButton } from '@gorgias/axiom'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'

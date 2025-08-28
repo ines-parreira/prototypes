@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import moment from 'moment'
@@ -5,7 +6,6 @@ import { UncontrolledTooltip } from 'reactstrap'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import type { Meta } from 'models/ticket/types'
 

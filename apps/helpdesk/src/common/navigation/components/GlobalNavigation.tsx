@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -12,7 +13,6 @@ import { MenuItemName } from 'common/navigation/hooks/useMainNavigationItems'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useNavBarMenuIcon } from 'common/navigation/hooks/useNavBarMenuIcon'
 import { useNavBarShortcuts } from 'common/navigation/hooks/useNavBarShortcuts'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'

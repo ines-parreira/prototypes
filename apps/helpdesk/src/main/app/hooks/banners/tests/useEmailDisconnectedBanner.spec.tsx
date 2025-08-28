@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -5,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
 import { BannerCategories } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { getCurrentUser } from 'state/currentUser/selectors'

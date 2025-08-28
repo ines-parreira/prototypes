@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { ticketInputFieldDefinition as mockTicketInputFieldDefinition } from 'fixtures/customField'
 import {

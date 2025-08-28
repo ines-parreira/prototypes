@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,7 +15,6 @@ import {
 } from 'automate/notifications/constants'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'

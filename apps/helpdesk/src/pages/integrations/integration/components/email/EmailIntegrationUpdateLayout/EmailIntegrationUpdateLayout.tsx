@@ -1,8 +1,8 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EmailProvider } from 'models/integration/constants'
 import { Integration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'

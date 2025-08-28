@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -9,7 +10,6 @@ import {
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     EmailIntegration as DEPRECATED_EmailIntegration,

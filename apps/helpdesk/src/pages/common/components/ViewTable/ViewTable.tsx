@@ -1,5 +1,6 @@
 import { Component, ComponentType, ContextType, ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
@@ -8,7 +9,6 @@ import { parse, stringify } from 'qs'
 import { connect, ConnectedProps } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getConfigByName } from 'config/views'
 import { EntityType, ViewType, ViewVisibility } from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -119,9 +119,9 @@ export class ViewTableContainer extends Component<Props> {
             })
 
             updateView(
-                urlSearchView.merge({
-                    ...(!!fieldConfig ? { fields: fieldConfig } : {}),
-                }),
+                urlSearchView.merge(
+                    !!fieldConfig ? { fields: fieldConfig } : {},
+                ),
                 false,
             )
         } else if (isCreationUrl(location.pathname, 'tickets')) {

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {

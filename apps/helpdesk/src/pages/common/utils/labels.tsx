@@ -1,5 +1,6 @@
 import { isValidElement, ReactNode, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Map } from 'immutable'
@@ -7,7 +8,6 @@ import { Map } from 'immutable'
 import { Badge, ColorType } from '@gorgias/axiom'
 
 import { isImmutable } from 'common/utils'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'

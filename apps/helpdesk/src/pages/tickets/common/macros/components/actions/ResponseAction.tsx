@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { List, Map } from 'immutable'
@@ -14,7 +15,6 @@ import {
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'

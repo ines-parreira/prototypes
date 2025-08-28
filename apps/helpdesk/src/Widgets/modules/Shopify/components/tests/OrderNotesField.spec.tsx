@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { executeAction } from 'state/infobar/actions'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'

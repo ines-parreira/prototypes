@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { List, Map } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { MacroActionName } from 'models/macroAction/types'
 
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'

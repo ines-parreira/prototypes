@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     nodeHelpers,

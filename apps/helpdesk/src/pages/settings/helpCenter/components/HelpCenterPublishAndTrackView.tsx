@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { get } from 'lodash'
@@ -11,7 +12,6 @@ import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'

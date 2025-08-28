@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { Banner, Button, Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'

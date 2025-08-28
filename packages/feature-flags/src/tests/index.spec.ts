@@ -1,7 +1,5 @@
-import { placeholder } from '..'
-
 describe('Feature flags', () => {
-    it('should be defined', () => {
-        expect(placeholder).toBeDefined()
+    it('temporary placeholder test for CI/CD', () => {
+        expect(true).toBe(true)
     })
 })

@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import {
     AlertBannerTypes,
     BannerCategories,
     ContextBanner,
     useBanners,
 } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 
 import { ActionTemplate } from '../types'
 

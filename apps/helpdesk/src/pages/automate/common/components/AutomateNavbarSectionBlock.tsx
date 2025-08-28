@@ -1,10 +1,10 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

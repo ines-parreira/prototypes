@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { ShopifyIntegration } from 'models/integration/types'
 import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
 

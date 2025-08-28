@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import { Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     isTicketMessageDeleted,

@@ -1,11 +1,11 @@
 import { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import { useTicket } from '../hooks/useTicket'

@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
 import { act, assumeMock, renderHook } from '@repo/testing'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { FilterOptionGroup } from 'domains/reporting/pages/types'

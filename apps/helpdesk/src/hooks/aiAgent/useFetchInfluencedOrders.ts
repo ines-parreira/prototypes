@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { UseQueryResult } from '@tanstack/react-query'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {

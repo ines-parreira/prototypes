@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react'
 
 import useViewStoreMapping from '../useViewStoreMapping'
 
-jest.mock('config/featureFlags')
 jest.mock('core/flags')
 jest.mock('models/storeMapping/queries')
 

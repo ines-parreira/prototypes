@@ -1,10 +1,10 @@
 import React, { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import _keyBy from 'lodash/keyBy'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { Locale } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 

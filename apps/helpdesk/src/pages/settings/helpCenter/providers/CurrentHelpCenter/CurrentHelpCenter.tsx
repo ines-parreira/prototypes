@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
@@ -10,7 +11,6 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Loader from 'pages/common/components/Loader/Loader'

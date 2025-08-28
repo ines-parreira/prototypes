@@ -1,12 +1,12 @@
 import React, { ReactNode, useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
 import _intersection from 'lodash/intersection'
 import { Link } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import { ChannelLanguage } from 'pages/automate/common/types'

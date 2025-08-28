@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { AxiosError } from 'axios'
 import { fromJS, List, Map } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
@@ -27,7 +28,6 @@ import {
 } from 'common/state'
 import goToTicket from 'common/utils/goToTicket'
 import { DEFAULT_ACTIONS } from 'config'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { CustomFields, CustomFieldState } from 'custom-fields/types'
 import client from 'models/api/resources'
 import { getCustomer } from 'models/customer/resources'

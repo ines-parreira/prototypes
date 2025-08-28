@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import moment from 'moment'
 import { Link, useHistory } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { Link, useHistory } from 'react-router-dom'
 import { Tooltip } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -19,7 +20,6 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { TicketMessage } from 'models/ticket/types'
 
 import { TicketMessageTranslationDisplayProvider } from '../TicketMessageTranslationDisplayProvider'

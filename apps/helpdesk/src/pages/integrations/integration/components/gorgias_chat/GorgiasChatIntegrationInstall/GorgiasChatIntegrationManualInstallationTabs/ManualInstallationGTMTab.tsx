@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import InstallationStep from './components/InstallationStep'

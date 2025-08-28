@@ -1,5 +1,6 @@
 import React, { Component, FormEvent } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -8,7 +9,6 @@ import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
 import { Button, ToggleField } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,

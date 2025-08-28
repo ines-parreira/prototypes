@@ -1,10 +1,10 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
 import { Avatar } from '@gorgias/axiom'
 import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { Avatar as NewAvatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 

@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -22,7 +23,6 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'

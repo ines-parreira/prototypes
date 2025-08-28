@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render } from '@testing-library/react'
@@ -11,7 +12,6 @@ import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'

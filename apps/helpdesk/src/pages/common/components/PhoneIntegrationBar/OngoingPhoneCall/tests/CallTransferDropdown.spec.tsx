@@ -1,5 +1,6 @@
 import { ComponentProps, createRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
@@ -22,7 +23,6 @@ import {
     mockTransferCallHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

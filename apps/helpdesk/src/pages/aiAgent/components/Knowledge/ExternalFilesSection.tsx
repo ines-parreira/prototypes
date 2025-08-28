@@ -1,11 +1,11 @@
 import React, { createRef, useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
 import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'

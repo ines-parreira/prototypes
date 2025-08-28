@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'

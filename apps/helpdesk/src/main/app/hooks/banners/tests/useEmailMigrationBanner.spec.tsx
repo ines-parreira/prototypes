@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import { AlertBannerCTATypes, AlertBannerTypes } from 'AlertBanners'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import * as helpers from 'pages/common/components/EmailMigrationBanner/helpers'

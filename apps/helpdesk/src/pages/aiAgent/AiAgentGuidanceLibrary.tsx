@@ -1,6 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { Button, LoadingSpinner } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import BackLink from 'pages/common/components/BackLink'
 import history from 'pages/history'

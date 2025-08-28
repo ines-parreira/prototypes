@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -7,7 +8,6 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../models/integration/types'

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { getPageInteractionsCountAfterDate } from 'domains/reporting/pages/convert/clients/PageInteractionsCubeQueries'

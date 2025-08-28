@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
@@ -12,7 +13,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { isForwardedMessage } from 'tickets/common/utils'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'

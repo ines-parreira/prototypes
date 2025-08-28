@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { mockStore } from 'utils/testing'
 

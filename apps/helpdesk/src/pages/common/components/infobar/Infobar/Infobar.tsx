@@ -1,5 +1,6 @@
 import { KeyboardEvent, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { InfobarTicketDetails } from '@repo/tickets'
 import classnames from 'classnames'
@@ -9,7 +10,6 @@ import { useLocation } from 'react-router-dom'
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

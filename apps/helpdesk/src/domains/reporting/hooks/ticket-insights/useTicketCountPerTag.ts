@@ -1,4 +1,5 @@
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTagResultsSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'

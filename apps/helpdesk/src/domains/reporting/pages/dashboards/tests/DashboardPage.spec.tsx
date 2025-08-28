@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import {
     fireEvent,
@@ -9,7 +10,6 @@ import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'

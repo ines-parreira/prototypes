@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'

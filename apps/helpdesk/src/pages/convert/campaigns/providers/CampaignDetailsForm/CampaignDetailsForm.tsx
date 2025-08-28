@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -12,7 +13,6 @@ import { Skeleton } from '@gorgias/axiom'
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatCreationWizardStatus,

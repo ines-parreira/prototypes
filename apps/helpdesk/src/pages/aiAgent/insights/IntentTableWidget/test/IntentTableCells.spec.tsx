@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     Intent,

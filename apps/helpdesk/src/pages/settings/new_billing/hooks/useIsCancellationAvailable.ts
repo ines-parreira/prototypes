@@ -1,6 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { HelpdeskPlan } from 'models/billing/types'
 

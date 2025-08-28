@@ -1,12 +1,12 @@
 import React, { MouseEvent, useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,

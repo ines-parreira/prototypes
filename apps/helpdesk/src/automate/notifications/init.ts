@@ -1,5 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { registerCategory, registerNotification } from 'common/notifications'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { AUTOMATE_ICON } from 'pages/common/components/SourceIcon'
 import { getLDClient } from 'utils/launchDarkly'
 

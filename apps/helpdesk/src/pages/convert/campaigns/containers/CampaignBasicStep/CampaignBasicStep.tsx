@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 
 import { Label } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     mapIntegrationLanguagesToLanguagePicker,

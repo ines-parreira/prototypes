@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'

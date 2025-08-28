@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {

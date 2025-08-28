@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -17,7 +18,6 @@ import {
 } from '@gorgias/helpdesk-client'
 import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import socketManager from 'services/socketManager'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'

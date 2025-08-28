@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'
 import {
     AccountConfigurationWithHttpIntegration,

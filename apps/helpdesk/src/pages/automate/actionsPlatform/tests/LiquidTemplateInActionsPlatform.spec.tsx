@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { ulid } from 'ulidx'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     useDownloadWorkflowConfigurationStepLogs,

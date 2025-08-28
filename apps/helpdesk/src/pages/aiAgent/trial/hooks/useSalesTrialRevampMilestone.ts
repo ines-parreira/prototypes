@@ -1,4 +1,5 @@
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import useFlag from 'core/flags/hooks/useFlag'
 
 /** This feature flag is now fully activated on the milestone-1 */

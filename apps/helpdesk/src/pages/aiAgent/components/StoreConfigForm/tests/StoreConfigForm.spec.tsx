@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -16,7 +17,6 @@ import thunk from 'redux-thunk'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { billingState } from 'fixtures/billing'
 import {

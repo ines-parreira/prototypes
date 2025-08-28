@@ -1,10 +1,10 @@
 import React, { useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import {
     formatCurrency,

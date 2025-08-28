@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,

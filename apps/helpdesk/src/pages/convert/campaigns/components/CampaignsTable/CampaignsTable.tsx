@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
@@ -14,7 +15,6 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { Badge, ToggleField, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageFromChatConfig,

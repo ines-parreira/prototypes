@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
@@ -204,7 +205,7 @@ export const useTableReportData = <Keys extends string, Format>(
         const fetchPromises = reportDataSources.map((r) =>
             r.fetchData(cleanStatsFilters, userTimezone),
         )
-        void Promise.all([...fetchPromises])
+        void Promise.all(fetchPromises)
             .then((results) => {
                 setTableData({
                     isFetching: false,
@@ -234,7 +235,7 @@ export const fetchTableReportData = async <Keys extends string, Format>(
     const fetchPromises = reportDataSources.map((r) =>
         r.fetchData(cleanStatsFilters, userTimezone),
     )
-    return Promise.all([...fetchPromises])
+    return Promise.all(fetchPromises)
         .then((results) => ({
             isFetching: false,
             isError: false,

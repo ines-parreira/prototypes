@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 export function useAutomateRedirects() {

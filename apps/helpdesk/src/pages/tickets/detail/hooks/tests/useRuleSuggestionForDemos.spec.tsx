@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -6,7 +7,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
 import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -12,7 +13,6 @@ import {
 } from 'reactstrap'
 
 import { UploadType } from 'common/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { MacroActionName } from 'models/macroAction/types'

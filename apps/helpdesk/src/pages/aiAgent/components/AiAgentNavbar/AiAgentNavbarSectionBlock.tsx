@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
 import { Badge } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopType } from 'models/selfServiceConfiguration/types'
 import { OPPORTUNITIES, SALES, SETTINGS } from 'pages/aiAgent/constants'

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Component } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -18,7 +19,6 @@ import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 import { Button, ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'

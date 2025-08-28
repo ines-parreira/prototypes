@@ -1,9 +1,9 @@
 import React, { UIEventHandler, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'

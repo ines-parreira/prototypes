@@ -3,12 +3,12 @@ import React, { createContext, ReactNode } from 'react'
 
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { List } from 'immutable'
 import moment from 'moment'
 
 import noise from 'assets/img/integrations/noise.svg'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import ConversationHeader, {
     ConversationHeaderVariant,

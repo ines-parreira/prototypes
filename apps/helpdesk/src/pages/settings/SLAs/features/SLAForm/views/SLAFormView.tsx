@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'

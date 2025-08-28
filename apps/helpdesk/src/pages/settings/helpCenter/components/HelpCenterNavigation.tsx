@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { NavLink, useHistory } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

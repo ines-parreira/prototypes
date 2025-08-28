@@ -6,6 +6,7 @@ import {
     useRef,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { omit } from 'lodash'
 
 import { DomainEvent } from '@gorgias/events'
@@ -19,7 +20,6 @@ import {
 import { AgentStatus } from '@gorgias/helpdesk-types'
 import { ChannelNameOptions, useAccountId } from '@gorgias/realtime'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     addVoiceCallToLiveCallsQueryCache,

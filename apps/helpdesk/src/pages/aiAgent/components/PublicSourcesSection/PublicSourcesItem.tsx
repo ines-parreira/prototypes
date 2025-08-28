@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
 import { Button, IconButton } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'

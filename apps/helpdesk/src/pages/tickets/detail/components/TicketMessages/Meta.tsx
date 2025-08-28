@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

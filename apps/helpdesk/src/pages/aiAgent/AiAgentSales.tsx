@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
-
-import { FeatureFlagKey } from 'config/featureFlags'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'

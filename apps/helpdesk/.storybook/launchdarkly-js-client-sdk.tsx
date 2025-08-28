@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import React from 'react'
 
-import { FeatureFlagKey } from '../src/config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
 
 let _flags = Object.keys(FeatureFlagKey).reduce<Record<string, boolean>>(
     (acc, key) => {

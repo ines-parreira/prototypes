@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -10,7 +11,6 @@ import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'

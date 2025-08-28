@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { User } from '@gorgias/helpdesk-queries'
 import { useAgentActivity } from '@gorgias/realtime'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getOtherAgentsOnTicket } from 'state/agents/selectors'

@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -9,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import { Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,

@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { SAVEABLE_FILTERS } from 'domains/reporting/pages/common/filters/constants'

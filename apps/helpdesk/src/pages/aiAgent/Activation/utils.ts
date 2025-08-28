@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Location } from 'history'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getLDClient } from 'utils/launchDarkly'
 
 export const getAiSalesAgentEmailEnabledFlag = () => {

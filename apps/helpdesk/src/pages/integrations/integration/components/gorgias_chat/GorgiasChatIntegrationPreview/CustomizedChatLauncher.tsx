@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
 import { useFlag } from 'core/flags'
 import { THEME_NAME } from 'core/theme'

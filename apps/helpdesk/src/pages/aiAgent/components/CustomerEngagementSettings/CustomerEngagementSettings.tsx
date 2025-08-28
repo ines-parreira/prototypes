@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { get } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -9,7 +10,6 @@ import { z } from 'zod'
 
 import { Box, Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,8 +1,8 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useWindowSize } from '@repo/hooks'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { OnboardingPanel } from 'common/onboarding'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'

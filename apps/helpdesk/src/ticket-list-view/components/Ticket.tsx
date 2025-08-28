@@ -1,5 +1,6 @@
 import { ComponentProps, MouseEvent, useCallback, useMemo, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
@@ -8,7 +9,6 @@ import { Components } from 'react-virtuoso'
 import { CheckBoxField, Tooltip } from '@gorgias/axiom'
 import { TicketTranslationCompact } from '@gorgias/helpdesk-types'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'

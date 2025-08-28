@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -7,7 +8,6 @@ import {
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'

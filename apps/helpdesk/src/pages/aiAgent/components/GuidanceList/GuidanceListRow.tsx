@@ -1,8 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { IconButton, ToggleField } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
 import { LDFlagSet } from 'launchdarkly-js-client-sdk'
@@ -8,7 +9,6 @@ import _memoize from 'lodash/memoize'
 import moment, { Moment } from 'moment'
 
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
 import { MessageMetadataType, TicketMessage } from 'models/ticket/types'

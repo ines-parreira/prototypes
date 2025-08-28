@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
     aiAgentRoutes,

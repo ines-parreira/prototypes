@@ -1,6 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { Label } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

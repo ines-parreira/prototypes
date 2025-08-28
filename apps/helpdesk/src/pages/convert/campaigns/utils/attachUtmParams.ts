@@ -1,6 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { parse } from 'qs'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { getLDClient } from 'utils/launchDarkly'
 import { attachSearchParamsToUrl } from 'utils/url'
 

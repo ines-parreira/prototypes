@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
@@ -47,7 +48,7 @@ export const useTrendReportData = (
                 costSavedPerInteraction,
             ),
         )
-        void Promise.all([...workloadTrendPromises])
+        void Promise.all(workloadTrendPromises)
             .then((results) => {
                 setTrendData({
                     isFetching: false,

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import useOrderBy from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

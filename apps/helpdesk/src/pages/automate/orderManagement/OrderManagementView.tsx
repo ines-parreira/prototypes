@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { createMemoryHistory } from 'history'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import {

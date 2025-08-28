@@ -1,5 +1,6 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { DOWNLOAD_BUTTON_TITLE } from 'domains/reporting/pages/voice/constants/voiceAgents'

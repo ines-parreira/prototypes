@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { HttpResponse } from '@gorgias/helpdesk-queries'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
@@ -58,7 +58,7 @@ export const useGuidanceArticleMutation = ({
                 translation: {
                     created_datetime: new Date().toISOString(),
                     updated_datetime: new Date().toISOString(),
-                    ...(payload.translation || {}),
+                    ...payload.translation,
                 },
             }
 

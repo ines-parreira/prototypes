@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -7,7 +8,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Badge, BadgeIcon, Button } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,

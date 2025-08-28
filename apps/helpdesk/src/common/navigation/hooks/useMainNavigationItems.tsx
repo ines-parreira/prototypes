@@ -1,10 +1,10 @@
 import React, { ReactNode, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Map } from 'immutable'
 
 import { Badge } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'

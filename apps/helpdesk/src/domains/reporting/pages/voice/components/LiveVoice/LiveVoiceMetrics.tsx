@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import { useFlag } from 'core/flags'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

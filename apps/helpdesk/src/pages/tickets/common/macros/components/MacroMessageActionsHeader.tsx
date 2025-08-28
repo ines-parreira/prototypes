@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -11,7 +12,6 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     MacroActionName,
     MacroResponseActionName,

@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { ActiveContent, Navbar } from 'common/navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'

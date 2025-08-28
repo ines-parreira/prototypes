@@ -1,12 +1,12 @@
 import React, { DragEvent, ReactNode, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
 import { Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {

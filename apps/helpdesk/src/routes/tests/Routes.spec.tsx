@@ -1,5 +1,6 @@
 import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -15,7 +16,6 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
 import { logPageChange } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'

@@ -1,9 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'

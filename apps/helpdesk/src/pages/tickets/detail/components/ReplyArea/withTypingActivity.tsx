@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { debounce, toPlainObject } from 'lodash'
 
 import { isRealtimeError, useAgentActivity } from '@gorgias/realtime'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
 import { reportError } from 'utils/errors'

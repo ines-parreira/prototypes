@@ -1,5 +1,6 @@
 import React, { createRef, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import axios from 'axios'
 import { FormGroup, FormText } from 'reactstrap'
@@ -7,7 +8,6 @@ import isHexColor from 'validator/lib/isHexColor'
 
 import { Button } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

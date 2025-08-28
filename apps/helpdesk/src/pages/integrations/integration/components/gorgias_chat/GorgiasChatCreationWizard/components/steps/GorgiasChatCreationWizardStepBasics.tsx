@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { Link } from 'react-router-dom'
 import { Button, Label, Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,

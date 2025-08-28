@@ -1,8 +1,8 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import { Middleware } from 'redux'
 
-import { FeatureFlagKey } from '../../config/featureFlags'
 import {
     GorgiasApiError,
     GorgiasApiResponseDataError,

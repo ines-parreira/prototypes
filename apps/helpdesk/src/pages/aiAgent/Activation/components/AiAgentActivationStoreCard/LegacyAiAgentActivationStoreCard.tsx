@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { Link } from 'react-router-dom'
 import { Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentActivationStoreCardAlert } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCardAlert'

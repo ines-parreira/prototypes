@@ -1,10 +1,10 @@
 import { ReactNode, useContext } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {

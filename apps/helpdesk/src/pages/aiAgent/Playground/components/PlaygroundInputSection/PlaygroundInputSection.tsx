@@ -6,12 +6,12 @@ import React, {
     useState,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
 import { Button, Tooltip } from '@gorgias/axiom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import keymap from 'config/shortcuts'
 import useFlag from 'core/flags/hooks/useFlag'
 import { useSearchParam } from 'hooks/useSearchParam'

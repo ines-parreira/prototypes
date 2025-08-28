@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useUpdateEffect } from '@repo/hooks'
 import { isObject, isString, toPlainObject } from 'lodash'
 
@@ -12,7 +13,6 @@ import {
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
 

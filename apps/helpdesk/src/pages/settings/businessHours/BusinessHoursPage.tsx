@@ -1,7 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Switch, useRouteMatch } from 'react-router'
 import { Route } from 'react-router-dom'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { fromJS, List, Map } from 'immutable'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     GORGIAS_CHAT_WIDGET_TEXTS,

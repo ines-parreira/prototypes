@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useUpdateEffect } from '@repo/hooks'
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -10,7 +11,6 @@ import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider } from 'models/integration/constants'

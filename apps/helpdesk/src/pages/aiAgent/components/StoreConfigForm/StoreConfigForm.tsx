@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { List } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -17,7 +18,6 @@ import { Button } from '@gorgias/axiom'
 
 // Absolute Imports
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

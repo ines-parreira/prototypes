@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,

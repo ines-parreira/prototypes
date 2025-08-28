@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
@@ -19,7 +20,6 @@ import {
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
 import { useFlag } from 'core/flags'
@@ -285,12 +285,11 @@ function GorgiasTranslateText({
                     setTranslations({
                         ...data,
                         // Customize the chat title and launcher label key value.
-                        ...{
-                            texts: {
-                                ...data.texts,
-                                chatTitle: `${integrationChat.name} (chat title)`,
-                                chatWithUs: `${data.texts.chatWithUs} (launcher label)`,
-                            },
+
+                        texts: {
+                            ...data.texts,
+                            chatTitle: `${integrationChat.name} (chat title)`,
+                            chatWithUs: `${data.texts.chatWithUs} (launcher label)`,
                         },
                     })
                 }
@@ -1079,7 +1078,7 @@ export default connect(
 function getSelectedLanguage(
     languageValue: LanguageChat,
 ): Map<string, string> | null {
-    if ([...Object.values(LanguageChat)].includes(languageValue)) {
+    if (Object.values(LanguageChat).includes(languageValue)) {
         return GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {
             return el?.get('value') === languageValue
         })

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -13,7 +14,6 @@ import thunk from 'redux-thunk'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import * as billingFixtures from 'fixtures/billing'
 import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
 import history from 'pages/history'

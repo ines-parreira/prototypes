@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from 'config/featureFlags'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { useFlag } from 'core/flags'
 import { AutomateAiAgentsReportConfig } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'

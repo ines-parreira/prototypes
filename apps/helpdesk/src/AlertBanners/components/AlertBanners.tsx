@@ -1,12 +1,12 @@
 import { memo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { noop } from 'lodash'
 
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { MergedBanner } from 'AlertBanners/Context/types'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 
 import { useBannerCarousel } from '../hooks/useBannerCarousel'

@@ -1,8 +1,8 @@
 import { ComponentProps, useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { RecentItems } from 'hooks/useRecentItems/constants'

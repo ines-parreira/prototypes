@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
-import { FeatureFlagKey } from 'config/featureFlags'
 import { useFlag } from 'core/flags'
 import {
     basicMonthlyHelpdeskPlan,
