@@ -158,13 +158,15 @@ const PhoneNumberInput = (
             setCurrentCountry(country)
             setCountrySelectVisible(false)
 
-            const newNumber = buildInternationalNumber(number, country)
+            if (number !== '') {
+                const newNumber = buildInternationalNumber(number, country)
 
-            onChange?.(
-                getCountryFromPhoneNumber(newNumber) === country
-                    ? newNumber
-                    : '',
-            )
+                onChange?.(
+                    getCountryFromPhoneNumber(newNumber) === country
+                        ? newNumber
+                        : '',
+                )
+            }
         },
         [onChange, setCurrentCountry],
     )

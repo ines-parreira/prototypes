@@ -1,237 +1,332 @@
-import React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
-import { isValidPhoneNumber } from 'libphonenumber-js'
+import { act } from '@testing-library/react'
+import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { PhoneIntegration } from 'models/integration/types/phone'
 import { UserSearchResult } from 'models/search/types'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
-import * as selectors from 'state/integrations/selectors'
 
 import useDialerOutboundCall from '../useDialerOutboundCall'
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
-import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 import usePhoneNumbers from '../usePhoneNumbers'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
-jest.mock(
-    'pages/integrations/integration/components/phone/useDialerOutboundCall',
-)
-jest.mock(
-    'pages/integrations/integration/components/phone/usePhoneDeviceDialerCustomerSuggestions',
-)
-jest.mock('libphonenumber-js')
+jest.mock('hooks/useAppSelector')
+jest.mock('../useDialerOutboundCall')
 jest.mock('../usePhoneNumbers')
+jest.mock('libphonenumber-js')
 jest.mock('pages/phoneNumbers/utils')
 
+const useAppSelectorMock = assumeMock(useAppSelector)
 const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
 const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
-const usePhoneDeviceDialerCustomerSuggestionsMock = assumeMock(
-    usePhoneDeviceDialerCustomerSuggestions,
-)
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const getCountryFromPhoneNumberMock = assumeMock(getCountryFromPhoneNumber)
 
-const getPhoneIntegrationsSpy = jest.spyOn(selectors, 'getPhoneIntegrations')
-
 describe('usePhoneDeviceDialer', () => {
-    const mockPhoneIntegrations = [
+    const mockPhoneIntegrations: PhoneIntegration[] = [
         {
             id: 1,
-            name: 'testIntegration',
+            name: 'Primary Phone',
             meta: {
                 phone_number_id: 1,
             },
-        },
+        } as PhoneIntegration,
         {
             id: 2,
-            name: 'otherTestIntegration2',
+            name: 'Secondary Phone',
             meta: {
                 phone_number_id: 2,
             },
-        },
+        } as PhoneIntegration,
     ]
-    const mockUserSearchResult: UserSearchResult = {
-        customer: { name: 'John Doe' },
-        id: 'user1',
-    } as any
+
+    const mockCustomer: UserSearchResult = {
+        id: 1,
+        address: '+15551234567',
+        customer: {
+            id: 1,
+            name: 'Guybrush Threepwood',
+        },
+    }
+
     const mockMakeCall = jest.fn()
     const mockOnCallInitiated = jest.fn()
-    const mockDebouncedSearchCustomers = jest.fn()
+    const mockGetPhoneNumberById = jest.fn()
+
+    const setup = () => {
+        return renderHook(() =>
+            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
+        )
+    }
 
     beforeEach(() => {
+        jest.clearAllMocks()
+        useAppSelectorMock.mockImplementation(() => mockPhoneIntegrations)
         useDialerOutboundCallMock.mockReturnValue(mockMakeCall)
-        getPhoneIntegrationsSpy.mockReturnValue(mockPhoneIntegrations as any)
-        ;(usePhoneDeviceDialerCustomerSuggestions as jest.Mock).mockReturnValue(
-            {
-                isFetching: false,
-                handleInputKeyDown: jest.fn(),
-                customers: [],
-                highlightedResultIndex: -1,
-                debouncedSearchCustomers: mockDebouncedSearchCustomers,
-            },
-        )
         usePhoneNumbersMock.mockReturnValue({
-            getPhoneNumberById: jest.fn(() => ({ phone_number: '1234567890' })),
+            getPhoneNumberById: mockGetPhoneNumberById,
         } as any)
+        mockGetPhoneNumberById.mockReturnValue({
+            phone_number: '+12125551234',
+        })
+        getCountryFromPhoneNumberMock.mockReturnValue('US' as CountryCode)
+        isValidPhoneNumberMock.mockReturnValue(true)
     })
 
     it('should initialize with default values', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
+        const { result } = setup()
 
-        expect(result.current.inputValue).toBe('')
-        expect(result.current.selectedCustomer).toBeNull()
         expect(result.current.phoneNumberInputError).toBeUndefined()
+        expect(result.current.country).toBeUndefined()
         expect(result.current.phoneIntegrations).toEqual(mockPhoneIntegrations)
         expect(result.current.selectedIntegration).toEqual(
             mockPhoneIntegrations[0],
         )
-        expect(result.current.isSearchTypeCustomer).toBe(false)
-        expect(result.current.isSearchingCustomers).toBe(false)
-        expect(result.current.isCallButtonDisabled).toBe(false)
+        expect(result.current.isSelectedNumberValid).toBe(false)
     })
 
-    it('should handle input change', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
+    describe('isSelectedNumberValid', () => {
+        it('should be true for valid phone number', () => {
+            const { result } = setup()
 
-        act(() => {
-            result.current.handleChange('1234567890')
+            act(() => {
+                result.current.setSelectedNumberAndCustomer(
+                    '+15551234567',
+                    mockCustomer,
+                )
+            })
+
+            expect(result.current.isSelectedNumberValid).toBe(true)
         })
 
-        expect(result.current.inputValue).toBe('1234567890')
-        expect(result.current.selectedCustomer).toBeNull()
-        expect(result.current.phoneNumberInputError).toBeUndefined()
-        expect(mockDebouncedSearchCustomers).toHaveBeenCalledWith('1234567890')
+        it('should be false for invalid phone number', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('')
+            })
+
+            expect(result.current.isSelectedNumberValid).toBe(false)
+        })
     })
 
-    it('should handle customer selection', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
+    describe('handleCall', () => {
+        it('should make call with valid phone number', () => {
+            isValidPhoneNumberMock.mockReturnValue(true)
+            const { result } = setup()
 
-        act(() => {
-            result.current.handleSelectCustomer(mockUserSearchResult)
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('+15551234567')
+            })
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(useDialerOutboundCallMock).toHaveBeenCalledWith({
+                inputValue: '+15551234567',
+                selectedCustomer: null,
+                selectedIntegration: mockPhoneIntegrations[0],
+            })
+            expect(mockMakeCall).toHaveBeenCalled()
+            expect(mockOnCallInitiated).toHaveBeenCalled()
+            expect(result.current.phoneNumberInputError).toBeUndefined()
         })
 
-        expect(result.current.inputValue).toBe('John Doe')
-        expect(result.current.selectedCustomer).toEqual(mockUserSearchResult)
+        it('should make call with customer', () => {
+            isValidPhoneNumberMock.mockReturnValue(true)
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer(
+                    '+15551234567',
+                    mockCustomer,
+                )
+            })
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(useDialerOutboundCallMock).toHaveBeenCalledWith({
+                inputValue: '+15551234567',
+                selectedCustomer: mockCustomer,
+                selectedIntegration: mockPhoneIntegrations[0],
+            })
+            expect(mockMakeCall).toHaveBeenCalled()
+            expect(mockOnCallInitiated).toHaveBeenCalled()
+            expect(result.current.phoneNumberInputError).toBeUndefined()
+        })
+
+        it('should not make call with empty phone number', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(mockMakeCall).not.toHaveBeenCalled()
+            expect(mockOnCallInitiated).not.toHaveBeenCalled()
+            expect(result.current.phoneNumberInputError).toBeUndefined()
+        })
+
+        it('should not make call with invalid phone number', () => {
+            isValidPhoneNumberMock.mockReturnValue(false)
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('123')
+            })
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(result.current.phoneNumberInputError).toBe(
+                'Enter a valid number',
+            )
+            expect(mockMakeCall).not.toHaveBeenCalled()
+            expect(mockOnCallInitiated).not.toHaveBeenCalled()
+        })
+
+        it('should validate phone number before making call', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('+15551234567')
+            })
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(isValidPhoneNumberMock).toHaveBeenCalledWith('+15551234567')
+        })
+
+        it('should reset error after trying to make call', () => {
+            isValidPhoneNumberMock.mockReturnValue(false)
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('123')
+            })
+
+            act(() => {
+                result.current.handleCall()
+            })
+
+            expect(result.current.phoneNumberInputError).toBe(
+                'Enter a valid number',
+            )
+
+            act(() => {
+                result.current.resetError()
+            })
+
+            expect(result.current.phoneNumberInputError).toBeUndefined()
+        })
     })
 
-    it('should handle call click with valid phone number', () => {
-        isValidPhoneNumberMock.mockReturnValue(true)
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
+    describe('integration selection', () => {
+        it('should change selected integration', () => {
+            const { result } = setup()
 
-        act(() => {
-            result.current.handleChange('1234567890')
-        })
+            act(() => {
+                result.current.setSelectedIntegration(mockPhoneIntegrations[1])
+            })
 
-        act(() => {
-            result.current.handleCallClick()
-        })
-
-        expect(mockMakeCall).toHaveBeenCalled()
-        expect(mockOnCallInitiated).toHaveBeenCalled()
-    })
-
-    it('should handle call click with invalid phone number', () => {
-        isValidPhoneNumberMock.mockReturnValue(false)
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
-
-        act(() => {
-            result.current.handleChange('123')
-        })
-
-        act(() => {
-            result.current.handleCallClick()
-        })
-
-        expect(result.current.phoneNumberInputError).toBe(
-            'Enter a valid number',
-        )
-        expect(mockMakeCall).not.toHaveBeenCalled()
-        expect(mockOnCallInitiated).not.toHaveBeenCalled()
-    })
-
-    it('should disable call button if search type is customer and no customer is selected', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
-
-        act(() => {
-            result.current.handleChange('John')
-        })
-
-        expect(result.current.isCallButtonDisabled).toBe(true)
-    })
-
-    it('should trigger search after the minimum amount of characters have been entered for number input', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
-
-        act(() => {
-            result.current.handleChange('123')
-        })
-
-        expect(result.current.isSearchTypeCustomer).toBe(false)
-        expect(
-            usePhoneDeviceDialerCustomerSuggestionsMock,
-        ).toHaveBeenLastCalledWith(
-            expect.objectContaining({ minSearchInputLength: 5 }),
-        )
-    })
-
-    it('should trigger search after the minimum amount of characters have been entered for customer input', () => {
-        const { result } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
-
-        act(() => {
-            result.current.handleChange('John')
-        })
-
-        expect(result.current.isSearchTypeCustomer).toBe(true)
-        expect(
-            usePhoneDeviceDialerCustomerSuggestionsMock,
-        ).toHaveBeenLastCalledWith(
-            expect.objectContaining({ minSearchInputLength: 3 }),
-        )
-    })
-
-    it('should return default country code', async () => {
-        getCountryFromPhoneNumberMock.mockReturnValueOnce('US')
-        const onCountryChange = jest.fn()
-        jest.spyOn(React, 'createRef').mockReturnValue({
-            current: { onCountryChange },
-        } as any)
-
-        const { result, rerender } = renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
-        )
-
-        getCountryFromPhoneNumberMock.mockReturnValue('FR')
-        rerender()
-
-        act(() => {
-            result.current.setSelectedIntegration(
-                mockPhoneIntegrations[1] as any,
+            expect(result.current.selectedIntegration).toEqual(
+                mockPhoneIntegrations[1],
             )
         })
 
-        expect(result.current.selectedIntegration).toEqual(
-            mockPhoneIntegrations[1],
-        )
+        it('should update country when changing integration with no selected number', () => {
+            getCountryFromPhoneNumberMock.mockReturnValueOnce(
+                'IT' as CountryCode,
+            )
 
-        await waitFor(() => {
-            expect(onCountryChange).toHaveBeenCalledWith('FR')
+            const { result } = setup()
+
+            expect(result.current.country).toBeUndefined()
+
+            act(() => {
+                result.current.setSelectedIntegration(mockPhoneIntegrations[1])
+            })
+
+            expect(mockGetPhoneNumberById).toHaveBeenCalledWith(
+                mockPhoneIntegrations[1].meta.phone_number_id,
+            )
+            expect(getCountryFromPhoneNumberMock).toHaveBeenCalledWith(
+                '+12125551234',
+            )
+            expect(result.current.country).toBe('IT')
+        })
+
+        it('should not update country when changing integration with selected number', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('+15551234567')
+            })
+
+            act(() => {
+                result.current.setSelectedIntegration(mockPhoneIntegrations[1])
+            })
+
+            expect(getCountryFromPhoneNumberMock).not.toHaveBeenCalled()
+            expect(result.current.country).toBeUndefined()
+        })
+
+        it('should update useDialerOutboundCall when integration changes', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer(
+                    '+15551234567',
+                    mockCustomer,
+                )
+            })
+
+            act(() => {
+                result.current.setSelectedIntegration(mockPhoneIntegrations[1])
+            })
+
+            expect(useDialerOutboundCallMock).toHaveBeenLastCalledWith({
+                inputValue: '+15551234567',
+                selectedCustomer: mockCustomer,
+                selectedIntegration: mockPhoneIntegrations[1],
+            })
+        })
+    })
+
+    describe('country management', () => {
+        it('should allow setting country directly', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setCountry('IT' as CountryCode)
+            })
+
+            expect(result.current.country).toBe('IT')
+        })
+
+        it('should preserve country when switching integrations with selected number', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setCountry('IT' as CountryCode)
+            })
+
+            act(() => {
+                result.current.setSelectedNumberAndCustomer('+441234567890')
+            })
+
+            act(() => {
+                result.current.setSelectedIntegration(mockPhoneIntegrations[1])
+            })
+
+            expect(result.current.country).toBe('IT')
         })
     })
 })

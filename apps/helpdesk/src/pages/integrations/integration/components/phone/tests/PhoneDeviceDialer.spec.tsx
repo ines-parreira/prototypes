@@ -1,278 +1,266 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { CountryCode } from 'libphonenumber-js'
 import { Provider } from 'react-redux'
 
 import { PhoneIntegration } from 'models/integration/types'
-import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
-import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
+import PhoneDeviceDialerInput from '../PhoneDeviceDialerInput'
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
 
-jest.mock(
-    'pages/integrations/integration/components/phone/usePhoneDeviceDialer',
-)
+jest.mock('../usePhoneDeviceDialer')
+jest.mock('../PhoneDeviceDialerInput')
+jest.mock('../PhoneDeviceDialerIntegrationSelect')
 
-jest.mock(
-    'pages/common/forms/input/TextInput',
-    () =>
-        ({
-            onChange,
-            value,
-            suffix,
-        }: {
-            onChange: (value: string) => void
-            value: string
-            suffix?: React.ReactNode
-        }) => (
-            <>
-                <input
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    data-testid="mock-text-input"
-                />
-                {suffix}
-            </>
-        ),
-)
-
-jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
-    const { forwardRef } = jest.requireActual('react')
-    return {
-        __esModule: true,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        default: forwardRef(
-            ({
-                onChange,
-                value,
-                error,
-            }: {
-                onChange: (value: string) => void
-                value: string
-                error?: string
-            }) => (
-                <>
-                    <input
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        data-testid="mock-phone-input"
-                    />
-                    <div data-testid="mock-phone-input-error">{error}</div>
-                </>
-            ),
-        ),
-    }
-})
-
-const PhoneDeviceDialerBodySpy = jest
-    .spyOn(PhoneDeviceDialerBody, 'default')
-    .mockImplementation(() => <div data-testid="mock-dialer-body" />)
-
-jest.mock(
-    'pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect',
-)
-
+const usePhoneDeviceDialerMock = assumeMock(usePhoneDeviceDialer)
+const PhoneDeviceDialerInputMock = assumeMock(PhoneDeviceDialerInput)
 const PhoneDeviceDialerIntegrationSelectMock = assumeMock(
     PhoneDeviceDialerIntegrationSelect,
 )
-PhoneDeviceDialerIntegrationSelectMock.mockImplementation(() => (
-    <>PhoneDeviceDialerIntegrationSelect</>
-))
-
-const usePhoneDeviceDialerMock = assumeMock(usePhoneDeviceDialer)
 
 describe('PhoneDeviceDialer', () => {
-    const onCallInitiated = jest.fn()
-    const phoneNumberInputRef = React.createRef<PhoneNumberInputHandle>()
-    const textInputRef = React.createRef<HTMLInputElement>()
-    const mockPhoneDeviceDialerHookResult = {
-        inputValue: '',
-        handleChange: jest.fn(),
-        isSearchTypeCustomer: false,
-        isSearchingCustomers: false,
-        customers: [],
-        selectedCustomer: null,
-        highlightedResultIndex: null,
-        selectedIntegration: {
+    const mockOnCallInitiated = jest.fn()
+    const mockSetSelectedNumberAndCustomer = jest.fn()
+    const mockResetError = jest.fn()
+    const mockSetCountry = jest.fn()
+    const mockSetSelectedIntegration = jest.fn()
+    const mockHandleCall = jest.fn()
+
+    const mockPhoneIntegrations: PhoneIntegration[] = [
+        {
             id: 1,
-            name: 'testIntegration',
+            name: 'Primary Phone',
+            meta: {
+                phone_number_id: 1,
+            },
         } as PhoneIntegration,
-        setSelectedIntegration: jest.fn(),
-        isCallButtonDisabled: false,
-        handleCallClick: jest.fn(),
-        phoneNumberInputError: '',
-        phoneNumberInputRef,
-        textInputRef,
-        phoneIntegrations: [
-            {
-                id: 1,
-                name: 'testIntegration',
+        {
+            id: 2,
+            name: 'Secondary Phone',
+            meta: {
+                phone_number_id: 2,
             },
-            {
-                id: 2,
-                name: 'otherTestIntegration2',
-            },
-        ] as PhoneIntegration[],
-        handleSelectCustomer: jest.fn(),
-        handleInputKeyDown: jest.fn(),
+        } as PhoneIntegration,
+    ]
+
+    const mockSelectedIntegration = mockPhoneIntegrations[0]
+
+    const mockHookResult = {
+        setSelectedNumberAndCustomer: mockSetSelectedNumberAndCustomer,
+        phoneNumberInputError: undefined as string | undefined,
+        resetError: mockResetError,
+        country: undefined as CountryCode | undefined,
+        setCountry: mockSetCountry,
+        phoneIntegrations: mockPhoneIntegrations,
+        selectedIntegration: mockSelectedIntegration,
+        setSelectedIntegration: mockSetSelectedIntegration,
+        handleCall: mockHandleCall,
+        isSelectedNumberValid: false,
     }
 
     const renderComponent = () =>
         renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
-                <PhoneDeviceDialer onCallInitiated={onCallInitiated} />
+                <PhoneDeviceDialer onCallInitiated={mockOnCallInitiated} />
             </Provider>,
         )
 
     beforeEach(() => {
-        usePhoneDeviceDialerMock.mockReturnValue(
-            mockPhoneDeviceDialerHookResult,
+        jest.clearAllMocks()
+
+        usePhoneDeviceDialerMock.mockReturnValue(mockHookResult)
+
+        PhoneDeviceDialerInputMock.mockImplementation(
+            ({
+                onValueChange,
+                onConfirm,
+                phoneNumberInputError,
+                resetError,
+                country,
+                onCountryChange,
+            }) => (
+                <div data-testid="phone-device-dialer-input">
+                    <input
+                        data-testid="mock-input"
+                        onChange={(e) => onValueChange?.(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') onConfirm?.()
+                        }}
+                    />
+                    {phoneNumberInputError && (
+                        <div data-testid="input-error">
+                            {phoneNumberInputError}
+                        </div>
+                    )}
+                    <button
+                        data-testid="reset-error-button"
+                        onClick={resetError}
+                    />
+                    <button
+                        data-testid="change-country-button"
+                        onClick={() => onCountryChange?.('IT' as CountryCode)}
+                    />
+                    {country && (
+                        <div data-testid="current-country">{country}</div>
+                    )}
+                </div>
+            ),
         )
+
+        PhoneDeviceDialerIntegrationSelectMock.mockImplementation(() => (
+            <>PhoneDeviceDialerIntegrationSelect</>
+        ))
     })
 
-    it('renders initial state correctly: phone number input, body, integration selector and cta', () => {
-        renderComponent()
+    describe('rendering', () => {
+        it('should render all components correctly', () => {
+            renderComponent()
 
-        expect(screen.getByTestId('mock-phone-input')).toBeInTheDocument()
-        expect(screen.getByTestId('mock-dialer-body')).toBeInTheDocument()
-        expect(
-            screen.getByText('PhoneDeviceDialerIntegrationSelect'),
-        ).toBeInTheDocument()
-        expect(PhoneDeviceDialerIntegrationSelectMock).toHaveBeenCalledWith(
-            {
-                value: mockPhoneDeviceDialerHookResult.selectedIntegration,
-                onChange: expect.any(Function),
-                options: mockPhoneDeviceDialerHookResult.phoneIntegrations,
-            },
-            {},
-        )
-        expect(screen.getByRole('button', { name: 'Call' })).toBeInTheDocument()
-    })
-
-    it('calls handleChange when value changes', () => {
-        renderComponent()
-
-        const inputElement: HTMLInputElement =
-            screen.getByTestId('mock-phone-input')
-
-        fireEvent.change(inputElement, { target: { value: '1234567890' } })
-        expect(
-            mockPhoneDeviceDialerHookResult.handleChange,
-        ).toHaveBeenCalledWith('1234567890')
-    })
-
-    it('displays customer search input when customer is selected', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            selectedCustomer: {
-                customer: {
-                    id: 1,
-                    name: 'testCustomerName',
-                },
-                address: 'testAddress',
-            } as any,
+            expect(
+                screen.getByTestId('phone-device-dialer-input'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /call/i }),
+            ).toBeInTheDocument()
         })
 
-        renderComponent()
+        it('should pass correct props to PhoneDeviceDialerInput', () => {
+            renderComponent()
 
-        expect(screen.getByTestId('mock-text-input')).toBeInTheDocument()
-    })
-
-    it('displays customer search input with customer address as value when customer is selected and has no name', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            selectedCustomer: {
-                id: 1,
-                customer: {},
-                address: 'testAddress',
-            } as any,
-        })
-        renderComponent()
-
-        PhoneDeviceDialerBodySpy.mock.calls[0][0].onCustomerSelect({
-            id: '1',
-            customer: {},
-            address: 'testAddress',
-        } as any)
-        expect(screen.getByTestId('mock-text-input')).toHaveValue('testAddress')
-    })
-
-    it('displays Call button as enabled when isCallButtonDisabled is false', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            isCallButtonDisabled: false,
-        })
-        renderComponent()
-
-        expect(screen.getByRole('button', { name: 'Call' })).toBeAriaEnabled()
-    })
-
-    it('displays Call button as disabled when isCallButtonDisabled is true', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            isCallButtonDisabled: true,
-        })
-        renderComponent()
-
-        expect(screen.getByRole('button', { name: 'Call' })).toBeAriaDisabled()
-    })
-
-    it('displays error when phone number is not valid', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            phoneNumberInputError: 'Enter a valid number',
+            expect(PhoneDeviceDialerInputMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onValueChange: mockSetSelectedNumberAndCustomer,
+                    onConfirm: mockHandleCall,
+                    phoneNumberInputError: undefined,
+                    resetError: mockResetError,
+                    country: undefined,
+                    onCountryChange: mockSetCountry,
+                }),
+                {},
+            )
         })
 
-        renderComponent()
+        it('should pass correct props to PhoneDeviceDialerIntegrationSelect', () => {
+            renderComponent()
 
-        expect(screen.getByText('Enter a valid number')).toBeInTheDocument()
+            expect(PhoneDeviceDialerIntegrationSelectMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    value: mockSelectedIntegration,
+                    options: mockPhoneIntegrations,
+                    onChange: mockSetSelectedIntegration,
+                }),
+                {},
+            )
+        })
     })
 
-    it('triggers handleCallClick when Call button is clicked', () => {
-        renderComponent()
+    describe('call button', () => {
+        it('should be disabled when isSelectedNumberValid is false', () => {
+            usePhoneDeviceDialerMock.mockReturnValue({
+                ...mockHookResult,
+                isSelectedNumberValid: false,
+            })
 
-        fireEvent.click(screen.getByRole('button', { name: 'Call' }))
+            renderComponent()
 
-        expect(
-            mockPhoneDeviceDialerHookResult.handleCallClick,
-        ).toHaveBeenCalled()
-    })
-
-    it('renders PhoneDeviceDialerBody with isLoading true only if isSearchTypeCustomer is true', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            isSearchTypeCustomer: true,
-            isSearchingCustomers: true,
+            const callButton = screen.getByRole('button', { name: /call/i })
+            expect(callButton).toBeAriaDisabled()
         })
 
-        renderComponent()
+        it('should be enabled when isSelectedNumberValid is true', () => {
+            usePhoneDeviceDialerMock.mockReturnValue({
+                ...mockHookResult,
+                isSelectedNumberValid: true,
+            })
 
-        expect(PhoneDeviceDialerBodySpy).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                isLoading: true,
-            }),
-            {},
-        )
-    })
+            renderComponent()
 
-    it('renders PhoneDeviceDialerBody with correct props', () => {
-        usePhoneDeviceDialerMock.mockReturnValue({
-            ...mockPhoneDeviceDialerHookResult,
-            highlightedResultIndex: 1,
+            const callButton = screen.getByRole('button', { name: /call/i })
+            expect(callButton).toBeAriaEnabled()
         })
 
-        renderComponent()
+        it('should call handleCall when clicked', async () => {
+            const user = userEvent.setup()
 
-        expect(PhoneDeviceDialerBodySpy).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                highlightedResultIndex: 1,
-            }),
-            {},
-        )
+            usePhoneDeviceDialerMock.mockReturnValue({
+                ...mockHookResult,
+                isSelectedNumberValid: true,
+            })
+
+            renderComponent()
+
+            const callButton = screen.getByRole('button', { name: /call/i })
+            await user.click(callButton)
+
+            expect(mockHandleCall).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('input interactions', () => {
+        it('should call setSelectedNumberAndCustomer when input value changes', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.type(screen.getByTestId('mock-input'), '+15551234567')
+
+            expect(mockSetSelectedNumberAndCustomer).toHaveBeenLastCalledWith(
+                '+15551234567',
+            )
+        })
+
+        it('should display error message when phoneNumberInputError is set', () => {
+            usePhoneDeviceDialerMock.mockReturnValue({
+                ...mockHookResult,
+                phoneNumberInputError: 'Enter a valid number',
+            })
+
+            renderComponent()
+
+            expect(screen.getByTestId('input-error')).toHaveTextContent(
+                'Enter a valid number',
+            )
+        })
+
+        it('should call resetError when reset error button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const resetButton = screen.getByTestId('reset-error-button')
+            await user.click(resetButton)
+
+            expect(mockResetError).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('country selection', () => {
+        it('should display current country when set', () => {
+            usePhoneDeviceDialerMock.mockReturnValue({
+                ...mockHookResult,
+                country: 'US' as CountryCode,
+            })
+
+            renderComponent()
+
+            expect(screen.getByTestId('current-country')).toHaveTextContent(
+                'US',
+            )
+        })
+
+        it('should call setCountry when country is changed', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const changeCountryButton = screen.getByTestId(
+                'change-country-button',
+            )
+            await user.click(changeCountryButton)
+
+            expect(mockSetCountry).toHaveBeenCalledWith('IT')
+        })
     })
 })

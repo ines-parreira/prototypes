@@ -1,6 +1,7 @@
-import React, { createRef } from 'react'
+import { createRef } from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { reportError } from 'utils/errors'
 
@@ -182,14 +183,10 @@ describe('<PhoneNumberInput/>', () => {
         expect(getByText(/\+40/i)).toBeVisible()
     })
 
-    it('should clear the input when selecting a new country if resulting phone number is invalid', () => {
+    it('should change the input when selecting a new country', () => {
         const { container, getByText } = render(
-            <PhoneNumberInput value="" onChange={onChange} />,
+            <PhoneNumberInput value="+37360000000" onChange={onChange} />,
         )
-
-        fireEvent.change(container.getElementsByTagName('input')[0], {
-            target: { value: '+373 600 00 000' },
-        })
 
         fireEvent.click(getByText('🇲🇩'))
         fireEvent.change(container.getElementsByTagName('input')[0], {
@@ -197,7 +194,7 @@ describe('<PhoneNumberInput/>', () => {
         })
         fireEvent.click(getByText('France'))
 
-        expect(onChange).toHaveBeenLastCalledWith('+33')
+        expect(onChange).toHaveBeenLastCalledWith('+3360000000')
     })
 
     it('should report an error if the default country is not allowed', () => {
@@ -329,5 +326,22 @@ describe('<PhoneNumberInput/>', () => {
         })
 
         expect(getByText('🇫🇷')).toBeVisible()
+    })
+
+    it('should not call onChange when changing country with empty input', async () => {
+        const user = userEvent.setup()
+
+        const { getByText } = render(
+            <PhoneNumberInput
+                value=""
+                onChange={onChange}
+                defaultCountry="US"
+            />,
+        )
+
+        await user.click(getByText('🇺🇸'))
+        await user.click(getByText('France'))
+
+        expect(onChange).not.toHaveBeenCalled()
     })
 })
