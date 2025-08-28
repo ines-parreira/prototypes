@@ -1,6 +1,11 @@
 import classNames from 'classnames'
 
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
+import {
+    Button,
+    type ButtonComponentProps,
+    type ButtonProps,
+} from '@gorgias/axiom'
+
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.less'
 
@@ -16,7 +21,7 @@ export type ConfirmationModalProps = {
     title: React.ReactNode
     onClose: () => void
     onConfirm: () => void
-    additionalActionButtonConfig?: Omit<ButtonProps, 'children'>
+    additionalActionButtonConfig?: Omit<ButtonComponentProps, 'children'>
 }
 
 export const ConfirmationModal = ({

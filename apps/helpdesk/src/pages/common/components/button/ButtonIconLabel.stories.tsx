@@ -2,7 +2,8 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import Button from './Button'
+import { Button } from '@gorgias/axiom'
+
 import ButtonIconLabel from './ButtonIconLabel'
 
 const storyConfig: Meta = {

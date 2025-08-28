@@ -2,10 +2,11 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
+import { Button } from '@gorgias/axiom'
+
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { NotificationCenterEventTypes } from 'common/segment/types'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 

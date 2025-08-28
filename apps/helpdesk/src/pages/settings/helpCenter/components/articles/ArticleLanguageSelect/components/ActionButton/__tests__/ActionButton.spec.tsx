@@ -17,11 +17,10 @@ describe('<ActionButton />', () => {
 
         const btn = getByRole('button', { name: 'Delete' })
 
-        expect(btn.classList.contains('destructive')).toBe(true)
-
+        expect(/.*destructive.*/.test(btn.className)).toBe(true)
         rerender(<ActionButton variant="neutral">Delete</ActionButton>)
 
-        expect(btn.classList.contains('secondary')).toBe(true)
+        expect(/.*secondary.*/.test(btn.className)).toBe(true)
     })
 
     it('shows the tooltip on hover', async () => {

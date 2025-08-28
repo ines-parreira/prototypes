@@ -331,18 +331,18 @@ exports[`<Recharge/> Integration should render 1`] = `
         <div>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-button-delete"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>

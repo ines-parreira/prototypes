@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 
 import { useFormState } from 'react-hook-form'
 
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
+import { Button, type ButtonComponentProps } from '@gorgias/axiom'
 
-export type FormSubmitButtonProps = Omit<ButtonProps, 'children'> & {
+export type FormSubmitButtonProps = Omit<ButtonComponentProps, 'children'> & {
     children?: ReactNode
 }
 

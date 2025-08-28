@@ -122,18 +122,18 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-1"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -267,18 +267,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-3"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -373,18 +373,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-2"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -518,18 +518,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-4"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -663,18 +663,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-5"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -808,18 +808,18 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-6"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -925,18 +925,18 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-12"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -1056,18 +1056,18 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-9"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -1199,18 +1199,18 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-8"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -1372,18 +1372,18 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           </button>
           <button
             aria-disabled="true"
-            class="wrapper float-right fill destructive medium isDisabled"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432 ui-button-isdisabled-a432"
             id="confirm-10"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>
@@ -1515,18 +1515,18 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-11"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete integration
             </span>

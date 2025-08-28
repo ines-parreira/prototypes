@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Button, type ButtonSize, Tooltip } from '@gorgias/axiom'
 
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import Button, { ButtonSize } from 'pages/common/components/button/Button'
 
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 

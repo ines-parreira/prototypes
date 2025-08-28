@@ -2,9 +2,13 @@ import React, { ComponentProps, ReactNode } from 'react'
 
 import { Popover } from 'reactstrap'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import {
+    Button,
+    type ButtonComponentProps,
+    type ButtonProps,
+} from '@gorgias/axiom'
 
-import Button, { type ButtonProps } from './Button'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 type Props = {
     confirmationButtonIntent?: ButtonProps['intent']
@@ -20,7 +24,7 @@ type Props = {
     containerElement?: ComponentProps<
         typeof ConfirmationPopover
     >['containerElement']
-} & ButtonProps
+} & ButtonComponentProps
 
 export default function ConfirmButton({
     children,

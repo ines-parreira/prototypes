@@ -108,18 +108,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-2"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -239,18 +239,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-8"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -368,18 +368,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-4"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -499,18 +499,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-6"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -630,18 +630,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-10"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -761,18 +761,18 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-12"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -890,18 +890,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-24"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -1035,18 +1035,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-18"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -1164,18 +1164,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-16"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -1295,18 +1295,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           </button>
           <button
             aria-disabled="true"
-            class="wrapper float-right fill destructive medium isDisabled"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432 ui-button-isdisabled-a432"
             id="confirm-20"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>
@@ -1424,18 +1424,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           </button>
           <button
             aria-disabled="false"
-            class="wrapper float-right fill destructive medium"
+            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
             id="confirm-22"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons icon medium"
+              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
             >
               delete
             </i>
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               Delete App
             </span>

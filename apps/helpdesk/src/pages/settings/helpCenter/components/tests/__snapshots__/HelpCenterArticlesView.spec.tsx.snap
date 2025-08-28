@@ -42,11 +42,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper ghost primary medium"
+                class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <span
                     class="wrapper"

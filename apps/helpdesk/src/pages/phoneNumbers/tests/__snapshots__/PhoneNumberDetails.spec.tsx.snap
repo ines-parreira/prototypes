@@ -230,18 +230,18 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -512,18 +512,18 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -789,18 +789,18 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -1071,18 +1071,18 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -1372,18 +1372,18 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -1624,18 +1624,18 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
@@ -1906,18 +1906,18 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
         </button>
         <button
           aria-disabled="false"
-          class="wrapper float-right fill destructive medium"
+          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons icon medium"
+            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
           >
             delete
           </i>
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             Delete number
           </span>
