@@ -205,6 +205,8 @@ export enum SegmentEvent {
     FlowBuilderSaved = 'flow-builder-saved',
     FlowBuilderViewed = 'flow-builder-viewed',
     FailedMessageNotification = 'failed-message-notification',
+    FailedEmailImportNotification = 'failed-email-import-notification',
+    SuccessfulEmailImportNotification = 'successful-email-import-notification',
     GlobalSearchAdvancedButtonClick = 'search-advanced-button-click',
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchAllTabClick = 'all-tab-click',
