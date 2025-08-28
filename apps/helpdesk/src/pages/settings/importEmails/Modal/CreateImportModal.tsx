@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import moment from 'moment-timezone'
+
 import { Button } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
@@ -64,12 +66,16 @@ const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
 
             redirectUrl.searchParams.set('provider_address', email)
 
-            const import_window: string[] = timeframe.split(' to ')
+            const [startDate, endDate]: string[] = timeframe.split(' to ')
+
             redirectUrl.searchParams.set(
                 'import_window_start',
-                import_window[0],
+                moment(startDate, 'MMM D, YYYY').format('YYYY-MM-DD'),
             )
-            redirectUrl.searchParams.set('import_window_end', import_window[1])
+            redirectUrl.searchParams.set(
+                'import_window_end',
+                moment(endDate, 'MMM D, YYYY').format('YYYY-MM-DD'),
+            )
 
             window.location.href = redirectUrl.toString()
             setEmail('')

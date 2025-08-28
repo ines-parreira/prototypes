@@ -260,12 +260,15 @@ describe('CreateImportModal', () => {
 
         beforeEach(() => {
             originalLocation = window.location
-            delete (window as any).location
-            window.location = {
+            const mockLocation = {
                 ...originalLocation,
                 href: '',
                 origin: 'https://app.gorgias.com',
-            } as Location
+            }
+            Object.defineProperty(window, 'location', {
+                value: mockLocation,
+                writable: true,
+            })
 
             mockUseEmailIntegrations.mockReturnValue([
                 { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
@@ -273,7 +276,10 @@ describe('CreateImportModal', () => {
         })
 
         afterEach(() => {
-            window.location = originalLocation
+            Object.defineProperty(window, 'location', {
+                value: originalLocation,
+                writable: true,
+            })
         })
 
         it('should redirect to OAuth URL with correct parameters when form is submitted', async () => {
@@ -386,9 +392,9 @@ describe('CreateImportModal', () => {
             const endDate = urlParams.get('import_window_end')
             expect(startDate).toBeTruthy()
             expect(endDate).toBeTruthy()
-            // Dates should be in MMM D, YYYY format
-            expect(startDate).toMatch(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/)
-            expect(endDate).toMatch(/^[A-Z][a-z]{2} \d{1,2}, \d{4}$/)
+            // Dates should be in YYYY-MM-DD format
+            expect(startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+            expect(endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
         })
 
         it('should call onClose after successful submission', async () => {
