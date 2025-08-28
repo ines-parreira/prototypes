@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 
 import { History } from 'history'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Redirect,
     Route,
@@ -318,25 +317,30 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         shopName: string
     }>()
 
-    const flags = useFlags()
+    const isAiAgentAIGeneratedGuidancesEnabled = useFlag(
+        FeatureFlagKey.AiAgentAIGeneratedGuidances,
+    )
 
-    const isAiAgentAIGeneratedGuidancesEnabled =
-        flags[FeatureFlagKey.AiAgentAIGeneratedGuidances]
+    const isAiAgentOnboardingWizardEnabled = useFlag(
+        FeatureFlagKey.AiAgentOnboardingWizard,
+    )
 
-    const isAiAgentOnboardingWizardEnabled =
-        flags[FeatureFlagKey.AiAgentOnboardingWizard]
+    const isAiAgentKnowledgeTabEnabled = useFlag(
+        FeatureFlagKey.AiAgentKnowledgeTab,
+    )
 
-    const isAiAgentKnowledgeTabEnabled =
-        flags[FeatureFlagKey.AiAgentKnowledgeTab]
+    const isAiAgentScrapeStoreDomainEnabled = useFlag(
+        FeatureFlagKey.AiAgentScrapeStoreDomain,
+    )
 
-    const isAiAgentScrapeStoreDomainEnabled =
-        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
+    const isAiShoppingAssistantProductRecommendationsEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantProductRecommendations,
+        false,
+    )
 
-    const isAiShoppingAssistantProductRecommendationsEnabled =
-        !!flags[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
-
-    const isShoppingAssitantDeactivationEnforced =
-        flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
+    const isShoppingAssitantDeactivationEnforced = useFlag(
+        FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
+    )
 
     const { routes } = useAiAgentNavigation({ shopName })
 

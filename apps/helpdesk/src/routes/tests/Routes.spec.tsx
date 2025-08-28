@@ -6,7 +6,6 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -635,8 +634,11 @@ describe('<Routes/>', () => {
         } as unknown as RootState
 
         it('should render knowledge page on new namespace', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentKnowledgeTab]: true,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiAgentKnowledgeTab) {
+                    return true
+                }
+                return false
             })
 
             render(
@@ -690,8 +692,11 @@ describe('<Routes/>', () => {
         })
 
         it('should render sales page when flag ai-shopping-assistant-enabled is enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                return false
             })
 
             render(
@@ -710,8 +715,11 @@ describe('<Routes/>', () => {
         })
 
         it('should render customer engagement page under sales', () => {
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                return false
             })
 
             render(
@@ -732,8 +740,11 @@ describe('<Routes/>', () => {
         })
 
         it('should redirect to /intents when accessing /optimize', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentOptimizeTab]: true,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiAgentOptimizeTab) {
+                    return true
+                }
+                return false
             })
 
             render(
@@ -756,8 +767,11 @@ describe('<Routes/>', () => {
         })
 
         it('should redirect to /app/stats/ai-sales-agent/overview when accessing /sales/analytics', () => {
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                return false
             })
 
             render(
@@ -889,8 +903,11 @@ describe('<Routes/>', () => {
         })
         const queryClient = new QueryClient()
         it('should redirect to /app when feature flag is disabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiJourneyEnabled]: false,
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return false
+                }
+                return true
             })
 
             const history = createMemoryHistory({
