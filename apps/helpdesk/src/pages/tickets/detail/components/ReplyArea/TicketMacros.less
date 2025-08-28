@@ -8,7 +8,7 @@
     width: 100%;
     height: 100%;
     padding: 0;
-    background: var(--neutral-grey-1);
+    background: var(--neutral-grey-1); // legacy
 
     .content {
         display: flex;
@@ -36,8 +36,8 @@
         padding: 1em;
         height: 100%;
         overflow-y: scroll;
-        background: var(--neutral-grey-0);
-        border-left: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border-left: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .manageMacros {
@@ -55,5 +55,16 @@
         position: absolute;
         height: 20%;
         width: 90%;
+    }
+}
+
+.axiom :local {
+    .content {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .preview {
+        background: var(--elevation-neutral-mid);
+        border-left: 1px solid var(--border-neutral-default);
     }
 }

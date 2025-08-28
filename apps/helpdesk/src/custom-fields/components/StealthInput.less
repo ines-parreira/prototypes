@@ -12,7 +12,7 @@
             outline: none;
         }
         &::placeholder {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-weight: normal;
         }
         &[disabled] {
@@ -22,7 +22,7 @@
 
     .stealth {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -33,7 +33,7 @@
     }
 
     .valid {
-        border: 1px solid var(--main-primary);
+        border: 1px solid var(--main-primary); // legacy
         box-shadow: 0 0 0 2px
             hsla(
                 var(--main-primary-h),
@@ -44,6 +44,28 @@
     }
 
     .invalid {
-        border: 1px solid var(--feedback-error);
+        border: 1px solid var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .baseStyles {
+        border: 1px solid var(--border-neutral-default);
+
+        &::placeholder {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .stealth {
+        color: var(--content-neutral-default);
+    }
+
+    .valid {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .invalid {
+        border: 1px solid var(--border-error-primary);
     }
 }

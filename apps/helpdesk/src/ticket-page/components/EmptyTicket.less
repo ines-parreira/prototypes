@@ -12,7 +12,7 @@
     .logo {
         height: 111px;
         width: 111px;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         -webkit-mask-image: url('@gorgias/branding-assets/logos/square/Black.svg');
         mask-image: url('@gorgias/branding-assets/logos/square/Black.svg');
         mask-repeat: no-repeat;
@@ -22,5 +22,11 @@
     .title {
         .heading-section-semibold();
         margin-top: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .logo {
+        background-color: var(--content-neutral-tertiary);
     }
 }

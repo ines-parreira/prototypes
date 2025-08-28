@@ -5,10 +5,10 @@
     }
 
     .wrapper {
-        background: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
+        box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.2); // legacy
         border-radius: 4px;
-        box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.2);
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -22,5 +22,13 @@
 
     .highlightedLabel {
         font-weight: 600;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background-color: var(--elevation-neutral-high);
+        border: 1px solid var(--border-neutral-default);
+        box-shadow: var(--effects-shadow-container);
     }
 }

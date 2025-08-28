@@ -14,11 +14,11 @@
     }
 
     &:hover {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
 
         :global {
             .message-content {
-                background: var(--neutral-grey-1);
+                background: var(--neutral-grey-1); // legacy
             }
         }
     }
@@ -249,6 +249,20 @@
 
             :global(.message-content) {
                 background: #312c33;
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .component {
+        &:hover {
+            background: var(--hover-default);
+
+            :global {
+                .message-content {
+                    background: transparent;
+                }
             }
         }
     }

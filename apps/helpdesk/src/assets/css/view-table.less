@@ -140,15 +140,24 @@
 .axiom .view-table {
     tbody {
         tr:hover {
-            background: var(--elevation-neutral-mid);
+            background: var(--hover-default);
         }
 
         tr {
+            background-color: var(--elevation-neutral-default);
             border-bottom: 1px solid var(--border-neutral-default);
         }
 
-        .description {
-            color: var(--neutral-grey-4);
+        .cell-wrapper {
+            color: var(--content-neutral-default);
+
+            .description {
+                color: var(--content-neutral-secondary);
+            }
+
+            .subject {
+                color: var(--content-neutral-default);
+            }
         }
     }
 
@@ -158,7 +167,7 @@
         }
 
         tr:first-child .field-title {
-            color: var(--neutral-grey-4);
+            color: var(--content-neutral-secondary);
 
             &.active {
                 color: var(--content-neutral-default);

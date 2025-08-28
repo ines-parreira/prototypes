@@ -171,7 +171,7 @@
 
 // lighter color of grey text (lighter than text-muted)
 .text-faded {
-    color: var(--neutral-grey-4) !important;
+    color: var(--neutral-grey-4) !important; // legacy
 
     a {
         color: var(--main-primary-2);
@@ -215,4 +215,10 @@
     border-color: var(--neutral-grey-3);
     border-radius: 4px;
     background-color: var(--neutral-grey-0);
+}
+
+.axiom {
+    .text-faded {
+        color: var(--content-neutral-tertiary) !important;
+    }
 }

@@ -12,8 +12,8 @@
 .rich-textarea-wrapper {
     .rich-content-wrapper;
 
-    background: var(--neutral-grey-0);
-    border: 1px solid var(--neutral-grey-2);
+    background: var(--neutral-grey-0); // legacy
+    border: 1px solid var(--neutral-grey-2); // legacy
     border-radius: 3px;
     position: relative;
 
@@ -175,4 +175,11 @@
     opacity: 0;
     transition: all 0.08s ease-out;
     transition-delay: 0.2s;
+}
+
+.axiom {
+    .rich-textarea-wrapper {
+        background: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
 }

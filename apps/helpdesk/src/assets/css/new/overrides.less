@@ -183,7 +183,7 @@ div.btn {
 input,
 textarea {
     @placeholder-color: var(--neutral-grey-4);
-    background-color: var(--neutral-grey-0);
+    background-color: var(--neutral-grey-0); // legacy
     color: var(--neutral-grey-6);
 
     &::-webkit-input-placeholder {
@@ -248,4 +248,32 @@ strong {
 
 pre {
     color: var(--neutral-grey-6);
+}
+
+.axiom {
+    color: var(--content-neutral-default);
+
+    input,
+    textarea {
+        background-color: transparent;
+
+        &::-webkit-input-placeholder {
+            color: var(--content-neutral-secondary) !important;
+        }
+
+        &::-moz-placeholder {
+            color: var(--content-neutral-secondary) !important;
+            opacity: 1;
+        }
+
+        &:-ms-input-placeholder {
+            color: var(--content-neutral-secondary) !important;
+            opacity: 1;
+        }
+
+        &:-moz-placeholder {
+            color: var(--content-neutral-secondary) !important;
+            opacity: 1;
+        }
+    }
 }

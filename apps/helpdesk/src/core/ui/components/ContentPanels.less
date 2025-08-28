@@ -3,13 +3,20 @@
         overflow: hidden;
         margin: var(--layout-spacing-xs);
         margin-left: 0;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: 8px;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow:
             3px 3px 10px 0px #0000000d,
             12px 13px 18px 0px #0000000a,
             27px 30px 24px 0px #00000008,
             48px 53px 28px 0px #00000003;
+    }
+}
+
+.axiom :local {
+    .contentPanels {
+        border-color: var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy
 
     @media @mobiles {
         width: 100%;
@@ -22,7 +22,7 @@
         .body-regular;
 
         &.active {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
 
             &,
             .automated {
@@ -39,6 +39,16 @@
             font-size: 17px;
             float: right;
             color: var(--neutral-grey-4);
+        }
+    }
+}
+
+.axiom :local {
+    .component {
+        .item {
+            &.active {
+                background-color: var(--hover-default);
+            }
         }
     }
 }
