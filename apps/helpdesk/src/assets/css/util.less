@@ -176,7 +176,7 @@ i.icon.action {
 }
 
 .page-header {
-    border-bottom: 1px solid var(--neutral-grey-3);
+    border-bottom: 1px solid var(--neutral-grey-3); // legacy
     min-height: 56px;
 
     h1 {
@@ -208,4 +208,10 @@ i.icon.action {
 .search-highlight {
     background-color: var(--feedback-warning-1);
     font-style: normal;
+}
+
+.axiom {
+    .page-header {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
 }

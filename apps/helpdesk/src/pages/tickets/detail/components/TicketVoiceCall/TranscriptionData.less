@@ -19,7 +19,7 @@
 
     .transcription {
         border-radius: var(--layout-spacing-xxs);
-        border-left: var(--layout-spacing-xxs) solid var(--neutral-grey-4);
+        border-left: var(--layout-spacing-xxs) solid var(--neutral-grey-4); // legacy
         padding-left: calc(var(--layout-spacing-m) - var(--layout-spacing-xxs));
         padding-bottom: var(--layout-spacing-s);
     }
@@ -72,5 +72,12 @@
         font-weight: 500;
         display: flex;
         align-items: center;
+    }
+}
+
+.axiom :local {
+    .transcription {
+        border-left: var(--layout-spacing-xxs) solid
+            var(--border-neutral-default);
     }
 }

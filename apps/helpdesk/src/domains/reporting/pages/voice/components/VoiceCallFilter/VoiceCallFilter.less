@@ -12,7 +12,7 @@
         display: flex;
         justify-content: space-between;
         background-color: transparent;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: var(--layout-spacing-xxs);
         cursor: pointer;
         padding: var(--layout-spacing-xxs);
@@ -34,5 +34,11 @@
 
     .menu {
         width: 160px;
+    }
+}
+
+.axiom :local {
+    .toggleButton {
+        border: 1px solid var(--border-neutral-default);
     }
 }

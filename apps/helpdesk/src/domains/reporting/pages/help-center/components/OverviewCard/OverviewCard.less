@@ -11,8 +11,14 @@
         align-items: flex-start !important;
         gap: 12px;
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         background: var(--neutral-grey-1);
         padding: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .noDataContainer {
+        border: 1px solid var(--border-neutral-default);
     }
 }

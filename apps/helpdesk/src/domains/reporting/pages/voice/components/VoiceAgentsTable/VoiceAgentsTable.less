@@ -58,7 +58,7 @@
                 content: '';
                 pointer-events: none;
                 position: absolute;
-                border-bottom: 1px solid var(--neutral-grey-3);
+                border-bottom: 1px solid var(--neutral-grey-3); // legacy
                 width: 100%;
                 z-index: 3;
                 margin-top: -1px;
@@ -89,5 +89,15 @@
     .metricCell {
         width: 13%;
         min-width: 125px;
+    }
+}
+
+.axiom :local {
+    .table {
+        .tableHead {
+            &:after {
+                border-bottom: 1px solid var(--border-neutral-default);
+            }
+        }
     }
 }

@@ -42,15 +42,15 @@
 .daterangepicker {
     font-family: 'Inter', sans-serif;
     background-color: var(--neutral-grey-0);
-    border: 1px solid var(--neutral-grey-3);
+    border: 1px solid var(--neutral-grey-3); // legacy
     color: var(--neutral-grey-6);
 
     &:after {
-        border-bottom-color: var(--neutral-grey-0);
+        border-bottom-color: var(--neutral-grey-0); // legacy
     }
 
     &:before {
-        border-bottom-color: var(--neutral-grey-3);
+        border-bottom-color: var(--neutral-grey-3); // legacy
     }
 
     .calendar-time {
@@ -95,7 +95,7 @@
 
             .next span,
             .prev span {
-                border: solid var(--neutral-grey-5);
+                border: solid var(--neutral-grey-5); // legacy
                 border-width: 0 2px 2px 0;
             }
         }
@@ -301,7 +301,7 @@
                 right 0.7em top 50%,
                 0 0;
             background-repeat: no-repeat, repeat;
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             border-radius: 4px;
             color: var(--neutral-grey-6);
             font-size: 14px;
@@ -477,7 +477,7 @@
                 grid-column-end: 1;
                 grid-row-start: 1;
                 grid-row-end: 3;
-                border-right: 1px solid var(--neutral-grey-3);
+                border-right: 1px solid var(--neutral-grey-3); // legacy
             }
 
             .drp-buttons {
@@ -501,7 +501,7 @@
                 align-items: center;
                 gap: 8px;
                 background-color: var(--neutral-grey-2);
-                border-top: 1px solid var(--neutral-grey-3);
+                border-top: 1px solid var(--neutral-grey-3); // legacy
                 position: relative;
                 margin: 0 -24px;
                 bottom: -24px;
@@ -529,6 +529,54 @@
 
         .calendar-time {
             margin: 0 0 4px 0;
+        }
+    }
+}
+
+.axiom {
+    .daterangepicker {
+        border: 1px solid var(--border-neutral-default);
+
+        &:after {
+            border-bottom-color: var(--neutral-grey-0);
+        }
+
+        &:before {
+            border-bottom-color: var(--border-neutral-default);
+        }
+
+        .drp-calendar {
+            .calendar-table {
+                .next span,
+                .prev span {
+                    border: solid var(--neutral-grey-5);
+                }
+            }
+        }
+
+        select {
+            &.hourselect,
+            &.minuteselect,
+            &.secondselect,
+            &.ampmselect,
+            &.monthselect,
+            &.yearselect {
+                border: 1px solid var(--border-neutral-default);
+            }
+        }
+
+        &.picker-v2 {
+            &.ranges-on-left {
+                .ranges {
+                    border-right: 1px solid var(--border-neutral-default);
+                }
+            }
+
+            &.action-buttons-on-the-bottom {
+                .drp-buttons {
+                    border-top: 1px solid var(--border-neutral-default);
+                }
+            }
         }
     }
 }

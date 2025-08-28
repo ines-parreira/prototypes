@@ -10,14 +10,14 @@
         .left {
             width: 45%;
             overflow-y: auto;
-            border-right: 1px solid var(--neutral-grey-3);
+            border-right: 1px solid var(--neutral-grey-3); // legacy
             padding-right: var(--layout-spacing-s);
 
             .separator {
                 width: 95%;
                 height: 1px;
                 margin: 0 var(--layout-spacing-xs);
-                background: var(--neutral-grey-3);
+                background: var(--neutral-grey-3); // legacy
             }
 
             .title {
@@ -54,6 +54,18 @@
                         margin-right: var(--layout-spacing-xxs);
                     }
                 }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .body {
+        .left {
+            border-right-color: var(--border-neutral-default);
+
+            .separator {
+                background: var(--border-neutral-default);
             }
         }
     }

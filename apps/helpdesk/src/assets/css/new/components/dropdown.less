@@ -11,7 +11,7 @@
     padding-left: 4px;
     padding-right: 4px;
     box-shadow: 0 2px 3px rgba(22, 22, 22, 0.2);
-    border-color: var(--neutral-grey-3);
+    border-color: var(--neutral-grey-3); // legacy
     color: var(--neutral-grey-6);
     background-color: var(--neutral-grey-0);
 
@@ -27,7 +27,7 @@
 .dropdown-divider {
     margin-left: -4px;
     margin-right: -4px;
-    border-color: var(--neutral-grey-2);
+    border-color: var(--neutral-grey-2); // legacy
 }
 
 // dropdown
@@ -72,5 +72,15 @@
     input {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+    }
+}
+
+.axiom {
+    .dropdown-menu {
+        border-color: var(--border-neutral-default);
+    }
+
+    .dropdown-divider {
+        border-color: var(--border-neutral-default);
     }
 }

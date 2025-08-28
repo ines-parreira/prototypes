@@ -20,7 +20,7 @@
         }
 
         background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .text {
@@ -51,5 +51,11 @@
         &.withClick {
             cursor: pointer;
         }
+    }
+}
+
+.axiom :local {
+    .tag {
+        border: 1px solid var(--border-neutral-default);
     }
 }

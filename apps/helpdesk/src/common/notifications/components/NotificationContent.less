@@ -24,7 +24,7 @@
         top: @iconSize;
         right: -(@iconSize / 2);
         border-radius: (@iconSize / 2);
-        border: 1px solid var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-0); // legacy
         color: var(--neutral-grey-0);
         background-color: var(--main-primary);
 
@@ -67,5 +67,11 @@
     .systemIcon {
         color: var(--neutral-grey-0);
         width: unset !important;
+    }
+}
+
+.axiom :local {
+    .subIcon {
+        border-color: var(--border-neutral-default);
     }
 }

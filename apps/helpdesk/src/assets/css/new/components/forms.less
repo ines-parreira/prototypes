@@ -1,5 +1,5 @@
 .form-control {
-    border: 1px solid var(--neutral-grey-3);
+    border: 1px solid var(--neutral-grey-3); // legacy
     border-radius: 3px;
     background-color: var(--neutral-grey-0);
     color: var(--neutral-grey-6);
@@ -42,5 +42,15 @@
 
 .input-group-text {
     background-color: var(--neutral-grey-1);
-    border-color: var(--neutral-grey-3);
+    border-color: var(--neutral-grey-3); // legacy
+}
+
+.axiom {
+    .form-control {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .input-group-text {
+        border-color: var(--border-neutral-default);
+    }
 }

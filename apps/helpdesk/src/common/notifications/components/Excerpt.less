@@ -8,9 +8,15 @@
 
         max-height: 48px;
         padding: 0 0 0 6px;
-        border-left: 2px solid var(--neutral-grey-5);
+        border-left: 2px solid var(--neutral-grey-5); // legacy
         color: var(--neutral-grey-5);
         word-break: break-word;
         overflow-wrap: break-word;
+    }
+}
+
+.axiom :local {
+    .excerpt {
+        border-left-color: var(--border-neutral-default);
     }
 }

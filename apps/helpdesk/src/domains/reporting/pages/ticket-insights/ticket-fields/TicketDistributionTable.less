@@ -22,7 +22,7 @@
     }
 
     .lastRow {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .total {
@@ -37,5 +37,11 @@
             min-width: 100px;
             width: inherit;
         }
+    }
+}
+
+.axiom :local {
+    .lastRow {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

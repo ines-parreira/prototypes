@@ -6,17 +6,17 @@
     color: var(--neutral-grey-6);
     font-size: 1rem;
     z-index: 1051 !important;
-    border-color: var(--neutral-grey-3);
+    border-color: var(--neutral-grey-3); // legacy
 
     &.bs-popover-auto {
         &[x-placement^='top'],
         &.bs-popover-top {
             > .arrow::after {
-                border-top-color: var(--neutral-grey-1);
+                border-top-color: var(--neutral-grey-1); // legacy
             }
 
             > .arrow::before {
-                border-top-color: var(--neutral-grey-3);
+                border-top-color: var(--neutral-grey-3); // legacy
             }
 
             .popover-header::before {
@@ -27,11 +27,11 @@
         &[x-placement^='right'],
         &.bs-popover-right {
             > .arrow::after {
-                border-right-color: var(--neutral-grey-1);
+                border-right-color: var(--neutral-grey-1); // legacy
             }
 
             > .arrow::before {
-                border-right-color: var(--neutral-grey-3);
+                border-right-color: var(--neutral-grey-3); // legacy
             }
 
             .popover-header::before {
@@ -42,11 +42,11 @@
         &[x-placement^='bottom'],
         &.bs-popover-bottom {
             > .arrow::after {
-                border-bottom-color: var(--neutral-grey-1);
+                border-bottom-color: var(--neutral-grey-1); // legacy
             }
 
             > .arrow::before {
-                border-bottom-color: var(--neutral-grey-3);
+                border-bottom-color: var(--neutral-grey-3); // legacy
             }
 
             .popover-header::before {
@@ -57,11 +57,11 @@
         &[x-placement^='left'],
         &.bs-popover-left {
             > .arrow::after {
-                border-left-color: var(--neutral-grey-1);
+                border-left-color: var(--neutral-grey-1); // legacy
             }
 
             > .arrow::before {
-                border-left-color: var(--neutral-grey-3);
+                border-left-color: var(--neutral-grey-3); // legacy
             }
 
             .popover-header::before {
@@ -78,7 +78,7 @@
 
 .popover-header {
     background-color: var(--neutral-grey-0);
-    border-color: var(--neutral-grey-3);
+    border-color: var(--neutral-grey-3); // legacy
 
     &:before {
         display: none;
@@ -92,7 +92,78 @@
                 &[x-placement^='bottom'],
                 &.bs-popover-bottom {
                     > .arrow::after {
-                        border-bottom-color: var(--neutral-grey-0);
+                        border-bottom-color: var(--neutral-grey-0); // legacy
+                    }
+                }
+            }
+        }
+    }
+}
+
+.axiom {
+    .popover {
+        border-color: var(--border-neutral-default);
+
+        &.bs-popover-auto {
+            &[x-placement^='top'],
+            &.bs-popover-top {
+                > .arrow::after {
+                    border-top-color: var(--neutral-grey-1);
+                }
+
+                > .arrow::before {
+                    border-top-color: var(--border-neutral-default);
+                }
+            }
+
+            &[x-placement^='right'],
+            &.bs-popover-right {
+                > .arrow::after {
+                    border-right-color: var(--neutral-grey-1);
+                }
+
+                > .arrow::before {
+                    border-right-color: var(--border-neutral-default);
+                }
+            }
+
+            &[x-placement^='bottom'],
+            &.bs-popover-bottom {
+                > .arrow::after {
+                    border-bottom-color: var(--neutral-grey-1);
+                }
+
+                > .arrow::before {
+                    border-bottom-color: var(--border-neutral-default);
+                }
+            }
+
+            &[x-placement^='left'],
+            &.bs-popover-left {
+                > .arrow::after {
+                    border-left-color: var(--neutral-grey-1);
+                }
+
+                > .arrow::before {
+                    border-left-color: var(--border-neutral-default);
+                }
+            }
+        }
+    }
+
+    .popover-header {
+        border-color: var(--border-neutral-default);
+    }
+
+    .popoverDark {
+        :global {
+            .popover {
+                &.bs-popover-auto {
+                    &[x-placement^='bottom'],
+                    &.bs-popover-bottom {
+                        > .arrow::after {
+                            border-bottom-color: var(--neutral-grey-0);
+                        }
                     }
                 }
             }

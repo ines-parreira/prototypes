@@ -6,7 +6,7 @@
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
         box-shadow: 0 3px 20px 0 #0000000a;
     }
@@ -29,5 +29,11 @@
             color: var(--neutral-grey-5);
             margin: 0;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

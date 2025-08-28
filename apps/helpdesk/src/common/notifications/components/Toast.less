@@ -2,7 +2,7 @@
     .container {
         width: 315px;
         margin: var(--layout-spacing-m) 0 0;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 10px;
         background: var(--neutral-grey-0);
         box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
@@ -13,5 +13,11 @@
         width: 20px;
         height: 20px;
         padding: 0;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
     }
 }

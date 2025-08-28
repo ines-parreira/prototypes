@@ -38,8 +38,14 @@
         }
     }
     .separator {
-        border-top: 1px solid var(--neutral-grey-2);
+        border-top: 1px solid var(--neutral-grey-2); // legacy
         margin: var(--layout-spacing-s) 0;
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .separator {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

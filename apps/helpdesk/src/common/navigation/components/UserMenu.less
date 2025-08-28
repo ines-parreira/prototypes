@@ -2,7 +2,7 @@
 
 :local {
     .separator {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         margin: 0;
     }
 
@@ -89,5 +89,11 @@
     .check {
         color: var(--neutral-grey-4);
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .separator {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

@@ -4,7 +4,7 @@
     td,
     thead th {
         border-top: 0;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     tbody tr:hover {
@@ -99,6 +99,15 @@
                     margin-bottom: -16px;
                 }
             }
+        }
+    }
+}
+
+.axiom {
+    .table {
+        td,
+        thead th {
+            border-bottom: 1px solid var(--border-neutral-default);
         }
     }
 }

@@ -16,7 +16,7 @@
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         margin: var(--layout-spacing-xs);
 
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-m);
 
         box-shadow: 2px 2px 20px 0px rgba(0, 0, 0, 0.05);
@@ -27,5 +27,11 @@
             rgba(255, 255, 255, 0.4) 0%,
             #fff 100%
         );
+    }
+}
+
+.axiom :local {
+    .badge {
+        border: 1px solid var(--border-neutral-default);
     }
 }

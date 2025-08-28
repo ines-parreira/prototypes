@@ -13,7 +13,7 @@
         top: 35px;
         right: 0;
         border-radius: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         background: var(--neutral-grey-0);
         backdrop-filter: blur(4px);
         width: fit-content;
@@ -43,5 +43,11 @@
             font-weight: 500;
             color: var(--neutral-grey-6);
         }
+    }
+}
+
+.axiom :local {
+    .menuPopover {
+        border: 1px solid var(--border-neutral-default);
     }
 }

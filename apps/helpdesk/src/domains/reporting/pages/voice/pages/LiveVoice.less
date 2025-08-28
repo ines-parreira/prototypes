@@ -14,8 +14,14 @@
     .agentsSection {
         width: 300px;
         flex-shrink: 0;
-        border-left: 1px solid var(--neutral-grey-3);
+        border-left: 1px solid var(--neutral-grey-3); // legacy
         height: calc(~'100vh - 100px');
         overflow-y: scroll;
+    }
+}
+
+.axiom :local {
+    .agentsSection {
+        border-left-color: var(--border-neutral-default);
     }
 }

@@ -19,7 +19,7 @@
         }
 
         tr:first-child {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -40,6 +40,14 @@
         @media @mobiles {
             min-width: 100px;
             width: inherit;
+        }
+    }
+}
+
+.axiom :local {
+    .table {
+        tr:first-child {
+            border-bottom: 1px solid var(--border-neutral-default);
         }
     }
 }

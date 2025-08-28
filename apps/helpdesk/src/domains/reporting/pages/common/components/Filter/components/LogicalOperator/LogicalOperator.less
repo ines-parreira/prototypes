@@ -5,7 +5,7 @@
         display: flex;
         gap: 12px;
         padding: var(--layout-spacing-s) 12px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .radioFieldSet {
@@ -22,5 +22,11 @@
         flex-shrink: 0;
         color: var(--neutral-grey-5);
         text-transform: lowercase;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

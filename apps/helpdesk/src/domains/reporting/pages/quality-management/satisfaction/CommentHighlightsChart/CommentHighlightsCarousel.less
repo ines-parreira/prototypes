@@ -136,7 +136,7 @@
         .commentWrapper {
             padding: var(--layout-spacing-s);
             border-radius: 4px;
-            border: 1px solid var(--neutral-grey-2);
+            border: 1px solid var(--neutral-grey-2); // legacy
             background: var(--neutral-grey-1);
             display: flex;
             flex-direction: column;
@@ -153,5 +153,11 @@
             .caption-semibold();
             color: var(--neutral-grey-4);
         }
+    }
+}
+
+.axiom :local {
+    .commentWrapper {
+        border: 1px solid var(--border-neutral-default);
     }
 }

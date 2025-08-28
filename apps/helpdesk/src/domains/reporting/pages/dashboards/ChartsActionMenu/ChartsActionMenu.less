@@ -42,7 +42,7 @@
         justify-content: center;
         inset: 0;
         background: var(--neutral-grey-2);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         color: var(--main-primary);
         height: 40px;
         padding: 0 var(--layout-spacing-xs);
@@ -83,5 +83,11 @@
         .body-regular();
         color: var(--neutral-grey-4);
         padding: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .addToDashboardAction {
+        border-color: var(--border-neutral-default);
     }
 }

@@ -16,7 +16,13 @@
             display: block;
             width: 1px;
             height: 100%;
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
         }
+    }
+}
+
+.axiom :local {
+    .list:before {
+        border-left-color: var(--border-neutral-default);
     }
 }

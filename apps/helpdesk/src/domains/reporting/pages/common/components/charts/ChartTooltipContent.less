@@ -38,8 +38,14 @@
         width: 100%;
 
         .tooltipSeparator {
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             margin: var(--layout-spacing-xs) 0;
         }
+    }
+}
+
+.axiom :local {
+    .tooltipSeparator {
+        border: 1px solid var(--border-neutral-default);
     }
 }

@@ -61,7 +61,7 @@
 
         &:not(:first-child) {
             padding: 6px 3px;
-            border-top: 2px solid var(--neutral-grey-2);
+            border-top: 2px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -71,5 +71,13 @@
 
     .description {
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .items {
+        &:not(:first-child) {
+            border-top: 2px solid var(--border-neutral-default);
+        }
     }
 }

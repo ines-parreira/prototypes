@@ -17,7 +17,17 @@
 
             &:hover {
                 color: var(--neutral-grey-3) !important;
-                border-color: var(--neutral-grey-3) !important;
+                border-color: var(--neutral-grey-3) !important; // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .button {
+        &.isDisabled {
+            &:hover {
+                border-color: var(--border-neutral-default) !important;
             }
         }
     }

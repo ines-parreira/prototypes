@@ -16,6 +16,12 @@
     .delimiter {
         margin-top: 12px;
         padding-top: 12px;
-        border-top: 1px dashed var(--neutral-grey-3);
+        border-top: 1px dashed var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .delimiter {
+        border-top-color: var(--border-neutral-default);
     }
 }

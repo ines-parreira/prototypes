@@ -19,7 +19,7 @@
     .tooltip {
         :global .tooltip-inner {
             background-color: var(--neutral-grey-0);
-            border: 1px solid var(--neutral-grey-1);
+            border: 1px solid var(--neutral-grey-1); // legacy
             color: var(--indigo);
             font-size: 14px;
             padding: var(--layout-spacing-s);
@@ -27,7 +27,7 @@
         }
 
         :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
-            border-top-color: var(--neutral-grey-1) !important;
+            border-top-color: var(--neutral-grey-1) !important; // legacy
         }
 
         :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
@@ -54,5 +54,17 @@
 
     .noDataTitle {
         font-weight: @body-semibold-font-weight;
+    }
+}
+
+.axiom :local {
+    .tooltip {
+        :global .tooltip-inner {
+            border: 1px solid var(--border-neutral-default);
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
+            border-top-color: var(--border-neutral-default) !important;
+        }
     }
 }

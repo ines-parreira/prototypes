@@ -131,7 +131,7 @@ label.form-check-label {
             margin: -@loader-size / 2 0 0 -@loader-size / 2;
             animation: spin 0.6s infinite linear;
             border-radius: 50%;
-            border-color: var(--neutral-grey-0) transparent transparent;
+            border-color: var(--neutral-grey-0) transparent transparent; // legacy
             border-style: solid;
             border-width: 0.2em;
         }
@@ -274,6 +274,15 @@ pre {
         &:-moz-placeholder {
             color: var(--content-neutral-secondary) !important;
             opacity: 1;
+        }
+    }
+
+    .btn {
+        &.btn-loading {
+            &:after {
+                border-color: var(--border-neutral-default) transparent
+                    transparent;
+            }
         }
     }
 }

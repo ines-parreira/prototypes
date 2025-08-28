@@ -10,7 +10,7 @@
         padding: 2px var(--layout-spacing-xs);
         height: var(--layout-spacing-m);
         border-radius: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         background-color: var(--neutral-grey-2);
         transition: all 0.2s linear;
         cursor: pointer;
@@ -77,7 +77,7 @@
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         justify-content: space-between;
         align-items: center;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         background-color: var(--neutral-grey-2);
     }
 
@@ -113,6 +113,20 @@
 
     .separator {
         margin: var(--layout-spacing-xxs) var(--layout-spacing-xs) 0;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .dropdownToggle {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .dropdownFooter {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .separator {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

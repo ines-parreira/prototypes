@@ -14,7 +14,7 @@
 
         &.dark {
             filter: unset;
-            border: 1px solid var(--neutral-grey-2);
+            border: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -24,5 +24,13 @@
 
     .button {
         align-self: flex-end;
+    }
+}
+
+.axiom :local {
+    .popover {
+        &.dark {
+            border: 1px solid var(--border-neutral-default);
+        }
     }
 }

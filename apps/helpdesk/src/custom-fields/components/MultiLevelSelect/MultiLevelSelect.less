@@ -107,7 +107,7 @@
             transform: translateY(-40%);
             width: 0;
             height: 0;
-            border-top: 5px solid var(--neutral-grey-6);
+            border-top: 5px solid var(--neutral-grey-6); // legacy
             border-left: 5px solid transparent;
             border-right: 5px solid transparent;
         }
@@ -127,5 +127,13 @@
 
     .inputWithPredictionIcon {
         padding-right: 20px;
+    }
+}
+
+.axiom :local {
+    .autoWidthSpan {
+        &::after {
+            border-top-color: var(--border-neutral-default);
+        }
     }
 }

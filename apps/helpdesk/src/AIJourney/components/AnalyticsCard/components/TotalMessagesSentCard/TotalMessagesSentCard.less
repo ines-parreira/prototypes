@@ -5,7 +5,7 @@
         justify-content: space-between;
         align-items: center;
         border-radius: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         background: var(--neutral-grey-0);
         box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.05);
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
@@ -27,7 +27,7 @@
         align-self: center;
 
         border-radius: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         height: 32px;
         width: 32px;
         padding: var(--layout-spacing-xxs);
@@ -38,5 +38,15 @@
         &:hover {
             background-color: var(--neutral-grey-1);
         }
+    }
+}
+
+.axiom :local {
+    .totalMessagesSentCard {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .redirectIcon {
+        border: 1px solid var(--border-neutral-default);
     }
 }

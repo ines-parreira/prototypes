@@ -1,6 +1,6 @@
 :local {
     .analyticsCard {
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-s);
         width: 100%;
     }
@@ -42,5 +42,11 @@
             background: rgba(239, 76, 0, 0.2);
             color: #ef4c00;
         }
+    }
+}
+
+.axiom :local {
+    .analyticsCard {
+        border: 1px solid var(--border-neutral-default);
     }
 }

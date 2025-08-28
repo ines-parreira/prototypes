@@ -16,7 +16,7 @@
         justify-content: space-between;
         align-items: center;
         padding: var(--layout-spacing-s);
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .header {
@@ -50,5 +50,11 @@
         .caption-regular();
 
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .footer {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

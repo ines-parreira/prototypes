@@ -12,7 +12,7 @@
         align-self: stretch;
 
         border-radius: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         background: var(--neutral-grey-0);
 
         &:hover {
@@ -116,5 +116,11 @@
     .play {
         position: absolute;
         right: 14px;
+    }
+}
+
+.axiom :local {
+    .inputActionContainer {
+        border: 1px solid var(--border-neutral-default);
     }
 }

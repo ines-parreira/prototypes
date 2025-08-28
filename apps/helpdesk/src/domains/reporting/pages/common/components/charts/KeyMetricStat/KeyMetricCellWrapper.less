@@ -10,7 +10,7 @@
         }
 
         &:nth-child(n + 1) {
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
         }
 
         .label {
@@ -24,6 +24,14 @@
         .info-icon {
             font-weight: 700;
             font-size: 13px;
+        }
+    }
+}
+
+.axiom :local {
+    .metric {
+        &:nth-child(n + 1) {
+            border-left: 1px solid var(--border-neutral-default);
         }
     }
 }

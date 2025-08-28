@@ -33,7 +33,7 @@
         padding: calc(var(--layout-spacing-xs) - 1px);
         .body-regular();
         color: var(--neutral-grey-6);
-        border: 1px solid var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-0); // legacy
         border-radius: 4px;
         cursor: pointer;
         overflow: hidden;
@@ -64,5 +64,11 @@
             align-items: center;
             margin-right: var(--layout-spacing-xxs);
         }
+    }
+}
+
+.axiom :local {
+    .sortItem {
+        border-color: var(--border-neutral-default);
     }
 }

@@ -23,7 +23,7 @@
         }
 
         .option {
-            border: 1px solid var(--neutral-grey-4);
+            border: 1px solid var(--neutral-grey-4); // legacy
             border-radius: 3px;
             padding: 10px;
             cursor: pointer;
@@ -85,4 +85,19 @@
 
 .Select-menu {
     overflow-x: hidden;
+}
+
+.axiom {
+    .form-group {
+        &.binary-choice,
+        &.multi-select-binary-choice {
+            .option {
+                border: 1px solid var(--border-neutral-default);
+
+                &.active {
+                    border: 1px solid var(--main-primary-2);
+                }
+            }
+        }
+    }
 }

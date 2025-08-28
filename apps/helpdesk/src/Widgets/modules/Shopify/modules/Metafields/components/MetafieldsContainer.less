@@ -1,8 +1,8 @@
 :local {
     .container {
         padding-top: 12px;
-        border-top: 1px dashed var(--neutral-grey-3);
-        border-bottom: 1px dashed var(--neutral-grey-3);
+        border-top: 1px dashed var(--neutral-grey-3); // legacy
+        border-bottom: 1px dashed var(--neutral-grey-3); // legacy
         width: 100%;
     }
 
@@ -39,5 +39,12 @@
 
     .content {
         margin-top: 12px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-top-color: var(--border-neutral-default);
+        border-bottom-color: var(--border-neutral-default);
     }
 }
