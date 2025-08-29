@@ -121,6 +121,7 @@ describe('useTrialModalProps', () => {
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 14,
             remainingDaysFloat: 14.0,
+            isTrialExtended: false,
             trialEndDatetime: getTrialEndTime(14),
             trialTerminationDatetime: null,
             optedOutDatetime: null,
@@ -392,6 +393,7 @@ describe('useTrialModalProps', () => {
             mockUseTrialEnding.mockReturnValue({
                 remainingDays: 7,
                 remainingDaysFloat: 7.0,
+                isTrialExtended: false,
                 trialEndDatetime: getTrialEndTime(7),
                 trialTerminationDatetime: null,
                 optedOutDatetime: null,
@@ -443,6 +445,7 @@ describe('useTrialModalProps', () => {
             mockUseTrialEnding.mockReturnValue({
                 remainingDays: 3,
                 remainingDaysFloat: 3.0,
+                isTrialExtended: false,
                 trialEndDatetime: getTrialEndTime(3),
                 trialTerminationDatetime: null,
                 optedOutDatetime: null,
@@ -490,6 +493,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
                     remainingDaysFloat: 0.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -514,6 +518,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: -1,
                     remainingDaysFloat: -1.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(-1),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -538,6 +543,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
                     remainingDaysFloat: 1.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -591,6 +597,7 @@ describe('useTrialModalProps', () => {
                     mockUseTrialEnding.mockReturnValue({
                         remainingDays,
                         remainingDaysFloat: remainingDays,
+                        isTrialExtended: false,
                         trialEndDatetime: getTrialEndTime(remainingDays),
                         trialTerminationDatetime: null,
                         optedOutDatetime: null,
@@ -616,6 +623,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 365,
                     remainingDaysFloat: 365.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(365),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -640,6 +648,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 5,
                     remainingDaysFloat: 5.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(5),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -664,6 +673,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
                     remainingDaysFloat: 1.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(1),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -684,6 +694,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
                     remainingDaysFloat: 0.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(0),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -714,6 +725,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
                     remainingDaysFloat: 7.0,
+                    isTrialExtended: false,
                     trialEndDatetime: getTrialEndTime(7),
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,

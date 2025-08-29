@@ -41,7 +41,7 @@ export const TrialEndingModal = ({
             trialType,
         })
 
-    const canRequestExtension = canRequestTrialExtension()
+    const canRequestExtension = canRequestTrialExtension(trialType)
     const secondaryButtonId =
         'shopping-assistant-request-trial-extension-button-on-trial-ending'
     const isOptedOut = !!optedOutDatetime
@@ -63,17 +63,17 @@ export const TrialEndingModal = ({
     }, [openUpgradePlanModal, dismissModal])
 
     const onRequestTrialExtensionClick = useCallback(() => {
-        if (!canRequestTrialExtension()) {
+        if (!canRequestTrialExtension(trialType)) {
             return
         }
 
-        onRequestTrialExtension().then((isSent) => {
+        onRequestTrialExtension(trialEndDatetime).then((isSent) => {
             if (isSent) {
-                markTrialExtensionRequested()
+                markTrialExtensionRequested(trialType)
                 dismissModal()
             }
         })
-    }, [onRequestTrialExtension, dismissModal])
+    }, [onRequestTrialExtension, dismissModal, trialType, trialEndDatetime])
 
     const primaryAction = isOptedOut
         ? {

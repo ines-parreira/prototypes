@@ -317,6 +317,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: '2023-11-14T00:00:00.000Z', // Has opted out
         })
@@ -339,6 +340,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z', // Future date
             remainingDays: 1,
             remainingDaysFloat: 1,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
             optedOutDatetime: '2023-11-16T00:00:00.000Z',
         })
@@ -360,6 +362,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
@@ -379,6 +382,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: null, // No opt out
         })
@@ -400,6 +404,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
@@ -435,6 +440,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
@@ -470,6 +476,7 @@ describe('TrialEndedModal', () => {
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-15T00:00:00.000Z',
             optedOutDatetime: '2023-11-14T00:00:00.000Z',
         })
@@ -525,6 +532,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             remainingDaysFloat: 0.5,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -547,6 +555,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -570,6 +579,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-17T00:00:00.000Z',
             remainingDays: 2,
             remainingDaysFloat: 2,
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-17T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -596,6 +606,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -617,6 +628,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -652,6 +664,7 @@ describe('TrialEndingModal', () => {
             trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
             remainingDays: 1,
             remainingDaysFloat: 0.5, // Less than 1 day
+            isTrialExtended: false,
             trialEndDatetime: '2023-11-16T00:00:00.000Z',
             optedOutDatetime: null,
         })
@@ -687,6 +700,7 @@ describe('TrialEndingModal', () => {
                 trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
                 remainingDays: 1,
                 remainingDaysFloat: 0.5,
+                isTrialExtended: false,
                 trialEndDatetime: '2023-11-16T00:00:00.000Z',
                 optedOutDatetime: '2023-11-15T00:00:00.000Z', // User has opted out
             })

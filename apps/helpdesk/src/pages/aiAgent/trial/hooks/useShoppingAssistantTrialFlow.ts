@@ -68,7 +68,7 @@ export type UseShoppingAssistantTrialFlowReturn = {
     openTrialFinishSetupModal: () => void
     openTrialRequestModal: () => void
     closeTrialRequestModal: () => void
-    onRequestTrialExtension: () => Promise<boolean>
+    onRequestTrialExtension: (trialEndDate: string | null) => Promise<boolean>
     closeAllTrialModals: () => void
 }
 
@@ -324,12 +324,14 @@ export const useShoppingAssistantTrialFlow = ({
         trialRequestModal.closeModal(trialRequestModalName)
     }
 
-    const onRequestTrialExtension = (): Promise<boolean> => {
+    const onRequestTrialExtension = (
+        trialEndDate: string | null,
+    ): Promise<boolean> => {
         logEvent(SegmentEvent.TrialManageTrialExtensionRequestClicked, {
             CTA: 'Request Trial Extension',
             trialType,
         })
-        return notifySlackChannel().then((isSent) => {
+        return notifySlackChannel(trialType, trialEndDate).then((isSent) => {
             if (isSent) {
                 dispatch(
                     notify({

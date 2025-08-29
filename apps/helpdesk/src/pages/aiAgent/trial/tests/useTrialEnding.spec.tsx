@@ -19,13 +19,17 @@ const mockUseSalesTrialRevampMilestone = jest.mocked(
 const createMockStoreActivation = (
     remainingDays: number,
     trialType: TrialType = TrialType.ShoppingAssistant,
+    extendedTrial = false,
 ) => {
     const now = moment().startOf('hour')
     const trialEndDatetime = now
         .clone()
         .add(remainingDays, 'days')
         .toISOString()
-    const trialStartDatetime = now.clone().subtract(14, 'days').toISOString()
+    // For extended trials, set start date beyond the standard 14-day duration
+    const trialStartDatetime = extendedTrial
+        ? now.clone().subtract(20, 'days').toISOString()
+        : now.clone().subtract(14, 'days').toISOString()
 
     const trialConfig = {
         startDatetime: trialStartDatetime,
@@ -94,7 +98,7 @@ describe('useTrialEnding', () => {
     })
 
     describe('basic functionality - ShoppingAssistant', () => {
-        it('should return remainingDays, trialEndDatetime, and trialTerminationDatetime', () => {
+        it('should return remainingDays, trialEndDatetime, trialTerminationDatetime, and isTrialExtended', () => {
             const { result } = renderHook(() =>
                 useTrialEnding('test-store', TrialType.ShoppingAssistant),
             )
@@ -102,9 +106,10 @@ describe('useTrialEnding', () => {
             expect(result.current).toHaveProperty('remainingDays')
             expect(result.current).toHaveProperty('trialEndDatetime')
             expect(result.current).toHaveProperty('trialTerminationDatetime')
+            expect(result.current).toHaveProperty('isTrialExtended')
         })
 
-        it('should calculate remainingDays correctly', () => {
+        it('should calculate remainingDays correctly and isTrialExtended should be false for active trial', () => {
             mockUseStoreActivations.mockReturnValue(
                 createMockUseStoreActivationsReturn(
                     createMockStoreActivation(3, TrialType.ShoppingAssistant),
@@ -116,6 +121,7 @@ describe('useTrialEnding', () => {
             )
 
             expect(result.current.remainingDays).toBe(3)
+            expect(result.current.isTrialExtended).toBe(false)
         })
 
         it('should return trialEndDatetime as ISO string', () => {
@@ -151,7 +157,7 @@ describe('useTrialEnding', () => {
     })
 
     describe('basic functionality - aiAgent', () => {
-        it('should return remainingDays, trialEndDatetime, and trialTerminationDatetime', () => {
+        it('should return remainingDays, trialEndDatetime, trialTerminationDatetime, and isTrialExtended', () => {
             mockUseStoreActivations.mockReturnValue(
                 createMockUseStoreActivationsReturn(
                     createMockStoreActivation(5, TrialType.AiAgent),
@@ -165,9 +171,10 @@ describe('useTrialEnding', () => {
             expect(result.current).toHaveProperty('remainingDays')
             expect(result.current).toHaveProperty('trialEndDatetime')
             expect(result.current).toHaveProperty('trialTerminationDatetime')
+            expect(result.current).toHaveProperty('isTrialExtended')
         })
 
-        it('should calculate remainingDays correctly', () => {
+        it('should calculate remainingDays correctly and isTrialExtended should be false for active trial', () => {
             mockUseStoreActivations.mockReturnValue(
                 createMockUseStoreActivationsReturn(
                     createMockStoreActivation(3, TrialType.AiAgent),
@@ -179,6 +186,7 @@ describe('useTrialEnding', () => {
             )
 
             expect(result.current.remainingDays).toBe(3)
+            expect(result.current.isTrialExtended).toBe(false)
         })
 
         it('should return trialTerminationDatetime when trial has ended', () => {
@@ -220,6 +228,7 @@ describe('useTrialEnding', () => {
             expect(result.current.remainingDays).toBe(0)
             expect(result.current.trialEndDatetime).toBeNull()
             expect(result.current.trialTerminationDatetime).toBeNull()
+            expect(result.current.isTrialExtended).toBe(false)
         })
 
         it('should return empty trial ending when trial dates are missing - ShoppingAssistant', () => {
@@ -240,6 +249,7 @@ describe('useTrialEnding', () => {
             expect(result.current.remainingDays).toBe(0)
             expect(result.current.trialEndDatetime).toBeNull()
             expect(result.current.trialTerminationDatetime).toBeNull()
+            expect(result.current.isTrialExtended).toBe(false)
         })
 
         it('should return empty trial ending when trial dates are missing - aiAgent', () => {
@@ -260,6 +270,7 @@ describe('useTrialEnding', () => {
             expect(result.current.remainingDays).toBe(0)
             expect(result.current.trialEndDatetime).toBeNull()
             expect(result.current.trialTerminationDatetime).toBeNull()
+            expect(result.current.isTrialExtended).toBe(false)
         })
 
         it('should handle negative remaining days (trial ended) - ShoppingAssistant', () => {
@@ -350,6 +361,66 @@ describe('useTrialEnding', () => {
             expect(result.current.remainingDays).toBe(0)
             expect(result.current.trialEndDatetime).toBeNull()
             expect(result.current.trialTerminationDatetime).toBeNull()
+            expect(result.current.isTrialExtended).toBe(false)
+        })
+    })
+
+    describe('isTrialExtended logic', () => {
+        it('should return isTrialExtended=true when trial exceeds standard duration - ShoppingAssistant', () => {
+            const storeActivation = createMockStoreActivation(
+                5,
+                TrialType.ShoppingAssistant,
+                true, // Extended trial
+            )
+
+            mockUseStoreActivations.mockReturnValue(
+                createMockUseStoreActivationsReturn(storeActivation),
+            )
+
+            const { result } = renderHook(() =>
+                useTrialEnding('test-store', TrialType.ShoppingAssistant),
+            )
+
+            expect(result.current.isTrialExtended).toBe(true)
+            expect(result.current.remainingDays).toBe(5)
+        })
+
+        it('should return isTrialExtended=true when trial exceeds standard duration - AiAgent', () => {
+            const storeActivation = createMockStoreActivation(
+                3,
+                TrialType.AiAgent,
+                true, // Extended trial
+            )
+
+            mockUseStoreActivations.mockReturnValue(
+                createMockUseStoreActivationsReturn(storeActivation),
+            )
+
+            const { result } = renderHook(() =>
+                useTrialEnding('test-store', TrialType.AiAgent),
+            )
+
+            expect(result.current.isTrialExtended).toBe(true)
+            expect(result.current.remainingDays).toBe(3)
+        })
+
+        it('should return isTrialExtended=false for standard duration trial', () => {
+            const storeActivation = createMockStoreActivation(
+                1,
+                TrialType.ShoppingAssistant,
+                false, // Standard trial
+            )
+
+            mockUseStoreActivations.mockReturnValue(
+                createMockUseStoreActivationsReturn(storeActivation),
+            )
+
+            const { result } = renderHook(() =>
+                useTrialEnding('test-store', TrialType.ShoppingAssistant),
+            )
+
+            expect(result.current.isTrialExtended).toBe(false)
+            expect(result.current.remainingDays).toBe(1)
         })
     })
 
@@ -421,6 +492,7 @@ describe('useTrialEnding', () => {
             expect(result.current.remainingDays).toBe(0)
             expect(result.current.trialEndDatetime).toBeNull()
             expect(result.current.trialTerminationDatetime).toBeNull()
+            expect(result.current.isTrialExtended).toBe(false)
         })
     })
 })

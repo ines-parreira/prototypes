@@ -322,9 +322,12 @@ describe('TrialProgressModals', () => {
     })
 
     describe('when no modals should be open', () => {
-        it('should render nothing when no modal conditions are met', () => {
+        it('should render only TrialEndingModal when storeName is provided but no other modal conditions are met', () => {
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(
@@ -337,8 +340,8 @@ describe('TrialProgressModals', () => {
                 screen.queryByText('Trial Opt Out Modal'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText(/Trial Ending Modal/),
-            ).not.toBeInTheDocument()
+                screen.getByText('Trial Ending Modal for test-store'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -367,7 +370,10 @@ describe('TrialProgressModals', () => {
 
         it('should render TrialManageModal with correct props', () => {
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(
@@ -405,6 +411,7 @@ describe('TrialProgressModals', () => {
             it('should show upgrade button', () => {
                 render(
                     <TrialProgressModals
+                        storeName="test-store"
                         trialType={TrialType.ShoppingAssistant}
                     />,
                 )
@@ -418,6 +425,7 @@ describe('TrialProgressModals', () => {
                 const user = userEvent.setup()
                 render(
                     <TrialProgressModals
+                        storeName="test-store"
                         trialType={TrialType.ShoppingAssistant}
                     />,
                 )
@@ -430,7 +438,10 @@ describe('TrialProgressModals', () => {
 
                 expect(mockLogEvent).toHaveBeenCalledWith(
                     SegmentEvent.PricingModalClicked,
-                    { type: 'upgraded' },
+                    {
+                        type: 'upgraded',
+                        trialType: TrialType.ShoppingAssistant,
+                    },
                 )
                 expect(
                     defaultMockValues.upgradePlan.upgradePlanAsync,
@@ -446,6 +457,7 @@ describe('TrialProgressModals', () => {
             it('should not show upgrade button', () => {
                 render(
                     <TrialProgressModals
+                        storeName="test-store"
                         trialType={TrialType.ShoppingAssistant}
                     />,
                 )
@@ -459,7 +471,10 @@ describe('TrialProgressModals', () => {
         it('should call closeManageTrialModal when close button is clicked', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -475,7 +490,10 @@ describe('TrialProgressModals', () => {
         it('should open opt out modal when opt out button is clicked', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -502,7 +520,10 @@ describe('TrialProgressModals', () => {
 
         it('should render UpgradePlanModal', () => {
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(screen.getByText('Upgrade Plan Modal')).toBeInTheDocument()
@@ -517,7 +538,10 @@ describe('TrialProgressModals', () => {
         it('should call closeUpgradePlanModal when close button is clicked', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -533,7 +557,10 @@ describe('TrialProgressModals', () => {
         it('should call closeUpgradePlanModal when dismiss button is clicked', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -551,7 +578,10 @@ describe('TrialProgressModals', () => {
         it('should handle upgrade confirmation with segment tracking', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -562,7 +592,7 @@ describe('TrialProgressModals', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.PricingModalClicked,
-                { type: 'upgraded' },
+                { type: 'upgraded', trialType: TrialType.ShoppingAssistant },
             )
             expect(
                 defaultMockValues.upgradePlan.upgradePlanAsync,
@@ -572,7 +602,10 @@ describe('TrialProgressModals', () => {
         it('should close modals after successful upgrade', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -600,6 +633,7 @@ describe('TrialProgressModals', () => {
             it('should show loading state on confirm button', () => {
                 render(
                     <TrialProgressModals
+                        storeName="test-store"
                         trialType={TrialType.ShoppingAssistant}
                     />,
                 )
@@ -624,7 +658,10 @@ describe('TrialProgressModals', () => {
         it('should render opt out modal after clicking opt out', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -639,7 +676,10 @@ describe('TrialProgressModals', () => {
         it('should call onRequestTrialExtension when request extension button is clicked', async () => {
             const user = userEvent.setup()
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             await act(async () => {
@@ -692,7 +732,10 @@ describe('TrialProgressModals', () => {
     describe('when useShoppingAssistantTrialFlow is called', () => {
         it('should be called with correct parameters', () => {
             render(
-                <TrialProgressModals trialType={TrialType.ShoppingAssistant} />,
+                <TrialProgressModals
+                    storeName="test-store"
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(mockUseShoppingAssistantTrialFlow).toHaveBeenCalledWith({

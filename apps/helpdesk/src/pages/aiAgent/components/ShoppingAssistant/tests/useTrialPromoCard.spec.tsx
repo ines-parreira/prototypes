@@ -164,6 +164,7 @@ describe('useTrialPromoCard', () => {
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 7,
             remainingDaysFloat: 7.0,
+            isTrialExtended: false,
             trialEndDatetime: '2024-01-15T00:00:00.000Z',
             trialTerminationDatetime: null,
             optedOutDatetime: null,
@@ -1146,6 +1147,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 14,
                     remainingDaysFloat: 14.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-28T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1177,6 +1179,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
                     remainingDaysFloat: 7.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-21T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1205,6 +1208,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 1,
                     remainingDaysFloat: 1.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-15T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1233,6 +1237,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 0,
                     remainingDaysFloat: 0.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-14T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1350,6 +1355,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 15,
                     remainingDaysFloat: 15.0, // More than trial duration
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-29T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1384,6 +1390,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 7,
                     remainingDaysFloat: 7.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-21T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,
@@ -1564,6 +1571,7 @@ describe('useTrialPromoCard', () => {
                 mockUseTrialEnding.mockReturnValue({
                     remainingDays: 5,
                     remainingDaysFloat: 5.0,
+                    isTrialExtended: false,
                     trialEndDatetime: '2024-01-19T00:00:00.000Z',
                     trialTerminationDatetime: null,
                     optedOutDatetime: null,

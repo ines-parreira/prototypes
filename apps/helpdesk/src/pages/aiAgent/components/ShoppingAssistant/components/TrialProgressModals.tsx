@@ -10,6 +10,7 @@ import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModa
 import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -17,7 +18,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { TrialType } from '../types/ShoppingAssistant'
 
 export type TrialProgressModalsProps = {
-    storeName?: string
+    storeName: string
     trialType: TrialType
 }
 
@@ -26,7 +27,11 @@ export const TrialProgressModals = ({
     trialType,
 }: TrialProgressModalsProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const { storeActivations } = useStoreActivations()
+    const { storeActivations } = useStoreActivations({ storeName })
+    const { trialEndDatetime, isTrialExtended } = useTrialEnding(
+        storeName,
+        trialType,
+    )
     const [isOptOutModalOpen, setIsOptOutModalOpen] = useState(false)
 
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
@@ -55,10 +60,11 @@ export const TrialProgressModals = ({
     const onUpgradeClick = useCallback(async () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'upgraded',
+            trialType,
         })
         await upgradePlanAsync()
         closeAllTrialModals()
-    }, [upgradePlanAsync, closeAllTrialModals])
+    }, [upgradePlanAsync, closeAllTrialModals, trialType])
 
     const trialModalProps = useTrialModalProps({
         storeName,
@@ -101,8 +107,12 @@ export const TrialProgressModals = ({
             {isOptOutModalOpen && (
                 <TrialOptOutModal
                     isOpen={isOptOutModalOpen}
+                    isTrialExtended={isTrialExtended}
                     onClose={() => setIsOptOutModalOpen(false)}
-                    onRequestTrialExtension={onRequestTrialExtension}
+                    onRequestTrialExtension={() =>
+                        onRequestTrialExtension(trialEndDatetime)
+                    }
+                    trialType={trialType}
                 />
             )}
 

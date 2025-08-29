@@ -2,10 +2,13 @@ import { useCallback } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isProduction } from 'utils/environment'
 
+// PROD: https://zapier.com/editor/313708537/published
+// DEV: https://zapier.com/editor/313712767/published
 export const TRIAL_EXTENSION_SLACK_NOTIFICATION_ZAPIER_URL = isProduction()
     ? 'https://hooks.zapier.com/hooks/catch/24089695/u4cpbo1/'
     : 'https://hooks.zapier.com/hooks/catch/24089695/u4cjmzv/'
@@ -14,6 +17,8 @@ type NotificationPayload = {
     userName: string
     userEmail: string
     accountDomain: string
+    trialType: TrialType
+    trialEndDate: string | null
 }
 
 const sendTrialExtensionSlackNotification = async (
@@ -45,15 +50,20 @@ export const useNotifyTrialExtensionSlackChannel = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
-    const notifySlackChannel = useCallback(async () => {
-        const payload: NotificationPayload = {
-            userName: currentUser.get('name') || '',
-            userEmail: currentUser.get('email') || '',
-            accountDomain: currentAccount.get('domain') || '',
-        }
+    const notifySlackChannel = useCallback(
+        async (trialType: TrialType, trialEndDate: string | null) => {
+            const payload: NotificationPayload = {
+                userName: currentUser.get('name') || '',
+                userEmail: currentUser.get('email') || '',
+                accountDomain: currentAccount.get('domain') || '',
+                trialType,
+                trialEndDate,
+            }
 
-        return sendTrialExtensionSlackNotification(payload)
-    }, [currentUser, currentAccount])
+            return sendTrialExtensionSlackNotification(payload)
+        },
+        [currentUser, currentAccount],
+    )
 
     return notifySlackChannel
 }

@@ -6,6 +6,7 @@ import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 import {
     TRIAL_EXTENSION_SLACK_NOTIFICATION_ZAPIER_URL,
@@ -36,6 +37,9 @@ jest.mock('state/currentAccount/selectors', () => ({
 jest.mock('common/utils/index', () => ({}))
 jest.mock('utils', () => ({}))
 
+const TEST_TRIAL_TYPE = TrialType.AiAgent
+const TEST_TRIAL_END_DATE = '2024-12-31T23:59:59Z'
+
 describe('useNotifyTrialExtensionSlackChannel', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -62,7 +66,7 @@ describe('useNotifyTrialExtensionSlackChannel', () => {
                 useNotifyTrialExtensionSlackChannel(),
             )
 
-            await result.current()
+            await result.current(TEST_TRIAL_TYPE, TEST_TRIAL_END_DATE)
 
             expect(mockPost).toHaveBeenCalledWith(
                 TRIAL_EXTENSION_SLACK_NOTIFICATION_ZAPIER_URL,
@@ -71,6 +75,8 @@ describe('useNotifyTrialExtensionSlackChannel', () => {
                         userName: user.name,
                         userEmail: user.email,
                         accountDomain: account.domain,
+                        trialType: TEST_TRIAL_TYPE,
+                        trialEndDate: TEST_TRIAL_END_DATE,
                     },
                 },
                 {
@@ -99,7 +105,10 @@ describe('useNotifyTrialExtensionSlackChannel', () => {
                 useNotifyTrialExtensionSlackChannel(),
             )
 
-            const response = await result.current()
+            const response = await result.current(
+                TEST_TRIAL_TYPE,
+                TEST_TRIAL_END_DATE,
+            )
 
             expect(response).toBe(true)
         })
@@ -124,9 +133,51 @@ describe('useNotifyTrialExtensionSlackChannel', () => {
                 useNotifyTrialExtensionSlackChannel(),
             )
 
-            const response = await result.current()
+            const response = await result.current(
+                TEST_TRIAL_TYPE,
+                TEST_TRIAL_END_DATE,
+            )
 
             expect(response).toBe(false)
+        })
+
+        it('handles null trialEndDate correctly', async () => {
+            mockPost.mockResolvedValue({})
+
+            mockUseAppSelector
+                .mockReturnValueOnce(
+                    fromJS({
+                        name: user.name,
+                        email: user.email,
+                    }),
+                )
+                .mockReturnValueOnce(
+                    fromJS({
+                        domain: account.domain,
+                    }),
+                )
+
+            const { result } = renderHook(() =>
+                useNotifyTrialExtensionSlackChannel(),
+            )
+
+            await result.current(TEST_TRIAL_TYPE, null)
+
+            expect(mockPost).toHaveBeenCalledWith(
+                TRIAL_EXTENSION_SLACK_NOTIFICATION_ZAPIER_URL,
+                {
+                    data: {
+                        userName: user.name,
+                        userEmail: user.email,
+                        accountDomain: account.domain,
+                        trialType: TEST_TRIAL_TYPE,
+                        trialEndDate: null,
+                    },
+                },
+                {
+                    transformRequest: expect.any(Function),
+                },
+            )
         })
     })
 })

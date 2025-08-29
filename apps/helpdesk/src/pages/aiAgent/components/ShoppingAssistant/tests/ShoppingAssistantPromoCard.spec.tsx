@@ -135,6 +135,7 @@ describe('ShoppingAssistantPromoCard', () => {
         mockUseTrialEnding.mockReturnValue({
             remainingDays: 0,
             remainingDaysFloat: 0,
+            isTrialExtended: false,
             trialEndDatetime: '2024-01-01T00:00:00.000Z',
             trialTerminationDatetime: new Date(
                 Date.now() - 2 * 24 * 60 * 60 * 1000,

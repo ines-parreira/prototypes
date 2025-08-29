@@ -550,7 +550,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             const { result } = renderHookWithDefaults()
 
             const success = await act(async () => {
-                return await result.current.onRequestTrialExtension()
+                return await result.current.onRequestTrialExtension(null)
             })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
@@ -577,7 +577,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             const { result } = renderHookWithDefaults()
 
             const success = await act(async () => {
-                return await result.current.onRequestTrialExtension()
+                return await result.current.onRequestTrialExtension(null)
             })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
