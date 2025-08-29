@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
-import { Cadence, ProductType } from 'models/billing/types'
+import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus, {
@@ -468,7 +468,7 @@ export const useBillingPlans = ({
         // Set notification when cadence has changed
         if (isPlanCadenceChanged) {
             notifications.push({
-                message: 'Your billing frequency has been updated to yearly',
+                message: `Your billing frequency has been updated to ${cadenceNames[Cadence.Year]}`,
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
                 showDismissButton: true,
