@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
@@ -63,7 +61,7 @@ describe('SummaryItem', () => {
 
         expect(screen.getByText('Helpdesk')).toBeInTheDocument()
         expect(
-            screen.getByText('Basic - 300 tickets/month'),
+            screen.getByText(`Basic - 300 tickets/${Cadence.Month}`),
         ).toBeInTheDocument()
     })
 
