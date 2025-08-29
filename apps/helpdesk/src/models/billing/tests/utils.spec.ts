@@ -114,7 +114,7 @@ describe('getOverageUnitPriceFormatted', () => {
 describe('getPlanUnitsPerCadence', () => {
     it('returns the correct string', () => {
         expect(getPlanUnitsPerCadence(basicMonthlyHelpdeskPlan)).toEqual(
-            '300 tickets/month',
+            `300 tickets/${Cadence.Month}`,
         )
     })
 })
