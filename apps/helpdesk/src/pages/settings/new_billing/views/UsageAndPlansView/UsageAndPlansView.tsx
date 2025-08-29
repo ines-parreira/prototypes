@@ -11,7 +11,7 @@ import { AlertBannerTypes } from 'AlertBanners'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, ProductType } from 'models/billing/types'
+import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
 import { isLegacyAutomate } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -245,9 +245,9 @@ const UsageAndPlansView = ({
                         Billed{' '}
                         {isCurrentPlanMonthly ||
                         isCurrentSubscriptionCanceled ? (
-                            <>monthly</>
+                            <>{cadenceNames[Cadence.Month]}</>
                         ) : (
-                            <>yearly</>
+                            <>{cadenceNames[Cadence.Year]}</>
                         )}
                     </span>
                     {isCurrentSubscriptionCanceled ? null : isSubscribedToHelpdeskStarter ? (
@@ -284,7 +284,8 @@ const UsageAndPlansView = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                To switch from monthly to yearly,{' '}
+                                To switch from {cadenceNames[Cadence.Month]} to{' '}
+                                {cadenceNames[Cadence.Year]},{' '}
                                 <span
                                     className={css.link}
                                     onClick={() =>

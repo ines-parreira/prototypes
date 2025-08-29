@@ -26,7 +26,7 @@ import {
     voicePlan1,
 } from 'fixtures/productPrices'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import { ProductType } from 'models/billing/types'
+import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AlertType } from 'pages/common/components/Alert/Alert'
@@ -530,7 +530,11 @@ describe('UsageAndPlansView', () => {
             screen.queryByRole('button', { name: /Update/i }),
         ).not.toBeInTheDocument()
 
-        expect(screen.queryByText(/Billed monthly/i)).toBeInTheDocument()
+        expect(
+            screen.queryByText(`Billed ${cadenceNames[Cadence.Month]}`, {
+                exact: false,
+            }),
+        ).toBeInTheDocument()
     })
 
     it('should not be possible to update plan frequency when the user is on a yearly plan', () => {
