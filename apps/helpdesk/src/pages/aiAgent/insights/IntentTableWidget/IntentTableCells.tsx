@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton, Tooltip } from '@gorgias/axiom'
@@ -52,10 +50,8 @@ export const IntentNameCellContent = ({
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
     const isL1Drilldown = intentLevel === INTENT_LEVEL
-    const hasL2DrilldownEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]
     const goToIntent = () => {
-        if (hasL2DrilldownEnabled && isL1Drilldown) {
+        if (isL1Drilldown) {
             history.push(routes.intentsWithId(String(intent.id)))
         }
     }
@@ -66,7 +62,7 @@ export const IntentNameCellContent = ({
         <BodyCellWrapper
             bodyCellProps={{
                 width: getColumnWidth(column),
-                isClickable: hasL2DrilldownEnabled && isL1Drilldown,
+                isClickable: isL1Drilldown,
             }}
         >
             <div className={intentTableCss.intentNameCell} onClick={goToIntent}>

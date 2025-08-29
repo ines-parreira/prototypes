@@ -162,7 +162,6 @@ const renderNavbar = ({ store }: { store?: Partial<RootState> } = {}) =>
 describe('<AiAgentNavbar />', () => {
     beforeEach(() => {
         mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentOptimizeTab]: true,
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
         })
 

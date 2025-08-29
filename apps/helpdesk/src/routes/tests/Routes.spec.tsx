@@ -740,13 +740,6 @@ describe('<Routes/>', () => {
         })
 
         it('should redirect to /intents when accessing /optimize', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiAgentOptimizeTab) {
-                    return true
-                }
-                return false
-            })
-
             render(
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>

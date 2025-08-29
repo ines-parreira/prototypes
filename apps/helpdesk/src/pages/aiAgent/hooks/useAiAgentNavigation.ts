@@ -145,8 +145,6 @@ const useNavigationItems = (
     const isAiAgentKnowledgeTabEnabled =
         flags[FeatureFlagKey.AiAgentKnowledgeTab]
 
-    const isAiAgentOptimizeTabEnabled = flags[FeatureFlagKey.AiAgentOptimizeTab]
-
     const isAiAgentScrapeStoreDomainEnabled =
         flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
 
@@ -175,7 +173,7 @@ const useNavigationItems = (
                         title: OVERVIEW,
                         exact: true,
                     },
-                    isAiAgentOptimizeTabEnabled && {
+                    {
                         route: routes.analyzeIntents,
                         title: INTENTS,
                         exact: false,
@@ -297,7 +295,6 @@ const useNavigationItems = (
         ].filter((x) => !!x) as NavigationItem[]
     }, [
         isAiAgentKnowledgeTabEnabled,
-        isAiAgentOptimizeTabEnabled,
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isAiShoppingAssistantEnabled,

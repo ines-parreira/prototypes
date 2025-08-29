@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -88,9 +86,6 @@ describe('IntentTableCells', () => {
         })
 
         it('navigates to the correct route on click if isL1Drilldown is true', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]: true,
-            })
             renderTableCell(
                 <IntentNameCellContent
                     intent={{ ...mockIntent, id: '1::2::3' }}
