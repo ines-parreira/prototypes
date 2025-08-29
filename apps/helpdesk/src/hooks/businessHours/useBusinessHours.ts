@@ -7,7 +7,11 @@ import {
 
 import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import { DAYS_OPTIONS } from 'pages/settings/businessHours/constants'
+import {
+    ALWAYS_ON_OPTION_LABEL,
+    DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
+    EVERYDAY_OPTION_VALUE,
+} from 'pages/settings/businessHours/constants'
 import { convertToAmPm } from 'pages/settings/businessHours/utils'
 import { getTimeFormatPreferenceSetting } from 'state/currentUser/selectors'
 
@@ -25,7 +29,17 @@ export const useBusinessHours = () => {
                     ? convertToAmPm(businessHoursTimeFrame.to_time)
                     : businessHoursTimeFrame.to_time
 
-            const displayName = DAYS_OPTIONS.find(
+            const days = businessHoursTimeFrame.days
+
+            if (
+                days === EVERYDAY_OPTION_VALUE &&
+                businessHoursTimeFrame.to_time === '00:00' &&
+                businessHoursTimeFrame.from_time === '00:00'
+            ) {
+                return ALWAYS_ON_OPTION_LABEL
+            }
+
+            const displayName = DAYS_OPTIONS_WITHOUT_ALWAYS_ON.find(
                 (day) => day.value === businessHoursTimeFrame.days,
             )?.label
 

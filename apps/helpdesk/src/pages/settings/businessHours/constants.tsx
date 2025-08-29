@@ -31,10 +31,14 @@ export const DEPRECATED_DAYS_OPTIONS: SelectableOption[] = [
     { label: 'Sunday', value: '7' },
 ]
 
-export const DAYS_OPTIONS = [
+export const EVERYDAY_OPTION_VALUE = '1,2,3,4,5,6,7'
+export const ALWAYS_ON_OPTION_LABEL = '24/7 (always on)'
+export const EVERYDAY_OPTION_LABEL = 'Everyday'
+
+export const DAYS_OPTIONS_WITHOUT_ALWAYS_ON = [
     {
-        label: 'Everyday',
-        value: '1,2,3,4,5,6,7',
+        label: EVERYDAY_OPTION_LABEL,
+        value: EVERYDAY_OPTION_VALUE,
     },
     {
         label: 'Mon-Fri',
@@ -50,10 +54,18 @@ export const DAYS_OPTIONS = [
     { label: 'Sunday', value: '7' },
 ]
 
+export const DAYS_OPTIONS = [
+    {
+        label: ALWAYS_ON_OPTION_LABEL,
+        value: EVERYDAY_OPTION_VALUE,
+    },
+    ...DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
+]
+
 export const MAX_BUSINESS_HOURS = 20
 
 export const DEFAULT_BUSINESS_HOURS_SCHEDULE = {
-    days: DAYS_OPTIONS[0].value,
+    days: DAYS_OPTIONS_WITHOUT_ALWAYS_ON[0].value,
     from_time: '00:00',
     to_time: '23:59',
 }

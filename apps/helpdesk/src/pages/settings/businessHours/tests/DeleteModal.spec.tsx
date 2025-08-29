@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { DeleteModal } from './DeleteModal'
+import { DeleteModal } from '../DeleteModal'
 
 describe('DeleteModal', () => {
     const defaultProps = {

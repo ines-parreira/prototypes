@@ -24,8 +24,20 @@ const defaultFormValues = {
     },
 }
 
+const alwaysOnFormValues = {
+    business_hours_config: {
+        business_hours: [
+            {
+                days: '1,2,3,4,5,6,7',
+                from_time: '00:00',
+                to_time: '00:00',
+            },
+        ],
+    },
+}
+
 describe('TimeScheduleRow', () => {
-    it('should render all fields and remove button', () => {
+    it('should render all fields and remove button', async () => {
         render(
             <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
                 <TimeScheduleRow {...props} />
@@ -46,17 +58,22 @@ describe('TimeScheduleRow', () => {
             </Form>,
         )
 
-        expect(screen.queryByText('close')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /close/i }),
+        ).not.toBeInTheDocument()
     })
 
-    it('should call onRemove when remove button is clicked', () => {
+    it('should call onRemove when remove button is clicked', async () => {
+        const user = userEvent.setup()
         render(
             <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
                 <TimeScheduleRow {...props} />
             </Form>,
         )
 
-        fireEvent.click(screen.getByText('close'))
+        await act(async () => {
+            await user.click(screen.getByText('close'))
+        })
 
         expect(props.onRemove).toHaveBeenCalledWith(0)
     })
@@ -108,6 +125,25 @@ describe('TimeScheduleRow', () => {
                 initialSelectionEnd: input.value.length,
             })
         })
+    })
+
+    it('should hide time inputs when "Always On" is selected', async () => {
+        const user = userEvent.setup()
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        await act(async () => {
+            const dropdown = screen.getByRole('combobox')
+            await user.click(dropdown)
+        })
+
+        await waitFor(async () => {
+            const alwaysOnOption = screen.getByText('24/7 (always on)')
+            await user.click(alwaysOnOption)
+        })
 
         await waitFor(() => {
             expect(
@@ -140,5 +176,119 @@ describe('TimeScheduleRow', () => {
         expect(
             screen.queryByText('To time must be greater than From time'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should show time inputs when switching from "Always On" to regular schedule', async () => {
+        const user = userEvent.setup()
+        const { container } = render(
+            <Form onValidSubmit={jest.fn()} defaultValues={alwaysOnFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        // Initially time inputs should be hidden
+        expect(
+            container.querySelector(
+                `input[name="business_hours_config.business_hours.0.from_time"]`,
+            ),
+        ).toBeDisabled()
+        expect(
+            container.querySelector(
+                `input[name="business_hours_config.business_hours.0.to_time"]`,
+            ),
+        ).toBeDisabled()
+
+        await act(async () => {
+            const dropdown = screen.getByRole('combobox')
+            await user.click(dropdown)
+        })
+
+        await waitFor(async () => {
+            const everydayOption = screen.getByText('Everyday')
+            await user.click(everydayOption)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('00:00')).toBeInTheDocument()
+            expect(screen.getByDisplayValue('23:59')).toBeInTheDocument()
+            expect(screen.getByText('to')).toBeInTheDocument()
+        })
+    })
+
+    it('should display "Everyday" when times are not 00:00', () => {
+        const everydayFormValues = {
+            business_hours_config: {
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5,6,7',
+                        from_time: '09:00',
+                        to_time: '17:00',
+                    },
+                ],
+            },
+        }
+
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={everydayFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        expect(screen.getByText('Everyday')).toBeInTheDocument()
+    })
+
+    it('should disable time inputs when "Always On" is selected', async () => {
+        const user = userEvent.setup()
+        const { container } = render(
+            <Form onValidSubmit={jest.fn()} defaultValues={defaultFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        await act(async () => {
+            const dropdown = screen.getByRole('combobox')
+            await user.click(dropdown)
+        })
+
+        await waitFor(async () => {
+            const alwaysOnOption = screen.getByText('24/7 (always on)')
+            await user.click(alwaysOnOption)
+        })
+
+        await waitFor(() => {
+            const fromTimeInput = container.querySelector(
+                `input[name="business_hours_config.business_hours.0.from_time"]`,
+            )
+            const toTimeInput = container.querySelector(
+                `input[name="business_hours_config.business_hours.0.to_time"]`,
+            )
+
+            expect(fromTimeInput).toBeDisabled()
+            expect(toTimeInput).toBeDisabled()
+        })
+    })
+
+    it('should enable time inputs when switching from "Always On" to regular schedule', async () => {
+        const user = userEvent.setup()
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={alwaysOnFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        await act(async () => {
+            const dropdown = screen.getByRole('combobox')
+            await user.click(dropdown)
+        })
+
+        await waitFor(async () => {
+            const everydayOption = screen.getByText('Everyday')
+            await user.click(everydayOption)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('00:00')).not.toBeDisabled()
+            expect(screen.getByDisplayValue('23:59')).not.toBeDisabled()
+        })
     })
 })

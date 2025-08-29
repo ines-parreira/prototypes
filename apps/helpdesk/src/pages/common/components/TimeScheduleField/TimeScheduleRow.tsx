@@ -1,12 +1,20 @@
 import { useEffect, useMemo } from 'react'
 
+import cn from 'classnames'
 import { get } from 'lodash'
 
-import { Box, IconButton } from '@gorgias/axiom'
+import { IconButton } from '@gorgias/axiom'
 
 import { FormField, useFormContext } from 'core/forms'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
-import { DAYS_OPTIONS } from 'pages/settings/businessHours/constants'
+import {
+    ALWAYS_ON_OPTION_LABEL,
+    DAYS_OPTIONS,
+    DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
+    DEFAULT_BUSINESS_HOURS_SCHEDULE,
+    EVERYDAY_OPTION_LABEL,
+    EVERYDAY_OPTION_VALUE,
+} from 'pages/settings/businessHours/constants'
 
 import TimeInputField from './TimeInputField'
 
@@ -34,8 +42,10 @@ export default function TimeScheduleRow({
     const {
         watch,
         setError,
+        setValue,
         formState: { errors },
     } = useFormContext()
+    const days = watch(`${namePrefix}.days`)
     const toTime = watch(`${namePrefix}.to_time`)
     const fromTime = watch(`${namePrefix}.from_time`)
 
@@ -60,6 +70,32 @@ export default function TimeScheduleRow({
         }
     }, [toTime, fromTime, namePrefix, setError, errors])
 
+    const daysFieldOutputTransform = (option: string) => {
+        if (option === ALWAYS_ON_OPTION_LABEL) {
+            setValue(`${namePrefix}.to_time`, '00:00')
+            setValue(`${namePrefix}.from_time`, '00:00')
+        } else if (fromTime === '00:00' && toTime === '00:00') {
+            setValue(
+                `${namePrefix}.from_time`,
+                DEFAULT_BUSINESS_HOURS_SCHEDULE.from_time,
+            )
+            setValue(
+                `${namePrefix}.to_time`,
+                DEFAULT_BUSINESS_HOURS_SCHEDULE.to_time,
+            )
+        }
+
+        return (
+            DAYS_OPTIONS.find((daysOption) => daysOption.label === option)
+                ?.value ?? ''
+        )
+    }
+
+    const isAlwaysOn =
+        days === EVERYDAY_OPTION_VALUE &&
+        toTime === '00:00' &&
+        fromTime === '00:00'
+
     return (
         <div className={css.container}>
             <div className={css.selectField}>
@@ -68,29 +104,28 @@ export default function TimeScheduleRow({
                     field={SelectDropdownField<string>}
                     options={DAYS_OPTIONS.map((option) => option.label)}
                     outputTransform={(option) =>
-                        DAYS_OPTIONS.find(
-                            (daysOption) => daysOption.label === option,
-                        )?.value
+                        daysFieldOutputTransform(option)
                     }
                     inputTransform={(option) => {
-                        return (
-                            DAYS_OPTIONS.find(
-                                (daysOption) => daysOption.value === option,
-                            )?.label ?? ''
-                        )
+                        return daysFieldInputTransform(option, toTime, fromTime)
                     }}
                     root={root}
                 />
             </div>
 
-            <FormField
-                name={`${namePrefix}.from_time`}
-                field={TimeInputField}
-            />
-
-            <Box pt="var(--layout-spacing-xxs)">to</Box>
-
-            <FormField name={`${namePrefix}.to_time`} field={TimeInputField} />
+            <div className={cn(css.timeInputs, { [css.hidden]: isAlwaysOn })}>
+                <FormField
+                    isDisabled={isAlwaysOn}
+                    name={`${namePrefix}.from_time`}
+                    field={TimeInputField}
+                />
+                <div>to</div>
+                <FormField
+                    isDisabled={isAlwaysOn}
+                    name={`${namePrefix}.to_time`}
+                    field={TimeInputField}
+                />
+            </div>
 
             {isRemovable && (
                 <IconButton
@@ -101,5 +136,23 @@ export default function TimeScheduleRow({
                 />
             )}
         </div>
+    )
+}
+
+const daysFieldInputTransform = (
+    option: string,
+    toTime: string,
+    fromTime: string,
+): string => {
+    if (option === EVERYDAY_OPTION_VALUE) {
+        return toTime === '00:00' && fromTime === '00:00'
+            ? ALWAYS_ON_OPTION_LABEL
+            : EVERYDAY_OPTION_LABEL
+    }
+
+    return (
+        DAYS_OPTIONS_WITHOUT_ALWAYS_ON.find(
+            (daysOption) => daysOption.value === option,
+        )?.label ?? ''
     )
 }

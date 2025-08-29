@@ -43,7 +43,7 @@ export const DefaultBusinessHoursDrawer = ({
 
     const onSubmit = (values: AccountSettingsItem) => {
         updateAccountSetting({
-            id: businessHoursSettingsData!.id!,
+            id: values.id!,
             data: values,
         })
     }

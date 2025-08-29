@@ -196,7 +196,7 @@ describe('useBusinessHours', () => {
             { days: '1,2,3,4,5', daysLabel: 'Mon-Fri' },
             { days: '6,7', daysLabel: 'Weekend' },
             { days: '1,2,3,4,5,6,7', daysLabel: 'Everyday' },
-        ])('should return correct days labels', ({ days, daysLabel }) => {
+        ])('should return correct days labels %s', ({ days, daysLabel }) => {
             const { result } = renderHook(() => useBusinessHours())
 
             const label = result.current.getBusinessHoursConfigLabel({
