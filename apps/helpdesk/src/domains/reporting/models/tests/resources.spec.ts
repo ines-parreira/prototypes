@@ -123,7 +123,12 @@ describe('Reporting resources', () => {
 
             await expect(request).rejects.toEqual(error)
             expect(reportErrorMock).toHaveBeenCalledWith(error, {
-                extra: { context: { query: JSON.stringify([query]) } },
+                extra: {
+                    context: {
+                        query: JSON.stringify([query]),
+                        metricName: METRIC_NAMES.TEST_METRIC,
+                    },
+                },
             })
         })
     })

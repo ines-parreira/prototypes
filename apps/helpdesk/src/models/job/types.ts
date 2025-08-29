@@ -78,10 +78,12 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketFirstHumanAgentResponseTimeCube
 >
 
+type APIDrillDownReportingQuery = Omit<DrillDownReportingQuery, 'metricName'>
+
 export type ReportingQueryJobParams = {
-    reporting_query: Omit<DrillDownReportingQuery, 'metricName'>
+    reporting_query: APIDrillDownReportingQuery
+    metric_name: string
     context?: JobContext
-    metric_name?: string
 }
 
 export type Job = {
