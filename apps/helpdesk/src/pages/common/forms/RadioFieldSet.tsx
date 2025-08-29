@@ -61,6 +61,7 @@ const RadioFieldSet = ({
                     isSelected={selectedValue === value}
                     isDisabled={disabled || isDisabled}
                     onChange={onChange}
+                    id={name ? `${name}-${value}` : undefined}
                 />
             ))}
         </fieldset>

@@ -70,8 +70,10 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
 
     useEffect(() => {
         // Update the node data when the rule type changes to reflect in the children nodes
-        updateNodeData(id, { rule_type })
-    }, [rule_type, id, updateNodeData])
+        if (rule_type !== data.rule_type) {
+            updateNodeData(id, { rule_type })
+        }
+    }, [rule_type, id, updateNodeData, data.rule_type])
 
     return (
         <VoiceStepNode

@@ -2044,12 +2044,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -2061,11 +2061,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -2077,11 +2077,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -2093,11 +2093,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -2119,12 +2119,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -2136,11 +2136,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -2152,12 +2152,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -3544,12 +3544,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -3561,11 +3561,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -3577,11 +3577,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -3593,11 +3593,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -3619,12 +3619,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -3636,11 +3636,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -3652,12 +3652,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -5014,12 +5014,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -5031,11 +5031,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -5047,11 +5047,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -5063,11 +5063,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -5089,12 +5089,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -5106,11 +5106,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -5122,12 +5122,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -6484,12 +6484,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -6501,11 +6501,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -6517,11 +6517,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -6533,11 +6533,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -6559,12 +6559,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -6576,11 +6576,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -6592,12 +6592,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -7954,12 +7954,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -7971,11 +7971,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -7987,11 +7987,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -8003,11 +8003,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -8029,12 +8029,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -8046,11 +8046,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -8062,12 +8062,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -10792,12 +10792,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -10809,11 +10809,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -10825,11 +10825,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -10841,11 +10841,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -10867,12 +10867,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -10884,11 +10884,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -10900,12 +10900,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -12346,12 +12346,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -12363,11 +12363,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -12379,11 +12379,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -12395,11 +12395,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -12421,12 +12421,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -12438,11 +12438,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -12454,11 +12454,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -15165,12 +15165,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-name"
+                        for="avatar-name-type-field-agent-first-name"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-first-name"
+                          id="avatar-name-type-field-agent-first-name"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -15182,11 +15182,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-first-last-name-initial"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
                           class="input"
-                          id="agent-first-last-name-initial"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -15198,11 +15198,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-fullname"
+                        for="avatar-name-type-field-agent-fullname"
                       >
                         <input
                           class="input"
-                          id="agent-fullname"
+                          id="avatar-name-type-field-agent-fullname"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -15214,11 +15214,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="chat-title"
+                        for="avatar-name-type-field-chat-title"
                       >
                         <input
                           class="input"
-                          id="chat-title"
+                          id="avatar-name-type-field-chat-title"
                           name="avatar-name-type-field"
                           type="radio"
                         />
@@ -15240,12 +15240,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-picture"
+                        for="avatar-image-type-field-agent-picture"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="agent-picture"
+                          id="avatar-image-type-field-agent-picture"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -15257,11 +15257,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 label"
-                        for="agent-initials"
+                        for="avatar-image-type-field-agent-initials"
                       >
                         <input
                           class="input"
-                          id="agent-initials"
+                          id="avatar-image-type-field-agent-initials"
                           name="avatar-image-type-field"
                           type="radio"
                         />
@@ -15273,12 +15273,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                        for="company-logo"
+                        for="avatar-image-type-field-company-logo"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="company-logo"
+                          id="avatar-image-type-field-company-logo"
                           name="avatar-image-type-field"
                           type="radio"
                         />

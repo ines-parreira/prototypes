@@ -1,21 +1,19 @@
 import { AddStepButton, NodeProps, NodeWrapper } from 'core/ui/flows'
 
-import { FINAL_NODES_TYPES, VoiceFlowNodeType } from '../constants'
+import AddStepMenuContent from '../AddStepMenuContent'
+import { FINAL_NODES_TYPES } from '../constants'
 import type { IntermediaryNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
+import { getSourceNodes } from '../utils'
 
 export function IntermediaryNode(props: NodeProps<IntermediaryNode>) {
-    const { getNode, getEdges } = useVoiceFlow()
+    const { getNode, getNodes } = useVoiceFlow()
 
-    const incomingNodeIds = getEdges()
-        .filter((e) => e.target === props.id)
-        .map((e) => e.source)
-
-    const isFinal = incomingNodeIds.every((id) =>
-        FINAL_NODES_TYPES.includes(
-            getNode(id)?.type ?? VoiceFlowNodeType.Intermediary,
-        ),
-    )
+    // More than 1 non-final node is converging to this intermediary node
+    const sourceNodes = getSourceNodes(getNode(props.id)!, getNodes())
+    const isFinal =
+        sourceNodes.filter((node) => !FINAL_NODES_TYPES.includes(node.type))
+            .length < 2
 
     return (
         <NodeWrapper {...props}>
@@ -28,7 +26,12 @@ export function IntermediaryNode(props: NodeProps<IntermediaryNode>) {
                     }}
                 ></div>
             ) : (
-                <AddStepButton>Add step</AddStepButton>
+                <AddStepButton>
+                    <AddStepMenuContent
+                        source={props.id}
+                        target={props.data.next_step_id}
+                    />
+                </AddStepButton>
             )}
         </NodeWrapper>
     )

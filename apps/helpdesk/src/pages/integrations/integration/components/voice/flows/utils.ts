@@ -2,7 +2,15 @@ import { Edge } from '@xyflow/react'
 import { cloneDeep } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-import { CallRoutingFlow, CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
+import {
+    CallRoutingFlow,
+    CallRoutingFlowSteps,
+    IvrMenuStep,
+    PlayMessageStep,
+    SendToSMSStep,
+    TimeSplitConditionalRuleType,
+    TimeSplitConditionalStep,
+} from '@gorgias/helpdesk-types'
 
 import { ConvergencePoint } from 'core/ui/flows/types'
 import {
@@ -18,9 +26,12 @@ import {
 import {
     IntermediaryNode,
     IvrMenuNode,
+    IvrOptionNode,
     TimeSplitConditionalNode,
+    TimeSplitOptionNode,
     VoiceFlowNode,
     VoiceFlowNodeBase,
+    VoiceFlowNodeData,
 } from './types'
 
 export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
@@ -46,12 +57,21 @@ export function isVoiceFlowStep(
     )
 }
 
-function isBranchingNode(
+export function isBranchingNode(
     node: VoiceFlowNodeBase,
 ): node is IvrMenuNode | TimeSplitConditionalNode {
     return (
         node.type === VoiceFlowNodeType.IvrMenu ||
         node.type === VoiceFlowNodeType.TimeSplitConditional
+    )
+}
+
+export function isBranchingOption(
+    node: VoiceFlowNodeBase,
+): node is TimeSplitOptionNode | IvrOptionNode {
+    return (
+        node.type === VoiceFlowNodeType.TimeSplitOption ||
+        node.type === VoiceFlowNodeType.IvrOption
     )
 }
 
@@ -98,13 +118,15 @@ export function createIvrOptionNode(
 export function createTimeSplitOptionNode(
     node: TimeSplitConditionalNode,
     nextStepId: string,
+    isTrueBranch: boolean,
 ): VoiceFlowNodeBase {
     return {
-        id: uuidv4(),
+        id: `${node.id}-${isTrueBranch ? 'true' : 'false'}`,
         type: VoiceFlowNodeType.TimeSplitOption,
         data: {
             parentId: node.id,
             next_step_id: nextStepId,
+            isTrueBranch,
         },
     }
 }
@@ -142,10 +164,12 @@ function handleBranchingNode(
             const onTrueNode = createTimeSplitOptionNode(
                 node,
                 node.data.on_true_step_id,
+                true,
             )
             const onFalseNode = createTimeSplitOptionNode(
                 node,
                 node.data.on_false_step_id,
+                false,
             )
 
             const updatedParentNode = {
@@ -188,6 +212,7 @@ export function connectTerminalStepsToEndCallStep(
 
 export function transformToReactFlowNodes(
     flow: CallRoutingFlow,
+    selectedNodeId?: string,
 ): VoiceFlowNode[] {
     const steps = connectTerminalStepsToEndCallStep(flow.steps)
     const nodes = Object.entries(steps).map(([id, step]) => {
@@ -196,6 +221,7 @@ export function transformToReactFlowNodes(
                   id,
                   type: step.step_type,
                   data: step,
+                  selected: selectedNodeId === id,
               }
             : null
     })
@@ -310,4 +336,199 @@ export function getEdgeProps(
         default:
             return { weight: 1, height: 24 }
     }
+}
+
+export const generateNodeData = (
+    type: VoiceFlowNodeType,
+    next_step_id: string | null,
+): VoiceFlowNodeData | null => {
+    switch (type) {
+        case VoiceFlowNodeType.TimeSplitConditional:
+            return {
+                id: uuidv4(),
+                name: 'Time rule',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                on_true_step_id: next_step_id,
+                on_false_step_id: next_step_id,
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            } as TimeSplitConditionalStep
+        case VoiceFlowNodeType.PlayMessage:
+            return {
+                id: uuidv4(),
+                name: 'Play message',
+                step_type: VoiceFlowNodeType.PlayMessage,
+                message: {
+                    voice_message_type: 'text_to_speech',
+                },
+                next_step_id,
+            } as PlayMessageStep
+        case VoiceFlowNodeType.SendToVoicemail:
+            return {
+                id: uuidv4(),
+                name: 'Send to voicemail',
+                step_type: VoiceFlowNodeType.SendToVoicemail,
+                voicemail: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content:
+                        "Hello! Unfortunately, we aren't able to take your call right now. Please call us back later or leave a message. Thank you!",
+                },
+                allow_to_leave_voicemail: true,
+                next_step_id: null,
+            }
+        case VoiceFlowNodeType.SendToSMS:
+            return {
+                id: uuidv4(),
+                name: 'Send to SMS',
+                step_type: VoiceFlowNodeType.SendToSMS,
+                confirmation_message: {
+                    voice_message_type: 'text_to_speech',
+                },
+                next_step_id: null,
+            } as SendToSMSStep
+
+        default:
+            return null
+    }
+}
+
+export const getSourceNodes = (
+    node: VoiceFlowNode,
+    nodes: VoiceFlowNode[],
+): VoiceFlowNode[] => {
+    // Remove intermediary nodes and get their sources instead
+    switch (node.type) {
+        case VoiceFlowNodeType.IncomingCall:
+            return []
+        case VoiceFlowNodeType.Intermediary:
+            const sourceNodes = nodes.filter(
+                (n) => getNextNodes(n, nodes).indexOf(node.id) !== -1,
+            )
+            return [
+                ...new Set(
+                    sourceNodes.map((sn) => getSourceNodes(sn, nodes)).flat(),
+                ),
+            ]
+        default:
+            return [node]
+    }
+}
+
+export const getFormTargetStepId = (
+    node: VoiceFlowNode,
+    getNode: (nodeId: string) => VoiceFlowNode | undefined,
+): string | null => {
+    // Recursively find the next step that is not an intermediary node
+    switch (node.type) {
+        case VoiceFlowNodeType.EndCall:
+            return null
+        case VoiceFlowNodeType.Intermediary:
+            const nextNode = getNode(node.data.next_step_id)
+            if (!nextNode) return null
+            return getFormTargetStepId(nextNode, getNode)
+        default:
+            return node.id
+    }
+}
+
+export const updateTimeSplitNodeData = (
+    data: TimeSplitConditionalStep,
+    oldNextStepId: string | null,
+    newNextStepId: string | null,
+): TimeSplitConditionalStep => {
+    return {
+        ...data,
+        on_true_step_id:
+            data.on_true_step_id === oldNextStepId
+                ? newNextStepId
+                : data.on_true_step_id,
+        on_false_step_id:
+            data.on_false_step_id === oldNextStepId
+                ? newNextStepId
+                : data.on_false_step_id,
+    } as TimeSplitConditionalStep
+}
+
+export const updateIvrMenuNodeData = (
+    data: IvrMenuStep,
+    oldNextStepId: string | null,
+    newNextStepId: string | null,
+): IvrMenuStep => {
+    return {
+        ...data,
+        branch_options: data.branch_options.map((option: any) =>
+            option.next_step_id === oldNextStepId
+                ? { ...option, next_step_id: newNextStepId }
+                : option,
+        ),
+    }
+}
+
+export const linkFormStep = (
+    relatedNode: VoiceFlowNode,
+    formStep: VoiceFlowNodeData | undefined,
+    nextStepId: string,
+): VoiceFlowNodeData | null => {
+    if (!formStep) return null
+
+    switch (formStep.step_type) {
+        case VoiceFlowNodeType.TimeSplitConditional:
+            if (relatedNode.type !== VoiceFlowNodeType.TimeSplitOption) {
+                return null
+            }
+            return {
+                ...formStep,
+                on_true_step_id: relatedNode.data.isTrueBranch
+                    ? nextStepId
+                    : formStep.on_true_step_id,
+                on_false_step_id: !relatedNode.data.isTrueBranch
+                    ? nextStepId
+                    : formStep.on_false_step_id,
+            }
+        case VoiceFlowNodeType.IvrMenu:
+            if (relatedNode.type !== VoiceFlowNodeType.IvrOption) {
+                return null
+            }
+            return {
+                ...formStep,
+                branch_options: formStep.branch_options.map((option, index) =>
+                    index === relatedNode.data.optionIndex
+                        ? {
+                              ...option,
+                              next_step_id: nextStepId,
+                          }
+                        : option,
+                ),
+            }
+        case VoiceFlowNodeType.PlayMessage:
+        case VoiceFlowNodeType.Enqueue:
+            return {
+                ...formStep,
+                next_step_id: nextStepId,
+            }
+        case VoiceFlowNodeType.SendToSMS:
+        case VoiceFlowNodeType.SendToVoicemail:
+            // these are final nodes, we shouldn't be updating them
+            return null
+        default:
+            return null
+    }
+}
+
+export const pointsToEndNode = (
+    node: VoiceFlowNode | undefined,
+    getNode: (id: string) => VoiceFlowNode | undefined,
+): boolean => {
+    if (!node) return false
+    if (node.type === VoiceFlowNodeType.EndCall) {
+        return true
+    }
+    if (node.type === VoiceFlowNodeType.Intermediary) {
+        return pointsToEndNode(
+            node.data.next_step_id
+                ? getNode(node.data.next_step_id)
+                : undefined,
+            getNode,
+        )
+    }
+    return false
 }

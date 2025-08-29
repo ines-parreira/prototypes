@@ -17,6 +17,9 @@ jest.mock('../useVoiceFlow', () => ({
         getNode: mockGetNode,
     }),
 }))
+jest.mock('../AddStepMenuContent', () => () => {
+    return <div>Add step</div>
+})
 
 const defaultProps = {
     id: 'edge-1',

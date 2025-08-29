@@ -6,7 +6,14 @@ import {
     mockSendToVoicemailStep,
     mockTimeSplitConditionalStep,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import {
+    CallRoutingFlow,
+    EnqueueStep,
+    IvrMenuStep,
+    PlayMessageStep,
+    TimeSplitConditionalRuleType,
+    TimeSplitConditionalStep,
+} from '@gorgias/helpdesk-types'
 
 import {
     END_CALL_NODE,
@@ -21,17 +28,28 @@ import {
     PlayMessageNode,
     SendToVoicemailNode,
     TimeSplitConditionalNode,
+    TimeSplitOptionNode,
     VoiceFlowNode,
+    VoiceFlowNodeData,
 } from '../types'
 import {
     canAddNewStepOnEdge,
     createIvrOptionNode,
     createTimeSplitOptionNode,
     findConvergencePointsInVoiceFlow,
+    generateNodeData,
     getEdgeProps,
+    getFormTargetStepId,
     getNextNodes,
+    getSourceNodes,
+    isBranchingNode,
+    isBranchingOption,
     isVoiceFlowStep,
+    linkFormStep,
+    pointsToEndNode,
     transformToReactFlowNodes,
+    updateIvrMenuNodeData,
+    updateTimeSplitNodeData,
 } from '../utils'
 
 describe('utils', () => {
@@ -176,6 +194,7 @@ describe('utils', () => {
             const node = createTimeSplitOptionNode(
                 timeSplitConditionalNode,
                 timeSplitConditionalNode.data.on_true_step_id,
+                true,
             )
 
             expect(node).toEqual({
@@ -184,6 +203,7 @@ describe('utils', () => {
                 data: {
                     parentId: timeSplitConditionalNode.id,
                     next_step_id: timeSplitConditionalNode.data.on_true_step_id,
+                    isTrueBranch: true,
                 },
             })
         })
@@ -251,6 +271,7 @@ describe('utils', () => {
                     id: 'play_message_start',
                     type: VoiceFlowNodeType.PlayMessage,
                     data: playMessageNodeStart,
+                    selected: false,
                 },
                 {
                     id: 'ivr_menu',
@@ -264,6 +285,7 @@ describe('utils', () => {
                             }),
                         ]),
                     },
+                    selected: false,
                 },
                 {
                     id: expect.any(String),
@@ -293,6 +315,7 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
+                    selected: false,
                 },
                 {
                     id: 'time_split_conditional',
@@ -306,6 +329,7 @@ describe('utils', () => {
                             timeSplitConditionalNode.on_false_step_id,
                         ),
                     },
+                    selected: false,
                 },
                 {
                     id: expect.any(String),
@@ -313,6 +337,7 @@ describe('utils', () => {
                     data: {
                         parentId: 'time_split_conditional',
                         next_step_id: 'play_message_3',
+                        isTrueBranch: true,
                     },
                 },
                 {
@@ -321,6 +346,7 @@ describe('utils', () => {
                     data: {
                         parentId: 'time_split_conditional',
                         next_step_id: 'voicemail',
+                        isTrueBranch: false,
                     },
                 },
                 {
@@ -333,6 +359,7 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
+                    selected: false,
                 },
                 {
                     id: 'voicemail',
@@ -344,6 +371,7 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
+                    selected: false,
                 },
                 {
                     ...END_CALL_NODE,
@@ -635,6 +663,833 @@ describe('utils', () => {
             const result = getEdgeProps(edge, nodes)
 
             expect(result).toEqual({ weight: 1, height: 24 })
+        })
+    })
+
+    describe('isBranchingOption', () => {
+        it('should return true for IvrOption node', () => {
+            const node: IvrOptionNode = {
+                type: VoiceFlowNodeType.IvrOption,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: {
+                    parentId: 'parent-1',
+                    optionIndex: 0,
+                    next_step_id: '2',
+                },
+            }
+
+            expect(isBranchingOption(node)).toBe(true)
+        })
+
+        it('should return true for TimeSplitConditional node', () => {
+            const node: TimeSplitOptionNode = {
+                type: VoiceFlowNodeType.TimeSplitOption,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: {
+                    isTrueBranch: true,
+                    parentId: 'parent-1',
+                    next_step_id: '2',
+                },
+            }
+
+            expect(isBranchingOption(node)).toBe(true)
+        })
+
+        it('should return false for PlayMessage node', () => {
+            const node: PlayMessageNode = {
+                type: VoiceFlowNodeType.PlayMessage,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockPlayMessageStep(),
+            }
+
+            expect(isBranchingOption(node)).toBe(false)
+        })
+    })
+
+    describe('isBranchingNode', () => {
+        it('should return true for IvrMenu node', () => {
+            const node: IvrMenuNode = {
+                type: VoiceFlowNodeType.IvrMenu,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockIvrMenuStep(),
+            }
+
+            expect(isBranchingNode(node)).toBe(true)
+        })
+
+        it('should return true for TimeSplitConditional node', () => {
+            const node: TimeSplitConditionalNode = {
+                type: VoiceFlowNodeType.TimeSplitConditional,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockTimeSplitConditionalStep(),
+            }
+
+            expect(isBranchingNode(node)).toBe(true)
+        })
+
+        it('should return false for PlayMessage node', () => {
+            const node: PlayMessageNode = {
+                type: VoiceFlowNodeType.PlayMessage,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockPlayMessageStep(),
+            }
+
+            expect(isBranchingNode(node)).toBe(false)
+        })
+    })
+
+    describe('generateNodeData', () => {
+        it('should generate TimeSplitConditional node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.TimeSplitConditional,
+                'next-step-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Time rule',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                on_true_step_id: 'next-step-id',
+                on_false_step_id: 'next-step-id',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate PlayMessage node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.PlayMessage,
+                'next-step-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Play message',
+                step_type: VoiceFlowNodeType.PlayMessage,
+                message: {
+                    voice_message_type: 'text_to_speech',
+                },
+                next_step_id: 'next-step-id',
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate SendToVoicemail node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.SendToVoicemail,
+                'testing-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Send to voicemail',
+                step_type: VoiceFlowNodeType.SendToVoicemail,
+                voicemail: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: expect.any(String),
+                },
+                allow_to_leave_voicemail: true,
+                next_step_id: null,
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate SendToSMS node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.SendToSMS,
+                'testing-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Send to SMS',
+                step_type: VoiceFlowNodeType.SendToSMS,
+                confirmation_message: {
+                    voice_message_type: 'text_to_speech',
+                },
+                next_step_id: null,
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should return null for unsupported node types', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.IvrOption,
+                'next-step-id',
+            )
+
+            expect(nodeData).toBeNull()
+        })
+    })
+
+    describe('getSourceNodes', () => {
+        const mockNodes: VoiceFlowNode[] = [
+            {
+                id: 'incoming',
+                type: VoiceFlowNodeType.IncomingCall,
+                data: { next_step_id: 'node-1' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'node-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'node-1',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play message',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hello',
+                    },
+                    next_step_id: 'intermediary-1',
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'node-2',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'node-2',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play message',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hi again',
+                    },
+                    next_step_id: 'intermediary-1',
+                },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'intermediary-1',
+                type: VoiceFlowNodeType.Intermediary,
+                data: {
+                    next_step_id: 'node-3',
+                },
+                position: { x: 0, y: 0 },
+            } as IntermediaryNode,
+            {
+                id: 'node-3',
+                type: VoiceFlowNodeType.EndCall,
+                data: {},
+                position: { x: 0, y: 0 },
+            },
+        ]
+
+        it('should return empty array for IncomingCall node', () => {
+            const sourceNodes = getSourceNodes(mockNodes[0], mockNodes)
+
+            expect(sourceNodes).toEqual([])
+        })
+
+        it('should return the node itself if not intermediary or incoming call', () => {
+            const sourceNodes = getSourceNodes(mockNodes[1], mockNodes)
+
+            expect(sourceNodes).toEqual([mockNodes[1]])
+        })
+
+        it('should return source nodes for intermediary node', () => {
+            const sourceNodes = getSourceNodes(mockNodes[3], mockNodes)
+
+            expect(sourceNodes).toHaveLength(2)
+            expect(sourceNodes).toContainEqual(mockNodes[1])
+            expect(sourceNodes).toContainEqual(mockNodes[2])
+        })
+
+        it('should handle EndCall nodes', () => {
+            const mockNodes: VoiceFlowNode[] = [
+                {
+                    id: 'end-call',
+                    type: VoiceFlowNodeType.EndCall,
+                    data: {},
+                    position: { x: 0, y: 0 },
+                },
+            ]
+
+            const sourceNodes = getSourceNodes(mockNodes[0], mockNodes)
+
+            expect(sourceNodes).toEqual([mockNodes[0]])
+        })
+    })
+
+    describe('linkFormStep', () => {
+        it('should update TimeSplitConditional true branch', () => {
+            const relatedNode: TimeSplitOptionNode = {
+                id: 'option-1',
+                type: VoiceFlowNodeType.TimeSplitOption,
+                data: {
+                    parentId: 'time-split-1',
+                    next_step_id: 'old-id',
+                    isTrueBranch: true,
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = {
+                id: 'time-split-1',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'old-id',
+                on_false_step_id: 'other-id',
+            } as TimeSplitConditionalStep
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as TimeSplitConditionalStep
+
+            expect(updated?.on_true_step_id).toBe('new-id')
+            expect(updated?.on_false_step_id).toBe('other-id')
+        })
+
+        it('should update TimeSplitConditional false branch', () => {
+            const relatedNode: TimeSplitOptionNode = {
+                id: 'option-2',
+                type: VoiceFlowNodeType.TimeSplitOption,
+                data: {
+                    parentId: 'time-split-1',
+                    next_step_id: 'old-id',
+                    isTrueBranch: false,
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = {
+                id: 'time-split-1',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'other-id',
+                on_false_step_id: 'old-id',
+            } as TimeSplitConditionalStep
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as TimeSplitConditionalStep
+
+            expect(updated?.on_true_step_id).toBe('other-id')
+            expect(updated?.on_false_step_id).toBe('new-id')
+        })
+
+        it('should update PlayMessage next_step_id', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'play-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'play-1',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play message',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hello',
+                    },
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = relatedNode.data
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as PlayMessageStep
+
+            expect(updated?.next_step_id).toBe('new-id')
+        })
+
+        it('should return null for final nodes', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'sms-1',
+                type: VoiceFlowNodeType.SendToSMS,
+                data: {
+                    id: 'sms-1',
+                    step_type: VoiceFlowNodeType.SendToSMS,
+                    name: 'Send to SMS',
+                    confirmation_message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: '',
+                    },
+                    sms_content: '',
+                    sms_integration_id: 1,
+                    next_step_id: null,
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = relatedNode.data
+
+            const updated = linkFormStep(relatedNode, formStep, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+
+        it('should return null if formStep is undefined', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'node-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'node-1',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play message',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hello',
+                    },
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const updated = linkFormStep(relatedNode, undefined, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+
+        it('should update IvrMenu branch option based on optionIndex', () => {
+            const relatedNode: IvrOptionNode = {
+                id: 'ivr-option-1',
+                type: VoiceFlowNodeType.IvrOption,
+                data: {
+                    parentId: 'ivr-menu-1',
+                    next_step_id: 'old-id',
+                    optionIndex: 1,
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep: IvrMenuStep = {
+                id: 'ivr-menu-1',
+                step_type: VoiceFlowNodeType.IvrMenu,
+                name: 'IVR menu',
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: 'Choose option',
+                },
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        branch_name: 'Option 1',
+                        next_step_id: 'step-1',
+                    },
+                    {
+                        input_digit: '2',
+                        branch_name: 'Option 2',
+                        next_step_id: 'old-id',
+                    },
+                    {
+                        input_digit: '3',
+                        branch_name: 'Option 3',
+                        next_step_id: 'step-3',
+                    },
+                ],
+            }
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as IvrMenuStep
+
+            expect(updated?.branch_options[0].next_step_id).toBe('step-1')
+            expect(updated?.branch_options[1].next_step_id).toBe('new-id')
+            expect(updated?.branch_options[2].next_step_id).toBe('step-3')
+        })
+
+        it('should update Enqueue next_step_id', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'enqueue-1',
+                type: VoiceFlowNodeType.Enqueue,
+                data: {
+                    id: 'enqueue-1',
+                    step_type: VoiceFlowNodeType.Enqueue,
+                    name: 'Enqueue',
+                    queue_id: 1,
+                    next_step_id: 'old-id',
+                } as EnqueueStep,
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = relatedNode.data as EnqueueStep
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as EnqueueStep
+
+            expect(updated?.next_step_id).toBe('new-id')
+        })
+
+        it('should return null for SendToVoicemail (final node)', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'voicemail-1',
+                type: VoiceFlowNodeType.SendToVoicemail,
+                data: {
+                    id: 'voicemail-1',
+                    step_type: VoiceFlowNodeType.SendToVoicemail,
+                    name: 'Send to voicemail',
+                    voicemail: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Leave a message',
+                    },
+                    allow_to_leave_voicemail: true,
+                    next_step_id: null,
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = relatedNode.data
+
+            const updated = linkFormStep(relatedNode, formStep, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+
+        it('should return null for unknown node type', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'unknown-1',
+                type: 'UnknownType' as any,
+                data: {
+                    id: 'unknown-1',
+                    step_type: 'UnknownType' as any,
+                    name: 'Unknown',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = relatedNode.data as VoiceFlowNodeData
+
+            const updated = linkFormStep(relatedNode, formStep, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+
+        it('should return null when TimeSplitConditional relatedNode is wrong type', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'play-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'play-1',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hello',
+                    },
+                    next_step_id: 'next',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep: TimeSplitConditionalStep = {
+                id: 'time-split',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'true-id',
+                on_false_step_id: 'false-id',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            }
+
+            const updated = linkFormStep(relatedNode, formStep, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+
+        it('should return null when IvrMenu relatedNode is wrong type', () => {
+            const relatedNode: VoiceFlowNode = {
+                id: 'play-1',
+                type: VoiceFlowNodeType.PlayMessage,
+                data: {
+                    id: 'play-1',
+                    step_type: VoiceFlowNodeType.PlayMessage,
+                    name: 'Play',
+                    message: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content: 'Hello',
+                    },
+                    next_step_id: 'next',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep: IvrMenuStep = {
+                id: 'ivr-menu',
+                step_type: VoiceFlowNodeType.IvrMenu,
+                name: 'IVR menu',
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: 'Press 1',
+                },
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        branch_name: 'Option 1',
+                        next_step_id: 'step-1',
+                    },
+                ],
+            }
+
+            const updated = linkFormStep(relatedNode, formStep, 'new-id')
+
+            expect(updated).toBeNull()
+        })
+    })
+
+    describe('pointsToEndNode', () => {
+        const getNode = (id: string): VoiceFlowNode | undefined => {
+            const nodes: Record<string, VoiceFlowNode> = {
+                'end-node': {
+                    id: 'end-node',
+                    type: VoiceFlowNodeType.EndCall,
+                    data: {},
+                    position: { x: 0, y: 0 },
+                },
+                'intermediary-1': {
+                    id: 'intermediary-1',
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: { next_step_id: 'end-node' },
+                    position: { x: 0, y: 0 },
+                } as IntermediaryNode,
+                'intermediary-2': {
+                    id: 'intermediary-2',
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: { next_step_id: 'intermediary-1' },
+                    position: { x: 0, y: 0 },
+                } as IntermediaryNode,
+                'play-node': {
+                    id: 'play-node',
+                    type: VoiceFlowNodeType.PlayMessage,
+                    data: {
+                        id: 'play-node',
+                        step_type: VoiceFlowNodeType.PlayMessage,
+                        name: 'Play message',
+                        message: {
+                            voice_message_type: 'text_to_speech',
+                            text_to_speech_content: 'Hello',
+                        },
+                        next_step_id: 'other-node',
+                    },
+                    position: { x: 0, y: 0 },
+                },
+            }
+            return nodes[id]
+        }
+
+        it('should return true for EndCall node', () => {
+            const node = getNode('end-node')
+            const result_value = pointsToEndNode(node, getNode)
+            expect(result_value).toBe(true)
+        })
+
+        it('should return true for intermediary pointing to EndCall', () => {
+            const node = getNode('intermediary-1')
+            const result_value = pointsToEndNode(node, getNode)
+            expect(result_value).toBe(true)
+        })
+
+        it('should return true for chained intermediaries pointing to EndCall', () => {
+            const node = getNode('intermediary-2')
+            const result_value = pointsToEndNode(node, getNode)
+            expect(result_value).toBe(true)
+        })
+
+        it('should return false for non-EndCall nodes', () => {
+            const node = getNode('play-node')
+            const result_value = pointsToEndNode(node, getNode)
+            expect(result_value).toBe(false)
+        })
+
+        it('should return false for undefined node', () => {
+            const result_value = pointsToEndNode(undefined, getNode)
+            expect(result_value).toBe(false)
+        })
+    })
+
+    describe('getFormTargetStepId', () => {
+        const getNode = (id: string): VoiceFlowNode | undefined => {
+            const nodes: Record<string, VoiceFlowNode> = {
+                'play-node': {
+                    id: 'play-node',
+                    type: VoiceFlowNodeType.PlayMessage,
+                    data: {
+                        id: 'play-node',
+                        step_type: VoiceFlowNodeType.PlayMessage,
+                        name: 'Play message',
+                        message: {
+                            voice_message_type: 'text_to_speech',
+                            text_to_speech_content: 'Hello',
+                        },
+                        next_step_id: 'next-node',
+                    },
+                    position: { x: 0, y: 0 },
+                },
+                'intermediary-1': {
+                    id: 'intermediary-1',
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: { next_step_id: 'play-node' },
+                    position: { x: 0, y: 0 },
+                } as IntermediaryNode,
+                'intermediary-2': {
+                    id: 'intermediary-2',
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: { next_step_id: 'intermediary-1' },
+                    position: { x: 0, y: 0 },
+                } as IntermediaryNode,
+                'end-node': {
+                    id: 'end-node',
+                    type: VoiceFlowNodeType.EndCall,
+                    data: {},
+                    position: { x: 0, y: 0 },
+                },
+                'time-split': {
+                    id: 'time-split',
+                    type: VoiceFlowNodeType.TimeSplitConditional,
+                    data: {
+                        id: 'time-split',
+                        step_type: VoiceFlowNodeType.TimeSplitConditional,
+                        name: 'Time rule',
+                        on_true_step_id: 'node-1',
+                        on_false_step_id: 'node-2',
+                        rule_type: TimeSplitConditionalRuleType.BusinessHours,
+                        custom_hours: null,
+                    },
+                    position: { x: 0, y: 0 },
+                } as TimeSplitConditionalNode,
+            }
+            return nodes[id]
+        }
+
+        it('should return node id for regular nodes', () => {
+            const node = getNode('play-node')!
+            const targetId = getFormTargetStepId(node, getNode)
+            expect(targetId).toBe('play-node')
+        })
+
+        it('should recursively resolve intermediary nodes', () => {
+            const node = getNode('intermediary-1')!
+            const targetId = getFormTargetStepId(node, getNode)
+            expect(targetId).toBe('play-node')
+        })
+
+        it('should handle chained intermediary nodes', () => {
+            const node = getNode('intermediary-2')!
+            const targetId = getFormTargetStepId(node, getNode)
+            expect(targetId).toBe('play-node')
+        })
+
+        it('should return null for EndCall node', () => {
+            const node = getNode('end-node')!
+            const targetId = getFormTargetStepId(node, getNode)
+            expect(targetId).toBeNull()
+        })
+    })
+
+    describe('updateTimeSplitNodeData', () => {
+        it('should update on_true_step_id when it matches oldNextStepId', () => {
+            const data: TimeSplitConditionalStep = {
+                id: 'time-split',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'old-id',
+                on_false_step_id: 'other-id',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            }
+
+            const updated = updateTimeSplitNodeData(data, 'old-id', 'new-id')
+
+            expect(updated.on_true_step_id).toBe('new-id')
+            expect(updated.on_false_step_id).toBe('other-id')
+        })
+
+        it('should update on_false_step_id when it matches oldNextStepId', () => {
+            const data: TimeSplitConditionalStep = {
+                id: 'time-split',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'other-id',
+                on_false_step_id: 'old-id',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            }
+
+            const updated = updateTimeSplitNodeData(data, 'old-id', 'new-id')
+
+            expect(updated.on_true_step_id).toBe('other-id')
+            expect(updated.on_false_step_id).toBe('new-id')
+        })
+
+        it('should update both branches when both match oldNextStepId', () => {
+            const data: TimeSplitConditionalStep = {
+                id: 'time-split',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'old-id',
+                on_false_step_id: 'old-id',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            }
+
+            const updated = updateTimeSplitNodeData(data, 'old-id', 'new-id')
+
+            expect(updated.on_true_step_id).toBe('new-id')
+            expect(updated.on_false_step_id).toBe('new-id')
+        })
+
+        it('should not update branches when they do not match oldNextStepId', () => {
+            const data: TimeSplitConditionalStep = {
+                id: 'time-split',
+                step_type: VoiceFlowNodeType.TimeSplitConditional,
+                name: 'Time rule',
+                on_true_step_id: 'different-id-1',
+                on_false_step_id: 'different-id-2',
+                rule_type: TimeSplitConditionalRuleType.BusinessHours,
+            }
+
+            const updated = updateTimeSplitNodeData(data, 'old-id', 'new-id')
+
+            expect(updated.on_true_step_id).toBe('different-id-1')
+            expect(updated.on_false_step_id).toBe('different-id-2')
+        })
+    })
+
+    describe('updateIvrMenuNodeData', () => {
+        it('should update multiple branch options when they match', () => {
+            const data: IvrMenuStep = {
+                id: 'ivr-menu',
+                step_type: VoiceFlowNodeType.IvrMenu,
+                name: 'IVR menu',
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: 'Press 1 or 2',
+                },
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        branch_name: 'Option 1',
+                        next_step_id: 'old-id',
+                    },
+                    {
+                        input_digit: '2',
+                        branch_name: 'Option 2',
+                        next_step_id: 'old-id',
+                    },
+                    {
+                        input_digit: '3',
+                        branch_name: 'Option 3',
+                        next_step_id: 'other-id',
+                    },
+                ],
+            }
+
+            const updated = updateIvrMenuNodeData(data, 'old-id', 'new-id')
+
+            expect(updated.branch_options[0].next_step_id).toBe('new-id')
+            expect(updated.branch_options[1].next_step_id).toBe('new-id')
+            expect(updated.branch_options[2].next_step_id).toBe('other-id')
         })
     })
 })

@@ -18,27 +18,36 @@ export function useAutoLayout<TNode extends Node>(
         edge: Edge,
         nodes: TNode[],
     ) => { weight?: number; height?: number },
+    computeEdges?: (nodes: TNode[]) => Edge[],
 ): void {
     const nodeCount = useStore(nodeCountSelector)
     const nodesInitialized = useNodesInitialized()
-    const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<TNode>()
+    const {
+        getNodes,
+        setNodes,
+        getEdges: getDefaultEdges,
+        setEdges,
+    } = useReactFlow<TNode, Edge>()
 
     useEffect(() => {
+        if (!nodesInitialized) return
         if (nodeCount > 0) {
             const nodes = getNodes()
-            const edges = getEdges()
-            const { nodes: newNodes } = getLayoutedElements(
+            const edges = computeEdges ? computeEdges(nodes) : getDefaultEdges()
+            const { nodes: newNodes, edges: newEdges } = getLayoutedElements(
                 nodes,
                 edges,
                 getEdgeProps,
             )
 
             setNodes(newNodes)
+            setEdges(newEdges)
         }
     }, [
         nodeCount,
         getNodes,
-        getEdges,
+        computeEdges,
+        getDefaultEdges,
         setNodes,
         setEdges,
         nodesInitialized,

@@ -1,0 +1,63 @@
+import { AddStepMenuItem } from 'core/ui/flows/components/AddStepMenuItem'
+import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
+
+import { VoiceFlowNodeType } from './constants'
+import { useAddNode } from './utils/useAddNode'
+
+function AddStepMenuContent({
+    source,
+    target,
+}: {
+    source: string
+    target: string
+}) {
+    const { addNode, canAddFinalNode } = useAddNode(source, target)
+
+    return (
+        <>
+            <AddStepMenuItem
+                icon={<StepCardIcon backgroundColor="purple" name="clock" />}
+                label={'Time rule'}
+                onClick={() => addNode(VoiceFlowNodeType.TimeSplitConditional)}
+            />
+            <AddStepMenuItem
+                icon={
+                    <StepCardIcon
+                        backgroundColor="blue"
+                        name="media-play-circle"
+                    />
+                }
+                label={'Play message'}
+                onClick={() => addNode(VoiceFlowNodeType.PlayMessage)}
+            />
+            {canAddFinalNode && (
+                <>
+                    <AddStepMenuItem
+                        icon={
+                            <StepCardIcon
+                                backgroundColor="green"
+                                name="comm-chat-dots"
+                            />
+                        }
+                        label={'Send to SMS'}
+                        onClick={() => addNode(VoiceFlowNodeType.SendToSMS)}
+                    />
+                    <AddStepMenuItem
+                        icon={
+                            <StepCardIcon
+                                backgroundColor="yellow"
+                                name="comm-voicemail"
+                            />
+                        }
+                        label={'Send to voicemail'}
+                        onClick={() =>
+                            addNode(VoiceFlowNodeType.SendToVoicemail)
+                        }
+                    />
+                </>
+            )}
+        </>
+    )
+}
+
+export default AddStepMenuContent

@@ -58,7 +58,7 @@ export function findConvergencePoints<TNode extends Node>(
     const allNodes = nodes.map((n) => n.id)
     const incomingEdges = buildIncomingEdgesMap(nodes, getNextNodes)
 
-    // Find nodes that have multiple incoming edges, excluding intermediary nodes
+    // Find nodes that have multiple incoming edges
     for (const nodeId of allNodes) {
         const incomingNodes = incomingEdges[nodeId] || []
         if (incomingNodes.length > 1) {

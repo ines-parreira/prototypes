@@ -1,5 +1,6 @@
 import {
     CallRoutingFlow,
+    CallRoutingFlowSteps,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
@@ -20,6 +21,7 @@ export type IvrOptionStep = {
 
 export type TimeSplitOptionStep = {
     parentId: string
+    isTrueBranch: boolean
     next_step_id: string
 }
 
@@ -57,6 +59,8 @@ export type IntermediaryNode = Node<
     },
     VoiceFlowNodeType.Intermediary
 >
+
+export type VoiceFlowNodeData = CallRoutingFlowSteps[string]
 
 export type VoiceFlowNode =
     | IncomingCallNode

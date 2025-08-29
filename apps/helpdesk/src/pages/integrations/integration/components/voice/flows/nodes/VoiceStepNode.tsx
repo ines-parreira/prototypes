@@ -32,7 +32,7 @@ export function VoiceStepNode({
     drawerRef,
     ...rest
 }: VoiceStepNodeProps) {
-    const [selected, setSelected] = useState(false)
+    const [selected, setSelected] = useState(rest.selected || false)
     const handleDrawerClose = () => {
         setSelected(false)
     }
