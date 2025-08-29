@@ -9,6 +9,7 @@ import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { Cadence, cadenceNames } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -154,7 +155,7 @@ const BillingStartView = () => {
                     ].join('\n')
                 case TicketPurpose.MONTHLY_TO_YEARLY:
                     return [
-                        `Billing request: Subscription change from Monthly to Yearly with Voice/SMS`,
+                        `Billing request: Subscription change from ${cadenceNames[Cadence.Month]} to ${cadenceNames[Cadence.Year]} with Voice/SMS`,
                         `Request:`,
                         message,
                     ].join('\n')
