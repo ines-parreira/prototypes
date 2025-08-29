@@ -1,11 +1,16 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { AutomatePlan, Cadence, HelpdeskPlan } from 'models/billing/types'
+import {
+    AutomatePlan,
+    Cadence,
+    cadenceNames,
+    HelpdeskPlan,
+} from 'models/billing/types'
 import { isLegacyAutomate } from 'models/billing/utils'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
@@ -75,7 +80,8 @@ const PaymentInformationView = ({
         } else {
             toolTipContent = (
                 <>
-                    To switch from yearly to monthly billing, please{' '}
+                    To switch from {cadenceNames[Cadence.Year]} to{' '}
+                    {cadenceNames[Cadence.Month]} billing, please{' '}
                     <span
                         className={css.link}
                         onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
