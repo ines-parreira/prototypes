@@ -8,7 +8,7 @@ import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _memoize from 'lodash/memoize'
 import moment, { Moment } from 'moment'
 
-import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
+import { TicketVia } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
 import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
@@ -88,9 +88,6 @@ export class Container extends Component<Props> {
             flags,
             isImpersonated,
         } = this.props
-
-        const isInternalNote =
-            message.source?.type === TicketMessageSourceType.InternalNote
 
         const hasTicketThreadRevamp =
             !!flags?.[FeatureFlagKey.TicketThreadRevamp]
@@ -270,7 +267,6 @@ export class Container extends Component<Props> {
                                 (isTicketAfterFeedbackCollectionPeriod ? (
                                     showAiReasoning &&
                                     message.id &&
-                                    !isInternalNote &&
                                     message.via === TicketVia.Api &&
                                     shouldTicketHaveReasoning &&
                                     (isImpersonated ||
