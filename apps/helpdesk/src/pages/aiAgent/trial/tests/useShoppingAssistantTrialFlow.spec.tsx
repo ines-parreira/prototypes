@@ -15,6 +15,7 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { useAiAgentTrialOnboarding } from '../hooks/useAiAgentTrialOnboarding'
 import { useNotifyTrialExtensionSlackChannel } from '../hooks/useNotifyTrialExtensionSlackChannel'
 import { useShoppingAssistantTrialFlow } from '../hooks/useShoppingAssistantTrialFlow'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
@@ -22,6 +23,7 @@ import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssista
 // Mock the hooks
 jest.mock('../hooks/useStartShoppingAssistantTrial')
 jest.mock('../hooks/useNotifyTrialExtensionSlackChannel')
+jest.mock('../hooks/useAiAgentTrialOnboarding')
 jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useModalManager')
 jest.mock('common/segment')
@@ -34,6 +36,7 @@ const mockUseStartShoppingAssistantTrial = assumeMock(
 const mockUseStartAiAgentTrialMutation = assumeMock(
     useStartAiAgentTrialMutation,
 )
+const mockUseAiAgentTrialOnboarding = assumeMock(useAiAgentTrialOnboarding)
 const mockUseModalManager = assumeMock(useModalManager)
 const mockUseNotifyTrialExtensionSlackChannel = assumeMock(
     useNotifyTrialExtensionSlackChannel,
@@ -45,6 +48,7 @@ const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockDispatch = jest.fn()
 const mockNotifySlackChannel = jest.fn()
 const mockHistoryPush = jest.fn()
+const mockStartOnboardingAfterTrial = jest.fn()
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
@@ -102,6 +106,10 @@ describe('useShoppingAssistantTrialFlow', () => {
         )
 
         mockUseAppDispatch.mockReturnValue(mockDispatch)
+
+        mockUseAiAgentTrialOnboarding.mockReturnValue({
+            startOnboardingAfterTrial: mockStartOnboardingAfterTrial,
+        })
 
         // Create a new QueryClient for each test
         queryClient = new QueryClient({
@@ -802,6 +810,9 @@ describe('useShoppingAssistantTrialFlow', () => {
 
                 // Check callbacks were called
                 expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+
+                // Check onboarding was started
+                expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
             })
         })
 
@@ -870,6 +881,9 @@ describe('useShoppingAssistantTrialFlow', () => {
                     'AiAgentTrialUpgradeModal',
                 )
                 expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+
+                // 5. Verify onboarding was started
+                expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
             })
 
             it('should handle complete Shopping Assistant trial flow using startTrial', async () => {
@@ -915,6 +929,9 @@ describe('useShoppingAssistantTrialFlow', () => {
                     'ShoppingAssistantTrialFinishSetupModal',
                 )
                 expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
+
+                // 6. Verify onboarding was NOT started for Shopping Assistant trial
+                expect(mockStartOnboardingAfterTrial).not.toHaveBeenCalled()
             })
         })
     })

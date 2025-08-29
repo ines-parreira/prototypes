@@ -20,6 +20,7 @@ export type PlanDetails = {
     title: string
     description: string
     price: string
+    currency: string
     billingPeriod: Cadence
     priceTooltipText?: string
     features: {

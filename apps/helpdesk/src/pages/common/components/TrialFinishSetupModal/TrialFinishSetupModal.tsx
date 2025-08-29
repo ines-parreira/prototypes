@@ -135,7 +135,7 @@ const TrialFinishSetupModal = ({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            size="large"
+            size="huge"
             classNameContent={css.modalContent}
         >
             <ModalBody className={css.body}>

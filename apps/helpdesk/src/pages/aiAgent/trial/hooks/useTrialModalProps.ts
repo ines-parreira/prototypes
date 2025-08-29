@@ -34,7 +34,10 @@ import {
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
-import { TrialTryModalProps } from 'pages/common/components/TrialTryModal/TrialTryModal'
+import {
+    TrialFeature,
+    TrialTryModalProps,
+} from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
@@ -67,6 +70,47 @@ export const AI_AGENT_ADVANTAGES = [
     '60% support inquiries',
     '35% faster ticket handling',
     '62% conversion rate',
+]
+
+const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description: 'We’ll remind you when you’re halfway through your trial.',
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description:
+            'Your new AI Agent plan kicks in automatically after the trial so you can keep automating support and growing revenue.',
+    },
+]
+
+const SHOPPING_ASSISTANT_TRIAL_FEATURES: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. All shopping assistant features are unlocked, so you can start boosting conversions today.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description:
+            'Mid-trial reminder: optimize your conversion strategies and explore advanced shopping features.',
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description:
+            'Your new AI Agent plan with shopping assistant features kicks in automatically to keep growing revenue.',
+    },
 ]
 
 export type TrialModalProps = {
@@ -108,6 +152,7 @@ export type TrialModalProps = {
         | 'primaryAction'
         | 'secondaryAction'
         | 'onClose'
+        | 'features'
     >
     trialRequestModal: Pick<
         RequestTrialModalProps,
@@ -173,6 +218,7 @@ const createPlanModalData = (
         title: 'AI Agent',
         description: 'Provide best-in-class automated support',
         price: planDetails.currentPlanAmountFormatted,
+        currency: planDetails.currency,
         billingPeriod: planDetails.currentPlanCadence,
         features: [
             {
@@ -198,6 +244,7 @@ const createPlanModalData = (
         title: 'AI Agent + Shopping Assistant',
         description: 'Add powerful conversion features to your support flow',
         price: planDetails.earlyAccessPlanAmount,
+        currency: planDetails.currency,
         billingPeriod: planDetails.earlyAccessPlanCadence,
         features: [
             {
@@ -282,17 +329,29 @@ const useNewTrialUpgradePlanModal = (
             trialType,
         })
 
-    const aiAgentProps = useMemo(
-        () => ({
-            ...createPlanModalData(
-                '',
-                planDetails,
-                {
-                    current: '',
-                    new: '',
-                },
-                isMultiStore,
-            ),
+    const aiAgentProps = useMemo(() => {
+        const planModalData = createPlanModalData(
+            '',
+            planDetails,
+            {
+                current: '',
+                new: '',
+            },
+            isMultiStore,
+        )
+
+        let tooltip = `You’ll be moved from Helpdesk to Helpdesk + AI Agent plan. Once you upgrade, each support or sales resolution will cost $1, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`
+        if (isMultiStore) {
+            tooltip += ' Upgrade will apply to all stores.'
+        }
+
+        return {
+            ...planModalData,
+            currentPlan: null,
+            newPlan: {
+                ...planModalData.newPlan,
+                priceTooltipText: tooltip,
+            },
             title: 'Try AI Agent for free',
             subtitle:
                 'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
@@ -305,15 +364,15 @@ const useNewTrialUpgradePlanModal = (
                 onClick: onDismissTrialUpgradeModal,
             },
             onClose: closeTrialUpgradeModal,
-        }),
-        [
-            planDetails,
-            startTrial,
-            onDismissTrialUpgradeModal,
-            closeTrialUpgradeModal,
-            isMultiStore,
-        ],
-    )
+            features: AI_AGENT_TRIAL_FEATURES,
+        }
+    }, [
+        planDetails,
+        startTrial,
+        onDismissTrialUpgradeModal,
+        closeTrialUpgradeModal,
+        isMultiStore,
+    ])
 
     const shoppingAssistantProps = useMemo(
         () => ({
@@ -338,6 +397,7 @@ const useNewTrialUpgradePlanModal = (
                 onClick: onDismissTrialUpgradeModal,
             },
             onClose: closeTrialUpgradeModal,
+            features: SHOPPING_ASSISTANT_TRIAL_FEATURES,
         }),
         [
             planDetails,

@@ -141,6 +141,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
@@ -149,6 +150,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
@@ -163,6 +165,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
@@ -171,6 +174,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
@@ -222,6 +226,7 @@ const mockTrialModalProps = {
             title: 'Current Plan',
             description: 'Current plan description',
             price: '$100',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [{ label: 'Feature 1', isError: false }],
             buttonText: 'Keep current plan',
@@ -230,6 +235,7 @@ const mockTrialModalProps = {
             title: 'New Plan',
             description: 'New plan description',
             price: '$200',
+            currency: 'USD',
             billingPeriod: Cadence.Month,
             features: [
                 { label: 'Feature 1', isError: false },
@@ -246,6 +252,13 @@ const mockTrialModalProps = {
             label: 'Secondary Action',
             onClick: jest.fn(),
         },
+        features: [
+            {
+                icon: 'check',
+                title: 'Today',
+                description: 'Test feature description',
+            },
+        ],
     },
     trialEndingModal: {
         title: 'Shopping Assistant trial ends tomorrow',

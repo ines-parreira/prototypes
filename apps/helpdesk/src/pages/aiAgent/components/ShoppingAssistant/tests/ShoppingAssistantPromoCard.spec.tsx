@@ -148,13 +148,29 @@ describe('ShoppingAssistantPromoCard', () => {
         mockUseTrialModalProps.mockReturnValue({
             trialUpgradePlanModal: {
                 title: 'Mock Trial Upgrade',
+                subtitle: 'Mock subtitle',
                 currentPlan: { name: 'Mock Current Plan', amount: '$100' },
                 newPlan: { name: 'Mock New Plan', amount: '$200' },
+                features: [
+                    {
+                        icon: 'star',
+                        title: 'Mock Feature',
+                        description: 'Mock feature description',
+                    },
+                ],
             },
             upgradePlanModal: {
                 title: 'Mock Upgrade Plan',
+                subtitle: 'Mock subtitle',
                 currentPlan: { name: 'Mock Current Plan', amount: '$100' },
                 newPlan: { name: 'Mock New Plan', amount: '$200' },
+                features: [
+                    {
+                        icon: 'star',
+                        title: 'Mock Feature',
+                        description: 'Mock feature description',
+                    },
+                ],
             },
             trialActivatedModal: {
                 title: 'Mock Trial Activated',
@@ -199,6 +215,13 @@ describe('ShoppingAssistantPromoCard', () => {
                     onClick: jest.fn(),
                 },
                 onClose: jest.fn(),
+                features: [
+                    {
+                        icon: 'star',
+                        title: 'Mock Feature',
+                        description: 'Mock feature description',
+                    },
+                ],
             },
             trialEndedModal: {
                 title: 'Mock Trial Ended',

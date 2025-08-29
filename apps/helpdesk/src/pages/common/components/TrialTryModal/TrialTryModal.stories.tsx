@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { Cadence, cadenceNames } from 'models/billing/types'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
-import TrialTryModal from './TrialTryModal'
+import TrialTryModal, { TrialFeature } from './TrialTryModal'
 
 const meta: Meta<typeof TrialTryModal> = {
     title: 'Overlays/TrialTryModal',
@@ -31,6 +31,7 @@ type Story = StoryObj<typeof TrialTryModal>
 const currentPlan = {
     name: 'Basic',
     price: '$50',
+    currency: 'USD',
     billingPeriod: Cadence.Month,
     priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $50 per seat`,
 } as unknown as PlanDetails
@@ -38,9 +39,31 @@ const currentPlan = {
 const newPlan = {
     name: 'Pro',
     price: '$100',
+    currency: 'USD',
     billingPeriod: Cadence.Month,
     priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
 } as unknown as PlanDetails
+
+const mockFeatures: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. All shopping assistant features are unlocked, so you can start boosting conversions today.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description:
+            'Mid-trial reminder: optimize your conversion strategies and explore advanced shopping features.',
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description:
+            'Your new AI Agent plan with shopping assistant features kicks in automatically to keep growing revenue.',
+    },
+]
 
 const TRIAL_TITLE = 'Unlock new AI Agent skills at no extra cost'
 const TRIAL_SUBTITLE =
@@ -65,5 +88,6 @@ export const Default: Story = {
         isLoading: false,
         currentPlan,
         newPlan,
+        features: mockFeatures,
     },
 }

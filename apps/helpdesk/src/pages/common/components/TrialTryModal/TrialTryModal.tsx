@@ -7,8 +7,15 @@ import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
 import css from './TrialTryModal.less'
+
+export type TrialFeature = {
+    icon: string
+    title: string
+    description: string
+}
 
 export type TrialTryModalProps = {
     title: string
@@ -25,39 +32,17 @@ export type TrialTryModalProps = {
     }
     showTermsCheckbox?: boolean
     isLoading?: boolean
-    currentPlan: PlanDetails
+    currentPlan: PlanDetails | null
     newPlan: PlanDetails
+    features: TrialFeature[]
 }
-
-const STATIC_FEATURES = [
-    {
-        icon: 'check',
-        title: 'Today',
-        description:
-            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
-    },
-    {
-        icon: 'notifications_none',
-        title: 'Day 7',
-        description: "We'll remind you when you're halfway through your trial.",
-    },
-    {
-        icon: 'star_outline',
-        title: 'Day 14',
-        description:
-            'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with shopping assistant, unless you cancel during your trial.',
-    },
-]
 
 const FeatureCard = ({
     icon,
     title,
     description,
     isLast,
-}: {
-    icon: string
-    title: string
-    description: string
+}: TrialFeature & {
     isLast: boolean
 }) => (
     <div className={css.featureCard}>
@@ -153,18 +138,29 @@ const PlanPricingSection = ({
     currentPlan,
     newPlan,
 }: {
-    currentPlan: PlanDetails
+    currentPlan: PlanDetails | null
     newPlan: PlanDetails
 }) => (
     <div className={css.planContainer}>
-        <div className={css.planHeader}>
-            <div>Current plan</div>
-            <div>
-                {currentPlan.price} / {currentPlan.billingPeriod}
+        {!!currentPlan ? (
+            <div className={css.planHeader}>
+                <div>Current plan</div>
+                <div>
+                    {currentPlan.price} / {currentPlan.billingPeriod}
+                </div>
             </div>
-        </div>
+        ) : (
+            <div className={classNames(css.trialPlan, css.planHeader)}>
+                <div>Today</div>
+                <div>{formatAmount(0, newPlan.currency)}</div>
+            </div>
+        )}
 
-        <div className={classNames(css.trialPlan, css.planHeader)}>
+        <div
+            className={classNames(css.planHeader, {
+                [css.trialPlan]: !!currentPlan,
+            })}
+        >
             <div>After trial ends</div>
             <div>
                 <span className={css.trialPlanPrice}>
@@ -206,6 +202,7 @@ const TrialTryModal = ({
     isLoading = false,
     currentPlan,
     newPlan,
+    features,
 }: TrialTryModalProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
@@ -231,7 +228,7 @@ const TrialTryModal = ({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            size="large"
+            size="huge"
             classNameContent={css.modalContent}
         >
             <ModalBody className={css.body}>
@@ -263,11 +260,11 @@ const TrialTryModal = ({
                 </div>
 
                 <div className={css.featureContainer}>
-                    {STATIC_FEATURES.map((item, index) => (
+                    {features.map((item, index) => (
                         <FeatureCard
                             key={index}
                             {...item}
-                            isLast={index === STATIC_FEATURES.length - 1}
+                            isLast={index === features.length - 1}
                         />
                     ))}
                 </div>

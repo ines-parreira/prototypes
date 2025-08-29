@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { Cadence, cadenceNames } from 'models/billing/types'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
-import TrialTryModal from '../TrialTryModal'
+import TrialTryModal, { TrialFeature } from '../TrialTryModal'
 
 const mockCurrentPlan = {
     name: 'Basic',
@@ -19,6 +19,25 @@ const mockNewPlan = {
     billingPeriod: Cadence.Month,
     priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
 } as unknown as PlanDetails
+
+const mockFeatures: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. All features are unlocked.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description: "We'll remind you when you're halfway through your trial.",
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description: 'Your new plan kicks in automatically after the trial.',
+    },
+]
 
 const defaultProps = {
     title: 'Unlock new AI Agent skills',
@@ -37,6 +56,7 @@ const defaultProps = {
     isLoading: false,
     currentPlan: mockCurrentPlan,
     newPlan: mockNewPlan,
+    features: mockFeatures,
 }
 
 describe('<TrialTryModal />', () => {
@@ -148,5 +168,18 @@ describe('<TrialTryModal />', () => {
         await user.click(primaryButton)
 
         expect(defaultProps.primaryAction.onClick).not.toHaveBeenCalled()
+    })
+
+    it('displays "Today" and "0" when currentPlan is null', () => {
+        render(<TrialTryModal {...defaultProps} currentPlan={null} />)
+
+        expect(screen.getAllByText('Today')).toHaveLength(2)
+        expect(screen.getByText('$0')).toBeInTheDocument()
+        expect(screen.getByText('After trial ends')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                `${mockNewPlan.price} / ${mockNewPlan.billingPeriod}`,
+            ),
+        ).toBeInTheDocument()
     })
 })

@@ -226,6 +226,7 @@ describe('useTrialModalProps', () => {
                     title: 'AI Agent',
                     description: 'Provide best-in-class automated support',
                     price: '$180',
+                    currency: 'usd',
                     billingPeriod: Cadence.Month,
                     features: [
                         {
@@ -252,6 +253,7 @@ describe('useTrialModalProps', () => {
                     description:
                         'Add powerful conversion features to your support flow',
                     price: '$30',
+                    currency: 'usd',
                     billingPeriod: Cadence.Month,
                     features: [
                         {
@@ -2187,7 +2189,7 @@ describe('useTrialModalProps', () => {
                 )
                 expect(modal.primaryAction?.label).toBe('Start trial now')
                 expect(modal.secondaryAction?.label).toBe('No, thanks')
-                expect(modal.currentPlan.title).toBe('AI Agent')
+                expect(modal.currentPlan?.title).toBe('AI Agent')
                 expect(modal.newPlan.title).toBe(
                     'AI Agent + Shopping Assistant',
                 )
@@ -2232,6 +2234,72 @@ describe('useTrialModalProps', () => {
                 )
                 expect(modal.primaryAction?.label).toBe('Start Free Trial Now')
                 expect(modal.secondaryAction?.label).toBe('No, thanks')
+            })
+
+            it('should include correct tooltip for AI Agent trial single store', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        canSeeTrialCTA: true,
+                        isAdminUser: true,
+                        trialType: TrialType.AiAgent,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'be moved from Helpdesk to Helpdesk + AI Agent plan',
+                )
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'each support or sales resolution will cost $1',
+                )
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'plus a $0.18 helpdesk fee',
+                )
+                expect(modal.newPlan.priceTooltipText).not.toContain(
+                    'Upgrade will apply to all stores',
+                )
+            })
+
+            it('should handle different currencies in AI Agent trial tooltip', () => {
+                const mockBillingState = {
+                    data: {
+                        current_plans: {
+                            automate: { amount: 5000, currency: 'EUR' },
+                            helpdesk: { amount: 10000, num_quota_tickets: 100 },
+                        },
+                    },
+                } as any
+
+                mockUseBillingState.mockReturnValue(mockBillingState)
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        canSeeTrialCTA: true,
+                        isAdminUser: true,
+                        trialType: TrialType.AiAgent,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'be moved from Helpdesk to Helpdesk + AI Agent plan',
+                )
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'each support or sales resolution will cost $1',
+                )
+                expect(modal.newPlan.priceTooltipText).toContain(
+                    'plus a €1 helpdesk fee',
+                )
             })
 
             it('should call startTrial when primary action is clicked for AI Agent', () => {

@@ -13,6 +13,7 @@ import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopName
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { useAiAgentTrialOnboarding } from './useAiAgentTrialOnboarding'
 import { useNotifyTrialExtensionSlackChannel } from './useNotifyTrialExtensionSlackChannel'
 import { useStartShoppingAssistantTrial } from './useStartShoppingAssistantTrial'
 
@@ -160,6 +161,10 @@ export const useShoppingAssistantTrialFlow = ({
             },
         })
 
+    const { startOnboardingAfterTrial } = useAiAgentTrialOnboarding({
+        shopName,
+    })
+
     const startTrialDeprecated = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
@@ -211,9 +216,11 @@ export const useShoppingAssistantTrialFlow = ({
             trialType: TrialType.AiAgent,
         })
         triggerAiAgentTrialMutation(['shopify', shopName, optedInForUpgrade], {
-            onSuccess: () => {
+            onSuccess: async () => {
                 trialModal.closeModal(trialUpgradeModalName)
                 onUpgradeModalClose?.()
+
+                await startOnboardingAfterTrial()
             },
         })
     }

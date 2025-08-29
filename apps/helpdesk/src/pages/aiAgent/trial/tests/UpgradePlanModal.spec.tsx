@@ -14,6 +14,7 @@ describe('UpgradePlanModal', () => {
         title: 'Current Plan',
         description: 'Your existing plan features',
         price: '$299',
+        currency: 'usd',
         billingPeriod: Cadence.Month,
         features: [
             { label: 'Feature 1', isError: false },
@@ -27,6 +28,7 @@ describe('UpgradePlanModal', () => {
         title: 'Premium Plan',
         description: 'Unlock advanced features',
         price: '$599',
+        currency: 'usd',
         billingPeriod: Cadence.Month,
         priceTooltipText: 'Price includes all premium features',
         features: [
