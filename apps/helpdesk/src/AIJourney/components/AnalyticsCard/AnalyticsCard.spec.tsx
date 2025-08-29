@@ -117,17 +117,13 @@ const cleanStatsFilters = {
 
 describe('<AnalyticsCard />', () => {
     beforeEach(() => {
+        appQueryClient.clear()
         mockUseParams.mockReturnValue({ shopName: 'test-shop' })
 
         getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
             userTimezone: 'someTimezone',
             cleanStatsFilters,
             granularity: ReportingGranularity.Day,
-        })
-
-        mockHandleUpdate.mockClear()
-        mockHandleUpdate.mockResolvedValue({
-            data: { state: JourneyStatusEnum.Paused },
         })
     })
 
@@ -189,7 +185,13 @@ describe('<AnalyticsCard />', () => {
         expect(screen.getByTestId('discount-card')).toBeInTheDocument()
     })
 
-    it('should call handleUpdate with correct parameters when clicking pause/activate button', async () => {
+    it('should call handleUpdate with correct parameters when clicking pause button', async () => {
+        mockHandleUpdate.mockClear()
+        mockHandleUpdate.mockResolvedValue({
+            data: { state: JourneyStatusEnum.Paused },
+        })
+
+        const user = userEvent.setup()
         render(
             <MemoryRouter>
                 <QueryClientProvider client={appQueryClient}>
@@ -207,8 +209,8 @@ describe('<AnalyticsCard />', () => {
         )
 
         const moreButton = screen.getByLabelText('Open options')
-        act(() => {
-            userEvent.click(moreButton)
+        await act(async () => {
+            await user.click(moreButton)
         })
 
         await waitFor(() => {
@@ -216,8 +218,8 @@ describe('<AnalyticsCard />', () => {
         })
 
         const pauseButton = screen.getByText('Pause')
-        act(() => {
-            userEvent.click(pauseButton)
+        await act(async () => {
+            await user.click(pauseButton)
         })
 
         await waitFor(() => {
@@ -229,10 +231,12 @@ describe('<AnalyticsCard />', () => {
     })
 
     it('should call handleUpdate with correct parameters when clicking activate button', async () => {
+        mockHandleUpdate.mockClear()
         mockHandleUpdate.mockResolvedValue({
             data: { state: JourneyStatusEnum.Active },
         })
 
+        const user = userEvent.setup()
         render(
             <MemoryRouter>
                 <QueryClientProvider client={appQueryClient}>
@@ -253,8 +257,8 @@ describe('<AnalyticsCard />', () => {
         )
 
         const moreButton = screen.getByLabelText('Open options')
-        act(() => {
-            userEvent.click(moreButton)
+        await act(async () => {
+            await user.click(moreButton)
         })
 
         await waitFor(() => {
@@ -262,8 +266,8 @@ describe('<AnalyticsCard />', () => {
         })
 
         const activateButton = screen.getByText('Activate')
-        act(() => {
-            userEvent.click(activateButton)
+        await act(async () => {
+            await user.click(activateButton)
         })
 
         await waitFor(() => {
