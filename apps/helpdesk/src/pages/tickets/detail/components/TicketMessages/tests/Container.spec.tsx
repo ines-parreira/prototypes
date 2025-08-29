@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
+import { TicketVia } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
 import {
     duplicatedHiddenFacebookMessage,
@@ -93,12 +94,16 @@ describe('Container', () => {
     const flags = {
         [FeatureFlagKey.TicketThreadRevamp]: false,
     }
+    const messageFromAiAgent = {
+        ...message,
+        via: TicketVia.Api,
+    }
     const props = {
         id: 'some-header',
         ticketId: 123,
         hasCursor: false,
-        message,
-        messages: [message],
+        message: messageFromAiAgent,
+        messages: [messageFromAiAgent],
         timezone: 'America/Los_Angeles',
         lastMessageDatetimeAfterMount: moment('2017-01-01T12:12:34Z'),
         isMessageHidden: false,
@@ -123,7 +128,7 @@ describe('Container', () => {
     })
     it('should not render container if message type is signal', () => {
         const signalMessage: TicketMessage = {
-            ...message,
+            ...messageFromAiAgent,
             meta: {
                 type: MessageMetadataType.Signal,
             },
@@ -177,7 +182,7 @@ describe('Container', () => {
 
     it('should have hasError class if message has failed', () => {
         const failedMessage = {
-            ...message,
+            ...messageFromAiAgent,
             failed_datetime: '2017-01-01T12:12:34Z',
         }
         const { container, rerender } = render(<Container {...props} />)
@@ -455,6 +460,28 @@ describe('Container', () => {
                 expect(
                     queryByText('SimplifiedAIAgentBanner'),
                 ).toBeInTheDocument()
+            })
+
+            it('should not show AiAgentReasoning for messages with via not Api', () => {
+                const gorgiaChatMessage = {
+                    ...props.message,
+                    via: TicketVia.GorgiasChat,
+                    id: 123,
+                }
+
+                const { queryByText } = render(
+                    <Container
+                        {...baseAiAgentProps}
+                        message={gorgiaChatMessage}
+                        flags={{
+                            [FeatureFlagKey.ShowAiReasoningInTicket]: true,
+                        }}
+                        shouldTicketHaveReasoning={true}
+                        isImpersonated={false}
+                    />,
+                )
+
+                expect(queryByText('AiAgentReasoning')).not.toBeInTheDocument()
             })
         })
     })

@@ -271,6 +271,7 @@ export class Container extends Component<Props> {
                                     showAiReasoning &&
                                     message.id &&
                                     !isInternalNote &&
+                                    message.via === TicketVia.Api &&
                                     shouldTicketHaveReasoning &&
                                     (isImpersonated ||
                                         !onlyShowReasoningWhileImpersonating) ? (
