@@ -30,12 +30,14 @@ export const usePlaygroundApi = ({
     httpIntegrationId,
     channelIntegrationId,
     isNewAgenticArchitectureEnabled,
+    baseUrl,
 }: {
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
     channelIntegrationId?: number
     isNewAgenticArchitectureEnabled: boolean
+    baseUrl?: string
 }) => {
     const { mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting } =
         useSubmitPlaygroundTicket()
@@ -141,6 +143,7 @@ export const usePlaygroundApi = ({
                 },
                 testSessionIdToUse ?? '',
                 abortController,
+                baseUrl,
             ])
 
             actionSerializedStateRef.current =
@@ -154,6 +157,7 @@ export const usePlaygroundApi = ({
             submitPlaygroundTicket,
             channelIntegrationId,
             isNewAgenticArchitectureEnabled,
+            baseUrl,
         ],
     )
 

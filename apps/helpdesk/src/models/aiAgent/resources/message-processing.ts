@@ -39,6 +39,18 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
+export const createApiClient = (baseUrl: string) => {
+    // eslint-disable-next-line no-restricted-properties
+    const client = axios.create({
+        baseURL: baseUrl,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    client.interceptors.request.use(gorgiasAppsAuthInterceptor)
+    return client
+}
+
 const mockTicket = (body: CreatePlaygroundBody) => {
     return {
         ...createMockHttpIntegrationPayload({
@@ -62,31 +74,39 @@ export const submitAiAgentTicket = async (
     body: AiAgentInput,
     sessionId?: string,
     abortController?: AbortController,
+    baseUrl?: string,
 ) => {
-    return await apiClient.post<AiAgentResponse>(
-        '/api/interaction/start',
-        body,
-        {
-            params: {
-                playground: true,
-                test_mode_session_id: sessionId,
-            },
-            signal: abortController?.signal,
+    const client = baseUrl ? createApiClient(baseUrl) : apiClient
+    return await client.post<AiAgentResponse>('/api/interaction/start', body, {
+        params: {
+            playground: true,
+            test_mode_session_id: sessionId,
         },
-    )
+        signal: abortController?.signal,
+    })
 }
 
 export const createContextAndSubmitPlaygroundTicket = async (
     body: CreatePlaygroundBody,
     sessionId?: string,
     abortController?: AbortController,
+    baseUrl?: string,
 ) => {
     const mockedTicket = mockTicket(body)
-    return await submitAiAgentTicket(mockedTicket, sessionId, abortController)
+    return await submitAiAgentTicket(
+        mockedTicket,
+        sessionId,
+        abortController,
+        baseUrl,
+    )
 }
 
-export const generateCustomToneOfVoicePreview = async (body: AiAgentInput) => {
-    return await apiClient.post<AiAgentCustomToneOfVoiceResponse>(
+export const generateCustomToneOfVoicePreview = async (
+    body: AiAgentInput,
+    baseUrl?: string,
+) => {
+    const client = baseUrl ? createApiClient(baseUrl) : apiClient
+    return await client.post<AiAgentCustomToneOfVoiceResponse>(
         '/api/interaction/generate-custom-tov-preview',
         body,
     )
@@ -94,7 +114,8 @@ export const generateCustomToneOfVoicePreview = async (body: AiAgentInput) => {
 
 export const createContextAndGenerateCustomToneOfVoicePreview = async (
     body: CreatePlaygroundBody,
+    baseUrl?: string,
 ) => {
     const mockedTicket = mockTicket(body)
-    return await generateCustomToneOfVoicePreview(mockedTicket)
+    return await generateCustomToneOfVoicePreview(mockedTicket, baseUrl)
 }

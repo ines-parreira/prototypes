@@ -6,7 +6,7 @@ import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-export const useTestSession = () => {
+export const useTestSession = (baseUrl?: string) => {
     const { notify } = useNotify()
     const [testSessionId, setTestSessionId] = useState<string | null>(null)
     const {
@@ -17,7 +17,7 @@ export const useTestSession = () => {
     } = useCreateTestSessionMutation()
 
     const createTestSession = useCallback(async () => {
-        const data = await createTestSessionAsync([])
+        const data = await createTestSessionAsync([baseUrl])
         const testSessionId = data?.testModeSession.id
 
         if (testSessionId) {
@@ -26,7 +26,7 @@ export const useTestSession = () => {
         }
 
         return null
-    }, [createTestSessionAsync])
+    }, [createTestSessionAsync, baseUrl])
 
     useEffect(() => {
         const testSessionId = data?.testModeSession.id

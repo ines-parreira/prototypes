@@ -267,12 +267,17 @@ export const testSessionLogsKeys = {
 
 export const useGetTestSessionLogs = (
     testSessionId: string,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getTestSessionLogs>>>,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getTestSessionLogs>>
+    > & {
+        baseUrl?: string
+    },
 ) => {
+    const { baseUrl, ...queryOverrides } = overrides || {}
     return useQuery({
         queryKey: testSessionLogsKeys.logs(testSessionId),
-        queryFn: () => getTestSessionLogs(testSessionId),
-        ...overrides,
+        queryFn: () => getTestSessionLogs(testSessionId, baseUrl),
+        ...queryOverrides,
     })
 }
 

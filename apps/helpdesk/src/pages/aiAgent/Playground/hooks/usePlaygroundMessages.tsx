@@ -53,6 +53,7 @@ export const usePlaygroundMessages = ({
     channel,
     channelIntegrationId,
     channelAvailability,
+    baseUrl,
 }: {
     storeData: StoreConfiguration
     gorgiasDomain: string
@@ -62,18 +63,19 @@ export const usePlaygroundMessages = ({
     channel: PlaygroundChannels
     channelIntegrationId?: number
     channelAvailability?: PlaygroundChannelAvailability
+    baseUrl?: string
 }) => {
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
     )
-
     const initialMessages: PlaygroundMessage[] = useMemo(() => [], [])
 
-    const { testSessionId, createTestSession } = useTestSession()
+    const { testSessionId, createTestSession } = useTestSession(baseUrl)
 
     const { testSessionLogs, startPolling, stopPolling, isPolling } =
         usePlaygroundPolling({
             testSessionId: testSessionId ?? '',
+            baseUrl,
         })
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =
@@ -83,6 +85,7 @@ export const usePlaygroundMessages = ({
             httpIntegrationId,
             channelIntegrationId,
             isNewAgenticArchitectureEnabled,
+            baseUrl,
         })
 
     const [messages, setMessages] =

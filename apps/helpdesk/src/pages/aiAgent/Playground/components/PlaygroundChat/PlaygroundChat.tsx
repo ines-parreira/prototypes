@@ -20,6 +20,7 @@ import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
+import { useAiAgentHttpIntegration } from '../../hooks/useAiAgentHttpIntegration'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
@@ -61,6 +62,8 @@ export const PlaygroundChat = ({
         useState<PlaygroundChannelAvailability>('online')
     const feedbackPollingStopRef = useRef<(() => void) | null>(null)
 
+    const { httpIntegrationId, baseUrl } = useAiAgentHttpIntegration()
+
     const {
         messages,
         onMessageSend,
@@ -69,7 +72,7 @@ export const PlaygroundChat = ({
         isWaitingResponse,
     } = usePlaygroundMessages({
         storeData,
-        httpIntegrationId: accountData.httpIntegration?.id,
+        httpIntegrationId: httpIntegrationId || accountData.httpIntegration?.id,
         gorgiasDomain: accountData.gorgiasDomain,
         accountId: accountData.accountId,
         currentUserFirstName,
@@ -79,6 +82,7 @@ export const PlaygroundChat = ({
                 ? storeData.monitoredChatIntegrations[0]
                 : undefined,
         channelAvailability,
+        baseUrl,
     })
 
     const {

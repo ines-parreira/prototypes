@@ -33,6 +33,7 @@ import {
 import { getAccountConfigurationWithHttpIntegrationFixture } from '../../../fixtures/accountConfiguration.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
+import { useAiAgentHttpIntegration } from '../../hooks/useAiAgentHttpIntegration'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
@@ -86,6 +87,10 @@ jest.mock('../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
     )),
 }))
 
+jest.mock('../../hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: jest.fn(),
+}))
+
 const MockKnowledgeSourcesWrapper =
     KnowledgeSourcesWrapper as jest.MockedFunction<
         typeof KnowledgeSourcesWrapper
@@ -98,6 +103,7 @@ const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseAiAgentHttpIntegration = jest.mocked(useAiAgentHttpIntegration)
 
 const defaultUsePlaygroundMessagesProps = {
     messages: [],
@@ -147,6 +153,11 @@ describe('PlaygroundChat', () => {
         mockedUsePlaygroundMessages.mockReturnValue(
             defaultUsePlaygroundMessagesProps,
         )
+        mockUseAiAgentHttpIntegration.mockReturnValue({
+            httpIntegrationId: 123,
+            baseUrl: 'https://aiagent.gorgias.help',
+            aiAgentIntegration: undefined,
+        })
         mockedUsePlaygroundForm.mockReturnValue({
             formValues: { message: '', customer: DEFAULT_PLAYGROUND_CUSTOMER },
             onFormValuesChange: jest.fn(),
