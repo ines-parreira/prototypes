@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
@@ -25,8 +23,6 @@ describe('SummaryLineItem', () => {
             )
 
             expect(container).toHaveTextContent('Helpdesk')
-            expect(container).toHaveTextContent('Basic - 1000 tickets / month')
-            expect(container).toHaveTextContent('$250/month')
 
             const strickenThroughText =
                 container.querySelector('.strikeThrough')
@@ -36,6 +32,30 @@ describe('SummaryLineItem', () => {
             } else {
                 expect(strickenThroughText).toBeNull()
             }
+        },
+    )
+    it.each(Object.values(Cadence))(
+        'should render with the correct cadence: %s',
+        (cadence) => {
+            const { container } = render(
+                <SummaryLineItem
+                    summaryItem={{
+                        title: 'Helpdesk',
+                        label: 'Basic - ',
+                        cadence: cadence,
+                        quotaAmount: 1000,
+                        counter: 'tickets',
+                        amount: '$250',
+                        strickenOut: false,
+                    }}
+                />,
+            )
+
+            expect(container).toHaveTextContent('Helpdesk')
+            expect(container).toHaveTextContent(
+                `Basic - 1000 tickets / ${cadence}`,
+            )
+            expect(container).toHaveTextContent(`$250/${cadence}`)
         },
     )
 })
