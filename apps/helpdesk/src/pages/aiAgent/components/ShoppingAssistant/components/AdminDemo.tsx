@@ -1,10 +1,12 @@
 import React from 'react'
 
+import preTrialBannerAiAgentThumbnail from 'assets/img/pre-trial-banner-ai-agent.png'
 import preTrialBannerThumbnail from 'assets/img/pre-trial-banner-thumbnail.png'
 import aiAgentPreviewVideo from 'assets/video/ai-agent-sales-video.mp4'
+import aiAgentTrialPromoVideo from 'assets/video/ai-agent-trial-promo.mp4'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
-import { PromoCardContent } from '../types/ShoppingAssistant'
+import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
 import { NotificationIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'
@@ -12,11 +14,13 @@ import css from '../../AiAgentNavbar/AiAgentNavbar.less'
 interface AdminDemoProps {
     className?: string
     promoContent: PromoCardContent
+    trialType: TrialType
 }
 
 export const AdminDemo: React.FC<AdminDemoProps> = ({
     className,
     promoContent,
+    trialType,
 }) => {
     const {
         title,
@@ -29,6 +33,8 @@ export const AdminDemo: React.FC<AdminDemoProps> = ({
         videoModalButton,
     } = promoContent
 
+    const isAiAgentTrial = trialType === TrialType.AiAgent
+
     return (
         <div className={css.promoCardSection}>
             <PromoCard className={className} data-variant={variant}>
@@ -40,14 +46,34 @@ export const AdminDemo: React.FC<AdminDemoProps> = ({
                         }}
                     >
                         <PromoCard.VideoThumbnail
-                            poster={preTrialBannerThumbnail}
-                            alt="Shopping Assistant Demo"
-                            videoUrl={aiAgentPreviewVideo}
-                            className={css.videoThumbnail}
+                            poster={
+                                isAiAgentTrial
+                                    ? preTrialBannerAiAgentThumbnail
+                                    : preTrialBannerThumbnail
+                            }
+                            alt={
+                                isAiAgentTrial
+                                    ? 'AI Agent Demo'
+                                    : 'Shopping Assistant Demo'
+                            }
+                            videoUrl={
+                                isAiAgentTrial
+                                    ? aiAgentTrialPromoVideo
+                                    : aiAgentPreviewVideo
+                            }
+                            className={
+                                isAiAgentTrial
+                                    ? css.videoThumbnailAiAgent
+                                    : css.videoThumbnail
+                            }
                         />
 
                         <PromoCard.VideoModal
-                            videoUrl={aiAgentPreviewVideo}
+                            videoUrl={
+                                isAiAgentTrial
+                                    ? aiAgentTrialPromoVideo
+                                    : aiAgentPreviewVideo
+                            }
                             ctaButton={
                                 videoModalButton
                                     ? {

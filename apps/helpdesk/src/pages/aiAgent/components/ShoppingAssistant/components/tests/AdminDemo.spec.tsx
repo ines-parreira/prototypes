@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event'
 import {
     PromoCardContent,
     PromoCardVariant,
+    TrialType,
 } from '../../types/ShoppingAssistant'
 import { AdminDemo } from '../AdminDemo'
 
@@ -22,16 +23,35 @@ jest.mock('pages/common/components/PromoCard', () => {
     }: {
         children: React.ReactNode
     }) => <div {...props}>{children}</div>
-    MockPromoCard.VideoThumbnail = (props: any) => (
-        <div data-testid="video-thumbnail" {...props} />
+    MockPromoCard.VideoThumbnail = ({
+        videoUrl,
+        poster,
+        alt,
+        ...domProps
+    }: any) => (
+        <div data-testid="video-thumbnail" {...domProps}>
+            <img
+                src={poster || 'test-file-stub'}
+                alt={alt || 'test-alt'}
+                data-testid="video-thumbnail-poster"
+            />
+            <div data-testid="video-thumbnail-url">
+                {videoUrl || 'test-file-stub'}
+            </div>
+        </div>
     )
     MockPromoCard.VideoModal = ({
         ctaButton,
-        ...props
+        videoUrl,
+        ...domProps
     }: {
         ctaButton?: any
+        videoUrl?: string
     }) => (
-        <div data-testid="video-modal" {...props}>
+        <div data-testid="video-modal" {...domProps}>
+            <div data-testid="video-modal-url">
+                {videoUrl || 'test-file-stub'}
+            </div>
             {ctaButton && (
                 <button
                     data-testid="video-modal-cta"
@@ -112,13 +132,21 @@ const mockPromoContent: PromoCardContent = {
     },
 }
 
+const renderAdminDemo = (
+    trialType: TrialType = TrialType.ShoppingAssistant,
+) => {
+    return render(
+        <AdminDemo promoContent={mockPromoContent} trialType={trialType} />,
+    )
+}
+
 describe('AdminDemo', () => {
     afterEach(() => {
         jest.clearAllMocks()
     })
 
     it('renders the component with basic promo content', () => {
-        render(<AdminDemo promoContent={mockPromoContent} />)
+        renderAdminDemo()
         expect(screen.getByText('Test Title')).toBeInTheDocument()
         expect(screen.getByText('Test Description')).toBeInTheDocument()
         expect(screen.getByText('Primary')).toBeInTheDocument()
@@ -126,7 +154,7 @@ describe('AdminDemo', () => {
     })
 
     it('shows video content when showVideo is true', () => {
-        render(<AdminDemo promoContent={mockPromoContent} />)
+        renderAdminDemo()
         expect(screen.getByTestId('video-thumbnail')).toBeInTheDocument()
         expect(screen.getByTestId('video-modal')).toBeInTheDocument()
     })
@@ -135,6 +163,7 @@ describe('AdminDemo', () => {
         render(
             <AdminDemo
                 promoContent={{ ...mockPromoContent, showVideo: false }}
+                trialType={TrialType.ShoppingAssistant}
             />,
         )
         expect(screen.queryByTestId('video-thumbnail')).not.toBeInTheDocument()
@@ -148,6 +177,7 @@ describe('AdminDemo', () => {
                     ...mockPromoContent,
                     shouldShowNotificationIcon: true,
                 }}
+                trialType={TrialType.ShoppingAssistant}
             />,
         )
         expect(screen.getAllByTestId('action-button-icon')).toHaveLength(1)
@@ -155,7 +185,7 @@ describe('AdminDemo', () => {
     })
 
     it('does not show notification icon on buttons when shouldShowNotificationIcon is false', () => {
-        render(<AdminDemo promoContent={mockPromoContent} />)
+        renderAdminDemo()
         expect(
             screen.queryByTestId('action-button-icon'),
         ).not.toBeInTheDocument()
@@ -166,7 +196,7 @@ describe('AdminDemo', () => {
 
     it('handles clicks on primary, secondary, and video modal buttons', async () => {
         const user = userEvent.setup()
-        render(<AdminDemo promoContent={mockPromoContent} />)
+        renderAdminDemo()
 
         await user.click(screen.getByText('Primary'))
         expect(mockPromoContent.primaryButton.onClick).toHaveBeenCalled()
@@ -185,6 +215,7 @@ describe('AdminDemo', () => {
                     ...mockPromoContent,
                     secondaryButton: undefined,
                 }}
+                trialType={TrialType.ShoppingAssistant}
             />,
         )
         expect(screen.queryByText('Secondary')).not.toBeInTheDocument()
@@ -197,8 +228,62 @@ describe('AdminDemo', () => {
                     ...mockPromoContent,
                     videoModalButton: undefined,
                 }}
+                trialType={TrialType.ShoppingAssistant}
             />,
         )
         expect(screen.queryByTestId('video-modal-cta')).not.toBeInTheDocument()
+    })
+
+    describe('trial type conditional rendering', () => {
+        it('renders AI Agent content when trialType is AiAgent', () => {
+            renderAdminDemo(TrialType.AiAgent)
+
+            // Check that AI Agent specific content is rendered
+            expect(screen.getByTestId('video-thumbnail')).toBeInTheDocument()
+            expect(screen.getByTestId('video-modal')).toBeInTheDocument()
+
+            // Check that the video URL shows the AI Agent trial video
+            expect(screen.getByTestId('video-thumbnail-url')).toHaveTextContent(
+                'test-file-stub',
+            )
+            expect(screen.getByTestId('video-modal-url')).toHaveTextContent(
+                'test-file-stub',
+            )
+        })
+
+        it('renders Shopping Assistant content when trialType is ShoppingAssistant', () => {
+            renderAdminDemo(TrialType.ShoppingAssistant)
+
+            // Check that Shopping Assistant specific content is rendered
+            expect(screen.getByTestId('video-thumbnail')).toBeInTheDocument()
+            expect(screen.getByTestId('video-modal')).toBeInTheDocument()
+
+            // Check that the video URL shows the Shopping Assistant video
+            expect(screen.getByTestId('video-thumbnail-url')).toHaveTextContent(
+                'test-file-stub',
+            )
+            expect(screen.getByTestId('video-modal-url')).toHaveTextContent(
+                'test-file-stub',
+            )
+        })
+
+        it('uses correct poster image for AI Agent trial', () => {
+            renderAdminDemo(TrialType.AiAgent)
+
+            const posterImage = screen.getByTestId('video-thumbnail-poster')
+            expect(posterImage).toHaveAttribute('src', 'test-file-stub')
+            expect(posterImage).toHaveAttribute('alt', 'AI Agent Demo')
+        })
+
+        it('uses correct poster image for Shopping Assistant trial', () => {
+            renderAdminDemo(TrialType.ShoppingAssistant)
+
+            const posterImage = screen.getByTestId('video-thumbnail-poster')
+            expect(posterImage).toHaveAttribute('src', 'test-file-stub')
+            expect(posterImage).toHaveAttribute(
+                'alt',
+                'Shopping Assistant Demo',
+            )
+        })
     })
 })

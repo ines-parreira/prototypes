@@ -79,7 +79,6 @@ export const ShoppingAssistantPromoCard: React.FC<
         </>
     )
     const { variant } = promoContent
-
     let variantComponent: React.ReactNode = null
 
     switch (variant) {
@@ -115,6 +114,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     <AdminTrial
                         className={className}
                         promoContent={promoContent}
+                        trialType={trialAccess.trialType}
                     />
                 </>
             )
@@ -122,7 +122,11 @@ export const ShoppingAssistantPromoCard: React.FC<
 
         case PromoCardVariant.AdminDemo:
             variantComponent = (
-                <AdminDemo className={className} promoContent={promoContent} />
+                <AdminDemo
+                    className={className}
+                    promoContent={promoContent}
+                    trialType={trialAccess.trialType}
+                />
             )
             break
 
@@ -137,6 +141,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     <LeadNotify
                         className={className}
                         promoContent={promoContent}
+                        trialType={trialAccess.trialType}
                     />
                 </>
             )
