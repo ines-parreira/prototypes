@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan, getHasAutomate } from 'state/billing/selectors'
@@ -40,7 +40,7 @@ export default function useRuleSuggestionForDemos(
     const inTicketSuggestionForDemo = useAppSelector(
         getInTicketSuggestionSettings,
     )
-    const ticketDemoSuggestion = useFlags()[FeatureFlagKey.TicketDemoSuggestion]
+    const ticketDemoSuggestion = useFlag(FeatureFlagKey.TicketDemoSuggestion)
 
     const dispatch = useAppDispatch()
 

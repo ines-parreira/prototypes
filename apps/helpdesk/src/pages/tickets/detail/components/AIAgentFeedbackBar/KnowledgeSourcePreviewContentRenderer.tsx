@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
@@ -27,7 +27,7 @@ type KnowledgeSourcePreviewContentRendererProps = {
     shopName: string
 }
 
-export const KnowledgeSourcePreviewContentRenderer = React.memo(
+export const KnowledgeSourcePreviewContentRenderer = memo(
     ({
         content,
         guidanceVariables,

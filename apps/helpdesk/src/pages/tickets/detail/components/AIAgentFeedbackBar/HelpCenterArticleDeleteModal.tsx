@@ -1,5 +1,3 @@
-import React from 'react'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { LocaleCode } from 'models/helpCenter/types'

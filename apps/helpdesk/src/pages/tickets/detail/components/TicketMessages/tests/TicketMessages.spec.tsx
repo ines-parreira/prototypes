@@ -1,17 +1,16 @@
 import { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
@@ -104,6 +103,9 @@ jest.mock('@repo/navigation', () => ({
         Feedback: 'feedback',
     },
 }))
+
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.Mock
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
@@ -212,9 +214,6 @@ describe('TicketMessages', () => {
         } as unknown as ReturnType<typeof getSelectedAIMessage>)
         getShouldDisplayAuditLogEventsMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
-        })
     })
 
     it('should identify and render AiAgentDraftMessage', () => {
@@ -277,9 +276,7 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType qa_failed for Draft message', async () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         const props = {
             ...defaultProps,
@@ -318,9 +315,7 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType trial for Trial message', async () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -358,9 +353,7 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_and_down for ai agent message', async () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -399,9 +392,7 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_improve_response for ai agent message', async () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -485,9 +476,7 @@ describe('TicketMessages', () => {
     })
 
     it('should handle feature flag disabled state', () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         const props = {
             ...defaultProps,
@@ -784,9 +773,7 @@ describe('TicketMessages', () => {
     })
 
     it('should not log events when banner type is empty', () => {
-        mockFlags({
-            [FeatureFlagKey.FeedbackToAIAgentInTicketViews]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         const props = {
             ...defaultProps,

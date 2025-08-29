@@ -1,13 +1,12 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useMeasure } from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -31,7 +30,8 @@ jest.mock('@repo/hooks', () => ({
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 
-const useFlagsMock = useFlags as jest.Mock
+jest.mock('core/flags')
+const useFlagMock = useFlag as jest.Mock
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -249,9 +249,7 @@ describe('RuleSuggestion', () => {
     })
 
     it('should display the CTAs for no addon and admin role', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.TicketDemoSuggestion]: 10,
-        })
+        useFlagMock.mockReturnValue(10)
 
         render(
             <Provider store={mockStore(store)}>
@@ -270,9 +268,7 @@ describe('RuleSuggestion', () => {
     })
 
     it('should display the CTAs for no addon and agent role', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.TicketDemoSuggestion]: 10,
-        })
+        useFlagMock.mockReturnValue(10)
 
         const liteAgentStore = {
             ...store,

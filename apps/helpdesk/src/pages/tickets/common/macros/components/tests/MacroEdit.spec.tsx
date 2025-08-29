@@ -2,7 +2,6 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -35,11 +34,6 @@ afterEach(() => {
     server.resetHandlers()
 })
 afterAll(() => server.close())
-
-jest.mock(
-    'pages/tickets/detail/components/TicketDetails/TicketTags',
-    () => () => 'TicketTagsMock',
-)
 
 jest.mock(
     'pages/common/forms/FileField',
@@ -136,14 +130,6 @@ const setTeamAssignee = {
         },
     },
 }
-
-// TODO: remove this once ResponseAction is refactored too
-const flags = {
-    [FeatureFlagKey.MacroResponseTextCcBcc]: true,
-    [FeatureFlagKey.MacroForwardByEmail]: true,
-}
-
-mockFlags(flags)
 
 const state = {
     ...integrationsState,
@@ -409,12 +395,24 @@ describe('MacroEdit component', () => {
     })
 
     it('should set response text', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.MacroResponseTextCcBcc) {
+                return true
+            }
+            return false
+        })
         renderComponent({ actions: fromJS([setTextAction]) })
 
         expect(screen.getAllByText('Response text')).toHaveLength(2)
     })
 
     it('should add internal note action', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.MacroResponseTextCcBcc) {
+                return true
+            }
+            return false
+        })
         renderComponent({ actions: fromJS([addInternalNoteAction]) })
 
         expect(screen.getAllByText('Internal note')).toHaveLength(3)

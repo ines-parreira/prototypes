@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'

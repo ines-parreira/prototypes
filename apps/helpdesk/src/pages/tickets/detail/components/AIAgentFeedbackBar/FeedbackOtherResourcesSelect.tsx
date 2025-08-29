@@ -1,10 +1,4 @@
-import React, {
-    Fragment,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/axiom'
 import { Tag } from '@gorgias/helpdesk-types'

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
@@ -97,9 +97,15 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
                 }
                 text={
                     <div className={css.skeletonWrapper}>
-                        {new Array(10).fill(null).map((_, index) => (
-                            <Skeleton key={index} height={20} width="100%" />
-                        ))}
+                        {Array.from({ length: 10 })
+                            .fill(null)
+                            .map((_, index) => (
+                                <Skeleton
+                                    key={index}
+                                    height={20}
+                                    width="100%"
+                                />
+                            ))}
                     </div>
                 }
                 hideExpandButton

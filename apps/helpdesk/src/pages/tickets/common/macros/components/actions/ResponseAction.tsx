@@ -1,10 +1,9 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     DropdownItem,
     DropdownMenu,
@@ -15,6 +14,7 @@ import {
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
@@ -145,28 +145,30 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
     )
 }
 
-const ResponseAction: React.FC<Props> = ({
-    type,
+export default function ResponseAction({
     action,
     actions,
     className,
     convertAction,
     hideToolbar,
+    ignoredVariables,
+    index,
+    updateActionArgs,
     replyControlsClassName,
     showReplyControls,
     tabIndex,
     toolbarOnTop,
-    index,
-    ignoredVariables,
-    updateActionArgs,
-}) => {
+    type,
+}: Props) {
     const richArea = useRef<RichField>(null)
     const [showCcTip, setShowCcTip] = useState(false)
 
-    const {
-        [FeatureFlagKey.MacroResponseTextCcBcc]: isMacroResponseCcBccEnabled,
-        [FeatureFlagKey.MacroForwardByEmail]: isMacroForwardByEmailEnabled,
-    } = useFlags()
+    const isMacroResponseCcBccEnabled = useFlag(
+        FeatureFlagKey.MacroResponseTextCcBcc,
+    )
+    const isMacroForwardByEmailEnabled = useFlag(
+        FeatureFlagKey.MacroForwardByEmail,
+    )
 
     const insertEditorText = useCallback<InsertEditorText>((text) => {
         if (!richArea.current) {
@@ -315,5 +317,3 @@ const ResponseAction: React.FC<Props> = ({
         </div>
     )
 }
-
-export default ResponseAction

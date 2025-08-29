@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
 import {
@@ -71,8 +71,9 @@ type Props = {
 }
 
 const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
-    const isFeedbackToAiAgentV3Enabled =
-        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3]
+    const isFeedbackToAiAgentV3Enabled = useFlag(
+        FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3,
+    )
 
     const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
 

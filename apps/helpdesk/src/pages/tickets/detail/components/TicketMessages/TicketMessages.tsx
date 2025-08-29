@@ -2,12 +2,12 @@ import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Moment } from 'moment'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import {
@@ -63,8 +63,9 @@ export default function TicketMessages({
     ticketMeta,
     messagePosition,
 }: Props) {
-    const isFeedbackToAiAgentEnabled =
-        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
+    const isFeedbackToAiAgentEnabled = useFlag(
+        FeatureFlagKey.FeedbackToAIAgentInTicketViews,
+    )
     const isTicketAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
 

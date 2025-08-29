@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import {
     useGetConfigurationExecution,
@@ -165,7 +165,7 @@ const PartialSuccessMessage = ({
             const isSecondToLast = index === successfulSteps.length - 2
 
             return (
-                <React.Fragment key={step.stepId}>
+                <Fragment key={step.stepId}>
                     <StepWithIcon
                         step={step}
                         parentTemplateConfiguration={templateConfiguration}
@@ -173,7 +173,7 @@ const PartialSuccessMessage = ({
                     />
                     {isSecondToLast && successfulSteps.length > 1 && ' and '}
                     {!isLast && !isSecondToLast && ', '}
-                </React.Fragment>
+                </Fragment>
             )
         })
     }
@@ -187,7 +187,7 @@ const PartialSuccessMessage = ({
             const isSecondToLast = index === failedSteps.length - 2
 
             return (
-                <React.Fragment key={step.stepId}>
+                <Fragment key={step.stepId}>
                     <StepWithIcon
                         step={step}
                         parentTemplateConfiguration={templateConfiguration}
@@ -195,7 +195,7 @@ const PartialSuccessMessage = ({
                     />
                     {isSecondToLast && failedSteps.length > 1 && ' and '}
                     {!isLast && !isSecondToLast && ', '}
-                </React.Fragment>
+                </Fragment>
             )
         })
     }

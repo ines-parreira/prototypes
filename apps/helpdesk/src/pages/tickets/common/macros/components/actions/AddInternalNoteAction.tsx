@@ -1,9 +1,8 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
 import { List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Button,
     DropdownItem,
@@ -13,6 +12,7 @@ import {
 } from 'reactstrap'
 
 import { UploadType } from 'common/types'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { MacroActionName } from 'models/macroAction/types'
@@ -47,10 +47,12 @@ export default function AddInternalNoteAction({
     renderVariables = true,
     convertAction,
 }: Props) {
-    const {
-        [FeatureFlagKey.MacroResponseTextCcBcc]: isMacroResponseCcBccEnabled,
-        [FeatureFlagKey.MacroForwardByEmail]: isMacroForwardByEmailEnabled,
-    } = useFlags()
+    const isMacroResponseCcBccEnabled = useFlag(
+        FeatureFlagKey.MacroResponseTextCcBcc,
+    )
+    const isMacroForwardByEmailEnabled = useFlag(
+        FeatureFlagKey.MacroForwardByEmail,
+    )
 
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<RichField>(null)

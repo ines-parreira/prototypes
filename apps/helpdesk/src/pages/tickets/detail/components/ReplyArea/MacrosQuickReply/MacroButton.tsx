@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Button } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'

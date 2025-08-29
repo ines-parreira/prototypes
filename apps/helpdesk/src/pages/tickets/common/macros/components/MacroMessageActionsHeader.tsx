@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     DropdownItem,
     DropdownMenu,
@@ -12,6 +11,7 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
+import { useFlag } from 'core/flags'
 import {
     MacroActionName,
     MacroResponseActionName,
@@ -33,7 +33,6 @@ const optionsConfig: Record<MacroResponseActionName, MessageOptionConfig> = {
     [MacroActionName.ForwardByEmail]: {
         title: 'Forward by email',
         icon: 'forward',
-        featureFlagKey: FeatureFlagKey.MacroForwardByEmail,
     },
     [MacroActionName.AddInternalNote]: {
         title: 'Internal note',
@@ -54,11 +53,17 @@ const MacroMessageActionsHeaderDropdownItem: React.FC<
     const id = `macro-action-header-item-${type}`
     const disabled = !current && used
     const onClick = useCallback(() => onSelect(type), [onSelect, type])
-    const flags = useFlags()
 
-    const { title, icon, featureFlagKey } = optionsConfig[type]
+    const isMacroForwardByEmailEnabled = useFlag(
+        FeatureFlagKey.MacroForwardByEmail,
+    )
 
-    if (featureFlagKey && !flags[featureFlagKey]) {
+    const { title, icon } = optionsConfig[type]
+
+    if (
+        type === MacroActionName.ForwardByEmail &&
+        !isMacroForwardByEmailEnabled
+    ) {
         return null
     }
 

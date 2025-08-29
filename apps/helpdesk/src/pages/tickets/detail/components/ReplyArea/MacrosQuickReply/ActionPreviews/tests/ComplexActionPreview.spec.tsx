@@ -1,12 +1,11 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import {
     addInternalNoteAction,
     httpAction,
     shopifyAction,
-} from '../../../../../../../../fixtures/macro'
+} from 'fixtures/macro'
+
 import { ComplexActionPreview } from '../ComplexActionPreview'
 
 describe('<ComplexActionPreview />', () => {

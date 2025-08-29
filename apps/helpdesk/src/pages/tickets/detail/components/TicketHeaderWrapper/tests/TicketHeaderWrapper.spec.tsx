@@ -1,21 +1,17 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import client from 'models/api/resources'
 import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 
 import TicketHeaderWrapper from '../TicketHeaderWrapper'
-
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
 
 jest.mock('pages/tickets/detail/components/TicketHeader', () => () => (
     <div>TicketHeader</div>
@@ -29,11 +25,13 @@ jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
 )
 
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.Mock
+
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock
 
 const mockedServer = new MockAdapter(client)
 const mockStore = configureMockStore([thunk])
-const useFlagsMock = useFlags as jest.Mock
 
 describe('<TicketHeaderWrapper/>', () => {
     const minProps: ComponentProps<typeof TicketHeaderWrapper> = {
@@ -49,7 +47,7 @@ describe('<TicketHeaderWrapper/>', () => {
 
     beforeEach(() => {
         mockedServer.reset()
-        useFlagsMock.mockReturnValue(false)
+        mockUseFlag.mockReturnValue(false)
         mockUseCollisionDetection.mockReturnValue({
             agentsViewing: [],
             agentsViewingNotTyping: [],

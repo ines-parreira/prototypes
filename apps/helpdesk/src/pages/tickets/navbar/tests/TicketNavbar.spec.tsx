@@ -26,10 +26,6 @@ import { TicketNavbarContainer } from '../TicketNavbar'
 import { TicketNavbarBlock } from '../TicketNavbarBlock'
 import TicketNavbarContent from '../TicketNavbarContent'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 jest.mock('common/navigation', () => ({
     ActiveContent: { Tickets: 'tickets' },
     Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
