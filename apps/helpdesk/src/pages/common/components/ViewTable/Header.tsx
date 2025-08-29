@@ -2,7 +2,6 @@ import { Component, createRef, KeyboardEvent, type ReactNode } from 'react'
 
 import classnames from 'classnames'
 import { Map } from 'immutable'
-import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -40,7 +39,7 @@ type OwnProps = {
     viewButtons?: ReactNode
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector> & { flags?: LDFlagSet }
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
     askDeleteConfirmation: boolean
@@ -345,4 +344,4 @@ const connector = connect(
     },
 )
 
-export default connector(withLDConsumer()(HeaderContainer))
+export default connector(HeaderContainer)

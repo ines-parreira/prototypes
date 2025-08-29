@@ -2,8 +2,6 @@ import { Component, ReactNode } from 'react'
 
 import { ArrayExpression, Expression, Identifier, Literal } from 'estree'
 import { fromJS, List, Map, Seq } from 'immutable'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import moment from 'moment-timezone'
 import { connect, ConnectedProps } from 'react-redux'
@@ -62,7 +60,6 @@ type OwnProps = {
     updateFieldFilter: typeof updateFieldFilter
     objectPath: string
     empty: boolean
-    flags?: LDFlagSet
     storeMappings: StoreMapping[]
 }
 
@@ -630,4 +627,4 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
     }
 })
 
-export default connector(withLDConsumer()(RightContainer))
+export default connector(RightContainer)

@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import { connect, ConnectedProps } from 'react-redux'
 
@@ -39,7 +37,6 @@ type Props = {
     ticketId: number
     disabled?: boolean
     className?: string
-    flags?: LDFlagSet
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -566,6 +563,4 @@ const connector = connect(null, {
     updateActionArgsOnApplied,
 })
 
-export default connector(
-    withLDConsumer()(withAppNode(TicketReplyActionContainer)),
-)
+export default connector(withAppNode(TicketReplyActionContainer))
