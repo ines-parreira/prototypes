@@ -1,5 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Redirect } from 'react-router-dom'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -14,6 +16,28 @@ export const AiAgentRedirect = () => {
 
     const firstStore = storeIntegrations[0]
 
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag<boolean>(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+        false,
+    )
+
+    if (isAiAgentExpandingTrialExperienceForAllEnabled) {
+        if (!hasAutomate) {
+            if (!firstStore) {
+                return <StoreIntegrationView title="AI Agent" />
+            }
+            return (
+                <AiAgentPaywallView
+                    aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
+                />
+            )
+        }
+        if (!firstStore) {
+            return <StoreIntegrationView title="AI Agent" />
+        }
+        return <Redirect to={aiAgentRoutes.overview} />
+    }
+
     if (!hasAutomate) {
         return (
             <AiAgentPaywallView
@@ -21,7 +45,6 @@ export const AiAgentRedirect = () => {
             />
         )
     }
-
     if (!firstStore) {
         return <StoreIntegrationView title="AI Agent" />
     }
