@@ -1549,6 +1549,12 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.45.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/helpdesk-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.9.45(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/helpdesk-types':
+        specifier: catalog:rest-api-sdk
+        version: 0.9.11
     devDependencies:
       '@repo/config':
         specifier: workspace:*

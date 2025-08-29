@@ -1,6 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { TicketHeader } from '@repo/tickets'
+import { useParams } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { Handle } from 'core/layout/panels'
@@ -28,12 +29,15 @@ export function TicketDetailWithInfobar({ onToggleUnread }: Props) {
 
 function TicketDetailContent({ onToggleUnread }: Props) {
     const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { isExpanded } = useTicketInfobarNavigation()
     const { mode } = useKnowledgeSourceSideBar()
 
+    const ticketId = parseInt(ticketIdParam, 10)
+
     return (
         <div className={css.container}>
-            {hasUIVisionMS1 && <TicketHeader />}
+            {hasUIVisionMS1 && <TicketHeader ticketId={ticketId} />}
             <div className={css.content}>
                 <TicketDetailPanel
                     key="ticket-detail-panel"

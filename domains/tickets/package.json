@@ -17,6 +17,8 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
