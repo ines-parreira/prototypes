@@ -3,14 +3,28 @@
     font-weight: bold;
 
     &.positive {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
     }
 
     &.negative {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     &.neutral {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local .statsDifference {
+    &.positive {
+        color: var(--static-success);
+    }
+
+    &.negative {
+        color: var(--static-error);
+    }
+
+    &.neutral {
+        color: var(--surface-additional-blue);
     }
 }

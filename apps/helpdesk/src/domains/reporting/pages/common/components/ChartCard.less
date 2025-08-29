@@ -3,7 +3,7 @@
 
 :local {
     .card {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-m);
         min-width: 0;
 
@@ -50,5 +50,11 @@
     .tooltipIcon {
         font-size: @heading-sub-section-regular-font-size;
         margin-left: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .card {
+        background-color: var(--elevation-neutral-default);
     }
 }

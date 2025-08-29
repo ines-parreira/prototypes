@@ -3,7 +3,7 @@
 
 &:local {
     .wrapper {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-s);
     }
@@ -27,13 +27,13 @@
             font-size: @heading-sub-section-regular-font-size;
             margin-right: var(--layout-spacing-xxs);
             &.success {
-                color: var(--feedback-success-3);
+                color: var(--feedback-success-3); // legacy
             }
             &.light-success {
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
             }
             &.light-error {
-                color: var(--feedback-warning-3);
+                color: var(--feedback-warning-3); // legacy
             }
         }
     }
@@ -45,6 +45,24 @@
 }
 
 .axiom :local {
+    .wrapper {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .iconWrapper {
+        .icon {
+            &.success {
+                color: var(--content-success-primary);
+            }
+            &.light-success {
+                color: var(--surface-additional-blue);
+            }
+            &.light-error {
+                color: var(--content-warning-primary);
+            }
+        }
+    }
+
     .separator {
         border-top: 1px solid var(--border-neutral-default);
     }

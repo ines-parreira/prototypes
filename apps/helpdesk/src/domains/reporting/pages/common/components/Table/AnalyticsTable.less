@@ -25,7 +25,7 @@
                 top: 0;
                 height: 56px;
                 z-index: 3;
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
                 cursor: pointer;
             }
 
@@ -68,12 +68,12 @@
                     position: sticky;
                     left: 0;
                     z-index: 2;
-                    background-color: var(--neutral-grey-0);
+                    background-color: var(--neutral-grey-0); // legacy
                 }
 
                 &.highlight {
                     &:first-child {
-                        background-color: var(--neutral-grey-1);
+                        background-color: var(--neutral-grey-1); // legacy
                         font-weight: @body-medium-font-weight;
                     }
                 }
@@ -108,12 +108,45 @@
     }
 
     .emptyValue {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .pagination {
         margin-top: var(--layout-spacing-xs);
         margin-left: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .table {
+        .header,
+        thead {
+            .sticky,
+            th,
+            td {
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+
+        tr {
+            th,
+            td {
+                &.sticky,
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+
+                &.highlight {
+                    &:first-child {
+                        background-color: var(--elevation-neutral-mid);
+                    }
+                }
+            }
+        }
+    }
+
+    .emptyValue {
+        color: var(--border-neutral-default);
     }
 }

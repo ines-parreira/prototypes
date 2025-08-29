@@ -3,7 +3,7 @@
         margin: 0;
         flex-grow: 1;
         padding: 25px 20px;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
 
         @media (max-width: 992px) {
             flex-basis: 0;
@@ -30,6 +30,8 @@
 
 .axiom :local {
     .metric {
+        background: var(--elevation-neutral-default);
+
         &:nth-child(n + 1) {
             border-left: 1px solid var(--border-neutral-default);
         }

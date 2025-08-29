@@ -24,7 +24,7 @@
     }
 
     .header {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 500;
     }
 
@@ -38,7 +38,7 @@
         padding: 8px 8px 8px 16px;
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         & > span {
@@ -70,7 +70,29 @@
     }
 
     .description {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .header {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .labelItem {
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .items {
+        &:not(:first-child) {
+            border-top: 2px solid var(--border-neutral-default);
+        }
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }
 

@@ -5,17 +5,34 @@
         background: none !important;
         border: none;
         box-shadow: none !important;
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
 
         &:hover {
-            background-color: var(--neutral-grey-2) !important;
+            background-color: var(--neutral-grey-2) !important; // legacy
             box-shadow: none;
         }
 
         &:active {
-            background-color: var(--neutral-grey-3) !important;
+            background-color: var(--neutral-grey-3) !important; // legacy
             box-shadow: none !important;
-            color: var(--neutral-grey-6) !important;
+            color: var(--neutral-grey-6) !important; // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .toggle,
+    :global.dropdown > :local.toggle,
+    :global.show > :global.dropdown-toggle:local.toggle {
+        color: var(--content-neutral-tertiary) !important;
+
+        &:hover {
+            background-color: var(--elevation-neutral-mid) !important;
+        }
+
+        &:active {
+            background-color: var(--border-neutral-default) !important;
+            color: var(--content-neutral-default) !important;
         }
     }
 }

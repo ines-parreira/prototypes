@@ -4,7 +4,7 @@
     .noData {
         .body-regular();
         margin: var(--layout-spacing-m);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,5 +20,11 @@
     p.noDataTitle {
         font-weight: @body-semibold-font-weight;
         margin-bottom: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .noData {
+        color: var(--content-neutral-tertiary);
     }
 }

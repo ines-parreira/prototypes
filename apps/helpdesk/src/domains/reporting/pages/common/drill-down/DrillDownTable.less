@@ -8,7 +8,7 @@
             position: sticky;
             top: 0;
             z-index: 1;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
     }
 
@@ -29,7 +29,7 @@
         }
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -46,7 +46,7 @@
     }
 
     .noData {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .multiLineOutcome {
@@ -69,7 +69,7 @@
         font-size: 12px;
         font-weight: 400;
         line-height: 16px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin: 0;
     }
 
@@ -77,5 +77,27 @@
         margin-top: var(--layout-spacing-s);
         margin-left: var(--layout-spacing-m);
         margin-bottom: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .container {
+        thead td {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .tableRow {
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .noData {
+        color: var(--border-neutral-default);
+    }
+
+    .sublevels {
+        color: var(--content-neutral-tertiary);
     }
 }

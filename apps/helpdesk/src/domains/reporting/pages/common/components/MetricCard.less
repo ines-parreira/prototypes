@@ -1,7 +1,7 @@
 :local {
     .card {
         padding: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .wrapper {
@@ -33,7 +33,9 @@
     }
 }
 
-.axiom :local(.card) {
-    border-color: var(--border-neutral-default);
-    background-color: var(--elevation-neutral-mid);
+.axiom :local {
+    .card {
+        border-color: var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+    }
 }
