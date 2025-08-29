@@ -61,18 +61,17 @@ const mockActions = fromJS([
 jest.mock('pages/common/components/Loader/Loader', () => () => (
     <div>LoaderMock</div>
 ))
-jest.mock(
-    'pages/tickets/common/macros/components/MacroEdit',
-    () =>
-        ({ actions, setActions }: ComponentProps<typeof MacroEdit>) => (
-            <div onClick={() => setActions(mockActions)}>
-                <span>MacroEditMock</span>
-                {actions?.toArray().map((action: Map<any, any>, i) => (
-                    <span key={i}>{action.get('name') as string}</span>
-                ))}
-            </div>
-        ),
-)
+jest.mock('pages/tickets/common/macros/components/MacroEdit', () => ({
+    MacroEdit: ({ actions, setActions }: ComponentProps<typeof MacroEdit>) => (
+        <div onClick={() => setActions(mockActions)}>
+            <span>MacroEditMock</span>
+            {actions?.toArray().map((action: Map<any, any>, i) => (
+                <span key={i}>{action.get('name') as string}</span>
+            ))}
+        </div>
+    ),
+}))
+
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock(
     'react-router',

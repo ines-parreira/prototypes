@@ -25,7 +25,7 @@ exports[`<ComplexActionPreview /> should render both internal note action 1`] = 
           />
         </span>
         <span>
-          Add internal note
+          Send internal note
         </span>
       </span>
     </div>

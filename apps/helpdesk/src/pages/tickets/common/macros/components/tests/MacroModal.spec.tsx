@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -21,7 +21,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
 
-import MacroEdit from '../MacroEdit'
+import { MacroEdit } from '../MacroEdit'
 import MacroModal from '../MacroModal'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -69,20 +69,22 @@ const mockActions = fromJS([
         name: MacroActionName.AddAttachments,
     },
 ])
-jest.mock(
-    '../MacroEdit',
-    () =>
-        ({ actions, name, setActions }: ComponentProps<typeof MacroEdit>) => (
-            <div onClick={() => setActions(mockActions)}>
-                MacroEditMock
-                {name}
-                {actions?.toArray().map((action: Map<any, any>, i) => (
-                    <div key={i}>{action.get('name')}</div>
-                ))}
-                {`actions.size: ${actions?.size}`}
-            </div>
-        ),
-)
+jest.mock('../MacroEdit', () => ({
+    MacroEdit: ({
+        actions,
+        name,
+        setActions,
+    }: ComponentProps<typeof MacroEdit>) => (
+        <div onClick={() => setActions(mockActions)}>
+            MacroEditMock
+            {name}
+            {actions?.toArray().map((action: Map<any, any>, i) => (
+                <div key={i}>{action.get('name')}</div>
+            ))}
+            {`actions.size: ${actions?.size}`}
+        </div>
+    ),
+}))
 
 jest.mock('pages/common/components/modal/Modal', () => {
     return ({ children }: { children: ReactNode }) => <div>{children}</div>

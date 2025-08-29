@@ -39,7 +39,7 @@ import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
 import { makeGetViewCount } from 'state/views/selectors'
 
-import MacroEdit from './MacroEdit'
+import { MacroEdit } from './MacroEdit'
 import MacroModalList from './MacroModalList'
 import MacroNoResults from './MacroNoResults'
 import MacroPreview from './MacroPreview'
