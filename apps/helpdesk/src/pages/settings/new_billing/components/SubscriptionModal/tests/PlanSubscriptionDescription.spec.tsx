@@ -2,7 +2,7 @@ import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { convertProduct } from 'fixtures/productPrices'
-import { ProductType } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { getProductLabel } from 'models/billing/utils'
 import PlanSubscriptionDescription, {
     PlanSubscriptionDescriptionProps,
@@ -42,10 +42,10 @@ describe('PlanSubscriptionDescription', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('$30/month', { exact: false }),
+            screen.getByText(`$30/${Cadence.Month}`, { exact: false }),
         ).toBeInTheDocument()
 
-        expect(screen.getByText('clicks/month')).toBeInTheDocument()
+        expect(screen.getByText(`clicks/${Cadence.Month}`)).toBeInTheDocument()
 
         PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
             (feature) => {
