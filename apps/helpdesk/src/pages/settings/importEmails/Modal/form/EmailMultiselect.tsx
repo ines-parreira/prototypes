@@ -47,7 +47,7 @@ export const EmailMultiselect = ({
         <>
             <div className={css.formGroup}>
                 <Label className="mb-2" isRequired>
-                    Email address
+                    Email
                 </Label>
                 <EmailSelectSearch
                     emailOptions={emailOptions}

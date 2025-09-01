@@ -98,7 +98,7 @@ describe('CreateImportModal', () => {
         it('should render form components', () => {
             render(<CreateImportModal {...defaultProps} />)
 
-            expect(screen.getByText('Email address')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByText('Import timeframe')).toBeInTheDocument()
         })
 
@@ -250,7 +250,7 @@ describe('CreateImportModal', () => {
 
             render(<CreateImportModal {...defaultProps} />)
 
-            expect(screen.getByText('Email address')).toBeInTheDocument()
+            expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByRole('dialog')).toBeInTheDocument()
         })
     })
@@ -287,7 +287,7 @@ describe('CreateImportModal', () => {
             render(<CreateImportModal {...defaultProps} />)
 
             // Click on email select input - use label to find the field
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -332,7 +332,7 @@ describe('CreateImportModal', () => {
 
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -363,7 +363,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -404,7 +404,7 @@ describe('CreateImportModal', () => {
                 <CreateImportModal {...defaultProps} onClose={onCloseMock} />,
             )
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -437,7 +437,7 @@ describe('CreateImportModal', () => {
 
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -477,7 +477,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -512,7 +512,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
@@ -539,7 +539,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling

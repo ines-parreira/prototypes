@@ -1,10 +1,9 @@
-import moment from 'moment/moment'
-
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
 import { logEvent, SegmentEvent } from 'common/segment'
 
 import { ERROR_ICON } from '../../../../common/components/SourceIcon'
+import { getStartEndDate } from '../../utils'
 import { ImportNotification } from '../types'
 
 import css from './ImportEmailNotifications.less'
@@ -22,11 +21,9 @@ const ImportEmailFailedNotification = ({
 
     if (!importNotification) return
 
-    const startDate = moment(importNotification.import_window_start).format(
-        'MMM D, YYYY',
-    )
-    const endDate = moment(importNotification.import_window_end).format(
-        'MMM D, YYYY',
+    const { startDate, endDate } = getStartEndDate(
+        importNotification.import_window_start,
+        importNotification.import_window_end,
     )
 
     return (
@@ -34,7 +31,7 @@ const ImportEmailFailedNotification = ({
             {...props}
             icon={{ type: ERROR_ICON }}
             title="Email import failed"
-            url={'#'}
+            url="#"
             onClick={() => {
                 onClick?.()
                 logEvent(SegmentEvent.FailedEmailImportNotification, {

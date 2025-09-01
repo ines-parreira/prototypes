@@ -48,7 +48,7 @@ describe('EmailMultiselect', () => {
         it('renders the email address label as required', () => {
             renderEmailMultiselect()
 
-            const label = screen.getByText('Email address')
+            const label = screen.getByText('Email')
             expect(label).toBeInTheDocument()
 
             const requiredIndicator = screen.getByLabelText('required')
@@ -256,7 +256,7 @@ describe('EmailMultiselect', () => {
         it('renders labels with proper spacing', () => {
             renderEmailMultiselect()
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             expect(emailLabel).toHaveClass('mb-2')
         })
 

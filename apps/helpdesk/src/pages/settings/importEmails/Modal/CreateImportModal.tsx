@@ -105,9 +105,9 @@ const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
                 <div className={css.helpText}>
                     <h2 className={css.heading}>What will be imported?</h2>
                     <ul>
-                        <li>Emails – including full message content.</li>
-                        <li>Attachments – any files sent with those emails.</li>
-                        <li>Timeframe – up to 2 years of historical data.</li>
+                        <li>Emails – including full message content</li>
+                        <li>Attachments – any files sent with those emails</li>
+                        <li>Timeframe – up to 2 years of historical data</li>
                     </ul>
                 </div>
 
