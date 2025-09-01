@@ -290,7 +290,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         refetchMessageAiReasoning()
     }, [refetchMessageAiReasoning])
 
-    const handleGiveFeedback = () => {
+    const handleGiveFeedback = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
+        e.preventDefault()
         onFeedbackTabOpened('give-feedback-buton-from-reasoning')
         onChangeTab(TicketInfobarTab.AIFeedback)
     }
@@ -343,21 +345,46 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         }
 
         return (
-            <>
-                {!isExpanded && (
-                    <i className={classNames('material-icons', css.expandIcon)}>
-                        keyboard_arrow_down
-                    </i>
-                )}
-                {isExpanded && (
-                    <i className={classNames('material-icons', css.expandIcon)}>
-                        keyboard_arrow_up
-                    </i>
-                )}
-                <span className={css.text}>
-                    {isExpanded ? 'Hide reasoning' : 'Show reasoning'}
-                </span>
-            </>
+            <div className={css.titleContainer}>
+                <div className={css.titleContent}>
+                    {!isExpanded && (
+                        <i
+                            className={classNames(
+                                'material-icons',
+                                css.expandIcon,
+                            )}
+                        >
+                            keyboard_arrow_down
+                        </i>
+                    )}
+                    {isExpanded && (
+                        <i
+                            className={classNames(
+                                'material-icons',
+                                css.expandIcon,
+                            )}
+                        >
+                            keyboard_arrow_up
+                        </i>
+                    )}
+                    <span className={css.text}>
+                        {isExpanded ? 'Hide reasoning' : 'Show reasoning'}
+                    </span>
+                </div>
+                <Button
+                    intent="secondary"
+                    size="small"
+                    fillStyle="fill"
+                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
+                    onClick={handleGiveFeedback}
+                    className={classNames({
+                        [css.activeButton]:
+                            activeTab === TicketInfobarTab.AIFeedback,
+                    })}
+                >
+                    Give Feedback
+                </Button>
+            </div>
         )
     }
 
@@ -413,21 +440,6 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 })}
             >
                 {executionComponent}
-                {(isExpanded || isStatic) && (
-                    <Button
-                        intent="secondary"
-                        size="small"
-                        fillStyle="fill"
-                        isDisabled={activeTab === TicketInfobarTab.AIFeedback}
-                        onClick={handleGiveFeedback}
-                        className={classNames({
-                            [css.activeButton]:
-                                activeTab === TicketInfobarTab.AIFeedback,
-                        })}
-                    >
-                        Give Feedback
-                    </Button>
-                )}
             </div>
         )
     }

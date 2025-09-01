@@ -542,10 +542,9 @@ describe('AiAgentReasoning', () => {
         it('should be clickable when in collapsed state', () => {
             renderComponent()
 
-            const titleElement = screen
-                .getByText('Show reasoning')
-                .closest('div')
-            expect(titleElement).toHaveClass('clickable')
+            const showReasoningText = screen.getByText('Show reasoning')
+            const titleElement = showReasoningText.closest('.clickable')
+            expect(titleElement).toBeInTheDocument()
         })
     })
 
