@@ -10,7 +10,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { Form } from 'core/forms'
-import { FormField } from 'core/forms/components/FormField'
 import { Flow, FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -18,6 +17,13 @@ import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
 import { createIvrOptionNode } from '../../utils'
 import { IvrMenuNode } from '../IvrMenuNode'
+
+const matchesOriginal = HTMLElement.prototype.matches
+HTMLElement.prototype.matches = function (query: string) {
+    if (query === ':focus-visible') return false
+    return matchesOriginal.call(this, query)
+}
+HTMLCanvasElement.prototype.getContext = jest.fn()
 
 const ivrMenuStep = mockIvrMenuStep({
     id: '1',
@@ -66,10 +72,10 @@ const renderComponent = (
     return renderWithStoreAndQueryClientProvider(
         <FlowProvider>
             <Form defaultValues={formDefaultValues} onValidSubmit={jest.fn()}>
-                <Flow {...flowDefaultProps} />
-                <FormField
-                    name={`steps.${ivrMenuStep.id}.test_field`}
-                    placeholder="test-field"
+                <Flow
+                    {...flowDefaultProps}
+                    nodesDraggable={false}
+                    panOnDrag={false}
                 />
             </Form>
         </FlowProvider>,
@@ -97,6 +103,23 @@ describe('IvrMenuNode', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should add new node to flow when add option button is clicked', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await act(async () => {
+            await user.click(screen.getByText('Add option'))
+        })
+
+        await waitFor(() => {
+            expect(onNodesChange).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({ type: 'add' }),
+                ]),
+            )
+        })
+    })
+
     it('should update node data when the value changes', async () => {
         const user = userEvent.setup()
 
@@ -104,11 +127,9 @@ describe('IvrMenuNode', () => {
 
         const onNodesChangeNumberOfCalls = onNodesChange.mock.calls.length
 
-        expect(screen.getByPlaceholderText('test-field')).toBeInTheDocument()
-
         await act(async () => {
             await user.type(
-                screen.getByPlaceholderText('test-field'),
+                screen.getAllByPlaceholderText('Branch name')[0],
                 'test-value',
             )
         })

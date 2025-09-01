@@ -164,7 +164,7 @@ describe('utils', () => {
             }
 
             const node = createIvrOptionNode(
-                ivrMenuNode,
+                ivrMenuNode.id,
                 0,
                 ivrMenuNode.data.branch_options[0].next_step_id,
             )

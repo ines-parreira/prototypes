@@ -3,19 +3,20 @@ import { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { useFieldArray, useWatch } from 'core/forms'
 
-import { END_CALL_NODE } from './flows/constants'
 import { IvrMenuActionFieldItem } from './IvrMenuActionsFieldItem'
 
 type Props = {
     name: string
-    onAddOption?: (option: BranchOptions) => void
+    onAddOption?: (option: BranchOptions, insertAtIndex: number) => void
     onRemoveOption?: (optionIndex: number) => void
+    branchNextId: string
 }
 
 export function IvrMenuActionsFieldArray({
     name,
     onAddOption,
     onRemoveOption,
+    branchNextId,
 }: Props): JSX.Element {
     const { fields, insert, remove } = useFieldArray({
         name,
@@ -26,14 +27,14 @@ export function IvrMenuActionsFieldArray({
         const nextAvailableDigit = getNextAvailableDigit(fieldValue)
 
         if (nextAvailableDigit) {
+            const insertAtIndex = Number(nextAvailableDigit) - 1
             const newOption: BranchOptions = {
                 branch_name: '',
                 input_digit: nextAvailableDigit,
-                // TODO update
-                next_step_id: END_CALL_NODE.id,
+                next_step_id: branchNextId,
             }
-            insert(Number(nextAvailableDigit) - 1, newOption)
-            onAddOption?.(newOption)
+            insert(insertAtIndex, newOption)
+            onAddOption?.(newOption, insertAtIndex)
         }
     }
 

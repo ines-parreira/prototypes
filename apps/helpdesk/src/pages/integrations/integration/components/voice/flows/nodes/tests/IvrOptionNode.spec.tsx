@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
+import { Form } from 'core/forms'
 import { Flow, FlowProvider, Node } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
@@ -12,7 +13,7 @@ const nodes: Node<Record<string, unknown>>[] = [
         data: {
             branch_options: [
                 {
-                    input_digit: '5',
+                    input_digit: 'does_not_matter_should_be_ignored',
                     next_step_id: '3',
                 },
             ],
@@ -29,16 +30,26 @@ const nodes: Node<Record<string, unknown>>[] = [
     },
 ]
 
+const formDefaultValues = {
+    steps: {
+        '1': {
+            branch_options: [{ input_digit: '5', next_step_id: '3' }],
+        },
+    },
+}
+
 const renderComponent = () => {
     return render(
         <FlowProvider>
-            <Flow
-                nodes={nodes}
-                nodeTypes={{
-                    [VoiceFlowNodeType.IvrOption]: IvrOptionNode,
-                }}
-                edges={[]}
-            />
+            <Form onValidSubmit={jest.fn()} defaultValues={formDefaultValues}>
+                <Flow
+                    nodes={nodes}
+                    nodeTypes={{
+                        [VoiceFlowNodeType.IvrOption]: IvrOptionNode,
+                    }}
+                    edges={[]}
+                />
+            </Form>
         </FlowProvider>,
     )
 }

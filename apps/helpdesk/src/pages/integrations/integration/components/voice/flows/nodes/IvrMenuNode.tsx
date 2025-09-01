@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
 
 import { Banner, Label } from '@gorgias/axiom'
-import { CustomRecordingType, IvrMenuStep } from '@gorgias/helpdesk-types'
+import {
+    BranchOptions,
+    CustomRecordingType,
+    IvrMenuStep,
+} from '@gorgias/helpdesk-types'
 import {
     validateBranchOptions,
     validateVoiceMessage,
@@ -12,14 +16,14 @@ import {
 import { FormField } from 'core/forms'
 import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
-import { findPathFromRoot } from 'core/ui/flows/utils'
+import { findIntermediaryNodeForRoot } from 'core/ui/flows/utils'
 
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
-import { VoiceFlowNodeType } from '../constants'
-import { type IvrMenuNode, VoiceFlowFormValues } from '../types'
+import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
+import { type IvrMenuNode, IvrOptionNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
-import { getNextNodes } from '../utils'
+import { createIvrOptionNode, getNextNodes } from '../utils'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -29,17 +33,17 @@ type IvrMenuNodeProps = NodeProps<IvrMenuNode>
 export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
-    const { updateNodeData, getNodes, getNode } = useVoiceFlow()
-    const { watch } = useFormContext<VoiceFlowFormValues>()
+    const { updateNodeData, getNodes, addNodes } = useVoiceFlow()
 
     const { id } = data
-    const firstStepId = watch('first_step_id')
     const step: IvrMenuStep = useWatch({ name: `steps.${id}` })
 
     useEffect(() => {
-        // Update node data when the value changes to reflect in children nodes
-        updateNodeData(id, step)
-    }, [step, id, updateNodeData])
+        if (step.branch_options.length !== data.branch_options.length) {
+            // Update node data when the value changes to reflect in children nodes
+            updateNodeData(id, step)
+        }
+    }, [step, id, updateNodeData, data])
 
     const errors = useMemo(() => {
         const errors: string[] = []
@@ -59,16 +63,33 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         return errors
     }, [step])
 
+    /* can't be memoized because intermediary node id changes */
+    const intermediaryNodeId =
+        findIntermediaryNodeForRoot(
+            getNodes(),
+            id,
+            getNextNodes,
+            VoiceFlowNodeType.Intermediary,
+        )?.id ?? END_CALL_NODE.id
+
     const isNestedIvr = useMemo(() => {
         const nodes = getNodes()
-        const path = findPathFromRoot(nodes, firstStepId, id, getNextNodes)
-
-        return !!path?.find(
-            (nodeId) =>
-                nodeId !== id &&
-                getNode(nodeId)?.type === VoiceFlowNodeType.IvrMenu,
+        const isParentNodeIvrOption = nodes.find(
+            (node) =>
+                node.type === VoiceFlowNodeType.IvrOption &&
+                node.data.next_step_id === id,
         )
-    }, [getNodes, firstStepId, id, getNode])
+
+        return isParentNodeIvrOption
+    }, [id, getNodes])
+
+    const handleAddOption = (option: BranchOptions, insertAtIndex: number) => {
+        const newNode: IvrOptionNode = {
+            ...createIvrOptionNode(id, insertAtIndex, option.next_step_id),
+            position: { x: 0, y: 0 },
+        }
+        addNodes(newNode)
+    }
 
     return (
         <VoiceStepNode
@@ -103,7 +124,11 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                     </div>
                 </div>
                 <Label>Menu options</Label>
-                <IvrMenuActionsFieldArray name={`steps.${id}.branch_options`} />
+                <IvrMenuActionsFieldArray
+                    name={`steps.${id}.branch_options`}
+                    onAddOption={handleAddOption}
+                    branchNextId={intermediaryNodeId}
+                />
             </div>
         </VoiceStepNode>
     )

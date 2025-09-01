@@ -8,13 +8,13 @@ import { mockBranchOptions } from '@gorgias/helpdesk-mocks'
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 
-import { END_CALL_NODE } from './flows/constants'
 import { IvrMenuActionsFieldArray } from './IvrMenuActionsFieldArray'
 
 const defaultProps = {
     name: 'someFieldArray',
     onAddOption: jest.fn(),
     onRemoveOption: jest.fn(),
+    branchNextId: 'end_call_node',
 }
 
 const branchOptions = [
@@ -65,8 +65,9 @@ describe('IvrMenuActionsFieldArray', () => {
                 expect.objectContaining({
                     input_digit: '4',
                     branch_name: '',
-                    next_step_id: END_CALL_NODE.id,
+                    next_step_id: defaultProps.branchNextId,
                 }),
+                3,
             )
         })
     })
@@ -103,6 +104,7 @@ describe('IvrMenuActionsFieldArray', () => {
                 expect.objectContaining({
                     input_digit: '2',
                 }),
+                1,
             )
         })
 
@@ -115,6 +117,7 @@ describe('IvrMenuActionsFieldArray', () => {
                 expect.objectContaining({
                     input_digit: '3',
                 }),
+                2,
             )
         })
 
@@ -127,6 +130,7 @@ describe('IvrMenuActionsFieldArray', () => {
                 expect.objectContaining({
                     input_digit: '6',
                 }),
+                5,
             )
         })
     })

@@ -29,7 +29,8 @@ export function buildIncomingEdgesMap<TNode extends Node>(
 ): Record<string, string[]> {
     const incomingEdges: Record<string, string[]> = {}
 
-    // Initialize all known nodes
+    /* Initialize all known nodes, intermediary nodes
+     * might have been filtered out prior to calling this function */
     nodes.forEach((node) => {
         incomingEdges[node.id] = []
     })
@@ -43,7 +44,10 @@ export function buildIncomingEdgesMap<TNode extends Node>(
         }
 
         nextNodes.forEach((nextNode) => {
-            incomingEdges[nextNode].push(node.id)
+            incomingEdges[nextNode] = [
+                ...(incomingEdges[nextNode] || []),
+                node.id,
+            ]
         })
     })
 
@@ -271,4 +275,35 @@ export function insertConvergenceNodes<
     }
 
     return modifiedNodes
+}
+
+export function findIntermediaryNodeForRoot<TNode extends Node>(
+    nodes: TNode[],
+    rootId: string,
+    getNextNodes: (node: TNode, nodes: TNode[]) => string[],
+    intermediaryNodeType: string,
+): TNode | null {
+    const incomingEdgesMap = buildIncomingEdgesMap(nodes, getNextNodes)
+
+    const intermediaryNodes = nodes.filter(
+        (node) => node.type === intermediaryNodeType,
+    )
+
+    const intermediaryNodeForRoot = intermediaryNodes.find(
+        (intermediaryNode) => {
+            const incomingNodes = incomingEdgesMap[intermediaryNode.id]
+            const lca = findLowestCommonAncestor(
+                nodes,
+                incomingNodes,
+                rootId,
+                getNextNodes,
+            )
+
+            if (lca === rootId) {
+                return true
+            }
+        },
+    )
+
+    return intermediaryNodeForRoot ?? null
 }

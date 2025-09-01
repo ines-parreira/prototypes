@@ -1,4 +1,5 @@
 import { Node } from '@xyflow/react'
+import { cloneDeep } from 'lodash'
 
 import { VoiceFlowNodeType } from 'pages/integrations/integration/components/voice/flows/constants'
 
@@ -6,6 +7,7 @@ import {
     buildIncomingEdgesMap,
     createFlowGraph,
     findConvergencePoints,
+    findIntermediaryNodeForRoot,
     findLowestCommonAncestor,
     findPathFromRoot,
     insertConvergenceNodes,
@@ -226,6 +228,28 @@ describe('buildIncomingEdgesMap', () => {
             'branch-b': ['decision'],
             merge: ['branch-a', 'branch-b'],
             end: ['merge'],
+        })
+    })
+
+    it('should not throw error when the next node does not exist on nodes array', () => {
+        const [firstNode, ...restNodes] = linearFlowNodes
+        const firstNodeWithNonexistentNext = cloneDeep(firstNode)
+        firstNodeWithNonexistentNext.data.next = [
+            firstNode.data.next as string,
+            'nonexistent',
+        ]
+
+        const nodes: GenericNode[] = [
+            firstNodeWithNonexistentNext,
+            ...restNodes,
+        ]
+
+        expect(buildIncomingEdgesMap(nodes, getNextNodes)).toEqual({
+            start: [],
+            nonexistent: ['start'],
+            'step-1': ['start'],
+            'step-2': ['step-1'],
+            end: ['step-2'],
         })
     })
 
@@ -810,5 +834,30 @@ describe('insertConvergenceNodes', () => {
         )
 
         expect(result).toEqual(singleNode)
+    })
+})
+
+describe('findIntermediaryNodeForRoot', () => {
+    it('should return null when no intermediary node is found', () => {
+        // the flow is linear, there is no node connecting other nodes with the same lowest common ancestor
+        const result = findIntermediaryNodeForRoot(
+            linearFlowNodes,
+            'start',
+            getNextNodes,
+            'merge',
+        )
+        expect(result).toBeNull()
+    })
+
+    it('should return the intermediary node connecting decision node branches when it is found', () => {
+        const result = findIntermediaryNodeForRoot(
+            branchedFlowNodes,
+            'decision',
+            getNextNodes,
+            'merge',
+        )
+
+        const mergeNode = branchedFlowNodes.find((node) => node.id === 'merge')
+        expect(result).toBe(mergeNode)
     })
 })

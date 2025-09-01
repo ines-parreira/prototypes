@@ -100,15 +100,15 @@ export function getNextNodes(
 }
 
 export function createIvrOptionNode(
-    node: IvrMenuNode,
+    parentId: string,
     optionIndex: number,
     nextStepId: string,
-): VoiceFlowNodeBase {
+): VoiceFlowNodeBase<IvrOptionNode> {
     return {
         id: uuidv4(),
         type: VoiceFlowNodeType.IvrOption,
         data: {
-            parentId: node.id,
+            parentId,
             optionIndex,
             next_step_id: nextStepId,
         },
@@ -139,7 +139,7 @@ function handleBranchingNode(
         case VoiceFlowNodeType.IvrMenu: {
             const branchNodes = Object.values(node.data.branch_options).map(
                 (branch, index) =>
-                    createIvrOptionNode(node, index, branch.next_step_id),
+                    createIvrOptionNode(node.id, index, branch.next_step_id),
             )
 
             const updatedParentNode = {

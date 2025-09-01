@@ -1,23 +1,22 @@
-import { useNodesData } from '@xyflow/react'
+import { useFormContext } from 'react-hook-form'
 
 import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
 
-import { IvrMenuNode, type IvrOptionNode } from '../types'
+import { type IvrOptionNode, VoiceFlowFormValues } from '../types'
 
 type IvrOptionNodeProps = NodeProps<IvrOptionNode>
 
 export function IvrOptionNode(props: IvrOptionNodeProps) {
     const { data } = props
-    const parentStep = useNodesData<IvrMenuNode>(props.data.parentId)
+    const { watch } = useFormContext<VoiceFlowFormValues>()
+
+    const inputDigit = watch(
+        `steps.${data.parentId}.branch_options.${data.optionIndex}.input_digit`,
+    )
 
     return (
         <NodeWrapper {...props}>
-            <ActionLabel
-                label={
-                    parentStep?.data.branch_options[data.optionIndex]
-                        .input_digit ?? ''
-                }
-            />
+            <ActionLabel label={inputDigit} />
         </NodeWrapper>
     )
 }
