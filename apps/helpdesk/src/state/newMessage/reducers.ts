@@ -417,6 +417,14 @@ export default function reducer(
                     newState = newState
                         .setIn(['state', 'contentState'], originalContent)
                         .deleteIn(['state', 'originalContentState'])
+                        .update('newMessage', (newMessage: Map<any, any>) => {
+                            return fromJS(
+                                updateNewMessageWithContentState(
+                                    newMessage.toJS() as NewMessage,
+                                    originalContent,
+                                ),
+                            ) as Map<any, any>
+                        })
                         // Force the editor to update with the original content
                         .setIn(['state', 'forceUpdate'], true)
                 }
@@ -773,7 +781,6 @@ export default function reducer(
                 translatedContentState: ContentState
             }
 
-            // store original content state before replacing with translation
             const currentState = state.getIn([
                 'state',
                 'contentState',
@@ -782,6 +789,14 @@ export default function reducer(
             return state
                 .setIn(['state', 'originalContentState'], currentState)
                 .setIn(['state', 'contentState'], translatedContentState)
+                .update('newMessage', (newMessage: Map<any, any>) => {
+                    return fromJS(
+                        updateNewMessageWithContentState(
+                            newMessage.toJS() as NewMessage,
+                            translatedContentState,
+                        ),
+                    ) as Map<any, any>
+                })
         }
 
         case types.CLEAR_TRANSLATION_STATE: {
@@ -790,11 +805,18 @@ export default function reducer(
                 'originalContentState',
             ]) as ContentState
 
-            // restore original content if it exists
             if (originalContent) {
                 state = state
                     .setIn(['state', 'contentState'], originalContent)
                     .deleteIn(['state', 'originalContentState'])
+                    .update('newMessage', (newMessage: Map<any, any>) => {
+                        return fromJS(
+                            updateNewMessageWithContentState(
+                                newMessage.toJS() as NewMessage,
+                                originalContent,
+                            ),
+                        ) as Map<any, any>
+                    })
             }
 
             return state

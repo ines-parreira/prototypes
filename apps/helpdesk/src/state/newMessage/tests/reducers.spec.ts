@@ -60,6 +60,12 @@ describe('new message reducer', () => {
             expect(newState.getIn(['state', 'contentState'])).toEqual(
                 translatedContent,
             )
+            expect(newState.getIn(['newMessage', 'body_text'])).toEqual(
+                'Translated text',
+            )
+            expect(newState.getIn(['newMessage', 'body_html'])).toContain(
+                'Translated text',
+            )
         })
 
         it('handles CLEAR_TRANSLATION_STATE action when original content exists', () => {
@@ -83,6 +89,12 @@ describe('new message reducer', () => {
             expect(
                 newState.getIn(['state', 'originalContentState']),
             ).toBeUndefined()
+            expect(newState.getIn(['newMessage', 'body_text'])).toEqual(
+                'Original text',
+            )
+            expect(newState.getIn(['newMessage', 'body_html'])).toContain(
+                'Original text',
+            )
         })
 
         it('handles CLEAR_TRANSLATION_STATE action when no original content exists', () => {
@@ -123,6 +135,12 @@ describe('new message reducer', () => {
                 newState.getIn(['state', 'originalContentState']),
             ).toBeUndefined()
             expect(newState.getIn(['state', 'forceUpdate'])).toBe(true)
+            expect(newState.getIn(['newMessage', 'body_text'])).toEqual(
+                'Original text',
+            )
+            expect(newState.getIn(['newMessage', 'body_html'])).toContain(
+                'Original text',
+            )
         })
 
         it('prevents editing when translation is active (SET_RESPONSE_TEXT)', () => {
