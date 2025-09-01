@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
-import { useIntegrations } from 'AIJourney/providers'
-import { useJourneys, useTestSms } from 'AIJourney/queries'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useTestSms } from 'AIJourney/queries'
 import { isValidPhoneNumber } from 'AIJourney/utils'
 import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -29,30 +29,22 @@ type ActivationProps = {
 }
 export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
     const history = useHistory()
-    const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
 
     const [isVisible, setIsVisible] = useState(true)
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [testSmsNumber, setTestSmsNumber] = useState('')
 
-    const { currentIntegration, isLoading: isLoadingIntegrations } =
-        useIntegrations(shopName)
+    const {
+        journey: abandonedCartJourney,
+        currentIntegration,
+        shopName,
+        isLoading: isLoadingJourneyData,
+    } = useJourneyContext()
 
     const testSms = useTestSms()
 
-    const integrationId = useMemo(() => {
-        return currentIntegration?.id
-    }, [currentIntegration])
-
-    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
-        useJourneys(integrationId, {
-            enabled: !!integrationId,
-        })
-
-    const abandonedCartJourney = merchantAiJourneys?.find(
-        (journey) => journey.type === 'cart_abandoned',
-    )
+    const integrationId = currentIntegration?.id
 
     const { data: integrationItems, isLoading: isLoadingProductsList } =
         useListProducts(
@@ -171,8 +163,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const shouldDisableButton = !selectedProduct || !isNumberValid
 
-    const isLoading =
-        isLoadingIntegrations || isLoadingProductsList || isLoadingJourneys
+    const isLoading = isLoadingJourneyData || isLoadingProductsList
 
     if (isLoading) {
         return <LoadingSpinner />

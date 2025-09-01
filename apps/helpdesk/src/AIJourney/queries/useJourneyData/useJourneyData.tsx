@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { getJourneyDetails } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
+import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { aiJourneyKeys } from '../utils'

@@ -35,6 +35,11 @@ jest.mock('AIJourney/providers', () => ({
     useIntegrations: jest.fn(),
 }))
 
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
+    JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
+    useJourneyContext: jest.fn(),
+}))
+
 jest.mock('AIJourney/hooks', () => ({
     ...jest.requireActual('AIJourney/hooks'),
     useJourneyUpdateHandler: jest.fn(),
@@ -64,6 +69,9 @@ const mockUseUpdateJourney = require('AIJourney/queries')
 
 const mockUseIntegrations = require('AIJourney/providers')
     .useIntegrations as jest.Mock
+const mockUseJourneyContext =
+    require('AIJourney/providers/JourneyProvider/JourneyProvider')
+        .useJourneyContext as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -99,6 +107,18 @@ describe('<AiJourneyOnboarding />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseJourneyContext.mockReturnValue({
+            journey: undefined,
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         mockUseJourneyUpdateHandler.mockImplementation(() => ({
             handleUpdate: mockHandleUpdate,

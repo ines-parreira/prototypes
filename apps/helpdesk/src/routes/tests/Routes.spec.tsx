@@ -196,6 +196,11 @@ const useListProductsMock = assumeMock(useListProducts)
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
     .useJourneyData as jest.Mock
+const mockUseIntegrations = require('AIJourney/providers')
+    .useIntegrations as jest.Mock
+const mockUseJourneyContext =
+    require('AIJourney/providers/JourneyProvider/JourneyProvider')
+        .useJourneyContext as jest.Mock
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
@@ -229,8 +234,14 @@ jest.mock('AIJourney/providers', () => {
             <>{children}</>
         ),
         useAccessToken: () => 'test-token',
+        useIntegrations: jest.fn(),
     }
 })
+
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
+    JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
+    useJourneyContext: jest.fn(),
+}))
 
 jest.mock('rest_api/auth', () => ({
     ...jest.requireActual('rest_api/auth'),
@@ -863,13 +874,43 @@ describe('<Routes/>', () => {
                 granularity: ReportingGranularity.Day,
             })
 
+            mockUseJourneyContext.mockReturnValue({
+                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            mockUseIntegrations.mockReturnValue({
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                integrations: [
+                    { id: 1, name: 'shopify-store', type: 'shopify' },
+                ],
+                isLoading: false,
+            })
+
             mockUseJourneyConfiguration.mockImplementation(() => ({
                 data: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 'sms-1',
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
                 },
                 isError: false,
                 isLoading: false,

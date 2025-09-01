@@ -17,7 +17,6 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { renderWithRouter } from 'utils/testing'
 
 import { Setup } from './Setup'
@@ -33,9 +32,11 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    ...jest.requireActual('AIJourney/providers'),
-    useIntegrations: jest.fn(),
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
+    ...jest.requireActual(
+        'AIJourney/providers/JourneyProvider/JourneyProvider',
+    ),
+    useJourneyContext: jest.fn(),
 }))
 
 jest.mock('AIJourney/hooks', () => ({
@@ -48,25 +49,20 @@ const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
 
 jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
-    useJourneys: jest.fn(),
     useCreateNewJourney: jest.fn(),
-    useJourneyData: jest.fn(),
     useUpdateJourney: jest.fn(),
     useSmsIntegrations: jest.fn(),
 }))
 
-const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 const mockUseSmsIntegrations = require('AIJourney/queries')
     .useSmsIntegrations as jest.Mock
-const mockUseJourneyConfiguration = require('AIJourney/queries')
-    .useJourneyData as jest.Mock
 const mockUseCreateNewJourney = require('AIJourney/queries')
     .useCreateNewJourney as jest.Mock
 const mockUseUpdateJourney = require('AIJourney/queries')
     .useUpdateJourney as jest.Mock
-
-const mockUseIntegrations = require('AIJourney/providers')
-    .useIntegrations as jest.Mock
+const mockUseJourneyContext =
+    require('AIJourney/providers/JourneyProvider/JourneyProvider')
+        .useJourneyContext as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -76,12 +72,7 @@ jest.mock('hooks/useAllIntegrations', () => ({
     default: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
-    useStoreConfiguration: jest.fn(),
-}))
-
-const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
-
+// Removed useStoreConfiguration mock - now provided by JourneyProvider
 ;(useAllIntegrations as jest.Mock).mockReturnValue({
     integrations: [
         {
@@ -109,16 +100,18 @@ describe('<Setup />', () => {
         const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
         const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
 
-        mockUseJourneys.mockImplementation(() => ({
-            data: [],
-            isError: false,
+        // Default mock for useJourneyContext
+        mockUseJourneyContext.mockReturnValue({
+            journey: undefined,
+            journeyData: undefined,
+            currentIntegration: undefined,
+            shopName: 'shopify-store',
             isLoading: false,
-        }))
-
-        mockUseIntegrations.mockImplementation(() => ({
-            integrations: [{ id: 1, name: 'shopify-store' }],
-            isLoading: false,
-        }))
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector.name === 'getCurrentAccountState') {
@@ -143,27 +136,6 @@ describe('<Setup />', () => {
             error: null,
         })
 
-        mockUseStoreConfiguration.mockReturnValue({
-            storeConfiguration: {
-                monitoredSmsIntegrations: [1, 2],
-            },
-            isLoading: false,
-        })
-
-        mockUseJourneyConfiguration.mockImplementation(() => ({
-            data: {
-                configuration: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '415-111-111',
-                    sms_sender_integration_id: 1,
-                },
-            },
-            isError: false,
-            isLoading: false,
-        }))
-
         mockUseCreateNewJourney.mockImplementation(() => ({
             mutateAsync: mockCreateJourneyMutateAsync,
             isError: false,
@@ -181,19 +153,9 @@ describe('<Setup />', () => {
     })
 
     it('should redirect from conversation setup to landing page on return', async () => {
-        mockUseJourneys.mockImplementation(() => ({
-            data: [],
-            isError: false,
-            isLoading: false,
-        }))
-
-        mockUseIntegrations.mockImplementation(() => ({
-            integrations: [{ id: 1, name: 'shopify-store' }],
-            isLoading: false,
-        }))
-
-        mockUseJourneyConfiguration.mockImplementation(() => ({
-            data: {
+        mockUseJourneyContext.mockReturnValue({
+            journey: undefined,
+            journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -202,9 +164,14 @@ describe('<Setup />', () => {
                     sms_sender_integration_id: 1,
                 },
             },
-            isError: false,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
             isLoading: false,
-        }))
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -226,8 +193,9 @@ describe('<Setup />', () => {
     })
 
     it('should update state when journeyParams is fetched', async () => {
-        mockUseJourneyConfiguration.mockImplementation(() => ({
-            data: {
+        mockUseJourneyContext.mockReturnValue({
+            journey: undefined,
+            journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -235,9 +203,14 @@ describe('<Setup />', () => {
                     discount_code_message_threshold: 2,
                 },
             },
-            isError: false,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
             isLoading: false,
-        }))
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -265,11 +238,17 @@ describe('<Setup />', () => {
 
     it('should reset the discount threshold message when total of message is changed', async () => {
         // Mock no existing journey configuration so the component starts with defaults
-        mockUseJourneyConfiguration.mockImplementation(() => ({
-            data: null,
-            isError: false,
+        mockUseJourneyContext.mockReturnValue({
+            journey: undefined,
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
             isLoading: false,
-        }))
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -354,9 +333,12 @@ describe('<Setup />', () => {
             mockUseJourneyUpdateHandler.mockImplementation(() => ({
                 handleUpdate: mockHandleUpdate,
             }))
+        })
 
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: {
+        it('should throw error when creating journey with missing integration ID', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
                         offer_discount: true,
@@ -365,22 +347,14 @@ describe('<Setup />', () => {
                         sms_sender_integration_id: 1,
                     },
                 },
-                isError: false,
+                currentIntegration: { name: 'shopify-store' }, // Missing ID
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-        })
-
-        it('should throw error when creating journey with missing integration ID', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ name: 'shopify-store' }],
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest
                 .fn()
@@ -417,16 +391,25 @@ describe('<Setup />', () => {
         })
 
         it('should throw error when creating journey with missing integration name', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1 }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1 }, // Missing name
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest
                 .fn()
@@ -463,16 +446,25 @@ describe('<Setup />', () => {
         })
 
         it('should throw error when updating journey with missing integration ID', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ name: 'shopify-store' }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { name: 'shopify-store' }, // Missing ID
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockUpdateJourney = jest
                 .fn()
@@ -512,16 +504,25 @@ describe('<Setup />', () => {
         })
 
         it('should throw error when updating journey with missing integration name', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1 }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1 }, // Missing name
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockUpdateJourney = jest
                 .fn()
@@ -561,16 +562,25 @@ describe('<Setup />', () => {
         })
 
         it('should throw error when updating journey with missing journey ID', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: { type: 'cart_abandoned' }, // Missing ID
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockUpdateJourney = jest
                 .fn()
@@ -610,16 +620,25 @@ describe('<Setup />', () => {
         })
 
         it('should handle mutation errors during journey creation', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest
                 .fn()
@@ -656,16 +675,25 @@ describe('<Setup />', () => {
         })
 
         it('should handle mutation errors during journey update', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
+            mockUseJourneyContext.mockReturnValue({
+                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockUpdateJourney = jest
                 .fn()
@@ -724,25 +752,13 @@ describe('<Setup />', () => {
                 return mockPhoneNumbers
             })
 
-            mockUseIntegrations.mockImplementation(() => ({
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [
-                    {
-                        id: 'journey-123',
-                        type: 'cart_abandoned',
-                        message_instructions: 'Be friendly and professional',
-                    },
-                ],
-                isError: false,
-                isLoading: false,
-            }))
-
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: {
+            mockUseJourneyContext.mockReturnValue({
+                journey: {
+                    id: 'journey-123',
+                    type: 'cart_abandoned',
+                    message_instructions: 'Be friendly and professional',
+                },
+                journeyData: {
                     configuration: {
                         max_follow_up_messages: 2,
                         offer_discount: true,
@@ -751,9 +767,14 @@ describe('<Setup />', () => {
                         sms_sender_integration_id: 1,
                     },
                 },
-                isError: false,
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             renderWithRouter(
                 <Provider store={mockStore}>
@@ -800,25 +821,13 @@ describe('<Setup />', () => {
                 return mockPhoneNumbers
             })
 
-            mockUseIntegrations.mockImplementation(() => ({
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [
-                    {
-                        id: 'journey-123',
-                        type: 'cart_abandoned',
-                        message_instructions: 'Be friendly and professional',
-                    },
-                ],
-                isError: false,
-                isLoading: false,
-            }))
-
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: {
+            mockUseJourneyContext.mockReturnValue({
+                journey: {
+                    id: 'journey-123',
+                    type: 'cart_abandoned',
+                    message_instructions: 'Be friendly and professional',
+                },
+                journeyData: {
                     configuration: {
                         max_follow_up_messages: 2,
                         offer_discount: true,
@@ -827,9 +836,14 @@ describe('<Setup />', () => {
                         sms_sender_integration_id: 1,
                     },
                 },
-                isError: false,
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             renderWithRouter(
                 <Provider store={mockStore}>
@@ -863,25 +877,13 @@ describe('<Setup />', () => {
                 return mockPhoneNumbers
             })
 
-            mockUseIntegrations.mockImplementation(() => ({
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [
-                    {
-                        id: 'journey-123',
-                        type: 'cart_abandoned',
-                        message_instructions: 'Be friendly and professional',
-                    },
-                ],
-                isError: false,
-                isLoading: false,
-            }))
-
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: {
+            mockUseJourneyContext.mockReturnValue({
+                journey: {
+                    id: 'journey-123',
+                    type: 'cart_abandoned',
+                    message_instructions: 'Be friendly and professional',
+                },
+                journeyData: {
                     configuration: {
                         max_follow_up_messages: 2,
                         offer_discount: true,
@@ -890,9 +892,14 @@ describe('<Setup />', () => {
                         sms_sender_integration_id: 1,
                     },
                 },
-                isError: false,
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             renderWithRouter(
                 <Provider store={mockStore}>
@@ -930,23 +937,17 @@ describe('<Setup />', () => {
                 return mockPhoneNumbers
             })
 
-            mockUseIntegrations.mockImplementation(() => ({
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
-                isLoading: false,
-            }))
-
-            // When no journey exists, there should be no journey configuration
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: undefined,
-                isError: false,
-                isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockCreateMutateAsync = jest.fn().mockResolvedValue({})
             mockUseCreateNewJourney.mockImplementation(() => ({
@@ -1080,20 +1081,10 @@ describe('<Setup />', () => {
                 error: null,
             })
 
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
-                isLoading: false,
-            }))
-
-            mockUseStoreConfiguration.mockReturnValue({
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                isLoading: false,
-            })
-
-            mockUseJourneyConfiguration.mockImplementation(() => ({
-                data: {
+            // Default mock for useJourneyContext in handleContinue tests
+            mockUseJourneyContext.mockReturnValue({
+                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
                         offer_discount: true,
@@ -1103,21 +1094,14 @@ describe('<Setup />', () => {
                         discount_code_message_threshold: 2,
                     },
                 },
-                isError: false,
-                isLoading: false,
-            }))
-
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
-                isLoading: false,
                 currentIntegration: { id: 1, name: 'shopify-store' },
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             jest.mock('hooks/useAllIntegrations', () => ({
                 __esModule: true,
@@ -1137,11 +1121,27 @@ describe('<Setup />', () => {
         })
 
         it('should navigate to activation page after successful journey creation', async () => {
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
+            // Override the default to have no existing journey
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 2,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest.fn()
             mockUseCreateNewJourney.mockImplementation(() => ({
@@ -1196,16 +1196,7 @@ describe('<Setup />', () => {
         })
 
         it('should navigate to activation page after successful journey update', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+            // Uses the default mock from beforeEach which has existing journey
 
             renderWithRouter(
                 <Provider store={mockStore}>
@@ -1235,11 +1226,27 @@ describe('<Setup />', () => {
         })
 
         it('should call handleCreate when no existing journey exists', async () => {
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
+            // Override the default to have no existing journey
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 2,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest.fn()
             mockUseCreateNewJourney.mockImplementation(() => ({
@@ -1285,11 +1292,27 @@ describe('<Setup />', () => {
         })
 
         it('should call handleCreate without discount_code_message_threshold when no existing journey exists and discount disabled', async () => {
-            mockUseJourneys.mockImplementation(() => ({
-                data: [],
-                isError: false,
+            // Override the default to have no existing journey
+            mockUseJourneyContext.mockReturnValue({
+                journey: undefined,
+                journeyData: {
+                    configuration: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 2,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
                 isLoading: false,
-            }))
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
 
             const mockMutateAsync = jest.fn()
             mockUseCreateNewJourney.mockImplementation(() => ({
@@ -1334,16 +1357,7 @@ describe('<Setup />', () => {
         })
 
         it('should call handleUpdate when existing journey exists', async () => {
-            mockUseIntegrations.mockImplementation(() => ({
-                integrations: [{ id: 1, name: 'shopify-store' }],
-                isLoading: false,
-            }))
-
-            mockUseJourneys.mockImplementation(() => ({
-                data: [{ id: 'journey-123', type: 'cart_abandoned' }],
-                isError: false,
-                isLoading: false,
-            }))
+            // Uses the default mock from beforeEach which has existing journey
 
             renderWithRouter(
                 <Provider store={mockStore}>

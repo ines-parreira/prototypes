@@ -1,5 +1,6 @@
 import { OnboardingStepSelector } from 'AIJourney/components/OnboardingStepSelector/OnboardingStepSelector'
 import { STEPS_NAMES } from 'AIJourney/constants'
+import { JourneyProvider } from 'AIJourney/providers'
 import lightningIcon from 'assets/img/ai-journey/lightning.svg'
 
 import { Activation } from '../Activation/Activation'
@@ -24,20 +25,22 @@ export const AiJourneyOnboarding = ({ step }: AiJourneyOnboardingProps) => {
     ]
 
     return (
-        <div className={css.container}>
-            <div className={css.header}>
-                <img src={lightningIcon} alt="lightning" />
-                <span>SMS Abandoned Cart flow</span>
+        <JourneyProvider journeyType="cart_abandoned">
+            <div className={css.container}>
+                <div className={css.header}>
+                    <img src={lightningIcon} alt="lightning" />
+                    <span>SMS Abandoned Cart flow</span>
+                </div>
+                <OnboardingStepSelector
+                    steps={ONBOARDING_STEPS}
+                    activeStep={step}
+                />
+                {step === STEPS_NAMES.CONVERSATION_SETUP ? (
+                    <Setup />
+                ) : (
+                    <Activation />
+                )}
             </div>
-            <OnboardingStepSelector
-                steps={ONBOARDING_STEPS}
-                activeStep={step}
-            />
-            {step === STEPS_NAMES.CONVERSATION_SETUP ? (
-                <Setup />
-            ) : (
-                <Activation />
-            )}
-        </div>
+        </JourneyProvider>
     )
 }

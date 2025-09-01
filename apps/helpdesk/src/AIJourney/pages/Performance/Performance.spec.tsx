@@ -36,6 +36,8 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 jest.mock('AIJourney/queries', () => ({
     ...jest.requireActual('AIJourney/queries'),
     useJourneys: jest.fn(),
+    useJourneyData: jest.fn(),
+    useUpdateJourney: jest.fn(),
 }))
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
@@ -44,6 +46,10 @@ jest.mock(
     }),
 )
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
+const mockUseJourneyData = require('AIJourney/queries')
+    .useJourneyData as jest.Mock
+const mockUseUpdateJourney = require('AIJourney/queries')
+    .useUpdateJourney as jest.Mock
 
 describe('<Performance />', () => {
     beforeEach(() => {
@@ -52,6 +58,26 @@ describe('<Performance />', () => {
             data: [
                 { id: 'journey-123', type: 'cart_abandoned', state: 'active' },
             ],
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseJourneyData.mockImplementation(() => ({
+            data: {
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseUpdateJourney.mockImplementation(() => ({
+            mutateAsync: jest.fn().mockResolvedValue({}),
             isError: false,
             isLoading: false,
         }))

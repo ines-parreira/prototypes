@@ -1,25 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { Button } from 'AIJourney/components'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
-import { useIntegrations } from 'AIJourney/providers'
-import {
-    useCreateNewJourney,
-    useJourneyData,
-    useJourneys,
-} from 'AIJourney/queries'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useCreateNewJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
-import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -36,42 +29,22 @@ import css from './Setup.less'
 
 export const Setup = () => {
     const history = useHistory()
-    const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
     const customInstructionEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomInstructions,
     )
 
-    const { currentIntegration, isLoading: isLoadingIntegrations } =
-        useIntegrations(shopName)
+    const {
+        journey: abandonedCartJourney,
+        journeyData,
+        currentIntegration,
+        shopName,
+        isLoading: isLoadingJourneyData,
+        storeConfiguration,
+    } = useJourneyContext()
 
-    const integrationId = useMemo(() => {
-        return currentIntegration?.id
-    }, [currentIntegration])
-
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-
-    const { storeConfiguration, isLoading: isLoadingStoreConfiguration } =
-        useStoreConfiguration({
-            shopName,
-            accountDomain,
-        })
-
-    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
-        useJourneys(integrationId, {
-            enabled: !!integrationId,
-        })
-
-    const abandonedCartJourney = merchantAiJourneys?.find(
-        (journey) => journey.type === 'cart_abandoned',
-    )
-
-    const { data: journeyData, isLoading: isLoadingJourneyConfiguration } =
-        useJourneyData(abandonedCartJourney?.id, {
-            enabled: !!integrationId && !!abandonedCartJourney?.id,
-        })
+    const integrationId = currentIntegration?.id
 
     const { configuration: journeyParams } = journeyData || {}
 
@@ -235,13 +208,7 @@ export const Setup = () => {
     const showMessageWithDiscountCode =
         isDiscountEnabled && numberOfMessageValue > 1
 
-    const isLoading =
-        isLoadingIntegrations ||
-        isLoadingStoreConfiguration ||
-        isLoadingJourneys ||
-        (!!abandonedCartJourney?.id && isLoadingJourneyConfiguration)
-
-    if (isLoading) {
+    if (isLoadingJourneyData) {
         return <LoadingSpinner />
     }
 

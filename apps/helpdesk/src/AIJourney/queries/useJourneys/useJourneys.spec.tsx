@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getAllJourneysPublic } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
+import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useJourneys } from './useJourneys'
@@ -12,7 +12,7 @@ jest.mock('@gorgias/convert-client', () => ({
     getAllJourneysPublic: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers', () => ({
+jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
     useAccessToken: jest.fn(),
 }))
 

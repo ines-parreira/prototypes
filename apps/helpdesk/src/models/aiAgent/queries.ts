@@ -137,10 +137,14 @@ export const useGetStoreConfigurationPure = (
     })
 }
 
-export const useGetStoresConfigurationForAccount = (
+export const useGetStoresConfigurationForAccount = <
+    TData = Awaited<ReturnType<typeof getStoresConfigurations>>,
+>(
     params: GetStoreConfigurationForAccountParams,
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getStoresConfigurations>>
+        Awaited<ReturnType<typeof getStoresConfigurations>>,
+        unknown,
+        TData
     >,
 ) => {
     const parsedParams = {

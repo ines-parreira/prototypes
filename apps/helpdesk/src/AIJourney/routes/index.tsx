@@ -69,7 +69,9 @@ export function AiJourneyRoutes() {
     return (
         <IntegrationsProvider>
             <TokenProvider>
-                <App content={AiJourneyBaseRoutes} navbar={AiJourneyNavbar} />
+                <App navbar={AiJourneyNavbar}>
+                    <AiJourneyBaseRoutes />
+                </App>
             </TokenProvider>
         </IntegrationsProvider>
     )
