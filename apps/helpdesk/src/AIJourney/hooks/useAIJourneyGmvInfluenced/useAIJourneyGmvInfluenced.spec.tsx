@@ -146,19 +146,19 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
         ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
             const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
+            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
                 return {
                     data: [
                         [
                             {
                                 dateTime: '2025-07-03',
                                 value: 100,
-                                label: AiSalesAgentOrdersMeasure.Gmv,
+                                label: AiSalesAgentOrdersMeasure.GmvUsd,
                             },
                             {
                                 dateTime: '2025-07-10',
                                 value: 10,
-                                label: AiSalesAgentOrdersMeasure.Gmv,
+                                label: AiSalesAgentOrdersMeasure.GmvUsd,
                             },
                         ],
                     ] satisfies TimeSeriesDataItem[][],
@@ -179,12 +179,12 @@ describe('useAIJourneyGmvInfluenced', () => {
         expect(result.current.series).toEqual([
             {
                 dateTime: '2025-07-03',
-                label: 'AiSalesAgentOrders.gmv',
+                label: 'AiSalesAgentOrders.gmvUsd',
                 value: 100,
             },
             {
                 dateTime: '2025-07-10',
-                label: 'AiSalesAgentOrders.gmv',
+                label: 'AiSalesAgentOrders.gmvUsd',
                 value: 10,
             },
         ])

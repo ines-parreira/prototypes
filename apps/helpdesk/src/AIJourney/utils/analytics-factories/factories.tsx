@@ -43,7 +43,7 @@ export const aiJourneyGmvInfluencedQueryFactory = (
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_GMV_INFLUENCED,
-        measures: [AiSalesAgentOrdersMeasure.Gmv],
+        measures: [AiSalesAgentOrdersMeasure.GmvUsd],
         dimensions: [AiSalesAgentOrdersDimension.Currency],
         filters: [
             {

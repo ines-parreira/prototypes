@@ -48,6 +48,9 @@ apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/conv-ai-flywheel
 apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/conv-ai-flywheel
 
+# Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
+apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
+
 # Chat widget scope @gorgias/conv-ai-expansion
 
 apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-expansion

@@ -22,7 +22,7 @@ export const aiJourneyOrdersDrillDownQueryFactory = (
         timezone,
         journeyId,
     ),
-    measures: [AiSalesAgentOrdersMeasure.Gmv],
+    measures: [AiSalesAgentOrdersMeasure.GmvUsd],
     dimensions: [
         AiSalesAgentOrdersDimension.TicketId,
         AiSalesAgentOrdersDimension.OrderId,

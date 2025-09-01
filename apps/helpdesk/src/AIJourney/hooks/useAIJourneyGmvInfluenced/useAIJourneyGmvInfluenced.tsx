@@ -51,7 +51,7 @@ export const useAIJourneyGmvInfluenced = (
         ),
     )
     const gmvInfluencedTimeSeriesData = useMemo(
-        () => getStatsByMeasure(AiSalesAgentOrdersMeasure.Gmv, timeSeries),
+        () => getStatsByMeasure(AiSalesAgentOrdersMeasure.GmvUsd, timeSeries),
         [timeSeries],
     )
 
