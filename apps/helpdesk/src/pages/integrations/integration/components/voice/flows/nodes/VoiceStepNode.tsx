@@ -76,19 +76,21 @@ export function VoiceStepNode({
                 isLoading={false}
                 withFooter={false}
             >
-                <Drawer.Header>
+                <Drawer.Header className={css.drawerHeader}>
                     <span>{title}</span>
                     <Drawer.HeaderActions
                         onClose={handleDrawerClose}
                         closeButtonId="close-button"
                         className={css.headerActions}
-                    >
+                    ></Drawer.HeaderActions>
+                </Drawer.Header>
+
+                <Drawer.Content>
+                    <div className={css.learnMoreLink}>
                         <LearnMoreLink url="#">
                             Learn more about Call Flows
                         </LearnMoreLink>
-                    </Drawer.HeaderActions>
-                </Drawer.Header>
-                <Drawer.Content>
+                    </div>
                     <div className={css.drawerForm} ref={drawerRef}>
                         {children}
                     </div>

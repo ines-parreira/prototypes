@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Banner, Label } from '@gorgias/axiom'
+import { Banner } from '@gorgias/axiom'
 import { useListIntegrations } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType, SendToSMSStep } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
@@ -67,49 +67,77 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
         >
             <Banner type="info">
                 Sending to SMS is a final step, you cannot add any other steps
-                after. Once the caller hears the confirmation message, the call
+                after. Once the caller hears the transition message, the call
                 ends.
             </Banner>
-            <div className={css.formSection}>
-                <Label>SMS integration</Label>
-                <FormField
-                    name={`steps.${id}.sms_integration_id`}
-                    field={SmsIntegrationSelect}
-                    options={smsIntegrations.map((integration) => ({
-                        label: getIntegrationName(integration, phoneNumbers),
-                        value: integration.id,
-                    }))}
-                />
-            </div>
 
-            <div className={css.formSection}>
-                <Label>SMS confirmation message</Label>
-                <span>
-                    This message will be played to callers before deflecting the
-                    conversation to SMS
-                </span>
-            </div>
-            <div>
-                <FormField
-                    name={`steps.${id}.confirmation_message`}
-                    field={VoiceMessageField}
-                    horizontal={true}
-                    shouldUpload={true}
-                    allowNone={false}
-                    customRecordingType={CustomRecordingType.GreetingMessage}
-                    radioButtonId={id}
-                />
-            </div>
+            <div className={css.formWithSeparator}>
+                <div className={css.formSection}>
+                    <div className={css.sectionHeader}>
+                        <div className={css.sectionTitle}>
+                            Step 1: Where should this call go?
+                        </div>
+                        <div className={css.sectionDescription}>
+                            Select the SMS integrations you want your callers to
+                            be deflected to:
+                        </div>
+                    </div>
+                    <FormField
+                        name={`steps.${id}.sms_integration_id`}
+                        field={SmsIntegrationSelect}
+                        options={smsIntegrations.map((integration) => ({
+                            label: getIntegrationName(
+                                integration,
+                                phoneNumbers,
+                            ),
+                            value: integration.id,
+                        }))}
+                    />
+                </div>
 
-            <div className={css.formSection}>
-                <Label>Outbound SMS message</Label>
-                <span>This message will be sent to callers via SMS</span>
+                <div className={css.formSection}>
+                    <div className={css.sectionHeader}>
+                        <div className={css.sectionTitle}>
+                            Step 2: Transition message
+                        </div>
+                        <div className={css.sectionDescription}>
+                            Let callers know they&apos;re switching to text
+                            messaging so they know what to expect next.
+                        </div>
+                    </div>
+                    <div>
+                        <FormField
+                            name={`steps.${id}.confirmation_message`}
+                            field={VoiceMessageField}
+                            horizontal={true}
+                            shouldUpload={true}
+                            allowNone={false}
+                            customRecordingType={
+                                CustomRecordingType.GreetingMessage
+                            }
+                            radioButtonId={id}
+                        />
+                    </div>
+                </div>
+
+                <div className={css.formSection}>
+                    <div className={css.sectionHeader}>
+                        <div className={css.sectionTitle}>
+                            Step 3: Opening SMS message
+                        </div>
+                        <div className={css.sectionDescription}>
+                            Welcome customers to the text conversation
+                        </div>
+                    </div>
+
+                    <FormField
+                        name={`steps.${id}.sms_content`}
+                        field={TextArea}
+                        label={'SMS message'}
+                        placeholder="Hello! Thank you for choosing our messaging service. How can I help you?"
+                    />
+                </div>
             </div>
-            <FormField
-                name={`steps.${id}.sms_content`}
-                field={TextArea}
-                placeholder="Hello! Thank you for choosing our messaging service. How can I help you?"
-            />
         </VoiceStepNode>
     )
 }

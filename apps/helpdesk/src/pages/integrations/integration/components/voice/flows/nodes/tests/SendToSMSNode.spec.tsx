@@ -110,22 +110,30 @@ describe('SendToSMSNode', () => {
             expect(screen.getAllByText('Send to SMS')).toHaveLength(2)
             expect(
                 screen.getByText(
-                    'Sending to SMS is a final step, you cannot add any other steps after. Once the caller hears the confirmation message, the call ends.',
+                    'Sending to SMS is a final step, you cannot add any other steps after. Once the caller hears the transition message, the call ends.',
                 ),
             ).toBeInTheDocument()
             expect(
-                screen.getByText('SMS confirmation message'),
+                screen.getByText('Step 1: Where should this call go?'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'This message will be played to callers before deflecting the conversation to SMS',
+                    'Select the SMS integrations you want your callers to be deflected to:',
                 ),
             ).toBeInTheDocument()
-            expect(screen.getByText('Outbound SMS message')).toBeInTheDocument()
+            expect(
+                screen.getByText('Step 2: Transition message'),
+            ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'This message will be sent to callers via SMS',
+                    "Let callers know they're switching to text messaging so they know what to expect next.",
                 ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Step 3: Opening SMS message'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Welcome customers to the text conversation'),
             ).toBeInTheDocument()
 
             // The description & dropdown show the integration name
@@ -149,8 +157,7 @@ describe('SendToSMSNode', () => {
         renderComponent(stepWithoutPhone, flowData)
 
         await waitFor(() => {
-            // card description + card label
-            expect(screen.getAllByText('SMS integration')).toHaveLength(2)
+            expect(screen.getByText('SMS integration')).toBeInTheDocument()
             // error message
             expect(screen.getByText('warning_amber')).toBeInTheDocument()
             // dropdown should show placeholder

@@ -1,6 +1,14 @@
+@import '~css/typography';
+
 :local {
-    .headerActions {
-        gap: var(--layout-spacing-xs);
+    .drawerHeader {
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .learnMoreLink {
+        display: flex;
+        justify-content: end;
+
         a {
             font-size: 12px;
             font-weight: 500;
@@ -17,6 +25,7 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-m);
+        padding-top: var(--layout-spacing-s);
     }
 
     .tightDrawerForm {
@@ -25,10 +34,36 @@
         gap: var(--layout-spacing-s);
     }
 
+    .formWithSeparator {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+
+        & > *:not(:last-child) {
+            padding-bottom: var(--layout-spacing-m);
+            border-bottom: 1px solid var(--neutral-grey-2);
+        }
+    }
+
     .formSection {
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
+
+        .sectionHeader {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: var(--layout-spacing-xs);
+            gap: var(--layout-spacing-xxs);
+
+            .sectionTitle {
+                .heading-subsection-semibold();
+            }
+
+            .sectionDescription {
+                color: var(--neutral-grey-5);
+            }
+        }
     }
 
     .deleteIcon {
