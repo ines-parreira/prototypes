@@ -11,6 +11,10 @@ import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 import { TwilioSocketEventType } from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
 import client from 'models/api/resources'
+import {
+    TransferTarget,
+    TransferType,
+} from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import socketManager from 'services/socketManager'
 import {
     SocketEventType,
@@ -29,36 +33,59 @@ jest.mock('@gorgias/helpdesk-queries')
 jest.unmock('services/socketManager')
 jest.unmock('services/socketManager/socketManager')
 
-jest.mock('../CallTransferDropdown', () => ({
-    __esModule: true,
-    default: ({
-        isOpen,
-        setIsOpen,
-        onTransferInitiated,
-    }: {
-        isOpen: boolean
-        setIsOpen: (flag: boolean) => void
-        onTransferInitiated: () => void
-    }) => (
-        <div
-            data-testid="transfer-dropdown"
-            className={isOpen ? 'is-open' : 'is-hidden'}
-            onClick={() => setIsOpen(!isOpen)}
-        >
+jest.mock('../CallTransferDropdown/CallTransferDropdown', () => {
+    return {
+        __esModule: true,
+        default: ({
+            isOpen,
+            setIsOpen,
+            onTransferInitiated,
+        }: {
+            isOpen: boolean
+            setIsOpen: (flag: boolean) => void
+            onTransferInitiated: (transferringTo: TransferTarget | null) => void
+        }) => (
             <div
-                data-testid="confirm-transfer-button"
-                onClick={onTransferInitiated}
+                data-testid="transfer-dropdown"
+                className={isOpen ? 'is-open' : 'is-hidden'}
+                onClick={() => setIsOpen(!isOpen)}
             >
-                Transfer
+                <div
+                    data-testid="confirm-agent-transfer-button"
+                    onClick={() =>
+                        onTransferInitiated({ id: 1, type: TransferType.Agent })
+                    }
+                >
+                    Transfer to Agent
+                </div>
+                <div
+                    data-testid="confirm-external-transfer-button"
+                    onClick={() =>
+                        onTransferInitiated({
+                            type: TransferType.External,
+                            value: '+15551234567',
+                            customer: null,
+                        })
+                    }
+                >
+                    Transfer to External
+                </div>
             </div>
+        ),
+    }
+})
+
+jest.mock('../TransferTargetLabel', () => ({
+    TransferTargetLabel: ({
+        transferringTo,
+    }: {
+        transferringTo: TransferTarget
+    }) => (
+        <div data-testid="transfer-target-label">
+            Transferring call to {transferringTo.type}
         </div>
     ),
 }))
-
-jest.mock(
-    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () => () => <div>Agent Label</div>,
-)
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
@@ -316,27 +343,41 @@ describe('<OngoingPhoneCall/>', () => {
         expect(screen.getByTestId('transfer-dropdown')).toHaveClass('is-open')
     })
 
-    it(`should display "Transferring" state after a transfer is initiated`, () => {
-        mockUsePutCallParticipantOnHold.mockReturnValue({
-            mutate: jest.fn(),
-        })
-        const call = mockIncomingCall(integrationId) as Call
-        render(
-            <Provider store={store}>
-                <OngoingPhoneCall call={call} />
-            </Provider>,
-        )
+    it.each([
+        {
+            buttonIdToPress: 'confirm-agent-transfer-button',
+            expectedLabel: 'Transferring call to agent',
+        },
+        {
+            buttonIdToPress: 'confirm-external-transfer-button',
+            expectedLabel: 'Transferring call to external',
+        },
+    ])(
+        `should display "Transferring" state with agent`,
+        ({ buttonIdToPress, expectedLabel }) => {
+            mockUsePutCallParticipantOnHold.mockReturnValue({
+                mutate: jest.fn(),
+            })
+            const call = mockIncomingCall(integrationId) as Call
+            render(
+                <Provider store={store}>
+                    <OngoingPhoneCall call={call} />
+                </Provider>,
+            )
 
-        fireEvent.click(screen.getByTestId('confirm-transfer-button'))
+            fireEvent.click(screen.getByTestId(buttonIdToPress))
 
-        expect(screen.getByText('Transferring...')).toBeVisible()
-        expect(
-            screen.getByLabelText('Take off hold on phone call'),
-        ).toBeAriaDisabled()
-        expect(screen.getByLabelText('Transfer phone call')).toBeAriaDisabled()
-        expect(screen.getByText(/Transferring call to/)).toBeInTheDocument()
-        expect(screen.getByLabelText('End phone call')).toBeInTheDocument()
-    })
+            expect(screen.getByText('Transferring...')).toBeVisible()
+            expect(
+                screen.getByLabelText('Take off hold on phone call'),
+            ).toBeAriaDisabled()
+            expect(
+                screen.getByLabelText('Transfer phone call'),
+            ).toBeAriaDisabled()
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            expect(screen.getByLabelText('End phone call')).toBeInTheDocument()
+        },
+    )
 
     it.each([
         {
@@ -412,7 +453,7 @@ describe('<OngoingPhoneCall/>', () => {
         )
 
         // start the transfer
-        fireEvent.click(screen.getByTestId('confirm-transfer-button'))
+        fireEvent.click(screen.getByTestId('confirm-agent-transfer-button'))
 
         expect(screen.getByText('Transferring...')).toBeVisible()
         expect(

@@ -21,6 +21,7 @@ import {
     TWILIO_CURRENT_ITEM,
 } from 'pages/common/components/PhoneIntegrationBar/constants'
 import { useConnectionParameters } from 'pages/common/components/PhoneIntegrationBar/hooks'
+import { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -35,12 +36,12 @@ import { notify as notifyAction } from 'state/notifications/actions'
 import { Notification, NotificationStatus } from 'state/notifications/types'
 import { RootState } from 'state/types'
 
-import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
-import CallTransferDropdown from './CallTransferDropdown'
+import CallTransferDropdown from './CallTransferDropdown/CallTransferDropdown'
 import IconButtonTooltip from './IconButtonTooltip'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
+import { TransferTargetLabel } from './TransferTargetLabel'
 
 import css from './OngoingPhoneCall.less'
 
@@ -61,7 +62,9 @@ export function OngoingPhoneCall({
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const [isTransferring, setIsTransferring] = useState(false)
-    const [transferringTo, setTransferringTo] = useState<number | null>(null)
+    const [transferringTo, setTransferringTo] = useState<TransferTarget | null>(
+        null,
+    )
     const [isRecording, setIsRecording] = useState(false)
 
     const { mutate: changeHoldState } = usePutCallParticipantOnHold({
@@ -164,10 +167,7 @@ export function OngoingPhoneCall({
                 <div className={css.callerDetailsContainer}>
                     <PhoneIntegrationName integrationId={integrationId} />
                     {transferringTo ? (
-                        <div className={css.callerDetails}>
-                            Transferring call to
-                            <VoiceCallAgentLabel agentId={transferringTo} />
-                        </div>
+                        <TransferTargetLabel transferringTo={transferringTo} />
                     ) : (
                         <PhoneCustomerName
                             name={customerName}

@@ -1,10 +1,14 @@
-import { User } from '@gorgias/helpdesk-queries'
+import { User, VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
 
 import {
     AgentWithStatus,
     AvailabilityStatusTag,
     User as GorgiasStateUser,
 } from 'config/types/user'
+import {
+    TransferTarget,
+    TransferType,
+} from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 
 export const mergeAgentData = (
     agentsData: GorgiasStateUser[],
@@ -55,5 +59,21 @@ export const getAvailabilityStatus = (
             return 'online'
         default:
             return
+    }
+}
+
+export const getTransferReceiverData = (target: TransferTarget) => {
+    // convert from transfer target to transfer API receiver data
+    switch (target.type) {
+        case TransferType.Agent:
+            return {
+                receiver_type: VoiceCallTransferReceiverType.Agent,
+                receiver_id: target.id,
+            }
+        case TransferType.External:
+            return {
+                receiver_type: VoiceCallTransferReceiverType.External,
+                receiver_value: target.value,
+            }
     }
 }

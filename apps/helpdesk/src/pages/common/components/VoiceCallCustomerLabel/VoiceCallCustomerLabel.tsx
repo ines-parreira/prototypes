@@ -1,6 +1,5 @@
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
-import { fromJS } from 'immutable'
 import { isEmpty } from 'lodash'
 
 import { Tooltip } from '@gorgias/axiom'
@@ -19,6 +18,7 @@ type CustomerLabelProps = {
     className?: string
     withTooltip?: boolean
     interactable?: boolean
+    showBothNameAndPhone?: boolean
 }
 
 export default function VoiceCallCustomerLabel({
@@ -28,6 +28,7 @@ export default function VoiceCallCustomerLabel({
     className,
     withTooltip = false,
     interactable = false,
+    showBothNameAndPhone = false,
 }: CustomerLabelProps) {
     const { customer, error } = useCustomerDetails({
         customerId,
@@ -37,15 +38,31 @@ export default function VoiceCallCustomerLabel({
     const generatedId = useId()
     const id = `voice-call-customer-label-${generatedId}`
 
-    const customerDataOrPhoneNumber =
-        error || isEmpty(customer) ? formattedPhoneNumber : fromJS(customer)
-    const displayedValue = customerName || customerDataOrPhoneNumber
+    const isFoundCustomerValid = !error && !isEmpty(customer)
+    const foundCustomerName = isFoundCustomerValid ? customer?.name : undefined
+    const displayedCustomerName = customerName
+        ? customerName
+        : foundCustomerName
 
-    const label = <CustomerLabel customer={displayedValue} />
+    const shouldAlsoDisplayPhoneNumber =
+        showBothNameAndPhone && !!displayedCustomerName
+
+    const label = (
+        <CustomerLabel
+            customer={displayedCustomerName || formattedPhoneNumber}
+        />
+    )
 
     return (
         <>
-            {withTooltip && <Tooltip target={id}>{label}</Tooltip>}
+            {withTooltip && (
+                <Tooltip target={id}>
+                    {label}
+                    {shouldAlsoDisplayPhoneNumber && (
+                        <span> ({formattedPhoneNumber})</span>
+                    )}
+                </Tooltip>
+            )}
             <div
                 id={id}
                 className={classNames(css.name, className, {
@@ -53,6 +70,9 @@ export default function VoiceCallCustomerLabel({
                 })}
             >
                 {label}
+                {shouldAlsoDisplayPhoneNumber && (
+                    <b> ({formattedPhoneNumber})</b>
+                )}
             </div>
         </>
     )

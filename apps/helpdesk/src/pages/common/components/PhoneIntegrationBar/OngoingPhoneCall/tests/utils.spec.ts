@@ -1,8 +1,12 @@
+import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
+
 import { AvailabilityStatusTag } from 'config/types/user'
+import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 
 import {
     getAvailabilityBadgeColor,
     getAvailabilityStatus,
+    getTransferReceiverData,
     mergeAgentData,
 } from '../utils'
 
@@ -125,6 +129,49 @@ describe('utils', () => {
             const badgeColor = getAvailabilityStatus(status)
 
             expect(badgeColor).toBeUndefined()
+        })
+    })
+
+    describe('getTransferReceiverData', () => {
+        it('should return correct data for agent transfer target', () => {
+            const result = getTransferReceiverData({
+                type: TransferType.Agent,
+                id: 123,
+            })
+
+            expect(result).toEqual({
+                receiver_type: VoiceCallTransferReceiverType.Agent,
+                receiver_id: 123,
+            })
+        })
+
+        it('should return correct data for external transfer target', () => {
+            const result = getTransferReceiverData({
+                type: TransferType.External,
+                value: '+15551234567',
+                customer: null,
+            })
+
+            expect(result).toEqual({
+                receiver_type: VoiceCallTransferReceiverType.External,
+                receiver_value: '+15551234567',
+            })
+        })
+
+        it('should return correct data for external transfer target with customer', () => {
+            const result = getTransferReceiverData({
+                type: TransferType.External,
+                value: '+15551234567',
+                customer: {
+                    id: 456,
+                    name: 'John Doe',
+                },
+            })
+
+            expect(result).toEqual({
+                receiver_type: VoiceCallTransferReceiverType.External,
+                receiver_value: '+15551234567',
+            })
         })
     })
 })

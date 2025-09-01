@@ -23,7 +23,7 @@ const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
 describe('VoiceCallActivity', () => {
     it('should render completed inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -52,7 +52,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render waiting inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -83,7 +83,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render "ringing agent" inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -113,7 +113,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render missed inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -143,7 +143,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render ongoing inbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -186,7 +186,7 @@ describe('VoiceCallActivity', () => {
         'should render inbound call activity with agent data missing',
         ({ agentHookData, phoneNumberDestination, expectedLabel }) => {
             useCustomerDetailsSpy.mockReturnValue({
-                customer: 'Customer Name',
+                customer: { name: 'Customer Name' },
             } as any)
             useAgentDetailsSpy.mockReturnValue({
                 data: { name: agentHookData },
@@ -260,7 +260,9 @@ describe('VoiceCallActivity', () => {
             customerName,
         }) => {
             useCustomerDetailsSpy.mockReturnValue({
-                customer: customerHookData,
+                customer: customerHookData
+                    ? { name: customerHookData }
+                    : undefined,
             } as any)
             useAgentDetailsSpy.mockReturnValue({
                 data: { name: 'Agent Name' },
@@ -288,7 +290,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render outbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -316,7 +318,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render outbound ringing call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -346,7 +348,7 @@ describe('VoiceCallActivity', () => {
 
     it('should render ongoing outbound call activity', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            customer: 'Customer Name',
+            customer: { name: 'Customer Name' },
         } as any)
         useAgentDetailsSpy.mockReturnValue({
             data: { name: 'Agent Name' },
@@ -397,7 +399,7 @@ describe('VoiceCallActivity', () => {
         `should render outbound call activity with agent data missing`,
         ({ agentHookData, agentId, phoneNumberSource, expectedLabel }) => {
             useCustomerDetailsSpy.mockReturnValue({
-                customer: 'Customer Name',
+                customer: { name: 'Customer Name' },
             } as any)
             useAgentDetailsSpy.mockReturnValue({
                 data: { name: agentHookData },
@@ -467,7 +469,9 @@ describe('VoiceCallActivity', () => {
             customerName,
         }) => {
             useCustomerDetailsSpy.mockReturnValue({
-                customer: customerHookData,
+                customer: customerHookData
+                    ? { name: customerHookData }
+                    : undefined,
             } as any)
             useAgentDetailsSpy.mockReturnValue({
                 data: { name: 'Agent Name' },
