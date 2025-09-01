@@ -175,6 +175,20 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         }
     }, [handleInstall, setIsModalOpen])
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [{ loading: reinstallLoading }, handleReinstall] =
+        useAsyncFn(async () => {
+            if (
+                !isInstallOnShopifyCallbackEnabled ||
+                hasShopifyScriptTagScope
+            ) {
+                await handleUninstall()
+                await handleInstall()
+            } else {
+                setIsModalOpen(true)
+            }
+        }, [handleInstall, setIsModalOpen])
+
     const redirectToShopifyPermissionsWithChatInstall = () => {
         const shopName = integration.getIn(['meta', 'shop_name'])
         const redirectUri = getRedirectUri(IntegrationType.Shopify, {
@@ -260,7 +274,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                 <Button
                     isDisabled={!canSubmitInstall || !isVisibilityValid}
                     intent={'primary'}
-                    onClick={handleShopifyScriptTagScope}
+                    onClick={handleReinstall}
                 >
                     Reinstall
                 </Button>
