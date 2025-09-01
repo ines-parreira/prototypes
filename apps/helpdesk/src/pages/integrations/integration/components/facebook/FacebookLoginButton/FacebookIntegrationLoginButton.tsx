@@ -1,7 +1,8 @@
 import React, { FC, ReactNode, SyntheticEvent } from 'react'
 
+import { ButtonIntent } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { ButtonIntent } from 'pages/common/components/button/Button'
 import { getFacebookRedirectUri } from 'state/integrations/selectors'
 
 import FacebookLoginButton from './FacebookLoginButton'

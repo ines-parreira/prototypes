@@ -6,11 +6,11 @@ exports[`TicketStatus component closed ticket 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper wrapper small fill primary small"
+    class="ui-button-wrapper-a432 wrapper small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <i
         class="material-icons icon"

@@ -2,7 +2,8 @@ import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
 
 import classnames from 'classnames'
 
-import Button from './Button'
+import { Button } from '@gorgias/axiom'
+
 import IconButton from './IconButton'
 
 import css from './DropdownButton.less'

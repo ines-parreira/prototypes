@@ -18,12 +18,12 @@ exports[`AppErrorRow should render 1`] = `
         </b>
         <button
           aria-disabled="false"
-          class="wrapper wrapper ghost ghost secondary medium"
+          class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
           title="More details"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             <i
               class="material-icons icon"

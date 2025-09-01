@@ -314,12 +314,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-41"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -330,12 +330,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-42"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -346,12 +346,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-43"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -362,12 +362,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-44"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -378,12 +378,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-45"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -394,12 +394,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-46"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -410,12 +410,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-47"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -426,12 +426,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-48"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -442,12 +442,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-49"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -695,12 +695,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-50"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -711,12 +711,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-51"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -727,12 +727,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-52"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -743,12 +743,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-53"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -759,12 +759,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-54"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -775,12 +775,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-55"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -791,12 +791,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-56"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -807,12 +807,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-57"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -823,12 +823,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-58"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1021,12 +1021,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-59"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1037,12 +1037,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-60"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1053,12 +1053,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-61"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1069,12 +1069,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-62"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1085,12 +1085,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-63"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1101,12 +1101,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-64"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1117,12 +1117,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1133,12 +1133,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-65"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1149,12 +1149,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-66"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1304,12 +1304,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-67"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1320,12 +1320,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-68"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1336,12 +1336,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-69"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1352,12 +1352,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-70"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1368,12 +1368,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-71"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1384,12 +1384,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-72"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1400,12 +1400,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1416,12 +1416,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-73"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1432,12 +1432,12 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-74"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -1796,12 +1796,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-79"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1812,12 +1812,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-80"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1828,12 +1828,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-81"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1844,12 +1844,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-82"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1860,12 +1860,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-83"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1876,12 +1876,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-84"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1892,12 +1892,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-85"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1908,12 +1908,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-86"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -1924,12 +1924,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-87"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2177,12 +2177,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-88"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2193,12 +2193,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-89"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2209,12 +2209,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-90"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2225,12 +2225,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-91"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2241,12 +2241,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-92"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2257,12 +2257,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-93"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2273,12 +2273,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-94"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2289,12 +2289,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-95"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2305,12 +2305,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-96"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -2503,12 +2503,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-97"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2519,12 +2519,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-98"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2535,12 +2535,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-99"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2551,12 +2551,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-100"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2567,12 +2567,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-101"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2583,12 +2583,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-102"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2599,12 +2599,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2615,12 +2615,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-103"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2631,12 +2631,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-104"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2740,12 +2740,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-105"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2756,12 +2756,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-106"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2772,12 +2772,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-107"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2788,12 +2788,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-108"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2804,12 +2804,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-109"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2820,12 +2820,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-110"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2836,12 +2836,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2852,12 +2852,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-111"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -2868,12 +2868,12 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-112"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3193,12 +3193,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-5"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3209,12 +3209,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-6"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3225,12 +3225,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-7"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3241,12 +3241,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-8"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3257,12 +3257,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-9"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3273,12 +3273,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-10"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3289,12 +3289,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-11"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3305,12 +3305,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-12"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3321,12 +3321,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-13"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3574,12 +3574,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-14"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3590,12 +3590,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-15"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3606,12 +3606,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-16"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3622,12 +3622,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-17"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3638,12 +3638,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-18"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3654,12 +3654,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-19"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3670,12 +3670,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-20"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3686,12 +3686,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-21"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3702,12 +3702,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     aria-disabled="false"
-                    class="wrapper button wrapper small fill secondary small"
+                    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                     id="toolbar-button-22"
                     type="button"
                   >
                     <span
-                      class="content"
+                      class="ui-button-content-a432"
                     >
                       <i
                         class="material-icons icon"
@@ -3900,12 +3900,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-23"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3916,12 +3916,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-24"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3932,12 +3932,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-25"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3948,12 +3948,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-26"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3964,12 +3964,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-27"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3980,12 +3980,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-28"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -3996,12 +3996,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4012,12 +4012,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-29"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4028,12 +4028,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-30"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4204,12 +4204,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-31"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4220,12 +4220,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-32"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4236,12 +4236,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-33"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4252,12 +4252,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-34"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4268,12 +4268,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-35"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4284,12 +4284,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-36"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4300,12 +4300,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper wrapper ghost small ghost secondary small"
+                        class="ui-button-wrapper-a432 wrapper ghost small ui-button-ghost-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="contactFormButton"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4316,12 +4316,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-37"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -4332,12 +4332,12 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         id="toolbar-button-38"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"

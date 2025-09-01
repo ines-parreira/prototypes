@@ -178,22 +178,22 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mainAction small fill primary small"
+                      class="ui-button-wrapper-a432 mainAction small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Apply Saved Filter
                       </span>
                     </button>
                     <button
                       aria-disabled="false"
-                      class="wrapper toggle small wrapper fill small fill primary small"
+                      class="ui-button-wrapper-a432 toggle small wrapper fill small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         <i
                           class="material-icons icon"
@@ -896,22 +896,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mainAction small fill primary small"
+                      class="ui-button-wrapper-a432 mainAction small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Apply Saved Filter
                       </span>
                     </button>
                     <button
                       aria-disabled="false"
-                      class="wrapper toggle small wrapper fill small fill primary small"
+                      class="ui-button-wrapper-a432 toggle small wrapper fill small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         <i
                           class="material-icons icon"
@@ -1597,22 +1597,22 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mainAction small fill primary small"
+                      class="ui-button-wrapper-a432 mainAction small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Apply Saved Filter
                       </span>
                     </button>
                     <button
                       aria-disabled="false"
-                      class="wrapper toggle small wrapper fill small fill primary small"
+                      class="ui-button-wrapper-a432 toggle small wrapper fill small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         <i
                           class="material-icons icon"
@@ -2315,22 +2315,22 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mainAction small fill primary small"
+                      class="ui-button-wrapper-a432 mainAction small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Apply Saved Filter
                       </span>
                     </button>
                     <button
                       aria-disabled="false"
-                      class="wrapper toggle small wrapper fill small fill primary small"
+                      class="ui-button-wrapper-a432 toggle small wrapper fill small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         <i
                           class="material-icons icon"
@@ -3033,22 +3033,22 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   >
                     <button
                       aria-disabled="false"
-                      class="wrapper mainAction small fill primary small"
+                      class="ui-button-wrapper-a432 mainAction small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         Apply Saved Filter
                       </span>
                     </button>
                     <button
                       aria-disabled="false"
-                      class="wrapper toggle small wrapper fill small fill primary small"
+                      class="ui-button-wrapper-a432 toggle small wrapper fill small ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
                       type="button"
                     >
                       <span
-                        class="content"
+                        class="ui-button-content-a432"
                       >
                         <i
                           class="material-icons icon"

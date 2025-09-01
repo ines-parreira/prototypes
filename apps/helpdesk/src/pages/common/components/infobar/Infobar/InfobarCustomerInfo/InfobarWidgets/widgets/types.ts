@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from 'react'
 
-import type { ButtonProps } from 'pages/common/components/button/Button'
+import type { ButtonProps } from '@gorgias/axiom'
 
 export type Parameter = {
     name: string

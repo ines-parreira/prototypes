@@ -53,14 +53,6 @@ jest.mock('pages/common/components/dropdown/DropdownItem', () => {
     ))
 })
 
-jest.mock('pages/common/components/button/Button', () => {
-    return jest.fn(({ children, onClick }) => (
-        <button data-testid="button" onClick={onClick}>
-            {children}
-        </button>
-    ))
-})
-
 jest.mock('pages/common/components/button/ButtonIconLabel', () => {
     return jest.fn(({ children, icon }) => (
         <div data-testid="button-icon-label" data-icon={icon}>

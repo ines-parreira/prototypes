@@ -4,12 +4,12 @@ exports[`<AddProductLink/> should not render when the popover is closed 1`] = `
 <body>
   <button
     aria-disabled="false"
-    class="wrapper button wrapper small fill secondary small"
+    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
     id="toolbar-button-1"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <i
         class="material-icons icon"
@@ -25,12 +25,12 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
 <body>
   <button
     aria-disabled="false"
-    class="wrapper button wrapper small fill secondary small"
+    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
     id="toolbar-button-2"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <i
         class="material-icons icon"
@@ -123,12 +123,12 @@ exports[`<AddProductLink/> should render the store picker because of multiple in
 <body>
   <button
     aria-disabled="false"
-    class="wrapper button wrapper small fill secondary small"
+    class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
     id="toolbar-button-3"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <i
         class="material-icons icon"

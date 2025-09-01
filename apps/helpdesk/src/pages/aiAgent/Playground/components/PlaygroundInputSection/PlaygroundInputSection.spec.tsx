@@ -101,30 +101,6 @@ jest.mock('../PlaygroundCustomerSelection/PlaygroundCustomerSelection', () => ({
     },
 }))
 
-jest.mock('pages/common/components/button/Button', () => ({
-    __esModule: true,
-    default: ({
-        children,
-        onClick,
-        isDisabled,
-        intent,
-        leadingIcon,
-        id,
-        ...props
-    }: any) => (
-        <button
-            onClick={onClick}
-            disabled={isDisabled}
-            data-intent={intent}
-            data-leading-icon={leadingIcon}
-            id={id}
-            {...props}
-        >
-            {children}
-        </button>
-    ),
-}))
-
 jest.mock('pages/common/forms/input/TextInput', () => ({
     __esModule: true,
     default: ({ value, onChange, isDisabled, ...props }: any) => (

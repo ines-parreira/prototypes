@@ -51,11 +51,11 @@ exports[`<TitleWrapper/> should render the invoice sent status 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper iconButton wrapper ghost small ghost primary small"
+        class="ui-button-wrapper-a432 iconButton wrapper ghost small ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons copyIcon icon"
@@ -97,11 +97,11 @@ exports[`<TitleWrapper/> should render the open status 1`] = `
     >
       <button
         aria-disabled="false"
-        class="wrapper iconButton wrapper ghost small ghost primary small"
+        class="ui-button-wrapper-a432 iconButton wrapper ghost small ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons copyIcon icon"

@@ -397,11 +397,11 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper button wrapper small fill secondary small top"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -412,11 +412,11 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                       </button>
                       <button
                         aria-disabled="true"
-                        class="wrapper button wrapper small fill secondary small bottom isDisabled"
+                        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432 ui-button-isdisabled-a432"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"

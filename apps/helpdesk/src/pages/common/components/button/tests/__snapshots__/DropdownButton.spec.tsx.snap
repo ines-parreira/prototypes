@@ -6,22 +6,22 @@ exports[`<DropdownButton /> should render a button with dropdown 1`] = `
 >
   <button
     aria-disabled="false"
-    class="wrapper mainAction fill primary medium"
+    class="ui-button-wrapper-a432 mainAction ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       Click
     </span>
   </button>
   <button
     aria-disabled="false"
-    class="wrapper toggle wrapper fill primary medium"
+    class="ui-button-wrapper-a432 toggle wrapper ui-button-fill-a432 ui-button-primary-a432"
     type="button"
   >
     <span
-      class="content"
+      class="ui-button-content-a432"
     >
       <i
         class="material-icons icon"

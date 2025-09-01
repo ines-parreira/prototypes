@@ -191,12 +191,12 @@ exports[`ObjectListField component should display the field with items 1`] = `
           >
             <button
               aria-disabled="false"
-              class="wrapper float-right wrapper fill destructive medium"
+              class="ui-button-wrapper-a432 float-right wrapper ui-button-fill-a432 ui-button-destructive-a432"
               title="Remove field"
               type="button"
             >
               <span
-                class="content"
+                class="ui-button-content-a432"
               >
                 <i
                   class="material-icons icon"
@@ -296,12 +296,12 @@ exports[`ObjectListField component should display the field with items 1`] = `
         >
           <button
             aria-disabled="false"
-            class="wrapper float-right wrapper fill destructive medium"
+            class="ui-button-wrapper-a432 float-right wrapper ui-button-fill-a432 ui-button-destructive-a432"
             title="Remove field"
             type="button"
           >
             <span
-              class="content"
+              class="ui-button-content-a432"
             >
               <i
                 class="material-icons icon"

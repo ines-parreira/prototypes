@@ -820,11 +820,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -835,11 +835,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -887,11 +887,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -902,11 +902,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -2301,11 +2301,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -2316,11 +2316,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -2368,11 +2368,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -2383,11 +2383,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -3801,11 +3801,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -3816,11 +3816,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -3868,11 +3868,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -3883,11 +3883,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -5271,11 +5271,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -5286,11 +5286,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -5338,11 +5338,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -5353,11 +5353,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -6741,11 +6741,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -6756,11 +6756,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -6808,11 +6808,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -6823,11 +6823,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -8211,11 +8211,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -8226,11 +8226,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -8278,11 +8278,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -8293,11 +8293,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -9568,11 +9568,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -9583,11 +9583,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -9635,11 +9635,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -9650,11 +9650,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -11049,11 +11049,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -11064,11 +11064,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -11116,11 +11116,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -11131,11 +11131,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -12559,11 +12559,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -12574,11 +12574,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -12626,11 +12626,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -12641,11 +12641,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -13941,11 +13941,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -13956,11 +13956,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -14008,11 +14008,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -14023,11 +14023,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -15422,11 +15422,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -15437,11 +15437,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -15489,11 +15489,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         >
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small top"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"
@@ -15504,11 +15504,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           </button>
                           <button
                             aria-disabled="false"
-                            class="wrapper button wrapper small fill secondary small bottom"
+                            class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                             type="button"
                           >
                             <span
-                              class="content"
+                              class="ui-button-content-a432"
                             >
                               <i
                                 class="material-icons icon"

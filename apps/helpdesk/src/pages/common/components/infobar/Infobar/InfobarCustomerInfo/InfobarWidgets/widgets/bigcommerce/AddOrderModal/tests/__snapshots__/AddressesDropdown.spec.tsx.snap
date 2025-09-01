@@ -45,11 +45,11 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
     </div>
     <button
       aria-disabled="false"
-      class="wrapper ml-2 wrapper fill secondary medium"
+      class="ui-button-wrapper-a432 ml-2 wrapper ui-button-fill-a432 ui-button-secondary-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <i
           class="material-icons icon"
@@ -108,11 +108,11 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
     </div>
     <button
       aria-disabled="false"
-      class="wrapper ml-2 wrapper fill secondary medium"
+      class="ui-button-wrapper-a432 ml-2 wrapper ui-button-fill-a432 ui-button-secondary-a432"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <i
           class="material-icons icon"

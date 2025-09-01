@@ -454,12 +454,12 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
     >
       <button
         aria-disabled="true"
-        class="wrapper wrapper fill secondary medium left isDisabled"
+        class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
         id="prev-btn"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -470,12 +470,12 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
       </button>
       <button
         aria-disabled="false"
-        class="wrapper wrapper fill secondary medium right"
+        class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="next-btn"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"

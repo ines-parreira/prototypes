@@ -6,19 +6,6 @@ import { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variab
 
 import GuidanceVariablePicker from '../GuidanceVariablePicker'
 
-jest.mock('pages/common/components/button/Button', () => {
-    return jest.fn(({ children, isDisabled, onClick }) => (
-        <button
-            data-testid="button"
-            data-disabled={isDisabled ? 'true' : 'false'}
-            disabled={isDisabled}
-            onClick={onClick}
-        >
-            {children}
-        </button>
-    ))
-})
-
 jest.mock('../GuidanceVariableDropdown', () => {
     return jest.fn(({ onSelect, isOpen, onToggle }) =>
         isOpen ? (

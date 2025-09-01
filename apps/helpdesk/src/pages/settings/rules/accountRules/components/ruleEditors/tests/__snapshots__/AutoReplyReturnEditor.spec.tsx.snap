@@ -462,12 +462,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-3"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -478,12 +478,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-4"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -494,12 +494,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-5"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -510,12 +510,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-6"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -526,12 +526,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-7"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -542,12 +542,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-8"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -558,12 +558,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-9"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -574,12 +574,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-10"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -957,12 +957,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-11"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -973,12 +973,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-12"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -989,12 +989,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-13"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -1005,12 +1005,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-14"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -1021,12 +1021,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-15"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -1037,12 +1037,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-16"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -1053,12 +1053,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-17"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"
@@ -1069,12 +1069,12 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="wrapper button wrapper small fill secondary small"
+                class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
                 id="toolbar-button-18"
                 type="button"
               >
                 <span
-                  class="content"
+                  class="ui-button-content-a432"
                 >
                   <i
                     class="material-icons icon"

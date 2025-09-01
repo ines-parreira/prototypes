@@ -21,13 +21,14 @@ import {
 } from '@floating-ui/react'
 import cn from 'classnames'
 
+import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+
 import { THEME_NAME, useTheme } from 'core/theme'
-import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 
 import css from './Popover.less'
 
 type Props = {
-    buttonProps?: PropsWithChildren<Omit<ButtonProps, 'children'>>
+    buttonProps?: PropsWithChildren<Omit<ButtonComponentProps, 'children'>>
     footer?: ReactNode
     isOpen: boolean
     offsetValue?: OffsetOptions

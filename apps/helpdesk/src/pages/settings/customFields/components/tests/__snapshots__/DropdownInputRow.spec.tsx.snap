@@ -32,12 +32,12 @@ exports[`<DropdownInputRow/> should render correctly 1`] = `
     </div>
     <button
       aria-disabled="false"
-      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      class="ui-button-wrapper-a432 deleteButton wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
       data-testid="dropdown-choice-123-remove"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <i
           class="material-icons icon"
@@ -82,12 +82,12 @@ exports[`<DropdownInputRow/> should render correctly when validation fails 1`] =
     </div>
     <button
       aria-disabled="false"
-      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      class="ui-button-wrapper-a432 deleteButton wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
       data-testid="dropdown-choice-123-remove"
       type="button"
     >
       <span
-        class="content"
+        class="ui-button-content-a432"
       >
         <i
           class="material-icons icon"

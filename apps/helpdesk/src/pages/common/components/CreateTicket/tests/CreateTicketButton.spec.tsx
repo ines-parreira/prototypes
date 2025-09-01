@@ -91,11 +91,11 @@ describe('<CreateTicketButton />', () => {
             const buttonClasses = getByRole('button', {
                 name: 'Create ticket',
             }).classList
-            expect(buttonClasses).toContain('secondary')
+            expect(buttonClasses).toContain('ui-button-secondary-a432')
             expect(buttonClasses).not.toContain('primary')
             const arrowClasses =
                 getByText('arrow_drop_down').closest('button')?.classList
-            expect(arrowClasses).toContain('secondary')
+            expect(arrowClasses).toContain('ui-button-secondary-a432')
             expect(arrowClasses).not.toContain('primary')
         })
 

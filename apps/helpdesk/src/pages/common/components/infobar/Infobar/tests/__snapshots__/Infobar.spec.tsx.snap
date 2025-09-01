@@ -53,12 +53,12 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -131,12 +131,12 @@ exports[`<Infobar/> should ignore other keys 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -182,12 +182,12 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -279,12 +279,12 @@ exports[`<Infobar/> should render customer context 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -330,12 +330,12 @@ exports[`<Infobar/> should render loading state because the customer is being fe
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -385,12 +385,12 @@ exports[`<Infobar/> should render loading state because the search is in progres
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -440,12 +440,12 @@ exports[`<Infobar/> should render search results 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -519,12 +519,12 @@ exports[`<Infobar/> should render selected customer 1`] = `
         />
         <button
           aria-disabled="true"
-          class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
+          class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
           id="toggle-widgets-edition-button"
           type="button"
         >
           <span
-            class="content"
+            class="ui-button-content-a432"
           >
             <i
               class="material-icons icon"
@@ -598,12 +598,12 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -677,12 +677,12 @@ exports[`<Infobar/> should render ticket context 1`] = `
       />
       <button
         aria-disabled="false"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"
@@ -728,12 +728,12 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
       />
       <button
         aria-disabled="true"
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
+        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="content"
+          class="ui-button-content-a432"
         >
           <i
             class="material-icons icon"

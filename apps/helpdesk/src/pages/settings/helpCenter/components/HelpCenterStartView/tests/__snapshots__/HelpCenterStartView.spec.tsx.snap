@@ -447,12 +447,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -471,12 +471,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -560,12 +560,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -584,12 +584,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -673,12 +673,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -697,12 +697,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -786,12 +786,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"
@@ -810,12 +810,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="wrapper iconButton chevronRight wrapper ghost ghost secondary medium"
+                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="content"
+                          class="ui-button-content-a432"
                         >
                           <i
                             class="material-icons icon"

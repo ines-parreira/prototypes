@@ -1,15 +1,17 @@
-import React, { ForwardedRef, forwardRef } from 'react'
+import React, { ForwardedRef, forwardRef, useContext } from 'react'
 
 import classnames from 'classnames'
 
-import Button, { type ButtonProps } from './Button'
+import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+
+import { GroupContext } from '../layout/Group'
 
 import css from './IconButton.less'
 
 type Props = {
     children?: string
     iconClassName?: string
-} & Omit<ButtonProps, 'children'>
+} & Omit<ButtonComponentProps, 'children'>
 
 const BaseIconButton = (
     {
@@ -22,6 +24,8 @@ const BaseIconButton = (
     }: Props,
     ref: ForwardedRef<HTMLButtonElement>,
 ) => {
+    const context = useContext(GroupContext)
+
     return (
         <Button
             className={classnames(
@@ -33,6 +37,7 @@ const BaseIconButton = (
             fillStyle={fillStyle}
             size={size}
             {...others}
+            isDisabled={others.isDisabled || context?.isDisabled}
             ref={ref}
         >
             <i className={classnames(iconClassName, css.icon)}>{children}</i>
