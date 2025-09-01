@@ -71,23 +71,17 @@
         }
     }
 
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
     .footerContainer {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        width: 100%;
-
-        .iconButton {
-            color: var(--neutral-grey-6) !important;
-
-            &:hover {
-                background-color: var(--neutral-grey-3) !important;
-            }
-        }
-
-        > div {
-            display: flex;
-            gap: var(--layout-spacing-s);
-        }
+        gap: var(--layout-spacing-xs);
     }
 }

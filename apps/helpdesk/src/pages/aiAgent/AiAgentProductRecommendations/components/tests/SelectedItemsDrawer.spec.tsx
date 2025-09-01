@@ -101,7 +101,7 @@ describe('SelectedItemsDrawer', () => {
         fireEvent.click(screen.getByText('Sweat-Wicking Socks'))
         fireEvent.click(screen.getByText('4-Way Stretch Shorts'))
         fireEvent.click(screen.getByText('Hydration Backpack'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['4', '9', '22', '27', '30'])
 

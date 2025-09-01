@@ -281,7 +281,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         const product3 = queryAllByTextAccessible(screen, 'Fitness Gloves')[0]
         fireEvent.click(product3)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -333,7 +333,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         )[0]
         fireEvent.click(product3)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -409,7 +409,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         const tag4 = queryAllByTextAccessible(screen, 'CrossFit Apparel')[0]
         fireEvent.click(tag4)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -454,7 +454,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         const product1 = queryAllByTextAccessible(screen, 'Gym Gear')[1]
         fireEvent.click(product1)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -533,7 +533,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         const vendor5 = queryAllByTextAccessible(screen, 'ProForm')[0]
         fireEvent.click(vendor5)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
@@ -585,7 +585,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
         const product2 = queryAllByTextAccessible(screen, 'Mizuno')[0]
         fireEvent.click(product2)
 
-        const submitButton = queryAllByTextAccessible(screen, 'Done')[0]
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
         fireEvent.click(submitButton)
 
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
@@ -66,6 +66,7 @@ export const ItemSelectionDrawer = ({
     const [localSearchTerm, setLocalSearchTerm] = useState('')
     const [localSelectedItemIds, setLocalSelectedItemIds] =
         useState(selectedItemIds)
+    const itemsContainerRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         if (!isOpen) return
@@ -107,6 +108,12 @@ export const ItemSelectionDrawer = ({
                 : [...prev, itemId],
         )
 
+    const scrollItemsToTop = () => {
+        if (itemsContainerRef.current) {
+            itemsContainerRef.current.scrollTop = 0
+        }
+    }
+
     return (
         <Drawer
             fullscreen={false}
@@ -134,7 +141,7 @@ export const ItemSelectionDrawer = ({
                         />
                     </div>
 
-                    <div className={css.items}>
+                    <div ref={itemsContainerRef} className={css.items}>
                         {isLoading && (
                             <div className={css.loading}>
                                 <LoadingSpinner size="big" />
@@ -191,98 +198,109 @@ export const ItemSelectionDrawer = ({
                                     )}
                                 </div>
                             ))}
+
+                        {!isLoading &&
+                            (pagination.hasPrevPage ||
+                                pagination.hasNextPage) && (
+                                <div className={css.pagination}>
+                                    <IconButton
+                                        fillStyle="fill"
+                                        intent="secondary"
+                                        className={
+                                            pagination.hasPrevPage
+                                                ? css.iconButton
+                                                : undefined
+                                        }
+                                        onClick={() => {
+                                            scrollItemsToTop()
+                                            pagination.onPrevClick()
+                                        }}
+                                        aria-label="Previous page"
+                                        icon="chevron_left"
+                                        isDisabled={
+                                            isLoading || !pagination.hasPrevPage
+                                        }
+                                    />
+
+                                    <IconButton
+                                        fillStyle="fill"
+                                        intent="secondary"
+                                        className={
+                                            pagination.hasNextPage
+                                                ? css.iconButton
+                                                : undefined
+                                        }
+                                        onClick={() => {
+                                            scrollItemsToTop()
+                                            pagination.onNextClick()
+                                        }}
+                                        aria-label="Next page"
+                                        icon="chevron_right"
+                                        isDisabled={
+                                            isLoading || !pagination.hasNextPage
+                                        }
+                                    />
+                                </div>
+                            )}
                     </div>
                 </div>
             </Drawer.Content>
 
             <Drawer.Footer>
                 <div className={css.footerContainer}>
-                    <div>
-                        <IconButton
-                            size="small"
-                            fillStyle="ghost"
-                            className={
-                                pagination.hasPrevPage
-                                    ? css.iconButton
-                                    : undefined
-                            }
-                            onClick={pagination.onPrevClick}
-                            aria-label="Previous page"
-                            icon="chevron_left"
-                            isDisabled={isLoading || !pagination.hasPrevPage}
-                        />
+                    <Button
+                        onClick={async () => {
+                            setIsSubmitting(true)
 
-                        <IconButton
-                            size="small"
-                            fillStyle="ghost"
-                            className={
-                                pagination.hasNextPage
-                                    ? css.iconButton
-                                    : undefined
-                            }
-                            onClick={pagination.onNextClick}
-                            aria-label="Next page"
-                            icon="chevron_right"
-                            isDisabled={isLoading || !pagination.hasNextPage}
-                        />
-                    </div>
+                            try {
+                                await onSubmit(localSelectedItemIds)
+                                onClose()
 
-                    <div>
-                        <Button
-                            onClick={onClose}
-                            intent="secondary"
-                            size="medium"
-                        >
-                            Cancel
-                        </Button>
+                                void dispatch(
+                                    notify({
+                                        message:
+                                            'Product recommendations saved.',
+                                        status: NotificationStatus.Success,
+                                    }),
+                                )
+                            } catch (error) {
+                                let errorMessage =
+                                    'Failed to save product recommendations.'
 
-                        <Button
-                            onClick={async () => {
-                                setIsSubmitting(true)
-
-                                try {
-                                    await onSubmit(localSelectedItemIds)
-                                    onClose()
-
-                                    void dispatch(
-                                        notify({
-                                            message:
-                                                'Product recommendations saved.',
-                                            status: NotificationStatus.Success,
-                                        }),
-                                    )
-                                } catch (error) {
-                                    let errorMessage =
-                                        'Failed to save product recommendations.'
-
-                                    if (
-                                        isProductRecommendationConflictError(
-                                            error,
-                                        )
-                                    ) {
-                                        errorMessage = formatConflictMessage(
-                                            error.response!.data,
-                                            ruleType,
-                                        )
-                                    }
-
-                                    void dispatch(
-                                        notify({
-                                            message: errorMessage,
-                                            status: NotificationStatus.Error,
-                                        }),
+                                if (
+                                    isProductRecommendationConflictError(error)
+                                ) {
+                                    errorMessage = formatConflictMessage(
+                                        error.response!.data,
+                                        ruleType,
                                     )
                                 }
 
-                                setIsSubmitting(false)
-                            }}
-                            intent="primary"
-                            type="submit"
-                            isDisabled={isSubmitting}
-                        >
-                            Done
-                        </Button>
-                    </div>
+                                void dispatch(
+                                    notify({
+                                        message: errorMessage,
+                                        status: NotificationStatus.Error,
+                                    }),
+                                )
+                            }
+
+                            setIsSubmitting(false)
+                        }}
+                        intent="primary"
+                        type="submit"
+                        isDisabled={isSubmitting}
+                    >
+                        Save Changes
+                    </Button>
+
+                    <Button
+                        onClick={onClose}
+                        intent="secondary"
+                        size="medium"
+                        fillStyle="ghost"
+                    >
+                        Cancel
+                    </Button>
                 </div>
             </Drawer.Footer>
         </Drawer>

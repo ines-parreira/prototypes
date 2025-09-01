@@ -145,7 +145,7 @@ describe('ItemSelectionDrawer', () => {
         fireEvent.click(screen.getByText('Test product 3'))
         fireEvent.click(screen.getByText('Test product 6'))
         fireEvent.click(screen.getByText('Test product 8'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['3', '6', '8'])
 
@@ -168,7 +168,7 @@ describe('ItemSelectionDrawer', () => {
         fireEvent.click(screen.getByText('Test product 2'))
         fireEvent.click(screen.getByText('Test product 5'))
         fireEvent.click(screen.getByText('Test product 8'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['6', '1', '8'])
     })
@@ -254,7 +254,7 @@ describe('ItemSelectionDrawer', () => {
 
         fireEvent.click(screen.getByText('Test product 4'))
         fireEvent.click(screen.getByText('Test product 5'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['4', '5'])
 
@@ -301,7 +301,7 @@ describe('ItemSelectionDrawer', () => {
         const screen = renderComponent({ ruleType: 'product' })
 
         fireEvent.click(screen.getByText('Test product 4'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['4'])
 
@@ -360,7 +360,7 @@ describe('ItemSelectionDrawer', () => {
         const screen = renderComponent({ ruleType: 'vendor' })
 
         fireEvent.click(screen.getByText('Test product 4'))
-        fireEvent.click(screen.getByText('Done'))
+        fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockOnSubmit).toHaveBeenCalledWith(['4'])
 
