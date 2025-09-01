@@ -13,6 +13,9 @@ import { TicketStatusFilter } from './TicketStatusFilter'
 import css from './Filters.less'
 
 type FilterProps = {
+    setMemoizedFilters: Dispatch<
+        SetStateAction<Record<InteractionFilterType, boolean>>
+    >
     setActiveFilters: Dispatch<SetStateAction<ActiveFilters>>
     setRangeFilter: (val: Range) => void
     selectedTypeKeys: InteractionFilterType[]
@@ -23,6 +26,7 @@ type FilterProps = {
 
 const Filters = ({
     setActiveFilters,
+    setMemoizedFilters,
     setRangeFilter,
     selectedTypeKeys,
     selectedStatusKeys,
@@ -42,17 +46,9 @@ const Filters = ({
                 <InteractionType
                     selectedType={selectedTypeKeys}
                     toggleSelectedType={(value) => {
-                        setActiveFilters((prev) => ({
+                        setMemoizedFilters((prev) => ({
                             ...prev,
-                            type: {
-                                ...prev.type,
-                                [value]: !prev.type[value],
-                            },
-                            status: {
-                                open: true,
-                                closed: true,
-                                snooze: true,
-                            },
+                            [value]: !prev[value],
                         }))
                     }}
                 />

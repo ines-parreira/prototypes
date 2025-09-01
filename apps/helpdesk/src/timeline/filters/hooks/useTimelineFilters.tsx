@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { useLocalStorage } from '@repo/hooks'
 
 import { useFlag } from '../../../core/flags'
 import { SORT_OPTIONS, SORT_OPTIONS_WITH_ORDERS } from '../../constants'
@@ -16,7 +17,6 @@ import { useRangeFilter } from './useRangeFilter'
 import { useSort } from './useSort'
 
 export type ActiveFilters = {
-    type: Record<InteractionFilterType, boolean>
     status: Record<FilterKey, boolean>
     sortOption: SortOption
 }
@@ -25,17 +25,19 @@ type UseTimelineFilters = {
     items: TimelineItem[]
 }
 
+const INTERACTION_TYPE_FILTER_KEY = 'ct::interaction-type-filter'
+
 export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
     const enableOrdersInTimeline = useFlag(
         FeatureFlagKey.ShopifyCustomerTimeline,
         false,
     )
 
+    const [memoizedFilters, setMemoizedFilters] = useLocalStorage<
+        Record<InteractionFilterType, boolean>
+    >(INTERACTION_TYPE_FILTER_KEY, { ticket: true, order: true })
+
     const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
-        type: {
-            ticket: true,
-            order: true,
-        },
         status: {
             open: true,
             closed: true,
@@ -56,9 +58,9 @@ export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
     ).filter((key) => activeFilters.status[key as FilterKey]) as FilterKey[]
 
     const selectedTypeKeys: InteractionFilterType[] = Object.keys(
-        activeFilters.type,
+        memoizedFilters,
     ).filter(
-        (key) => activeFilters.type[key as InteractionFilterType],
+        (key) => memoizedFilters[key as InteractionFilterType],
     ) as InteractionFilterType[]
 
     const mappedTickets = useMemo(() => {
@@ -89,7 +91,9 @@ export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
 
     return {
         activeFilters,
+        memoizedFilters,
         setActiveFilters,
+        setMemoizedFilters,
         selectedStatusKeys,
         selectedTypeKeys,
         rangeFilter,

@@ -28,10 +28,11 @@ const Timeline = ({
     const { items, isLoading } = useTimelineData(shopperId ?? undefined)
 
     const {
-        activeFilters,
+        memoizedFilters,
         selectedTypeKeys,
         selectedStatusKeys,
         setActiveFilters,
+        setMemoizedFilters,
         rangeFilter,
         setRangeFilter,
         setSortOption,
@@ -41,7 +42,7 @@ const Timeline = ({
     } = useTimelineFilters({ items })
 
     const isTypeFilterDisabled =
-        activeFilters.type.order && !activeFilters.type.ticket
+        memoizedFilters.order && !memoizedFilters.ticket
 
     if (isLoading) {
         return (
@@ -68,6 +69,7 @@ const Timeline = ({
                 <div className={css.toolbar}>
                     <Filters
                         isTypeFilterDisabled={isTypeFilterDisabled}
+                        setMemoizedFilters={setMemoizedFilters}
                         setActiveFilters={setActiveFilters}
                         setRangeFilter={setRangeFilter}
                         selectedTypeKeys={selectedTypeKeys}

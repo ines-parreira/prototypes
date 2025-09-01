@@ -76,8 +76,8 @@ describe('<Timeline />', () => {
     }
 
     const defaultTimelineFiltersReturnValue = {
+        memoizedFilters: { ticket: true, order: true },
         activeFilters: {
-            type: { ticket: true, order: true },
             status: { open: true, closed: true, snooze: true },
             sortOption: {
                 order: 'desc' as const,
@@ -92,6 +92,7 @@ describe('<Timeline />', () => {
             'snooze' as const,
         ],
         setActiveFilters: jest.fn(),
+        setMemoizedFilters: jest.fn(),
         rangeFilter: { start: null, end: null },
         setRangeFilter: jest.fn(),
         setSortOption: jest.fn(),
@@ -204,6 +205,8 @@ describe('<Timeline />', () => {
                     isTypeFilterDisabled: false,
                     setActiveFilters:
                         defaultTimelineFiltersReturnValue.setActiveFilters,
+                    setMemoizedFilters:
+                        defaultTimelineFiltersReturnValue.setMemoizedFilters,
                     setRangeFilter:
                         defaultTimelineFiltersReturnValue.setRangeFilter,
                     selectedTypeKeys:
@@ -232,10 +235,7 @@ describe('<Timeline />', () => {
         it('should disable type filter when only orders are selected', () => {
             useTimelineFiltersMock.mockReturnValue({
                 ...defaultTimelineFiltersReturnValue,
-                activeFilters: {
-                    ...defaultTimelineFiltersReturnValue.activeFilters,
-                    type: { ticket: false, order: true },
-                },
+                memoizedFilters: { ticket: false, order: true },
             })
 
             render(<Timeline shopperId={null} />)

@@ -40,9 +40,11 @@ const TicketStatusFilterMock = assumeMock(TicketStatusFilter)
 describe('Filters', () => {
     const mockSetActiveFilters = jest.fn()
     const mockSetRangeFilter = jest.fn()
+    const mockSetMemoizedFilters = jest.fn()
 
     const defaultProps = {
         setActiveFilters: mockSetActiveFilters,
+        setMemoizedFilters: mockSetMemoizedFilters,
         setRangeFilter: mockSetRangeFilter,
         selectedTypeKeys: ['ticket', 'order'] as InteractionFilterType[],
         selectedStatusKeys: ['open', 'closed'] as any,
@@ -110,7 +112,7 @@ describe('Filters', () => {
             useFlagMock.mockReturnValue(true)
         })
 
-        it('should toggle interaction type and reset status filters to all true', () => {
+        it('should toggle interaction type using setMemoizedFilters', () => {
             render(<Filters {...defaultProps} />)
 
             // Get the toggleSelectedType function passed to InteractionType
@@ -120,33 +122,23 @@ describe('Filters', () => {
             // Simulate toggling a type (e.g., 'ticket')
             toggleSelectedType('ticket')
 
-            expect(mockSetActiveFilters).toHaveBeenCalledWith(
+            expect(mockSetMemoizedFilters).toHaveBeenCalledWith(
                 expect.any(Function),
             )
 
-            // Test the function passed to setActiveFilters
-            const setActiveFiltersCallback =
-                mockSetActiveFilters.mock.calls[0][0]
+            // Test the function passed to setMemoizedFilters
+            const setMemoizedFiltersCallback =
+                mockSetMemoizedFilters.mock.calls[0][0]
             const previousState = {
-                type: { ticket: true, order: false },
-                status: { open: false, closed: true, snooze: false },
-                sortOption: {
-                    order: 'desc',
-                    key: 'last_message_datetime',
-                    label: 'Last message',
-                },
+                ticket: true,
+                order: false,
             }
 
-            const result = setActiveFiltersCallback(previousState)
+            const result = setMemoizedFiltersCallback(previousState)
 
             expect(result).toEqual({
-                type: { ticket: false, order: false }, // ticket toggled from true to false
-                status: { open: true, closed: true, snooze: true }, // all status reset to true
-                sortOption: {
-                    order: 'desc',
-                    key: 'last_message_datetime',
-                    label: 'Last message',
-                },
+                ticket: false, // ticket toggled from true to false
+                order: false,
             })
         })
 
@@ -159,28 +151,18 @@ describe('Filters', () => {
             // Simulate toggling 'order'
             toggleSelectedType('order')
 
-            const setActiveFiltersCallback =
-                mockSetActiveFilters.mock.calls[0][0]
+            const setMemoizedFiltersCallback =
+                mockSetMemoizedFilters.mock.calls[0][0]
             const previousState = {
-                type: { ticket: true, order: true },
-                status: { open: true, closed: false, snooze: false },
-                sortOption: {
-                    order: 'desc',
-                    key: 'last_message_datetime',
-                    label: 'Last message',
-                },
+                ticket: true,
+                order: true,
             }
 
-            const result = setActiveFiltersCallback(previousState)
+            const result = setMemoizedFiltersCallback(previousState)
 
             expect(result).toEqual({
-                type: { ticket: true, order: false }, // order toggled from true to false
-                status: { open: true, closed: true, snooze: true }, // all status reset to true
-                sortOption: {
-                    order: 'desc',
-                    key: 'last_message_datetime',
-                    label: 'Last message',
-                },
+                ticket: true,
+                order: false, // order toggled from true to false
             })
         })
 
@@ -191,30 +173,18 @@ describe('Filters', () => {
                 InteractionTypeMock.mock.calls[0][0].toggleSelectedType
             toggleSelectedType('ticket')
 
-            const setActiveFiltersCallback =
-                mockSetActiveFilters.mock.calls[0][0]
+            const setMemoizedFiltersCallback =
+                mockSetMemoizedFilters.mock.calls[0][0]
             const previousState = {
-                type: { ticket: false, order: true },
-                status: { open: false, closed: false, snooze: true },
-                sortOption: {
-                    order: 'asc',
-                    key: 'created_datetime',
-                    label: 'Created',
-                },
-                customProperty: 'should be preserved',
+                ticket: false,
+                order: true,
             }
 
-            const result = setActiveFiltersCallback(previousState)
+            const result = setMemoizedFiltersCallback(previousState)
 
             expect(result).toEqual({
-                type: { ticket: true, order: true }, // ticket toggled from false to true
-                status: { open: true, closed: true, snooze: true }, // all status reset to true
-                sortOption: {
-                    order: 'asc',
-                    key: 'created_datetime',
-                    label: 'Created',
-                }, // preserved
-                customProperty: 'should be preserved', // preserved
+                ticket: true, // ticket toggled from false to true
+                order: true,
             })
         })
     })

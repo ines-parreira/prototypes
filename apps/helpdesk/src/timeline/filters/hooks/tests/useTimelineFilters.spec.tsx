@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@repo/hooks'
 import { act, renderHook } from '@testing-library/react'
 
 import { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
@@ -9,6 +10,13 @@ import { TimelineItem, TimelineItemKind } from '../../../types'
 import { ActiveFilters, useTimelineFilters } from '../useTimelineFilters'
 
 jest.mock('common/segment')
+jest.mock('@repo/hooks', () => ({
+    useLocalStorage: jest.fn(),
+}))
+
+const mockUseLocalStorage = useLocalStorage as jest.MockedFunction<
+    typeof useLocalStorage
+>
 
 const createMockTicket = (overrides: Partial<TicketCompact>): TicketCompact =>
     ({
@@ -111,6 +119,11 @@ const mockItems: TimelineItem[] = [
 describe('useTimelineFilters', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseLocalStorage.mockReturnValue([
+            { ticket: true, order: true },
+            jest.fn(),
+            jest.fn(),
+        ])
     })
 
     describe('initial state', () => {
@@ -120,10 +133,6 @@ describe('useTimelineFilters', () => {
             )
 
             const expectedActiveFilters: ActiveFilters = {
-                type: {
-                    ticket: true,
-                    order: true,
-                },
                 status: {
                     open: true,
                     closed: true,
@@ -189,10 +198,6 @@ describe('useTimelineFilters', () => {
             )
 
             const newActiveFilters: ActiveFilters = {
-                type: {
-                    ticket: true,
-                    order: false,
-                },
                 status: {
                     open: true,
                     closed: false,
@@ -234,21 +239,15 @@ describe('useTimelineFilters', () => {
         })
 
         it('should update selectedTypeKeys when type filters change', () => {
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: false, order: true },
+                jest.fn(),
+                jest.fn(),
+            ])
+
             const { result } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
-
-            const newActiveFilters: ActiveFilters = {
-                ...result.current.activeFilters,
-                type: {
-                    ticket: false,
-                    order: true,
-                },
-            }
-
-            act(() => {
-                result.current.setActiveFilters(newActiveFilters)
-            })
 
             expect(result.current.selectedTypeKeys).toEqual(['order'])
         })
@@ -326,21 +325,15 @@ describe('useTimelineFilters', () => {
         })
 
         it('should filter by ticket type only', () => {
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: true, order: false },
+                jest.fn(),
+                jest.fn(),
+            ])
+
             const { result } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
-
-            const newActiveFilters: ActiveFilters = {
-                ...result.current.activeFilters,
-                type: {
-                    ticket: true,
-                    order: false,
-                },
-            }
-
-            act(() => {
-                result.current.setActiveFilters(newActiveFilters)
-            })
 
             expect(result.current.sortedTickets).toHaveLength(3)
             expect(result.current.sortedTickets).toEqual(
@@ -353,21 +346,15 @@ describe('useTimelineFilters', () => {
         })
 
         it('should filter by order type only', () => {
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: false, order: true },
+                jest.fn(),
+                jest.fn(),
+            ])
+
             const { result } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
-
-            const newActiveFilters: ActiveFilters = {
-                ...result.current.activeFilters,
-                type: {
-                    ticket: false,
-                    order: true,
-                },
-            }
-
-            act(() => {
-                result.current.setActiveFilters(newActiveFilters)
-            })
 
             expect(result.current.sortedTickets).toHaveLength(1)
             expect(result.current.sortedTickets[0]).toEqual(mockOrderItem)
@@ -384,10 +371,6 @@ describe('useTimelineFilters', () => {
                     open: false,
                     closed: false,
                     snooze: false,
-                },
-                type: {
-                    ticket: false,
-                    order: false,
                 },
             }
 
@@ -409,10 +392,6 @@ describe('useTimelineFilters', () => {
                     open: true,
                     closed: false,
                     snooze: false,
-                },
-                type: {
-                    ticket: true,
-                    order: false,
                 },
             }
 
@@ -437,10 +416,6 @@ describe('useTimelineFilters', () => {
                     open: true,
                     closed: false,
                     snooze: false,
-                },
-                type: {
-                    ticket: true,
-                    order: false,
                 },
             }
 
@@ -506,24 +481,30 @@ describe('useTimelineFilters', () => {
         })
 
         it('should update results when type filter changes', () => {
-            const { result } = renderHook(() =>
+            const setMemoizedFilters = jest.fn()
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: true, order: true },
+                setMemoizedFilters,
+                jest.fn(),
+            ])
+
+            const { result, rerender } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
 
+            // Initially should have all 4 items
             expect(result.current.sortedTickets).toHaveLength(4)
 
-            const newActiveFilters: ActiveFilters = {
-                ...result.current.activeFilters,
-                type: {
-                    ticket: true,
-                    order: false,
-                },
-            }
+            // Change to only tickets
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: true, order: false },
+                setMemoizedFilters,
+                jest.fn(),
+            ])
 
-            act(() => {
-                result.current.setActiveFilters(newActiveFilters)
-            })
+            rerender()
 
+            // Should now have only 3 tickets
             expect(result.current.sortedTickets).toHaveLength(3)
             expect(result.current.sortedTickets).toEqual(
                 expect.arrayContaining([
@@ -575,26 +556,26 @@ describe('useTimelineFilters', () => {
         })
 
         it('should handle partial type filter selection', () => {
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: false, order: true },
+                jest.fn(),
+                jest.fn(),
+            ])
+
             const { result } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
-
-            const newActiveFilters: ActiveFilters = {
-                ...result.current.activeFilters,
-                type: {
-                    ticket: false,
-                    order: true,
-                },
-            }
-
-            act(() => {
-                result.current.setActiveFilters(newActiveFilters)
-            })
 
             expect(result.current.selectedTypeKeys).toEqual(['order'])
         })
 
         it('should return empty arrays when no filters are selected', () => {
+            mockUseLocalStorage.mockReturnValue([
+                { ticket: false, order: false },
+                jest.fn(),
+                jest.fn(),
+            ])
+
             const { result } = renderHook(() =>
                 useTimelineFilters({ items: mockItems }),
             )
@@ -605,10 +586,6 @@ describe('useTimelineFilters', () => {
                     open: false,
                     closed: false,
                     snooze: false,
-                },
-                type: {
-                    ticket: false,
-                    order: false,
                 },
             }
 
