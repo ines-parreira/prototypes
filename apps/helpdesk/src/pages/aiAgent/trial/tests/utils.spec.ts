@@ -3,9 +3,15 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 
 import {
     atLeastOneStoreHasActiveTrial,
+    dismissTrialEndedModal,
+    dismissTrialEndingModal,
+    getTrialEndedDismissedKey,
+    getTrialEndingDismissedKey,
     hasTrialExpired,
     hasTrialOptedOut,
     hasTrialStarted,
+    isTrialEndedModalDismissed,
+    isTrialEndingModalDismissed,
 } from '../utils/utils'
 
 // Mock the legacy function
@@ -548,6 +554,136 @@ describe('Trial utility functions', () => {
                 TrialType.AiAgent,
             )
             expect(result).toBe(true) // First store has active trial
+        })
+    })
+
+    describe('localStorage utility functions', () => {
+        const localStorageMock = {
+            getItem: jest.fn(),
+            setItem: jest.fn(),
+            removeItem: jest.fn(),
+            clear: jest.fn(),
+        }
+
+        beforeEach(() => {
+            Object.defineProperty(window, 'localStorage', {
+                value: localStorageMock,
+                writable: true,
+            })
+            jest.clearAllMocks()
+        })
+
+        describe('getTrialEndingDismissedKey', () => {
+            it('should generate correct key with storeName and trialType', () => {
+                const key = getTrialEndingDismissedKey(
+                    'test-store',
+                    TrialType.ShoppingAssistant,
+                )
+                expect(key).toBe(
+                    'ai-agent-trial-ending-tomorrow-dismissed:test-store:shoppingAssistant',
+                )
+            })
+
+            it('should generate correct key for AiAgent trial type', () => {
+                const key = getTrialEndingDismissedKey(
+                    'another-store',
+                    TrialType.AiAgent,
+                )
+                expect(key).toBe(
+                    'ai-agent-trial-ending-tomorrow-dismissed:another-store:aiAgent',
+                )
+            })
+        })
+
+        describe('getTrialEndedDismissedKey', () => {
+            it('should generate correct key with storeName and trialType', () => {
+                const key = getTrialEndedDismissedKey(
+                    'test-store',
+                    TrialType.ShoppingAssistant,
+                )
+                expect(key).toBe(
+                    'ai-agent-trial-ended-dismissed:test-store:shoppingAssistant',
+                )
+            })
+
+            it('should generate correct key for AiAgent trial type', () => {
+                const key = getTrialEndedDismissedKey(
+                    'another-store',
+                    TrialType.AiAgent,
+                )
+                expect(key).toBe(
+                    'ai-agent-trial-ended-dismissed:another-store:aiAgent',
+                )
+            })
+        })
+
+        describe('isTrialEndingModalDismissed', () => {
+            it('should return true when localStorage has value "true"', () => {
+                localStorageMock.getItem.mockReturnValue('true')
+                const result = isTrialEndingModalDismissed(
+                    'test-store',
+                    TrialType.ShoppingAssistant,
+                )
+                expect(result).toBe(true)
+                expect(localStorageMock.getItem).toHaveBeenCalledWith(
+                    'ai-agent-trial-ending-tomorrow-dismissed:test-store:shoppingAssistant',
+                )
+            })
+
+            it('should return false when localStorage has no value', () => {
+                localStorageMock.getItem.mockReturnValue(null)
+                const result = isTrialEndingModalDismissed(
+                    'test-store',
+                    TrialType.ShoppingAssistant,
+                )
+                expect(result).toBe(false)
+            })
+        })
+
+        describe('isTrialEndedModalDismissed', () => {
+            it('should return true when localStorage has value "true"', () => {
+                localStorageMock.getItem.mockReturnValue('true')
+                const result = isTrialEndedModalDismissed(
+                    'test-store',
+                    TrialType.AiAgent,
+                )
+                expect(result).toBe(true)
+                expect(localStorageMock.getItem).toHaveBeenCalledWith(
+                    'ai-agent-trial-ended-dismissed:test-store:aiAgent',
+                )
+            })
+
+            it('should return false when localStorage has no value', () => {
+                localStorageMock.getItem.mockReturnValue(null)
+                const result = isTrialEndedModalDismissed(
+                    'test-store',
+                    TrialType.AiAgent,
+                )
+                expect(result).toBe(false)
+            })
+        })
+
+        describe('dismissTrialEndingModal', () => {
+            it('should set localStorage value to "true"', () => {
+                dismissTrialEndingModal(
+                    'test-store',
+                    TrialType.ShoppingAssistant,
+                )
+                expect(localStorageMock.setItem).toHaveBeenCalledWith(
+                    'ai-agent-trial-ending-tomorrow-dismissed:test-store:shoppingAssistant',
+                    'true',
+                )
+            })
+        })
+
+        describe('dismissTrialEndedModal', () => {
+            it('should set localStorage value to "true"', () => {
+                dismissTrialEndedModal('test-store', TrialType.AiAgent)
+                expect(localStorageMock.setItem).toHaveBeenCalledWith(
+                    'ai-agent-trial-ended-dismissed:test-store:aiAgent',
+                    'true',
+                )
+            })
         })
     })
 })

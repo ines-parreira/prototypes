@@ -356,7 +356,15 @@ describe('TrialEndedModal', () => {
     })
 
     it('should not render modal when already dismissed', () => {
-        localStorageMock.getItem.mockReturnValue('true') // Already dismissed
+        localStorageMock.getItem.mockImplementation((key) => {
+            if (
+                key ===
+                `ai-agent-trial-ended-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`
+            ) {
+                return 'true'
+            }
+            return null
+        })
 
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
@@ -423,7 +431,7 @@ describe('TrialEndedModal', () => {
         })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
-            'ai-agent-trial-ended-dismissed',
+            `ai-agent-trial-ended-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`,
             'true',
         )
 
@@ -459,7 +467,7 @@ describe('TrialEndedModal', () => {
         })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
-            'ai-agent-trial-ended-dismissed',
+            `ai-agent-trial-ended-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`,
             'true',
         )
 
@@ -596,7 +604,10 @@ describe('TrialEndingModal', () => {
 
     it('should not render modal when already dismissed', () => {
         localStorageMock.getItem.mockImplementation((key) => {
-            if (key === 'ai-agent-trial-ending-tomorrow-dismissed') {
+            if (
+                key ===
+                `ai-agent-trial-ending-tomorrow-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`
+            ) {
                 return 'true'
             }
             return null
@@ -647,7 +658,7 @@ describe('TrialEndingModal', () => {
         })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
-            'ai-agent-trial-ending-tomorrow-dismissed',
+            `ai-agent-trial-ending-tomorrow-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`,
             'true',
         )
 
@@ -683,7 +694,7 @@ describe('TrialEndingModal', () => {
         })
 
         expect(localStorageMock.setItem).toHaveBeenCalledWith(
-            'ai-agent-trial-ending-tomorrow-dismissed',
+            `ai-agent-trial-ending-tomorrow-dismissed:${mockStoreConfiguration.storeName}:shoppingAssistant`,
             'true',
         )
 

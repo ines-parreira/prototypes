@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -131,14 +132,19 @@ describe('useTrialModalProps', () => {
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
 
-        mockUseAppSelector.mockReturnValue(
-            fromJS({
+        mockUseAppSelector.mockImplementation((selector) => {
+            // The Shopify selector appears as "memoized" due to memoization wrapper
+            if (selector && selector.name === 'memoized') {
+                return [] // Default to empty array (no stores)
+            }
+            // Otherwise return the account state
+            return fromJS({
                 domain: 'test-domain.com',
                 role: {
                     name: 'admin',
                 },
-            }),
-        )
+            })
+        })
 
         mockUseStoreActivations.mockReturnValue({
             storeActivations: {
@@ -195,6 +201,8 @@ describe('useTrialModalProps', () => {
             endTrial: jest.fn(),
             activation: jest.fn(),
         })
+
+        // Remove useStoreConfigurations mock as it's no longer used
 
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             defaultMockUseShoppingAssistantTrialFlow,
@@ -918,14 +926,11 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'Shopping Assistant trial ends tomorrow',
                 )
-                expect(
-                    result.current.trialEndingModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'Shopping Assistant drove ',
-                        React.createElement('strong', { key: 'gmv' }, '$25'),
-                        " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    "Shopping Assistant drove $25 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
                 )
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
@@ -952,14 +957,11 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'Shopping Assistant trial ends tomorrow',
                 )
-                expect(
-                    result.current.trialEndingModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'Shopping Assistant drove ',
-                        React.createElement('strong', { key: 'gmv' }, '$25'),
-                        " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    "Shopping Assistant drove $25 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
                 )
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
@@ -1015,21 +1017,20 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'AI Agent trial ends tomorrow',
                 )
-                expect(
-                    result.current.trialEndingModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'AI Agent drove ',
-                        React.createElement(
-                            'strong',
-                            { key: 'automationRate' },
-                            0.65,
-                        ),
-                        " automation rate. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toContain(
+                    'AI Agent handled 65% of customer inquiries',
+                )
+                expect(descriptionElement.textContent).toContain(
+                    'drove a 3% lift in revenue',
+                )
+                expect(descriptionElement.textContent).toContain(
+                    "To keep the momentum going, your plan will be upgraded automatically (unless you've opted-out)",
                 )
                 expect(result.current.trialEndingModal.advantages).toEqual([
-                    '0.65 automation rate',
+                    '65% automation rate',
                 ])
                 expect(
                     result.current.trialEndingModal.secondaryDescription,
@@ -1057,8 +1058,12 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'AI Agent trial ends tomorrow',
                 )
-                expect(result.current.trialEndingModal.description).toEqual(
-                    `Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`,
+                // Now returns JSX element instead of string
+                const description = result.current.trialEndingModal
+                    .description as any
+                expect(description?.type).toBe('span')
+                expect(description?.props?.children).toContain(
+                    'AI Agent has been working behind the scenes to help your team',
                 )
                 expect(result.current.trialEndingModal.advantages).toEqual([
                     '60% support inquiries',
@@ -1087,8 +1092,12 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'AI Agent trial ends tomorrow',
                 )
-                expect(result.current.trialEndingModal.description).toEqual(
-                    `Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`,
+                // Now returns JSX element instead of string
+                const description = result.current.trialEndingModal
+                    .description as any
+                expect(description?.type).toBe('span')
+                expect(description?.props?.children).toContain(
+                    'AI Agent has been working behind the scenes to help your team',
                 )
                 expect(result.current.trialEndingModal.advantages).toEqual([
                     '60% support inquiries',
@@ -1116,8 +1125,12 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'AI Agent trial ends tomorrow',
                 )
-                expect(result.current.trialEndingModal.description).toEqual(
-                    `Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`,
+                // Now returns JSX element instead of string
+                const description = result.current.trialEndingModal
+                    .description as any
+                expect(description?.type).toBe('span')
+                expect(description?.props?.children).toContain(
+                    'AI Agent has been working behind the scenes to help your team',
                 )
             })
 
@@ -1140,18 +1153,122 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndingModal.title).toEqual(
                     'AI Agent trial ends tomorrow',
                 )
-                expect(
-                    result.current.trialEndingModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'AI Agent drove ',
-                        React.createElement(
-                            'strong',
-                            { key: 'automationRate' },
-                            0.006,
-                        ),
-                        " automation rate. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toContain(
+                    'AI Agent handled 0.6% of customer inquiries',
+                )
+                expect(descriptionElement.textContent).toContain(
+                    'drove a 3% lift in revenue',
+                )
+                expect(descriptionElement.textContent).toContain(
+                    "To keep the momentum going, your plan will be upgraded automatically (unless you've opted-out)",
+                )
+            })
+
+            it('should include multi-store message when there are multiple stores', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.03,
+                    automationRate: {
+                        value: 0.002,
+                        prevValue: 0.001,
+                        isLoading: false,
+                    },
+                    isLoading: false,
+                })
+
+                // Mock multiple stores - specifically mock the selectors
+                // Reset and setup new mocks
+                mockUseAppSelector.mockReset()
+
+                // Create proper mock values
+                const accountState = fromJS({
+                    domain: 'test-domain.com',
+                    role: {
+                        name: 'admin',
+                    },
+                })
+                const shopifyIntegrations = [{ id: 1 }, { id: 2 }] // Two stores
+
+                // Mock useAppSelector with a more targeted approach
+                // We know useTrialEndingModal calls useAppSelector twice:
+                // 1. getCurrentAccountState
+                // 2. getShopifyIntegrationsSortedByName (appears as "memoized")
+
+                mockUseAppSelector.mockImplementation((selector) => {
+                    // The Shopify selector appears as "memoized" due to memoization wrapper
+                    if (selector && selector.name === 'memoized') {
+                        // This is the getShopifyIntegrationsSortedByName selector
+                        return shopifyIntegrations
+                    }
+
+                    // Default to account state for getCurrentAccountState
+                    return accountState
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.trialEndingModal.title).toEqual(
+                    'AI Agent trial ends tomorrow',
+                )
+
+                // Check that description contains multi-store message
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+
+                // Check the full text content
+                expect(descriptionElement.textContent).toEqual(
+                    "AI Agent has been working behind the scenes to help your team deliver faster, more efficient support and sales. To keep the momentum going, your plan will be upgraded automatically tomorrow (unless you've opted-out) – giving you continued access to AI Agent across all your stores.",
+                )
+            })
+
+            it('should not include multi-store message when there is only one store', () => {
+                mockUseTrialMetrics.mockReturnValue({
+                    gmvInfluenced: '$25',
+                    gmvInfluencedRate: 0.03,
+                    automationRate: {
+                        value: 0.002,
+                        prevValue: 0.001,
+                        isLoading: false,
+                    },
+                    isLoading: false,
+                })
+
+                // Mock single store
+                mockUseAppSelector.mockImplementation((selector) => {
+                    // The Shopify selector appears as "memoized" due to memoization wrapper
+                    if (selector && selector.name === 'memoized') {
+                        return [{}] // Single store
+                    }
+                    return fromJS({
+                        domain: 'test-domain.com',
+                        role: {
+                            name: 'admin',
+                        },
+                    })
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({}),
+                )
+
+                expect(result.current.trialEndingModal.title).toEqual(
+                    'AI Agent trial ends tomorrow',
+                )
+
+                // Check that description does not include multi-store message
+                const descriptionElement = render(
+                    <>{result.current.trialEndingModal.description}</>,
+                ).container
+
+                // Check the full text content without multi-store message
+                expect(descriptionElement.textContent).toEqual(
+                    "AI Agent has been working behind the scenes to help your team deliver faster, more efficient support and sales. To keep the momentum going, your plan will be upgraded automatically tomorrow (unless you've opted-out).",
                 )
             })
         })
@@ -1183,14 +1300,11 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
-                expect(
-                    result.current.trialEndedModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'Shopping Assistant drove ',
-                        React.createElement('strong', { key: 'gmv' }, '$25'),
-                        ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndedModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    'Shopping Assistant drove $25 uplift in GMV. Keep the momentum going and turn even more visitors into buyers.',
                 )
                 expect(
                     result.current.trialEndedModal.secondaryDescription,
@@ -1217,14 +1331,11 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
-                expect(
-                    result.current.trialEndedModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'Shopping Assistant drove ',
-                        React.createElement('strong', { key: 'gmv' }, '$25'),
-                        ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndedModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    'Shopping Assistant drove $25 uplift in GMV. Keep the momentum going and turn even more visitors into buyers.',
                 )
                 expect(
                     result.current.trialEndedModal.secondaryDescription,
@@ -1280,21 +1391,14 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
-                expect(
-                    result.current.trialEndedModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'AI Agent drove ',
-                        React.createElement(
-                            'strong',
-                            { key: 'automationRate' },
-                            0.65,
-                        ),
-                        ' automation rate. To keep the momentum going, you will be upgraded automatically tomorrow.',
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndedModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    'AI Agent drove 65% automation rate. Upgrade today to drive even greater impact.',
                 )
                 expect(result.current.trialEndedModal.advantages).toEqual([
-                    '0.65 automation rate',
+                    '65% automation rate',
                 ])
                 expect(
                     result.current.trialEndedModal.secondaryDescription,
@@ -1323,7 +1427,7 @@ describe('useTrialModalProps', () => {
                     "Your trial ended — but it's just the beginning.",
                 )
                 expect(result.current.trialEndedModal.description).toEqual(
-                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.',
                 )
                 expect(result.current.trialEndedModal.advantages).toEqual([
                     '60% support inquiries',
@@ -1353,7 +1457,7 @@ describe('useTrialModalProps', () => {
                     "Your trial ended — but it's just the beginning.",
                 )
                 expect(result.current.trialEndedModal.description).toEqual(
-                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.',
                 )
                 expect(result.current.trialEndedModal.advantages).toEqual([
                     '60% support inquiries',
@@ -1382,7 +1486,7 @@ describe('useTrialModalProps', () => {
                     "Your trial ended — but it's just the beginning.",
                 )
                 expect(result.current.trialEndedModal.description).toEqual(
-                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.',
+                    'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.',
                 )
             })
 
@@ -1405,18 +1509,11 @@ describe('useTrialModalProps', () => {
                 expect(result.current.trialEndedModal.title).toEqual(
                     'Your trial has ended — and it made an impact.',
                 )
-                expect(
-                    result.current.trialEndedModal.description?.toString(),
-                ).toEqual(
-                    React.createElement('span', {}, [
-                        'AI Agent drove ',
-                        React.createElement(
-                            'strong',
-                            { key: 'automationRate' },
-                            0.006,
-                        ),
-                        ' automation rate. To keep the momentum going, you will be upgraded automatically tomorrow.',
-                    ]).toString(),
+                const descriptionElement = render(
+                    <>{result.current.trialEndedModal.description}</>,
+                ).container
+                expect(descriptionElement.textContent).toEqual(
+                    'AI Agent drove 0.6% automation rate. Upgrade today to drive even greater impact.',
                 )
             })
         })
@@ -1780,23 +1877,15 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({}),
                 )
 
-                expect(result.current.trialEndingModal.description).toEqual(
-                    expect.objectContaining({
-                        type: 'span',
-                        props: expect.objectContaining({
-                            children: expect.arrayContaining([
-                                'Shopping Assistant drove ',
-                                expect.objectContaining({
-                                    type: 'strong',
-                                    props: expect.objectContaining({
-                                        children: '$250',
-                                    }),
-                                }),
-                                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                            ]),
-                        }),
-                    }),
-                )
+                // Now returns JSX element
+                const description = result.current.trialEndingModal
+                    .description as any
+                expect(description?.type).toBe('span')
+                const children = description?.props?.children
+                expect(children?.[0]).toBe('Shopping Assistant drove ')
+                expect(children?.[1]?.type).toBe('strong')
+                expect(children?.[1]?.props?.children).toBe('$250')
+                expect(children?.[3]).toContain('uplift in GMV')
             })
 
             it('should handle different GMV amounts in personalized message', () => {
@@ -1810,23 +1899,15 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({}),
                 )
 
-                expect(result.current.trialEndingModal.description).toEqual(
-                    expect.objectContaining({
-                        type: 'span',
-                        props: expect.objectContaining({
-                            children: expect.arrayContaining([
-                                'Shopping Assistant drove ',
-                                expect.objectContaining({
-                                    type: 'strong',
-                                    props: expect.objectContaining({
-                                        children: '$1,500',
-                                    }),
-                                }),
-                                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                            ]),
-                        }),
-                    }),
-                )
+                // Now returns JSX element
+                const description = result.current.trialEndingModal
+                    .description as any
+                expect(description?.type).toBe('span')
+                const children = description?.props?.children
+                expect(children?.[0]).toBe('Shopping Assistant drove ')
+                expect(children?.[1]?.type).toBe('strong')
+                expect(children?.[1]?.props?.children).toBe('$1,500')
+                expect(children?.[3]).toContain('uplift in GMV')
             })
         })
 

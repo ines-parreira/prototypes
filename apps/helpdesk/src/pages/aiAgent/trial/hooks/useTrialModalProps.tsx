@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { SegmentEvent } from 'common/segment'
 import { logEvent } from 'common/segment/segment'
@@ -613,6 +613,11 @@ const useTrialAlertBanner = ({
     )
 }
 
+const toPercentage = (value: number, decimals = 1) => {
+    const percentage = value * 100
+    return `${parseFloat(percentage.toFixed(decimals))}%`
+}
+
 const useTrialEndedModal = (
     trialType: TrialType,
     trialMetrics: TrialMetrics,
@@ -650,28 +655,29 @@ const useTrialEndedModal = (
     const description = useMemo(() => {
         if (isAiAgentTrial) {
             if (hasSignificantAutomationRateImpact) {
-                return React.createElement('span', {}, [
-                    'AI Agent drove ',
-                    React.createElement(
-                        'strong',
-                        { key: 'automationRate' },
-                        automationRateValue,
-                    ),
-                    ' automation rate. To keep the momentum going, you will be upgraded automatically tomorrow.',
-                ])
+                return (
+                    <span>
+                        AI Agent drove{' '}
+                        <strong>{toPercentage(automationRateValue)}</strong>{' '}
+                        automation rate. Upgrade today to drive even greater
+                        impact.
+                    </span>
+                )
             }
-            return 'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
+            return 'Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.'
         }
 
         if (hasSignificantGmvImpact) {
-            return React.createElement('span', {}, [
-                'Shopping Assistant drove ',
-                React.createElement('strong', { key: 'gmv' }, gmvInfluenced),
-                ' uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow.',
-            ])
+            return (
+                <span>
+                    Shopping Assistant drove <strong>{gmvInfluenced}</strong>{' '}
+                    uplift in GMV. Keep the momentum going and turn even more
+                    visitors into buyers.
+                </span>
+            )
         }
 
-        return 'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow.'
+        return 'Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. Upgrade today to drive even greater impact.'
     }, [
         isAiAgentTrial,
         hasSignificantGmvImpact,
@@ -683,7 +689,7 @@ const useTrialEndedModal = (
     const advantages = useMemo(() => {
         if (isAiAgentTrial) {
             return hasSignificantAutomationRateImpact
-                ? [`${automationRateValue} automation rate`]
+                ? [`${toPercentage(automationRateValue)} automation rate`]
                 : [...AI_AGENT_ADVANTAGES]
         }
 
@@ -760,6 +766,11 @@ const useTrialEndingModal = (
     const increaseAmount = formatAmount(difference, currency)
     const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
 
+    const allShopifyIntegrations = useAppSelector(
+        getShopifyIntegrationsSortedByName,
+    )
+    const isMultiStore = allShopifyIntegrations.length > 1
+
     const title = isAiAgentTrial
         ? 'AI Agent trial ends tomorrow'
         : 'Shopping Assistant trial ends tomorrow'
@@ -767,25 +778,50 @@ const useTrialEndingModal = (
     const description = useMemo(() => {
         if (isAiAgentTrial) {
             if (hasSignificantAutomationRateImpact) {
-                return React.createElement('span', {}, [
-                    'AI Agent drove ',
-                    React.createElement(
-                        'strong',
-                        { key: 'automationRate' },
-                        automationRateValue,
-                    ),
-                    " automation rate. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                ])
+                return (
+                    <span>
+                        AI Agent handled{' '}
+                        <strong>
+                            {toPercentage(automationRateValue)} of customer
+                            inquiries
+                        </strong>{' '}
+                        and automatically{' '}
+                        <strong>
+                            drove a {toPercentage(gmvInfluencedRate)} lift in
+                            revenue
+                        </strong>{' '}
+                        in the last 13 days. To keep the momentum going, your
+                        plan will be upgraded automatically (unless you&apos;ve
+                        opted-out).
+                    </span>
+                )
             }
-            return `Brands that unlock AI Agent see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
+            return (
+                <span>
+                    AI Agent has been working behind the scenes to help your
+                    team{' '}
+                    <strong>
+                        deliver faster, more efficient support and sales
+                    </strong>
+                    . To keep the momentum going, your plan will be upgraded
+                    automatically tomorrow (unless you&apos;ve opted-out)
+                    {isMultiStore
+                        ? ` – giving you continued access to AI Agent across all your stores`
+                        : ''}
+                    .
+                </span>
+            )
         }
 
         if (hasSignificantGmvImpact) {
-            return React.createElement('span', {}, [
-                'Shopping Assistant drove ',
-                React.createElement('strong', { key: 'gmv' }, gmvInfluenced),
-                " uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-            ])
+            return (
+                <span>
+                    Shopping Assistant drove <strong>{gmvInfluenced}</strong>{' '}
+                    uplift in GMV. To keep the momentum going, you will be
+                    upgraded automatically tomorrow (unless you&apos;ve
+                    opted-out).
+                </span>
+            )
         }
         return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
     }, [
@@ -793,13 +829,15 @@ const useTrialEndingModal = (
         hasSignificantAutomationRateImpact,
         automationRateValue,
         gmvInfluenced,
+        gmvInfluencedRate,
         hasSignificantGmvImpact,
+        isMultiStore,
     ])
 
     const advantages = useMemo(() => {
         if (isAiAgentTrial) {
             return hasSignificantAutomationRateImpact
-                ? [`${automationRateValue} automation rate`]
+                ? [`${toPercentage(automationRateValue)} automation rate`]
                 : [...AI_AGENT_ADVANTAGES]
         }
 

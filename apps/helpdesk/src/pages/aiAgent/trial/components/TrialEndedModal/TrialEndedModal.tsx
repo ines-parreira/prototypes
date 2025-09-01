@@ -6,8 +6,10 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
-
-const TRIAL_ENDED_DISMISSED_KEY = 'ai-agent-trial-ended-dismissed'
+import {
+    dismissTrialEndedModal,
+    isTrialEndedModalDismissed,
+} from 'pages/aiAgent/trial/utils/utils'
 
 export const TrialEndedModal = ({
     storeName,
@@ -22,14 +24,14 @@ export const TrialEndedModal = ({
         trialType,
     )
 
-    const [isModalDismissed, setIsModalDismissed] = useState(
-        () => localStorage.getItem(TRIAL_ENDED_DISMISSED_KEY) === 'true',
+    const [isModalDismissed, setIsModalDismissed] = useState(() =>
+        isTrialEndedModalDismissed(storeName, trialType),
     )
 
     const dismissModal = useCallback(() => {
-        localStorage.setItem(TRIAL_ENDED_DISMISSED_KEY, 'true')
+        dismissTrialEndedModal(storeName, trialType)
         setIsModalDismissed(true)
-    }, [])
+    }, [storeName, trialType])
 
     const now = moment()
     const terminationDatetime = moment(trialTerminationDatetime)
@@ -52,7 +54,7 @@ export const TrialEndedModal = ({
             onClose={dismissModal}
             primaryAction={{
                 label: 'Upgrade to Reactivate',
-                onClick: () => {},
+                onClick: () => {}, // TODO: Implement this
             }}
             secondaryAction={{
                 label: 'No, thanks',

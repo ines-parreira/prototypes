@@ -58,3 +58,49 @@ export const hasTrialActive = (
 ) =>
     hasTrialStarted(trialType, storeConfiguration) &&
     !hasTrialExpired(trialType, storeConfiguration)
+
+const TRIAL_ENDING_DISMISSED_KEY_PREFIX =
+    'ai-agent-trial-ending-tomorrow-dismissed'
+const TRIAL_ENDED_DISMISSED_KEY_PREFIX = 'ai-agent-trial-ended-dismissed'
+
+export const getTrialEndingDismissedKey = (
+    storeName: string,
+    trialType: TrialType,
+) => `${TRIAL_ENDING_DISMISSED_KEY_PREFIX}:${storeName}:${trialType}`
+
+export const getTrialEndedDismissedKey = (
+    storeName: string,
+    trialType: TrialType,
+) => `${TRIAL_ENDED_DISMISSED_KEY_PREFIX}:${storeName}:${trialType}`
+
+export const isTrialEndingModalDismissed = (
+    storeName: string,
+    trialType: TrialType,
+) =>
+    localStorage.getItem(getTrialEndingDismissedKey(storeName, trialType)) ===
+    'true'
+
+export const isTrialEndedModalDismissed = (
+    storeName: string,
+    trialType: TrialType,
+) =>
+    localStorage.getItem(getTrialEndedDismissedKey(storeName, trialType)) ===
+    'true'
+
+export const dismissTrialEndingModal = (
+    storeName: string,
+    trialType: TrialType,
+) =>
+    localStorage.setItem(
+        getTrialEndingDismissedKey(storeName, trialType),
+        'true',
+    )
+
+export const dismissTrialEndedModal = (
+    storeName: string,
+    trialType: TrialType,
+) =>
+    localStorage.setItem(
+        getTrialEndedDismissedKey(storeName, trialType),
+        'true',
+    )

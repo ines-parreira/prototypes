@@ -14,10 +14,11 @@ import {
     COOLDOWN_WAIT_HOURS,
     markTrialExtensionRequested,
 } from 'pages/aiAgent/trial/utils/trialExtensionUtils'
+import {
+    dismissTrialEndingModal,
+    isTrialEndingModalDismissed,
+} from 'pages/aiAgent/trial/utils/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-
-const TRIAL_ENDING_TOMORROW_DISMISSED_KEY =
-    'ai-agent-trial-ending-tomorrow-dismissed'
 
 type TrialEndingModalProps = {
     storeName: string
@@ -46,16 +47,14 @@ export const TrialEndingModal = ({
         'shopping-assistant-request-trial-extension-button-on-trial-ending'
     const isOptedOut = !!optedOutDatetime
 
-    const [isModalDismissed, setIsModalDismissed] = useState(
-        () =>
-            localStorage.getItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY) ===
-            'true',
+    const [isModalDismissed, setIsModalDismissed] = useState(() =>
+        isTrialEndingModalDismissed(storeName, trialType),
     )
 
     const dismissModal = useCallback(() => {
-        localStorage.setItem(TRIAL_ENDING_TOMORROW_DISMISSED_KEY, 'true')
+        dismissTrialEndingModal(storeName, trialType)
         setIsModalDismissed(true)
-    }, [])
+    }, [storeName, trialType])
 
     const onUpgradeClick = useCallback(() => {
         openUpgradePlanModal(false)
