@@ -18,10 +18,15 @@ import css from './CreateImportModal.less'
 type CreateImportModalProps = {
     isOpen: boolean
     onClose: () => void
+    selectedEmail?: string | null
 }
 
-const CreateImportModal = ({ isOpen, onClose }: CreateImportModalProps) => {
-    const [email, setEmail] = useState('')
+const CreateImportModal = ({
+    isOpen,
+    onClose,
+    selectedEmail,
+}: CreateImportModalProps) => {
+    const [email, setEmail] = useState(selectedEmail ?? '')
     const [forwardingProvider, setForwardingProvider] = useState<
         'gmail' | 'outlook'
     >('gmail')

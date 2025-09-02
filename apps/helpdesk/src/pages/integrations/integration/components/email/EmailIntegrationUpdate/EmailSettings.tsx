@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
@@ -26,6 +27,7 @@ import { importEmails } from 'state/integrations/actions'
 import { displayRestrictedSymbols } from 'utils'
 import { convertToHTML } from 'utils/editor'
 
+import { useFlag } from '../../../../../../core/flags'
 import Imports from './Imports'
 
 import css from './EmailIntegrationUpdate.less'
@@ -66,6 +68,8 @@ const EmailSettings = ({
     const [errors, setErrors] = useState<{ name?: string | null }>({
         name: null,
     })
+
+    const enabledHistoricalImports = useFlag(FeatureFlagKey.HistoricalImports)
 
     const isGmail = integration.get('type') === IntegrationType.Gmail
     const isOutlook = integration.get('type') === IntegrationType.Outlook
@@ -343,7 +347,7 @@ const EmailSettings = ({
                             </AccordionBody>
                         </AccordionItem>
                     )}
-                    {(isGmail || isOutlook) && (
+                    {!enabledHistoricalImports && (isGmail || isOutlook) && (
                         <AccordionItem>
                             <AccordionHeader>
                                 <h3 className="mb-0">Email imports</h3>

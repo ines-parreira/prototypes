@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Banner, Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -59,6 +62,12 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
         showCancelModal,
         submitIntegration,
     } = useEmailIntegrationUpdate()
+
+    const enabledHistoricalImports = useFlag(FeatureFlagKey.HistoricalImports)
+
+    const [showImportMigrationBanner, setShowImportMigrationBanner] = useState(
+        enabledHistoricalImports,
+    )
 
     const dispatch = useAppDispatch()
     const domain = useAppSelector((state: RootState) =>
@@ -129,14 +138,46 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
         return <Loader />
     }
 
+    const integrationJSObj = integration.toJS()
+
     return (
         <>
             <Container fluid className={settingsCss.pageContainer}>
+                <Col
+                    lg={6}
+                    xl={7}
+                    className={classnames('pl-0', settingsCss.mb24)}
+                >
+                    {showImportMigrationBanner && (
+                        <Banner
+                            type="info"
+                            fillStyle="fill"
+                            isClosable={true}
+                            onClose={() => setShowImportMigrationBanner(false)}
+                            action={
+                                <Button
+                                    onClick={() => {
+                                        history.push(
+                                            `/app/settings/import-email?selectedEmail=${integrationJSObj?.meta?.address}`,
+                                        )
+                                    }}
+                                    fillStyle="ghost"
+                                >
+                                    Import
+                                </Button>
+                            }
+                        >
+                            You can import up to 2 years of email history to
+                            Gorgias. This helps you keep your past email content
+                            and metadata in one place.
+                        </Banner>
+                    )}
+                </Col>
                 <h2 className={settingsCss.headingSection}>General</h2>
                 <Col lg={6} xl={7} className="pl-0">
                     <div className="mt-4">
                         <EmailIntegrationAddressField
-                            integration={integration.toJS()}
+                            integration={integrationJSObj}
                         />
                         <EmailIntegrationConnectStore
                             integration={integration}

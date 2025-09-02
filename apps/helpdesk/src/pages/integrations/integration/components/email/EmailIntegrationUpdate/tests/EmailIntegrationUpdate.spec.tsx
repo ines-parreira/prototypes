@@ -9,6 +9,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -60,6 +61,14 @@ jest.mock('hooks/useAppSelector', () => {
     }
 })
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+jest.mock('pages/history', () => ({
+    push: jest.fn(),
+}))
+
 jest.mock('pages/common/forms/RichFieldWithVariables', () => {
     return function MockRichFieldWithVariables({ onChange, label }: any) {
         return (
@@ -81,6 +90,8 @@ jest.mock('pages/common/forms/RichFieldWithVariables', () => {
 })
 
 const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
+const mockUseFlag = jest.mocked(require('core/flags').useFlag)
+const mockHistoryPush = jest.mocked(require('pages/history').push)
 
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
@@ -706,12 +717,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         })
 
         it('should handle cancel when form is not dirty - navigate directly', () => {
-            const mockHistoryPush = jest.fn()
-            jest.spyOn(
-                require('pages/history').default,
-                'push',
-            ).mockImplementation(mockHistoryPush)
-
             const props = {
                 integration: fromJS({
                     id: 1,
@@ -798,12 +803,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         })
 
         it('should handle discard changes', async () => {
-            const mockHistoryPush = jest.fn()
-            jest.spyOn(
-                require('pages/history').default,
-                'push',
-            ).mockImplementation(mockHistoryPush)
-
             const props = {
                 integration: fromJS({
                     id: 1,
@@ -991,6 +990,326 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             )
 
             mockWindowOpen.mockRestore()
+        })
+    })
+
+    describe('Import Migration Banner', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockHistoryPush.mockClear()
+        })
+
+        afterEach(() => {
+            mockUseFlag.mockReset()
+            mockHistoryPush.mockReset()
+        })
+
+        it('should show banner when HistoricalImports feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText, getByRole } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            expect(getByRole('button', { name: 'Import' })).toBeInTheDocument()
+        })
+
+        it('should not show banner when HistoricalImports feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { queryByText, queryByRole } = renderWithStore(props)
+
+            expect(
+                queryByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).not.toBeInTheDocument()
+
+            expect(
+                queryByRole('button', { name: 'Import' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should close banner when close button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText, queryByText, getByRole } = renderWithStore(props)
+
+            // Verify banner is initially visible
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            // Find and click the close button
+            const closeButton = getByRole('button', { name: 'Close' })
+            await user.click(closeButton)
+
+            // Verify banner is hidden after clicking close
+            await waitFor(() => {
+                expect(
+                    queryByText(
+                        'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                    ),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should navigate to import page with selectedEmail when Import button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const importButton = getByRole('button', { name: 'Import' })
+            await user.click(importButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/settings/import-email?selectedEmail=test@gmail.com',
+            )
+        })
+
+        it('should handle Import button click with Outlook integration', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Outlook,
+                    meta: {
+                        address: 'support@outlook.com',
+                    },
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const importButton = getByRole('button', { name: 'Import' })
+            await user.click(importButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/settings/import-email?selectedEmail=support@outlook.com',
+            )
+        })
+
+        it('should handle Import button click when integration has no email address', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {},
+                }),
+            }
+
+            const { getByRole } = renderWithStore(props)
+
+            const importButton = getByRole('button', { name: 'Import' })
+            await user.click(importButton)
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/settings/import-email?selectedEmail=undefined',
+            )
+        })
+
+        it('should have correct banner styling and structure', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText, getByRole } = renderWithStore(props)
+
+            const bannerText = getByText(
+                'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+            )
+            expect(bannerText).toBeInTheDocument()
+
+            const importButton = getByRole('button', { name: 'Import' })
+            expect(importButton).toBeInTheDocument()
+
+            // Verify the close button exists
+            const closeButton = getByRole('button', { name: 'Close' })
+            expect(closeButton).toBeInTheDocument()
+        })
+
+        it('should show banner initially and maintain state across re-renders when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText, rerender } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            // Re-render with same props
+            rerender(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationUpdateContainer
+                            {...commonProps}
+                            {...props}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should work with Gmail integration type', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText, getByRole } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            expect(getByRole('button', { name: 'Import' })).toBeInTheDocument()
+        })
+
+        it('should work with Outlook integration type', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Outlook,
+                    meta: {
+                        address: 'test@outlook.com',
+                    },
+                }),
+            }
+
+            const { getByText, getByRole } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            expect(getByRole('button', { name: 'Import' })).toBeInTheDocument()
+        })
+
+        it('should work with Email integration type', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Email,
+                    meta: {
+                        address: 'test@example.com',
+                    },
+                }),
+            }
+
+            const { getByText, getByRole } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+
+            expect(getByRole('button', { name: 'Import' })).toBeInTheDocument()
         })
     })
 })

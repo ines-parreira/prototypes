@@ -19,6 +19,7 @@ describe('CreateImportModal', () => {
     const defaultProps = {
         isOpen: true,
         onClose: jest.fn(),
+        selectedEmail: null,
     }
 
     beforeEach(() => {
@@ -252,6 +253,163 @@ describe('CreateImportModal', () => {
 
             expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByRole('dialog')).toBeInTheDocument()
+        })
+    })
+
+    describe('selectedEmail prop functionality', () => {
+        beforeEach(() => {
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
+                {
+                    provider: IntegrationType.Outlook,
+                    email: 'test@outlook.com',
+                },
+            ])
+        })
+
+        it('should pre-populate email field when selectedEmail is provided', async () => {
+            const selectedEmail = 'test@gmail.com'
+            render(
+                <CreateImportModal
+                    {...defaultProps}
+                    selectedEmail={selectedEmail}
+                />,
+            )
+
+            // Wait for component to initialize
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            // The email field should be pre-populated with the selectedEmail
+            expect(screen.getByText(selectedEmail)).toBeInTheDocument()
+        })
+
+        it('should have empty email field when selectedEmail is null', async () => {
+            render(<CreateImportModal {...defaultProps} selectedEmail={null} />)
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            // Check that no email is pre-selected by looking for the combobox
+            const emailLabel = screen.getByText('Email address')
+            expect(emailLabel).toBeInTheDocument()
+
+            // The select should be present but without any selected email text
+            const emailSelect = screen.getByRole('combobox')
+            expect(emailSelect).toBeInTheDocument()
+
+            // Should not contain any of the available emails as selected text
+            expect(screen.queryByText('test@gmail.com')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('test@outlook.com'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should have empty email field when selectedEmail is undefined', async () => {
+            render(
+                <CreateImportModal
+                    {...defaultProps}
+                    selectedEmail={undefined}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            const emailLabel = screen.getByText('Email address')
+            expect(emailLabel).toBeInTheDocument()
+        })
+
+        it('should allow user to change pre-populated email from selectedEmail', async () => {
+            const user = userEvent.setup()
+            const selectedEmail = 'test@gmail.com'
+
+            render(
+                <CreateImportModal
+                    {...defaultProps}
+                    selectedEmail={selectedEmail}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            // Verify initial email is pre-populated
+            expect(screen.getByText(selectedEmail)).toBeInTheDocument()
+
+            // Click on email select to open dropdown
+            const emailSelect = screen.getByRole('combobox')
+            await user.click(emailSelect)
+
+            // Select a different email
+            await user.click(screen.getByText('test@outlook.com'))
+
+            // Verify the email has been changed
+            expect(screen.getByText('test@outlook.com')).toBeInTheDocument()
+            expect(screen.queryByText(selectedEmail)).not.toBeInTheDocument()
+        })
+
+        it('should work with complete flow when selectedEmail is provided', async () => {
+            const user = userEvent.setup()
+            const selectedEmail = 'test@gmail.com'
+
+            // Mock window.location
+            const originalLocation = window.location
+            const mockLocation = {
+                ...originalLocation,
+                href: '',
+                origin: 'https://app.gorgias.com',
+            }
+            Object.defineProperty(window, 'location', {
+                value: mockLocation,
+                writable: true,
+            })
+
+            render(
+                <CreateImportModal
+                    {...defaultProps}
+                    selectedEmail={selectedEmail}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            // Verify email is pre-populated
+            expect(screen.getByText(selectedEmail)).toBeInTheDocument()
+
+            // Select timeframe
+            const timeframeSelect = screen.getByPlaceholderText(
+                'Please select a timeframe',
+            )
+            await user.click(timeframeSelect)
+            const timeframeOption = await screen.findByText('Last 6 months')
+            await user.click(timeframeOption)
+
+            // Submit form
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
+            })
+            await user.click(submitButton)
+
+            // Verify redirect with correct email
+            expect(window.location.href).toContain(
+                '/integrations/gmail/auth/import/oauth-redirect',
+            )
+            expect(window.location.href).toContain(
+                `provider_address=${encodeURIComponent(selectedEmail)}`,
+            )
+
+            // Restore window.location
+            Object.defineProperty(window, 'location', {
+                value: originalLocation,
+                writable: true,
+            })
         })
     })
 
