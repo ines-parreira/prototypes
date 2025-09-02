@@ -1,17 +1,14 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import _capitalize from 'lodash/capitalize'
 
 import { Skeleton } from '@gorgias/axiom'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { useFlag } from 'core/flags'
-import { ProcessedEvent, processEvents } from 'models/voiceCall/processEvents'
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'
-import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
+import { DEPRECATED_processEvents } from 'models/voiceCall/utils'
+import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import DEPRECATED_TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/DEPRECATED_TicketVoiceCallEvents'
 
 import Timeline from './Timeline'
 import TimelineItem from './TimelineItem'
@@ -23,35 +20,10 @@ type TicketVoiceCallEventsProps = {
     terminationStatus?: VoiceCallTerminationStatus
 }
 
-const TicketVoiceCallEvents = ({
+export default function DEPRECATED_TicketVoiceCallEvents({
     callId,
     terminationStatus,
-}: TicketVoiceCallEventsProps) => {
-    const isTransferToExternalNumberEnabled = useFlag(
-        FeatureFlagKey.TransferCallToExternalNumber,
-    )
-
-    if (!isTransferToExternalNumberEnabled) {
-        return (
-            <DEPRECATED_TicketVoiceCallEvents
-                callId={callId}
-                terminationStatus={terminationStatus}
-            />
-        )
-    }
-
-    return (
-        <NewTicketVoiceCallEvents
-            callId={callId}
-            terminationStatus={terminationStatus}
-        />
-    )
-}
-
-const NewTicketVoiceCallEvents = ({
-    callId,
-    terminationStatus,
-}: TicketVoiceCallEventsProps) => {
+}: TicketVoiceCallEventsProps) {
     const { data, isLoading, error } = useListVoiceCallEvents({
         call_id: callId,
     })
@@ -68,7 +40,7 @@ const NewTicketVoiceCallEvents = ({
         )
     }
 
-    const processedEvents = processEvents(data.data.data)
+    const processedEvents = DEPRECATED_processEvents(data.data.data)
 
     if (!processedEvents.length) {
         if (
@@ -95,15 +67,8 @@ const NewTicketVoiceCallEvents = ({
         )
     }
 
-    const getActionPrettyName = (event: ProcessedEvent) => {
-        if (event.happensDuringTransfer) {
-            return `Transfer ${event.action}`
-        }
-        return _capitalize(event.action)
-    }
-
     return (
-        <Timeline useFullWidth>
+        <Timeline>
             {processedEvents.map((event, index) => (
                 <TimelineItem key={`call-event-${index}`}>
                     <div
@@ -115,27 +80,21 @@ const NewTicketVoiceCallEvents = ({
                                 css.inbound,
                             )}
                         >
-                            <span>{getActionPrettyName(event)}</span>
-                            {event.actor && (
-                                <>
-                                    <span> by </span>
-                                    <VoiceCallSubjectLabel
-                                        subject={event.actor}
-                                    />
-                                </>
+                            <div>{event.text}</div>
+                            {event.userId && (
+                                <VoiceCallAgentLabel agentId={event.userId} />
                             )}
-                            {event.target && (
-                                <>
-                                    <span> to </span>
-                                    <VoiceCallSubjectLabel
-                                        subject={event.target}
-                                    />
-                                </>
+                            {event.customerId && (
+                                <VoiceCallCustomerLabel
+                                    customerId={event.customerId}
+                                    phoneNumber={'customer'}
+                                />
                             )}
                         </div>
                         <DatetimeLabel
                             dateTime={event.datetime}
                             className={classNames('text-faded', css.date)}
+                            breakDate
                             labelFormat={
                                 DateAndTimeFormatting.TimeDoubleDigitHour
                             }
@@ -146,5 +105,3 @@ const NewTicketVoiceCallEvents = ({
         </Timeline>
     )
 }
-
-export default TicketVoiceCallEvents

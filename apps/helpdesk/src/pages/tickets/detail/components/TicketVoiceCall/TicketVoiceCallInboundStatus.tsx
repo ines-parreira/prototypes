@@ -13,9 +13,9 @@ import {
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
 
 import CollapsibleDetails from './CollapsibleDetails'
-import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -60,6 +60,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                                     phoneNumber={
                                         voiceCall.phone_number_destination
                                     }
+                                    semibold
                                     interactable
                                 />
                             )}

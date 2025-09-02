@@ -53,7 +53,8 @@ const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
                         phoneNumber={
                             voiceCall.phoneNumberDestination ?? UNKNOWN_AGENT
                         }
-                        withTooltip={true}
+                        semibold
+                        withTooltip
                     />
                 </div>
             )}
@@ -90,10 +91,10 @@ const OutboundVoiceCallActivity = ({ voiceCall }: Props) => {
             {voiceCall.customerId ? (
                 <VoiceCallCustomerLabel
                     customerId={voiceCall.customerId}
+                    customerName={voiceCall.customerName}
                     phoneNumber={voiceCall.phoneNumberDestination}
                     className={css.customerLabel}
-                    withTooltip={true}
-                    customerName={voiceCall.customerName}
+                    withTooltip
                 />
             ) : (
                 <CustomerLabel

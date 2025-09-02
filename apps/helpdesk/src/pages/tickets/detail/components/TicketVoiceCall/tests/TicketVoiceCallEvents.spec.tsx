@@ -1,17 +1,22 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { cleanup, render, screen } from '@testing-library/react'
 
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
+import * as flags from 'core/flags'
+import { ProcessedEvent } from 'models/voiceCall/processEvents'
 import * as queries from 'models/voiceCall/queries'
+import { VoiceCallSubjectType } from 'models/voiceCall/types'
 
 import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
+const useFlagSpy = jest.spyOn(flags, 'useFlag')
 
 jest.mock('@gorgias/axiom', () => ({
-    Skeleton: () => <div> Loading</div>,
+    Skeleton: () => <div>Loading</div>,
 }))
 
 jest.mock('../Timeline', () => ({ children }: any) => (
@@ -23,12 +28,9 @@ jest.mock('../TimelineItem', () => ({ children }: any) => (
 ))
 
 jest.mock(
-    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () => () => <div>Agent Label</div>,
-)
-jest.mock(
-    'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () => () => <div>Customer Label</div>,
+    'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel',
+    () =>
+        ({ subject }: any) => <span>{subject.type} subject</span>,
 )
 
 jest.mock(
@@ -37,12 +39,34 @@ jest.mock(
         ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
-jest.mock('models/voiceCall/utils', () => ({
+jest.mock('models/voiceCall/processEvents', () => ({
     processEvents: (events: any): any => events,
 }))
 
+jest.mock(
+    '../DEPRECATED_TicketVoiceCallEvents',
+    () =>
+        ({ callId, terminationStatus }: any) => {
+            return (
+                <div>
+                    DEPRECATED_TicketVoiceCallEvents - callId: {callId},
+                    terminationStatus: {terminationStatus || 'undefined'}
+                </div>
+            )
+        },
+)
+
 describe('TicketVoiceCallEvents', () => {
     afterEach(cleanup)
+
+    beforeEach(() => {
+        useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.TransferCallToExternalNumber) {
+                return true
+            }
+            return false
+        })
+    })
 
     it('should render loading skeleton when data is loading', () => {
         useListVoiceCallEventsSpy.mockReturnValue({
@@ -72,8 +96,8 @@ describe('TicketVoiceCallEvents', () => {
 
     it('should render timeline with events when data is available', () => {
         const mockEvents = [
-            { text: 'Event 1', userId: 1, datetime: '00:01 AM' },
-            { text: 'Event 2', userId: 2, datetime: '07:11 PM' },
+            { action: 'missed', datetime: '2025-01-01T10:00:00Z' },
+            { action: 'answered', datetime: '2025-01-01T10:05:00Z' },
         ]
         useListVoiceCallEventsSpy.mockReturnValue({
             data: { data: { data: mockEvents } },
@@ -87,6 +111,8 @@ describe('TicketVoiceCallEvents', () => {
         expect(screen.getAllByTestId('timeline-item')).toHaveLength(
             mockEvents.length,
         )
+        expect(screen.getByText('Missed')).toBeInTheDocument()
+        expect(screen.getByText('Answered')).toBeInTheDocument()
     })
 
     it.each([
@@ -132,14 +158,87 @@ describe('TicketVoiceCallEvents', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render customer event', () => {
+    it('should render event with actor', () => {
         const mockEvents = [
             {
-                text: 'Event 1',
-                userId: null,
-                datetime: '00:01 AM',
-                customerId: 1,
+                action: 'answered',
+                datetime: '2025-01-01T10:00:00Z',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 123,
+                },
             },
+        ] as ProcessedEvent[]
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: { data: { data: mockEvents } },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        const { container } = render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(container).toHaveTextContent(
+            `Answered by ${VoiceCallSubjectType.Agent} subject`,
+        )
+    })
+
+    it('should render event with target', () => {
+        const mockEvents = [
+            {
+                action: 'forwarded',
+                datetime: '2025-01-01T10:00:00Z',
+                target: {
+                    type: VoiceCallSubjectType.External,
+                    value: '+1 5551234567',
+                },
+            },
+        ] as ProcessedEvent[]
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: { data: { data: mockEvents } },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        const { container } = render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(container).toHaveTextContent(
+            `Forwarded to ${VoiceCallSubjectType.External} subject`,
+        )
+    })
+
+    it('should render transfer event with both actor and target', () => {
+        const mockEvents = [
+            {
+                action: 'initiated',
+                datetime: '2025-01-01T10:00:00Z',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 123,
+                },
+                target: {
+                    type: VoiceCallSubjectType.External,
+                    value: '+1 5551234567',
+                },
+                happensDuringTransfer: true,
+            },
+        ] as ProcessedEvent[]
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: { data: { data: mockEvents } },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        const { container } = render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(container).toHaveTextContent(
+            `Transfer initiated by ${VoiceCallSubjectType.Agent} subject to ${VoiceCallSubjectType.External} subject`,
+        )
+    })
+
+    it('should render datetime labels for each event', () => {
+        const mockEvents = [
+            { action: 'connected', datetime: '2025-01-01T10:00:00Z' },
+            { action: 'ended', datetime: '2025-01-01T10:05:00Z' },
         ]
         useListVoiceCallEventsSpy.mockReturnValue({
             data: { data: { data: mockEvents } },
@@ -149,7 +248,59 @@ describe('TicketVoiceCallEvents', () => {
 
         render(<TicketVoiceCallEvents callId={1} />)
 
-        expect(screen.getByText('Event 1')).toBeInTheDocument()
-        expect(screen.getByText('Customer Label')).toBeInTheDocument()
+        expect(screen.getByText('2025-01-01T10:00:00Z')).toBeInTheDocument()
+        expect(screen.getByText('2025-01-01T10:05:00Z')).toBeInTheDocument()
+    })
+
+    describe('with TransferCallToExternalNumber FF disabled', () => {
+        beforeEach(() => {
+            useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
+                if (key === FeatureFlagKey.TransferCallToExternalNumber) {
+                    return false
+                }
+                return false
+            })
+        })
+
+        it('should render DEPRECATED_TicketVoiceCallEvents', () => {
+            const { container } = render(
+                <TicketVoiceCallEvents
+                    callId={123}
+                    terminationStatus={VoiceCallTerminationStatus.Answered}
+                />,
+            )
+
+            expect(container).toHaveTextContent(
+                'DEPRECATED_TicketVoiceCallEvents - callId: 123',
+            )
+            expect(container).toHaveTextContent(
+                `terminationStatus: ${VoiceCallTerminationStatus.Answered}`,
+            )
+        })
+
+        it('should pass correct props to DEPRECATED_TicketVoiceCallEvents', () => {
+            const { container } = render(
+                <TicketVoiceCallEvents
+                    callId={456}
+                    terminationStatus={VoiceCallTerminationStatus.Abandoned}
+                />,
+            )
+
+            expect(container).toHaveTextContent(
+                'DEPRECATED_TicketVoiceCallEvents - callId: 456',
+            )
+            expect(container).toHaveTextContent(
+                `terminationStatus: ${VoiceCallTerminationStatus.Abandoned}`,
+            )
+        })
+
+        it('should render DEPRECATED_TicketVoiceCallEvents without terminationStatus', () => {
+            const { container } = render(<TicketVoiceCallEvents callId={789} />)
+
+            expect(container).toHaveTextContent(
+                'DEPRECATED_TicketVoiceCallEvents - callId: 789',
+            )
+            expect(container).toHaveTextContent('terminationStatus: undefined')
+        })
     })
 })

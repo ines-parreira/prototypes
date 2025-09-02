@@ -27,7 +27,6 @@ export const TransferTargetLabel = ({
                         customerName={transferringTo.customer.name}
                         phoneNumber={transferringTo.value}
                         showBothNameAndPhone
-                        withTooltip
                     />
                 ) : (
                     <b>{transferringTo.value}</b>

@@ -94,14 +94,16 @@ const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
     return missedCallEvent || !answeredOrDeclinedEvent
 }
 
-type ProcessedEvent = {
+type DEPRECATED_ProcessedEvent = {
     text: string
     userId: number | null
     datetime: string
     customerId?: number
 }
 
-export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
+export const DEPRECATED_processEvents = (
+    events: VoiceCallEvent[],
+): DEPRECATED_ProcessedEvent[] => {
     const result = []
     const handled = events.filter((event) =>
         [
@@ -118,7 +120,7 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
 
     let isTransfer = false
     for (const [index, event] of handled.entries()) {
-        const newEvent: ProcessedEvent = {
+        const newEvent: DEPRECATED_ProcessedEvent = {
             datetime: event.created_datetime,
             userId: event.user_id,
             text: '',

@@ -5,12 +5,12 @@ import * as momentUtils from 'utils/date'
 
 import { VoiceCall, VoiceCallEvent } from '../types'
 import {
+    DEPRECATED_processEvents,
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     getFormattedDurationTranscriptionStart,
     isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
-    processEvents,
 } from '../utils'
 
 const getMomentSpy = jest.spyOn(momentUtils, 'getMoment')
@@ -75,9 +75,9 @@ describe('voice call utils', () => {
         })
     })
 
-    describe('processEvents', () => {
+    describe('DEPRECATED_processEvents', () => {
         it('should return an empty array when passed an empty array', () => {
-            const result = processEvents([])
+            const result = DEPRECATED_processEvents([])
             expect(result).toEqual([])
         })
 
@@ -135,7 +135,7 @@ describe('voice call utils', () => {
                     created_datetime: '03:07 PM',
                 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([
                 { text: 'Declined by ', userId: 2, datetime: '10:03 AM' },
                 { text: 'Missed by ', userId: 3, datetime: '10:04 AM' },
@@ -167,7 +167,7 @@ describe('voice call utils', () => {
                 { type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 3 },
                 { type: 'some other event', user_id: 4 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([
                 { text: 'Answered by ', userId: 1 },
                 { text: 'Declined by ', userId: 2 },
@@ -183,7 +183,7 @@ describe('voice call utils', () => {
                     user_id: 1,
                 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([{ text: 'Missed by ', userId: 1 }])
         })
 
@@ -255,7 +255,7 @@ describe('voice call utils', () => {
                     created_datetime: '10:10 AM',
                 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([
                 { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
                 { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },
@@ -325,7 +325,7 @@ describe('voice call utils', () => {
                     created_datetime: '10:03 AM',
                 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([
                 { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
                 { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },
@@ -365,7 +365,7 @@ describe('voice call utils', () => {
                     created_datetime: '10:05 AM',
                 },
             ] as VoiceCallEvent[]
-            const result = processEvents(events)
+            const result = DEPRECATED_processEvents(events)
             expect(result).toEqual([
                 { text: 'Missed by ', userId: 2, datetime: '10:00 AM' },
                 { text: 'Answered by ', userId: 1, datetime: '10:01 AM' },

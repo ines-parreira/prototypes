@@ -4,9 +4,9 @@ import {
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
 
 import CollapsibleDetails from './CollapsibleDetails'
-import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 import css from './TicketVoiceCallContainer.less'
 

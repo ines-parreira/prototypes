@@ -255,3 +255,16 @@ export const getPrettyVoiceCallDisplayStatusName = (
             return ''
     }
 }
+
+export enum VoiceCallSubjectType {
+    Agent = 'agent',
+    External = 'external',
+}
+
+export type VoiceCallSubject =
+    | { type: VoiceCallSubjectType.Agent; id: number }
+    | {
+          type: VoiceCallSubjectType.External
+          value: string
+          customer?: { id: number; name?: string } | null
+      }
