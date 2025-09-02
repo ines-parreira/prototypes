@@ -49,7 +49,7 @@
         color: var(--main-primary);
 
         border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
     }
 
     .modalFooter {
@@ -70,5 +70,11 @@
         padding: var(--layout-spacing-xs);
         padding-bottom: 0;
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .applyButtonContainer {
+        background: var(--elevation-neutral-mid);
     }
 }

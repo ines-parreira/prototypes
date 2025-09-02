@@ -19,11 +19,17 @@
         text-align: left;
         line-height: 16px;
         color: var(--neutral-grey-6);
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         font-weight: 400;
     }
 
     .internalNoteIcon {
         color: var(--yellow);
+    }
+}
+
+.axiom :local {
+    .badge {
+        background-color: var(--elevation-neutral-mid);
     }
 }

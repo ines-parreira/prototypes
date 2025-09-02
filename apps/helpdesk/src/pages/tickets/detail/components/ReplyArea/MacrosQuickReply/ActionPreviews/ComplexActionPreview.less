@@ -12,17 +12,31 @@
     }
 
     .shopify {
-        background-color: var(--accessory-green-1);
+        background-color: var(--accessory-green-1); // legacy
         color: var(--TEMP_shopifyBadgeColor);
     }
 
     .http {
         color: var(--neutral-grey-6);
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .bigcommerce {
-        background-color: var(--bigcommerceLightPurple);
+        background-color: var(--bigcommerceLightPurple); // legacy
         color: var(--bigcommercePurple);
+    }
+}
+
+.axiom :local {
+    .shopify {
+        background-color: var(--elevation-status-success-subtle);
+    }
+
+    .http {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .bigcommerce {
+        background-color: var(--elevation-status-info-subtle);
     }
 }

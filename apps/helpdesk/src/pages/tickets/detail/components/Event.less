@@ -69,20 +69,20 @@
         margin-left: -25px;
         margin-right: var(--layout-spacing-xs);
         border-radius: 50%;
-        background-color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         color: var(--neutral-grey-0);
 
         &.success {
-            background-color: var(--feedback-success);
+            background-color: var(--feedback-success); // legacy
         }
 
         &.danger {
-            background-color: var(--feedback-error);
+            background-color: var(--feedback-error); // legacy
         }
 
         &.warning {
-            background-color: var(--feedback-warning);
+            background-color: var(--feedback-warning); // legacy
         }
     }
 
@@ -90,7 +90,7 @@
         display: block;
         height: 20px;
         width: 20px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         mask-repeat: no-repeat;
         -webkit-mask-repeat: no-repeat;
         mask-position: center;
@@ -195,10 +195,38 @@
     }
 
     .icon.success {
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
     }
 
     .equalFiller {
         margin-left: 6px;
+    }
+}
+
+.axiom :local {
+    .icon {
+        background-color: var(--elevation-neutral-inverse);
+
+        &.success {
+            background-color: var(--elevation-status-success-default);
+        }
+
+        &.danger {
+            background-color: var(--elevation-status-error-default);
+        }
+
+        &.warning {
+            background-color: var(--elevation-status-warning-default);
+        }
+    }
+
+    .logo {
+        background-color: var(--elevation-overlay-default);
+    }
+}
+
+.axiom.ticket-thread-revamp :local {
+    .icon.success {
+        background-color: var(--elevation-accent-default);
     }
 }

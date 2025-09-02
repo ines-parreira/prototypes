@@ -52,12 +52,12 @@
                 .ratingButton {
                     display: flex;
                     flex: 1;
-                    background-color: var(--neutral-grey-0);
+                    background-color: var(--neutral-grey-0); // legacy
                     border-color: var(--neutral-grey-3);
                     color: var(--neutral-grey-5);
 
                     &:hover {
-                        background-color: var(--neutral-grey-0);
+                        background-color: var(--neutral-grey-0); // legacy
                         border-color: var(--neutral-grey-3);
                         color: var(--neutral-grey-5);
 
@@ -69,12 +69,12 @@
                 }
 
                 .buttonPressed {
-                    background-color: var(--main-primary-0);
+                    background-color: var(--main-primary-0); // legacy
                     border-color: var(--main-primary-1);
                     color: var(--neutral-grey-6);
 
                     &:hover {
-                        background-color: var(--main-primary-0);
+                        background-color: var(--main-primary-0); // legacy
                         border-color: var(--main-primary-1);
                         color: var(--neutral-grey-6);
                     }
@@ -109,18 +109,18 @@
         }
 
         &::-webkit-scrollbar-track {
-            background-color: transparent !important;
+            background-color: transparent !important; // legacy
             border-radius: 10px !important;
             display: block !important;
             visibility: visible !important;
             margin-right: 1px !important;
             &:hover {
-                background-color: transparent !important;
+                background-color: transparent !important; // legacy
             }
         }
 
         &::-webkit-scrollbar-thumb {
-            background-color: var(--neutral-grey-3) !important;
+            background-color: var(--neutral-grey-3) !important; // legacy
             border-radius: 10px !important;
             display: block !important;
             visibility: visible !important;
@@ -128,7 +128,7 @@
             border-right: 1px solid transparent !important; // Creates gap effect
             background-clip: padding-box !important; // Ensures border creates gap
             &:hover {
-                background-color: var(--neutral-grey-3) !important;
+                background-color: var(--neutral-grey-3) !important; // legacy
             }
         }
 
@@ -136,9 +136,52 @@
         @supports not selector(::-webkit-scrollbar) {
             scrollbar-width: thin !important;
             // Use a visible track color for Firefox
-            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-1) !important;
+            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-1) !important; // legacy
             // Force scrollbar gutter to always reserve space
             scrollbar-gutter: stable !important;
+        }
+    }
+}
+
+.axiom :local {
+    .ratingButtons {
+        .ratingButton {
+            background-color: var(--elevation-overlay-default);
+
+            &:hover {
+                background-color: var(--elevation-overlay-default);
+            }
+        }
+
+        .buttonPressed {
+            background-color: var(--elevation-accent-subtle);
+
+            &:hover {
+                background-color: var(--elevation-accent-subtle);
+            }
+        }
+    }
+
+    .multiLevelSelectBodyWrapper {
+        &::-webkit-scrollbar-track {
+            background-color: transparent !important;
+
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--border-neutral-subtle) !important;
+
+            &:hover {
+                background-color: var(--border-neutral-subtle) !important;
+            }
+        }
+
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-color: var(--border-neutral-subtle)
+                var(--elevation-neutral-mid) !important;
         }
     }
 }
