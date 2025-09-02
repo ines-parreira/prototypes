@@ -28,7 +28,7 @@ function VoiceFlowForm({
     return (
         <Form
             onValidSubmit={onSubmit}
-            defaultValues={defaultValues ?? getDefaultValues()}
+            defaultValues={getDefaultValues(defaultValues)}
             mode="onChange"
             resetOptions={{
                 keepDirty: false,

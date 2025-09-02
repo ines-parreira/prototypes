@@ -15,6 +15,8 @@ import {
     TimeSplitConditionalStep,
 } from '@gorgias/helpdesk-types'
 
+import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
+
 import {
     END_CALL_NODE,
     INCOMING_CALL_NODE,
@@ -810,6 +812,25 @@ describe('utils', () => {
                     voice_message_type: 'text_to_speech',
                 },
                 next_step_id: null,
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate Enqueue node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.Enqueue,
+                'testing-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Route to',
+                step_type: VoiceFlowNodeType.Enqueue,
+                callback_requests: {
+                    ...DEFAULT_CALLBACK_REQUESTS,
+                    enabled: true,
+                },
+                conditional_routing: false,
+                next_step_id: 'testing-id',
             })
             expect(nodeData?.id).toBeDefined()
         })

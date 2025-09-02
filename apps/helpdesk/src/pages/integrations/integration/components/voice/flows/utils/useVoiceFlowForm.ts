@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep'
 import omit from 'lodash/omit'
 
 import {
@@ -6,6 +7,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
+import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
 import { VoiceFlowNodeType } from '../constants'
 import { VoiceFlowFormValues } from '../types'
@@ -13,43 +15,39 @@ import { VoiceFlowFormValues } from '../types'
 export function useVoiceFlowForm(integration: PhoneIntegration) {
     const notify = useNotify()
 
-    const getDefaultValues = (): VoiceFlowFormValues => {
-        // todo get actual formData
+    const getDefaultValues = (
+        values?: VoiceFlowFormValues,
+    ): VoiceFlowFormValues => {
+        if (!values) {
+            return {
+                business_hours_id: integration.business_hours_id,
+                first_step_id: '',
+                steps: {},
+            }
+        }
+        const stepsWithDefaults = Object.fromEntries(
+            Object.entries(values.steps).map(([stepId, step]) => {
+                switch (step.step_type) {
+                    case VoiceFlowNodeType.Enqueue:
+                        return [
+                            stepId,
+                            {
+                                callback_requests: {
+                                    ...cloneDeep(DEFAULT_CALLBACK_REQUESTS),
+                                    ...step.callback_requests,
+                                },
+                                conditional_routing: false,
+                                ...step,
+                            },
+                        ]
+                    default:
+                        return [stepId, step]
+                }
+            }),
+        )
         return {
-            business_hours_id: integration.business_hours_id ?? null,
-            first_step_id: 'time-rule',
-            steps: {
-                'play-message': {
-                    id: 'play-message',
-                    step_type: VoiceFlowNodeType.PlayMessage,
-                    name: 'Play Message',
-                    message: {
-                        voice_message_type: 'text_to_speech',
-                        text_to_speech_content:
-                            'Hello, this is a test message.',
-                    },
-                    next_step_id: null,
-                },
-                'time-rule': {
-                    id: 'time-rule',
-                    step_type: VoiceFlowNodeType.TimeSplitConditional,
-                    name: 'Time Rule',
-                    rule_type: 'business_hours',
-                    on_true_step_id: 'play-message',
-                    on_false_step_id: 'send-to-voicemail',
-                },
-                'send-to-voicemail': {
-                    id: 'send-to-voicemail',
-                    step_type: VoiceFlowNodeType.SendToVoicemail,
-                    name: 'Send to Voicemail',
-                    voicemail: {
-                        voice_message_type: 'text_to_speech',
-                        text_to_speech_content:
-                            'Please leave a message after the beep.',
-                    },
-                    allow_to_leave_voicemail: true,
-                },
-            },
+            ...values,
+            steps: stepsWithDefaults,
         }
     }
 

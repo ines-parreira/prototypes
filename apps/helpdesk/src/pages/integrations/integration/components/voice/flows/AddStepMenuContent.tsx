@@ -30,6 +30,16 @@ function AddStepMenuContent({
                 label={'Play message'}
                 onClick={() => addNode(VoiceFlowNodeType.PlayMessage)}
             />
+            <AddStepMenuItem
+                icon={
+                    <StepCardIcon
+                        backgroundColor="orange"
+                        name="arrow-routing"
+                    />
+                }
+                label={'Route to'}
+                onClick={() => addNode(VoiceFlowNodeType.Enqueue)}
+            />
             {canAddFinalNode && (
                 <>
                     <AddStepMenuItem

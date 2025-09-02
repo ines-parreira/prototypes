@@ -15,6 +15,7 @@ import { createFlowGraph } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
+import { EnqueueNode } from './nodes/EnqueueNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { IntermediaryNode } from './nodes/IntermediaryNode'
 import { IvrMenuNode } from './nodes/IvrMenuNode'
@@ -39,6 +40,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.TimeSplitOption]: TimeSplitOptionNode,
     [VoiceFlowNodeType.SendToSMS]: SendToSMSNode,
     [VoiceFlowNodeType.Intermediary]: IntermediaryNode,
+    [VoiceFlowNodeType.Enqueue]: EnqueueNode,
 }
 
 const edgeTypes = {

@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import {
     CallRoutingFlow,
     CallRoutingFlowSteps,
+    EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
     SendToSMSStep,
@@ -17,6 +18,7 @@ import {
     findConvergencePoints,
     insertConvergenceNodes,
 } from 'core/ui/flows/utils'
+import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
 import {
     END_CALL_NODE,
@@ -385,6 +387,18 @@ export const generateNodeData = (
                 },
                 next_step_id: null,
             } as SendToSMSStep
+        case VoiceFlowNodeType.Enqueue:
+            return {
+                id: uuidv4(),
+                name: 'Route to',
+                step_type: VoiceFlowNodeType.Enqueue,
+                callback_requests: {
+                    ...cloneDeep(DEFAULT_CALLBACK_REQUESTS),
+                    enabled: true,
+                },
+                conditional_routing: false,
+                next_step_id,
+            } as EnqueueStep
 
         default:
             return null

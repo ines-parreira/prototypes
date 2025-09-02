@@ -26,12 +26,14 @@ type VoiceQueueSelectProps = {
     name?: string
     value?: number
     onChange: (queueId: number) => void
+    withLabel?: boolean
 }
 
 export default function VoiceQueueSelectField({
     value,
     onChange,
     name,
+    withLabel = true,
 }: VoiceQueueSelectProps) {
     const id = useId()
     const fieldsetName = name || 'radio-field-' + id
@@ -120,15 +122,18 @@ export default function VoiceQueueSelectField({
 
     return (
         <fieldset name={fieldsetName} className={css.container}>
-            <div className={css.labelWithTooltip}>
-                <Label>Queue name</Label>
-                <IconTooltip>
-                    When you assign a queue to this line, its settings—including
-                    assigned agents/teams, distribution mode, wait time, queue
-                    limit, and wait music—will be applied automatically. View or
-                    adjust settings in Queues.
-                </IconTooltip>
-            </div>
+            {withLabel && (
+                <div className={css.labelWithTooltip}>
+                    <Label>Queue name</Label>
+                    <IconTooltip>
+                        When you assign a queue to this line, its
+                        settings—including assigned agents/teams, distribution
+                        mode, wait time, queue limit, and wait music—will be
+                        applied automatically. View or adjust settings in
+                        Queues.
+                    </IconTooltip>
+                </div>
+            )}
             <SelectInputBox
                 label={selectedQueueName}
                 onToggle={setIsDropdownOpen}

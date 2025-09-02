@@ -1,0 +1,40 @@
+:local {
+    .stepsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .stepWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+
+        &:not(:last-child) {
+            .stepContent {
+                border-left: 1px solid var(--black);
+            }
+        }
+    }
+
+    .stepIndicator {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+
+        .stepDescription {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .stepContent {
+        padding-left: var(--layout-spacing-s);
+        padding-bottom: var(--layout-spacing-xs);
+        margin-left: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .stepContent {
+        border-left: 1px solid var(--content-inverted-default);
+    }
+}

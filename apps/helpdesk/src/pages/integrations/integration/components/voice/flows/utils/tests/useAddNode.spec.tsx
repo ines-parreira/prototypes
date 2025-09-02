@@ -252,6 +252,30 @@ describe('useAddNode', () => {
             )
         })
 
+        it('should add an Enqueue node', () => {
+            const { result } = renderHook(
+                () => useAddNode('source-node', 'end_call'),
+                { wrapper: Wrapper },
+            )
+
+            result.current.addNode(VoiceFlowNodeType.Enqueue)
+
+            expect(mockSetNodes).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: 'new-node-id',
+                        type: VoiceFlowNodeType.Enqueue,
+                        data: expect.objectContaining({
+                            id: 'new-node-id',
+                            name: 'Route to',
+                            step_type: VoiceFlowNodeType.Enqueue,
+                            next_step_id: 'end_call',
+                        }),
+                    }),
+                ]),
+            )
+        })
+
         it('should not add node if source or target is undefined', () => {
             mockGetNode.mockImplementation(() => undefined)
 

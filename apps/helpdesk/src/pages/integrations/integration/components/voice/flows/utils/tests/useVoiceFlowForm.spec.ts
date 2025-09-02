@@ -9,9 +9,11 @@ import {
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
+import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { VoiceFlowNodeType } from '../../constants'
+import { VoiceFlowFormValues } from '../../types'
 import { useVoiceFlowForm } from '../useVoiceFlowForm'
 
 jest.mock('hooks/useNotify', () => ({
@@ -35,41 +37,6 @@ describe('useVoiceFlowForm', () => {
     const mockNotifySuccess = jest.fn()
     const mockNotifyError = jest.fn()
 
-    const expectedDefaultValues: CallRoutingFlow = {
-        first_step_id: 'time-rule',
-        steps: {
-            'play-message': {
-                id: 'play-message',
-                step_type: VoiceFlowNodeType.PlayMessage,
-                name: 'Play Message',
-                message: {
-                    voice_message_type: 'text_to_speech',
-                    text_to_speech_content: 'Hello, this is a test message.',
-                },
-                next_step_id: null,
-            },
-            'time-rule': {
-                id: 'time-rule',
-                step_type: VoiceFlowNodeType.TimeSplitConditional,
-                name: 'Time Rule',
-                rule_type: 'business_hours',
-                on_true_step_id: 'play-message',
-                on_false_step_id: 'send-to-voicemail',
-            },
-            'send-to-voicemail': {
-                id: 'send-to-voicemail',
-                step_type: VoiceFlowNodeType.SendToVoicemail,
-                name: 'Send to Voicemail',
-                voicemail: {
-                    voice_message_type: 'text_to_speech',
-                    text_to_speech_content:
-                        'Please leave a message after the beep.',
-                },
-                allow_to_leave_voicemail: true,
-            },
-        },
-    }
-
     beforeEach(() => {
         mockUseNotify.mockReturnValue({
             success: mockNotifySuccess,
@@ -82,16 +49,65 @@ describe('useVoiceFlowForm', () => {
         server.resetHandlers()
     })
 
-    it('getDefaultValues should return default CallRoutingFlow values', () => {
-        const { result } = renderHookWithQueryClientProvider(() =>
-            useVoiceFlowForm(mockIntegration),
-        )
+    describe('getDefaultValues', () => {
+        it('getDefaultValues should return empty CallRoutingFlow values', () => {
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useVoiceFlowForm(mockIntegration),
+            )
 
-        const defaultValues = result.current.getDefaultValues()
+            const defaultValues = result.current.getDefaultValues()
 
-        expect(defaultValues).toEqual(
-            expect.objectContaining(expectedDefaultValues),
-        )
+            expect(defaultValues).toEqual({
+                business_hours_id: mockIntegration.business_hours_id,
+                first_step_id: '',
+                steps: {},
+            })
+        })
+
+        it('getDefaultValues should add defaults for enqueue step', () => {
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useVoiceFlowForm(mockIntegration),
+            )
+
+            const values = {
+                business_hours_id: 2,
+                first_step_id: 'step-1',
+                steps: {
+                    'step-1': {
+                        id: 'step-1',
+                        step_type: VoiceFlowNodeType.PlayMessage,
+                        name: 'Step 1',
+                        message: {
+                            voice_message_type: 'text_to_speech',
+                            text_to_speech_content: 'Hello, this is step 1',
+                        },
+                        next_step_id: 'step-2',
+                    },
+                    'step-2': {
+                        id: 'step-2',
+                        step_type: VoiceFlowNodeType.Enqueue,
+                        name: 'Step 2',
+                        queue_id: 123,
+                        next_step_id: null,
+                    },
+                },
+            } as VoiceFlowFormValues
+            const defaultValues = result.current.getDefaultValues(values)
+
+            expect(defaultValues).toEqual({
+                ...values,
+                steps: {
+                    ...values.steps,
+                    'step-2': {
+                        ...values.steps['step-2'],
+                        callback_requests: {
+                            ...DEFAULT_CALLBACK_REQUESTS,
+                        },
+                        conditional_routing: false,
+                    },
+                },
+            })
+        })
     })
 
     describe('onSubmit', () => {

@@ -76,6 +76,19 @@ describe('<VoiceQueueSelectField />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should not display label', () => {
+        const { queryByText } = render(
+            <VoiceQueueSelectField
+                value={2}
+                onChange={handleChange}
+                withLabel={false}
+            />,
+        )
+
+        expect(queryByText('Queue name')).toBeNull()
+        expect(queryByText('Queue 2')).toBeInTheDocument()
+    })
+
     it('Queues link should redirect to Edit queue page when a queue is selected', () => {
         renderComponent(2)
 

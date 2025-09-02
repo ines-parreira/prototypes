@@ -83,6 +83,7 @@ describe('AddStepMenuContent', () => {
 
             expect(screen.getByText('Time rule')).toBeInTheDocument()
             expect(screen.getByText('Play message')).toBeInTheDocument()
+            expect(screen.getByText('Route to')).toBeInTheDocument()
             expect(screen.queryByText('Send to SMS')).toBeNull()
             expect(screen.queryByText('Send to voicemail')).toBeNull()
         })
@@ -92,6 +93,7 @@ describe('AddStepMenuContent', () => {
 
             expect(screen.getByText('Time rule')).toBeInTheDocument()
             expect(screen.getByText('Play message')).toBeInTheDocument()
+            expect(screen.getByText('Route to')).toBeInTheDocument()
             expect(screen.getByText('Send to SMS')).toBeInTheDocument()
             expect(screen.getByText('Send to voicemail')).toBeInTheDocument()
         })

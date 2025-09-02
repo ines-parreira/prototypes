@@ -1,4 +1,5 @@
 import { merge } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 
 import {
     HttpResponse,
@@ -125,7 +126,7 @@ export const getDefaultValues = (
                 },
             },
             greeting_message: DEFAULT_GREETING_MESSAGE,
-            callback_requests: DEFAULT_CALLBACK_REQUESTS,
+            callback_requests: cloneDeep(DEFAULT_CALLBACK_REQUESTS),
         },
     }
 
