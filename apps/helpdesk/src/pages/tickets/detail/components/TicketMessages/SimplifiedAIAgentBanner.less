@@ -2,26 +2,22 @@
 
 :local {
     .container {
-        margin: var(--layout-spacing-xs) 0;
-        padding: 16px;
+        width: 100%;
+        min-width: 380px;
+        padding-block: var(--layout-spacing-s);
+        padding-inline: var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-xs);
+        border-radius: 8px;
+        border: 1px solid transparent;
         display: flex;
-        gap: var(--layout-spacing-s);
-        border: 1px solid var(--accessory-magenta-3);
-        border-radius: var(--layout-spacing-xxs);
-        background-color: var(--neutral-grey-0); // legacy
-
-        .icon {
-            font-size: 20px !important;
-            color: var(--accessory-magenta-3);
-            align-self: flex-start;
-        }
+        gap: var(--layout-spacing-m);
+        background:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
+                padding-box,
+            linear-gradient(90deg, #f58d86, #a084e1) border-box;
 
         &.hasError {
             border: 1px solid var(--feedback-error);
-
-            .icon {
-                color: var(--feedback-error);
-            }
         }
     }
     .activeButton {
@@ -33,16 +29,13 @@
         overflow: auto;
         gap: var(--layout-spacing-m);
         justify-content: space-between;
+        align-items: center;
 
         :global {
             .message-content {
                 background: var(--neutral-grey-0) !important; // legacy
             }
         }
-    }
-
-    .boldMessage {
-        .body-semibold();
     }
 
     .executionId {

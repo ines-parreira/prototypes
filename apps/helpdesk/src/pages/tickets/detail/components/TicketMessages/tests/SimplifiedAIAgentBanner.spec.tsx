@@ -178,7 +178,6 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         const message = screen.getByText('summary')
 
         expect(message).toBeInTheDocument()
-        expect(message.parentElement?.parentElement).toHaveClass('boldMessage')
     })
 
     it('should fall back to body_html if no summary was provided', () => {

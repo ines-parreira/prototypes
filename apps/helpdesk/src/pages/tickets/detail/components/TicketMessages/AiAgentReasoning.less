@@ -34,7 +34,7 @@
         padding-block: var(--layout-spacing-s);
         padding-inline: var(--layout-spacing-xs);
         margin-top: var(--layout-spacing-s);
-        border-radius: 12px;
+        border-radius: 8px;
         border: 1px solid transparent;
         display: flex;
         gap: 0px;
@@ -42,13 +42,7 @@
         background:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
                 padding-box,
-            linear-gradient(
-                    90deg,
-                    var(--neutral-grey-3),
-                    var(--accessory-magenta-2),
-                    var(--main-primary-1)
-                )
-                border-box; // legacy
+            linear-gradient(90deg, #f58d86, #a084e1) border-box; // legacy
 
         // Smooth height transitions
         transition: all 0.5s ease-in-out;
@@ -155,25 +149,14 @@
         }
 
         .text {
-            background: linear-gradient(
-                90deg,
-                var(--accessory-magenta-3) 0%,
-                var(--main-primary-2) 50%
-            );
+            background: linear-gradient(90deg, #f58d86, #a084e1);
             .caption-regular();
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
 
             &.loading {
-                background: linear-gradient(
-                    90deg,
-                    transparent 0%,
-                    var(--accessory-magenta-3) 20%,
-                    var(--main-primary-2) 50%,
-                    var(--accessory-magenta-3) 80%,
-                    transparent 100%
-                );
+                background: linear-gradient(90deg, #f58d86, #a084e1);
                 background-size: 200% 100%;
                 background-clip: text;
                 -webkit-background-clip: text;
@@ -326,13 +309,7 @@
                     var(--elevation-neutral-default)
                 )
                 padding-box,
-            linear-gradient(
-                    90deg,
-                    var(--neutral-grey-3),
-                    var(--accessory-magenta-2),
-                    var(--main-primary-1)
-                )
-                border-box;
+            linear-gradient(90deg, #f58d86, #a084e1) border-box;
     }
 
     .footer {

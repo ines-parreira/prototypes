@@ -111,16 +111,9 @@ const SimplifiedAIAgentBanner = ({
                 [css.hasError]: messageSummaryHasError,
             })}
         >
-            <i className={classNames('material-icons', css.icon)}>
-                {messageSummaryHasError ? 'error' : 'auto_awesome'}
-            </i>
             <div className={css.content}>
                 {!isTrialMessage && (
-                    <div
-                        className={classNames({
-                            [css.boldMessage]: isMessagePublic,
-                        })}
-                    >
+                    <div>
                         {failedWorkflowData ? (
                             <FailedWorkflowMessage
                                 workflowData={failedWorkflowData}
