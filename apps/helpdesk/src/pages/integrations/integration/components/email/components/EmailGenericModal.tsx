@@ -22,7 +22,7 @@ export default function EmailGenericModal({
     children,
 }: Props) {
     return (
-        <Modal isOpen={showModal} onClose={onCloseCleanup}>
+        <Modal isOpen={showModal} onClose={onCloseCleanup} isClosable={false}>
             <ModalHeader
                 title={
                     <div className={css.title}>
@@ -30,6 +30,7 @@ export default function EmailGenericModal({
                     </div>
                 }
             />
+
             <ModalBody className={css.body}>{description}</ModalBody>
             <ModalActionsFooter>{children}</ModalActionsFooter>
         </Modal>
