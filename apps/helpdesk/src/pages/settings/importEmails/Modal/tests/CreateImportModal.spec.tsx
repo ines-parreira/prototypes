@@ -293,7 +293,7 @@ describe('CreateImportModal', () => {
             })
 
             // Check that no email is pre-selected by looking for the combobox
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             expect(emailLabel).toBeInTheDocument()
 
             // The select should be present but without any selected email text
@@ -319,7 +319,7 @@ describe('CreateImportModal', () => {
                 expect(screen.getByRole('dialog')).toBeInTheDocument()
             })
 
-            const emailLabel = screen.getByText('Email address')
+            const emailLabel = screen.getByText('Email')
             expect(emailLabel).toBeInTheDocument()
         })
 
