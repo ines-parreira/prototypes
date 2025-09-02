@@ -1,4 +1,5 @@
 import { useWidthBasedOnScreen } from '@repo/hooks'
+import { TrendIcon } from '@repo/reporting'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -13,7 +14,6 @@ import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
 } from 'domains/reporting/pages/common/components/TrendBadge'
-import { TrendIcon } from 'domains/reporting/pages/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricTrend,
@@ -165,7 +165,7 @@ export const TopUsedTagsChart = ({
                                         justifyContent="center"
                                         width={65}
                                     >
-                                        <TrendIcon sign={sign} />
+                                        <TrendIcon value={sign} />
                                         {formattedTrend || DEFAULT_BADGE_TEXT}
                                     </BodyCell>
                                 </TableBodyRow>

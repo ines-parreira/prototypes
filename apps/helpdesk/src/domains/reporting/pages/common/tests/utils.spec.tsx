@@ -367,6 +367,7 @@ describe('stats components utils', () => {
         it('should return null when current value is non-zero and prev value is zero and the format is percent', () => {
             expect(formatMetricTrend(2.3, 0, 'percent')).toMatchObject({
                 formattedTrend: null,
+                sign: 0,
             })
         })
 

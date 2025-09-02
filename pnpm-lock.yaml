@@ -401,6 +401,9 @@ importers:
       '@repo/navigation':
         specifier: workspace:*
         version: link:../../core/navigation
+      '@repo/reporting':
+        specifier: workspace:*
+        version: link:../../domains/reporting
       '@repo/tickets':
         specifier: workspace:*
         version: link:../../domains/tickets
@@ -1562,6 +1565,9 @@ importers:
       '@repo/navigation':
         specifier: workspace:*
         version: link:../../core/navigation
+      '@repo/reporting':
+        specifier: workspace:*
+        version: link:../reporting
       '@repo/testing':
         specifier: workspace:*
         version: link:../../utils/testing

@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import { useWidthBasedOnScreen } from '@repo/hooks'
+import { TrendIcon } from '@repo/reporting'
 
 import { useTicketsPerProductDistribution } from 'domains/reporting/hooks/voice-of-customer/useTicketsDistributionPerProduct'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
@@ -8,7 +9,6 @@ import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
 } from 'domains/reporting/pages/common/components/TrendBadge'
-import { TrendIcon } from 'domains/reporting/pages/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import {
@@ -159,7 +159,7 @@ export const TicketVolumeTable = () => {
                                 </DrillDownModalTrigger>
                             </BodyCell>
                             <BodyCell justifyContent="center" width={75}>
-                                <TrendIcon sign={sign} />
+                                <TrendIcon value={sign} />
                                 {formattedTrend || DEFAULT_BADGE_TEXT}
                             </BodyCell>
                         </TableBodyRow>

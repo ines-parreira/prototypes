@@ -1,11 +1,11 @@
 import { useId } from '@repo/hooks'
+import { TrendIcon } from '@repo/reporting'
 import classnames from 'classnames'
 
 import { Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { getTrendColorFromSign } from 'domains/reporting/pages/common/components/TrendBadge/helper'
 import css from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge.less'
-import { TrendIcon } from 'domains/reporting/pages/common/components/TrendIcon'
 import {
     formatMetricTrend,
     formatMetricValue,
@@ -73,7 +73,7 @@ export default function TrendBadge({
                 )}
                 id={badgeId}
             >
-                <TrendIcon sign={sign} />
+                <TrendIcon value={sign} />
                 {`${formattedTrend ?? DEFAULT_BADGE_TEXT}`}
             </div>
             {tooltipData && formattedTrend && (

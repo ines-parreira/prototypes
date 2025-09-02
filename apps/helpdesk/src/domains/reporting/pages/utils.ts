@@ -142,15 +142,6 @@ export const getBadgeTooltipForPreviousPeriod = (
     )
 }
 
-export const getIconNameBySign = (sign: number) => {
-    if (sign > 0) {
-        return 'arrow_upward'
-    } else if (sign < 0) {
-        return 'arrow_downward'
-    }
-    return null
-}
-
 export const highlightString = (text: string, highlight: string) => {
     if (!highlight) {
         return text

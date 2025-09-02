@@ -1,5 +1,6 @@
 import { CSSProperties, useState } from 'react'
 
+import { TrendIcon } from '@repo/reporting'
 import classNames from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -10,7 +11,6 @@ import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
 } from 'domains/reporting/pages/common/components/TrendBadge'
-import { TrendIcon } from 'domains/reporting/pages/common/components/TrendIcon'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatMetricTrend } from 'domains/reporting/pages/common/utils'
 import { ProductRows } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/ProductRows'
@@ -159,7 +159,7 @@ const IntentCell = ({
                     hasChildren={false}
                     innerStyle={contentCellInnerStyle}
                 >
-                    <TrendIcon sign={sign} />
+                    <TrendIcon value={sign} />
                     {formattedTrend || DEFAULT_BADGE_TEXT}
                 </TableWithNestedRowsCell>
             )

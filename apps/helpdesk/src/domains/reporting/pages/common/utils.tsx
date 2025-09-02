@@ -330,7 +330,7 @@ export const formatMetricTrend = (
     value: number,
     prevValue: number,
     format: MetricTrendFormat,
-) => {
+): { formattedTrend: string | null; sign: number } => {
     const diff = value - prevValue
     const absDiff = Math.abs(diff)
     let formattedDiff: string | null
@@ -350,6 +350,7 @@ export const formatMetricTrend = (
     if (formattedDiff === null || parseFloat(formattedDiff) === 0) {
         return {
             formattedTrend: formattedDiff,
+            sign: 0,
         }
     }
 
