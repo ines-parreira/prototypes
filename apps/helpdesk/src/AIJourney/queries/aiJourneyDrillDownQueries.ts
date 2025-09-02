@@ -1,4 +1,11 @@
-import { aiJourneyTotalNumberOfOrderQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
+import {
+    aiJourneyRepliedMessagesQueryFactory,
+    aiJourneyTotalNumberOfOrderQueryFactory,
+} from 'AIJourney/utils/analytics-factories/factories'
+import {
+    AiSalesAgentConversationsCube,
+    AiSalesAgentConversationsDimension,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
@@ -33,6 +40,31 @@ export const aiJourneyOrdersDrillDownQueryFactory = (
     ...(sorting
         ? {
               order: [[AiSalesAgentOrdersDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyResponseRateDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyRepliedMessagesQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyId,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
           }
         : {
               order: [],

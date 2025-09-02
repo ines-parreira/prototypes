@@ -143,14 +143,15 @@ export const Performance = () => {
     }
 
     const { metrics } = useAIJourneyKpis(
-        integrationId?.toString(),
+        integrationId.toString(),
         namespacedShopName,
     )
 
-    const { metrics: journeyMetrics, period } = useAbandonedCartKpis(
-        integrationId?.toString(),
-        abandonedCartJourney?.id,
-    )
+    const { metrics: journeyMetrics, period } = useAbandonedCartKpis({
+        integrationId: integrationId.toString(),
+        journeyId: abandonedCartJourney?.id,
+        shopName,
+    })
 
     const metricsContent = useMemo(() => {
         const [gmvInfluenced] = metrics

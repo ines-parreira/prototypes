@@ -6,6 +6,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    AIJourneyMetric,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
@@ -91,12 +95,15 @@ describe('<DrillDownTable />', () => {
     const pagesCount = 2
     const useDataHookMock = jest.fn()
 
-    getDrillDownMetricColumnMock.mockReturnValue({
-        showMetric: false,
-        metricTitle: '',
-        metricValueFormat: 'decimal',
+    beforeEach(() => {
+        jest.clearAllMocks()
+        getDrillDownMetricColumnMock.mockReturnValue({
+            showMetric: false,
+            metricTitle: '',
+            metricValueFormat: 'decimal',
+        })
+        numberedPaginationMock.mockImplementation(() => <div />)
     })
-    numberedPaginationMock.mockImplementation(() => <div />)
 
     const renderTable = (
         metricData: DrillDownMetric,
@@ -687,6 +694,202 @@ describe('<DrillDownTable />', () => {
                 },
                 {},
             )
+        })
+    })
+
+    describe('with AIJourneyMetric.TotalOrders', () => {
+        const metricData: DrillDownMetric = {
+            ...AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders],
+            integrationId: '1',
+            metricName: AIJourneyMetric.TotalOrders,
+        }
+
+        const renderTableForTotalOrders = (metricData: DrillDownMetric) => {
+            return renderTable(metricData, TicketDrillDownTableContent)
+        }
+
+        it('should render expected columns for TotalOrders metric', () => {
+            const exampleRow = {
+                ticket: {
+                    id: '222846848',
+                    subject:
+                        'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                    description:
+                        "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
+                    channel: 'sms',
+                    isRead: false,
+                    created: '2025-08-30T21:30:01.011352',
+                    contactReason: null,
+                    status: 'closed',
+                },
+                metricValue: '6146766766294',
+                assignee: { id: 518103189, name: 'AI Agent Bot' },
+                rowData: {
+                    'AiSalesAgentOrders.customerId': '6889049587926',
+                    'AiSalesAgentOrders.orderId': '6146766766294',
+                    'AiSalesAgentOrders.ticketId': '222846848',
+                    'AiSalesAgentOrders.totalAmount': '1892.59',
+                    'AiSalesAgentOrders.gmvUsd': '1892.59',
+                    'Ticket.subject':
+                        'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                    'Ticket.status': 'closed',
+                    'Ticket.excerpt':
+                        "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
+                    'Ticket.channel': 'sms',
+                    'Ticket.assignee_user_id': 518103189,
+                    'Ticket.created_datetime': '2025-08-30T21:30:01.011352',
+                    'Ticket.contact_reason': null,
+                    'Ticket.is_unread': true,
+                    'Ticket.custom_fields': {
+                        '52697': 'Snooze::With message',
+                        '61361': false,
+                        '61362': true,
+                    },
+                    'Ticket.customer_name': 'Kahlil Adams',
+                    'CustomerIntegrationDataByExternalId.id': 'Kahlil Adams',
+                },
+                slas: {},
+                outcome: 'Automated::Snooze::With message',
+                order: { id: '6146766766294', customer: 'Kahlil Adams' },
+                product: { titles: [], variants: [] },
+            }
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForTotalOrders(metricData)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('6146766766294')).toBeInTheDocument()
+            expect(screen.getByText('1892.59')).toBeInTheDocument()
+            expect(screen.getByText('Kahlil Adams')).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
+        })
+
+        it('should render expected columns for TotalOrders metric with missing data', () => {
+            const exampleRow = {
+                ticket: {
+                    id: '222846848',
+                    subject:
+                        'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                    description:
+                        "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
+                    channel: 'sms',
+                    isRead: false,
+                    created: '2025-08-30T21:30:01.011352',
+                    contactReason: null,
+                    status: 'closed',
+                },
+                metricValue: '6146766766294',
+                assignee: { id: 518103189, name: 'AI Agent Bot' },
+                rowData: {},
+                slas: {},
+                outcome: 'Automated::Snooze::With message',
+                product: { titles: [], variants: [] },
+            }
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForTotalOrders(metricData)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
+        })
+    })
+
+    describe('with AIJourneyMetric.ResponseRate', () => {
+        const metricData: DrillDownMetric = {
+            ...AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate],
+            integrationId: '1',
+            metricName: AIJourneyMetric.ResponseRate,
+        }
+
+        const exampleRow = {
+            ticket: {
+                id: '223105547',
+                subject:
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                description:
+                    'Great to hear you completed your purchase! If you have any questions or need help in the future, just reach out. Enjoy your new gear!',
+                channel: 'sms',
+                isRead: false,
+                created: '2025-09-01T18:03:01.138718',
+                contactReason: null,
+                status: 'closed',
+            },
+            assignee: { id: 518103189, name: 'AI Agent Bot' },
+            rowData: {
+                'AiSalesAgentConversations.ticketId': '223105547',
+                'Ticket.subject':
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                'Ticket.status': 'closed',
+                'Ticket.excerpt':
+                    'Great to hear you completed your purchase! If you have any questions or need help in the future, just reach out. Enjoy your new gear!',
+                'Ticket.channel': 'sms',
+                'Ticket.assignee_user_id': 518103189,
+                'Ticket.created_datetime': '2025-09-01T18:03:01.138718',
+                'Ticket.contact_reason': null,
+                'Ticket.is_unread': true,
+                'Ticket.custom_fields': {
+                    '52697': 'Close::With message',
+                    '52698': 'Other::No reply::Other',
+                    '61361': false,
+                    '61362': false,
+                },
+                'Ticket.customer_name': 'Emmanuel Gomez',
+            },
+            slas: {},
+            outcome: 'Automated::Close::With message',
+            intent: 'Other::No reply::Other',
+            order: {},
+            product: { titles: [], variants: [] },
+        }
+
+        const renderTableForResponseRate = (metricData: DrillDownMetric) => {
+            return renderTable(metricData, TicketDrillDownTableContent)
+        }
+
+        it('should render expected columns for ResponseRate metric', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForResponseRate(metricData)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
+            expect(screen.getByText('Emmanuel Gomez')).toBeInTheDocument()
         })
     })
 })

@@ -9,6 +9,7 @@ import {
     extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
+import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
@@ -156,8 +157,12 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName === AiSalesAgentChart.AiSalesAgentSuccessRate
     const isAiSalesAgentTotalNumberOfOrdersMetric =
         metricData.metricName ===
-            AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders ||
+        AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
+    const isAiJourneyTotalOrdersMetric =
         metricData.metricName === AIJourneyMetric.TotalOrders
+
+    const isAiJourneyResponseRateMetric =
+        metricData.metricName === AIJourneyMetric.ResponseRate
 
     const isAiSalesAgentDiscountOfferedMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered
@@ -223,7 +228,8 @@ export const TicketDrillDownTableContent = ({
                     width={columnWidths.ticket}
                     className={css.headerCell}
                 />
-                {isAiSalesAgentTotalNumberOfOrdersMetric && (
+                {(isAiSalesAgentTotalNumberOfOrdersMetric ||
+                    isAiJourneyTotalOrdersMetric) && (
                     <>
                         <HeaderCellProperty
                             title="Order"
@@ -241,6 +247,13 @@ export const TicketDrillDownTableContent = ({
                             className={css.headerCell}
                         />
                     </>
+                )}
+                {isAiJourneyResponseRateMetric && (
+                    <HeaderCellProperty
+                        title="Customer"
+                        width={columnWidths.order}
+                        className={css.headerCell}
+                    />
                 )}
                 {isAiSalesAgentTotalProductRecommendationsMetric && (
                     <>
@@ -293,7 +306,9 @@ export const TicketDrillDownTableContent = ({
                         }
                     />
                 )}
-                {!isAiSalesAgentTotalNumberOfOrdersMetric && (
+                {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
+                    isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyResponseRateMetric) && (
                     <HeaderCellProperty
                         title="Assignee"
                         width={columnWidths.assignee}
@@ -399,7 +414,9 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric ||
                     isAiSalesAgentTotalProductRecommendationsMetric ||
-                    isAiSalesAgentTotalNumberOfOrdersMetric
+                    isAiSalesAgentTotalNumberOfOrdersMetric ||
+                    isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyResponseRateMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"
@@ -453,6 +470,28 @@ export const TicketDrillDownTableContent = ({
                                         {item.order?.customer}
                                     </BodyCell>
                                 </>
+                            )}
+                            {isAiJourneyTotalOrdersMetric && (
+                                <>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item.order?.id}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item?.rowData?.[
+                                            AiSalesAgentOrdersMeasure.GmvUsd
+                                        ] ?? NOT_AVAILABLE_PLACEHOLDER}
+                                    </BodyCell>
+                                    <BodyCell width={columnWidths.order}>
+                                        {item.order?.customer}
+                                    </BodyCell>
+                                </>
+                            )}
+                            {isAiJourneyResponseRateMetric && (
+                                <BodyCell width={columnWidths.order}>
+                                    {item?.rowData?.[
+                                        EnrichmentFields.CustomerName
+                                    ] ?? NOT_AVAILABLE_PLACEHOLDER}
+                                </BodyCell>
                             )}
                             {isAiSalesAgentTotalProductRecommendationsMetric && (
                                 <BodyCell width={columnWidths.product}>
@@ -528,7 +567,8 @@ export const TicketDrillDownTableContent = ({
                                     }
                                 </BodyCell>
                             )}
-                            {!isAiSalesAgentTotalNumberOfOrdersMetric && (
+                            {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
+                                isAiJourneyResponseRateMetric) && (
                                 <BodyCell width={columnWidths.assignee}>
                                     {item.assignee && (
                                         <AgentAvatar
@@ -619,7 +659,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiInsightsCsatMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric ||
-                                isAiSalesAgentTotalProductRecommendationsMetric
+                                isAiSalesAgentTotalProductRecommendationsMetric ||
+                                isAiJourneyResponseRateMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (

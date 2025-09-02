@@ -13,15 +13,26 @@ import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/hel
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
 import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
+export const getEnrichmentFields = (metricName: string) => {
+    switch (metricName) {
+        case AIJourneyMetric.TotalOrders:
+            return [
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+                EnrichmentFields.CustomerIntegrationDataByExternalId,
+            ]
+        case AIJourneyMetric.ResponseRate:
+            return [...defaultEnrichmentFields, EnrichmentFields.CustomerName]
+        default:
+            return [...defaultEnrichmentFields]
+    }
+}
+
 const useAIJourneyDrillDownHook = (metricData: DrillDownMetric) => {
     return useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
-        [
-            ...defaultEnrichmentFields,
-            EnrichmentFields.CustomerName,
-            EnrichmentFields.CustomerIntegrationDataByExternalId,
-        ],
+        getEnrichmentFields(metricData.metricName),
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )
@@ -36,5 +47,7 @@ export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
     metricsConfig: {
         [AIJourneyMetric.TotalOrders]:
             AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders],
+        [AIJourneyMetric.ResponseRate]:
+            AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate],
     },
 }

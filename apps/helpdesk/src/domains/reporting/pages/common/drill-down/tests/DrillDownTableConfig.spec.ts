@@ -81,6 +81,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceOfCustomerMetricWithDrillDown.IntentPerProducts,
     ProductsPerTicketColumn.TicketVolume,
     AIJourneyMetric.TotalOrders,
+    AIJourneyMetric.ResponseRate,
 ]
 
 describe('MetricsConfig', () => {

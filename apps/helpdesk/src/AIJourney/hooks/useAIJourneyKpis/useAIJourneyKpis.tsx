@@ -102,6 +102,7 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
+        shopName,
     )
 
     return {

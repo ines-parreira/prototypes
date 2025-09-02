@@ -105,6 +105,7 @@ describe('useAIJourneyResponseRate', () => {
                 userTimezone,
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -128,6 +129,12 @@ describe('useAIJourneyResponseRate', () => {
                     value: 50,
                 },
             ],
+            drilldown: {
+                integrationId: '123',
+                metricName: 'aiJourneyResponseRate',
+                shopName: 'shopName',
+                title: 'Response Rate',
+            },
         })
     })
 
@@ -147,6 +154,7 @@ describe('useAIJourneyResponseRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -159,6 +167,12 @@ describe('useAIJourneyResponseRate', () => {
             prevValue: 0,
             value: 0,
             series: [],
+            drilldown: {
+                integrationId: '123',
+                metricName: 'aiJourneyResponseRate',
+                shopName: 'shopName',
+                title: 'Response Rate',
+            },
         })
     })
 
@@ -181,6 +195,7 @@ describe('useAIJourneyResponseRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 

@@ -1,4 +1,7 @@
-import { aiJourneyOrdersDrillDownQueryFactory } from 'AIJourney/queries/aiJourneyDrillDownQueries'
+import {
+    aiJourneyOrdersDrillDownQueryFactory,
+    aiJourneyResponseRateDrillDownQueryFactory,
+} from 'AIJourney/queries/aiJourneyDrillDownQueries'
 import {
     AIJourneyMetric,
     AIJourneyMetrics,
@@ -441,6 +444,20 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 aiJourneyOrdersDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyId,
+                )
+        }
+        case AIJourneyMetric.ResponseRate: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyResponseRateDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     metricData.integrationId,

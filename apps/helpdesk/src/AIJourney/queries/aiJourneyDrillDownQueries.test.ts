@@ -1,0 +1,429 @@
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { OrderDirection } from 'models/api/types'
+
+import {
+    aiJourneyOrdersDrillDownQueryFactory,
+    aiJourneyResponseRateDrillDownQueryFactory,
+} from './aiJourneyDrillDownQueries'
+
+describe('aiJourneyDrillDownQueries', () => {
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: '2025-08-29T12:00:00',
+            end_datetime: '2025-09-05T12:00:00',
+        },
+    }
+    const timezone = 'America/New_York'
+    const integrationId = '12345'
+    const journeyId = 'journey-123'
+
+    describe('aiJourneyOrdersDrillDownQueryFactory', () => {
+        it('should produce query without sorting and journeyId', () => {
+            const query = aiJourneyOrdersDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+            )
+
+            expect(query).toEqual({
+                dimensions: [
+                    'AiSalesAgentOrders.ticketId',
+                    'AiSalesAgentOrders.orderId',
+                    'AiSalesAgentOrders.totalAmount',
+                    'AiSalesAgentOrders.customerId',
+                ],
+                filters: [
+                    {
+                        member: 'AiSalesAgentOrders.isInfluenced',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.integrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: ['AiSalesAgentOrders.gmvUsd'],
+                metricName: 'ai-journey-total-number-of-order',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with sorting', () => {
+            const sorting = OrderDirection.Desc
+            const query = aiJourneyOrdersDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+            )
+
+            expect(query).toEqual({
+                dimensions: [
+                    'AiSalesAgentOrders.ticketId',
+                    'AiSalesAgentOrders.orderId',
+                    'AiSalesAgentOrders.totalAmount',
+                    'AiSalesAgentOrders.customerId',
+                ],
+                filters: [
+                    {
+                        member: 'AiSalesAgentOrders.isInfluenced',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.integrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: ['AiSalesAgentOrders.gmvUsd'],
+                metricName: 'ai-journey-total-number-of-order',
+                order: [['AiSalesAgentOrders.ticketId', 'desc']],
+                timezone,
+            })
+        })
+
+        it('should produce query with journeyId', () => {
+            const query = aiJourneyOrdersDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                undefined,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: [
+                    'AiSalesAgentOrders.ticketId',
+                    'AiSalesAgentOrders.orderId',
+                    'AiSalesAgentOrders.totalAmount',
+                    'AiSalesAgentOrders.customerId',
+                ],
+                filters: [
+                    {
+                        member: 'AiSalesAgentOrders.isInfluenced',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.integrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: ['AiSalesAgentOrders.gmvUsd'],
+                metricName: 'ai-journey-total-number-of-order',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with both sorting and journeyId', () => {
+            const sorting = OrderDirection.Asc
+            const query = aiJourneyOrdersDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: [
+                    'AiSalesAgentOrders.ticketId',
+                    'AiSalesAgentOrders.orderId',
+                    'AiSalesAgentOrders.totalAmount',
+                    'AiSalesAgentOrders.customerId',
+                ],
+                filters: [
+                    {
+                        member: 'AiSalesAgentOrders.isInfluenced',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.integrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentOrders.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: ['AiSalesAgentOrders.gmvUsd'],
+                metricName: 'ai-journey-total-number-of-order',
+                order: [['AiSalesAgentOrders.ticketId', 'asc']],
+                timezone,
+            })
+        })
+    })
+
+    describe('aiJourneyResponseRateDrillDownQueryFactory', () => {
+        it('should produce query without sorting and journeyId', () => {
+            const query = aiJourneyResponseRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.replied',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-replied-messages',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with sorting', () => {
+            const sorting = OrderDirection.Desc
+            const query = aiJourneyResponseRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.replied',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-replied-messages',
+                order: [['AiSalesAgentConversations.ticketId', 'desc']],
+                timezone,
+            })
+        })
+
+        it('should produce query with journeyId', () => {
+            const query = aiJourneyResponseRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                undefined,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.replied',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-replied-messages',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with both sorting and journeyId', () => {
+            const sorting = OrderDirection.Asc
+            const query = aiJourneyResponseRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.replied',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-replied-messages',
+                order: [['AiSalesAgentConversations.ticketId', 'asc']],
+                timezone,
+            })
+        })
+    })
+})

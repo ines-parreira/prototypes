@@ -49,7 +49,11 @@ describe('useAbandonedCartKpis', () => {
 
     it('should return KPIs in correct order', () => {
         const { result } = renderHook(() =>
-            useAbandonedCartKpis('123', 'shopName'),
+            useAbandonedCartKpis({
+                integrationId: '123',
+                journeyId: 'journey-id',
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current.metrics).toHaveLength(3)
@@ -75,7 +79,13 @@ describe('useAbandonedCartKpis', () => {
             },
         }
 
-        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
+        renderHook(() =>
+            useAbandonedCartKpis({
+                integrationId: '123',
+                journeyId: 'journey-id',
+                shopName: 'shopName',
+            }),
+        )
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
             '123',
@@ -96,6 +106,7 @@ describe('useAbandonedCartKpis', () => {
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
+            'shopName',
             'journey-id',
         )
     })
@@ -105,7 +116,13 @@ describe('useAbandonedCartKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
+        renderHook(() =>
+            useAbandonedCartKpis({
+                integrationId: '123',
+                journeyId: 'journey-id',
+                shopName: 'shopName',
+            }),
+        )
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
@@ -129,6 +146,7 @@ describe('useAbandonedCartKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'shopName',
             'journey-id',
         )
     })
@@ -138,7 +156,13 @@ describe('useAbandonedCartKpis', () => {
             userTimezone: 'Europe/London',
         })
 
-        renderHook(() => useAbandonedCartKpis('123', 'journey-id'))
+        renderHook(() =>
+            useAbandonedCartKpis({
+                integrationId: '123',
+                journeyId: 'journey-id',
+                shopName: 'shopName',
+            }),
+        )
 
         expect(mockUseAppSelector).toHaveBeenCalledWith(
             getCleanStatsFiltersWithTimezone,
@@ -162,6 +186,7 @@ describe('useAbandonedCartKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'shopName',
             'journey-id',
         )
     })

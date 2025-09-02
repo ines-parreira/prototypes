@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import {
@@ -110,6 +111,8 @@ describe('<DrillDownModal />', () => {
             AiSalesAgentChart.AiSalesAgentTotalSalesConv,
             TicketDrillDownTableContent,
         ],
+        [AIJourneyMetric.TotalOrders, TicketDrillDownTableContent],
+        [AIJourneyMetric.ResponseRate, TicketDrillDownTableContent],
     ])(
         'should render correct drill down table content for metric %s',
         (metric, ExpectedTableContentComponent) => {

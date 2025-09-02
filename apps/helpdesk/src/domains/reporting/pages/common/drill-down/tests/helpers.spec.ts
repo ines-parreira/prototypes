@@ -1,6 +1,15 @@
 import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
+import {
+    aiJourneyOrdersDrillDownQueryFactory,
+    aiJourneyResponseRateDrillDownQueryFactory,
+} from 'AIJourney/queries/aiJourneyDrillDownQueries'
+import {
+    AIJourneyMetric,
+    AIJourneyMetrics,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     discountCodesOfferedDrillDownQueryFactory,
@@ -135,6 +144,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
+jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
 
 jest.mock(
     'domains/reporting/models/queryFactories/support-performance/customerSatisfaction',
@@ -195,6 +205,15 @@ jest.mock(
 )
 const returnMentionsPerProductDrillDownQueryFactoryMock = assumeMock(
     returnMentionsPerProductDrillDownQueryFactory,
+)
+
+jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
+
+const aiJourneyOrdersDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyOrdersDrillDownQueryFactory,
+)
+const aiJourneyResponseRateDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyResponseRateDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -499,6 +518,19 @@ describe('getDrillDownQuery', () => {
         },
     ]
 
+    const aiJourneyMetrics: AIJourneyMetrics[] = [
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
+            metricName: AIJourneyMetric.TotalOrders,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
+            metricName: AIJourneyMetric.ResponseRate,
+            integrationId: '123',
+        },
+    ]
+
     it.each([
         ...supportedMetrics,
         ...agentsMetrics,
@@ -513,6 +545,7 @@ describe('getDrillDownQuery', () => {
         ...aiInsightsMetrics,
         ...productInsightsMetrics,
         ...voiceOfCustomerMetrics,
+        ...aiJourneyMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
@@ -1254,6 +1287,64 @@ describe('getDrillDownQuery', () => {
         expect(
             totalNumberProductRecommendationsDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone, undefined, '456')
+    })
+
+    it('should be populated with AIJourneyMetric.TotalOrders', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
+            metricName: AIJourneyMetric.TotalOrders,
+            integrationId: '123',
+            journeyId: 'test-journey-id',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(aiJourneyOrdersDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            '123',
+            undefined,
+            'test-journey-id',
+        )
+    })
+
+    it('should be populated with AIJourneyMetric.ResponseRate', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
+            metricName: AIJourneyMetric.ResponseRate,
+            integrationId: '456',
+            journeyId: 'test-journey-id',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyResponseRateDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            '456',
+            undefined,
+            'test-journey-id',
+        )
     })
 })
 

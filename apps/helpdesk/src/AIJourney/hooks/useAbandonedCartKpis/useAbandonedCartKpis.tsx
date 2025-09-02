@@ -30,12 +30,19 @@ export type MetricProps = {
     isLoading: boolean
 }
 
-export const useAbandonedCartKpis = (
-    integrationId: string,
-    journeyId?: string,
-    customStartDate?: string,
-    customEndDate?: string,
-) => {
+export const useAbandonedCartKpis = ({
+    integrationId,
+    journeyId,
+    customStartDate,
+    customEndDate,
+    shopName,
+}: {
+    integrationId: string
+    journeyId?: string
+    customStartDate?: string
+    customEndDate?: string
+    shopName: string
+}) => {
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
     const filters: filterType = useMemo(() => {
@@ -73,6 +80,7 @@ export const useAbandonedCartKpis = (
         userTimezone,
         filters,
         granularity,
+        shopName,
         journeyId,
     )
 

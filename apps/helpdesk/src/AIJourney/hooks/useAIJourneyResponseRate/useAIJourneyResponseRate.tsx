@@ -1,5 +1,9 @@
 import { useMemo } from 'react'
 
+import {
+    AIJourneyMetric,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
     aiJourneyRepliedMessagesQueryFactory,
@@ -22,6 +26,7 @@ export const useAIJourneyResponseRate = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
+    shopName: string,
     journeyId?: string,
 ): MetricProps => {
     const { currency } = useCurrency()
@@ -142,7 +147,7 @@ export const useAIJourneyResponseRate = (
     }, [ordersTimeSeriesData, conversationsTimeSeriesData])
 
     return {
-        label: 'Response Rate',
+        label: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
         value: responseRateValue,
         prevValue: responseRatePrevValue,
         series: conversionRateTimeSeries,
@@ -154,5 +159,12 @@ export const useAIJourneyResponseRate = (
             isFetchingtotalContactsEnrolled ||
             isFetchingRepliedMessagesSeries ||
             isFetchingConversationsSeries,
+        drilldown: {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
+            metricName: AIJourneyMetric.ResponseRate,
+            integrationId,
+            journeyId,
+            shopName,
+        },
     }
 }

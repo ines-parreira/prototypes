@@ -63,8 +63,7 @@ export const useAIJourneyTotalOrders = (
         prevValue: trendData?.prevValue || 0,
         series: totalNumberOfOrderTimeSeriesData,
         interpretAs: 'more-is-better',
-        metricFormat:
-            AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].metricFormat,
+        metricFormat: 'decimal-precision-1',
         isLoading: isFetchingTred || isFetchingSeries,
         drilldown: {
             title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,

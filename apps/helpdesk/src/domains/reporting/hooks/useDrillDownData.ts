@@ -7,8 +7,6 @@ import {
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { IDRecord, MergedRecord } from 'domains/reporting/hooks/withEnrichment'
-import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSLADimension } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import {
     EnrichmentFields,
@@ -65,24 +63,6 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.IsUnread,
     EnrichmentFields.CustomFields,
 ]
-
-export const enrichmentMappingPerMetric: Record<
-    string,
-    Record<string, EnrichmentFields> | undefined
-> = {
-    [AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders]: {
-        [AiSalesAgentOrdersDimension.TicketId]: EnrichmentFields.TicketId,
-        [AiSalesAgentOrdersDimension.CustomerId]:
-            EnrichmentFields.OrderCustomerId,
-    },
-    [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: {
-        [AiSalesAgentConversationsDimension.TicketId]:
-            EnrichmentFields.TicketId,
-        [AiSalesAgentConversationsDimension.ProductId]:
-            EnrichmentFields.ProductId,
-    },
-}
-
 export const extraEnrichmentFieldsPerMetric: Record<
     string,
     EnrichmentFields[]
@@ -101,6 +81,10 @@ export const extraEnrichmentFieldsPerMetric: Record<
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,
         EnrichmentFields.CustomerIntegrationDataByExternalId,
+    ],
+    [AIJourneyMetric.ResponseRate]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.CustomerName,
     ],
 }
 

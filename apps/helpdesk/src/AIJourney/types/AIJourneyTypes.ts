@@ -1,8 +1,9 @@
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 
 export enum AIJourneyMetric {
     TotalOrders = 'aiJourneyTotalOrders',
+    ResponseRate = 'aiJourneyResponseRate',
 }
 
 export type AIJourneyMetrics = {
@@ -19,12 +20,18 @@ export const AIJourneyMetricsConfig: Record<
         showMetric: boolean
         domain: Domain
         title: string
-        metricFormat: MetricTrendFormat
+        metricFormat: MetricValueFormat
     }
 > = {
     [AIJourneyMetric.TotalOrders]: {
         title: 'Total Orders',
         metricFormat: 'decimal-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.ResponseRate]: {
+        title: 'Response Rate',
+        metricFormat: 'percent-precision-1',
         showMetric: false,
         domain: Domain.AIJourney,
     },
