@@ -226,6 +226,7 @@ describe('App component', () => {
             const { container } = renderWithRouter(<App>boop</App>)
             const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(false)
+            expect(child.classList.contains('legacy')).toBe(true)
         })
 
         it('should render the Axiom migration toggle if the flag is enabled', () => {
@@ -240,6 +241,7 @@ describe('App component', () => {
             const { container } = renderWithRouter(<App>boop</App>)
             const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(true)
+            expect(child.classList.contains('legacy')).toBe(false)
         })
 
         it('should render the Axiom token highlighting toggle if the flag is enabled and the token highlighting is enabled', () => {

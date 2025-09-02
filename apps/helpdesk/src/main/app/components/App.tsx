@@ -85,6 +85,7 @@ export default function App({ children }: Props) {
         <AppNode
             className={cn({
                 axiom: hasAxiomMigration && isAxiomEnabled,
+                legacy: !hasAxiomMigration || !isAxiomEnabled,
                 axiomHighlightLegacyTokens:
                     hasAxiomMigration &&
                     isAxiomEnabled &&
