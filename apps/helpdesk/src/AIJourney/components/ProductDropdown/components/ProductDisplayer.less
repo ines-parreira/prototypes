@@ -20,14 +20,14 @@
         cursor: pointer;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
 
         &--selected {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
 
             &:hover {
-                background: var(--neutral-grey-2);
+                background: var(--neutral-grey-2); // legacy
             }
         }
     }
@@ -37,7 +37,7 @@
         align-items: center;
         justify-content: center;
         border-radius: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-xs);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -85,5 +85,25 @@
         &--selected {
             font-weight: 600;
         }
+    }
+}
+
+.axiom :local {
+    .productDisplayer {
+        &:hover {
+            background: var(--hover-default);
+        }
+
+        &--selected {
+            background: var(--elevation-neutral-mid);
+
+            &:hover {
+                background: var(--elevation-neutral-mid);
+            }
+        }
+    }
+
+    .productImage {
+        background-color: var(--elevation-neutral-default);
     }
 }

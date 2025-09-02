@@ -1,6 +1,6 @@
 :local {
     .selector {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
 
         border-radius: var(--layout-spacing-s);
 
@@ -33,12 +33,28 @@
         padding: var(--layout-spacing-xxs);
 
         &--selected {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             cursor: default;
         }
 
         &:not(&--selected):hover {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .selector {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .selectorOption {
+        &--selected {
+            background-color: var(--elevation-neutral-mid);
+        }
+
+        &:not(&--selected):hover {
+            background-color: var(--hover-default);
         }
     }
 }

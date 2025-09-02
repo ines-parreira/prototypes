@@ -90,7 +90,7 @@
 .textarea-toolbar {
     position: relative;
     z-index: 2;
-    background-color: var(--neutral-grey-2);
+    background-color: var(--neutral-grey-2); // legacy
     padding: 0.6rem 0.5rem;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -181,5 +181,9 @@
     .rich-textarea-wrapper {
         background: var(--elevation-neutral-mid);
         border: 1px solid var(--border-neutral-default);
+    }
+
+    .textarea-toolbar {
+        background-color: var(--elevation-neutral-mid);
     }
 }
