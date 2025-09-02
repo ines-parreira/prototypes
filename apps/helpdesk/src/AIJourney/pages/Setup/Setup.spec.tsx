@@ -335,318 +335,14 @@ describe('<Setup />', () => {
             }))
         })
 
-        it('should throw error when creating journey with missing integration ID', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { name: 'shopify-store' }, // Missing ID
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockMutateAsync = jest
-                .fn()
-                .mockRejectedValue(new Error('Missing integration ID'))
-
-            mockUseCreateNewJourney.mockImplementation(() => ({
-                mutateAsync: mockMutateAsync,
-                isError: false,
-                isLoading: false,
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const button = screen.getByTestId('ai-journey-button')
-
-            await act(async () => {
-                await userEvent.click(button)
-            })
-
-            await waitFor(async () => {
-                await expect(mockMutateAsync()).rejects.toThrow(
-                    'Missing integration ID',
-                )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
-            })
-        })
-
-        it('should throw error when creating journey with missing integration name', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1 }, // Missing name
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockMutateAsync = jest
-                .fn()
-                .mockRejectedValue(new Error('Missing integration name'))
-
-            mockUseCreateNewJourney.mockImplementation(() => ({
-                mutateAsync: mockMutateAsync,
-                isError: false,
-                isLoading: false,
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const button = screen.getByTestId('ai-journey-button')
-
-            await act(async () => {
-                await userEvent.click(button)
-            })
-
-            await waitFor(async () => {
-                await expect(mockMutateAsync()).rejects.toThrow(
-                    'Missing integration name',
-                )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
-            })
-        })
-
-        it('should throw error when updating journey with missing integration ID', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { name: 'shopify-store' }, // Missing ID
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockUpdateJourney = jest
-                .fn()
-                .mockRejectedValue(new Error('Missing integration ID'))
-
-            jest.doMock('AIJourney/queries', () => ({
-                ...jest.requireActual('AIJourney/queries'),
-                useUpdateJourney: jest.fn(() => ({
-                    mutateAsync: mockUpdateJourney,
-                    isError: false,
-                    isLoading: false,
-                })),
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const button = screen.getByTestId('ai-journey-button')
-
-            await act(async () => {
-                await userEvent.click(button)
-            })
-
-            await waitFor(async () => {
-                await expect(mockUpdateJourney()).rejects.toThrow(
-                    'Missing integration ID',
-                )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
-            })
-        })
-
-        it('should throw error when updating journey with missing integration name', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1 }, // Missing name
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockUpdateJourney = jest
-                .fn()
-                .mockRejectedValue(new Error('Missing integration name'))
-
-            jest.doMock('AIJourney/queries', () => ({
-                ...jest.requireActual('AIJourney/queries'),
-                useUpdateJourney: jest.fn(() => ({
-                    mutateAsync: mockUpdateJourney,
-                    isError: false,
-                    isLoading: false,
-                })),
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const button = screen.getByTestId('ai-journey-button')
-
-            await act(async () => {
-                await userEvent.click(button)
-            })
-
-            await waitFor(async () => {
-                await expect(mockUpdateJourney()).rejects.toThrow(
-                    'Missing integration name',
-                )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
-            })
-        })
-
-        it('should throw error when updating journey with missing journey ID', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: { type: 'cart_abandoned' }, // Missing ID
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockUpdateJourney = jest
-                .fn()
-                .mockRejectedValue(new Error('Missing journey ID'))
-
-            jest.doMock('AIJourney/queries', () => ({
-                ...jest.requireActual('AIJourney/queries'),
-                useUpdateJourney: jest.fn(() => ({
-                    mutateAsync: mockUpdateJourney,
-                    isError: false,
-                    isLoading: false,
-                })),
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const button = screen.getByTestId('ai-journey-button')
-
-            await act(async () => {
-                await userEvent.click(button)
-            })
-
-            await waitFor(async () => {
-                await expect(mockUpdateJourney()).rejects.toThrow(
-                    'Missing journey ID',
-                )
-                await expect(mockHistoryPush).not.toHaveBeenCalled()
-            })
-        })
-
         it('should handle mutation errors during journey creation', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
             const mockMutateAsync = jest
                 .fn()
-                .mockRejectedValue(new Error('Missing integration information'))
+                .mockRejectedValue(new Error('Journey creation error'))
 
             mockUseCreateNewJourney.mockImplementation(() => ({
                 mutateAsync: mockMutateAsync,
-                isError: false,
+                isError: true,
                 isLoading: false,
             }))
 
@@ -668,41 +364,19 @@ describe('<Setup />', () => {
 
             await waitFor(async () => {
                 await expect(mockMutateAsync()).rejects.toThrow(
-                    'Missing integration information',
+                    'Journey creation error',
                 )
-                expect(mockHistoryPush).not.toHaveBeenCalled()
+                await expect(mockHistoryPush).not.toHaveBeenCalled()
             })
         })
 
         it('should handle mutation errors during journey update', async () => {
-            mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            const mockUpdateJourney = jest
+            const mockHandleUpdate = jest
                 .fn()
-                .mockRejectedValue(new Error('Missing integration information'))
+                .mockRejectedValue(new Error('Journey update error'))
 
-            mockUseUpdateJourney.mockImplementation(() => ({
-                mutateAsync: mockUpdateJourney,
-                isError: false,
-                isLoading: false,
+            mockUseJourneyUpdateHandler.mockImplementation(() => ({
+                handleUpdate: mockHandleUpdate,
             }))
 
             renderWithRouter(
@@ -722,10 +396,10 @@ describe('<Setup />', () => {
             })
 
             await waitFor(async () => {
-                await expect(mockUpdateJourney()).rejects.toThrow(
-                    'Missing integration information',
+                await expect(mockHandleUpdate()).rejects.toThrow(
+                    'Journey update error',
                 )
-                expect(mockHistoryPush).not.toHaveBeenCalled()
+                await expect(mockHistoryPush).not.toHaveBeenCalled()
             })
         })
     })
@@ -735,7 +409,6 @@ describe('<Setup />', () => {
 
         beforeEach(() => {
             jest.clearAllMocks()
-
             mockUseJourneyUpdateHandler.mockImplementation(() => ({
                 handleUpdate: mockHandleUpdate,
             }))
@@ -1377,6 +1050,120 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('AiJourneyPlaygroundEnabled feature flag enabled', () => {
+            beforeEach(() => {
+                useFlagMock.mockImplementation((flag) => {
+                    if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
+                        return true
+                    }
+                })
+            })
+            it('should navigate to TEST page after successful journey creation', async () => {
+                // Override the default to have no existing journey
+                mockUseJourneyContext.mockReturnValue({
+                    journey: undefined,
+                    journeyData: {
+                        configuration: {
+                            max_follow_up_messages: 3,
+                            offer_discount: true,
+                            max_discount_percent: 20,
+                            sms_sender_number: '415-111-111',
+                            sms_sender_integration_id: 1,
+                            discount_code_message_threshold: 2,
+                        },
+                    },
+                    currentIntegration: { id: 1, name: 'shopify-store' },
+                    shopName: 'shopify-store',
+                    isLoading: false,
+                    journeyType: 'cart_abandoned',
+                    storeConfiguration: {
+                        monitoredSmsIntegrations: [1, 2],
+                    },
+                })
+
+                const mockMutateAsync = jest.fn()
+                mockUseCreateNewJourney.mockImplementation(() => ({
+                    mutateAsync: mockMutateAsync,
+                    isError: false,
+                    isLoading: false,
+                }))
+
+                renderWithRouter(
+                    <Provider store={mockStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <IntegrationsProvider>
+                                <Setup />
+                            </IntegrationsProvider>
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+                const user = userEvent.setup()
+
+                const button = screen.getByTestId('ai-journey-button')
+                await act(async () => {
+                    await user.click(button)
+                })
+
+                await waitFor(() => {
+                    expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+                })
+
+                expect(mockMutateAsync).toHaveBeenCalledWith({
+                    params: {
+                        store_integration_id: 1,
+                        store_name: 'shopify-store',
+                        message_instructions: null,
+                    },
+                    journeyConfigs: {
+                        max_follow_up_messages: 3,
+                        offer_discount: true,
+                        max_discount_percent: 20,
+                        sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 2,
+                        sms_sender_number: '+15551234567',
+                    },
+                })
+
+                await waitFor(() => {
+                    expect(mockHistoryPush).toHaveBeenCalledWith(
+                        '/app/ai-journey/shopify-store/test',
+                    )
+                })
+
+                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+            })
+
+            it('should navigate to TEST page after successful journey update', async () => {
+                // Uses the default mock from beforeEach which has existing journey
+
+                renderWithRouter(
+                    <Provider store={mockStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <IntegrationsProvider>
+                                <Setup />
+                            </IntegrationsProvider>
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+
+                const button = screen.getByTestId('ai-journey-button')
+                expect(button).not.toBeDisabled()
+                await act(async () => {
+                    await userEvent.click(button)
+                })
+
+                await waitFor(() => {
+                    expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+                })
+
+                await waitFor(() => {
+                    expect(mockHistoryPush).toHaveBeenCalledWith(
+                        '/app/ai-journey/shopify-store/test',
+                    )
+                })
             })
         })
     })

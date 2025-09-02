@@ -4,8 +4,8 @@ import css from './OnboardingStepSelector.less'
 
 type OnboardingStepSelectorProps = {
     steps: {
-        stepName: string
-        stepIndicator: number
+        name: string
+        indicator: number
     }[]
     activeStep?: string
 }
@@ -16,12 +16,12 @@ export const OnboardingStepSelector = ({
 }: OnboardingStepSelectorProps) => {
     return (
         <div className={css.onboardingSteps}>
-            {steps.map(({ stepName, stepIndicator }, index) => (
+            {steps.map(({ name, indicator }, index) => (
                 <OnboardingStep
                     key={index}
-                    stepName={stepName}
-                    stepIndicator={stepIndicator}
-                    isActive={activeStep === stepName}
+                    stepName={name}
+                    stepIndicator={indicator}
+                    isActive={activeStep === name}
                 />
             ))}
         </div>

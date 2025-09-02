@@ -114,5 +114,7 @@ export const useJourneyUpdateHandler = ({
 
     return {
         handleUpdate,
+        isLoading: updateJourney.isLoading,
+        isSuccess: updateJourney.isSuccess,
     }
 }

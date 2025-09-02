@@ -34,6 +34,9 @@ export const Setup = () => {
     const customInstructionEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomInstructions,
     )
+    const isAiJourneyPlaygroundEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPlaygroundEnabled,
+    )
 
     const {
         journey: abandonedCartJourney,
@@ -164,7 +167,11 @@ export const Setup = () => {
         }
     }
 
-    const { handleUpdate } = useJourneyUpdateHandler({
+    const {
+        handleUpdate,
+        isLoading: isLoadingHandleUpdate,
+        isSuccess: isSuccessHandleUpdate,
+    } = useJourneyUpdateHandler({
         integrationId,
         abandonedCartJourney,
         followUpValue: numberOfMessageValue - 1,
@@ -187,16 +194,11 @@ export const Setup = () => {
                 await handleCreate()
             }
             setIsVisible(false)
-            setTimeout(() => {
-                history.push(`/app/ai-journey/${shopName}/activation`)
-            }, 700)
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: `Error creating new journey: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
+            history.push(
+                `/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'activation'}`,
             )
+        } catch {
+            return // Error handling is done in the handleUpdate and handleCreate functions
         }
     }
 
@@ -204,7 +206,11 @@ export const Setup = () => {
         ? !!discountValue && isDiscountValueValid
         : true
 
-    const shouldDisableButton = !isDiscountFieldValid || !phoneNumberValue
+    const shouldDisableButton =
+        !isDiscountFieldValid ||
+        !phoneNumberValue ||
+        isLoadingHandleUpdate ||
+        isSuccessHandleUpdate
     const showMessageWithDiscountCode =
         isDiscountEnabled && numberOfMessageValue > 1
 

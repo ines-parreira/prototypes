@@ -3,31 +3,40 @@ import { render } from '@testing-library/react'
 import { OnboardingStepSelector } from './OnboardingStepSelector'
 
 describe('<OnboardingStepSelector />', () => {
-    const steps = [
-        { stepName: 'Conversation setup', stepIndicator: 1, isActive: false },
-        { stepName: 'Activation', stepIndicator: 2, isActive: true },
+    const stepsData = [
+        { name: 'Conversation setup', indicator: 1, path: '' },
+        { name: 'Activation', indicator: 2, path: '' },
     ]
+    const activeStep = 'Activation'
+
     it('should render steps in correct order', () => {
-        const { container } = render(<OnboardingStepSelector steps={steps} />)
+        const { container } = render(
+            <OnboardingStepSelector
+                steps={stepsData}
+                activeStep={activeStep}
+            />,
+        )
 
         const stepElements = container.getElementsByClassName('step')
 
-        steps.forEach((_, index) => {
+        stepsData.forEach((step, index) => {
             const stepElement = stepElements[index]
             expect(stepElement).toBeInTheDocument()
             expect(
                 stepElement.querySelector('.stepIndicator'),
             ).toHaveTextContent((index + 1).toString())
             expect(stepElement.querySelector('.stepName')).toHaveTextContent(
-                steps[index].stepName,
+                step.name,
             )
         })
     })
     it('should render active step with correct modifier', () => {
         const { container } = render(
-            <OnboardingStepSelector steps={steps} activeStep="Activation" />,
+            <OnboardingStepSelector
+                steps={stepsData}
+                activeStep="Activation"
+            />,
         )
-
         const activeStepName = container.querySelectorAll('.step--active')
         expect(activeStepName.length).toBe(1)
         expect(activeStepName).not.toBeNull()

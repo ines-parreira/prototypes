@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
 import { JourneyStatusEnum } from '@gorgias/convert-client'
+
+import { useFlag } from 'core/flags'
 
 import css from './MoreOptions.less'
 
@@ -16,10 +19,14 @@ export const MoreOptions = ({
     journeyState: JourneyStatusEnum
     handleChangeStatus: () => void
 }) => {
+    const isAiJourneyPlaygroundEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPlaygroundEnabled,
+    )
+
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
-    const options = [
+    const legacyOptions = [
         {
             label: 'Edit',
             icon: 'edit',
@@ -31,6 +38,28 @@ export const MoreOptions = ({
             path: 'activation',
         },
     ]
+
+    const optionsWithPlayground = [
+        {
+            label: 'Edit',
+            icon: 'edit',
+            path: 'setup',
+        },
+        {
+            label: 'Test',
+            icon: 'list',
+            path: 'test',
+        },
+        {
+            label: 'Activate',
+            icon: 'play_circle',
+            path: 'activate',
+        },
+    ]
+
+    const options = isAiJourneyPlaygroundEnabled
+        ? optionsWithPlayground
+        : legacyOptions
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {

@@ -3,8 +3,15 @@ import { useEffect } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { STEPS_NAMES } from 'AIJourney/constants'
-import { AiJourneyOnboarding, LandingPage, Performance } from 'AIJourney/pages'
+import { LEGACY_STEPS_NAMES, STEPS_NAMES } from 'AIJourney/constants'
+import {
+    Activation,
+    AiJourneyOnboarding,
+    LandingPage,
+    Performance,
+    Setup,
+    Test,
+} from 'AIJourney/pages'
 import {
     IntegrationsProvider,
     TokenProvider,
@@ -40,12 +47,14 @@ function AiJourneyBaseRoutes() {
                 exact
                 render={() => <LandingPage />}
             />
+            {/* Legacy Onboarding Steps */}
             <Route
                 path={`${path}/:shopName/conversation-setup`}
                 exact
                 render={() => (
                     <AiJourneyOnboarding
-                        step={STEPS_NAMES.CONVERSATION_SETUP}
+                        step={LEGACY_STEPS_NAMES.CONVERSATION_SETUP}
+                        stepComponent={<Setup />}
                     />
                 )}
             />
@@ -53,7 +62,41 @@ function AiJourneyBaseRoutes() {
                 path={`${path}/:shopName/activation`}
                 exact
                 render={() => (
-                    <AiJourneyOnboarding step={STEPS_NAMES.ACTIVATION} />
+                    <AiJourneyOnboarding
+                        step={LEGACY_STEPS_NAMES.ACTIVATION}
+                        stepComponent={<Activation />}
+                    />
+                )}
+            />
+            {/* Legacy Onboarding Steps */}
+            <Route
+                path={`${path}/:shopName/setup`}
+                exact
+                render={() => (
+                    <AiJourneyOnboarding
+                        step={STEPS_NAMES.SETUP}
+                        stepComponent={<Setup />}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/:shopName/test`}
+                exact
+                render={() => (
+                    <AiJourneyOnboarding
+                        step={STEPS_NAMES.TEST}
+                        stepComponent={<Test />}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/:shopName/activate`}
+                exact
+                render={() => (
+                    <AiJourneyOnboarding
+                        step={STEPS_NAMES.ACTIVATE}
+                        stepComponent={<Activation />}
+                    />
                 )}
             />
             <Route

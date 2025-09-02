@@ -1,3 +1,5 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,16 +9,18 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { STEPS_NAMES } from 'AIJourney/constants'
+import { LEGACY_STEPS_NAMES, STEPS_NAMES } from 'AIJourney/constants'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { renderWithRouter } from 'utils/testing'
 
+import { Setup } from '../Setup/Setup'
 import { AiJourneyOnboarding } from './AiJourneyOnboarding'
 
 const mockHistoryPush = jest.fn()
@@ -98,6 +102,9 @@ const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
     ],
     isLoading: false,
 })
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('<AiJourneyOnboarding />', () => {
     const mockHandleUpdate = jest.fn()
@@ -198,7 +205,8 @@ describe('<AiJourneyOnboarding />', () => {
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
                         <AiJourneyOnboarding
-                            step={STEPS_NAMES.CONVERSATION_SETUP}
+                            step={LEGACY_STEPS_NAMES.CONVERSATION_SETUP}
+                            stepComponent={<Setup />}
                         />
                     </IntegrationsProvider>
                 </QueryClientProvider>
@@ -207,5 +215,54 @@ describe('<AiJourneyOnboarding />', () => {
 
         expect(screen.getByText('Continue')).toBeInTheDocument()
         expect(screen.getByTestId('ai-journey-button')).toBeInTheDocument()
+    })
+
+    it('should render 2 steps if AiJourneyPlaygroundEnabled flag is disabled', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
+                return false
+            }
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <AiJourneyOnboarding
+                            step={STEPS_NAMES.SETUP}
+                            stepComponent={<Setup />}
+                        />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Setup')).toBeInTheDocument()
+        expect(screen.getByText('Test and Activate')).toBeInTheDocument()
+    })
+
+    it('should render 3 steps if AiJourneyPlaygroundEnabled flag is enabled', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
+                return true
+            }
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <AiJourneyOnboarding
+                            step={STEPS_NAMES.SETUP}
+                            stepComponent={<Setup />}
+                        />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Setup')).toBeInTheDocument()
+        expect(screen.getByText('Test')).toBeInTheDocument()
+        expect(screen.getByText('Activate')).toBeInTheDocument()
     })
 })

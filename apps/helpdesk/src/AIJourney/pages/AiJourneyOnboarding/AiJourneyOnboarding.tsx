@@ -1,28 +1,57 @@
+import React from 'react'
+
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { OnboardingStepSelector } from 'AIJourney/components/OnboardingStepSelector/OnboardingStepSelector'
-import { STEPS_NAMES } from 'AIJourney/constants'
+import { LEGACY_STEPS_NAMES, STEPS_NAMES } from 'AIJourney/constants'
 import { JourneyProvider } from 'AIJourney/providers'
 import lightningIcon from 'assets/img/ai-journey/lightning.svg'
-
-import { Activation } from '../Activation/Activation'
-import { Setup } from '../Setup/Setup'
+import { useFlag } from 'core/flags'
 
 import css from './AiJourneyOnboarding.less'
 
 type AiJourneyOnboardingProps = {
     step: string
+    stepComponent: React.ReactNode
 }
 
-export const AiJourneyOnboarding = ({ step }: AiJourneyOnboardingProps) => {
-    const ONBOARDING_STEPS = [
+export const AiJourneyOnboarding = ({
+    step,
+    stepComponent,
+}: AiJourneyOnboardingProps) => {
+    const isAiJourneyPlaygroundEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPlaygroundEnabled,
+    )
+
+    const LEGACY_ONBOARDING_STEPS = [
         {
-            stepName: STEPS_NAMES.CONVERSATION_SETUP,
-            stepIndicator: 1,
+            name: LEGACY_STEPS_NAMES.CONVERSATION_SETUP,
+            indicator: 1,
         },
         {
-            stepName: STEPS_NAMES.ACTIVATION,
-            stepIndicator: 2,
+            name: LEGACY_STEPS_NAMES.ACTIVATION,
+            indicator: 2,
         },
     ]
+
+    const ONBOARDING_STEPS = [
+        {
+            name: STEPS_NAMES.SETUP,
+            indicator: 1,
+        },
+        {
+            name: STEPS_NAMES.TEST,
+            indicator: 2,
+        },
+        {
+            name: STEPS_NAMES.ACTIVATE,
+            indicator: 3,
+        },
+    ]
+
+    const JOURNEY_ONBOARDING_STEPS = isAiJourneyPlaygroundEnabled
+        ? ONBOARDING_STEPS
+        : LEGACY_ONBOARDING_STEPS
 
     return (
         <JourneyProvider journeyType="cart_abandoned">
@@ -32,14 +61,10 @@ export const AiJourneyOnboarding = ({ step }: AiJourneyOnboardingProps) => {
                     <span>SMS Abandoned Cart flow</span>
                 </div>
                 <OnboardingStepSelector
-                    steps={ONBOARDING_STEPS}
+                    steps={JOURNEY_ONBOARDING_STEPS}
                     activeStep={step}
                 />
-                {step === STEPS_NAMES.CONVERSATION_SETUP ? (
-                    <Setup />
-                ) : (
-                    <Activation />
-                )}
+                {stepComponent}
             </div>
         </JourneyProvider>
     )

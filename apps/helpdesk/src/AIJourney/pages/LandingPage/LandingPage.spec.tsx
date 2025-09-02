@@ -57,7 +57,7 @@ describe('<LandingPage />', () => {
 
         expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
     })
-    it('should redirect to conversation-setup page when placeholder button is clicked', async () => {
+    it('should redirect to conversation-setup page when button is clicked', async () => {
         renderWithRouter(
             <QueryClientProvider client={appQueryClient}>
                 <IntegrationsProvider>

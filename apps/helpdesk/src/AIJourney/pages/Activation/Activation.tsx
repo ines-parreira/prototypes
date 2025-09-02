@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
@@ -13,6 +14,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { useTestSms } from 'AIJourney/queries'
 import { isValidPhoneNumber } from 'AIJourney/utils'
 import { Product } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListProducts } from 'models/integration/queries'
 import { IntegrationDataItem } from 'models/integration/types'
@@ -39,6 +41,10 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
     const [testSmsNumber, setTestSmsNumber] = useLocalStorage<string>(
         TEST_SMS_NUMBER_KEY,
         '',
+    )
+
+    const isAiJourneyPlaygroundEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPlaygroundEnabled,
     )
 
     const {
@@ -86,7 +92,11 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         setTestSmsNumber(newValue)
     }
 
-    const { handleUpdate } = useJourneyUpdateHandler({
+    const {
+        handleUpdate,
+        isLoading: isLoadingHandleUpdate,
+        isSuccess: isSuccessHandleUpdate,
+    } = useJourneyUpdateHandler({
         integrationId,
         abandonedCartJourney,
     })
@@ -167,7 +177,11 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const isNumberValid = isValidPhoneNumber(testSmsNumber)
 
-    const shouldDisableButton = !selectedProduct || !isNumberValid
+    const shouldDisableButton =
+        !selectedProduct ||
+        !isNumberValid ||
+        isLoadingHandleUpdate ||
+        isSuccessHandleUpdate
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
 
@@ -194,7 +208,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/conversation-setup`}
+                    redirectLink={`/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'conversation-setup'}`}
                     label="Back"
                 />
                 <Button

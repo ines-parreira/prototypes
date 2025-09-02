@@ -15,6 +15,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
+import { useUpdateJourney } from 'AIJourney/queries'
 import { logPageChange } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -860,6 +861,9 @@ describe('<Routes/>', () => {
                 console.log('AXIOS REQUEST:', config)
                 return Promise.reject(new Error('Mocked network error'))
             })
+            ;(useUpdateJourney as jest.Mock).mockReturnValue({
+                mutateAsync: jest.fn(),
+            })
 
             const cleanStatsFilters = {
                 period: {
@@ -987,7 +991,7 @@ describe('<Routes/>', () => {
             expect(
                 screen.getByText('SMS Abandoned Cart flow'),
             ).toBeInTheDocument()
-            expect(screen.getByText('Set up')).toBeInTheDocument()
+            expect(screen.getByText('Setup')).toBeInTheDocument()
         })
 
         it('should render activation page when feature flag is enabled', () => {
