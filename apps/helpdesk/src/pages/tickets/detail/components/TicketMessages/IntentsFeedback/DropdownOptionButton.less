@@ -7,7 +7,7 @@
         width: 20px;
         border-width: 0px;
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             cursor: pointer;
         }
         &:not(:last-child) {
@@ -17,5 +17,13 @@
     .icon {
         text-align: center;
         line-height: 20px;
+    }
+}
+
+.axiom :local {
+    .dropdownButton {
+        &:hover {
+            background-color: var(--hover-default);
+        }
     }
 }

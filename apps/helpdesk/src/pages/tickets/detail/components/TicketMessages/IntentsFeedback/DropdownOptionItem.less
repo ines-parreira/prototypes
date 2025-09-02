@@ -31,12 +31,18 @@
     }
 
     .hoverable:hover {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 4px;
         cursor: pointer;
     }
 
     .disabled {
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .hoverable:hover {
+        background-color: var(--hover-default);
     }
 }

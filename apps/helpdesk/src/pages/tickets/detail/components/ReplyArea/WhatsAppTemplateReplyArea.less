@@ -5,8 +5,14 @@
         flex-direction: column;
 
         .whatsAppTemplateContent {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             padding: var(--layout-spacing-s);
         }
+    }
+}
+
+.axiom :local {
+    .whatsAppTemplateContent {
+        background-color: var(--elevation-neutral-mid);
     }
 }

@@ -6,7 +6,7 @@
         padding: var(--layout-spacing-s);
         gap: var(--layout-spacing-s);
         align-items: center;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-top: 1px solid var(--neutral-grey-3);
     }
 
@@ -64,5 +64,11 @@
     .openIcon {
         font-size: 16px !important;
         color: var(--accessory-magenta-3);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-mid);
     }
 }

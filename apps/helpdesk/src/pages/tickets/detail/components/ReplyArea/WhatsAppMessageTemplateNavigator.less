@@ -12,7 +12,7 @@
         justify-content: center;
         align-items: center;
         gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         text-align: center;
         padding: var(--layout-spacing-s);
     }
@@ -48,7 +48,7 @@
             cursor: pointer;
 
             &.active {
-                background-color: var(--neutral-grey-2);
+                background-color: var(--neutral-grey-2); // legacy
                 color: var(--main-primary);
             }
 
@@ -64,6 +64,18 @@
 
         .flag {
             font-size: 20px;
+        }
+    }
+}
+
+.axiom :local {
+    .noResults {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .item {
+        &.active {
+            background-color: var(--hover-default);
         }
     }
 }

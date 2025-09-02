@@ -10,7 +10,7 @@
 
     .text {
         padding: 12px 16px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .action {
@@ -19,5 +19,11 @@
 
     .banner {
         margin: var(--layout-spacing-xs) 0;
+    }
+}
+
+.axiom :local {
+    .text {
+        background-color: var(--elevation-overlay-default);
     }
 }

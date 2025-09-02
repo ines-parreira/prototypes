@@ -141,7 +141,7 @@
         background-color: var(--highlightYellow);
     }
     to {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 }
 
@@ -264,6 +264,14 @@
                     background: transparent;
                 }
             }
+        }
+    }
+}
+
+.axiom {
+    @keyframes highlight-ticket {
+        to {
+            background-color: var(--elevation-neutral-default);
         }
     }
 }

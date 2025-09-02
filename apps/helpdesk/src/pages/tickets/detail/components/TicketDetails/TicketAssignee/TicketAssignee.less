@@ -21,7 +21,7 @@
     }
 
     .assigneeItem {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         margin-bottom: 5px;
         position: relative;
 
@@ -43,12 +43,22 @@
     }
 
     .menu {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         width: 260px;
         z-index: 1051;
     }
 
     .dropdown {
         align-self: start;
+    }
+}
+
+.axiom :local {
+    .assigneeItem {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .menu {
+        background-color: var(--elevation-overlay-default);
     }
 }

@@ -11,7 +11,7 @@
 
     .menu {
         border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0 2px 4px
             hsla(
                 var(--neutral-grey-6-h),
@@ -40,5 +40,11 @@
         .ticket-message:not(:hover) &:not([aria-expanded='true']) {
             display: none;
         }
+    }
+}
+
+.axiom :local {
+    .menu {
+        background: var(--elevation-neutral-default);
     }
 }
