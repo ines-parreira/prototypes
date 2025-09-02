@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
@@ -22,6 +23,8 @@ import { ProductSelectField, TestSMSField } from './fields'
 
 import css from './Activation.less'
 
+const TEST_SMS_NUMBER_KEY = 'ai-journey-test-sms-number'
+
 type ActivationProps = {
     // Allow to override the delay for sending the SMS
     // This is useful for testing purposes
@@ -33,7 +36,10 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const [isVisible, setIsVisible] = useState(true)
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-    const [testSmsNumber, setTestSmsNumber] = useState('')
+    const [testSmsNumber, setTestSmsNumber] = useLocalStorage<string>(
+        TEST_SMS_NUMBER_KEY,
+        '',
+    )
 
     const {
         journey: abandonedCartJourney,

@@ -519,6 +519,7 @@ describe('<Activation />', () => {
             const button = screen.getByText('Send test SMS')
 
             await act(async () => {
+                await userEvent.clear(input)
                 await userEvent.type(input, '1234567890')
                 expect(button).toBeEnabled()
                 await userEvent.click(button)
