@@ -127,6 +127,7 @@ export enum AIAgentPaywallFeatures {
     Automate = 'Automate',
     SalesWaitlist = 'SalesWaitlist',
     SalesSetup = 'SalesSetup',
+    TrialSetup = 'TrialSetup',
     Upgrade = 'Upgrade',
 }
 

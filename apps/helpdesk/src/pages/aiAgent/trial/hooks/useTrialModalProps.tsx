@@ -58,6 +58,12 @@ export const EXTERNAL_URLS = {
         'https://www.gorgias.com/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
     AI_AGENT_TRIAL_BOOK_DEMO:
         'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
+    SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL:
+        'https://www.gorgias.com/ai-agent/shopping-assistant?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+    AI_AGENT_TRIAL_LEARN_MORE_PAYWALL:
+        'https://www.gorgias.com/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+    BOOK_DEMO_PAYWALL:
+        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
 } as const
 
 export const SHOPPING_ASSISTANT_ADVANTAGES = [

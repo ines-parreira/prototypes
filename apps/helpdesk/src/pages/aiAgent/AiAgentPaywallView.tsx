@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Button } from '@gorgias/axiom'
 
 import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.png'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'
 import { usePaywallConfig } from 'pages/aiAgent/hooks/usePaywallConfig'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
@@ -78,8 +78,7 @@ export const AiAgentPaywallView = ({
         )
 
     const hasAccessToROICalculator =
-        useFlags()[FeatureFlagKey.ObservabilityROICalculator] &&
-        showRoiCalculator
+        useFlag(FeatureFlagKey.ObservabilityROICalculator) && showRoiCalculator
 
     const [showROICalculatorStep, setShowROICalculatorStep] = useState(false)
 

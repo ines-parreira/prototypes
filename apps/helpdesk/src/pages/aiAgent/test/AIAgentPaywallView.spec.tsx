@@ -1,14 +1,14 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { userEvent } from '@repo/testing'
+import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import {
     HELPDESK_PRODUCT_ID,
@@ -17,26 +17,32 @@ import {
 } from 'fixtures/productPrices'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
+import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
+import { useStoreActivations } from '../Activation/hooks/useStoreActivations'
 import {
     AiAgentPaywallView,
     AiAgentPaywallViewProps,
 } from '../AiAgentPaywallView'
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('common/segment')
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useTheme: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+const mockUseStoreActivations = assumeMock(useStoreActivations)
+
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
 const queryClient = mockQueryClient()
+const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
 const defaultState = {
     integrations: fromJS({
@@ -78,6 +84,27 @@ describe('<AiAgentPaywallView />', () => {
             resolvedName: THEME_NAME.Light,
             tokens: {} as any,
         })
+        mockUseStoreActivations.mockReturnValue({
+            storeActivations: {
+                'test-shop': {
+                    configuration: {
+                        monitoredChatIntegrations: [2],
+                    },
+                    support: {
+                        chat: {
+                            isIntegrationMissing: false,
+                        },
+                    },
+                    sales: {
+                        enabled: true,
+                    },
+                },
+            },
+            isFetchLoading: false,
+        } as unknown as ReturnType<typeof useStoreActivations>)
+        useStoreConfigurationsMock.mockReturnValue({
+            storeConfigurations: [],
+        } as any)
     })
 
     it('should render the sales paywall component', () => {
@@ -107,7 +134,7 @@ describe('<AiAgentPaywallView />', () => {
     it('changes image to Sales when the corresponding option is selected', async () => {
         renderComponent()
 
-        await userEvent.click(screen.getByText('Shopping Assistant'))
+        userEvent.click(screen.getByText('Sales'))
 
         expect(screen.getAllByRole('radio')[1]).toBeChecked()
     })
@@ -149,8 +176,11 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('displays ROI Calculator button when feature flag is enabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityROICalculator]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
+                return true
+            }
+            return false
         })
         renderComponent({
             aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,
@@ -162,8 +192,11 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('opens ROI Calculator modal on button click', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityROICalculator]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
+                return true
+            }
+            return false
         })
 
         renderComponent({
@@ -177,8 +210,11 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('closes ROI Calculator modal on click of the cancel button', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityROICalculator]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
+                return true
+            }
+            return false
         })
 
         renderComponent({

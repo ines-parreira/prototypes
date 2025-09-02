@@ -1,14 +1,15 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory, History } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -17,6 +18,7 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import {
@@ -61,9 +63,14 @@ jest.mock('common/segment', () => ({
     },
 }))
 
-mockFlags({
-    [FeatureFlagKey.AiAgentOnboardingWizard]: false,
-})
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
+    useTrialAccess: jest.fn(),
+}))
+const mockUseTrialAccess = require('pages/aiAgent/trial/hooks/useTrialAccess')
+    .useTrialAccess as jest.MockedFunction<any>
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -74,6 +81,7 @@ const defaultState = {
 } as RootState
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+const queryClient = mockQueryClient()
 
 const defaultProps = {
     accountDomain: 'my-account-domain',
@@ -86,9 +94,11 @@ const renderWithProvider = (
     history?: History,
 ) => {
     renderWithRouter(
-        <Provider store={mockStore(defaultState)}>
-            <AIAgentWelcomePageView {...defaultProps} {...props} />
-        </Provider>,
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(defaultState)}>
+                <AIAgentWelcomePageView {...defaultProps} {...props} />
+            </Provider>
+        </QueryClientProvider>,
         { history },
     )
 }
@@ -97,9 +107,29 @@ describe('<AIAgentWelcomePageView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         jest.resetModules()
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizard]: false,
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiAgentOnboardingWizard) {
+                return false
+            }
+            if (flag === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                return true
+            }
+            return false
+        })
+
+        mockUseTrialAccess.mockReturnValue({
+            hasAnyTrialStarted: false,
+            hasAnyTrialActive: false,
+            hasAnyTrialExpired: false,
+            hasAnyTrialOptedIn: false,
+            hasAnyTrialOptedOut: false,
+            canSeeTrialCTA: false,
+            isAdminUser: false,
+            canBookDemo: false,
+            canNotifyAdmin: false,
+
+            currentAutomatePlan: null,
+            trialType: 'aiAgent',
         })
     })
 
@@ -121,22 +151,17 @@ describe('<AIAgentWelcomePageView />', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Stay available 24\/7 across chat, email, and more — without extra headcount/,
+                /Leads customers to fast resolutions in seconds, not hours./,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Automate FAQs and order updates so your team can focus on high-impact work/,
+                /Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets./,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Convert more with tailored product recommendations and smart discounts based on real-time data/,
-            ),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /Train the AI to match your brand voice, policies, and sales strategy/,
+                /Offers tailored discounts and product recommendations to drive personalized shopping experiences./,
             ),
         ).toBeInTheDocument()
         expect(screen.getByText(/AI Agent Skills/)).toBeInTheDocument()
@@ -213,8 +238,11 @@ describe('<AIAgentWelcomePageView />', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        mockFlags({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                return true
+            }
+            return false
         })
 
         renderWithProvider({}, history)
@@ -235,8 +263,11 @@ describe('<AIAgentWelcomePageView />', () => {
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        mockFlags({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                return true
+            }
+            return false
         })
 
         renderWithProvider({}, history)

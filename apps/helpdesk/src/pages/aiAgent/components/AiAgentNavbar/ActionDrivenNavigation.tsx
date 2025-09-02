@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
+import { useFlag } from 'core/flags'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
     aiAgentRoutes,
@@ -14,6 +14,7 @@ import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
@@ -34,15 +35,29 @@ export const ActionDrivenNavigation = () => {
         handleExpandedSectionsChange,
     } = useActionDrivenNavbarSections()
 
+    const {
+        hasCurrentStoreTrialOptedOut,
+        hasCurrentStoreTrialExpired,
+        hasCurrentStoreTrialStarted,
+    } = useTrialAccess(selectedStore)
+
     const onboardingState = useAiAgentOnboardingState(selectedStore || '')
     const isOnboarded = onboardingState === OnboardingState.Onboarded
-    const flags = useFlags()
-    const isActionsInternalPlatformEnabled =
-        !!flags[FeatureFlagKey.ActionsInternalPlatform]
+    const isActionsInternalPlatformEnabled = useFlag(
+        FeatureFlagKey.ActionsInternalPlatform,
+    )
     const isActive =
         !!selectedStore &&
         !!getStoreActivationStatus &&
         getStoreActivationStatus(selectedStore)
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
+    const hasTrial =
+        hasCurrentStoreTrialStarted ||
+        hasCurrentStoreTrialExpired ||
+        hasCurrentStoreTrialOptedOut
 
     return (
         <Navigation.Root
@@ -95,7 +110,10 @@ export const ActionDrivenNavigation = () => {
                         exact
                         displayType="indent"
                     >
-                        Get Started
+                        {!isAiAgentExpandingTrialExperienceForAllEnabled ||
+                        hasTrial
+                            ? 'Get Started'
+                            : 'Try for free'}
                     </Navigation.SectionItem>
                 )}
 

@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Redirect } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
@@ -25,8 +25,11 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify),
     )
-    const hasAiAgentPreview =
-        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
+    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
+
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
 
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
@@ -41,7 +44,11 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
         )
 
     if (
-        !(hasAiAgentPreview || hasAutomate) ||
+        !(
+            hasAiAgentPreview ||
+            hasAutomate ||
+            isAiAgentExpandingTrialExperienceForAllEnabled
+        ) ||
         accountConfigRetrievalStatus === 'error'
     ) {
         return <Redirect to="/app/automation" />

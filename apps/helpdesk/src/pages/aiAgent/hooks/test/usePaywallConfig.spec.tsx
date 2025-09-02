@@ -33,18 +33,17 @@ describe('usePaywallConfig', () => {
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'Additional automation features: Flows with logic to answer FAQs, etc.',
             ],
             toggleElements: [
                 {
-                    title: 'Support Agent',
+                    title: 'Support',
                     contentSrc: assetsUrl(
                         '/video/ai-agent_paywall_support.mp4',
                     ),
                     type: 'video',
                 },
                 {
-                    title: 'Shopping Assistant',
+                    title: 'Sales',
                     contentSrc: SalesStrategy,
                     type: 'image',
                 },
@@ -107,21 +106,56 @@ describe('usePaywallConfig', () => {
             subtitle:
                 'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
             descriptions: [
-                'Stay available 24/7 across chat, email, and more — without extra headcount',
-                'Automate FAQs and order updates so your team can focus on high-impact work',
-                'Convert more with tailored product recommendations and smart discounts based on real-time data',
-                'Train the AI to match your brand voice, policies, and sales strategy',
+                'Leads customers to fast resolutions in seconds, not hours.',
+                'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
             ],
             toggleElements: [
                 {
-                    title: 'Support Agent',
+                    title: 'Support',
                     contentSrc: assetsUrl(
                         '/video/ai-agent_paywall_support.mp4',
                     ),
                     type: 'video',
                 },
                 {
-                    title: 'Shopping Assistant',
+                    title: 'Sales',
+                    contentSrc: SalesStrategy,
+                    type: 'image',
+                },
+            ],
+            contentSubtitle: 'AI Agent Skills',
+            hideLearnMore: false,
+            showRoiCalculator: false,
+        }
+
+        expect(result.current).toEqual(expectedConfig)
+    })
+
+    it('should return the correct config for AIAgentPaywallFeatures.TrialSetup', () => {
+        const { result } = renderHook(() =>
+            usePaywallConfig(AIAgentPaywallFeatures.TrialSetup),
+        )
+
+        const expectedConfig: PaywallFeature = {
+            title: '',
+            subtitle:
+                'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
+            descriptions: [
+                'Leads customers to fast resolutions in seconds, not hours.',
+                'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
+            ],
+            toggleElements: [
+                {
+                    title: 'Support',
+                    contentSrc: assetsUrl(
+                        '/video/ai-agent_paywall_support.mp4',
+                    ),
+                    type: 'video',
+                },
+                {
+                    title: 'Sales',
                     contentSrc: SalesStrategy,
                     type: 'image',
                 },
@@ -147,18 +181,17 @@ describe('usePaywallConfig', () => {
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                 'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                'Additional automation features: Flows with logic to answer FAQs, etc.',
             ],
             toggleElements: [
                 {
-                    title: 'Support Agent',
+                    title: 'Support',
                     contentSrc: assetsUrl(
                         '/video/ai-agent_paywall_support.mp4',
                     ),
                     type: 'video',
                 },
                 {
-                    title: 'Shopping Assistant',
+                    title: 'Sales',
                     contentSrc: SalesStrategy,
                     type: 'image',
                 },

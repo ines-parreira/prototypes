@@ -1,6 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import DynamicDiscount from 'assets/img/ai-agent/ai-agent_paywall_dynamic-discount.png'
 import ProductRecommendations from 'assets/img/ai-agent/ai-agent_paywall_product-recommendations.png'
 import SalesStrategy from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.png'
+import { useFlag } from 'core/flags'
 import type { ToggleElement } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { assetsUrl } from 'utils'
@@ -18,6 +21,10 @@ export type PaywallFeature = {
 export const usePaywallConfig = (
     aiAgentPaywallFeature: AIAgentPaywallFeatures,
 ): PaywallFeature => {
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
     switch (aiAgentPaywallFeature) {
         case AIAgentPaywallFeatures.Automate:
         default:
@@ -29,25 +36,25 @@ export const usePaywallConfig = (
                     'Leads customers to fast resolutions in seconds, not hours.',
                     'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
                     'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-                    'Additional automation features: Flows with logic to answer FAQs, etc.',
                 ],
                 toggleElements: [
                     {
-                        title: 'Support Agent',
+                        title: 'Support',
                         contentSrc: assetsUrl(
                             '/video/ai-agent_paywall_support.mp4',
                         ),
                         type: 'video',
                     },
                     {
-                        title: 'Shopping Assistant',
+                        title: 'Sales',
                         contentSrc: SalesStrategy,
                         type: 'image',
                     },
                 ],
                 contentSubtitle: 'AI Agent Skills',
                 hideLearnMore: false,
-                showRoiCalculator: true,
+                showRoiCalculator:
+                    !isAiAgentExpandingTrialExperienceForAllEnabled,
             }
         case AIAgentPaywallFeatures.SalesWaitlist:
             return {
@@ -87,21 +94,48 @@ export const usePaywallConfig = (
                 subtitle:
                     'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
                 descriptions: [
-                    'Stay available 24/7 across chat, email, and more — without extra headcount',
-                    'Automate FAQs and order updates so your team can focus on high-impact work',
-                    'Convert more with tailored product recommendations and smart discounts based on real-time data',
-                    'Train the AI to match your brand voice, policies, and sales strategy',
+                    'Leads customers to fast resolutions in seconds, not hours.',
+                    'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                    'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
                 ],
                 toggleElements: [
                     {
-                        title: 'Support Agent',
+                        title: 'Support',
                         contentSrc: assetsUrl(
                             '/video/ai-agent_paywall_support.mp4',
                         ),
                         type: 'video',
                     },
                     {
-                        title: 'Shopping Assistant',
+                        title: 'Sales',
+                        contentSrc: SalesStrategy,
+                        type: 'image',
+                    },
+                ],
+                contentSubtitle: 'AI Agent Skills',
+                hideLearnMore: false,
+                showRoiCalculator: false,
+            }
+        case AIAgentPaywallFeatures.TrialSetup:
+            return {
+                title: '',
+                subtitle:
+                    'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
+                descriptions: [
+                    'Leads customers to fast resolutions in seconds, not hours.',
+                    'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                    'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
+                ],
+                toggleElements: [
+                    {
+                        title: 'Support',
+                        contentSrc: assetsUrl(
+                            '/video/ai-agent_paywall_support.mp4',
+                        ),
+                        type: 'video',
+                    },
+                    {
+                        title: 'Sales',
                         contentSrc: SalesStrategy,
                         type: 'image',
                     },

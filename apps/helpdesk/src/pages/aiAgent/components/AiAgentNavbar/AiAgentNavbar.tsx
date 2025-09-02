@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { ActiveContent, Navbar } from 'common/navigation'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
@@ -15,12 +15,19 @@ import css from './AiAgentNavbar.less'
 
 export const AiAgentNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const hasAiAgentPreview =
-        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
+    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
+
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     if (
-        (!hasAutomate && !hasAiAgentPreview) ||
+        !(
+            hasAutomate ||
+            hasAiAgentPreview ||
+            isAiAgentExpandingTrialExperienceForAllEnabled
+        ) ||
         storeIntegrations.length === 0
     ) {
         return <Navbar activeContent={ActiveContent.AiAgent} title="AI Agent" />

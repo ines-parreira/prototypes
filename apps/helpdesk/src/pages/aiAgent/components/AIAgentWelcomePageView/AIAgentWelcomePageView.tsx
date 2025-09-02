@@ -1,23 +1,35 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
-
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import {
+    EXTERNAL_URLS,
+    useTrialModalProps,
+} from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+
+import { useAiAgentCtas } from '../ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 
 export type DynamicItem = {
     checked: boolean
@@ -42,13 +54,39 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({ shopName: props.shopName })
 
+    const trialAccess = useTrialAccess(props.shopName)
+
+    const trialModalProps = useTrialModalProps({
+        storeName: props.shopName,
+    })
+
+    const { storeActivations } = useStoreActivations({
+        storeName: props.shopName,
+        withChatIntegrationsStatus: true,
+        withStoresKnowledgeStatus: true,
+    })
+
+    const trialFlow = useShoppingAssistantTrialFlow({
+        accountDomain: props.accountDomain,
+        storeActivations,
+        trialType: trialAccess.trialType,
+    })
+
     const history = useHistory()
     const sameVisitRef = useRef(false)
+
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
 
     const isOnUpdateOnboardingWizard =
         props.storeConfiguration?.wizard?.completedDatetime === null
 
     const aiAgentNavigation = useAiAgentNavigation({ shopName: props.shopName })
+
     const handleOnFinishSetupNotification = useCallback(async () => {
         const isFinishedSetupNotificationAlreadyReceived =
             !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
@@ -87,6 +125,11 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             shopName: props.shopName,
         })
     })
+
+    const { isDisabled: isNotifyAdminDisabled } = useNotifyAdmins(
+        props.shopName,
+        trialAccess.trialType,
+    )
 
     const onOnboardingWizardClick = useCallback(() => {
         if (isAdmin) {
@@ -208,21 +251,65 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isLoadingOnboardingNotificationState,
     ])
 
+    const paywallFeature = isAiAgentExpandingTrialExperienceForAllEnabled
+        ? AIAgentPaywallFeatures.TrialSetup
+        : AIAgentPaywallFeatures.SalesSetup
+
+    const isBackwardCompatOrAutomatePlan =
+        !isAiAgentExpandingTrialExperienceForAllEnabled ||
+        !!trialAccess.currentAutomatePlan
+
+    const isDuringOrAfterTrial =
+        trialAccess.hasCurrentStoreTrialStarted ||
+        trialAccess.hasCurrentStoreTrialExpired ||
+        trialAccess.hasCurrentStoreTrialOptedOut
+
+    const canBookDemo = trialAccess.canBookDemo
+    const canNotifyAdmin = trialAccess.canNotifyAdmin
+    const canSeeTrial = trialAccess.canSeeTrialCTA
+
+    const learnMoreUrl =
+        trialAccess.trialType === TrialType.AiAgent
+            ? EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
+            : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
+
+    const { ctas, modals, afterCtas } = useAiAgentCtas({
+        isBackwardCompatOrAutomatePlan,
+        isDuringOrAfterTrial,
+        canBookDemo,
+        canNotifyAdmin,
+        canSeeTrial,
+        isAdmin,
+        learnMoreUrl,
+
+        onOpenWizard: onOnboardingWizardClick,
+        onOpenSubscribeModal: () => setIsAutomationModalOpened(true),
+        onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,
+        onOpenTrialRequestModal: trialFlow.openTrialRequestModal,
+        onCloseTrialRequestModal: trialFlow.closeTrialRequestModal,
+        isNotifyAdminDisabled,
+        trialModals: {
+            isTrialModalOpen: trialFlow.isTrialModalOpen,
+            newTrialUpgradePlanModal: trialModalProps.newTrialUpgradePlanModal,
+            isTrialRequestModalOpen: trialFlow.isTrialRequestModalOpen,
+            trialRequestModal: trialModalProps.trialRequestModal,
+        },
+
+        showAutoAwesomeIcon: !isAiAgentExpandingTrialExperienceForAllEnabled,
+        isOnUpdateOnboardingWizard,
+    })
+
     return (
-        <AiAgentPaywallView
-            aiAgentPaywallFeature={AIAgentPaywallFeatures.SalesSetup}
-        >
-            <Button
-                intent="primary"
-                size="medium"
-                onClick={onOnboardingWizardClick}
-                trailingIcon="auto_awesome"
-            >
-                {isOnUpdateOnboardingWizard
-                    ? 'Continue Setup'
-                    : 'Set Up AI Agent'}
-            </Button>
-            <div data-candu-id="ai-agent-welcome-page" />
+        <AiAgentPaywallView aiAgentPaywallFeature={paywallFeature}>
+            {ctas}
+            {afterCtas}
+            {modals}
+
+            <AutomateSubscriptionModal
+                confirmLabel="Subscribe"
+                isOpen={isAutomationModalOpened}
+                onClose={() => setIsAutomationModalOpened(false)}
+            />
         </AiAgentPaywallView>
     )
 }

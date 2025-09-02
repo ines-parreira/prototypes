@@ -3,19 +3,19 @@ import React from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
 
 import { IntegrationType } from 'models/integration/constants'
 import { StoreIntegration } from 'models/integration/types'
 
 import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(() => ({})),
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => ({})),
 }))
-
-const mockUseFlags = jest.requireMock('launchdarkly-react-client-sdk')
-    .useFlags as jest.Mock
+const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock
 
 jest.mock('../useActionDrivenNavbarSections', () => ({
     useActionDrivenNavbarSections: jest.fn(),
@@ -52,6 +52,7 @@ jest.mock('pages/common/components/StoreSelector/StoreSelector', () => {
                         <div
                             key={integration.id}
                             role="option"
+                            aria-selected={selected?.id === integration.id}
                             onClick={() => {
                                 const integrationMatch = integrations.find(
                                     (i: any) => i.id === integration.id,
@@ -95,9 +96,37 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
     useAiAgentOnboardingState: jest.fn(() => 'onboarded'),
 }))
 
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
+    useTrialAccess: jest.fn(() => ({
+        hasAnyTrialOptedOut: false,
+        hasAnyTrialOptedIn: false,
+        hasAnyTrialActive: false,
+        hasAnyTrialExpired: false,
+        hasAnyTrialStarted: false,
+    })),
+}))
+
+// Mock useStoreConfigurations to prevent the error
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: jest.fn(() => ({
+        storeActivations: {},
+        isFetchLoading: false,
+    })),
+    useStoreConfigurations: jest.fn(() => ({
+        storeConfigurations: [],
+        storeNames: [],
+        isLoading: false,
+    })),
+}))
+
 const mockedOnboardingHook = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentOnboardingState',
 ).useAiAgentOnboardingState as jest.Mock
+
+// We don't need to reference this mock since we're not changing its behavior in tests
+const __mockedTrialAccessHook = jest.requireMock(
+    'pages/aiAgent/trial/hooks/useTrialAccess',
+).useTrialAccess as jest.Mock
 
 const mockShopifyIntegration: StoreIntegration = {
     id: 1,
@@ -149,7 +178,7 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlags.mockReturnValue({})
+        mockUseFlag.mockReturnValue({})
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
@@ -167,11 +196,17 @@ describe('ActionDrivenNavigation', () => {
         })
     })
 
+    const mockStore = configureMockStore()
+    const initialState = {}
+
     const renderComponent = () => {
+        const store = mockStore(initialState)
         return render(
-            <MemoryRouter>
-                <ActionDrivenNavigation />
-            </MemoryRouter>,
+            <Provider store={store}>
+                <MemoryRouter>
+                    <ActionDrivenNavigation />
+                </MemoryRouter>
+            </Provider>,
         )
     }
 
@@ -191,7 +226,7 @@ describe('ActionDrivenNavigation', () => {
     })
 
     it('renders Actions platform link when flag enabled', () => {
-        mockUseFlags.mockReturnValue({
+        mockUseFlag.mockReturnValue({
             [FeatureFlagKey.ActionsInternalPlatform]: true,
         })
 
@@ -210,7 +245,7 @@ describe('ActionDrivenNavigation', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Get Started')).toBeInTheDocument()
+        expect(screen.getByText('Try for free')).toBeInTheDocument()
         expect(screen.queryByText('Overview')).not.toBeInTheDocument()
         expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
     })
