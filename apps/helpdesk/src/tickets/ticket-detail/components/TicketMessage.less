@@ -4,7 +4,7 @@
         padding: var(--layout-spacing-xs) var(--layout-spacing-m);
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
         &:not(.minimal) {
             display: flex;
@@ -73,6 +73,14 @@
     .ai {
         &:hover {
             background: #312c33;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        &:hover {
+            background-color: var(--hover-default);
         }
     }
 }

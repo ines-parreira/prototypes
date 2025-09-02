@@ -29,7 +29,7 @@
 
         &.disabled {
             cursor: not-allowed;
-            background-color: var(--neutral-grey-5);
+            background-color: var(--neutral-grey-5); // legacy
         }
 
         &.active {
@@ -59,7 +59,7 @@
         }
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         @media @mobiles {
@@ -70,7 +70,7 @@
     .mask {
         width: 20px;
         height: 20px;
-        background-color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-5); // legacy
         -webkit-mask-image: url(../assets/dock_to_right.svg);
         mask-image: url(../assets/dock_to_right.svg);
         -webkit-mask-repeat: no-repeat;
@@ -80,7 +80,7 @@
         -webkit-mask-position: center;
 
         &.disabled {
-            background-color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-4); // legacy
         }
 
         &.active {
@@ -100,6 +100,20 @@
 
         &.disabled {
             background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .showGlobalNavToggle {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .mask {
+        background-color: var(--elevation-neutral-default);
+
+        &.disabled {
+            background-color: var(--elevation-neutral-mid);
         }
     }
 }

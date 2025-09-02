@@ -38,11 +38,11 @@
         cursor: pointer;
         overflow: hidden;
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         &.selected {
-            background-color: var(--main-primary-0);
+            background-color: var(--main-primary-0); // legacy
         }
 
         .sortItemContent {
@@ -70,5 +70,13 @@
 .axiom :local {
     .sortItem {
         border-color: var(--border-neutral-default);
+
+        &:hover {
+            background-color: var(--hover-default);
+        }
+
+        &.selected {
+            background-color: var(--elevation-neutral-bg);
+        }
     }
 }
