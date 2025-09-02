@@ -9,6 +9,7 @@ import { assetsUrl } from 'utils'
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { SALES } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { DoNotRecommendTagBanner } from './components/DoNotRecommendTagBanner'
 
 import css from './AiAgentProductRecommendations.less'
 
@@ -108,6 +109,8 @@ export const AiAgentProductRecommendations = () => {
                     )}
                 </div>
             </div>
+
+            <DoNotRecommendTagBanner />
         </AiAgentLayout>
     )
 }

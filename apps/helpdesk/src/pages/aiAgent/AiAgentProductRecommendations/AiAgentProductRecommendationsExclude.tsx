@@ -11,6 +11,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCT_RECOMMENDATIONS, SALES } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { DoNotRecommendTagBanner } from './components/DoNotRecommendTagBanner'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
@@ -96,6 +97,8 @@ export const AiAgentProductRecommendationsExclude = () => {
                     Back to {PRODUCT_RECOMMENDATIONS}
                 </Button>
             </Link>
+
+            <DoNotRecommendTagBanner />
 
             <ProductRecommendationRuleCard
                 type="exclude"
