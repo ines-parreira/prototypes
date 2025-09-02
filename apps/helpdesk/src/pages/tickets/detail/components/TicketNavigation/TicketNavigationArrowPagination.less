@@ -6,7 +6,7 @@
         height: 24px;
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
@@ -18,7 +18,19 @@
     .separator {
         width: 1px;
         height: 18px;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         margin: 0 var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .paginationItemWrapper {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .separator {
+        background-color: var(--elevation-neutral-mid);
     }
 }

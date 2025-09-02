@@ -42,7 +42,7 @@
 
     .divider {
         height: 1px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         margin: var(--layout-spacing-xs) 0;
     }
 
@@ -52,17 +52,17 @@
 
     .popover {
         padding: 0;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         gap: var(--layout-spacing-xs);
     }
 
     .popoverHeader {
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         .body-semibold();
         border-bottom-width: 1px;
         border-bottom-style: solid;
-        border-bottom-color: var(--neutral-grey-2);
+        border-bottom-color: var(--neutral-grey-2); // legacy
     }
 
     .popoverBody {
@@ -71,5 +71,20 @@
 
     .popoverFooter {
         margin: 0 var(--layout-spacing-s) var(--layout-spacing-s) 0;
+    }
+}
+
+.axiom :local {
+    .divider {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .popover {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .popoverHeader {
+        background-color: var(--elevation-neutral-default);
+        border-bottom-color: var(--border-neutral-default);
     }
 }

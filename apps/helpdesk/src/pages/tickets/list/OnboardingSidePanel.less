@@ -15,7 +15,7 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        background-color: var(--main-primary-0);
+        background-color: var(--main-primary-0); // legacy
     }
 
     h1 {
@@ -32,7 +32,7 @@
             justify-content: flex-start;
             align-items: center;
             border-radius: 3px;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             border: 1px solid #f0f0f0;
             height: 60px;
             padding: 0 16px;
@@ -64,10 +64,10 @@
         width: 100%;
         padding: 30px;
         text-align: center;
-        background-color: var(--main-primary-0);
+        background-color: var(--main-primary-0); // legacy
         .button {
             &:hover {
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
             }
         }
     }
@@ -75,6 +75,38 @@
 
 :global(.globalNav) :local {
     .container {
-        border-left: 1px solid var(--neutral-grey-2);
+        border-left: 1px solid var(--neutral-grey-2); // legacy
+    }
+}
+
+.axiom :local {
+    .content {
+        background-color: var(--elevation-neutral-bg);
+    }
+
+    .buttons {
+        .button {
+            background-color: var(--elevation-neutral-default);
+
+            &:hover {
+                background-color: var(--hover-default);
+            }
+        }
+    }
+
+    .bottom {
+        background-color: var(--elevation-neutral-bg);
+
+        .button {
+            &:hover {
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+    }
+}
+
+.axiom :global(.globalNav) :local {
+    .container {
+        border-left: 1px solid var(--border-neutral-default);
     }
 }

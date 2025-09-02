@@ -29,7 +29,7 @@
         max-height: 100%;
         background-color: var(--neutral-grey-0); // legacy
 
-        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-2);
+        scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-2); // legacy
         scrollbar-width: thin;
 
         &::-webkit-scrollbar-thumb {
@@ -37,11 +37,11 @@
         }
 
         &::-webkit-scrollbar-track {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         .separator {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
 
         .ticketContent {
@@ -71,7 +71,7 @@
         display: flex;
         flex-direction: column;
         flex-grow: 100;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         box-shadow: inset 0 -2px 2px
             hsla(
                 var(--neutral-grey-6-h),
@@ -89,8 +89,8 @@
         padding: 0 var(--layout-spacing-s);
         height: 52px;
         .heading-subsection-semibold();
-        background: var(--neutral-grey-1);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-1); // legacy
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         &.rounded {
             border-top-left-radius: 8px;
@@ -111,7 +111,7 @@
         box-sizing: border-box;
         height: calc(100% - calc(var(--layout-spacing-xs) * 2));
         width: 500px;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         padding-bottom: var(--layout-spacing-xs);
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     }
@@ -139,5 +139,18 @@
         .separator {
             border-bottom: 1px solid var(--border-neutral-default);
         }
+    }
+
+    .timeline {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .timelineHeader {
+        background: var(--elevation-neutral-mid);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .timelineDrawer {
+        background: var(--elevation-neutral-mid);
     }
 }

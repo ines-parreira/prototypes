@@ -1,7 +1,7 @@
 :local {
     .widgets {
         display: flex;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
 
         .ticket-message:not(:hover) & {
             visibility: hidden;
@@ -15,7 +15,7 @@
             z-index: 100;
             border: 1px solid var(--neutral-grey-3);
             border-radius: 8px;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
             gap: var(--layout-spacing-xxs);
             padding: var(--layout-spacing-xxs);
@@ -45,12 +45,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             border: none;
             margin-right: 0;
 
             &:hover {
-                background: var(--neutral-grey-2);
+                background: var(--neutral-grey-2); // legacy
             }
         }
     }
@@ -63,5 +63,25 @@
         width: 26px;
         line-height: 24px;
         margin-right: 5px;
+    }
+}
+
+.axiom :local {
+    .widgets {
+        background: var(--elevation-neutral-mid);
+
+        &.hasMessageTranslation {
+            background: var(--elevation-neutral-default);
+        }
+    }
+
+    .actionButton {
+        &.hasMessageTranslation {
+            background: var(--elevation-neutral-default);
+
+            &:hover {
+                background: var(--hover-default);
+            }
+        }
     }
 }

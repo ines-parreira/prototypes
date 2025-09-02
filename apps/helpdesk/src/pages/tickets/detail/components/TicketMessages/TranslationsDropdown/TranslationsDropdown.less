@@ -10,11 +10,11 @@
             height: 24px;
             padding: 0;
             border-radius: 4px;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             border: none;
 
             &:hover {
-                background: var(--neutral-grey-2);
+                background: var(--neutral-grey-2); // legacy
             }
         }
 
@@ -31,7 +31,7 @@
             min-width: 240px;
             border-radius: 8px;
             border: 1px solid var(--neutral-grey-0);
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
         }
 
         .translationsList {
@@ -75,7 +75,7 @@
             }
 
             &:hover {
-                background-color: var(--neutral-grey-2);
+                background-color: var(--neutral-grey-2); // legacy
             }
 
             .translationsItemContent {
@@ -96,6 +96,28 @@
                 justify-content: center;
                 align-items: center;
                 margin-right: var(--layout-spacing-xxs);
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .dropdown {
+        .dropdownToggle {
+            background: var(--elevation-neutral-default);
+
+            &:hover {
+                background: var(--hover-default);
+            }
+        }
+
+        .menuWrapper {
+            background: var(--elevation-neutral-default);
+        }
+
+        .translationsItem {
+            &:hover {
+                background-color: var(--hover-default);
             }
         }
     }

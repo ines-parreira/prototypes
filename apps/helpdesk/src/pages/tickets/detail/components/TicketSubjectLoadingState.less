@@ -5,11 +5,19 @@
         .skeletonSubject {
             height: 32px;
             width: 100%;
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             border-radius: 4px;
             :global {
                 animation: animate-pulse 2s infinite;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .skeleton {
+        .skeletonSubject {
+            background-color: var(--elevation-neutral-mid);
         }
     }
 }
