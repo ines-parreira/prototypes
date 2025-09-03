@@ -563,9 +563,6 @@ describe('AiAgentReasoning', () => {
             fireEvent.click(showReasoningButton)
 
             expect(screen.getByText('Loading reasoning...')).toBeInTheDocument()
-            expect(document.querySelector('.material-icons')).toHaveTextContent(
-                'auto_awesome',
-            )
         })
 
         it('should transition to expanded state after loading timer', () => {

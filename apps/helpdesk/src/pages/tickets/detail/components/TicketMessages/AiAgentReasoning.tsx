@@ -306,20 +306,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const renderTitle = () => {
         if (isLoading) {
             return (
-                <>
-                    <i
-                        className={classNames(
-                            'material-icons',
-                            css.sparklesIcon,
-                            css.loading,
-                        )}
-                    >
-                        auto_awesome
-                    </i>
-                    <span className={classNames(css.text, css.loading)}>
-                        Loading reasoning...
-                    </span>
-                </>
+                <span className={classNames(css.text, css.loading)}>
+                    Loading reasoning...
+                </span>
             )
         }
 
