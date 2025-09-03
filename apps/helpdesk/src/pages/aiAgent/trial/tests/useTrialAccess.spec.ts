@@ -539,7 +539,7 @@ describe('useTrialAccess', () => {
     })
 
     describe('when trial history exists', () => {
-        it('should not show trial CTA when trial has expired', () => {
+        it('should not show trial CTA when current store trial has expired', () => {
             // Set up store configuration with expired trial
             const storeConfigWithExpiredTrial = getStoreConfigurationFixture({
                 storeName: 'Test Store',
@@ -587,15 +587,17 @@ describe('useTrialAccess', () => {
                 activation: jest.fn(),
             })
 
-            const { result } = renderHook(() => useTrialAccess())
+            const { result } = renderHook(() => useTrialAccess('Test Store'))
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canSeeTrialCTA: false, // Trial CTA should not be shown
-                hasAiAgentEnabledInCurrentStore: undefined,
+                hasAiAgentEnabledInCurrentStore: true,
                 hasAnyTrialExpired: true, // Trial has expired
                 hasAnyTrialStarted: true,
                 hasAnyTrialOptedIn: true,
+                hasCurrentStoreTrialExpired: true,
+                hasCurrentStoreTrialStarted: true,
                 isAdminUser: true,
             })
         })

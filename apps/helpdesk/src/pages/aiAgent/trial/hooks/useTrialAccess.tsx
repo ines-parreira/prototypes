@@ -211,7 +211,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         !isLoading &&
             isAdminUser &&
             !hasCurrentStoreTrialStarted &&
-            !hasAnyTrialExpired &&
+            !hasCurrentStoreTrialExpired &&
             (isOnStarterOrBasicPlan ||
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )
