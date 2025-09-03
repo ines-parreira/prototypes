@@ -5,7 +5,7 @@
         align-items: flex-start;
         gap: var(--layout-spacing-xxs);
         border-radius: var(--layout-spacing-xs);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
 
         /* shadow/shadow-container */
         box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
@@ -22,5 +22,11 @@
             font-size: 20px;
             width: 16px;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
     }
 }

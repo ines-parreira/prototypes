@@ -6,21 +6,39 @@
 
     .normal {
         mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M12 9.333a.667.667 0 0 1 0 1.334H4a.667.667 0 0 1 0-1.334zm0-4a.667.667 0 0 1 0 1.334H4a.667.667 0 0 1 0-1.334z"/></svg>');
-        background-color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-5); // legacy
     }
 
     .low {
         mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M11.63 6.778a.667.667 0 0 1 .74 1.11l-4 2.667-.088.05a.67.67 0 0 1-.652-.05l-4-2.667-.104-.086a.666.666 0 0 1 .724-1.087l.12.063L8 9.2z"/></svg>');
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
     }
 
     .high {
         mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M7.718 5.396a.67.67 0 0 1 .652.05l4 2.666.104.086a.667.667 0 0 1-.724 1.087l-.12-.064L8 6.801 4.37 9.22a.667.667 0 1 1-.74-1.109l4-2.667z"/></svg>');
-        background-color: var(--feedback-warning-4);
+        background-color: var(--feedback-warning-4); // legacy
     }
 
     .critical {
         mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M7.718 7.396a.67.67 0 0 1 .652.05l4 2.666.104.086a.667.667 0 0 1-.724 1.087l-.12-.063L8 8.8l-3.63 2.42a.667.667 0 0 1-.74-1.109l4-2.667zm0-3.334a.67.67 0 0 1 .652.05l4 2.667.104.086a.666.666 0 0 1-.724 1.087l-.12-.063L8 5.468l-3.63 2.42a.667.667 0 0 1-.74-1.109l4-2.667z"/></svg>');
-        background-color: var(--feedback-error-4);
+        background-color: var(--feedback-error-4); // legacy
+    }
+}
+
+.axiom :local {
+    .normal {
+        background-color: var(--content-neutral-secondary);
+    }
+
+    .low {
+        background-color: var(--content-neutral-tertiary);
+    }
+
+    .high {
+        background-color: var(--static-warning);
+    }
+
+    .critical {
+        background-color: var(--static-error);
     }
 }

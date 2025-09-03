@@ -49,7 +49,7 @@
                     position: sticky;
                     left: 0;
                     z-index: 2;
-                    background-color: var(--neutral-grey-0);
+                    background-color: var(--neutral-grey-0); // legacy
                 }
             }
         }
@@ -80,7 +80,7 @@
                     left: 0;
                     z-index: 2;
 
-                    background-color: var(--neutral-grey-0);
+                    background-color: var(--neutral-grey-0); // legacy
                 }
             }
         }
@@ -94,5 +94,25 @@
 
     .noData {
         height: 324px;
+    }
+}
+
+.axiom :local {
+    .table {
+        .header {
+            th {
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+            }
+        }
+
+        tr {
+            td {
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+            }
+        }
     }
 }

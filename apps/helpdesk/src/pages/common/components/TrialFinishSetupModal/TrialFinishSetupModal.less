@@ -44,14 +44,14 @@
         flex-direction: row;
         justify-content: flex-end;
         gap: var(--layout-spacing-xxs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border: none;
     }
 
     .modalContent .actionsContainer .primaryActionButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
     }
 
     .featureContainer {
@@ -134,5 +134,17 @@
         border-radius: 15px;
         justify-content: center;
         border: 1px solid var(--neutral-grey-3);
+    }
+}
+
+.axiom :local {
+    .actionsContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .modalContent .actionsContainer .primaryActionButton {
+        background-color: var(--content-neutral-strong) !important;
+        color: var(--content-inverse-primary) !important;
+        border-color: var(--content-neutral-strong) !important;
     }
 }

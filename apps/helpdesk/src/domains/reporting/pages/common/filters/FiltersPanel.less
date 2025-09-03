@@ -8,7 +8,13 @@
     .divider {
         width: 1px;
         height: 24px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
         margin: 0 3px;
+    }
+}
+
+.axiom :local {
+    .divider {
+        background: var(--border-neutral-default);
     }
 }

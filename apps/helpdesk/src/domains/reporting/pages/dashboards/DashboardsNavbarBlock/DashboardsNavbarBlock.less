@@ -26,7 +26,7 @@
         position: relative;
         &:hover {
             border-radius: 8px;
-            background: var(--navigation-background-accent);
+            background: var(--navigation-background-accent); // legacy
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
 
@@ -35,7 +35,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--navigation-text-item) !important;
+            color: var(--navigation-text-item) !important; // legacy
             font-size: 16px;
             line-height: 20px;
             padding: 3px;
@@ -47,21 +47,25 @@
 
             > i {
                 font-size: 16px !important;
-                color: var(--navigation-text-item);
+                color: var(--navigation-text-item); // legacy
             }
 
             &:hover,
             &:focus {
-                background-color: var(--navbar-link-hover-background-color);
-                color: var(--navbar-block-toggle-hover-color) !important;
+                background-color: var(
+                    --navbar-link-hover-background-color
+                ); // legacy
+                color: var(
+                    --navbar-block-toggle-hover-color
+                ) !important; // legacy
                 box-shadow: unset;
             }
 
             &:active {
                 background-color: var(
                     --navbar-block-toggle-active-background-color
-                ) !important;
-                color: var(--navbar-block-toggle-active-color);
+                ) !important; // legacy
+                color: var(--navbar-block-toggle-active-color); // legacy
             }
         }
     }
@@ -79,7 +83,40 @@
         white-space: pre-line;
         text-align: center;
         &:hover {
-            background: var(--white);
+            background: var(--white); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .actionsContainer {
+        &:hover {
+            background: var(--hover-default);
+        }
+
+        .toggle {
+            color: var(--content-neutral-secondary) !important;
+
+            > i {
+                color: var(--content-neutral-secondary);
+            }
+
+            &:hover,
+            &:focus {
+                background-color: var(--hover-default);
+                color: var(--content-neutral-default) !important;
+            }
+
+            &:active {
+                background-color: var(--active-default) !important;
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .action {
+        &:hover {
+            background: var(--elevation-neutral-default);
         }
     }
 }

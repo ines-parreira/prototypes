@@ -26,12 +26,12 @@
         width: 100%;
         height: 37px;
         border-radius: var(--layout-spacing-s);
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         font-weight: 500;
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-top: 0px;
         border-bottom: 0px;
-        background: #0a0d29;
+        background: #0a0d29; // legacy
         transition:
             height 0.2s linear,
             background 0.2s linear;
@@ -86,8 +86,22 @@
         justify-content: center;
 
         &:hover {
-            background: var(--neutral-grey-2);
-            color: var(--neutral-grey-6);
+            background: var(--neutral-grey-2); // legacy
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .button {
+        color: var(--content-inverse-primary);
+        background: var(--surface-additional-blue);
+    }
+
+    .linkButton {
+        &:hover {
+            background: var(--surface-neutral-secondary);
+            color: var(--content-neutral-default);
         }
     }
 }

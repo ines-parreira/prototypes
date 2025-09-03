@@ -14,11 +14,22 @@
         font-weight: @caption-all-caps-font-weight;
         font-size: @caption-all-caps-font-size;
         line-height: @caption-all-caps-line-height;
-        background-color: var(--neutral-grey-2);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         .resultTotal {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .header {
+        background-color: var(--surface-neutral-secondary);
+        border-bottom-color: var(--border-neutral-subtle);
+
+        .resultTotal {
+            color: var(--content-primary-default);
         }
     }
 }

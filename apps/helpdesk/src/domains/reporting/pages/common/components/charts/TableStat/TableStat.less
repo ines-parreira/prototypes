@@ -14,7 +14,7 @@
         }
         thead tr {
             th {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 font-size: 11px;
                 letter-spacing: 0.6px;
                 line-height: 1.27;
@@ -28,7 +28,7 @@
         }
 
         td {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .satisfaction-survey-link {
@@ -58,7 +58,7 @@
 
         tbody tr {
             &:hover {
-                background: var(--neutral-grey-1);
+                background: var(--neutral-grey-1); // legacy
             }
 
             td:first-child {
@@ -76,7 +76,7 @@
         }
 
         .emptyDuration {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         .userName {
@@ -97,19 +97,19 @@
         }
 
         .openArticle {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             font-size: 1.15em;
             margin-left: 0.5em;
         }
 
         .lowAutomationRateIcon {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             margin: 0 0.25em;
             font-size: 1.4em;
         }
 
         .quickResponseEnabled {
-            color: var(--feedback-success);
+            color: var(--feedback-success); // legacy
             margin: 0.3em 0.5em;
             font-size: 10px;
         }
@@ -121,7 +121,7 @@
         align-items: center;
         justify-content: center;
         border: none;
-        background-color: var(--main-primary-0);
+        background-color: var(--main-primary-0); // legacy
         &:focus:not(:focus-visible) {
             outline: none;
         }
@@ -130,7 +130,51 @@
             font-weight: 500;
             font-size: 14px;
             line-height: 20px;
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .table {
+        thead tr {
+            th {
+                color: var(--content-neutral-tertiary);
+            }
+        }
+
+        td {
+            color: var(--content-neutral-default);
+        }
+
+        tbody tr {
+            &:hover {
+                background: var(--hover-default);
+            }
+        }
+
+        .emptyDuration {
+            color: var(--content-neutral-tertiary);
+        }
+
+        .openArticle {
+            color: var(--content-neutral-secondary);
+        }
+
+        .lowAutomationRateIcon {
+            color: var(--static-error);
+        }
+
+        .quickResponseEnabled {
+            color: var(--static-success);
+        }
+    }
+
+    .showLinesButton {
+        background-color: var(--surface-neutral-primary);
+
+        & > div {
+            color: var(--content-primary-default);
         }
     }
 }

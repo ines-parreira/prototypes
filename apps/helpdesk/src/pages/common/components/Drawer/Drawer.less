@@ -78,7 +78,7 @@
         .drawer {
             max-width: 612px;
             width: 100%;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             position: absolute;
             top: 0;
             height: 100%;
@@ -134,7 +134,7 @@
 
         padding: 0 16px;
 
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .header-actions {
@@ -150,7 +150,7 @@
         grid-area: main;
         overflow: auto;
         padding: 16px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .footer {
@@ -158,6 +158,24 @@
         display: flex;
         align-items: center;
         padding: 0 16px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
+    }
+}
+
+.axiom :local {
+    .drawer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .header {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .content {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .footer {
+        background-color: var(--surface-neutral-secondary);
     }
 }

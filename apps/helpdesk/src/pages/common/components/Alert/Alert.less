@@ -8,27 +8,27 @@
         border: 1px solid;
         border-radius: 4px;
         padding: 16px 24px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         min-height: 54px;
 
         &.info {
-            border: 1px solid var(--main-primary);
+            border: 1px solid var(--main-primary); // legacy
         }
 
         &.success {
-            border: 1px solid var(--feedback-success);
+            border: 1px solid var(--feedback-success); // legacy
         }
 
         &.warning {
-            border: 1px solid var(--feedback-warning);
+            border: 1px solid var(--feedback-warning); // legacy
         }
 
         &.error {
-            border: 1px solid var(--feedback-error);
+            border: 1px solid var(--feedback-error); // legacy
         }
 
         &.loading {
-            border: 1px solid var(--neutral-grey-4);
+            border: 1px solid var(--neutral-grey-4); // legacy
         }
 
         &.closable {
@@ -36,7 +36,7 @@
         }
 
         &.ai {
-            border: 1px solid var(--accessory-magenta-3);
+            border: 1px solid var(--accessory-magenta-3); // legacy
         }
     }
 
@@ -59,7 +59,7 @@
     }
 
     .label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         line-height: 20px;
         letter-spacing: -0.01em;
         width: 100%;
@@ -100,5 +100,39 @@
         display: flex;
         align-items: center;
         overflow: visible;
+    }
+}
+
+.axiom :local {
+    .alert {
+        background-color: var(--elevation-neutral-default);
+
+        &.info {
+            border: 1px solid var(--surface-additional-blue);
+        }
+
+        &.success {
+            border: 1px solid var(--static-success);
+        }
+
+        &.warning {
+            border: 1px solid var(--static-warning);
+        }
+
+        &.error {
+            border: 1px solid var(--static-error);
+        }
+
+        &.loading {
+            border: 1px solid var(--content-neutral-tertiary);
+        }
+
+        &.ai {
+            border: 1px solid var(--surface-additional-magenta);
+        }
+    }
+
+    .label {
+        color: var(--content-neutral-default);
     }
 }

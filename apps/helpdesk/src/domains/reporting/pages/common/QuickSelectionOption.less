@@ -9,20 +9,32 @@
 
     .badge {
         .caption-allcaps();
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
         border: none;
         border-radius: 15px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         margin-left: auto;
         padding: 2px 9px;
     }
 
     .badge--unselect {
-        background-color: var(--main-primary);
-        color: var(--neutral-grey-1);
+        background-color: var(--main-primary); // legacy
+        color: var(--neutral-grey-1); // legacy
     }
 
     .checkbox {
         width: 100%;
+    }
+}
+
+.axiom :local .component {
+    .badge {
+        background-color: var(--surface-neutral-tertiary);
+        color: var(--elevation-neutral-default);
+    }
+
+    .badge--unselect {
+        background-color: var(--surface-additional-blue);
+        color: var(--surface-neutral-secondary);
     }
 }

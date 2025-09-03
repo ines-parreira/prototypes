@@ -20,7 +20,7 @@
 
             .screenshot {
                 height: 100%;
-                background: var(--main-primary-3);
+                background: var(--main-primary-3); // legacy
                 overflow: hidden;
                 position: relative;
 
@@ -38,7 +38,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                background: var(--main-primary-3);
+                background: var(--main-primary-3); // legacy
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
@@ -54,7 +54,7 @@
 
         .title {
             .caption-semibold();
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
     }
 
@@ -66,5 +66,23 @@
     .iframe {
         border: none;
         flex: 1;
+    }
+}
+
+.axiom :local {
+    .preview {
+        .screenshotWrapper {
+            .screenshot {
+                background: var(--surface-primary-default);
+            }
+
+            .playIcon {
+                background: var(--surface-primary-default);
+            }
+        }
+
+        .title {
+            color: var(--content-primary-default);
+        }
     }
 }

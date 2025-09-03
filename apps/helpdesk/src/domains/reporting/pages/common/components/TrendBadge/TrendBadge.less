@@ -13,23 +13,23 @@
     }
 
     .unchanged {
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey5);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey5); // legacy
     }
 
     .neutral {
-        background-color: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-6); // legacy
     }
 
     .positive {
-        background-color: var(--accessory-green-1);
-        color: var(--accessory-green-3);
+        background-color: var(--accessory-green-1); // legacy
+        color: var(--accessory-green-3); // legacy
     }
 
     .negative {
-        background-color: var(--accessory-red-1);
-        color: var(--accessory-red-3);
+        background-color: var(--accessory-red-1); // legacy
+        color: var(--accessory-red-3); // legacy
     }
 
     .sm {
@@ -38,5 +38,27 @@
 
     .md {
         height: 24px;
+    }
+}
+
+.axiom :local {
+    .unchanged {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
+    }
+
+    .neutral {
+        background-color: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-strong);
+    }
+
+    .positive {
+        background-color: var(--surface-success-secondary);
+        color: var(--static-success);
+    }
+
+    .negative {
+        background-color: var(--surface-error-secondary);
+        color: var(--static-error);
     }
 }

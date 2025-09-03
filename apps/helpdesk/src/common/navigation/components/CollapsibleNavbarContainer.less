@@ -10,7 +10,7 @@
         box-sizing: border-box;
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
         border-radius: 0 10px 10px 0;
-        background: var(--navigation-background);
+        background: var(--navigation-background); // legacy
         overflow-x: hidden;
 
         &[data-display='collapsed'] {
@@ -56,5 +56,11 @@
             height: 100%;
             background: transparent;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-bg);
     }
 }

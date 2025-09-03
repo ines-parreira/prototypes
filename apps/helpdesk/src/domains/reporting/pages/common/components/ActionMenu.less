@@ -7,7 +7,7 @@
         padding: var(--layout-spacing-xs);
 
         > i {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -19,23 +19,23 @@
     }
 
     .category {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         padding: var(--layout-spacing-xs);
         .caption-allcaps();
     }
 
     .label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .description {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .separator {
         margin: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         height: 1px;
     }
 
@@ -45,5 +45,29 @@
         height: var(--size);
         flex: 0 0 var(--size);
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .item {
+        > i {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .category {
+        color: var(--content-primary-default);
+    }
+
+    .label {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .separator {
+        background-color: var(--border-neutral-default);
     }
 }

@@ -25,7 +25,7 @@
         }
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -47,11 +47,11 @@
     }
 
     .selected {
-        background-color: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         &:hover {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -64,11 +64,32 @@
     }
 
     .disabled {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         cursor: default;
 
         &:hover {
             background-color: transparent;
         }
+    }
+}
+
+.axiom :local {
+    .item {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .selected {
+        background-color: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-strong);
+
+        &:hover {
+            background-color: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .disabled {
+        color: var(--content-neutral-tertiary);
     }
 }

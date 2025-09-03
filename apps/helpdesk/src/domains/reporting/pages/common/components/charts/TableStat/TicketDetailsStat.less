@@ -1,6 +1,6 @@
 :local {
     .empty {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .wrapper {
@@ -13,7 +13,7 @@
     }
 
     .separator {
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         margin: 0 16px;
         width: 1px;
         align-self: stretch;
@@ -31,8 +31,22 @@
     }
 
     .channelIcon {
-        color: var(--neutral-grey-3) !important;
+        color: var(--neutral-grey-3) !important; // legacy
         font-size: 16px;
         margin-right: 9px;
+    }
+}
+
+.axiom :local {
+    .empty {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .separator {
+        background-color: var(--border-neutral-default);
+    }
+
+    .channelIcon {
+        color: var(--content-neutral-tertiary) !important;
     }
 }

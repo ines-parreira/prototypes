@@ -5,7 +5,7 @@
     }
 
     .grey {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .header {
@@ -14,5 +14,11 @@
 
     .statsContainer {
         height: 100%;
+    }
+}
+
+.axiom :local {
+    .grey {
+        background-color: var(--surface-neutral-secondary);
     }
 }

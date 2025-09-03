@@ -2,8 +2,8 @@
 
 :local {
     .wrapper {
-        border-bottom: 1px solid var(--main-primary-1);
-        background-color: var(--main-primary-0);
+        border-bottom: 1px solid var(--main-primary-1); // legacy
+        background-color: var(--main-primary-0); // legacy
         padding: 12px var(--layout-spacing-s);
         display: flex;
         align-items: center;
@@ -13,10 +13,21 @@
 
     .icon {
         font-size: 20px;
-        color: var(--main-primary-3);
+        color: var(--main-primary-3); // legacy
     }
 
     .text {
         .body-regular();
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        border-bottom: 1px solid var(--surface-primary-subtle);
+        background-color: var(--surface-neutral-primary);
+    }
+
+    .icon {
+        color: var(--content-primary-default);
     }
 }

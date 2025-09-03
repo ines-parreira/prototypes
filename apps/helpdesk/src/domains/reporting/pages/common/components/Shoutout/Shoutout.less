@@ -28,8 +28,8 @@
 
         flex-shrink: 0;
 
-        background-color: var(--neutral-grey-2);
-        color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-2); // legacy
+        color: var(--neutral-grey-5); // legacy
 
         .noValuePlaceholder {
             font-size: 12px;
@@ -62,7 +62,7 @@
 
     .infoIcon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .metricRow {
@@ -74,17 +74,40 @@
 
     .metricName {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .metricDivider {
         height: 16px;
         width: 1px;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
     }
 
     .metricValue {
         .caption-semibold();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .avatarPlaceholder {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
+    }
+
+    .infoIcon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .metricName {
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricDivider {
+        background-color: var(--border-neutral-default);
+    }
+
+    .metricValue {
+        color: var(--content-neutral-secondary);
     }
 }
