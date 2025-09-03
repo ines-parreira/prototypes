@@ -7,10 +7,7 @@ import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
-import {
-    AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,
-    AI_AGENT_TRIAL_DURATION_DAYS,
-} from '../constants/shoppingAssistant'
+import { AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD } from '../constants/shoppingAssistant'
 import {
     ButtonConfig,
     PromoCardVariant,
@@ -38,7 +35,7 @@ type Result = {
  * Pre-Trial:
  * - Admin:
  *   - Non-Automate account: Try for free
- *   - Automate account: Try for X days
+ *   - Automate account: Try for free
  * - Lead:
  *   - Notify admin
  *
@@ -143,9 +140,7 @@ export const useAiAgentPrimaryCTA = ({
 
     if (adminSeesTrialCTA) {
         const startTrialButton: ButtonConfig = {
-            label: trialAccess.currentAutomatePlan
-                ? `Try for ${AI_AGENT_TRIAL_DURATION_DAYS} days`
-                : 'Try for free',
+            label: 'Try for free',
             onClick: handleStartTrial,
             disabled: false,
         }

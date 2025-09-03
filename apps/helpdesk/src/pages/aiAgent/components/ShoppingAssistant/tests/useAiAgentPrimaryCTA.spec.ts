@@ -4,7 +4,6 @@ import { shopifyIntegration } from 'fixtures/integrations'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 
-import { AI_AGENT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useAiAgentPrimaryCTA } from '../hooks/useAiAgentPrimaryCTA'
 import {
     PromoCardVariant,
@@ -277,7 +276,7 @@ describe('useAiAgentPrimaryCTA', () => {
         expect(result.current).toEqual({
             variant: PromoCardVariant.AdminTrial,
             button: {
-                label: `Try for ${AI_AGENT_TRIAL_DURATION_DAYS} days`,
+                label: `Try for free`,
                 onClick: expect.any(Function),
                 disabled: false,
             },
