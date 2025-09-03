@@ -16,6 +16,7 @@ import {
     HandoverConfigurationResponse,
     OnboardingData,
     OnboardingNotificationStateResponse,
+    ResponseTrial,
     StoreConfigurationResponse,
     StoreConfigurationsResponse,
     UpsertOnboardingNotificationStatePayload,
@@ -286,6 +287,13 @@ export const updateOnboardingData = async (
 /**
  * AI Agent Trial endpoints
  */
+export const getTrials = async (gorgiasDomain: string) => {
+    const response = await apiClient.get<ResponseTrial[]>(
+        `/config/accounts/${gorgiasDomain}/stores/trials`,
+    )
+    return response.data
+}
+
 export const startAiAgentTrial = async (
     gorgiasDomain: string,
     storeType: string,

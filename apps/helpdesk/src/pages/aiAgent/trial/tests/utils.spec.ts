@@ -1,5 +1,5 @@
+import { Trial } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import {
     atLeastOneStoreHasActiveTrial,
@@ -14,193 +14,102 @@ import {
     isTrialEndingModalDismissed,
 } from '../utils/utils'
 
-// Mock the legacy function
-jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
-    atLeastOneStoreHasActiveTrialOnSpecificStores: jest.fn(() => false),
-}))
+const BASE_TRIAL_ACCOUNT = {
+    plannedUpgradeDatetime: null,
+    optInDatetime: '2023-11-01T00:00:00.000Z',
+    optOutDatetime: null,
+    actualUpgradeDatetime: null,
+    actualTerminationDatetime: null,
+}
+
+const createShoppingAssistantTrial = (
+    overrides: Partial<Trial> = {},
+): Trial => ({
+    shopType: 'shopify',
+    shopName: 'Test Store',
+    type: TrialType.ShoppingAssistant,
+    trial: {
+        startDatetime: '2023-11-01T00:00:00.000Z',
+        endDatetime: '2023-11-15T00:00:00.000Z',
+        account: { ...BASE_TRIAL_ACCOUNT },
+    },
+    ...overrides,
+})
+
+const createAiAgentTrial = (overrides: Partial<Trial> = {}): Trial => ({
+    shopType: 'shopify',
+    shopName: 'Test Store',
+    type: TrialType.AiAgent,
+    trial: {
+        startDatetime: '2023-11-01T00:00:00.000Z',
+        endDatetime: '2023-11-15T00:00:00.000Z',
+        account: { ...BASE_TRIAL_ACCOUNT },
+    },
+    ...overrides,
+})
 
 describe('Trial utility functions', () => {
     describe('hasTrialOptedOut', () => {
-        it('should return true when store has opted out (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with OptOut',
-                sales: {
-                    trial: {
-                        startDatetime: null,
-                        endDatetime: null,
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: null,
-                            optOutDatetime: '2023-11-01T00:00:00.000Z',
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
-                },
-            })
-
-            const result = hasTrialOptedOut(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(true)
-        })
-
-        it('should return true when store has opted out (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with OptOut',
+        it('should return true when store has opted out', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with OptOut',
                 trial: {
                     startDatetime: null,
                     endDatetime: null,
                     account: {
-                        plannedUpgradeDatetime: null,
+                        ...BASE_TRIAL_ACCOUNT,
                         optInDatetime: null,
                         optOutDatetime: '2023-11-01T00:00:00.000Z',
-                        actualUpgradeDatetime: null,
-                        actualTerminationDatetime: null,
                     },
                 },
             })
 
-            const result = hasTrialOptedOut(TrialType.AiAgent, configuration)
+            const result = hasTrialOptedOut(trial)
             expect(result).toBe(true)
         })
 
-        it('should return false when store has not opted out (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with OptIn only',
-                sales: {
-                    trial: {
-                        startDatetime: null,
-                        endDatetime: null,
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: '2023-11-01T00:00:00.000Z',
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
-                },
-            })
-
-            const result = hasTrialOptedOut(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return false when store has not opted out (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with OptIn only',
+        it('should return false when store has not opted out', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with OptIn only',
                 trial: {
                     startDatetime: null,
                     endDatetime: null,
-                    account: {
-                        plannedUpgradeDatetime: null,
-                        optInDatetime: null,
-                        optOutDatetime: null,
-                        actualUpgradeDatetime: null,
-                        actualTerminationDatetime: null,
-                    },
+                    account: BASE_TRIAL_ACCOUNT,
                 },
             })
 
-            const result = hasTrialOptedOut(TrialType.AiAgent, configuration)
+            const result = hasTrialOptedOut(trial)
             expect(result).toBe(false)
         })
 
-        it('should return false when trial data is undefined (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store without trial data',
-                sales: undefined,
+        it('should return false when trial data is undefined', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store without trial data',
+                trial: undefined as any,
             })
 
-            const result = hasTrialOptedOut(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return false when trial data is undefined (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store without trial data',
-                trial: undefined,
-            })
-
-            const result = hasTrialOptedOut(TrialType.AiAgent, configuration)
+            const result = hasTrialOptedOut(trial)
             expect(result).toBe(false)
         })
     })
 
     describe('hasTrialStarted', () => {
-        it('should return true when store has trial start datetime (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
-                sales: {
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: '2023-11-01T00:00:00.000Z',
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
-                },
+        it('should return true when store has trial start datetime', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with Active Trial',
             })
 
-            const result = hasTrialStarted(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
+            const result = hasTrialStarted(trial)
             expect(result).toBe(true)
         })
 
-        it('should return true when store has trial start datetime (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
-                trial: {
-                    startDatetime: '2023-11-01T00:00:00.000Z',
-                    endDatetime: '2023-11-15T00:00:00.000Z',
-                    account: {
-                        plannedUpgradeDatetime: null,
-                        optInDatetime: null,
-                        optOutDatetime: null,
-                        actualUpgradeDatetime: null,
-                        actualTerminationDatetime: null,
-                    },
-                },
+        it('should return false when store has no trial start datetime', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store without trial data',
+                trial: undefined as any,
             })
 
-            const result = hasTrialStarted(TrialType.AiAgent, configuration)
-            expect(result).toBe(true)
-        })
-
-        it('should return false when store has no trial start datetime (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store without trial data',
-                sales: undefined,
-            })
-
-            const result = hasTrialStarted(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return false when store has no trial start datetime (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store without trial data',
-                trial: undefined,
-            })
-
-            const result = hasTrialStarted(TrialType.AiAgent, configuration)
+            const result = hasTrialStarted(trial)
             expect(result).toBe(false)
         })
     })
@@ -215,345 +124,99 @@ describe('Trial utility functions', () => {
             jest.useRealTimers()
         })
 
-        it('should return true when trial has expired (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Expired Trial',
-                sales: {
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: '2023-11-01T00:00:00.000Z',
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime:
-                                '2023-11-05T00:00:00.000Z',
-                        },
-                    },
-                },
-            })
-
-            const result = hasTrialExpired(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(true)
-        })
-
-        it('should return true when trial has expired (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Expired Trial',
+        it('should return true when trial has expired', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with Expired Trial',
                 trial: {
                     startDatetime: '2023-11-01T00:00:00.000Z',
                     endDatetime: '2023-11-15T00:00:00.000Z',
                     account: {
-                        plannedUpgradeDatetime: null,
-                        optInDatetime: null,
-                        optOutDatetime: null,
-                        actualUpgradeDatetime: null,
+                        ...BASE_TRIAL_ACCOUNT,
                         actualTerminationDatetime: '2023-11-05T00:00:00.000Z',
                     },
                 },
             })
 
-            const result = hasTrialExpired(TrialType.AiAgent, configuration)
+            const result = hasTrialExpired(trial)
             expect(result).toBe(true)
         })
 
-        it('should return false when trial has not expired (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
-                sales: {
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: '2023-11-01T00:00:00.000Z',
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime:
-                                '2023-11-20T00:00:00.000Z',
-                        },
-                    },
-                },
-            })
-
-            const result = hasTrialExpired(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return false when trial has not expired (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
+        it('should return false when trial has not expired', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with Active Trial',
                 trial: {
                     startDatetime: '2023-11-01T00:00:00.000Z',
                     endDatetime: '2023-11-15T00:00:00.000Z',
                     account: {
-                        plannedUpgradeDatetime: null,
-                        optInDatetime: null,
-                        optOutDatetime: null,
-                        actualUpgradeDatetime: null,
+                        ...BASE_TRIAL_ACCOUNT,
                         actualTerminationDatetime: '2023-11-20T00:00:00.000Z',
                     },
                 },
             })
 
-            const result = hasTrialExpired(TrialType.AiAgent, configuration)
+            const result = hasTrialExpired(trial)
             expect(result).toBe(false)
         })
 
-        it('should return false when actualTerminationDatetime is null (ShoppingAssistant)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
-                sales: {
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: '2023-11-01T00:00:00.000Z',
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
-                },
+        it('should return false when actualTerminationDatetime is null', () => {
+            const trial = createShoppingAssistantTrial({
+                shopName: 'Store with Active Trial',
             })
 
-            const result = hasTrialExpired(
-                TrialType.ShoppingAssistant,
-                configuration,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return false when actualTerminationDatetime is null (AiAgent)', () => {
-            const configuration = getStoreConfigurationFixture({
-                storeName: 'Store with Active Trial',
-                trial: {
-                    startDatetime: '2023-11-01T00:00:00.000Z',
-                    endDatetime: '2023-11-15T00:00:00.000Z',
-                    account: {
-                        plannedUpgradeDatetime: null,
-                        optInDatetime: null,
-                        optOutDatetime: null,
-                        actualUpgradeDatetime: null,
-                        actualTerminationDatetime: null,
-                    },
-                },
-            })
-
-            const result = hasTrialExpired(TrialType.AiAgent, configuration)
+            const result = hasTrialExpired(trial)
             expect(result).toBe(false)
         })
     })
 
     describe('atLeastOneStoreHasActiveTrial', () => {
-        it('should return true when at least one store has active trial (ShoppingAssistant)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store with Active Trial',
-                    sales: {
-                        trial: {
-                            startDatetime: '2023-11-01T00:00:00.000Z',
-                            endDatetime: '2023-11-15T00:00:00.000Z',
-                            account: {
-                                plannedUpgradeDatetime: null,
-                                optInDatetime: '2023-11-01T00:00:00.000Z',
-                                optOutDatetime: null,
-                                actualUpgradeDatetime: null,
-                                actualTerminationDatetime: null,
-                            },
-                        },
-                    },
+        it('should return true when at least one store has active trial', () => {
+            const trials = [
+                createShoppingAssistantTrial({
+                    shopName: 'Store with Active Trial',
                 }),
             ]
 
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.ShoppingAssistant,
-            )
+            const result = atLeastOneStoreHasActiveTrial(trials)
             expect(result).toBe(true)
         })
 
-        it('should return true when at least one store has active trial (AiAgent)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store with Active Trial',
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: null,
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
+        it('should return false when no stores have active trial', () => {
+            const trials = [
+                createShoppingAssistantTrial({
+                    shopName: 'Store without trial data',
+                    trial: undefined as any,
                 }),
             ]
 
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.AiAgent,
-            )
-            expect(result).toBe(true)
-        })
-
-        it('should return false when no stores have active trial (ShoppingAssistant)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store without trial data',
-                    sales: undefined,
-                }),
-            ]
-
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.ShoppingAssistant,
-            )
+            const result = atLeastOneStoreHasActiveTrial(trials)
             expect(result).toBe(false)
         })
 
-        it('should return false when no stores have active trial (AiAgent)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store without trial data',
-                    trial: undefined,
+        it('should handle multiple stores with mixed trial states', () => {
+            const trials = [
+                createShoppingAssistantTrial({
+                    shopName: 'Store with Active Trial',
                 }),
-            ]
-
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.AiAgent,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should use legacy logic when revamp is disabled', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store with Active Trial',
-                    sales: {
-                        trial: {
-                            startDatetime: '2023-11-01T00:00:00.000Z',
-                            endDatetime: '2023-11-15T00:00:00.000Z',
-                            account: {
-                                plannedUpgradeDatetime: null,
-                                optInDatetime: '2023-11-01T00:00:00.000Z',
-                                optOutDatetime: null,
-                                actualUpgradeDatetime: null,
-                                actualTerminationDatetime: null,
-                            },
-                        },
-                    },
+                createAiAgentTrial({
+                    shopName: 'Store without trial',
+                    trial: undefined as any,
                 }),
-            ]
-
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.ShoppingAssistant,
-            )
-
-            // The result depends on the legacy atLeastOneStoreHasActiveTrialOnSpecificStores function
-            // which is mocked in the test setup
-            expect(result).toBeDefined()
-        })
-
-        it('should handle multiple stores with mixed trial states (ShoppingAssistant)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store with Active Trial',
-                    sales: {
-                        trial: {
-                            startDatetime: '2023-11-01T00:00:00.000Z',
-                            endDatetime: '2023-11-15T00:00:00.000Z',
-                            account: {
-                                plannedUpgradeDatetime: null,
-                                optInDatetime: '2023-11-01T00:00:00.000Z',
-                                optOutDatetime: null,
-                                actualUpgradeDatetime: null,
-                                actualTerminationDatetime: null,
-                            },
-                        },
-                    },
-                }),
-                getStoreConfigurationFixture({
-                    storeName: 'Store without trial',
-                    sales: undefined,
-                }),
-                getStoreConfigurationFixture({
-                    storeName: 'Store with opted out trial',
-                    sales: {
-                        trial: {
-                            startDatetime: null,
-                            endDatetime: null,
-                            account: {
-                                plannedUpgradeDatetime: null,
-                                optInDatetime: null,
-                                optOutDatetime: '2023-11-02T00:00:00.000Z',
-                                actualUpgradeDatetime: null,
-                                actualTerminationDatetime: null,
-                            },
-                        },
-                    },
-                }),
-            ]
-
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.ShoppingAssistant,
-            )
-            expect(result).toBe(true) // First store has active trial
-        })
-
-        it('should handle multiple stores with mixed trial states (AiAgent)', () => {
-            const storeConfigurations = [
-                getStoreConfigurationFixture({
-                    storeName: 'Store with Active Trial',
-                    trial: {
-                        startDatetime: '2023-11-01T00:00:00.000Z',
-                        endDatetime: '2023-11-15T00:00:00.000Z',
-                        account: {
-                            plannedUpgradeDatetime: null,
-                            optInDatetime: null,
-                            optOutDatetime: null,
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
-                        },
-                    },
-                }),
-                getStoreConfigurationFixture({
-                    storeName: 'Store without trial',
-                    trial: undefined,
-                }),
-                getStoreConfigurationFixture({
-                    storeName: 'Store with opted out trial',
+                createShoppingAssistantTrial({
+                    shopName: 'Store with opted out trial',
                     trial: {
                         startDatetime: null,
                         endDatetime: null,
                         account: {
-                            plannedUpgradeDatetime: null,
+                            ...BASE_TRIAL_ACCOUNT,
                             optInDatetime: null,
                             optOutDatetime: '2023-11-02T00:00:00.000Z',
-                            actualUpgradeDatetime: null,
-                            actualTerminationDatetime: null,
                         },
                     },
                 }),
             ]
 
-            const result = atLeastOneStoreHasActiveTrial(
-                storeConfigurations,
-                TrialType.AiAgent,
-            )
-            expect(result).toBe(true) // First store has active trial
+            const result = atLeastOneStoreHasActiveTrial(trials)
+            expect(result).toBe(true)
         })
     })
 

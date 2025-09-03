@@ -160,6 +160,26 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         props.shopName,
     ])
 
+    /*
+     * We reached this component, so it means onboarding wizard is not finished yet (logic of the parent component).
+     * We need to open back the onboarding wizard if the trial is currently active - it is a required step to continue with trial.
+     */
+    useEffect(() => {
+        const isAiAgentTrial =
+            trialAccess.trialType === TrialType.AiAgent &&
+            trialAccess.hasCurrentStoreTrialStarted &&
+            !trialAccess.hasCurrentStoreTrialExpired
+
+        if (isAiAgentTrial) {
+            onOnboardingWizardClick()
+        }
+    }, [
+        trialAccess.trialType,
+        trialAccess.hasCurrentStoreTrialStarted,
+        trialAccess.hasCurrentStoreTrialExpired,
+        onOnboardingWizardClick,
+    ])
+
     useEffect(() => {
         logEvent(SegmentEvent.AiAgentWelcomePageViewed, {
             version: 'Basic',

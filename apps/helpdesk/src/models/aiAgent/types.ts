@@ -60,6 +60,22 @@ export type TrialConfiguration = {
     }
 }
 
+type ResponseTrialType = 'ai-trial' | 'sales-assistant'
+
+export type ResponseTrial = {
+    shopType: string
+    shopName: string
+    type: ResponseTrialType
+    trial: TrialConfiguration
+}
+
+export type Trial = {
+    shopType: string
+    shopName: string
+    type: TrialType
+    trial: TrialConfiguration
+}
+
 export type StoreConfiguration = {
     trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null

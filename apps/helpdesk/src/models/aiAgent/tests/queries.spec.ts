@@ -1,8 +1,11 @@
+import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import * as accountFixtures from 'fixtures/account'
 import {
     storeConfigurationKeys,
+    trialsKeys,
+    useGetTrials,
     useOptOutAiAgentTrialUpgradeMutation,
     useOptOutSalesTrialUpgradeMutation,
     useStartAiAgentTrialMutation,
@@ -43,6 +46,9 @@ describe('aiAgent queries', () => {
     let mockUpgradeSubscription: jest.MockedFunction<
         typeof configurationResources.upgradeSubscription
     >
+    let mockGetTrials: jest.MockedFunction<
+        typeof configurationResources.getTrials
+    >
 
     beforeEach(() => {
         mockStartSalesTrial = jest.mocked(
@@ -60,6 +66,7 @@ describe('aiAgent queries', () => {
         mockUpgradeSubscription = jest.mocked(
             configurationResources.upgradeSubscription,
         )
+        mockGetTrials = jest.mocked(configurationResources.getTrials)
     })
 
     describe('useStartSalesTrialMutation', () => {
@@ -482,7 +489,256 @@ describe('aiAgent queries', () => {
 
             await result.current.mutateAsync([])
 
-            expect(callOrder).toEqual(['invalidate', 'invalidate', 'override'])
+            expect(callOrder).toEqual([
+                'invalidate',
+                'invalidate',
+                'invalidate',
+                'override',
+            ])
+        })
+    })
+
+    describe('useGetTrials', () => {
+        it('should call getTrials with correct parameters', async () => {
+            const mockTrialsData = [
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-1',
+                    type: 'ai-trial' as const,
+                    trial: {
+                        startDatetime: '2024-01-01',
+                        endDatetime: '2024-02-01',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-2',
+                    type: 'sales-assistant' as const,
+                    trial: {
+                        startDatetime: '2024-01-15',
+                        endDatetime: '2024-02-15',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+            ]
+            mockGetTrials.mockResolvedValue(mockTrialsData)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useGetTrials('test-domain'),
+                defaultState,
+            )
+
+            await result.current.refetch()
+
+            expect(mockGetTrials).toHaveBeenCalledWith('test-domain')
+        })
+
+        it('should transform response trials correctly', async () => {
+            const mockTrialsData = [
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-1',
+                    type: 'ai-trial' as const,
+                    trial: {
+                        startDatetime: '2024-01-01',
+                        endDatetime: '2024-02-01',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-2',
+                    type: 'sales-assistant' as const,
+                    trial: {
+                        startDatetime: '2024-01-15',
+                        endDatetime: '2024-02-15',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+            ]
+            mockGetTrials.mockResolvedValue(mockTrialsData)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useGetTrials('test-domain', { enabled: true }),
+                defaultState,
+            )
+
+            await waitFor(() => {
+                expect(result.current.data).toBeDefined()
+            })
+
+            expect(result.current.data).toEqual([
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-1',
+                    type: 'aiAgent',
+                    trial: {
+                        startDatetime: '2024-01-01',
+                        endDatetime: '2024-02-01',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store-2',
+                    type: 'shoppingAssistant',
+                    trial: {
+                        startDatetime: '2024-01-15',
+                        endDatetime: '2024-02-15',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+            ])
+        })
+
+        it('should use correct query key', () => {
+            const expectedQueryKey = trialsKeys.list('test-domain')
+
+            expect(expectedQueryKey).toEqual(['aiAgentTrials', 'test-domain'])
+        })
+
+        it('should be enabled when gorgiasDomain is provided', () => {
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useGetTrials('test-domain'),
+                defaultState,
+            )
+
+            expect(result.current.isStale).toBe(true)
+        })
+
+        it('should be disabled when gorgiasDomain is empty', () => {
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useGetTrials(''),
+                defaultState,
+            )
+
+            expect(result.current.fetchStatus).toBe('idle')
+        })
+
+        it('should handle overrides correctly', async () => {
+            const onSuccessMock = jest.fn()
+            const mockTrialsData = [
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store',
+                    type: 'ai-trial' as const,
+                    trial: {
+                        startDatetime: '2024-01-01',
+                        endDatetime: '2024-02-01',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+            ]
+            mockGetTrials.mockResolvedValue(mockTrialsData)
+
+            renderHookWithStoreAndQueryClientProvider(
+                () =>
+                    useGetTrials('test-domain', {
+                        onSuccess: onSuccessMock,
+                        enabled: true,
+                    }),
+                defaultState,
+            )
+
+            await waitFor(() => {
+                expect(onSuccessMock).toHaveBeenCalled()
+            })
+
+            expect(onSuccessMock).toHaveBeenCalledWith([
+                {
+                    shopType: 'shopify',
+                    shopName: 'test-store',
+                    type: 'aiAgent',
+                    trial: {
+                        startDatetime: '2024-01-01',
+                        endDatetime: '2024-02-01',
+                        account: {
+                            optInDatetime: null,
+                            optOutDatetime: null,
+                            plannedUpgradeDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime: null,
+                        },
+                    },
+                },
+            ])
+        })
+
+        it('should handle error correctly', async () => {
+            const mockError = new Error('Network error')
+            const onErrorMock = jest.fn()
+            mockGetTrials.mockRejectedValue(mockError)
+
+            renderHookWithStoreAndQueryClientProvider(
+                () =>
+                    useGetTrials('test-domain', {
+                        onError: onErrorMock,
+                        enabled: true,
+                        retry: false,
+                    }),
+                defaultState,
+            )
+
+            await waitFor(() => {
+                expect(onErrorMock).toHaveBeenCalled()
+            })
+
+            expect(onErrorMock).toHaveBeenCalledWith(mockError)
+        })
+
+        it('should respect enabled override', () => {
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () =>
+                    useGetTrials('test-domain', {
+                        enabled: false,
+                    }),
+                defaultState,
+            )
+
+            expect(result.current.fetchStatus).toBe('idle')
         })
     })
 })

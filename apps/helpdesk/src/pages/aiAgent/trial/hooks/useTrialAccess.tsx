@@ -4,11 +4,9 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useGetTrials } from 'models/aiAgent/queries'
 import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
-import {
-    useStoreActivations,
-    useStoreConfigurations,
-} from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import {
     hasTrialActive,
@@ -17,7 +15,6 @@ import {
     hasTrialOptedOut,
     hasTrialStarted,
 } from 'pages/aiAgent/trial/utils/utils'
-import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -45,9 +42,6 @@ export type TrialAccess = {
     /** Whether at least one store has an active trial that hasn't opted out */
     hasAnyTrialOptedIn: boolean
     hasAnyTrialActive: boolean
-
-    /** Whether AI Agent is currently active on the current store (chat or email channels) */
-    hasAiAgentEnabledInCurrentStore: boolean | undefined
 
     isAdminUser: boolean
     isLoading?: boolean
@@ -82,16 +76,10 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const { storeConfigurations, isLoading: isStoreConfigsLoading } =
         useStoreConfigurations(accountDomain)
 
-    const { storeActivations, isFetchLoading } = useStoreActivations({
-        storeName: currentStoreName,
-        withChatIntegrationsStatus: true,
-    })
+    const { data: trials, isLoading: isTrialsLoading } =
+        useGetTrials(accountDomain)
 
-    const isLoading = isStoreConfigsLoading || isFetchLoading
-
-    const currentStore = currentStoreName
-        ? storeActivations[currentStoreName]
-        : undefined
+    const isLoading = isStoreConfigsLoading || isTrialsLoading
 
     // Feature flag that controls the list of merchants that can start a trial
     const isAiShoppingAssistantTrialMerchantsEnabled = useFlag(
@@ -119,14 +107,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     // Pro+ Helpdesk plan (tiers above Starter & Basic)
     const isOnProPlusPlan = !isOnStarterOrBasicPlan
 
-    // Check if AI Agent is onboarded  in current store
-    const hasAiAgentEnabledInCurrentStore = useMemo(() => {
-        if (!currentStore) {
-            return undefined
-        }
-        return isAiAgentEnabledForStore(currentStore.configuration)
-    }, [currentStore])
-
     const trialType = useMemo((): TrialType => {
         // Case 1: Feature flag disabled - return shopping assistant
         if (!isAiAgentExpandingTrialExperienceForAllEnabled) {
@@ -141,6 +121,26 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         // Case 3: All other cases - return shopping assistant
         return TrialType.ShoppingAssistant
     }, [currentAutomatePlan, isAiAgentExpandingTrialExperienceForAllEnabled])
+
+    const salesTrials = trials?.filter(
+        (trial) => trial.type === TrialType.ShoppingAssistant,
+    )
+    const aiAgentTrials = trials?.filter(
+        (trial) => trial.type === TrialType.AiAgent,
+    )
+    const salesStoreTrials = salesTrials?.filter(
+        (trial) => trial.shopName === currentStoreName,
+    )
+    const aiAgentStoreTrials = aiAgentTrials?.filter(
+        (trial) => trial.shopName === currentStoreName,
+    )
+    const currentStoreTrial =
+        trialType === TrialType.AiAgent
+            ? aiAgentStoreTrials?.[0]
+            : salesStoreTrials?.[0]
+
+    const currentTrials =
+        trialType === TrialType.AiAgent ? aiAgentTrials : salesTrials
 
     // Early return for USD6+ plan users
     const isOnUsd6PlusPlan =
@@ -159,7 +159,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             hasAnyTrialOptedOut: false,
             hasAnyTrialOptedIn: false,
             hasAnyTrialActive: false,
-            hasAiAgentEnabledInCurrentStore: false,
             isAdminUser: isAdmin(currentUser),
             isLoading: false,
             trialType: TrialType.ShoppingAssistant,
@@ -169,34 +168,29 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const isAdminUser = isAdmin(currentUser)
     const isTeamLeadUser = isTeamLead(currentUser)
 
-    const hasCurrentStoreTrialStarted = currentStore
-        ? hasTrialStarted(trialType, currentStore.configuration)
+    const hasCurrentStoreTrialStarted = currentStoreTrial
+        ? hasTrialStarted(currentStoreTrial)
         : false
-    const hasAnyTrialStarted = storeConfigurations.some((config) =>
-        hasTrialStarted(trialType, config),
-    )
+    const hasAnyTrialStarted =
+        currentTrials?.some((trial) => hasTrialStarted(trial)) || false
 
-    const hasCurrentStoreTrialOptedOut = currentStore
-        ? hasTrialOptedOut(trialType, currentStore.configuration)
+    const hasCurrentStoreTrialOptedOut = currentStoreTrial
+        ? hasTrialOptedOut(currentStoreTrial)
         : false
-    const hasAnyTrialOptedOut = storeConfigurations.some((config) =>
-        hasTrialOptedOut(trialType, config),
-    )
+    const hasAnyTrialOptedOut =
+        currentTrials?.some((trial) => hasTrialOptedOut(trial)) || false
 
-    const hasCurrentStoreTrialExpired = currentStore
-        ? hasTrialExpired(trialType, currentStore.configuration)
+    const hasCurrentStoreTrialExpired = currentStoreTrial
+        ? hasTrialExpired(currentStoreTrial)
         : false
-    const hasAnyTrialExpired = storeConfigurations.some((config) =>
-        hasTrialExpired(trialType, config),
-    )
+    const hasAnyTrialExpired =
+        currentTrials?.some((trial) => hasTrialExpired(trial)) || false
 
-    const hasAnyTrialOptedIn = storeConfigurations.some((config) =>
-        hasTrialOptedIn(trialType, config),
-    )
+    const hasAnyTrialOptedIn =
+        currentTrials?.some((trial) => hasTrialOptedIn(trial)) || false
 
-    const hasAnyTrialActive = storeConfigurations.some((config) =>
-        hasTrialActive(trialType, config),
-    )
+    const hasAnyTrialActive =
+        currentTrials?.some((trial) => hasTrialActive(trial)) || false
 
     // System Banner: Global application banner (requires AI Agent on chat)
     const canSeeSystemBanner = Boolean(
@@ -253,10 +247,9 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         hasAnyTrialOptedOut,
         hasAnyTrialOptedIn,
         hasAnyTrialActive,
-        hasAiAgentEnabledInCurrentStore,
 
         isAdminUser,
-        isLoading: isFetchLoading,
+        isLoading,
         trialType,
         currentAutomatePlan,
     }

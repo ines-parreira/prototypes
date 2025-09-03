@@ -1,63 +1,31 @@
 import moment from 'moment'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import { Trial } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
-export const hasTrialStarted = (
-    trialType: TrialType,
-    storeConfiguration: StoreConfiguration,
-) => {
-    if (trialType === TrialType.AiAgent) {
-        return !!storeConfiguration.trial?.startDatetime
-    }
-    return !!storeConfiguration.sales?.trial?.startDatetime
+export const hasTrialStarted = (trial: Trial) => {
+    return !!trial.trial?.startDatetime
 }
 
-export const atLeastOneStoreHasActiveTrial = (
-    storeConfigurations: StoreConfiguration[],
-    trialType: TrialType,
-) => {
-    return storeConfigurations.some((config) =>
-        hasTrialStarted(trialType, config),
-    )
+export const atLeastOneStoreHasActiveTrial = (trials: Trial[]) => {
+    return trials.some((trial) => hasTrialStarted(trial))
 }
 
-export const hasTrialOptedOut = (
-    trialType: TrialType,
-    storeConfiguration: StoreConfiguration,
-) => {
-    if (trialType === TrialType.AiAgent) {
-        return !!storeConfiguration?.trial?.account?.optOutDatetime
-    }
-    return !!storeConfiguration?.sales?.trial?.account?.optOutDatetime
+export const hasTrialOptedOut = (trial: Trial) => {
+    return !!trial.trial?.account?.optOutDatetime
 }
 
-export const hasTrialExpired = (
-    trialType: TrialType,
-    storeConfiguration: StoreConfiguration,
-) => {
+export const hasTrialExpired = (trial: Trial) => {
     const now = moment()
-    const terminationDatetime =
-        trialType === TrialType.AiAgent
-            ? storeConfiguration.trial?.account?.actualTerminationDatetime
-            : storeConfiguration.sales?.trial?.account
-                  ?.actualTerminationDatetime
+    const terminationDatetime = trial.trial?.account?.actualTerminationDatetime
     return !!terminationDatetime && moment(terminationDatetime).isBefore(now)
 }
 
-export const hasTrialOptedIn = (
-    trialType: TrialType,
-    storeConfiguration: StoreConfiguration,
-) =>
-    hasTrialStarted(trialType, storeConfiguration) &&
-    !hasTrialOptedOut(trialType, storeConfiguration)
+export const hasTrialOptedIn = (trial: Trial) =>
+    hasTrialStarted(trial) && !hasTrialOptedOut(trial)
 
-export const hasTrialActive = (
-    trialType: TrialType,
-    storeConfiguration: StoreConfiguration,
-) =>
-    hasTrialStarted(trialType, storeConfiguration) &&
-    !hasTrialExpired(trialType, storeConfiguration)
+export const hasTrialActive = (trial: Trial) =>
+    hasTrialStarted(trial) && !hasTrialExpired(trial)
 
 const TRIAL_ENDING_DISMISSED_KEY_PREFIX =
     'ai-agent-trial-ending-tomorrow-dismissed'

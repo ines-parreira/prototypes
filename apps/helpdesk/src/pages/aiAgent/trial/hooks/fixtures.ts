@@ -13,7 +13,6 @@ export const createMockTrialAccess = (overrides = {}) => ({
     hasAnyTrialExpired: false,
     hasAnyTrialOptedIn: false,
     hasAnyTrialActive: false,
-    hasAiAgentEnabledInCurrentStore: undefined,
     isAdminUser: false,
     isLoading: false,
     trialType: TrialType.ShoppingAssistant,

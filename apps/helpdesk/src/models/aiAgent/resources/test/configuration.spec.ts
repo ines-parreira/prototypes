@@ -27,6 +27,7 @@ import {
     getOnboardingNotificationState,
     getStoreConfiguration,
     getStoresConfigurations,
+    getTrials,
     getWelcomePageAcknowledged,
     optOutAiAgentTrialUpgrade,
     optOutSalesTrialUpgrade,
@@ -1042,6 +1043,58 @@ describe('Configuration', () => {
                 .reply(400)
 
             await expect(upgradeSubscription(gorgiasDomain)).rejects.toThrow(
+                'Request failed with status code 400',
+            )
+        })
+    })
+
+    describe('getTrials', () => {
+        const gorgiasDomain = 'test-domain'
+
+        beforeEach(() => {
+            apiServer.restore()
+            apiServer = new MockAdapter(apiClient)
+        })
+
+        it('should resolve with the correct data on success', async () => {
+            const mockTrials = [
+                {
+                    id: 1,
+                    gorgiasDomain: 'test-domain',
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    trialType: 'ai-agent',
+                    startDate: '2023-01-01T00:00:00Z',
+                    endDate: '2023-01-15T00:00:00Z',
+                    status: 'active',
+                },
+                {
+                    id: 2,
+                    gorgiasDomain: 'test-domain',
+                    storeName: 'test-store-2',
+                    storeType: 'shopify',
+                    trialType: 'ai-agent',
+                    startDate: '2023-02-01T00:00:00Z',
+                    endDate: '2023-02-15T00:00:00Z',
+                    status: 'completed',
+                },
+            ]
+
+            apiServer
+                .onGet(`/config/accounts/${gorgiasDomain}/stores/trials`)
+                .reply(200, mockTrials)
+
+            const result = await getTrials(gorgiasDomain)
+
+            expect(result).toEqual(mockTrials)
+        })
+
+        it('should handle an error correctly', async () => {
+            apiServer
+                .onGet(`/config/accounts/${gorgiasDomain}/stores/trials`)
+                .reply(400)
+
+            await expect(getTrials(gorgiasDomain)).rejects.toThrow(
                 'Request failed with status code 400',
             )
         })

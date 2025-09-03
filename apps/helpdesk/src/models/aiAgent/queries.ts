@@ -21,6 +21,7 @@ import {
     getOnboardingNotificationState,
     getStoreConfiguration,
     getStoresConfigurations,
+    getTrials,
     getWelcomePageAcknowledged,
     optOutAiAgentTrialUpgrade,
     optOutSalesTrialUpgrade,
@@ -43,6 +44,7 @@ import {
     SearchTicketsRequest,
 } from 'models/aiAgentPlayground/types'
 import { billingKeys } from 'models/billing/queries'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { Paths } from 'rest_api/help_center_api/client.generated'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -67,10 +69,22 @@ import {
     GetStoreConfigurationForAccountParams,
     GetStoreConfigurationParams,
     GetStoreHandoverConfigurationParams,
+    ResponseTrial,
+    Trial,
 } from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+
+const transformResponseTrialToTrial = (
+    responseTrial: ResponseTrial,
+): Trial => ({
+    ...responseTrial,
+    type:
+        responseTrial.type === 'ai-trial'
+            ? TrialType.AiAgent
+            : TrialType.ShoppingAssistant,
+})
 
 export const accountConfigurationKeys = {
     all: () => ['aiAgentAccountConfigurations'] as const,
@@ -506,6 +520,12 @@ export const handoverConfigurationKeys = {
         [...handoverConfigurationKeys.details(), params] as const,
 }
 
+export const trialsKeys = {
+    all: () => ['aiAgentTrials'] as const,
+    list: (gorgiasDomain: string) =>
+        [...trialsKeys.all(), gorgiasDomain] as const,
+}
+
 export const useGetStoreHandoverConfigurations = (
     params: GetStoreHandoverConfigurationParams,
     overrides?: UseQueryOptions<
@@ -536,6 +556,25 @@ export const useUpsertStoreHandoverConfiguration = (
         mutationFn: (params) =>
             upsertAiAgentStoreHandoverConfiguration(...params),
         ...overrides,
+    })
+}
+
+export const useGetTrials = (
+    gorgiasDomain: string,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getTrials>>,
+        unknown,
+        Trial[]
+    >,
+) => {
+    return useQuery({
+        queryKey: trialsKeys.list(gorgiasDomain),
+        queryFn: () => getTrials(gorgiasDomain),
+        select: (data) => data.map(transformResponseTrialToTrial),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+        enabled: !!gorgiasDomain && (overrides?.enabled ?? true),
     })
 }
 
@@ -574,6 +613,13 @@ export const useStartAiAgentTrialMutation = (
             queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
             })
+            queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
+            })
+            // Invalidate onboarding data to refresh onboarding state because onboarding is created when trial is started
+            queryClient.invalidateQueries({
+                queryKey: ['onboardingData', 'all'],
+            })
             overrides?.onSuccess?.(...args)
         },
         onError: (...args) => {
@@ -598,6 +644,9 @@ export const useOptOutAiAgentTrialUpgradeMutation = (
             // Invalidate store configurations to refresh trial state
             queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
+            })
+            queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
             })
             overrides?.onSuccess?.(...args)
         },
@@ -627,6 +676,9 @@ export const useUpgradeSubscriptionMutation = (
             queryClient.invalidateQueries({
                 queryKey: billingKeys.all,
             })
+            queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
+            })
             overrides?.onSuccess?.(...args)
         },
         onError: (...args) => {
@@ -655,6 +707,9 @@ export const useStartSalesTrialMutation = (
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
             })
+            void queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
+            })
         },
         ...overrides,
     })
@@ -676,6 +731,9 @@ export const useOptOutSalesTrialUpgradeMutation = (
             // Invalidate store configurations to refresh trial state
             void queryClient.invalidateQueries({
                 queryKey: storeConfigurationKeys.all(),
+            })
+            void queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
             })
             overrides?.onSuccess?.(...args)
         },
@@ -710,6 +768,9 @@ export const useUpgradeSalesSubscriptionMutation = (
             })
             void queryClient.invalidateQueries({
                 queryKey: billingKeys.all,
+            })
+            void queryClient.invalidateQueries({
+                queryKey: trialsKeys.all(),
             })
 
             overrides?.onSuccess?.(...args)
