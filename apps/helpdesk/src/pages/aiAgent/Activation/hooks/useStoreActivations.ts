@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
@@ -168,10 +168,6 @@ export const useStoreActivations = ({
         isActivating: boolean
     }
 } => {
-    const flags = useFlags()
-    const flagsRef = useRef(flags)
-    flagsRef.current = flags
-
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
     const pageName = window.location.pathname
@@ -186,10 +182,12 @@ export const useStoreActivations = ({
         [storeIntegrations],
     )
 
-    const hasAiAgentNewActivationXp =
-        !!flags[FeatureFlagKey.AiAgentNewActivationXp]
-    const aiSalesAgentEmailEnabled =
-        !!flags[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+    const hasAiAgentNewActivationXp = useFlag(
+        FeatureFlagKey.AiAgentNewActivationXp,
+    )
+    const aiSalesAgentEmailEnabled = useFlag(
+        FeatureFlagKey.AiSalesAgentActivationEmailSettings,
+    )
 
     const location = useLocation()
     const params = useParams<{ shopName?: string }>()
@@ -284,7 +282,6 @@ export const useStoreActivations = ({
             selfServiceChatChannels,
             emailIntegrations,
             helpCentersFaq: helpCenterListData?.data.data,
-            ldFlags: flagsRef.current,
             chatIntegrationStatus,
             storesKnowledgeStatus,
             hasNewAutomatePlan,

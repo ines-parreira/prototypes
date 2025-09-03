@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
@@ -19,7 +17,6 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useFileIngestion')
 jest.mock('rest_api/help_center_api/uploadAttachments')
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('core/flags')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

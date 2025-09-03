@@ -1,12 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act, render } from '@testing-library/react'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 
+import { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
+import { trackstarDefinitionKeys } from 'models/workflows/queries'
 
-import { trackstarDefinitionKeys } from '../../../../models/workflows/queries'
-import { WorkflowConfigurationUpdatedNotificationPayload } from '../../types'
 import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
 
 jest.mock('@tanstack/react-query')
@@ -18,7 +17,6 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
     const invalidateQueriesMock = jest.fn()
 
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
         useQueryClientMock.mockImplementation(
             () =>
                 ({

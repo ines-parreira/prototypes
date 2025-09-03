@@ -17,7 +17,6 @@ import ArticleRecommendationViewContainer from '../ArticleRecommendationViewCont
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
-jest.mock('launchdarkly-react-client-sdk')
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

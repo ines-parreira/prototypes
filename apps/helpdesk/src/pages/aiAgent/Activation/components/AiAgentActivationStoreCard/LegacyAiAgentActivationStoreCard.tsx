@@ -2,13 +2,13 @@ import React, { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentActivationStoreCardAlert } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCardAlert'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -49,7 +49,6 @@ export const LegacyAiAgentActivationStoreCard = ({
         current: enablementList.filter(Boolean).length,
         total: enablementList.length,
     }
-    const flags = useFlags()
 
     const chatChannels = useSelfServiceChatChannels(
         configuration.shopType,
@@ -95,8 +94,9 @@ export const LegacyAiAgentActivationStoreCard = ({
 
     const isDisabledCore = isDisabled || (alerts ?? []).length > 0
 
-    const aiSalesEmailEnabled =
-        !!flags[FeatureFlagKey.AiSalesAgentActivationEmailSettings]
+    const aiSalesEmailEnabled = useFlag(
+        FeatureFlagKey.AiSalesAgentActivationEmailSettings,
+    )
 
     const salesBlockCopy = aiSalesEmailEnabled
         ? 'Shopping Assistant can only be activated on the channel where Support Agent is activated.'

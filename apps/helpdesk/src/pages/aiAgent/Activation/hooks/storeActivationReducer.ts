@@ -1,6 +1,5 @@
 import { useReducer } from 'react'
 
-import { LDFlagSet } from 'launchdarkly-react-client-sdk'
 import cloneDeep from 'lodash/cloneDeep'
 
 import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
@@ -110,7 +109,6 @@ type UpdateStoreConfiguration = {
     )[]
     storesKnowledgeStatus?: Record<string, KnowledgeStatus>
     helpCentersFaq?: HelpCenter[]
-    ldFlags: LDFlagSet
     chatIntegrationStatus?: ChatIntegrationsStatusData
     hasNewAutomatePlan: boolean
     flags: Flags

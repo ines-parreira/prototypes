@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
+import { useFlag } from 'core/flags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
@@ -21,12 +21,12 @@ export const useTrackingBundleInstallationWarningCheck = ({
 }) => {
     const storeIntegrations = useShopifyIntegrations()
 
-    const hasShoppingAssistant =
-        !!useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
-    const hasTrackingBundleWarningBanner =
-        !!useFlags()[
-            FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner
-        ]
+    const hasShoppingAssistant = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
+    const hasTrackingBundleWarningBanner = useFlag(
+        FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner,
+    )
 
     const atLeastOneStoreHasActiveTrial = useAtLeastOneStoreHasActiveTrial()
     const canUseAiSalesAgent = useCanUseAiSalesAgent()

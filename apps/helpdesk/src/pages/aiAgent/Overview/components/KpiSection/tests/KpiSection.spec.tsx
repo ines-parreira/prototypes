@@ -2,11 +2,11 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { createMemoryHistory, History } from 'history'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -33,6 +33,9 @@ jest.mock(
             Skeleton: () => <div data-testid="skeleton" />,
         }) as typeof import('@gorgias/axiom'),
 )
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -178,9 +181,10 @@ describe('KpiSection', () => {
         })
 
         it('should render view report button when given sales analytics feature flag is true', () => {
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,
@@ -198,9 +202,11 @@ describe('KpiSection', () => {
             'should redirect to AI Agent Sales Analytics when AI Agent type is %s',
             (aiAgentType) => {
                 const history = createMemoryHistory()
-                mockFlags({
-                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                })
+                mockUseFlag.mockImplementation(
+                    (key) =>
+                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                        false,
+                )
 
                 useAiAgentTypeMock.mockReturnValue({
                     isLoading: false,
@@ -225,9 +231,10 @@ describe('KpiSection', () => {
 
         it('should redirect to automate overview', () => {
             const history = createMemoryHistory()
-            mockFlags({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             useAiAgentTypeMock.mockReturnValue({
                 isLoading: false,

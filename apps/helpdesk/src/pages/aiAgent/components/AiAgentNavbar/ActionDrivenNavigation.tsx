@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 

@@ -7,7 +7,6 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +14,7 @@ import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import {
     AiAgentOnboardingState,
@@ -75,6 +75,9 @@ jest.mock('common/segment', () => ({
             'ai-agent-onboarding-wizard-public-url-ingested',
     },
 }))
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const mockedUseAiAgentOnboardingWizard = {
     storeFormValues: getStoreConfigurationFormValuesFixture(),
@@ -203,9 +206,12 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
     })
 
     it('should call handleSave and redirect to guidance tab when Finish button is clicked and feature flag is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key ===
+                    FeatureFlagKey.AiAgentOnboardingWizardKnowledgeRedirect ||
+                false,
+        )
 
         renderComponent({})
 

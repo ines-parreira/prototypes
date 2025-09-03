@@ -29,8 +29,6 @@ import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingN
 import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
-jest.mock('launchdarkly-react-client-sdk')
-
 jest.mock('@gorgias/axiom', () => ({
     LoadingSpinner: () => <div data-testid="loading-spinner">Loading...</div>,
 }))

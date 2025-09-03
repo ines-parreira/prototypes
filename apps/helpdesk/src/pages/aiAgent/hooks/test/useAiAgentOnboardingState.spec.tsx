@@ -15,7 +15,6 @@ import {
 } from '../useAiAgentOnboardingState'
 import { useStoreConfiguration } from '../useStoreConfiguration'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('../useStoreConfiguration')
 
 const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock

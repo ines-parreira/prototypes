@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { HttpIntegration, IntegrationType } from 'models/integration/types'
 import { AVAILABLE_3PL_INTEGRATIONS } from 'pages/automate/workflows/models/variables.types'
@@ -13,7 +13,7 @@ type ValidIntegration = HttpIntegration & {
 }
 
 export default function useThreeplIntegrations() {
-    const are3plObjectsEnabled = useFlags()[FeatureFlagKey.Actions3plObjects]
+    const are3plObjectsEnabled = useFlag(FeatureFlagKey.Actions3plObjects)
     const integrations = useAppSelector(getIntegrations)
 
     const availableIntegrations = useMemo(

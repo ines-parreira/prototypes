@@ -3,7 +3,6 @@ import React, { useMemo, useRef, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
@@ -15,6 +14,7 @@ import {
     EMAIL_INTEGRATION_TYPES,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
@@ -159,8 +159,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
         return currentStepIndex > channelsStepIndex
     }, [data?.currentStepName])
 
-    const flags = useFlags()
-    const isStandalone = flags[FeatureFlagKey.StandaloneHandoverCapabilities]
+    const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
     const stores = useAppSelector(getShopifyIntegrationsSortedByName)
     const accountDomain = useAppSelector(getCurrentDomain)

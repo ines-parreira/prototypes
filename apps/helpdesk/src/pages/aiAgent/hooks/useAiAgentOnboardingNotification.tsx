@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import hash from 'object-hash'
 
 import {
@@ -15,6 +14,7 @@ import {
 } from 'automate/notifications/utils'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
@@ -66,8 +66,9 @@ export const useAiAgentOnboardingNotification = ({
         upsertOnboardingNotificationState,
     } = useOnboardingNotificationStateMutation({ accountDomain, shopName })
 
-    const isAiAgentOnboardingNotificationEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingNotification]
+    const isAiAgentOnboardingNotificationEnabled = useFlag(
+        FeatureFlagKey.AiAgentOnboardingNotification,
+    )
 
     const handleOnSave = useCallback(
         async (
@@ -380,6 +381,7 @@ export const useAiAgentOnboardingNotification = ({
             void handleOnSave(payload)
         },
         [
+            handleOnSave,
             handleOnSendOrCancelNotification,
             isAiAgentOnboardingNotificationEnabled,
             shopName,

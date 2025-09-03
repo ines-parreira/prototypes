@@ -1,12 +1,12 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
@@ -24,6 +24,11 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import ActionsList from '../components/ActionsList'
 import { StoresWorkflowConfiguration } from '../types'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
@@ -31,7 +36,6 @@ jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseApps = jest.mocked(useApps)
@@ -178,9 +182,9 @@ describe('ActionsList', () => {
     })
 
     it('show fake action placeholder', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.FakeActionPlaceholder]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.FakeActionPlaceholder || false,
+        )
 
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [

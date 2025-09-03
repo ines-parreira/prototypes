@@ -1,5 +1,4 @@
-// External Libraries
-import React, {
+import {
     ComponentProps,
     useCallback,
     useEffect,
@@ -11,14 +10,13 @@ import React, {
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { List } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-// Absolute Imports
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
@@ -99,14 +97,19 @@ export const StoreConfigForm = ({
     faqHelpCenters,
     section,
 }: Props) => {
-    const flags = useFlags()
-    const trialModeAvailable = flags[FeatureFlagKey.AiAgentTrialMode]
-    const isAiAgentOnboardingWizardEnabled =
-        flags[FeatureFlagKey.AiAgentOnboardingWizard]
-    const isFollowUpAiAgentPreviewModeEnabled =
-        flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
-    const isAiAutofillSectionEnabled =
-        flags[FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]
+    const trialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
+    const isAiAgentOnboardingWizardEnabled = useFlag(
+        FeatureFlagKey.AiAgentOnboardingWizard,
+    )
+    const isFollowUpAiAgentPreviewModeEnabled = useFlag(
+        FeatureFlagKey.FollowUpAiAgentPreviewMode,
+    )
+    const isAiAutofillSectionEnabled = useFlag(
+        FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields,
+    )
+    const standaloneFFEnabled = useFlag(
+        FeatureFlagKey.StandaloneHandoverCapabilities,
+    )
 
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
     const shouldDisplayChannelsSection = section ? true : tab === 'channels'
@@ -330,8 +333,6 @@ export const StoreConfigForm = ({
         updateValue,
     })
 
-    const standaloneFFEnabled =
-        !!flags[FeatureFlagKey.StandaloneHandoverCapabilities]
     const [isHandoverDrawerOpen, setIsHandoverDrawerOpen] = useState(false)
 
     const isHandoffToggled = isHandoffEnabled(

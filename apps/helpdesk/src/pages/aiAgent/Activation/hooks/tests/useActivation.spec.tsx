@@ -34,7 +34,6 @@ import { useActivation } from '../useActivation'
 import { getStoreConfigurationFixture } from './fixtures/store-configurations.fixture'
 
 // Mock only external services
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('common/segment')
 jest.mock('core/flags')
 jest.mock('common/segment')

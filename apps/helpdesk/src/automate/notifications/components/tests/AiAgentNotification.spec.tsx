@@ -1,8 +1,5 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import {
     AiAgentNotificationPayload,
@@ -13,7 +10,6 @@ import type { Notification } from 'common/notifications'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { getLDClient } from 'utils/launchDarkly'
 
 import AiAgentNotification from '../AiAgentNotification'
 
@@ -49,10 +45,6 @@ const defaultUseAiAgentOnboardingNotification =
 describe('AiAgentNotification', () => {
     const mockDatetime = '2024-11-04T13:07:00'
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )

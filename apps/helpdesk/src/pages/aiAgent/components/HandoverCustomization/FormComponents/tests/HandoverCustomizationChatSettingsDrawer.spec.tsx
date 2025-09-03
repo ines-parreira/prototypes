@@ -21,7 +21,6 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
 )
-jest.mock('launchdarkly-react-client-sdk')
 
 const mockIntegration = {
     id: 'test-id',

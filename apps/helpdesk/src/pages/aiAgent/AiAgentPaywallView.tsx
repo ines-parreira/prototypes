@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -28,7 +28,7 @@ export type ToggleElement = {
 
 export type AiAgentPaywallViewProps = {
     aiAgentPaywallFeature: AIAgentPaywallFeatures
-    children?: React.ReactNode
+    children?: ReactNode
 }
 
 export const AiAgentPaywallView = ({

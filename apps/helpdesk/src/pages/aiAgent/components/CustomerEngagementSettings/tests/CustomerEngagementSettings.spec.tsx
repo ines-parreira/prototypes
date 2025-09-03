@@ -3,13 +3,12 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { ldClientMock } from 'jest-launchdarkly-mock'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
@@ -19,7 +18,6 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import * as IntegrationsActions from 'state/integrations/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import { CustomerEngagementSettings } from '../CustomerEngagementSettings'
@@ -116,6 +114,11 @@ jest.mock(
     }),
 )
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
 const mockUseGetChatIntegrationColor = jest.mocked(
     chatColorHook.useGetChatIntegrationColor,
 )
@@ -131,9 +134,6 @@ const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
     .mockReturnValue(newStoreConfig)
-
-jest.mock('launchdarkly-react-client-sdk')
-const mockedUseFlags = jest.mocked(useFlags)
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
     const rowContent = within(container).getByText(
@@ -184,10 +184,7 @@ describe('CustomerEngagementSettings', () => {
             initialEntries: ['/shopify/test-store/customer-engagement'],
         })
 
-        mockedUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
-
+        mockUseFlag.mockReturnValue(true)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 ...storeConfiguration,
@@ -204,11 +201,6 @@ describe('CustomerEngagementSettings', () => {
             conversationColor: '#000000',
             mainColor: '#000000',
         })
-
-        ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
     })
 
     it('renders conversation starters toggle and floating input setup button correctly', () => {
@@ -602,9 +594,7 @@ describe('CustomerEngagementSettings', () => {
 
     describe('feature flag behavior', () => {
         it('should still trigger Unsaved Changes modal even when toggle is visually disabled', async () => {
-            mockedUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-            })
+            mockUseFlag.mockReturnValue(false)
 
             const result = renderComponent()
 
@@ -628,9 +618,10 @@ describe('CustomerEngagementSettings', () => {
         })
 
         it('should enable toggle when feature flag is enabled', async () => {
-            mockedUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const result = renderComponent()
 
@@ -650,9 +641,7 @@ describe('CustomerEngagementSettings', () => {
         })
 
         it('Should not render Floating Input settings when AiShoppingAssistantEnabled flag is disabled', () => {
-            mockedUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-            })
+            mockUseFlag.mockReturnValue(false)
 
             const result = renderComponent()
 

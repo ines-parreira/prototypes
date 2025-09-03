@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { Content, Excerpt, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'

@@ -1,10 +1,7 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -15,6 +12,7 @@ import {
 } from 'automate/notifications/constants'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -72,6 +70,9 @@ const mockedOnboardingNotificationState = getOnboardingNotificationStateFixture(
     },
 )
 
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
+
 const defaultState: Partial<RootState> = {
     currentAccount: fromJS({
         ...account,
@@ -93,9 +94,10 @@ describe('useAiAgentOnboardingNotification', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingNotification]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentOnboardingNotification || false,
+        )
         mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseOnboardingnotificationState.mockReturnValue({
@@ -599,9 +601,7 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should not trigger call to send activate AI agent notification when AiAgentOnboardingNotification feature flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         mockUseOnboardingnotificationState.mockReturnValue({
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
@@ -771,9 +771,7 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should not trigger call to cancel activate AI agent notification when AiAgentOnboardingNotification feature flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         mockUseOnboardingnotificationState.mockReturnValue({
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
@@ -946,9 +944,7 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should not trigger trial request notification when feature flag is disabled', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingNotification]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         const { result } = renderHook(
             () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),

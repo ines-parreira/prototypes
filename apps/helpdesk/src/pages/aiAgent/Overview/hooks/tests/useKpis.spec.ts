@@ -27,9 +27,6 @@ jest.mock(
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
     useGetTicketChannelsStoreIntegrations: jest.fn(() => ['123', '456']),
 }))
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(() => ({})),
-}))
 
 const timezone = 'UTC'
 const filters = {

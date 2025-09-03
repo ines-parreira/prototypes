@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Redirect } from 'react-router-dom'

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
 import {
@@ -93,19 +93,20 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         ? storeActivations[currentStoreName]
         : undefined
 
-    const flags = useFlags()
-
     // Feature flag that controls the list of merchants that can start a trial
-    const isAiShoppingAssistantTrialMerchantsEnabled =
-        flags[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
+    const isAiShoppingAssistantTrialMerchantsEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantTrialMerchants,
+    )
 
     // Feature flag that controls new trial experience for shopping assistant
-    const isShoppingAssistantTrialImprovement =
-        flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+    const isShoppingAssistantTrialImprovement = useFlag(
+        FeatureFlagKey.ShoppingAssistantTrialImprovement,
+    )
 
     // Feature flag that controls new trial experience for AI Agent
-    const isAiAgentExpandingTrialExperienceForAllEnabled =
-        flags[FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
 
     // Check if AI Agent is being used on chat (any store with monitored chat integrations)
     const isUsingAiAgentOnChat = storeConfigurations.some(

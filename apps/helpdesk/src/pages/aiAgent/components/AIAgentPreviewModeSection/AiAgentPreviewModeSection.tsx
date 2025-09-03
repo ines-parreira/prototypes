@@ -1,9 +1,9 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
@@ -34,7 +34,7 @@ export const AiAgentPreviewModeSection = ({
     className,
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const handleAiAgentTrialModeChange = (value: string) => {
         const date = new Date().toISOString()

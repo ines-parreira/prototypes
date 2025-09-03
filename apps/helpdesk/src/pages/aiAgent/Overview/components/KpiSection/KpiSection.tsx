@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import { NavLink } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -135,7 +135,7 @@ export const KpiSection = ({
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const aiAgentUserId = useAIAgentUserId()
-    const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const hasAnalytics = useFlag(FeatureFlagKey.AiShoppingAssistantEnabled)
 
     const analyticsLink = useMemo(() => {
         if (isLoading) {

@@ -2,8 +2,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import { OnboardingData } from 'models/aiAgent/types'
@@ -24,8 +24,10 @@ const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 describe('useTransformToneOfVoiceConversations', () => {
     beforeEach(() => {
@@ -60,9 +62,9 @@ describe('useTransformToneOfVoiceConversations', () => {
             ],
             isLoading: false,
         })
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentOnboardingMLPreview]: true,
-        } as any)
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentOnboardingMLPreview || false,
+        )
     })
 
     it('should call transformToneOfVoice with correct params', async () => {
@@ -307,9 +309,7 @@ describe('useTransformToneOfVoiceConversations', () => {
     })
 
     it('should return hardcoded when FF is deactivated', async () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentOnboardingMLPreview]: false,
-        } as any)
+        mockUseFlag.mockReturnValue(false)
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () =>

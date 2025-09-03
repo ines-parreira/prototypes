@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
@@ -50,8 +49,9 @@ import { getFormValuesFromStoreConfiguration } from './hooks/utils/configuration
 import css from './AiAgentKnowledgeContainer.less'
 
 export const AiAgentKnowledgeContainer = () => {
-    const isAiAgentScrapeStoreDomainEnabled =
-        useFlags()[FeatureFlagKey.AiAgentScrapeStoreDomain]
+    const isAiAgentScrapeStoreDomainEnabled = useFlag(
+        FeatureFlagKey.AiAgentScrapeStoreDomain,
+    )
     const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
         FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
     )

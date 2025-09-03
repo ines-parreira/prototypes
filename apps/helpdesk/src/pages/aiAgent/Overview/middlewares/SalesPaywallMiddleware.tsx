@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
@@ -59,7 +59,6 @@ const PaywallWrapper = ({ children }: PaywallWrapperProps) => {
 
 export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
-        const flags = useFlags()
         const hasAutomate = useAppSelector(getHasAutomate)
         const { storeActivations } = useStoreActivations({
             withChatIntegrationsStatus: true,
@@ -184,11 +183,13 @@ export const SalesPaywallMiddleware =
             storeName: shopName ?? '',
         }
 
-        const isAiSalesAlphaDemoUser =
-            !!flags[FeatureFlagKey.AiSalesAgentBypassPlanCheck]
+        const isAiSalesAlphaDemoUser = useFlag(
+            FeatureFlagKey.AiSalesAgentBypassPlanCheck,
+        )
 
-        const ishoppingAssistantTrialImprovement =
-            !!flags[FeatureFlagKey.ShoppingAssistantTrialImprovement]
+        const ishoppingAssistantTrialImprovement = useFlag(
+            FeatureFlagKey.ShoppingAssistantTrialImprovement,
+        )
 
         const showUpgradePaywall =
             !hasNewAutomatePlan &&
@@ -345,9 +346,9 @@ const PaywallWrapperComponent = ({
     isNotifyAdminDisabled: boolean
     onNotifyAdminClick: () => void
 }) => {
-    const flags = useFlags()
-    const isAiShoppingAssistantEnabled =
-        !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isAiShoppingAssistantEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
 
     const queryParams = new URLSearchParams(location.search)
 

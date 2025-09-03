@@ -1,8 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import * as aiSalesAgentTrialUtils from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 
@@ -11,8 +11,10 @@ import {
     useTrialEligibilityForManualActivationFromFeatureFlag,
 } from '../useTrialEligibility'
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 const isAtLeastOneStoreEligibleForTrialSpy = jest.spyOn(
     aiSalesAgentTrialUtils,
@@ -130,9 +132,11 @@ describe('useTrialEligibility', () => {
 
 describe('useTrialEligibilityForManualActivationFromFeatureFlag', () => {
     it('should return eligibility state correctly', async () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                false,
+        )
 
         const isOnUsd5Plan = true
         const isCurrentUserTeamLead = true
@@ -151,9 +155,7 @@ describe('useTrialEligibilityForManualActivationFromFeatureFlag', () => {
     })
 
     it('should return false if feature flag is disabled', async () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         const isOnUsd5Plan = true
         const isCurrentUserTeamLead = true

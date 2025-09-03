@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, useParams } from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -35,7 +35,7 @@ const MAX_TEMPLATES = 7
 const ActionsView = () => {
     const dispatch = useAppDispatch()
 
-    const showFakeActions = useFlags()[FeatureFlagKey.FakeActionPlaceholder]
+    const showFakeActions = useFlag(FeatureFlagKey.FakeActionPlaceholder)
 
     const { shopName, shopType } = useParams<{
         shopType: string

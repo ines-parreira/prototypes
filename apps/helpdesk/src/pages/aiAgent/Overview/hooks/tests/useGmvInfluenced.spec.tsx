@@ -5,11 +5,11 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -36,6 +36,9 @@ const useGmvInfluencedCtaButtonMock = assumeMock(useGmvInfluencedCtaButton)
 
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 const gmvInfluencedQueryFactoryMock = assumeMock(gmvInfluencedQueryFactory)
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.useFakeTimers()
 
@@ -77,9 +80,9 @@ const defaultState = {
 
 describe('useGmvInfluenced', () => {
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        )
 
         gmvInfluencedQueryFactoryMock.mockReturnValue({
             measures: [AiSalesAgentOrdersMeasure.Gmv],
@@ -266,9 +269,7 @@ describe('useGmvInfluenced', () => {
     })
 
     it(`should be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is disabled`, () => {
-        mockFlags({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         useMetricPerDimensionMock
             .mockReturnValueOnce({
@@ -293,9 +294,9 @@ describe('useGmvInfluenced', () => {
     })
 
     it(`should not be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is enabled`, () => {
-        mockFlags({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        )
 
         useMetricPerDimensionMock
             .mockReturnValueOnce({

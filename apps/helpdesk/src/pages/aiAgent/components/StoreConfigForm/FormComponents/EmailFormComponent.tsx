@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
@@ -39,9 +39,8 @@ export const EmailFormComponent = ({
     setIsPristine,
     isDisabled,
 }: EmailFormComponentProps) => {
-    const useInitialValue = React.useRef(true)
-    const isAiAgentChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChat]
+    const useInitialValue = useRef(true)
+    const isAiAgentChatEnabled = useFlag(FeatureFlagKey.AiAgentChat)
 
     const isValueRequired = isRequired || !isAiAgentChatEnabled
     const isEmailIntegrationsValid = useMemo(() => {

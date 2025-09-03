@@ -1,11 +1,11 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -37,6 +37,9 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 )
 
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const mockStore = configureMockStore([thunk])
 
@@ -82,6 +85,7 @@ const renderComponent = () =>
 describe('ActionsViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseFlag.mockReturnValue(false)
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
             data: [actionConfigurationFixture],
             isLoading: false,
@@ -97,8 +101,6 @@ describe('ActionsViewContainer', () => {
     })
 
     it('should render guidance page with title "Support Actions"', () => {
-        mockFlags({})
-
         renderComponent()
 
         expect(

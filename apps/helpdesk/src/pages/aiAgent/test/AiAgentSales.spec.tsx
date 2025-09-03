@@ -5,11 +5,11 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
@@ -31,10 +31,6 @@ jest.mock('../AiAgentPaywallView', () => ({
 
 jest.mock('../components/SalesSettings/SalesSettings', () => ({
     SalesSettings: jest.fn(() => <div data-testid="sales-settings" />),
-}))
-
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
 }))
 
 jest.mock('../hooks/useGetShoppingAssistantEnabled')
@@ -71,7 +67,11 @@ const defaultState = {
 
 const mockUseGetShoppingAssistantEnabled =
     useGetShoppingAssistantEnabled as jest.Mock
-const mockUseFlags = useFlags as jest.Mock
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 const renderComponent = () =>
     renderWithRouter(
@@ -89,9 +89,9 @@ const renderComponent = () =>
 describe('<AiAgentSales />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        )
     })
 
     it('should render without error', async () => {
@@ -151,9 +151,7 @@ describe('<AiAgentSales />', () => {
     })
 
     it('should not redirect when feature flag is disabled', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: false,

@@ -1,10 +1,4 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -13,7 +7,7 @@ import { useParams } from 'react-router'
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import keymap from 'config/shortcuts'
-import useFlag from 'core/flags/hooks/useFlag'
+import { useFlag } from 'core/flags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import TextInput from 'pages/common/forms/input/TextInput'

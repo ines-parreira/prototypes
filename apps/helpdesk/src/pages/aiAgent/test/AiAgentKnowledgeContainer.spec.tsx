@@ -7,7 +7,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -99,7 +98,7 @@ jest.mock('pages/aiAgent/hooks/useGuidanceAiSuggestions')
 const mockUseGuidanceAiSuggestions = assumeMock(useGuidanceAiSuggestions)
 
 jest.mock('core/flags')
-const mockUseFlag = assumeMock(useFlag)
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('models/helpCenter/queries')
 
@@ -293,12 +292,14 @@ const renderComponent = ({
         syncIsPending: false,
     })
 
-    mockFlags({
-        [FeatureFlagKey.AiAgentScrapeStoreDomain]:
-            isAiAgentScrapeStoreDomainEnabled,
-    })
-
-    mockUseFlag.mockReturnValue(isAiAgentFilesAndUrlsKnowledgeVisibilityButton)
+    mockUseFlag.mockImplementation((key) =>
+        key === FeatureFlagKey.AiAgentScrapeStoreDomain
+            ? isAiAgentScrapeStoreDomainEnabled
+            : key ===
+                FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton
+              ? isAiAgentFilesAndUrlsKnowledgeVisibilityButton
+              : false,
+    )
 
     return renderWithRouter(
         <Provider store={mockStore(defaultState)}>

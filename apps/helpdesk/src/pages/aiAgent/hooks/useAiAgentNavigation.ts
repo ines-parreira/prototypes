@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import {
     ANALYZE,
     CHAT,
@@ -136,28 +135,32 @@ export type NavigationItem = {
 
 const useNavigationItems = (
     routes: ReturnType<typeof getAiAgentNavigationRoutes>,
-    flags: LDFlagSet,
 ) => {
     const isGorgiasUser =
-        flags[FeatureFlagKey.FollowUpAiAgentPreviewMode] &&
+        useFlag(FeatureFlagKey.FollowUpAiAgentPreviewMode) &&
         (window.USER_IMPERSONATED || window.DEVELOPMENT)
 
-    const isAiAgentKnowledgeTabEnabled =
-        flags[FeatureFlagKey.AiAgentKnowledgeTab]
+    const isAiAgentKnowledgeTabEnabled = useFlag(
+        FeatureFlagKey.AiAgentKnowledgeTab,
+    )
 
-    const isAiAgentScrapeStoreDomainEnabled =
-        flags[FeatureFlagKey.AiAgentScrapeStoreDomain]
+    const isAiAgentScrapeStoreDomainEnabled = useFlag(
+        FeatureFlagKey.AiAgentScrapeStoreDomain,
+    )
 
-    const isAiShoppingAssistantEnabled =
-        !!flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isAiShoppingAssistantEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
 
-    const isAiShoppingAssistantProductRecommendationsEnabled =
-        !!flags[FeatureFlagKey.AiShoppingAssistantProductRecommendations]
+    const isAiShoppingAssistantProductRecommendationsEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantProductRecommendations,
+    )
 
-    const isShoppingAssitantDeactivationEnforced =
-        flags[FeatureFlagKey.ShoppingAssistantEnforceDeactivation]
+    const isShoppingAssitantDeactivationEnforced = useFlag(
+        FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
+    )
 
-    const isOpportunitiesEnabled = flags[FeatureFlagKey.SurfaceOpportunities]
+    const isOpportunitiesEnabled = useFlag(FeatureFlagKey.SurfaceOpportunities)
 
     // Actions platform is rendered outside the per-shop navigation in the
     // ActionDrivenNavigation component.
@@ -306,14 +309,12 @@ const useNavigationItems = (
 }
 
 export const useAiAgentNavigation = ({ shopName }: { shopName: string }) => {
-    const flags = useFlags()
-
     const routes = useMemo(
         () => getAiAgentNavigationRoutes(shopName),
         [shopName],
     )
 
-    const navigationItems = useNavigationItems(routes, flags)
+    const navigationItems = useNavigationItems(routes)
 
     return { navigationItems, routes }
 }

@@ -1,18 +1,18 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 import { ToneOfVoiceFormComponent } from '../ToneOfVoiceFormComponent'
 
-// Mock the useFlags hook
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 const mockUpdateValue = jest.fn()
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 const defaultProps = {
     updateValue: mockUpdateValue,
@@ -74,28 +74,26 @@ const defaultProps = {
 describe('ToneOfVoiceFormComponent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('does not display language control when feature flag is false', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentCustomLanguage]: false,
-        })
         render(<ToneOfVoiceFormComponent {...defaultProps} />)
         expect(screen.queryByText('Language')).not.toBeInTheDocument()
     })
 
     it('displays language control when feature flag is true', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentCustomLanguage]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentCustomLanguage || false,
+        )
         render(<ToneOfVoiceFormComponent {...defaultProps} />)
         expect(screen.getByText('Language')).toBeInTheDocument()
     })
 
     it('passes aiAgentLanguage prop to AiLanguageSettings when feature flag is true', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentCustomLanguage]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentCustomLanguage || false,
+        )
         const propsWithLanguage = {
             ...defaultProps,
             aiAgentLanguage: 'French',

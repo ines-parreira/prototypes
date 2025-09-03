@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import useOrderBy from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -35,7 +35,7 @@ export default function ActionsList({ actions }: Props) {
     const { orderDirection, orderBy, orderParam, toggleOrderBy } =
         useOrderBy<'updated'>('updated')
 
-    const showFakeActions = useFlags()[FeatureFlagKey.FakeActionPlaceholder]
+    const showFakeActions = useFlag(FeatureFlagKey.FakeActionPlaceholder)
 
     const { data: templateSteps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],

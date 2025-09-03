@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { ActiveContent, Navbar } from 'common/navigation'

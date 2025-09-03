@@ -1,8 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpdeskPlanTier } from 'models/billing/types'
@@ -24,14 +24,15 @@ import { createMockTrialAccess } from '../hooks/fixtures'
 import { useTrialAccess } from '../hooks/useTrialAccess'
 
 // Mock dependencies
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('../hooks/useSalesTrialRevampMilestone')
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -41,7 +42,6 @@ jest.mock('utils', () => ({
     isTeamLead: jest.fn(),
 }))
 
-const mockUseFlags = assumeMock(useFlags)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseAtLeastOneStoreHasActiveTrial = assumeMock(
     useAtLeastOneStoreHasActiveTrial,
@@ -159,10 +159,12 @@ describe('useTrialAccess', () => {
         jest.clearAllMocks()
 
         // Default mock implementations - AiAgentExpandingTrialExperienceForAll disabled by default
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-            [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
+                false,
+        )
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentUser) {
@@ -263,10 +265,11 @@ describe('useTrialAccess', () => {
             })
 
             // Enable feature flags
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                    false,
+            )
 
             // Set loading state for store configurations
             mockUseStoreConfigurations.mockReturnValue({
@@ -352,10 +355,7 @@ describe('useTrialAccess', () => {
         })
 
         it('should allow Pro+ admin to book demo when feature flag is disabled', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: false,
-                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
-            })
+            mockUseFlag.mockReturnValue(false)
 
             const { result } = renderHook(() => useTrialAccess())
 
@@ -890,10 +890,11 @@ describe('useTrialAccess', () => {
         })
 
         it('should return ShoppingAssistant when AiAgentExpandingTrialExperienceForAll flag is disabled', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: false,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                    false,
+            )
 
             const { result } = renderHook(() => useTrialAccess())
 
@@ -901,10 +902,13 @@ describe('useTrialAccess', () => {
         })
 
         it('should return AiAgent when no automate plan exists (USD-4)', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                    key ===
+                        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
+                    false,
+            )
 
             mockUseAppSelector.mockImplementation((selector) => {
                 if (selector === getCurrentUser) {
@@ -928,10 +932,11 @@ describe('useTrialAccess', () => {
         })
 
         it('should return ShoppingAssistant for all other cases', () => {
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantTrialMerchants]: true,
-                [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                    false,
+            )
 
             mockUseAppSelector.mockImplementation((selector) => {
                 if (selector === getCurrentUser) {

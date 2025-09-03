@@ -7,7 +7,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import moment from 'moment'
 import { Provider } from 'react-redux'
@@ -17,6 +16,7 @@ import thunk from 'redux-thunk'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { billingState } from 'fixtures/billing'
 import {
@@ -225,6 +225,9 @@ jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: () => mockDispatch,
 }))
+
+jest.mock('core/flags')
+const useFlagMock = jest.mocked(useFlag)
 
 const mockStore = configureMockStore([thunk])
 
@@ -481,10 +484,7 @@ describe('<StoreConfigForm />', () => {
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
         })
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: false,
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
+        useFlagMock.mockReturnValue(false)
         mockUseSearchParam.mockReturnValue([null, mockSetSearchParam])
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
@@ -560,9 +560,9 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should not deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is true', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
+        )
 
         renderComponent()
 
@@ -596,9 +596,9 @@ describe('<StoreConfigForm />', () => {
 
     describe('AI Agent chat configuration', () => {
         beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
             mockUseParams.mockReturnValue({ tab: 'channels' })
         })
 
@@ -611,9 +611,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should not display dropdown if feature flag is false', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: false,
-            })
+            useFlagMock.mockReturnValue(false)
             renderComponent()
 
             await waitFor(() => {
@@ -658,9 +656,9 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('chat toggle should be disabled if user does not have automate', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
             mockGetHasAutomate.mockReturnValue(false)
             renderComponent()
 
@@ -670,9 +668,9 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should trigger monitoredChatIntegrations with correct values on dropdown item click', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             renderComponent()
 
@@ -779,9 +777,9 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should trigger monitoredEmailIntegration with correct values on dropdown item click', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
@@ -883,10 +881,12 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should handle enabled mode correctly', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
+        useFlagMock.mockImplementation(
+            (key) =>
+                FeatureFlagKey.AiAgentTrialMode === key ||
+                FeatureFlagKey.AiAgentChat === key ||
+                false,
+        )
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -927,10 +927,9 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should handle trial mode correctly', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
+        useFlagMock.mockImplementation(
+            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
+        )
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -967,10 +966,9 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should handle disabled mode correctly', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentTrialMode]: true,
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
+        useFlagMock.mockImplementation(
+            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
+        )
         renderComponent({})
 
         // Simulate the user selecting 'disabled' mode
@@ -1018,9 +1016,9 @@ describe('<StoreConfigForm />', () => {
 
     it('should deactivate chat channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) => FeatureFlagKey.AiAgentChat === key || false,
+        )
 
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
@@ -1040,9 +1038,9 @@ describe('<StoreConfigForm />', () => {
 
     it('should activate chat channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) => FeatureFlagKey.AiAgentChat === key || false,
+        )
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1241,9 +1239,11 @@ describe('<StoreConfigForm />', () => {
 
     // TODO(React18): This test is flaky, we need to fix it
     it.skip('should update form values when saving drawer content with new ticket fields', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) =>
+                FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
+                    key || false,
+        )
 
         renderComponent()
 
@@ -1339,9 +1339,11 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should switch drawer content when clicking on different features', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) =>
+                FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
+                    key || false,
+        )
         renderComponent()
 
         // Open Tags drawer
@@ -1488,9 +1490,11 @@ describe('<StoreConfigForm />', () => {
     })
 
     it('should update activeDrawerValues when customFieldIds in formValues change', async () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
-        })
+        useFlagMock.mockImplementation(
+            (key) =>
+                FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
+                    key || false,
+        )
         mockedUseConfigurationForm.mockReturnValue({
             ...defaultUseConfigurationFormValues,
             formValues: {
@@ -1851,9 +1855,9 @@ describe('<StoreConfigForm />', () => {
 
         it('should show error when chat or email enabled but no integrations selected', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
@@ -1878,9 +1882,9 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should not show modal when trial mode is enabled', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentTrialMode]: false,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
+            )
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
@@ -1927,9 +1931,9 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should show modal when switching form trial mode to live mode', async () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentTrialMode]: false,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
+            )
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: 1,
@@ -1976,9 +1980,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display banner if AI Agent on Preview mode', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -2004,9 +2009,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should display banner if AI Agent on Preview mode with new method', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -2032,9 +2038,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should redirect to AI Agent Preview ticket views if button on Preview banner is clicked', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: null,
@@ -2069,9 +2076,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should not show Review Drafts button if Preview ticket views id is null', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: null,
@@ -2107,9 +2115,11 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should show the Ticket Fields section if the FF is activated', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
+                        key || false,
+            )
 
             const { container } = renderComponent()
             const section = within(container).getByText('Ticket Fields')
@@ -2120,9 +2130,10 @@ describe('<StoreConfigForm />', () => {
 
     describe('Preview Mode', () => {
         it('should display banner if AI Agent on Preview mode', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
@@ -2148,9 +2159,10 @@ describe('<StoreConfigForm />', () => {
         })
 
         it('should not show Review Drafts button if Preview ticket views id is null', () => {
-            mockFlags({
-                [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.FollowUpAiAgentPreviewMode === key || false,
+            )
             mockedUseAccountStoreConfiguration.mockReturnValue({
                 accountConfiguration: undefined,
                 aiAgentTicketViewId: null,
@@ -2283,9 +2295,9 @@ describe('<StoreConfigForm />', () => {
 
     describe('External Knowledge Sources', () => {
         beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
         })
 
         it('should filter knowledge source URLs', async () => {
@@ -2382,9 +2394,9 @@ describe('<StoreConfigForm />', () => {
     describe('section prop display logic', () => {
         it('should display channels section when section prop is provided regardless of tab', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             renderComponent({ section: 'email' })
 
@@ -2443,9 +2455,9 @@ describe('<StoreConfigForm />', () => {
 
         it('should display only specific channel section when section prop is chat', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             renderComponent({ section: 'chat' })
 
@@ -2469,9 +2481,9 @@ describe('<StoreConfigForm />', () => {
 
         it('should display only specific channel section when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentSms]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentSms === key || false,
+            )
 
             renderComponent({ section: 'sms' })
 
@@ -2497,10 +2509,10 @@ describe('<StoreConfigForm />', () => {
 
     describe('section-based display logic', () => {
         it('should display only channels section when section prop is chat', () => {
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
             mockUseParams.mockReturnValue({ tab: 'general' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
 
             renderComponent({ section: 'chat' })
 
@@ -2545,9 +2557,9 @@ describe('<StoreConfigForm />', () => {
 
         it('should display channels section when section prop is not provided and tab is channels', () => {
             mockUseParams.mockReturnValue({ tab: 'channels' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentChat === key || false,
+            )
 
             renderComponent({ section: undefined })
 
@@ -2591,9 +2603,9 @@ describe('<StoreConfigForm />', () => {
 
         it('should override tab parameter when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
-            mockFlags({
-                [FeatureFlagKey.AiAgentSms]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentSms === key || false,
+            )
 
             renderComponent({ section: 'sms' })
 
@@ -2615,15 +2627,15 @@ describe('<StoreConfigForm />', () => {
 
     describe('custom fields', () => {
         beforeEach(() => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: true,
-            })
+            useFlagMock.mockImplementation(
+                (key) =>
+                    FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields ===
+                        key || false,
+            )
         })
 
         it('should not display the custom fields settings card when FF custom-fields is disabled', () => {
-            mockFlags({
-                [FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields]: false,
-            })
+            useFlagMock.mockReturnValue(false)
             mockedUseConfigurationForm.mockReturnValue({
                 ...defaultUseConfigurationFormValues,
                 formValues: {

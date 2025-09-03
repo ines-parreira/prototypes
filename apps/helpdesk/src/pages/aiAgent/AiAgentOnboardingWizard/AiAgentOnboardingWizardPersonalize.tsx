@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -63,8 +63,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
         shopName,
     })
 
-    const isAiAgentChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChat]
+    const isAiAgentChatEnabled = useFlag(FeatureFlagKey.AiAgentChat)
 
     const handleButtonClicks = (action: FOOTER_BUTTONS) => {
         if (action !== FOOTER_BUTTONS.CANCEL) {

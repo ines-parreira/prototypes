@@ -5,7 +5,6 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -32,8 +31,10 @@ const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
 const queryClient = mockQueryClient()
 
-jest.mock('launchdarkly-react-client-sdk')
-const mockUseFlags = jest.mocked(useFlags)
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
@@ -58,9 +59,6 @@ jest.mock('../useActionDrivenNavbarSections', () => ({
         handleExpandedSectionsChange: jest.fn(),
     }),
 }))
-
-jest.mock('core/flags')
-const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('../ActionDrivenNavigation', () => ({
     ActionDrivenNavigation: jest.fn(() => <div>ActionDrivenNavigation</div>),
@@ -161,9 +159,9 @@ const renderNavbar = ({ store }: { store?: Partial<RootState> } = {}) =>
 
 describe('<AiAgentNavbar />', () => {
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentOnboardingWizard]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentOnboardingWizard || false,
+        )
 
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,

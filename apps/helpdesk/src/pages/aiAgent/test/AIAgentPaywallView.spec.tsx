@@ -29,6 +29,7 @@ import {
 } from '../AiAgentPaywallView'
 
 jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 jest.mock('common/segment')
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
@@ -39,7 +40,6 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
 const queryClient = mockQueryClient()
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
@@ -176,12 +176,9 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('displays ROI Calculator button when feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
-                return true
-            }
-            return false
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.ObservabilityROICalculator || false,
+        )
         renderComponent({
             aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,
         })
@@ -192,12 +189,9 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('opens ROI Calculator modal on button click', async () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
-                return true
-            }
-            return false
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.ObservabilityROICalculator || false,
+        )
 
         renderComponent({
             aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,
@@ -210,12 +204,9 @@ describe('<AiAgentPaywallView />', () => {
     })
 
     it('closes ROI Calculator modal on click of the cancel button', async () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ObservabilityROICalculator) {
-                return true
-            }
-            return false
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.ObservabilityROICalculator || false,
+        )
 
         renderComponent({
             aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,

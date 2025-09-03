@@ -1,16 +1,16 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
-import { ldClientMock } from 'jest-launchdarkly-mock'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -24,7 +24,6 @@ import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/__mocks__/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -71,6 +70,11 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
@@ -97,11 +101,6 @@ const renderComponent = (
 
 describe('AiAgentOnboarding', () => {
     beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
-
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
@@ -125,9 +124,9 @@ describe('AiAgentOnboarding', () => {
             data: [],
         })
 
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-        }))
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        )
     })
 
     beforeAll(() => {
@@ -149,9 +148,7 @@ describe('AiAgentOnboarding', () => {
     })
 
     it('should keep user on onboarding even if feature flag is disabled', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-        }))
+        mockUseFlag.mockReturnValue(false)
 
         renderComponent()
 

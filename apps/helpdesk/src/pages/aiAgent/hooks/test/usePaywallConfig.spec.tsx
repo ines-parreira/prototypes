@@ -8,7 +8,6 @@ import { assetsUrl } from 'utils'
 
 import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('utils')
 
 const mockAssetsUrl = assetsUrl as jest.MockedFunction<typeof assetsUrl>

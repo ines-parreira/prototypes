@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -38,10 +36,6 @@ import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundChat } from './PlaygroundChat'
-
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
 
 jest.mock('core/flags/hooks/useFlag', () => ({
     __esModule: true,

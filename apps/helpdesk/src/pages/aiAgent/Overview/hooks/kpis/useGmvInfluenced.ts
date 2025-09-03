@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -30,7 +30,7 @@ export const useGmvInfluenced = ({
     showActivationModal: () => void
     integrationIds?: number[]
 }): KpiMetric => {
-    const hasAnalytics = useFlags()[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const hasAnalytics = useFlag(FeatureFlagKey.AiShoppingAssistantEnabled)
     const { currency } = useCurrency()
 
     const currentPeriodQuery = gmvInfluencedQueryFactory(

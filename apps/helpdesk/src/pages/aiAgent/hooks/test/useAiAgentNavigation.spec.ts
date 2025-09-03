@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock, renderHook } from '@repo/testing'
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@repo/testing'
 
+import { useFlag } from 'core/flags'
 import {
     ANALYTICS,
     CUSTOMER_ENGAGEMENT,
@@ -13,27 +13,20 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
+jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
-const useFlagsMock = assumeMock(useFlags)
+const mockUseFlag = jest.mocked(useFlag)
 
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentKnowledgeTab]: false,
-            [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentKnowledgeTab || false,
+        )
     })
 
     it('should get Knowledge General tab to navbar if AI agent scrape store domain feature flag is off', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
-            [FeatureFlagKey.AiAgentScrapeStoreDomain]: false,
-        })
-
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
         )
@@ -62,10 +55,12 @@ describe('useAiAgentNavigation', () => {
     })
 
     it('should get Knowledge Source tab to navbar if AI agent scrape store domain feature flag is on', () => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.AiAgentKnowledgeTab]: true,
-            [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentKnowledgeTab ||
+                key === FeatureFlagKey.AiAgentScrapeStoreDomain ||
+                false,
+        )
 
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
@@ -226,9 +221,11 @@ describe('useAiAgentNavigation', () => {
     describe('useNavigationItems', () => {
         describe('when AiShoppingAssistantEnabled=false', () => {
             beforeEach(() => {
-                useFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-                })
+                mockUseFlag.mockImplementation(
+                    (key) =>
+                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                        false,
+                )
             })
 
             it('should return ai-agent route for ai-agent support set up', () => {
@@ -244,9 +241,11 @@ describe('useAiAgentNavigation', () => {
 
         describe('when AiShoppingAssistantEnabled=true', () => {
             beforeEach(() => {
-                useFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                })
+                mockUseFlag.mockImplementation(
+                    (key) =>
+                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                        false,
+                )
             })
 
             it('should return ai-agent route for ai-agent sales set up when no step', () => {
@@ -273,9 +272,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return ai-agent route for customer engagement when ai shopping assistant is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -300,9 +300,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return ai-agent route for strategy when ai shopping assistant is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -327,9 +328,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should not return ai-agent route for analytics in sales items', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -354,9 +356,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return ai-agent route for strategy when ai shopping assistant is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -381,10 +384,13 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return ai-agent route for product recommendations when ai shopping assistant and product recommendations are enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiShoppingAssistantProductRecommendations]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                    key ===
+                        FeatureFlagKey.AiShoppingAssistantProductRecommendations ||
+                    false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -409,10 +415,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should not return ai-agent route for product recommendations when ai shopping assistant is enabled but product recommendations is disabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.AiShoppingAssistantProductRecommendations]: false,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -442,10 +448,13 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should not include sales navigation item when ShoppingAssistantEnforceDeactivation is enabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.ShoppingAssistantEnforceDeactivation]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                    key ===
+                        FeatureFlagKey.ShoppingAssistantEnforceDeactivation ||
+                    false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
@@ -462,10 +471,10 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should include sales navigation item when ShoppingAssistantEnforceDeactivation is disabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-                [FeatureFlagKey.ShoppingAssistantEnforceDeactivation]: false,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+            )
 
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),

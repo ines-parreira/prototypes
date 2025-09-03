@@ -1,20 +1,15 @@
-import React from 'react'
+import { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { BrowserRouter } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ChannelsFormComponent } from '../ChannelsFormComponent'
-
-// Mock all hooks
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -46,7 +41,7 @@ jest.mock(
             children,
             title,
         }: {
-            children: React.ReactNode
+            children: ReactNode
             title: string
         }) => (
             <div data-testid="configuration-section" data-title={title}>
@@ -166,6 +161,11 @@ jest.mock(
     }),
 )
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
 describe('ChannelsFormComponent', () => {
     const mockProps = {
         shopName: 'Test Shop',
@@ -191,23 +191,15 @@ describe('ChannelsFormComponent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        // Mock the feature flags
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.StandaloneHandoverCapabilities]: false,
-        })
-
-        // Mock the app selector (hasAutomate)
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
         ;(useAppSelector as jest.Mock).mockReturnValue(true)
-
-        // Mock the chat channels
         ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([
             { value: { id: 1, name: 'Test Channel 1' } },
             { value: { id: 2, name: 'Test Channel 2' } },
             { value: { id: 3, name: 'Test Channel 3' } },
         ])
-
-        // Mock chat integration status data
         ;(useFetchChatIntegrationsStatusData as jest.Mock).mockReturnValue({
             data: [
                 { chatId: 1, installed: true },
@@ -217,10 +209,9 @@ describe('ChannelsFormComponent', () => {
         })
     })
     it('should render ai agent chat section when chat feature flag is enabled', () => {
-        // Disable the chat feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
 
         render(
             <BrowserRouter>
@@ -239,11 +230,13 @@ describe('ChannelsFormComponent', () => {
     })
 
     it('should render email/chat toggle when AiAgentActivation=true and AiAgentNewActivationXp=true', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentActivation]: true,
-            [FeatureFlagKey.AiAgentNewActivationXp]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentChat ||
+                key === FeatureFlagKey.AiAgentActivation ||
+                key === FeatureFlagKey.AiAgentNewActivationXp ||
+                false,
+        )
 
         render(
             <BrowserRouter>
@@ -256,11 +249,12 @@ describe('ChannelsFormComponent', () => {
     })
 
     it('should hide email and chat toggles when AiAgentActivation feature flag is enabled and ai agent chat is enabled', () => {
-        // Disable the chat feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentActivation]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentChat ||
+                key === FeatureFlagKey.AiAgentActivation ||
+                false,
+        )
 
         render(
             <BrowserRouter>
@@ -287,11 +281,7 @@ describe('ChannelsFormComponent', () => {
     })
 
     it('does not render ai agent chat section when chat feature flag is disabled', () => {
-        // Disable the chat feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: false,
-            [FeatureFlagKey.AiAgentActivation]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         render(
             <BrowserRouter>
@@ -311,11 +301,9 @@ describe('ChannelsFormComponent', () => {
     })
 
     it('should render handover customization', () => {
-        // Disable only the handover customization feature flag
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentActivation]: false,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
 
         render(
             <BrowserRouter>
@@ -333,10 +321,9 @@ describe('ChannelsFormComponent', () => {
 
     it('disables channel toggles when hasAutomate is false', () => {
         ;(useAppSelector as jest.Mock).mockReturnValue(false)
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-            [FeatureFlagKey.AiAgentActivation]: false,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
         render(
             <BrowserRouter>
                 <ChannelsFormComponent {...mockProps} />
@@ -351,9 +338,9 @@ describe('ChannelsFormComponent', () => {
     })
 
     it('passes correct isRequired prop to form components based on deactivated datetime', () => {
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
 
         const propsWithDeactivatedChat = {
             ...mockProps,
@@ -546,11 +533,12 @@ describe('ChannelsFormComponent', () => {
 
     describe('StandaloneHandoverCapabilities feature flag', () => {
         it('should hide email section when standalone flag is true', () => {
-            // Enable standalone flag
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.StandaloneHandoverCapabilities]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiAgentChat ||
+                    key === FeatureFlagKey.StandaloneHandoverCapabilities ||
+                    false,
+            )
 
             render(
                 <BrowserRouter>
@@ -571,11 +559,9 @@ describe('ChannelsFormComponent', () => {
         })
 
         it('should show email section when standalone flag is false', () => {
-            // Explicitly set standalone flag to false
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.StandaloneHandoverCapabilities]: false,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             render(
                 <BrowserRouter>
@@ -596,9 +582,9 @@ describe('ChannelsFormComponent', () => {
 
     describe('channel toggle interactions', () => {
         it('should call updateValue when email toggle is clicked', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             render(
                 <BrowserRouter>
@@ -615,9 +601,9 @@ describe('ChannelsFormComponent', () => {
         })
 
         it('should call updateValue when chat toggle is clicked', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             render(
                 <BrowserRouter>
@@ -634,9 +620,9 @@ describe('ChannelsFormComponent', () => {
         })
 
         it('should mark form as dirty when any toggle is changed', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             render(
                 <BrowserRouter>
@@ -655,10 +641,9 @@ describe('ChannelsFormComponent', () => {
 
     describe('SMS channel handling', () => {
         it('should not render SMS section when feature flag is disabled', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.AiAgentSms]: false, // Disable SMS
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             const propsWithSms = {
                 ...mockProps,
@@ -690,10 +675,12 @@ describe('ChannelsFormComponent', () => {
         })
 
         it('should render SMS section when feature flag is enabled', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.AiAgentSms]: true, // Enable SMS feature flag
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiAgentChat ||
+                    key === FeatureFlagKey.AiAgentSms ||
+                    false,
+            )
 
             const propsWithSms = {
                 ...mockProps,
@@ -721,9 +708,9 @@ describe('ChannelsFormComponent', () => {
 
     describe('settings banner', () => {
         it('should render settings banner for chat', () => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             render(
                 <BrowserRouter>

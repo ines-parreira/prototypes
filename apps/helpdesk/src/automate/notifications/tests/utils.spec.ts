@@ -1,9 +1,6 @@
-import { ldClientMock } from 'jest-launchdarkly-mock'
-
 import { OnboardingNotificationState } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentNotificationType } from '../types'
 import {
@@ -21,13 +18,6 @@ const basePayload = {
     ticket_id: '12345',
 }
 describe('getNotificationParams', () => {
-    beforeEach(() => {
-        ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
-    })
-
     it('should return correct params for StartAiAgentSetup', () => {
         const payload = {
             ...basePayload,

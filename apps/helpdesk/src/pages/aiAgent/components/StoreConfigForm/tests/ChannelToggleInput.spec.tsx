@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
@@ -16,10 +16,6 @@ import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
 jest.mock('common/segment', () => ({
     ...jest.requireActual('common/segment'),
     logEvent: jest.fn(),
-}))
-
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
 }))
 
 const mockLogEvent = jest.mocked(logEvent)

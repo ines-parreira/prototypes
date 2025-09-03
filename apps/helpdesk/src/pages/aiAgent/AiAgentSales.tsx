@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory, useParams } from 'react-router-dom'
+
+import { useFlag } from 'core/flags'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'
@@ -16,8 +17,9 @@ export const AiAgentSales = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-    const flags = useFlags()
-    const isSalesPageEnabled = flags[FeatureFlagKey.AiShoppingAssistantEnabled]
+    const isSalesPageEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName).analytics
     const strategyRoute = getAiAgentNavigationRoutes(shopName).salesStrategy

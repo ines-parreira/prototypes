@@ -1,14 +1,15 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -126,9 +127,10 @@ const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
 )
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(() => ({})),
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
 }))
+const mockUseFlag = jest.mocked(useFlag)
 
 const goToStep = jest.fn()
 
@@ -192,32 +194,57 @@ const mockChatAndEmailDisabled = () => {
     } as any)
 }
 
+const applyMocks = () => {
+    usePreselectedEmailsMock.mockReturnValue([])
+    usePreselectedChatMock.mockReturnValue([])
+
+    useSelectedEmailsBeforeRedirectMock.mockReturnValue({
+        selectedEmailsBeforeRedirect: [],
+        setSelectedEmailsBeforeRedirect: jest.fn(),
+        clearSelectedEmailsBeforeRedirect: jest.fn(),
+    })
+
+    useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+        AiAgentScopes.SUPPORT,
+        AiAgentScopes.SALES,
+    ])
+
+    useCreateOnboardingMock.mockReturnValue({
+        mutate: mutateCreateOnboardingMock,
+        isLoading: false,
+    } as any)
+
+    useUpdateOnboardingMock.mockReturnValue({
+        mutate: mutateUpdateOnboardingMock,
+        isLoading: false,
+    } as any)
+
+    mutateUpdateOnboardingMock.mockImplementation(
+        (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+            onSuccess()
+        },
+    )
+    mutateCreateOnboardingMock.mockImplementation(
+        (data: any, { onSuccess }: { onSuccess: () => {} }) => {
+            onSuccess()
+        },
+    )
+
+    useShouldDisplayEmailIntegrationsLinkMock.mockReturnValue(true)
+}
+
 describe('ChannelsStep', () => {
     describe('ChannelsStep - empty state', () => {
         beforeEach(() => {
+            applyMocks()
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: true,
             })
-
-            usePreselectedEmailsMock.mockReturnValue([])
-            usePreselectedChatMock.mockReturnValue([])
-            useSelectedEmailsBeforeRedirectMock.mockReturnValue({
-                selectedEmailsBeforeRedirect: [],
-                setSelectedEmailsBeforeRedirect: jest.fn(),
-                clearSelectedEmailsBeforeRedirect: jest.fn(),
-            })
-
-            useShouldDisplayEmailIntegrationsLinkMock.mockReturnValue(true)
 
             useGetOnboardingsMock.mockReturnValue({
                 data: [defaultOnboardingData],
                 isLoading: false,
             } as any)
-
-            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
-                AiAgentScopes.SUPPORT,
-                AiAgentScopes.SALES,
-            ])
 
             useGetOnboardingDataMock.mockReturnValue({
                 data: {
@@ -228,16 +255,6 @@ describe('ChannelsStep', () => {
                     shopName: shopifyIntegration.meta.shop_name,
                     currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
                 },
-                isLoading: false,
-            } as any)
-
-            useCreateOnboardingMock.mockReturnValue({
-                mutate: mutateCreateOnboardingMock,
-                isLoading: false,
-            } as any)
-
-            useUpdateOnboardingMock.mockReturnValue({
-                mutate: mutateUpdateOnboardingMock,
                 isLoading: false,
             } as any)
 
@@ -266,17 +283,6 @@ describe('ChannelsStep', () => {
                 ],
                 isLoading: false,
             })
-
-            mutateUpdateOnboardingMock.mockImplementation(
-                (data: any, { onSuccess }: { onSuccess: () => {} }) => {
-                    onSuccess()
-                },
-            )
-            mutateCreateOnboardingMock.mockImplementation(
-                (data: any, { onSuccess }: { onSuccess: () => {} }) => {
-                    onSuccess()
-                },
-            )
 
             useTransformToneOfVoiceConversationsMock.mockReturnValue({
                 previewConversation: conversationExamples.default,
@@ -338,6 +344,7 @@ describe('ChannelsStep', () => {
 
         // TODO(React18): Fix this flaky test
         it.skip('selects an additional email and proceeds to next step', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
@@ -350,7 +357,7 @@ describe('ChannelsStep', () => {
                 ).toBeInTheDocument()
             })
 
-            userEvent.click(
+            user.click(
                 screen.getByText(
                     'Enable your AI Agent to respond to customers via email.',
                 ),
@@ -376,10 +383,10 @@ describe('ChannelsStep', () => {
                 ).toBeInTheDocument()
             })
 
-            userEvent.click(screen.getByText('billing+1@acme.gorgias.io'))
+            user.click(screen.getByText('billing+1@acme.gorgias.io'))
 
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
 
             await waitFor(() => {
                 expect(mutateCreateOnboardingMock).toHaveBeenCalledWith(
@@ -396,6 +403,7 @@ describe('ChannelsStep', () => {
 
         // TODO(React18): Fix this flaky test
         it.skip('renders the dropdowns and allow next step (click on card)', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
@@ -416,7 +424,7 @@ describe('ChannelsStep', () => {
             const chatContainer = screen.getByText(
                 'Enable your AI Agent to respond to customers via chat.',
             )
-            userEvent.click(chatContainer)
+            user.click(chatContainer)
 
             await waitFor(() => {
                 expect(
@@ -429,15 +437,15 @@ describe('ChannelsStep', () => {
             const chatDropdown = screen.getByText(
                 'Select one or more chat integrations',
             )
-            userEvent.click(chatDropdown)
+            user.click(chatDropdown)
             fireEvent.focus(
                 screen.getByText('Select one or more chat integrations'),
             )
-            userEvent.click(screen.getByText('New chat'))
+            user.click(screen.getByText('New chat'))
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
 
             await waitFor(() => {
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
@@ -448,23 +456,24 @@ describe('ChannelsStep', () => {
 
         // TODO(React18): Fix this flaky test
         it.skip('renders the dropdowns and allow next step (click on checkbox)', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
-            userEvent.click(screen.getByText('Chat'))
+            user.click(screen.getByText('Chat'))
 
             const chatDropdown = screen.getByText(
                 'Select one or more chat integrations',
             )
-            userEvent.click(chatDropdown)
+            user.click(chatDropdown)
             fireEvent.focus(
                 screen.getByText('Select one or more chat integrations'),
             )
-            userEvent.click(screen.getByText('New chat'))
+            user.click(screen.getByText('New chat'))
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
 
             await waitFor(() => {
                 expect(defaultProps.goToStep).toHaveBeenCalledWith(
@@ -475,6 +484,7 @@ describe('ChannelsStep', () => {
 
         // TODO(React18): Fix this flaky test
         it.skip('should disable email integration from another onboarding', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             useGetOnboardingsMock.mockReturnValue({
                 data: [
@@ -502,7 +512,7 @@ describe('ChannelsStep', () => {
 
             renderWithProvider(customState)
 
-            userEvent.click(screen.getByText('Email'))
+            user.click(screen.getByText('Email'))
 
             await waitFor(() => {
                 expect(
@@ -528,6 +538,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no channel', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
@@ -536,7 +547,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
 
             await waitFor(() => {
@@ -549,6 +560,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no selecting email', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
@@ -572,7 +584,7 @@ describe('ChannelsStep', () => {
             const emailCheckbox = screen.getByText(
                 'Enable your AI Agent to respond to customers via email.',
             )
-            userEvent.click(emailCheckbox)
+            user.click(emailCheckbox)
             await waitFor(() => {
                 expect(
                     screen.queryByText(
@@ -583,7 +595,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
 
             await waitFor(() => {
@@ -596,6 +608,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles error on no selecting chat', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             renderWithProvider()
 
@@ -619,7 +632,7 @@ describe('ChannelsStep', () => {
             const chatCheckbox = screen.getByText(
                 'Enable your AI Agent to respond to customers via chat.',
             )
-            userEvent.click(chatCheckbox)
+            user.click(chatCheckbox)
             await waitFor(() => {
                 expect(
                     screen.queryByText(
@@ -630,7 +643,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
 
             await waitFor(() => {
@@ -643,6 +656,7 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the chat creation', async () => {
+            const user = userEvent.setup()
             mockedDispatch.mockImplementationOnce(() => Promise.resolve())
             useGetOnboardingDataMock.mockReturnValue({
                 data: defaultOnboardingData,
@@ -675,7 +689,7 @@ describe('ChannelsStep', () => {
             })
 
             // Setup chat
-            userEvent.click(screen.getByText('Email'))
+            user.click(screen.getByText('Email'))
 
             await waitFor(() => {
                 expect(
@@ -692,7 +706,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
 
             await waitFor(() => {
                 // Wait for goToStep to be called
@@ -705,6 +719,7 @@ describe('ChannelsStep', () => {
         })
 
         it('renders the chat creation error', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             mockedDispatch.mockImplementationOnce(() =>
                 Promise.reject(new Error('Error message')),
@@ -734,7 +749,7 @@ describe('ChannelsStep', () => {
             const chatCheckbox = screen.getByText(
                 'Enable your AI Agent to respond to customers via chat.',
             )
-            userEvent.click(chatCheckbox)
+            user.click(chatCheckbox)
             await waitFor(() => {
                 expect(
                     screen.queryByText(/Personalize your Chat widget/),
@@ -743,7 +758,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
 
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenCalledWith(
@@ -756,6 +771,7 @@ describe('ChannelsStep', () => {
         })
 
         it('handles no store', async () => {
+            const user = userEvent.setup()
             mockChatAndEmailDisabled()
             mockedDispatch.mockImplementationOnce(() => Promise.resolve())
 
@@ -765,7 +781,7 @@ describe('ChannelsStep', () => {
             const chatCheckbox = screen.getByText(
                 'Enable your AI Agent to respond to customers via chat.',
             )
-            userEvent.click(chatCheckbox)
+            user.click(chatCheckbox)
             await waitFor(() => {
                 expect(
                     screen.queryByText(
@@ -776,7 +792,7 @@ describe('ChannelsStep', () => {
 
             // Click on next button
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+            user.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
         })
 
@@ -842,6 +858,7 @@ describe('ChannelsStep', () => {
         })
 
         it('navigates to the shopify integration step when Back is clicked and there is no integration', async () => {
+            const user = userEvent.setup()
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: false,
             })
@@ -851,7 +868,7 @@ describe('ChannelsStep', () => {
                 totalSteps: 5,
             })
 
-            userEvent.click(screen.getByText(/Back/i))
+            user.click(screen.getByText(/Back/i))
 
             await waitFor(() => {
                 expect(goToStep).toHaveBeenCalledWith(
@@ -861,11 +878,11 @@ describe('ChannelsStep', () => {
         })
 
         it('should disable email channel (isEmailChannelEnabled=false) and hide email integration when in standalone mode, not backtracking, with no preselected emails', async () => {
-            // Mock flags to simulate standalone mode (isStandalone = true)
-            const mockUseFlags = useFlags as jest.Mock
-            mockUseFlags.mockReturnValue({
-                [FeatureFlagKey.StandaloneHandoverCapabilities]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.StandaloneHandoverCapabilities ||
+                    true,
+            )
 
             // Set currentStepName to CHANNELS to simulate not backtracking (isBacktracking = false)
             useGetOnboardingDataMock.mockReturnValue({
@@ -899,14 +916,14 @@ describe('ChannelsStep', () => {
                 expect(screen.getByText('Chat')).toBeInTheDocument()
                 expect(screen.getByRole('checkbox')).toBeChecked()
             })
-
-            mockUseFlags.mockReturnValue({})
         })
     })
 
     describe('ChannelsStep - With preloaded data', () => {
         beforeEach(() => {
             jest.clearAllMocks()
+            mockUseFlag.mockReturnValue(false)
+            applyMocks()
 
             mockUseShopifyIntegrationAndScope.mockReturnValue({
                 integration: true,
@@ -948,13 +965,9 @@ describe('ChannelsStep', () => {
             integrationType: 'Email' | 'Chat',
             expectedUpdate: object,
         ) => {
+            const user = userEvent.setup()
             usePreselectedChatMock.mockReturnValue([3])
             usePreselectedEmailsMock.mockReturnValue([5])
-            useSelectedEmailsBeforeRedirectMock.mockReturnValue({
-                selectedEmailsBeforeRedirect: [],
-                setSelectedEmailsBeforeRedirect: jest.fn(),
-                clearSelectedEmailsBeforeRedirect: jest.fn(),
-            })
 
             useGetOnboardingDataMock.mockReturnValue({
                 data: {
@@ -978,13 +991,20 @@ describe('ChannelsStep', () => {
             })
 
             const integration = screen.getByText(integrationType)
-            userEvent.click(integration)
+            await waitFor(() => {
+                expect(integration).toBeInTheDocument()
+            })
+
+            user.click(integration)
             await waitFor(() => {
                 expect(integration).not.toBeChecked()
             })
 
             const nextButton = screen.getByText('Next')
-            userEvent.click(nextButton)
+
+            await waitFor(() => {
+                user.click(nextButton)
+            })
 
             await waitFor(() => {
                 expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {
@@ -43,14 +43,15 @@ export const ToneOfVoiceFormComponent = ({
     aiAgentPreviewTicketViewId,
     ...props
 }: ToneOfVoiceFormComponentProps) => {
-    const flags = useFlags()
-    const trialModeAvailable = flags[FeatureFlagKey.AiAgentTrialMode]
-    const isFollowUpAiAgentPreviewModeEnabled =
-        flags[FeatureFlagKey.FollowUpAiAgentPreviewMode]
-    const isExtendedToneOfVoiceLimitEnabled =
-        flags[FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit]
+    const trialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
+    const isFollowUpAiAgentPreviewModeEnabled = useFlag(
+        FeatureFlagKey.FollowUpAiAgentPreviewMode,
+    )
+    const isExtendedToneOfVoiceLimitEnabled = useFlag(
+        FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit,
+    )
 
-    const shouldFocusTextArea = React.useRef(false)
+    const shouldFocusTextArea = useRef(false)
     const {
         updateValue,
         toneOfVoice,
@@ -79,8 +80,9 @@ export const ToneOfVoiceFormComponent = ({
         updateValue('toneOfVoice', toneOfVoiceLabel as ToneOfVoice)
     }
 
-    const isCustomLanguageEnabled: boolean | undefined =
-        flags[FeatureFlagKey.AiAgentCustomLanguage]
+    const isCustomLanguageEnabled = useFlag(
+        FeatureFlagKey.AiAgentCustomLanguage,
+    )
 
     const maxToneOfVoiceLength = isExtendedToneOfVoiceLimitEnabled
         ? CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH

@@ -6,12 +6,12 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
+import { useFlag } from 'core/flags'
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
@@ -63,6 +63,9 @@ jest.mock('models/billing/utils')
 
 jest.mock('pages/aiAgent/Overview/hooks/useHasNoOnboardedStores')
 const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
@@ -289,17 +292,18 @@ describe('AiAgentOverview', () => {
     })
 
     it('should render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Available', () => {
-        mockFlags({
-            [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key ===
+                    FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection ||
+                false,
+        )
         const { queryByText } = renderComponent()
         expect(queryByText('Resources')).toBeTruthy()
     })
 
     it('should not render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Unavailable', () => {
-        mockFlags({
-            [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         const { queryByText } = renderComponent()
         expect(queryByText('Resources')).toBeFalsy()
     })
@@ -593,9 +597,12 @@ describe('AiAgentOverview', () => {
 
     describe('Component Integration', () => {
         it('should render all major sections when feature flags are enabled', () => {
-            mockFlags({
-                [FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key ===
+                        FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection ||
+                    false,
+            )
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,

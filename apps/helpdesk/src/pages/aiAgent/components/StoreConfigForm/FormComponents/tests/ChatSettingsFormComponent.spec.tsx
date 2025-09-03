@@ -3,8 +3,6 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { ChatSettingsFormComponent } from '../ChatSettingsFormComponent'
 
-jest.mock('launchdarkly-react-client-sdk')
-
 describe('ChatSettingsFormComponent', () => {
     const mockProps = {
         updateValue: jest.fn(),

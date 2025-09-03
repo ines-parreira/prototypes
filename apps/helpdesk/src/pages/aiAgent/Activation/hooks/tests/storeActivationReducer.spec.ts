@@ -87,7 +87,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -122,7 +121,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -170,7 +168,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -216,7 +213,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -248,7 +244,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -302,7 +297,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -350,7 +344,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -398,7 +391,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -444,7 +436,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -476,7 +467,6 @@ describe('storeActivationReducer', () => {
                         } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                 })
@@ -551,7 +541,6 @@ describe('storeActivationReducer', () => {
                 ],
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
-                ldFlags: LD_FLAGS,
                 storesKnowledgeStatus,
                 flags: {
                     hasAiAgentNewActivationXp: false,
@@ -621,7 +610,6 @@ describe('storeActivationReducer', () => {
                 ],
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 helpCentersFaq,
-                ldFlags: LD_FLAGS,
                 storesKnowledgeStatus,
                 flags: {
                     hasAiAgentNewActivationXp: false,
@@ -659,7 +647,6 @@ describe('storeActivationReducer', () => {
                 { chatId: 2, installed: true } as any,
             ],
             helpCentersFaq,
-            ldFlags: LD_FLAGS,
             // No impact on chat enabled/disabled
             flags: {
                 hasAiAgentNewActivationXp: false,
@@ -692,7 +679,6 @@ describe('storeActivationReducer', () => {
             ],
             chatIntegrationStatus: [{ chatId: 1, installed: false } as any],
             helpCentersFaq,
-            ldFlags: LD_FLAGS,
             // No impact on chat enabled/disabled
             flags: {
                 hasAiAgentNewActivationXp: false,
@@ -730,7 +716,6 @@ describe('storeActivationReducer', () => {
             ],
             chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
             helpCentersFaq,
-            ldFlags: LD_FLAGS,
             // No impact on email enabled/disabled
             flags: {
                 hasAiAgentNewActivationXp: false,
@@ -836,7 +821,6 @@ describe('storeActivationReducer', () => {
                         { chatId: 1, installed: true } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                     emailIntegrations: [
@@ -886,7 +870,6 @@ describe('storeActivationReducer', () => {
                         { chatId: 1, installed: true } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                     emailIntegrations: [
@@ -924,7 +907,6 @@ describe('storeActivationReducer', () => {
                         { chatId: 1, installed: true } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                     emailIntegrations: [
@@ -980,7 +962,6 @@ describe('storeActivationReducer', () => {
                         { chatId: 1, installed: true } as any,
                     ],
                     helpCentersFaq,
-                    ldFlags: LD_FLAGS,
                     flags,
                     hasNewAutomatePlan: true,
                     emailIntegrations: [
@@ -1133,7 +1114,6 @@ describe('storeActivationReducer', () => {
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 emailIntegrations: [{ id: 2 } as any],
                 helpCentersFaq,
-                ldFlags: LD_FLAGS,
                 flags: {
                     hasAiAgentNewActivationXp: true,
                     aiSalesAgentEmailEnabled: true,
@@ -1171,7 +1151,6 @@ describe('storeActivationReducer', () => {
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 emailIntegrations: [{ id: 2 } as any],
                 helpCentersFaq,
-                ldFlags: LD_FLAGS,
                 flags: {
                     hasAiAgentNewActivationXp: true,
                     aiSalesAgentEmailEnabled: true,
@@ -1204,7 +1183,6 @@ describe('storeActivationReducer', () => {
                 chatIntegrationStatus: [{ chatId: 1, installed: true } as any],
                 emailIntegrations: [{ id: 2 } as any],
                 helpCentersFaq,
-                ldFlags: LD_FLAGS,
                 flags: {
                     hasAiAgentNewActivationXp: false,
                     aiSalesAgentEmailEnabled: false,

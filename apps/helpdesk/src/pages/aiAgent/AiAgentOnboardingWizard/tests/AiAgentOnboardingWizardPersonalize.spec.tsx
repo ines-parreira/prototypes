@@ -6,12 +6,12 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
@@ -53,6 +53,9 @@ const mockUseAiAgentOnboardingWizard = jest.mocked(useAiAgentOnboardingWizard)
 jest.mock('../../hooks/useCustomToneOfVoicePreview')
 
 const mockuseCustomToneofVoicePreview = jest.mocked(useCustomToneOfVoicePreview)
+
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const defaultState = {}
@@ -171,9 +174,9 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     })
 
     it('handles initial channel setup in useEffect', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation((key) =>
+            key === FeatureFlagKey.AiAgentChat ? true : false,
+        )
         mockUseAiAgentOnboardingWizard.mockReturnValue({
             handleFormUpdate: mockHandleFormUpdate,
             handleSave: mockHandleSave,
@@ -201,9 +204,9 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     })
 
     it('should render the ChatIntegrationListSelection component when chat flag is enabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
         renderComponent({})
         expect(
             screen.getByText('ChatIntegrationListSelection'),
@@ -211,9 +214,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
     })
 
     it('should not render the ChatIntegrationListSelection component when chat flag is disabled', () => {
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         renderComponent({})
 
         expect(

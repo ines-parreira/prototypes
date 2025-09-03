@@ -1,8 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
+import { useFlag } from 'core/flags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
@@ -12,8 +12,10 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 
-jest.mock('launchdarkly-react-client-sdk')
-const mockUseFlags = jest.mocked(useFlags)
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
@@ -70,10 +72,13 @@ const STORE_ACTIVATIONS = {
 
 describe('useTrackingBundleInstallationWarningCheck', () => {
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            [FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                key ===
+                    FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner ||
+                false,
+        )
 
         mockUseShopifyIntegrations.mockReturnValue([
             { meta: { shop_name: STORE_1 }, id: STORE_1_INTEGRATION_ID },
@@ -112,10 +117,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     })
 
     it('should disable queries when ai shopping assistant is not enabled', () => {
-        mockUseFlags.mockReturnValueOnce({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-        })
-
+        mockUseFlag.mockReturnValueOnce(false)
         renderHook(() => useTrackingBundleInstallationWarningCheck({}))
 
         expect(mockUseListBundles).toHaveBeenCalledWith({ enabled: false })
@@ -254,10 +256,9 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     })
 
     it('should return undefined with uninstalled chat integrations but tracking banner disabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-            [FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner]: false,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        )
 
         mockUseListBundles.mockReturnValueOnce({
             data: [

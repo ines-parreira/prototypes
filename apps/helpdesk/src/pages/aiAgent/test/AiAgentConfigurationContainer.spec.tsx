@@ -3,12 +3,12 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import * as billingFixtures from 'fixtures/billing'
@@ -190,6 +190,9 @@ const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
     formValues: {},
 }
 
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
+
 const mockStore = configureMockStore([thunk])
 
 const contactForm = ContactFormFixture
@@ -296,8 +299,6 @@ const setupMocks = ({
     hasStoreConfiguration = true,
     storeConfigurationData = {},
 } = {}) => {
-    mockFlags({})
-
     mockGetHasAutomate.mockReturnValue(false)
     mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
         helpCenter: null,
@@ -423,9 +424,9 @@ describe('AiAgentConfigurationContainer', () => {
 
     it('renders only general sections on general settings page if :tab param not set', () => {
         setupMocks()
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
         renderComponent()
 
         expect(
@@ -440,9 +441,9 @@ describe('AiAgentConfigurationContainer', () => {
 
     it('renders only channels section on channels settings page if :tab param set to "channels"', () => {
         setupMocks()
-        mockFlags({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
 
         renderComponent({ tab: 'channels' })
         expect(screen.queryByText('General')).not.toBeInTheDocument()
@@ -490,9 +491,9 @@ describe('AiAgentConfigurationContainer', () => {
                         },
                     })
 
-                    mockFlags({
-                        [FeatureFlagKey.AiAgentChat]: true,
-                    })
+                    mockUseFlag.mockImplementation(
+                        (key) => key === FeatureFlagKey.AiAgentChat || false,
+                    )
 
                     const { getAllByRole } = renderComponent()
                     fireEvent.click(
@@ -577,9 +578,9 @@ describe('AiAgentConfigurationContainer', () => {
     describe('tab navigation', () => {
         it('should render general tab content', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             renderComponent()
             expect(
@@ -589,9 +590,9 @@ describe('AiAgentConfigurationContainer', () => {
 
         it('should render channels tab content', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             renderComponent({ tab: 'channels' })
             // Check for actual content in channels tab
@@ -607,11 +608,13 @@ describe('AiAgentConfigurationContainer', () => {
     describe('feature flag combinations', () => {
         it('should handle multiple feature flags correctly', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-                [FeatureFlagKey.AiAgentActivation]: true,
-                [FeatureFlagKey.AiAgentNewActivationXp]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiAgentChat ||
+                    key === FeatureFlagKey.AiAgentActivation ||
+                    key === FeatureFlagKey.AiAgentNewActivationXp ||
+                    false,
+            )
 
             renderComponent({ tab: 'channels' })
 
@@ -625,9 +628,7 @@ describe('AiAgentConfigurationContainer', () => {
 
         it('should handle disabled feature flags', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: false,
-            })
+            mockUseFlag.mockReturnValue(false)
 
             renderComponent({ tab: 'channels' })
 
@@ -643,9 +644,9 @@ describe('AiAgentConfigurationContainer', () => {
     describe('integration state', () => {
         it('should show both chat and email toggles when configured', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             renderComponent({ tab: 'channels' })
 
@@ -661,9 +662,9 @@ describe('AiAgentConfigurationContainer', () => {
     describe('route-based section determination', () => {
         it('should determine chat section when route contains /deploy/chat and display Chat title', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             renderWithRouter(
                 <Provider store={mockStore(getState())}>
@@ -740,9 +741,9 @@ describe('AiAgentConfigurationContainer', () => {
 
         it('should handle nested deploy paths correctly and display Chat title', () => {
             setupMocks()
-            mockFlags({
-                [FeatureFlagKey.AiAgentChat]: true,
-            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentChat || false,
+            )
 
             renderWithRouter(
                 <Provider store={mockStore(getState())}>

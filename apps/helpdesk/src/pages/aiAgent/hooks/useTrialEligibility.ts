@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import {
@@ -60,8 +60,9 @@ export const useTrialEligibilityForManualActivationFromFeatureFlag = (
 ) => {
     const [canStartTrial, setCanStartTrial] = useState(false)
 
-    const isAiShoppingAssistantTrialMerchantsEnabled =
-        useFlags()[FeatureFlagKey.AiShoppingAssistantTrialMerchants]
+    const isAiShoppingAssistantTrialMerchantsEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantTrialMerchants,
+    )
 
     useEffect(() => {
         const checkEligibility = async () => {

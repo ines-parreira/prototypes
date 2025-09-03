@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
@@ -15,12 +15,12 @@ export const useSteps = ({
     shopName: string
     isStoreSelected?: boolean
 }) => {
-    const flags = useFlags()
     const { integration } = useShopifyIntegrationAndScope(shopName)
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
     const scopes = useAiAgentScopesForAutomationPlan()
-    const handoverEnabled =
-        !!flags[FeatureFlagKey.StandaloneHandoverCapabilities]
+    const handoverEnabled = useFlag(
+        FeatureFlagKey.StandaloneHandoverCapabilities,
+    )
 
     // Step configuration array
     const steps = useMemo(

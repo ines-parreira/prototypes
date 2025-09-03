@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { getHasAutomate } from 'state/billing/selectors'
 import { renderWithRouter } from 'utils/testing'
@@ -16,7 +15,6 @@ import { renderWithRouter } from 'utils/testing'
 import { AiAgentAccountConfigurationProvider } from '../AiAgentAccountConfigurationProvider'
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
-jest.mock('launchdarkly-react-client-sdk')
 
 const mockStore = configureMockStore([thunk])
 
@@ -52,10 +50,8 @@ jest.mock('state/billing/selectors', () => ({
 }))
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(() => ({})),
-}))
-const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 const renderComponent = () =>
     renderWithRouter(
@@ -90,12 +86,10 @@ describe('AiAgentAccountConfigurationProvider', () => {
 
     it('should render if not automate but feature flag and load successs', () => {
         mockGetHasAutomate.mockReturnValue(false)
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AIAgentPreviewModeAllowed) {
-                return true
-            }
-            return false
-        })
+        mockUseFlag.mockImplementation(
+            (key) => FeatureFlagKey.AIAgentPreviewModeAllowed === key || false,
+        )
+
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
         } as any)

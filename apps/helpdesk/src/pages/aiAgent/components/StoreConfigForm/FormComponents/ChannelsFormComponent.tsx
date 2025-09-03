@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
@@ -78,18 +78,13 @@ export const ChannelsFormComponent = ({
     setIsFormDirty,
     section = 'all',
 }: Props) => {
-    const isAiAgentChatEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentChat]
-    const isAiAgentSmsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSms]
-
-    const isAiAgentActivationEnabled =
-        !!useFlags()[FeatureFlagKey.AiAgentActivation]
-    const hasAiAgentNewActivationXp =
-        !!useFlags()[FeatureFlagKey.AiAgentNewActivationXp]
-
-    const isStandalone =
-        !!useFlags()[FeatureFlagKey.StandaloneHandoverCapabilities]
+    const isAiAgentChatEnabled = useFlag(FeatureFlagKey.AiAgentChat)
+    const isAiAgentSmsEnabled = useFlag(FeatureFlagKey.AiAgentSms)
+    const isAiAgentActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
+    const hasAiAgentNewActivationXp = useFlag(
+        FeatureFlagKey.AiAgentNewActivationXp,
+    )
+    const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 

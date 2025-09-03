@@ -2,8 +2,9 @@ import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
+import { useFlag } from 'core/flags'
 import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard'
 import {
     KNOWLEDGE_ALERT_KIND,
@@ -59,6 +60,11 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
         },
     ],
 }))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 const renderComponent = (
     props: ComponentProps<typeof LegacyAiAgentActivationStoreCard>,
@@ -302,14 +308,11 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
     })
 
     it('should display the correct sales block copy when the AiSalesAgentActivationEmailSettings flag is enabled', () => {
-        const useFlagsSpy = jest.spyOn(
-            require('launchdarkly-react-client-sdk'),
-            'useFlags',
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiSalesAgentActivationEmailSettings ||
+                false,
         )
-        useFlagsSpy.mockReturnValue({
-            [FeatureFlagKey.AiSalesAgentActivationEmailSettings]: true,
-        })
-
         const { getByText } = renderComponent({
             store: storeWithoutAlert,
             onSalesChange,
@@ -324,7 +327,5 @@ describe('<LegacyAiAgentActivationStoreCard />', () => {
                 'Shopping Assistant can only be activated on the channel where Support Agent is activated.',
             ),
         ).toBeInTheDocument()
-
-        useFlagsSpy.mockRestore()
     })
 })

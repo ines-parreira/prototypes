@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -7,6 +5,7 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { StoreIntegration } from 'models/integration/types'
 
@@ -15,7 +14,7 @@ import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(() => ({})),
 }))
-const mockUseFlag = jest.requireMock('core/flags').useFlag as jest.Mock
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('../useActionDrivenNavbarSections', () => ({
     useActionDrivenNavbarSections: jest.fn(),
@@ -178,7 +177,7 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue({})
+        mockUseFlag.mockReturnValue(false)
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
@@ -226,9 +225,9 @@ describe('ActionDrivenNavigation', () => {
     })
 
     it('renders Actions platform link when flag enabled', () => {
-        mockUseFlag.mockReturnValue({
-            [FeatureFlagKey.ActionsInternalPlatform]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.ActionsInternalPlatform || false,
+        )
 
         renderComponent()
 
@@ -240,6 +239,7 @@ describe('ActionDrivenNavigation', () => {
     })
 
     it('renders Get Started and hides nav items when in onboarding', () => {
+        mockUseFlag.mockReturnValue(true)
         mockedOnboardingHook.mockReturnValue('onboardingWizard')
         mockGetStoreActivationStatus.mockReturnValue(false)
 

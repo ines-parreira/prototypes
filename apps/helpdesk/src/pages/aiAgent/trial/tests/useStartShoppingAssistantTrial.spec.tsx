@@ -1,6 +1,5 @@
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useHistory } from 'react-router'
 
 import * as accountFixtures from 'fixtures/account'
@@ -20,10 +19,6 @@ import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilest
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
 
 // Mock external dependencies
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
-
 jest.mock('react-router', () => ({
     useHistory: jest.fn(),
 }))
@@ -55,7 +50,6 @@ jest.mock('models/aiAgent/queries', () => ({
     },
 }))
 
-const useFlagsMock = jest.mocked(useFlags)
 const useHistoryMock = jest.mocked(useHistory)
 const useAppDispatchMock = jest.mocked(useAppDispatch)
 const useSalesTrialRevampMilestoneMock = jest.mocked(
@@ -83,7 +77,6 @@ const defaultState = {
 describe('useStartShoppingAssistantTrial', () => {
     const mockDispatch = jest.fn()
     const mockPush = jest.fn()
-    const mockFlags = { someFlag: true }
     const mockStartSalesTrialMutateAsync = jest.fn()
 
     const mockStoreActivation: StoreActivation = {
@@ -168,7 +161,6 @@ describe('useStartShoppingAssistantTrial', () => {
         jest.clearAllMocks()
 
         useAppDispatchMock.mockReturnValue(mockDispatch)
-        useFlagsMock.mockReturnValue(mockFlags)
         useHistoryMock.mockReturnValue({ push: mockPush } as any)
         useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
         getAiAgentNavigationRoutesMock.mockReturnValue({

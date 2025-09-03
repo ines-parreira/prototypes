@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { isAxiosError } from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import _get from 'lodash/get'
 import _isEqual from 'lodash/isEqual'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
@@ -60,13 +60,13 @@ export const useConfigurationForm = ({
         [chatChannels],
     )
 
-    const flags = useFlags()
-    const isAiAgentChatEnabled: boolean | undefined =
-        flags[FeatureFlagKey.AiAgentChat]
-    const hasAiAgentNewActivationXp =
-        !!flags[FeatureFlagKey.AiAgentNewActivationXp]
-    const isExtendedToneOfVoiceLimitEnabled =
-        !!flags[FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit]
+    const isAiAgentChatEnabled = useFlag(FeatureFlagKey.AiAgentChat)
+    const hasAiAgentNewActivationXp = useFlag(
+        FeatureFlagKey.AiAgentNewActivationXp,
+    )
+    const isExtendedToneOfVoiceLimitEnabled = useFlag(
+        FeatureFlagKey.AiAgentExtendedToneOfVoiceLimit,
+    )
 
     const defaultValues = useMemo(() => {
         const monitoredChatIntegrations =

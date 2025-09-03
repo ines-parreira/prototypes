@@ -1,14 +1,12 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -21,7 +19,6 @@ import { renderWithRouter } from 'utils/testing'
 import { EmailFormComponent } from '../FormComponents/EmailFormComponent'
 
 // Mock dependencies
-jest.mock('launchdarkly-react-client-sdk')
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
@@ -58,8 +55,12 @@ jest.mock(
     }),
 )
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
 const mockUseAppSelector = jest.mocked(useAppSelector)
-const mockUseFlags = jest.mocked(useFlags)
 const mockUpdateValue = jest.fn()
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
@@ -94,9 +95,7 @@ describe('EmailFormComponent', () => {
 
     beforeEach(() => {
         mockUseAppSelector.mockReturnValue(mockEmailIntegrations)
-        mockUseFlags.mockReturnValue({
-            AiAgentChat: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         mockUpdateValue.mockClear()
     })
 
@@ -138,9 +137,9 @@ describe('EmailFormComponent', () => {
     })
 
     it('hides the required label if AiAgentChat feature flag is enabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: true,
-        })
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentChat || false,
+        )
 
         renderWithProvider()
 
@@ -150,10 +149,6 @@ describe('EmailFormComponent', () => {
     })
 
     it('shows an error message when no email is selected and AiAgentChat is disabled and value is required', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.AiAgentChat]: false,
-        })
-
         renderWithProvider({ ...defaultProps, isRequired: true })
 
         screen.getByText('One or more addresses required.')
