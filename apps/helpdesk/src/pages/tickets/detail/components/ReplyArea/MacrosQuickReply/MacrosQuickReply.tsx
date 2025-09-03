@@ -98,5 +98,3 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
         </div>
     )
 }
-
-export default MacrosQuickReply

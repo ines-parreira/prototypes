@@ -17,14 +17,16 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { RootState, StoreDispatch } from 'state/types'
 
-import MacrosQuickReply from '../MacrosQuickReply'
+import { MacrosQuickReply } from '../MacrosQuickReply'
 
 jest.mock('common/segment')
 jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity
 })
-jest.mock('pages/tickets/common/macros/Preview', () => () => <>Preview</>)
+jest.mock('pages/tickets/common/macros/Preview/Preview', () => ({
+    Preview: () => <>Preview</>,
+}))
 
 const logEventMock = logEvent as jest.Mock
 const applyMacro = jest.fn()

@@ -12,7 +12,7 @@ import { MacroAction } from 'models/macroAction/types'
 
 import { SimpleActionPreview } from '../SimpleActionPreview'
 
-jest.mock('pages/tickets/common/macros/Preview.tsx', () => ({
+jest.mock('pages/tickets/common/macros/Preview/CustomFieldName', () => ({
     CustomFieldName: () => <div>CustomFieldName</div>,
 }))
 

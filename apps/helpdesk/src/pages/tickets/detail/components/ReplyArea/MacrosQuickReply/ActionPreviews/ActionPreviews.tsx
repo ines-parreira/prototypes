@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { ActionTemplateExecution } from 'config'
 import { MacroDraft } from 'models/macro/types'
 import { MacroAction, MacroActionName } from 'models/macroAction/types'
-import Preview from 'pages/tickets/common/macros/Preview'
+import { Preview } from 'pages/tickets/common/macros/Preview/Preview'
 import { getActionTemplate } from 'utils'
 
 import { ComplexActionPreview } from './ComplexActionPreview'

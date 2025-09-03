@@ -1,6 +1,6 @@
 import { Macro } from '@gorgias/helpdesk-queries'
 
-import Preview from '../Preview'
+import { Preview } from '../Preview/Preview'
 
 const MacroPreview = ({ currentMacro }: { currentMacro?: Macro }) =>
     currentMacro ? (

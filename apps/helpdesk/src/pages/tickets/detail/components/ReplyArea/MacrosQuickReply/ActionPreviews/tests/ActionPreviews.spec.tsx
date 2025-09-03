@@ -13,7 +13,9 @@ import { ActionPreviews } from '../ActionPreviews'
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 
 const mockPreview = 'Preview'
-jest.mock('pages/tickets/common/macros/Preview', () => () => <>{mockPreview}</>)
+jest.mock('pages/tickets/common/macros/Preview/Preview', () => ({
+    Preview: () => <>{mockPreview}</>,
+}))
 
 describe('<ActionPreviews />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([

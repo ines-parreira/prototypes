@@ -39,7 +39,7 @@ import { RootState } from 'state/types'
 import { isInternalNote, isRichType } from 'tickets/common/utils'
 import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 
-import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
+import { MacrosQuickReply } from './MacrosQuickReply/MacrosQuickReply'
 
 import css from './TicketReplyEditor.less'
 
