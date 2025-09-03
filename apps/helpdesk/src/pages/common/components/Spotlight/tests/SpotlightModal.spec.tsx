@@ -2,9 +2,11 @@
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import React, { ComponentProps, ReactPortal } from 'react'
-import { userEvent } from '@testing-library/user-event'
 
+import { useSelectedIndex } from '@repo/hooks'
+import { assumeMock, flushPromises } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import { stringify } from 'qs'
@@ -22,7 +24,6 @@ import { voiceCall } from 'fixtures/voiceCalls'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import { useSelectedIndex } from '@repo/hooks'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { SearchEngine } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
@@ -46,7 +47,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as platform from 'utils/platform'
 import { renderWithRouter } from 'utils/testing'
-import { assumeMock, flushPromises } from '@repo/testing'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
@@ -62,12 +62,8 @@ jest.mock('pages/common/components/SkeletonLoader', () => () => (
 jest.mock(
     'pages/common/components/Spotlight/SpotlightTicketRow',
     () =>
-        ({ onClick, onHover }: ComponentProps<typeof SpotlightTicketRow>) => (
-            <div
-                onClick={onClick}
-                onMouseEnter={onHover}
-                data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}
-            >
+        ({ onClick }: ComponentProps<typeof SpotlightTicketRow>) => (
+            <div onClick={onClick} data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}>
                 MockedSpotlightTicketRow
             </div>
         ),
@@ -76,12 +72,8 @@ jest.mock(
 jest.mock(
     'pages/common/components/Spotlight/SpotlightCustomerRow',
     () =>
-        ({ onClick, onHover }: ComponentProps<typeof SpotlightCustomerRow>) => (
-            <div
-                onClick={onClick}
-                onMouseEnter={onHover}
-                data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}
-            >
+        ({ onClick }: ComponentProps<typeof SpotlightCustomerRow>) => (
+            <div onClick={onClick} data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}>
                 MockedSpotlightCustomerRow
             </div>
         ),
@@ -89,12 +81,8 @@ jest.mock(
 jest.mock(
     'pages/common/components/Spotlight/SpotlightCallRow',
     () =>
-        ({ onClick, onHover }: ComponentProps<typeof SpotlightCallRow>) => (
-            <div
-                onClick={onClick}
-                onMouseEnter={onHover}
-                data-testid={CALL_SPOTLIGHT_ROW_TEST_ID}
-            >
+        ({ onClick }: ComponentProps<typeof SpotlightCallRow>) => (
+            <div onClick={onClick} data-testid={CALL_SPOTLIGHT_ROW_TEST_ID}>
                 MockedSpotlightCallRow
             </div>
         ),
@@ -163,6 +151,7 @@ jest.mock('@repo/hooks', () => ({
             refreshTimestamp: jest.fn(),
         }
     }),
+    useTextWidth: jest.fn().mockReturnValue(100), // Mock text width measurement
 }))
 
 const mockUseSelectedIndex = assumeMock(useSelectedIndex)
@@ -260,13 +249,19 @@ describe('<SpotlightModal/>', () => {
             })
         })
 
-        it('should set All tab on click', () => {
+        it('should set All tab on click', async () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const customersTab = getCustomersTab()
-            customersTab?.focus()
+
+            await act(async () => {
+                customersTab?.focus()
+            })
+
             const federatedTab = getFederatedTab()
-            federatedTab?.focus()
+            await act(async () => {
+                federatedTab?.focus()
+            })
 
             expect(federatedTab).toHaveClass('activeTab')
         })
@@ -292,7 +287,10 @@ describe('<SpotlightModal/>', () => {
             const callsTab = getCallsTab()
             expect(callsTab).toBeInTheDocument()
 
-            await userEvent.click(callsTab)
+            await act(async () => {
+                await userEvent.click(callsTab)
+            })
+
             expect(callsTab).toHaveClass('activeTab')
         })
 
@@ -336,7 +334,9 @@ describe('<SpotlightModal/>', () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
-            ticketsTab?.focus()
+            await act(async () => {
+                ticketsTab?.focus()
+            })
             const advancedSearchButton = screen.getByText('Advanced Search')
             await act(async () => {
                 await userEvent.click(advancedSearchButton)
@@ -373,7 +373,10 @@ describe('<SpotlightModal/>', () => {
             )
             await act(flushPromises)
             const customersTab = getCustomersTab()
-            customersTab?.focus()
+            await act(async () => {
+                customersTab?.focus()
+            })
+
             const advancedSearchButton = getByText('Advanced Search')
             await act(async () => {
                 await userEvent.click(advancedSearchButton)
@@ -390,7 +393,9 @@ describe('<SpotlightModal/>', () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
-            ticketsTab?.focus()
+            await act(async () => {
+                ticketsTab?.focus()
+            })
             const advancedSearchButton = screen.getByText('Advanced Search')
             await act(async () => {
                 await userEvent.click(advancedSearchButton)
@@ -420,7 +425,9 @@ describe('<SpotlightModal/>', () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
-            ticketsTab?.focus()
+            await act(async () => {
+                ticketsTab?.focus()
+            })
 
             act(() => {
                 fireEnterShortcutUsingKeyboardEvent(
@@ -441,7 +448,9 @@ describe('<SpotlightModal/>', () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const customersTab = getCustomersTab()
-            await userEvent.click(customersTab)
+            await act(async () => {
+                await userEvent.click(customersTab)
+            })
             act(() => {
                 fireEnterShortcutUsingKeyboardEvent(
                     customersTab,
@@ -520,7 +529,9 @@ describe('<SpotlightModal/>', () => {
             renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const ticketsTab = getTicketsTab()
-            ticketsTab?.focus()
+            await act(async () => {
+                ticketsTab?.focus()
+            })
             const searchInput = screen.getByPlaceholderText('Search...')
 
             act(() => {
@@ -602,7 +613,9 @@ describe('<SpotlightModal/>', () => {
 
         const tab = getFederatedTab()
         const searchInput = screen.getByPlaceholderText('Search...')
-        tab?.focus()
+        await act(async () => {
+            tab?.focus()
+        })
 
         await act(async () => {
             await userEvent.type(searchInput, 'foo')
@@ -624,7 +637,9 @@ describe('<SpotlightModal/>', () => {
 
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
         const ticketsTab = getTicketsTab()
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
 
         const searchInput = screen.getByPlaceholderText('Search...')
 
@@ -659,7 +674,9 @@ describe('<SpotlightModal/>', () => {
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
 
         const searchInput = screen.getByPlaceholderText('Search...')
 
@@ -697,7 +714,9 @@ describe('<SpotlightModal/>', () => {
         })
 
         await act(flushPromises)
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(flushPromises)
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
@@ -726,7 +745,9 @@ describe('<SpotlightModal/>', () => {
         await act(async () => {
             await userEvent.type(searchInput, 'baz')
         })
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(flushPromises)
 
         await waitFor(() => {
@@ -758,7 +779,9 @@ describe('<SpotlightModal/>', () => {
         const customersTab = getCustomersTab()
         const callsTab = getCallsTab()
 
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         await act(async () => {
             await userEvent.type(searchInput, 'foo')
         })
@@ -768,11 +791,18 @@ describe('<SpotlightModal/>', () => {
         })
 
         await act(flushPromises)
-        customersTab?.focus()
+
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(flushPromises)
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         await act(flushPromises)
-        callsTab?.focus()
+        await act(async () => {
+            callsTab?.focus()
+        })
         await act(flushPromises)
 
         expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(1)
@@ -791,7 +821,9 @@ describe('<SpotlightModal/>', () => {
             await userEvent.type(searchInput, 'foo')
         })
 
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(flushPromises)
 
         expect(searchTicketsWithHighlightsMock).not.toHaveBeenCalled()
@@ -810,12 +842,14 @@ describe('<SpotlightModal/>', () => {
         const searchInput = screen.getByPlaceholderText('Search...')
         const customersTab = getCustomersTab()
 
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(async () => {
             await userEvent.type(searchInput, searchQuery)
         })
 
-        act(() => {
+        await act(async () => {
             fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         })
 
@@ -839,12 +873,14 @@ describe('<SpotlightModal/>', () => {
         const searchInput = screen.getByPlaceholderText('Search...')
         const callsTab = getCallsTab()
 
-        callsTab?.focus()
+        await act(async () => {
+            callsTab?.focus()
+        })
         await act(async () => {
             await userEvent.type(searchInput, searchQuery)
         })
 
-        act(() => {
+        await act(async () => {
             fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         })
 
@@ -897,8 +933,9 @@ describe('<SpotlightModal/>', () => {
             <WrappedSpotlightModal {...minProps} />,
         )
         const ticketsTab = getTicketsTab()
-        ticketsTab?.focus()
-
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         rerender(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -924,7 +961,9 @@ describe('<SpotlightModal/>', () => {
         )
 
         const ticketsTab = getTicketsTab()
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         rerender(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
@@ -973,7 +1012,9 @@ describe('<SpotlightModal/>', () => {
             fireEnterShortcutUsingKeyboardEvent(searchInput, '{enter}')
         })
 
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         await act(flushPromises)
 
         await waitFor(() => {
@@ -1019,8 +1060,9 @@ describe('<SpotlightModal/>', () => {
 
             const tab = getTicketsTab()
             const searchInput = screen.getByPlaceholderText('Search...')
-            tab?.focus()
-
+            await act(async () => {
+                tab?.focus()
+            })
             await act(async () => {
                 await userEvent.type(searchInput, 'foo')
             })
@@ -1067,8 +1109,9 @@ describe('<SpotlightModal/>', () => {
 
             const tab = screen.getByRole('tab', { name })
             const searchInput = screen.getByPlaceholderText('Search...')
-            tab?.focus()
-
+            await act(async () => {
+                tab?.focus()
+            })
             await act(async () => {
                 await userEvent.type(searchInput, 'foo')
             })
@@ -1113,7 +1156,9 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         const searchInput = getByPlaceholderText('Search...')
-        await userEvent.click(searchInput)
+        await act(async () => {
+            await userEvent.click(searchInput)
+        })
 
         await act(async () => {
             await userEvent.type(searchInput, searchQuery)
@@ -1151,7 +1196,7 @@ describe('<SpotlightModal/>', () => {
         )
         await act(flushPromises)
 
-        await act(() => {
+        act(() => {
             history.push('/foo/bar')
         })
         rerender(<WrappedSpotlightModal {...minProps} />)
@@ -1160,22 +1205,28 @@ describe('<SpotlightModal/>', () => {
         expect(mockCloseModal).toHaveBeenCalled()
     })
 
-    it('should log event on tab switch', () => {
+    it('should log event on tab switch', async () => {
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
         const customersTab = getCustomersTab()
         const callsTab = getCallsTab()
 
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchCustomerTabClick,
         )
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchTicketTabClick,
         )
-        callsTab?.focus()
+        await act(async () => {
+            callsTab?.focus()
+        })
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchCallTabClick,
         )
@@ -1189,11 +1240,17 @@ describe('<SpotlightModal/>', () => {
         const customersTab = getCustomersTab()
         const callsTab = getCallsTab()
 
-        customersTab?.focus()
+        await act(async () => {
+            customersTab?.focus()
+        })
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(1)
-        ticketsTab?.focus()
+        await act(async () => {
+            ticketsTab?.focus()
+        })
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(2)
-        callsTab?.focus()
+        await act(async () => {
+            callsTab?.focus()
+        })
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(3)
     })
 
@@ -1487,7 +1544,6 @@ describe('<SpotlightModal/>', () => {
                 await act(async () => {
                     await userEvent.click(searchInput)
                 })
-
                 await act(async () => {
                     await userEvent.type(searchInput, 'foo')
                 })
@@ -1628,8 +1684,10 @@ describe('<SpotlightModal/>', () => {
 
                 const tab = screen.getByRole('tab', { name })
                 const searchInput = getByPlaceholderText('Search...')
-                tab?.focus()
-                searchInput.focus()
+                await act(async () => {
+                    tab?.focus()
+                    searchInput.focus()
+                })
 
                 await act(async () => {
                     await userEvent.type(searchInput, 'foo')
@@ -1674,7 +1732,7 @@ describe('<SpotlightModal/>', () => {
 
             const searchInput = getByPlaceholderText('Search...')
 
-            act(() => {
+            await act(async () => {
                 fireEvent.keyDown(searchInput, { key: 'ArrowUp' })
             })
             expect(
@@ -1685,7 +1743,7 @@ describe('<SpotlightModal/>', () => {
                 ).previous,
             ).toHaveBeenCalled()
 
-            act(() => {
+            await act(async () => {
                 fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
             })
 
@@ -1720,8 +1778,9 @@ describe('<SpotlightModal/>', () => {
         const tab = getCustomersTab()
         const searchInput = screen.getByPlaceholderText('Search...')
 
-        tab?.focus()
-
+        await act(async () => {
+            tab?.focus()
+        })
         await act(async () => {
             await userEvent.type(searchInput, 'foo')
         })
@@ -1741,51 +1800,5 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
 
         expect(searchInput.textContent).toEqual('')
-    })
-
-    it('should change selectedItem on hover when customer row is present in template', async () => {
-        mockUseRecentItems.mockImplementation(() => ({
-            items: [customer],
-            setRecentItem: jest.fn() as any,
-            isGettingItems: false,
-        }))
-
-        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
-
-        await act(flushPromises)
-
-        const tab = await screen.findByRole('tab', { name: CUSTOMERS_LABEL })
-        await act(async () => {
-            await userEvent.click(tab)
-        })
-        await act(flushPromises)
-
-        const searchInput = screen.getByPlaceholderText('Search...')
-        await act(async () => {
-            await userEvent.type(searchInput, 'asdf')
-        })
-
-        await act(flushPromises)
-
-        await act(async () => {
-            await userEvent.keyboard('{enter}')
-        })
-        await act(flushPromises)
-
-        const spotlightCustomerRow = await screen.findByTestId(
-            CUSTOMER_SPOTLIGHT_ROW_TEST_ID,
-        )
-        await userEvent.hover(spotlightCustomerRow)
-        await act(flushPromises)
-
-        await waitFor(() => {
-            expect(
-                (
-                    mockUseSelectedIndex.mock.results[1].value as ReturnType<
-                        typeof useSelectedIndex
-                    >
-                ).setIndex,
-            ).toHaveBeenCalledWith(0)
-        })
     })
 })

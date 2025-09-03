@@ -1,4 +1,4 @@
-import React, { ComponentProps, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -21,7 +21,6 @@ type SpotlightTicketRowProps = {
     onCloseModal: () => void
     id: number
     index: number
-    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
 }
@@ -31,7 +30,6 @@ const SpotlightTicketRow = ({
     onCloseModal,
     id,
     index,
-    onHover,
     selected,
     onClick,
 }: SpotlightTicketRowProps) => {
@@ -60,7 +58,6 @@ const SpotlightTicketRow = ({
             }
             link={`/app/ticket/${itemWithHighlights.id}`}
             onCloseModal={onCloseModal}
-            onHover={onHover}
             selected={selected}
             onClick={onClick}
             message={itemWithHighlights.message}

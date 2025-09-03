@@ -1,4 +1,4 @@
-import React, { ComponentProps, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { EntityType } from 'hooks/useSearchRankScenario'
 import { PickedCustomerWithHighlights } from 'models/search/types'
@@ -12,7 +12,6 @@ type SpotlightCustomerRowProps = {
     onCloseModal: () => void
     id: number
     index: number
-    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
 }
@@ -21,7 +20,6 @@ const SpotlightCustomerRow = ({
     onCloseModal,
     id,
     index,
-    onHover,
     selected,
     onClick,
 }: SpotlightCustomerRowProps) => {
@@ -45,7 +43,6 @@ const SpotlightCustomerRow = ({
             }
             link={`/app/customer/${id}`}
             onCloseModal={onCloseModal}
-            onHover={onHover}
             selected={selected}
             shrinkInfo
             onClick={onClick}

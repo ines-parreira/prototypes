@@ -1,10 +1,4 @@
-import {
-    KeyboardEvent,
-    MouseEvent,
-    useCallback,
-    useEffect,
-    useRef,
-} from 'react'
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
 
 import { useUnmount, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
@@ -86,7 +80,6 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
         searchQuery,
         searchRank,
         setSearchItemsType,
-        setSelectedIndex,
         showCallsTab,
     } = search
 
@@ -186,17 +179,6 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
         }
     }
 
-    const handleHover = useCallback(
-        (e: MouseEvent) => {
-            const index =
-                e.currentTarget.parentElement?.getAttribute('data-item-index')
-            if (!index) return
-
-            setSelectedIndex(parseInt(index))
-        },
-        [setSelectedIndex],
-    )
-
     const logRecentlyAccessedSegmentEvent = useCallback(
         (
             type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call',
@@ -244,7 +226,6 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
             <ModalBody className={css.modalBody} ref={modalBodyRef}>
                 <SpotlightModalContent
                     {...search}
-                    handleHover={handleHover}
                     onTabChange={handleTabChange}
                     onCloseModal={onCloseModal}
                     modalBodyRef={modalBodyRef}

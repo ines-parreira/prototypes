@@ -1,4 +1,4 @@
-import { ComponentProps, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import moment from 'moment'
 
@@ -28,7 +28,6 @@ type SpotlightCallRowProps = {
     onCloseModal: () => void
     id: number
     index: number
-    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
 }
@@ -38,7 +37,6 @@ const SpotlightCallRow = ({
     onCloseModal,
     id,
     index,
-    onHover,
     selected,
     onClick,
 }: SpotlightCallRowProps) => {
@@ -56,7 +54,6 @@ const SpotlightCallRow = ({
             info={<SpotlightCallInfo voiceCall={item} />}
             link={`/app/ticket/${item.ticket_id}?call_id=${item.id}`}
             onCloseModal={onCloseModal}
-            onHover={onHover}
             selected={selected}
             onClick={onClick}
             entityType={EntityType.Call}

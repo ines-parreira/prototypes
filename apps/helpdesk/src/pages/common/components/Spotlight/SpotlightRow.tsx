@@ -1,4 +1,4 @@
-import React, { MouseEvent, ReactNode, useContext, useEffect } from 'react'
+import { MouseEvent, ReactNode, useContext, useEffect } from 'react'
 
 import classnames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
@@ -16,7 +16,6 @@ type SpotlightRowProps = {
     info: ReactNode
     link: string
     onCloseModal: () => void
-    onHover?: (e: MouseEvent) => void
     selected?: boolean
     shrinkInfo?: boolean
     id: number
@@ -33,7 +32,6 @@ const SpotlightRow = ({
     link,
     icon,
     onCloseModal,
-    onHover,
     selected = false,
     shrinkInfo = false,
     id,
@@ -79,7 +77,6 @@ const SpotlightRow = ({
             })}
             to={link}
             onClick={handleClick}
-            onMouseEnter={onHover}
         >
             <div className={css.infoContent}>
                 <div className={css.infoHeader}>

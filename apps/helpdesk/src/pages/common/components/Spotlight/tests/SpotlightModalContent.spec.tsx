@@ -44,7 +44,6 @@ describe('<SpotlightModalContent />', () => {
         tickets: [],
         customers: [],
         calls: [],
-        resultsWithHighlights: [],
         recentTickets: [],
         recentCustomers: [],
         recentCalls: [],
@@ -61,11 +60,11 @@ describe('<SpotlightModalContent />', () => {
         handleLoadMore: jest.fn(),
         isFetchingMore: false,
         onCloseModal: jest.fn(),
-        handleHover: jest.fn(),
         selectedIndex: 0,
         hasSearched: true,
         logRecentlyAccessedSegmentEvent: jest.fn(),
         onTabChange: jest.fn(),
+        showCallsTab: false,
     }
     const highlightedContent = '<em>some Highlighted text</em>'
     const ticketWithHighlights: PickedTicketWithHighlights = {
@@ -176,7 +175,6 @@ describe('<SpotlightModalContent />', () => {
     it('should render tickets and customers in Federated Search', async () => {
         const props = {
             ...defaultProps,
-            data: undefined,
             searchItemsType: ViewType.All,
             tickets: [ticketWithHighlights],
             customers: [customerWithHighlights],
@@ -204,7 +202,6 @@ describe('<SpotlightModalContent />', () => {
     it('should render recent tickets and customers in Federated Search', async () => {
         const props = {
             ...defaultProps,
-            data: undefined,
             searchItemsType: ViewType.All,
             recentTickets: [ticketWithHighlights],
             recentCustomers: [customerWithHighlights],
@@ -233,7 +230,6 @@ describe('<SpotlightModalContent />', () => {
     it('should render recent calls in Federated Search', async () => {
         const props = {
             ...defaultProps,
-            data: undefined,
             searchItemsType: ViewType.All,
             recentTickets: [ticketWithHighlights],
             recentCustomers: [customerWithHighlights],
@@ -269,7 +265,6 @@ describe('<SpotlightModalContent />', () => {
     it('should render recent calls in Calls tab', async () => {
         const props = {
             ...defaultProps,
-            data: undefined,
             searchItemsType: ViewType.CallList,
             recentTickets: [ticketWithHighlights],
             recentCustomers: [customerWithHighlights],

@@ -1,4 +1,4 @@
-import React, { MouseEvent, RefObject, useEffect, useRef } from 'react'
+import { RefObject, useEffect, useRef } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
 import { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
@@ -125,7 +125,6 @@ type Props = {
     handleLoadMore: () => Promise<void>
     isFetchingMore: boolean
     onCloseModal: () => void
-    handleHover: (e: MouseEvent) => void
     selectedIndex: number
     hasSearched: boolean
     logRecentlyAccessedSegmentEvent: (
@@ -151,7 +150,6 @@ export const SpotlightModalContent = ({
     handleLoadMore,
     isFetchingMore,
     onCloseModal,
-    handleHover,
     selectedIndex,
     hasSearched,
     logRecentlyAccessedSegmentEvent,
@@ -269,7 +267,6 @@ export const SpotlightModalContent = ({
                     index={index}
                     item={item}
                     onCloseModal={onCloseModal}
-                    onHover={handleHover}
                     selected={selected}
                     onClick={ticketOnClickHandler}
                 />
@@ -282,7 +279,6 @@ export const SpotlightModalContent = ({
                     index={index}
                     item={item}
                     onCloseModal={onCloseModal}
-                    onHover={handleHover}
                     selected={selected}
                     onClick={customerOnClickHandler}
                 />
@@ -295,7 +291,6 @@ export const SpotlightModalContent = ({
                     index={index}
                     item={item}
                     onCloseModal={onCloseModal}
-                    onHover={handleHover}
                     selected={selected}
                     onClick={callOnClickHandler}
                 />
