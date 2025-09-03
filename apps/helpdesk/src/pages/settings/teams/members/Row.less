@@ -4,7 +4,7 @@
     border-bottom: 1px solid var(--neutral-grey-3);
 
     &:hover {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .avatar {
@@ -44,5 +44,11 @@
 
     .delete {
         margin-left: auto;
+    }
+}
+
+.axiom :local .component {
+    &:hover {
+        background: var(--hover-default);
     }
 }

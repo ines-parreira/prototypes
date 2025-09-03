@@ -92,7 +92,7 @@
 
         &:hover {
             cursor: pointer;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             color: var(--main-primary);
         }
 
@@ -137,7 +137,7 @@
 
         &.clickable {
             &:hover:not(:has(.feedback:hover)) {
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy
                 cursor: pointer;
 
                 .sectionText {
@@ -241,6 +241,22 @@
 
         .tooltipSpecialText {
             font-weight: 700;
+        }
+    }
+}
+
+.axiom :local {
+    .order {
+        &:hover {
+            background: var(--surface-neutral-primary);
+        }
+    }
+
+    .section {
+        &.clickable {
+            &:hover:not(:has(.feedback:hover)) {
+                background: var(--surface-neutral-primary);
+            }
         }
     }
 }

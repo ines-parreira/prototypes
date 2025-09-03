@@ -5,7 +5,7 @@
         height: 100%;
 
         .search {
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             border-color: var(--neutral-grey-4);
         }
 
@@ -19,6 +19,14 @@
     .tags {
         > div:last-of-type {
             max-height: 45vh;
+        }
+    }
+}
+
+.axiom :local {
+    .component {
+        .search {
+            background: var(--surface-neutral-secondary);
         }
     }
 }

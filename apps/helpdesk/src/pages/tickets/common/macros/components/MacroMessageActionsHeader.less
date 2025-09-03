@@ -1,6 +1,6 @@
 :local {
     .wrapper {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         border: 1px solid var(--neutral-grey-2);
         border-bottom: none;
         border-top-left-radius: 4px;
@@ -21,7 +21,7 @@
     .dropdownToggle {
         border: 0;
         padding: 0;
-        background-color: transparent;
+        background-color: transparent; // legacy
         color: var(--neutral-grey-6);
         font-size: 20px;
 
@@ -49,7 +49,7 @@
     .menu {
         padding: 6px;
         border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0 2px 4px
             hsla(
                 var(--neutral-grey-6-h),
@@ -93,5 +93,19 @@
             cursor: not-allowed;
             color: var(--neutral-grey-4) !important;
         }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background: var(--surface-neutral-secondary);
+    }
+
+    .dropdownToggle {
+        background: transparent;
+    }
+
+    .menu {
+        background: var(--surface-neutral-secondary);
     }
 }

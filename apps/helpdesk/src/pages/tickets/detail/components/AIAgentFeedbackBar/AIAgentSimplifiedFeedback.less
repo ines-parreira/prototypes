@@ -46,7 +46,7 @@
         gap: var(--layout-spacing-xxs);
 
         .badge {
-            background-color: transparent;
+            background-color: transparent; // legacy
             font-size: 14px;
             color: var(--neutral-grey-5);
             padding: var(--layout-spacing-xxs);
@@ -70,7 +70,7 @@
             .sourceName {
                 .hasLink {
                     cursor: pointer;
-                    background-color: var(--neutral-grey-2);
+                    background-color: var(--neutral-grey-2); // legacy
                     span {
                         color: var(--main-primary);
                     }
@@ -87,7 +87,7 @@
                 cursor: default;
 
                 .deleted {
-                    background-color: var(--neutral-grey-0);
+                    background-color: var(--neutral-grey-0); // legacy
                     cursor: not-allowed;
                     span {
                         color: var(--neutral-grey-4) !important;
@@ -164,7 +164,7 @@
     }
 
     .button {
-        background-color: var(--neutral-grey-1) !important;
+        background-color: var(--neutral-grey-1) !important; // legacy
         padding: 0 var(--layout-spacing-xxs);
         flex-shrink: 0;
         :global {
@@ -195,7 +195,7 @@
         }
 
         textarea {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             border-color: var(--neutral-grey-3);
             color: var(--neutral-grey-6);
         }
@@ -270,7 +270,7 @@
 
     .footer {
         display: flex;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: 12px 16px;
     }
 
@@ -279,7 +279,7 @@
     }
 
     .autoSaveBadge {
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         color: var(--neutral-grey-5);
         max-width: 100%;
         min-width: 28px;
@@ -317,5 +317,43 @@
         div:nth-of-type(2) {
             width: 100%;
         }
+    }
+}
+
+.axiom :local {
+    .source {
+        .badge {
+            background: transparent;
+        }
+
+        &:hover {
+            .sourceName {
+                .hasLink {
+                    background: var(--surface-neutral-tertiary);
+                }
+
+                .deleted {
+                    background: var(--surface-neutral-secondary);
+                }
+            }
+        }
+    }
+
+    .button {
+        background: var(--surface-neutral-primary) !important;
+    }
+
+    .feedbackTextAreaContainer {
+        textarea {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
+    .footer {
+        background: var(--surface-neutral-primary);
+    }
+
+    .autoSaveBadge {
+        background: var(--surface-neutral-tertiary);
     }
 }

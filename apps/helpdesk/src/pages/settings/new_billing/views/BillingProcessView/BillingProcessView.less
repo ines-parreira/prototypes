@@ -97,7 +97,7 @@
     .enterprisePlanFooter {
         padding: 16px;
         border-top: 1px solid var(--neutral-grey-3);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         display: flex;
         justify-content: flex-end;
     }
@@ -120,5 +120,11 @@
 
     :global(.reapop__notification-button) {
         white-space: nowrap;
+    }
+}
+
+.axiom :local {
+    .enterprisePlanFooter {
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -1,6 +1,6 @@
 :local {
     .tableHead {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         top: 0;
         z-index: 1;
 
@@ -11,5 +11,11 @@
         .headerCellPropertyTitle {
             color: var(--neutral-grey-4);
         }
+    }
+}
+
+.axiom :local {
+    .tableHead {
+        background-color: var(--elevation-neutral-default);
     }
 }

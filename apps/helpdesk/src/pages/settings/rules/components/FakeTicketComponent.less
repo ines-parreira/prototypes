@@ -11,7 +11,7 @@
         border-radius: 4px;
         padding: 16px;
 
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .fakeTicket {
@@ -23,7 +23,7 @@
         flex-direction: column;
         box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
         border-radius: 10px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         width: 300px;
         .fakeTicketTitleWrapper {
             display: flex;
@@ -39,5 +39,15 @@
         .fakeTicketClosed {
             height: 18px;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
+    }
+
+    .fakeTicket {
+        background-color: var(--elevation-neutral-default);
     }
 }

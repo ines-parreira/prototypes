@@ -19,7 +19,7 @@
         height: 250px;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         overflow-y: scroll;
         .ruleEditor {
             border: none;
@@ -28,7 +28,7 @@
         }
     }
     .modalFooter {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
     .modalContainer {
         width: 800px;
@@ -79,5 +79,14 @@
             color: var(--neutral-grey-5);
         }
         line-height: 20px;
+    }
+}
+
+.axiom :local {
+    .ruleEditorContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+    .modalFooter {
+        background-color: var(--elevation-neutral-mid);
     }
 }

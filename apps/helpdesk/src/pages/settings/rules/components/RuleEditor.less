@@ -1,11 +1,17 @@
 :local {
     .ruleContainer {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: 16px 16px 8px 16px;
         border: 1px solid var(--neutral-grey-3);
         input::placeholder {
             color: var(--neutral-grey-5) !important;
         }
+    }
+}
+
+.axiom :local {
+    .ruleContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

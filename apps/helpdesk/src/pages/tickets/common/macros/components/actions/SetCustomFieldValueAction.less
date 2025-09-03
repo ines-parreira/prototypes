@@ -6,7 +6,7 @@
     .select {
         :global .dropdown-toggle {
             font-weight: 500;
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             color: var(--neutral-grey-6);
 
             i {
@@ -28,6 +28,14 @@
             border-radius: 4px;
             display: flex;
             line-height: 30px;
+        }
+    }
+}
+
+.axiom :local {
+    .select {
+        :global .dropdown-toggle {
+            background: var(--surface-neutral-tertiary);
         }
     }
 }

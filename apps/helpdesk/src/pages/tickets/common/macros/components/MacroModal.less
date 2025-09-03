@@ -15,7 +15,7 @@
 
     .list,
     .footer {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .footer {
@@ -41,5 +41,12 @@
     .primaryAction::after {
         top: -16px;
         height: ~'calc(100% + 28px)';
+    }
+}
+
+.axiom :local .component {
+    .list,
+    .footer {
+        background: var(--surface-neutral-primary);
     }
 }

@@ -3,7 +3,7 @@
         display: flex;
         justify-content: center;
         padding: 16px 20px;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-sizing: border-box;
         border-radius: 4px;
         margin-bottom: 24px;
@@ -44,5 +44,11 @@
         > span {
             display: inline-block;
         }
+    }
+}
+
+.axiom :local {
+    .banner {
+        background: var(--elevation-neutral-default);
     }
 }

@@ -22,7 +22,7 @@
         padding: 0.25em 0.76em;
         margin: 0 4px 3px 0;
 
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         color: var(--neutral-grey-6);
 
         font-weight: 600;
@@ -39,5 +39,11 @@
         right: 0;
         color: var(--main-primary);
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .currentClient {
+        background: var(--surface-neutral-tertiary);
     }
 }

@@ -8,7 +8,7 @@
 
     .container:hover {
         cursor: pointer;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         color: var(--neutral-grey-6);
 
         :global(.icon-go-to-store) {
@@ -31,5 +31,11 @@
     .storeUrl {
         padding: 0 0.5rem;
         color: var(--neutral-grey-5);
+    }
+}
+
+.axiom :local {
+    .container:hover {
+        background-color: var(--hover-default);
     }
 }

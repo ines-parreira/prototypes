@@ -28,7 +28,7 @@
     }
 
     .preview {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         height: 100%;
         width: 30%;
         padding: var(--layout-spacing-m) 7.5%;
@@ -41,5 +41,11 @@
         img {
             max-width: 100%;
         }
+    }
+}
+
+.axiom :local {
+    .preview {
+        background: var(--elevation-neutral-default);
     }
 }

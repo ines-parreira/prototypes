@@ -20,7 +20,7 @@
         padding: 18px;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
     }
 
     .cardTitle {
@@ -34,7 +34,7 @@
     }
 
     .navbar {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-bottom: 1px solid var(--neutral-grey-3);
         height: 52px;
         justify-content: normal;
@@ -58,5 +58,15 @@
         border-bottom: 2px solid var(--main-primary);
         color: var(--neutral-grey-6);
         padding: 16px 0 14px 0;
+    }
+}
+
+.axiom :local {
+    .card {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .navbar {
+        background-color: var(--elevation-neutral-mid);
     }
 }
