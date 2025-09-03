@@ -4,12 +4,15 @@ import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -153,10 +156,17 @@ export const useShoppingAssistantTrialFlow = ({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const notifySlackChannel = useNotifyTrialExtensionSlackChannel()
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
+    // Always try to get store when possible
+    const routeShopName = extractShopNameFromUrl(window.location.href)
     const shopName = useMemo(
-        () => getShopNameFromStoreActivations(storeActivations),
-        [storeActivations],
+        () =>
+            getShopNameFromStoreActivations(storeActivations) || // we have this during trial after onboarding
+            routeShopName || // before trial or onboarding is finished we need to rely on the route
+            storeIntegrations[0]?.name || // in case we are on the stats page, we assume the first store
+            '',
+        [routeShopName, storeActivations, storeIntegrations],
     )
     const { routes } = useAiAgentNavigation({ shopName })
 

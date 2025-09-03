@@ -8,10 +8,13 @@ import { Router } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
+import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -28,7 +31,12 @@ jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useModalManager')
 jest.mock('common/segment')
 jest.mock('hooks/useAppDispatch')
+jest.mock('hooks/useAppSelector')
 jest.mock('state/notifications/actions')
+jest.mock(
+    'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl',
+)
+jest.mock('pages/aiAgent/utils/getShopNameFromStoreActivations')
 
 const mockUseStartShoppingAssistantTrial = assumeMock(
     useStartShoppingAssistantTrial,
@@ -44,6 +52,11 @@ const mockUseNotifyTrialExtensionSlackChannel = assumeMock(
 const mockLogEvent = assumeMock(logEvent)
 const mockNotify = assumeMock(notify)
 const mockUseAppDispatch = assumeMock(useAppDispatch)
+const mockUseAppSelector = assumeMock(useAppSelector)
+const mockExtractShopNameFromUrl = assumeMock(extractShopNameFromUrl)
+const mockGetShopNameFromStoreActivations = assumeMock(
+    getShopNameFromStoreActivations,
+)
 
 const mockDispatch = jest.fn()
 const mockNotifySlackChannel = jest.fn()
@@ -167,6 +180,11 @@ describe('useShoppingAssistantTrialFlow', () => {
             variables: undefined,
             context: undefined,
         })
+
+        // Mock default shopName sources
+        mockUseAppSelector.mockReturnValue([])
+        mockExtractShopNameFromUrl.mockReturnValue(undefined)
+        mockGetShopNameFromStoreActivations.mockReturnValue('Test Store 1')
     })
 
     afterEach(() => {
@@ -1017,6 +1035,113 @@ describe('useShoppingAssistantTrialFlow', () => {
 
                 // 6. Verify onboarding was NOT started for Shopping Assistant trial
                 expect(mockStartOnboardingAfterTrial).not.toHaveBeenCalled()
+            })
+        })
+    })
+
+    describe('shopName fallback mechanism', () => {
+        describe('shopName source priority', () => {
+            it('should use shopName from storeActivations as primary source', () => {
+                mockGetShopNameFromStoreActivations.mockReturnValue(
+                    'store-from-activations',
+                )
+                mockExtractShopNameFromUrl.mockReturnValue('store-from-url')
+                mockUseAppSelector.mockReturnValue([
+                    { name: 'store-from-integrations' },
+                ])
+
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.startTrial(true)
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'store-from-activations', true],
+                    expect.any(Object),
+                )
+            })
+
+            it('should fallback to URL shopName when storeActivations is empty', () => {
+                mockGetShopNameFromStoreActivations.mockReturnValue('')
+                mockExtractShopNameFromUrl.mockReturnValue('store-from-url')
+                mockUseAppSelector.mockReturnValue([
+                    { name: 'store-from-integrations' },
+                ])
+
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.startTrial(false)
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'store-from-url', false],
+                    expect.any(Object),
+                )
+            })
+
+            it('should fallback to first store integration when storeActivations and URL are empty', () => {
+                mockGetShopNameFromStoreActivations.mockReturnValue('')
+                mockExtractShopNameFromUrl.mockReturnValue(undefined)
+                mockUseAppSelector.mockReturnValue([
+                    { name: 'store-from-integrations' },
+                ])
+
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.startTrial()
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', 'store-from-integrations', undefined],
+                    expect.any(Object),
+                )
+            })
+
+            it('should use empty string when all sources are unavailable', () => {
+                mockGetShopNameFromStoreActivations.mockReturnValue('')
+                mockExtractShopNameFromUrl.mockReturnValue(undefined)
+                mockUseAppSelector.mockReturnValue([])
+
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.startTrial(true)
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', '', true],
+                    expect.any(Object),
+                )
+            })
+
+            it('should handle empty storeIntegrations array when all other sources are empty', () => {
+                mockGetShopNameFromStoreActivations.mockReturnValue('')
+                mockExtractShopNameFromUrl.mockReturnValue(undefined)
+                mockUseAppSelector.mockReturnValue([])
+
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.AiAgent,
+                })
+
+                act(() => {
+                    result.current.startTrial()
+                })
+
+                expect(mockAiAgentMutateAsync).toHaveBeenCalledWith(
+                    ['shopify', '', undefined],
+                    expect.any(Object),
+                )
             })
         })
     })

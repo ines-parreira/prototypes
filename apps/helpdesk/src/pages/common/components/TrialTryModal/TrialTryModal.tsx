@@ -24,7 +24,7 @@ export type TrialTryModalProps = {
     onClose: () => void
     primaryAction?: {
         label: string
-        onClick: () => void
+        onClick: (optedInForUpgrade?: boolean) => void
     }
     secondaryAction?: {
         label: string
@@ -212,7 +212,7 @@ const TrialTryModal = ({
             setHasAttemptedSubmit(true)
             return
         }
-        primaryAction?.onClick()
+        primaryAction?.onClick(isTermsChecked)
     }
 
     const hasCheckboxError = !isTermsChecked && hasAttemptedSubmit

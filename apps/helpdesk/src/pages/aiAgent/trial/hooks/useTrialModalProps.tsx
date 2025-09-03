@@ -422,7 +422,8 @@ const useNewTrialUpgradePlanModal = (
                 'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
             primaryAction: {
                 label: 'Start Free Trial Now',
-                onClick: startTrial,
+                onClick: (optedInForUpgrade?: boolean) =>
+                    startTrial(optedInForUpgrade),
             },
             secondaryAction: {
                 label: 'No, thanks',
@@ -455,7 +456,8 @@ const useNewTrialUpgradePlanModal = (
                 "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
             primaryAction: {
                 label: 'Start trial now',
-                onClick: startTrial,
+                onClick: (optedInForUpgrade?: boolean) =>
+                    startTrial(optedInForUpgrade),
             },
             secondaryAction: {
                 label: 'No, thanks',

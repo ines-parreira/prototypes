@@ -2846,6 +2846,35 @@ describe('useTrialModalProps', () => {
                 result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(undefined)
+            })
+
+            it('should call startTrial with optedInForUpgrade parameter when provided', () => {
+                const mockStartTrial = jest.fn()
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    startTrial: mockStartTrial,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                    true,
+                )
+
+                expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(true)
+
+                mockStartTrial.mockClear()
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                    false,
+                )
+
+                expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(false)
             })
         })
 
@@ -2959,6 +2988,41 @@ describe('useTrialModalProps', () => {
                 result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(undefined)
+            })
+
+            it('should call startTrial with optedInForUpgrade parameter when provided for AI Agent', () => {
+                const mockStartTrial = jest.fn()
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.AiAgent,
+                    }),
+                )
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    startTrial: mockStartTrial,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                    true,
+                )
+
+                expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(true)
+
+                mockStartTrial.mockClear()
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                    false,
+                )
+
+                expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(false)
             })
 
             it('should call onDismissTrialUpgradeModal when secondary action is clicked for AI Agent', () => {
