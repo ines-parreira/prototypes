@@ -9,6 +9,7 @@ import { LoadingSpinner } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components/Button/Button'
+import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useTestSms } from 'AIJourney/queries'
@@ -196,6 +197,10 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             animate={{ opacity: isVisible ? 1 : 0 }}
             transition={{ duration: 0.5 }}
         >
+            <FieldPresentation
+                name="Give your flow a test run before going live"
+                description="Impersonate a customer and test the conversation with the agent on your phone."
+            />
             <ProductSelectField
                 options={products}
                 onChange={handleProductSelectChange}
@@ -212,7 +217,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                     label="Back"
                 />
                 <Button
-                    label="Continue"
+                    label="Activate"
                     onClick={handleContinue}
                     isDisabled={shouldDisableButton}
                 />

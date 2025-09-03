@@ -300,7 +300,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
             await act(async () => {
                 await userEvent.type(input, '1234567890')
                 expect(button).toBeEnabled()
@@ -358,7 +358,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
 
             await act(async () => {
                 await userEvent.type(input, '1234567890')
@@ -407,7 +407,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
 
             await act(async () => {
                 await userEvent.type(input, '1234567890')
@@ -449,7 +449,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
 
             await act(async () => {
                 await userEvent.type(input, '1234567890')
@@ -516,7 +516,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
 
             await act(async () => {
                 await userEvent.clear(input)
@@ -593,7 +593,7 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send test SMS')
+            const button = screen.getByText('Send SMS')
 
             await act(async () => {
                 await userEvent.type(input, '1234567890')

@@ -16,8 +16,8 @@ export const TestSMSField = ({
     return (
         <div className={css.testSmsField}>
             <FieldPresentation
-                name="Test phone number"
-                description="Select the phone number to preview your campaign"
+                name="Enter your phone number"
+                description="Receive the test message directly on your phone."
             />
             <InputAction
                 value={value}

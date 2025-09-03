@@ -11,6 +11,6 @@ describe('<TestSMSField />', () => {
     })
     it('should render field information and info', () => {
         render(<TestSMSField />)
-        expect(screen.getByText('Test phone number')).toBeInTheDocument()
+        expect(screen.getByText('Enter your phone number')).toBeInTheDocument()
     })
 })

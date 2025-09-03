@@ -142,7 +142,7 @@ export const InputAction = ({
                 onClick={handleActionClick}
                 disabled={!isValid || isSending}
             >
-                {isSending ? 'Sending SMS...' : 'Send test SMS'}
+                {isSending ? 'Sending SMS...' : 'Send SMS'}
                 <div className={actionDecoratorClass}>
                     <img className={css.play} src={playIcon} alt="arrow" />
                 </div>

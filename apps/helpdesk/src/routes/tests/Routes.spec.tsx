@@ -1011,10 +1011,12 @@ describe('<Routes/>', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+            expect(
+                screen.getByText('Give your flow a test run before going live'),
+            ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Select the phone number to preview your campaign',
+                    'Receive the test message directly on your phone.',
                 ),
             ).toBeInTheDocument()
         })

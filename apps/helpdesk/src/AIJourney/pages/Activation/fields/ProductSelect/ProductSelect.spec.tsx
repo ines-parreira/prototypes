@@ -91,7 +91,6 @@ describe('<ProductSelectField />', () => {
                 <ProductSelectField options={options} />
             </Provider>,
         )
-        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
         expect(
             await screen.findByText(
                 'Customer Jane Smith has left their cart with the following product',
