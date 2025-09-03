@@ -4,7 +4,6 @@ import _minBy from 'lodash/minBy'
 import { ColorType } from '@gorgias/axiom'
 
 import {
-    AutomateEarlyAccessPlan,
     AutomatePlan,
     Cadence,
     ConvertPlan,
@@ -208,22 +207,14 @@ export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
  * @returns string
  */
 export function getAutomateEarlyAccessPricesFormatted(
-    plan: AutomateEarlyAccessPlan | undefined | null,
+    plan: Plan | undefined | null,
 ) {
     const amountPrice = (plan?.amount ?? 0) / 100
-    const amountAfterDiscountPrice = (plan?.amount_after_discount ?? 0) / 100
-    const discountPrice = (plan?.discount ?? 0) / 100
     const currency = plan?.currency ?? 'usd'
     const cadence = plan?.cadence ?? Cadence.Month
 
     return {
         amount: formatAmount(amountPrice, currency),
-        amountAfterDiscount: formatAmount(
-            amountAfterDiscountPrice,
-            plan?.currency ?? 'usd',
-        ),
-        discount:
-            discountPrice > 0 ? formatAmount(discountPrice, currency) : null,
         cadence,
     }
 }

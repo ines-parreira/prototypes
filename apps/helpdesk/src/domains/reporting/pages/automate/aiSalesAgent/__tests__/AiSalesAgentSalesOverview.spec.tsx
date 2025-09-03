@@ -12,11 +12,11 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { products } from 'fixtures/productPrices'
 import { user } from 'fixtures/users'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { ProductType } from 'models/billing/types'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -28,6 +28,8 @@ import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
+jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
+
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
 const mockUseAtLeastOneStoreHasActiveTrial = jest.mocked(
     useAtLeastOneStoreHasActiveTrial,
@@ -184,11 +186,7 @@ jest.mock(
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 
-jest.mock('models/billing/queries', () => ({
-    useEarlyAccessAutomatePlan: jest.fn(),
-}))
-
-const mockUseEarlyAccessAutomatePlan = jest.mocked(useEarlyAccessAutomatePlan)
+const mockUseAiAgentUpgradePlan = jest.mocked(useAiAgentUpgradePlan)
 
 describe('AiSalesAgentSalesOverview', () => {
     const baseState = {
@@ -270,7 +268,7 @@ describe('AiSalesAgentSalesOverview', () => {
         mockUseSalesTrialRevampMilestone.mockReturnValue('off')
 
         // Mock useEarlyAccessAutomatePlan - default to null (no plan)
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null } as any)
+        mockUseAiAgentUpgradePlan.mockReturnValue({ data: null } as any)
     })
 
     it('should render when store data is ready', () => {
@@ -364,7 +362,7 @@ describe('AiSalesAgentSalesOverview', () => {
         })
 
         it('should not render Upgrade Now button when earlyAccessPlan is null', () => {
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: null,
             } as any)
 
@@ -374,7 +372,12 @@ describe('AiSalesAgentSalesOverview', () => {
         })
 
         it('should render Upgrade Now button when earlyAccessPlan is present', () => {
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    isAdminUser: true,
+                }),
+            )
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'plan-123',
                     name: 'Early Access Plan',
@@ -387,7 +390,7 @@ describe('AiSalesAgentSalesOverview', () => {
         })
 
         it('should render Start trial button regardless of earlyAccessPlan when canStartTrial is true', () => {
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: { id: 'plan-123' },
             } as any)
 

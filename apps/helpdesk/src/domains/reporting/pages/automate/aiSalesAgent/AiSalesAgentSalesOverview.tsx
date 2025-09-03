@@ -13,12 +13,12 @@ import css from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSales
 import SalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
 import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
@@ -81,7 +81,7 @@ const AiSalesAgentSalesOverview = () => {
     const trialMilestone = useSalesTrialRevampMilestone()
     const isShoppingAssistantTrialRevampEnabled = trialMilestone !== 'off'
 
-    const { canSeeTrialCTA } = useTrialAccess()
+    const { canSeeTrialCTA, isAdminUser } = useTrialAccess()
 
     const canStartTrial = isShoppingAssistantTrialRevampEnabled
         ? canSeeTrialCTA
@@ -95,8 +95,8 @@ const AiSalesAgentSalesOverview = () => {
         autoDisplayEarlyAccessDisabled:
             atLeastOneStoreHasActiveTrial || isLoading || canStartTrial,
     })
-    const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
 
+    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
     const component: React.ReactNode = (
         <AIAgentTrialSuccessModal
             isOpen={isModalOpen}
@@ -123,7 +123,7 @@ const AiSalesAgentSalesOverview = () => {
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <div className={css.wrapper}>
-                        {earlyAccessPlan && (
+                        {upgradePlanData && isAdminUser && (
                             <AIButton
                                 intent="primary"
                                 size="medium"

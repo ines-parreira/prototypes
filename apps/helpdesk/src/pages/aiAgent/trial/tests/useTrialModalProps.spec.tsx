@@ -10,12 +10,10 @@ import { Route, Router } from 'react-router-dom'
 
 import * as segment from 'common/segment'
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    useBillingState,
-    useEarlyAccessAutomatePlan,
-} from 'models/billing/queries'
+import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
@@ -47,9 +45,10 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/trial/hooks/useNotifyAdmins')
+jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 
 const mockUseBillingState = assumeMock(useBillingState)
-const mockUseEarlyAccessAutomatePlan = assumeMock(useEarlyAccessAutomatePlan)
+const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
 const mockUseTrialMetrics = assumeMock(useTrialMetrics)
 const mockUseTrialEnding = assumeMock(useTrialEnding)
 const mockUseAppDispatch = assumeMock(useAppDispatch)
@@ -229,7 +228,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -313,7 +312,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -338,7 +337,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -355,7 +354,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: null,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -377,7 +376,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -396,7 +395,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -438,7 +437,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -494,7 +493,7 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 },
                 } as any)
             })
@@ -749,7 +748,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should return undefined primaryAction when earlyAccessPlan is null', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
 
@@ -763,7 +762,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should return primaryAction when earlyAccessPlan has value', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 },
                 } as any)
 
@@ -781,7 +780,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should return Book a demo when canBookDemo is true regardless of earlyAccessPlan', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
                 mockUseTrialAccess.mockReturnValue(
@@ -807,7 +806,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -923,9 +922,16 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: earlyAccessMonthlyAutomationPlan,
                 } as any)
+                // Mock admin user for price information tests
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -954,9 +960,16 @@ describe('useTrialModalProps', () => {
                 mockUseBillingState.mockReturnValue({
                     data: trial,
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
+                // Mock admin user for price information tests
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -987,6 +1000,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
+                        isAdminUser: true, // Add admin user for price information tests
                     }),
                 )
                 mockUseBillingState.mockReturnValue({
@@ -1001,7 +1015,7 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: earlyAccessMonthlyAutomationPlan,
                 } as any)
             })
@@ -1298,9 +1312,16 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: earlyAccessMonthlyAutomationPlan,
                 } as any)
+                // Mock admin user for price information tests
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -1328,9 +1349,16 @@ describe('useTrialModalProps', () => {
                 mockUseBillingState.mockReturnValue({
                     data: trial,
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
+                // Mock admin user for price information tests
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -1361,6 +1389,7 @@ describe('useTrialModalProps', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         trialType: TrialType.AiAgent,
+                        isAdminUser: true, // Add admin user for price information tests
                     }),
                 )
                 mockUseBillingState.mockReturnValue({
@@ -1375,7 +1404,7 @@ describe('useTrialModalProps', () => {
                         },
                     },
                 } as any)
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: earlyAccessMonthlyAutomationPlan,
                 } as any)
             })
@@ -1542,7 +1571,7 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -1569,7 +1598,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -1670,7 +1699,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -1703,7 +1732,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -1738,7 +1767,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -1773,7 +1802,7 @@ describe('useTrialModalProps', () => {
             } as any
 
             mockUseBillingState.mockReturnValue(mockBillingState)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
 
@@ -1806,7 +1835,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -1868,7 +1897,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -1951,6 +1980,13 @@ describe('useTrialModalProps', () => {
                     },
                 },
             } as any)
+            // Mock admin user for these price-related tests
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    trialType: TrialType.ShoppingAssistant,
+                    isAdminUser: true,
+                }),
+            )
         })
 
         describe('when gmvInfluencedRate > 0.005', () => {
@@ -1963,7 +1999,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should show increase message when difference > 0', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 }, // $99 > $50
                 } as any)
 
@@ -1979,7 +2015,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should show same price message when difference <= 0', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 5000 }, // $50 = $50
                 } as any)
 
@@ -2005,7 +2041,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should show typical results with increase message when difference > 0', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 9900 }, // $99 > $50
                 } as any)
 
@@ -2021,7 +2057,7 @@ describe('useTrialModalProps', () => {
             })
 
             it('should show typical results with same price message when difference <= 0', () => {
-                mockUseEarlyAccessAutomatePlan.mockReturnValue({
+                mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: { amount: 5000 }, // $50 = $50
                 } as any)
 
@@ -2043,7 +2079,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -2235,7 +2271,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: undefined,
             } as any)
 
@@ -2256,7 +2292,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -2341,7 +2377,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -2488,7 +2524,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -2529,7 +2565,7 @@ describe('useTrialModalProps', () => {
         })
 
         it('should not show primary action when futurePlan is null', () => {
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: null,
             } as any)
 
@@ -2797,7 +2833,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
         })
@@ -3078,7 +3114,7 @@ describe('useTrialModalProps', () => {
             mockUseBillingState.mockReturnValue({
                 data: trial,
             } as any)
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
             mockUseTrialEnding.mockReturnValue({
@@ -3217,6 +3253,247 @@ describe('useTrialModalProps', () => {
                 accountDomain: 'test-domain.com',
                 storeActivations: expect.any(Object),
                 trialType: TrialType.ShoppingAssistant,
+            })
+        })
+    })
+
+    describe('admin vs non-admin user pricing display', () => {
+        const mockBillingStateWithPriceIncrease = {
+            data: {
+                ...trial,
+                current_plans: {
+                    ...trial.current_plans,
+                    automate: {
+                        ...trial.current_plans.automate,
+                        amount: 2000, // $20 to force price increase
+                    },
+                },
+            },
+        }
+
+        const setupMocks = (isAdmin: boolean) => {
+            mockUseBillingState.mockReturnValue(
+                mockBillingStateWithPriceIncrease as any,
+            )
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: {
+                    ...earlyAccessMonthlyAutomationPlan,
+                    amount: 3000, // $30 to ensure price increase
+                },
+            } as any)
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    trialType: TrialType.ShoppingAssistant,
+                    isAdminUser: isAdmin,
+                }),
+            )
+            mockUseTrialMetrics.mockReturnValue({
+                gmvInfluenced: '$25',
+                gmvInfluencedRate: 0.03,
+                automationRate: {
+                    value: 0.65,
+                    prevValue: 0.001,
+                    isLoading: false,
+                },
+                isLoading: false,
+            })
+        }
+
+        describe('trialEndingModal', () => {
+            describe('when user is admin', () => {
+                it('should show price information in secondaryDescription for significant GMV impact', () => {
+                    setupMocks(true) // Admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.04, // Above threshold
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndingModal.secondaryDescription,
+                    ).toBe(
+                        'With the upgrade, your plan will increase by $10/month.',
+                    )
+                })
+
+                it('should show price information for non-significant GMV impact', () => {
+                    setupMocks(true) // Admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.003, // Below threshold (< 0.005)
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    // For Shopping Assistant with non-significant impact, it should show "Typical results achieved by merchants" format
+                    expect(
+                        result.current.trialEndingModal.secondaryDescription,
+                    ).toBe(
+                        'Typical results achieved by merchants. After upgrading, your plan will increase by $10/month.',
+                    )
+                })
+            })
+
+            describe('when user is not admin', () => {
+                it('should hide price information in secondaryDescription for significant GMV impact', () => {
+                    setupMocks(false) // Non-admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.04, // Above threshold
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndingModal.secondaryDescription,
+                    ).toBe('Typical results achieved by merchants.')
+                })
+
+                it('should hide price information for non-significant GMV impact', () => {
+                    setupMocks(false) // Non-admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.003, // Below threshold (< 0.005)
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndingModal.secondaryDescription,
+                    ).toBe('Typical results achieved by merchants.')
+                })
+            })
+        })
+
+        describe('trialEndedModal', () => {
+            describe('when user is admin', () => {
+                it('should show price information in secondaryDescription for significant GMV impact', () => {
+                    setupMocks(true) // Admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.04, // Above threshold
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndedModal.secondaryDescription,
+                    ).toBe(
+                        'After your trial, your plan will increase by $10/month.',
+                    )
+                })
+
+                it('should show price information for non-significant GMV impact', () => {
+                    setupMocks(true) // Admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.003, // Below threshold (< 0.005)
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    // For Shopping Assistant with non-significant impact, it should show "Typical results achieved by merchants" format
+                    expect(
+                        result.current.trialEndedModal.secondaryDescription,
+                    ).toBe(
+                        'Typical results achieved by merchants. After upgrading, your plan will increase by $10/month.',
+                    )
+                })
+            })
+
+            describe('when user is not admin', () => {
+                it('should hide price information in secondaryDescription for significant GMV impact', () => {
+                    setupMocks(false) // Non-admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.04, // Above threshold
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndedModal.secondaryDescription,
+                    ).toBe('Typical results achieved by merchants.')
+                })
+
+                it('should hide price information for non-significant GMV impact', () => {
+                    setupMocks(false) // Non-admin user
+                    mockUseTrialMetrics.mockReturnValue({
+                        gmvInfluenced: '$25',
+                        gmvInfluencedRate: 0.003, // Below threshold (< 0.005)
+                        automationRate: {
+                            value: 0.002,
+                            prevValue: 0.001,
+                            isLoading: false,
+                        },
+                        isLoading: false,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({}),
+                    )
+
+                    expect(
+                        result.current.trialEndedModal.secondaryDescription,
+                    ).toBe('Typical results achieved by merchants.')
+                })
             })
         })
     })

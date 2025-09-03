@@ -4,11 +4,7 @@ import cn from 'classnames'
 
 import { Badge, CheckBoxField, Skeleton } from '@gorgias/axiom'
 
-import {
-    AutomateEarlyAccessPlan,
-    AutomatePlan,
-    HelpdeskPlan,
-} from 'models/billing/types'
+import { AutomatePlan, HelpdeskPlan, Plan } from 'models/billing/types'
 import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import {
     Card,
@@ -34,7 +30,7 @@ type Props = {
     isOpen: boolean
     currentPlan?: AutomatePlan | null
     helpdeskPlan?: HelpdeskPlan | null
-    earlyAccessPlan?: AutomateEarlyAccessPlan | null
+    earlyAccessPlan?: Plan | null
     userIsAdmin: boolean
     isUpgrading: boolean
 }

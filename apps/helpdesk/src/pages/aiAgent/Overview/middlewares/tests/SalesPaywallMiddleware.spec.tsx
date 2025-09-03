@@ -7,10 +7,10 @@ import { Route, Switch } from 'react-router-dom'
 import { logEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
@@ -72,11 +72,9 @@ jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
+jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 jest.mock('common/segment')
 jest.mock('hooks/useModalManager')
-jest.mock('models/billing/queries', () => ({
-    useEarlyAccessAutomatePlan: jest.fn(),
-}))
 
 // Mock modal components
 jest.mock(
@@ -157,7 +155,7 @@ const mockUseTrialModalProps = useTrialModalProps as jest.Mock
 const mockUseUpgradePlan = useUpgradePlan as jest.Mock
 const mockLogEvent = logEvent as jest.Mock
 const mockUseModalManager = useModalManager as jest.Mock
-const mockUseEarlyAccessAutomatePlan = useEarlyAccessAutomatePlan as jest.Mock
+const mockAiAgentUpgradePlan = useAiAgentUpgradePlan as jest.Mock
 
 const setupUseAppSelectorMock = ({
     hasAutomate = true,
@@ -261,7 +259,7 @@ describe('SalesPaywallMiddleware', () => {
         // Default useAppSelector mock
         setupUseAppSelectorMock()
         // Default useEarlyAccessAutomatePlan mock to null (no plan)
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
+        mockAiAgentUpgradePlan.mockReturnValue({ data: null })
     })
     it('should render automate paywall when it doesnt has automate', () => {
         setupUseAppSelectorMock({ hasAutomate: false })
@@ -425,6 +423,7 @@ describe('SalesPaywallMiddleware', () => {
             hasCurrentStoreTrialExpired: false,
             hasAnyTrialOptedIn: false,
             canBookDemo: false,
+            isAdminUser: true,
         })
         // Mock the original trial hook to return canStartTrial: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -443,7 +442,7 @@ describe('SalesPaywallMiddleware', () => {
             (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
         )
         // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+        mockAiAgentUpgradePlan.mockReturnValue({
             data: {
                 id: 'early-access-123',
                 name: 'Early Access Plan',
@@ -490,6 +489,7 @@ describe('SalesPaywallMiddleware', () => {
             hasCurrentStoreTrialExpired: false,
             hasAnyTrialOptedIn: false,
             canBookDemo: false,
+            isAdminUser: true,
         })
         // Mock the original trial hook to return canStartTrialFromFeatureFlag: true
         mockUseActivateAiAgentTrial.mockReturnValue({
@@ -511,7 +511,7 @@ describe('SalesPaywallMiddleware', () => {
                 false,
         )
         // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+        mockAiAgentUpgradePlan.mockReturnValue({
             data: {
                 id: 'early-access-123',
                 name: 'Early Access Plan',
@@ -568,7 +568,7 @@ describe('SalesPaywallMiddleware', () => {
             (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
         )
         // Mock earlyAccessPlan to be null so Upgrade Now button doesn't appear
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({
+        mockAiAgentUpgradePlan.mockReturnValue({
             data: null,
         })
 
@@ -965,6 +965,7 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasOptedOut: true,
                 hasActiveTrial: false,
+                isAdminUser: true,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -979,7 +980,7 @@ describe('SalesPaywallMiddleware', () => {
                 isLoading: false,
             })
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'early-access-123',
                     name: 'Early Access Plan',
@@ -1002,6 +1003,7 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasOptedOut: false,
                 hasAnyTrialOptedIn: true,
+                isAdminUser: true,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -1013,7 +1015,7 @@ describe('SalesPaywallMiddleware', () => {
                 isLoading: false,
             })
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'early-access-123',
                     name: 'Early Access Plan',
@@ -1047,9 +1049,10 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasOptedOut: false,
                 hasActiveTrial: false,
+                isAdminUser: true,
             })
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'early-access-123',
                     name: 'Early Access Plan',
@@ -1252,6 +1255,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAnyTrialOptedIn: false,
                 canBookDemo: false,
                 hasCurrentStoreTrialOptedOut: false,
+                isAdminUser: true,
             })
 
             setupUseAppSelectorMock({
@@ -1260,7 +1264,7 @@ describe('SalesPaywallMiddleware', () => {
             })
 
             // Mock earlyAccessPlan to exist so the Upgrade Now button shows
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: { id: 'early-access-plan' },
             })
 
@@ -1441,6 +1445,7 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasTrialExpired: false,
                 hasAnyTrialOptedIn: true,
+                isAdminUser: true,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -1465,7 +1470,7 @@ describe('SalesPaywallMiddleware', () => {
                     key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
             )
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'early-access-123',
                     name: 'Early Access Plan',
@@ -1587,6 +1592,7 @@ describe('SalesPaywallMiddleware', () => {
                 canStartTrial: false,
                 hasTrialExpired: false,
                 hasAnyTrialOptedIn: false,
+                isAdminUser: true,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -1605,7 +1611,7 @@ describe('SalesPaywallMiddleware', () => {
                     key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
             )
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
-            mockUseEarlyAccessAutomatePlan.mockReturnValue({
+            mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
                     id: 'early-access-123',
                     name: 'Early Access Plan',

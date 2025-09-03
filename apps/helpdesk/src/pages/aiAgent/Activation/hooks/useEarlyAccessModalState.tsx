@@ -3,11 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    useBillingState,
-    useEarlyAccessAutomatePlan,
-} from 'models/billing/queries'
+import { useBillingState } from 'models/billing/queries'
 import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
@@ -47,9 +45,10 @@ export const useEarlyAccessModalState = ({
     hasActivationEnabled: boolean
     autoDisplayDisabled?: boolean
 }) => {
-    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan({
-        enabled: hasActivationEnabled,
-    })
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { data: upgradePlanData, isLoading: upgradePlanLoading } =
+        useAiAgentUpgradePlan(accountDomain, hasActivationEnabled)
     const billingState = useBillingState({ enabled: hasActivationEnabled })
 
     const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)
@@ -71,8 +70,7 @@ export const useEarlyAccessModalState = ({
         () => setIsPreviewModalVisible(true),
     )
 
-    const isLoading =
-        billingState.isLoading || earlyAccessAutomatePlanQuery.isLoading
+    const isLoading = billingState.isLoading || upgradePlanLoading
 
     const currentProducts = useAppSelector(getCurrentPlansByProduct)
     const currentPriceIds = useCurrentPriceIds()
@@ -84,7 +82,7 @@ export const useEarlyAccessModalState = ({
     // The Early Access plan is not able to return the price_id, we uses the plan_id instead
     const priceIdsAndPlanIdsWithEarlyAccessPlanAdded = [
         ...priceIdsWithoutAutomationOne!,
-        earlyAccessAutomatePlanQuery.data?.plan_id,
+        upgradePlanData?.plan_id,
     ].filter(Boolean) as string[]
 
     const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
@@ -98,7 +96,7 @@ export const useEarlyAccessModalState = ({
 
     return useMemo(
         () => ({
-            earlyAccessPlan: earlyAccessAutomatePlanQuery.data,
+            earlyAccessPlan: upgradePlanData,
             currentPlan,
             helpdeskPlan,
             isPreviewModalVisible,
@@ -113,7 +111,7 @@ export const useEarlyAccessModalState = ({
                 ),
         }),
         [
-            earlyAccessAutomatePlanQuery.data,
+            upgradePlanData,
             currentPlan,
             helpdeskPlan,
             isPreviewModalVisible,

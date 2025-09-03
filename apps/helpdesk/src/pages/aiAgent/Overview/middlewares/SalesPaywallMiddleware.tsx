@@ -7,10 +7,10 @@ import { Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import AIAgentTrialSuccessModal, {
     MODAL_NAME as AI_TRIAL_MODAL_NAME,
 } from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
@@ -78,6 +78,7 @@ export const SalesPaywallMiddleware =
             canNotifyAdmin,
             isLoading: isTrialAccessLoading,
             trialType,
+            isAdminUser,
         } = useTrialAccess(currentStore?.name)
 
         const currentStoreHasActiveTrial =
@@ -166,14 +167,15 @@ export const SalesPaywallMiddleware =
                 displayTrialButton ||
                 canStartTrialFromFeatureFlag,
         })
-        const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
-
+        const { data: upgradePlanData, isLoading: upgradePlanDataLoading } =
+            useAiAgentUpgradePlan(accountDomain)
         const displayNotifyAdminButton =
             canNotifyAdmin &&
             !displayTrialButton &&
             !hasCurrentStoreTrialStarted &&
             !hasCurrentStoreTrialOptedOut &&
-            !earlyAccessPlan
+            (!upgradePlanData || !isAdminUser) && // Show only if no plan AND user is not admin
+            !upgradePlanDataLoading
 
         const eventData = {
             accountId: currentAccount.get('id'),
@@ -243,7 +245,7 @@ export const SalesPaywallMiddleware =
                 <PaywallWrapperComponent
                     showUpgradePaywall={showUpgradePaywall}
                     showEarlyAccessModal={onUpgradePlanClicked}
-                    displayUpgradeButton={!!earlyAccessPlan}
+                    displayUpgradeButton={!!upgradePlanData && isAdminUser}
                     displayTrialButton={displayTrialButton}
                     startTrial={() => {
                         logEvent(

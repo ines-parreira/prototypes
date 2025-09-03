@@ -2,13 +2,10 @@ import { useCallback, useMemo } from 'react'
 
 import { SegmentEvent } from 'common/segment'
 import { logEvent } from 'common/segment/segment'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    useBillingState,
-    useEarlyAccessAutomatePlan,
-} from 'models/billing/queries'
+import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
-import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
     AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,
@@ -78,6 +75,8 @@ export const AI_AGENT_ADVANTAGES = [
     '35% faster ticket handling',
     '62% conversion rate',
 ]
+
+const TYPICAL_RESULTS_TEXT = 'Typical results achieved by merchants.'
 
 const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
     {
@@ -200,9 +199,14 @@ type PlanDetails = {
 }
 
 const usePlanDetails = (): PlanDetails => {
-    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
-    const { amount: earlyAccessPlanAmount, cadence: earlyAccessPlanCadence } =
-        getAutomateEarlyAccessPricesFormatted(earlyAccessAutomatePlanQuery.data)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const upgradePlanAmount = upgradePlanData
+        ? formatAmount(upgradePlanData.amount / 100, upgradePlanData.currency)
+        : '$0'
+    const upgradePlanCadence = upgradePlanData?.cadence ?? Cadence.Month
     const billingState = useBillingState()
     const currentPlan = billingState?.data?.current_plans?.automate
     const helpdeskPlan = billingState?.data?.current_plans?.helpdesk
@@ -225,8 +229,8 @@ const usePlanDetails = (): PlanDetails => {
         currency,
         currentPlanAmountFormatted,
         helpdeskPlanTicketCost,
-        earlyAccessPlanAmount,
-        earlyAccessPlanCadence,
+        earlyAccessPlanAmount: upgradePlanAmount,
+        earlyAccessPlanCadence: upgradePlanCadence,
         numQuotaTickets,
     }
 }
@@ -357,7 +361,6 @@ const useUpgradePlanModal = (
 const useTrialUpgradePlanModal =
     (): TrialModalProps['trialUpgradePlanModal'] => {
         const planDetails = usePlanDetails()
-
         return useMemo(
             () =>
                 createPlanModalData(
@@ -581,7 +584,7 @@ const useTrialStartedBanner = (
         isUpgradePlanLoading,
     ])
 
-    const { data: earlyAccessPlan } = useEarlyAccessAutomatePlan()
+    const upgradePlanData = useAiAgentUpgradePlan(accountDomain)
     const primaryAction = useMemo(() => {
         if (canBookDemo) {
             return {
@@ -592,14 +595,14 @@ const useTrialStartedBanner = (
             }
         }
 
-        if (!earlyAccessPlan) return undefined
+        if (!upgradePlanData?.data) return undefined
 
         return {
             label: 'Upgrade Now',
             onClick: handleUpgradePlan,
             isLoading: isUpgradePlanLoading,
         }
-    }, [canBookDemo, earlyAccessPlan, handleUpgradePlan, isUpgradePlanLoading])
+    }, [canBookDemo, upgradePlanData, handleUpgradePlan, isUpgradePlanLoading])
 
     const description = useMemo(() => {
         if (
@@ -692,13 +695,17 @@ const toPercentage = (value: number, decimals = 1) => {
 const useTrialEndedModal = (
     trialType: TrialType,
     trialMetrics: TrialMetrics,
+    trialAccess: TrialAccess,
 ): TrialModalProps['trialEndedModal'] => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
     const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
     const automationRateValue = automationRate?.value ?? 0
-    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
-    const earlyAccessPlanPrice =
-        (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
+    const { isAdminUser } = trialAccess
+
+    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const earlyAccessPlanPrice = (upgradePlanData?.amount ?? 0) / 100
     const billingState = useBillingState()
     const currentPlan = billingState?.data?.current_plans?.automate
 
@@ -706,7 +713,7 @@ const useTrialEndedModal = (
     const currency = currentPlan?.currency ?? 'USD'
 
     const difference = earlyAccessPlanPrice - currentPlanAmount
-    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
+    const cadence = upgradePlanData?.cadence ?? Cadence.Month
 
     const hasSignificantGmvImpact =
         gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
@@ -780,21 +787,33 @@ const useTrialEndedModal = (
 
         if (isAiAgentTrial) {
             if (hasSignificantAutomationRateImpact) {
-                return `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
+                return isAdminUser
+                    ? `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
+                    : TYPICAL_RESULTS_TEXT
             }
-            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+            return isAdminUser
+                ? `${TYPICAL_RESULTS_TEXT} After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+                : TYPICAL_RESULTS_TEXT
         }
 
         if (hasSignificantGmvImpact) {
             if (difference > 0) {
-                return `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
+                return isAdminUser
+                    ? `After your trial, your plan will increase by ${increaseAmount}/${cadence}.`
+                    : TYPICAL_RESULTS_TEXT
             }
-            return 'The price of your plan remains the same after the upgrade.'
+            return isAdminUser
+                ? 'The price of your plan remains the same after the upgrade.'
+                : TYPICAL_RESULTS_TEXT
         }
         if (difference > 0) {
-            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+            return isAdminUser
+                ? `${TYPICAL_RESULTS_TEXT} After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+                : TYPICAL_RESULTS_TEXT
         }
-        return `Typical results achieved by merchants. The price of your plan remains the same after the upgrade.`
+        return isAdminUser
+            ? `${TYPICAL_RESULTS_TEXT} The price of your plan remains the same after the upgrade.`
+            : TYPICAL_RESULTS_TEXT
     }, [
         isAiAgentTrial,
         hasSignificantAutomationRateImpact,
@@ -802,6 +821,7 @@ const useTrialEndedModal = (
         difference,
         currency,
         cadence,
+        isAdminUser,
     ])
 
     return {
@@ -815,13 +835,17 @@ const useTrialEndedModal = (
 const useTrialEndingModal = (
     trialType: TrialType,
     trialMetrics: TrialMetrics,
+    trialAccess: TrialAccess,
 ): TrialModalProps['trialEndingModal'] => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
     const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
     const automationRateValue = automationRate?.value ?? 0
-    const earlyAccessAutomatePlanQuery = useEarlyAccessAutomatePlan()
-    const earlyAccessPlanPrice =
-        (earlyAccessAutomatePlanQuery?.data?.amount ?? 0) / 100
+    const { isAdminUser } = trialAccess
+
+    const earlyAccessPlanPrice = (upgradePlanData?.amount ?? 0) / 100
     const billingState = useBillingState()
     const currentPlan = billingState?.data?.current_plans?.automate
 
@@ -835,7 +859,7 @@ const useTrialEndingModal = (
         automationRateValue > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD
     const hasPriceIncrease = difference > 0
     const increaseAmount = formatAmount(difference, currency)
-    const cadence = earlyAccessAutomatePlanQuery?.data?.cadence ?? Cadence.Month
+    const cadence = upgradePlanData?.cadence ?? Cadence.Month
 
     const allShopifyIntegrations = useAppSelector(
         getShopifyIntegrationsSortedByName,
@@ -926,22 +950,30 @@ const useTrialEndingModal = (
     const secondaryDescription = useMemo(() => {
         if (isAiAgentTrial) {
             if (hasSignificantAutomationRateImpact) {
-                return `With the upgrade, your plan will increase by ${increaseAmount}/${cadence}.`
+                return isAdminUser
+                    ? `With the upgrade, your plan will increase by ${increaseAmount}/${cadence}.`
+                    : TYPICAL_RESULTS_TEXT
             }
-            return `Typical results achieved by merchants. After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+            return isAdminUser
+                ? `${TYPICAL_RESULTS_TEXT} After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
+                : TYPICAL_RESULTS_TEXT
         }
 
         if (hasSignificantGmvImpact) {
             const priceMessage = hasPriceIncrease
                 ? `your plan will increase by ${increaseAmount}/${cadence}`
                 : 'the price of your plan remains the same'
-            return `With the upgrade, ${priceMessage}.`
+            return isAdminUser
+                ? `With the upgrade, ${priceMessage}.`
+                : TYPICAL_RESULTS_TEXT
         }
 
         const priceMessage = hasPriceIncrease
             ? `After upgrading, your plan will increase by ${increaseAmount}/${cadence}`
             : 'The price of your plan remains the same after the upgrade'
-        return `Typical results achieved by merchants. ${priceMessage}.`
+        return isAdminUser
+            ? `${TYPICAL_RESULTS_TEXT} ${priceMessage}.`
+            : TYPICAL_RESULTS_TEXT
     }, [
         isAiAgentTrial,
         hasSignificantAutomationRateImpact,
@@ -949,6 +981,7 @@ const useTrialEndingModal = (
         hasPriceIncrease,
         increaseAmount,
         cadence,
+        isAdminUser,
     ])
 
     return {
@@ -977,7 +1010,7 @@ const useTrialManageModal = (
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
         useUpgradePlan()
 
-    const { data: futurePlan } = useEarlyAccessAutomatePlan()
+    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
 
     const {
         isManageTrialModalOpen,
@@ -1044,7 +1077,7 @@ const useTrialManageModal = (
                 ? aiAgentDescription
                 : trialEndingModalProps.description,
             onClose: closeManageTrialModal,
-            primaryAction: futurePlan
+            primaryAction: upgradePlanData
                 ? {
                       label: 'Upgrade Now',
                       onClick: onUpgradeClick,
@@ -1064,7 +1097,7 @@ const useTrialManageModal = (
             aiAgentDescription,
             trialEndingModalProps,
             closeManageTrialModal,
-            futurePlan,
+            upgradePlanData,
             onUpgradeClick,
             isUpgradePlanLoading,
             openTrialOptOutModal,
@@ -1186,8 +1219,16 @@ export const useTrialModalProps = ({
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
-    const trialEndingModal = useTrialEndingModal(trialType, trialMetrics)
-    const trialEndedModal = useTrialEndedModal(trialType, trialMetrics)
+    const trialEndingModal = useTrialEndingModal(
+        trialType,
+        trialMetrics,
+        trialAccess,
+    )
+    const trialEndedModal = useTrialEndedModal(
+        trialType,
+        trialMetrics,
+        trialAccess,
+    )
     const trialManageModal = useTrialManageModal(
         trialType,
         trialMetrics,

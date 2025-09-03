@@ -121,26 +121,22 @@ describe('getPlanUnitsPerCadence', () => {
 
 describe('getAutomateEarlyAccessPricesFormatted', () => {
     it('returns right amounts', () => {
-        const { amount, amountAfterDiscount, discount, cadence } =
-            getAutomateEarlyAccessPricesFormatted(
-                earlyAccessMonthlyAutomationPlan,
-            )
+        const { amount, cadence } = getAutomateEarlyAccessPricesFormatted(
+            earlyAccessMonthlyAutomationPlan,
+        )
 
         expect(amount).toEqual('$30')
-        expect(amountAfterDiscount).toEqual('$20')
-        expect(discount).toEqual('$10')
+
         expect(cadence).toEqual(earlyAccessMonthlyAutomationPlan.cadence)
     })
 
     it.each([undefined, null])(
         'handles invalid plans: %q',
         (plan: undefined | null) => {
-            const { amount, amountAfterDiscount, discount, cadence } =
+            const { amount, cadence } =
                 getAutomateEarlyAccessPricesFormatted(plan)
 
             expect(amount).toEqual('$0')
-            expect(amountAfterDiscount).toEqual('$0')
-            expect(discount).toEqual(null)
             expect(cadence).toEqual(Cadence.Month)
         },
     )

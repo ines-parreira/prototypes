@@ -8,6 +8,7 @@ import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AccountConfiguration,
     AccountConfigurationResponse,
+    AiAgentUpgradePlanResponse,
     CreateOnboardingNotificationStatePayload,
     CreateStoreConfigurationPayload,
     GetStoreConfigurationParams,
@@ -310,6 +311,16 @@ export const optOutAiAgentTrialUpgrade = async (gorgiasDomain: string) => {
 export const upgradeSubscription = async (gorgiasDomain: string) => {
     const response = await apiClient.post(
         `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
+    )
+    return response.data
+}
+
+/**
+ * AI Agent Upgrade Plan endpoint
+ */
+export const getAiAgentUpgradePlan = async (gorgiasDomain: string) => {
+    const response = await apiClient.get<AiAgentUpgradePlanResponse>(
+        `/config/accounts/${gorgiasDomain}/ai-agent-upgrade-plan`,
     )
     return response.data
 }

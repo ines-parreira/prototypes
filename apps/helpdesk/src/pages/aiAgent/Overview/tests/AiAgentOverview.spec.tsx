@@ -16,10 +16,8 @@ import { initialState as initialStatsFiltersState } from 'domains/reporting/stat
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
-import {
-    useBillingState,
-    useEarlyAccessAutomatePlan,
-} from 'models/billing/queries'
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
+import { useBillingState } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
@@ -60,6 +58,7 @@ jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils')
+jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 
 jest.mock('pages/aiAgent/Overview/hooks/useHasNoOnboardedStores')
 const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
@@ -94,7 +93,7 @@ const defaultThankYouModalValues = {
 const mockUseThankYouModal = useThankYouModal as jest.Mock
 const mockUseTrialAccess = useTrialAccess as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
-const mockUseEarlyAccessAutomatePlan = assumeMock(useEarlyAccessAutomatePlan)
+const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
 const useLocationMock = assumeMock(useLocation)
 const useParamsMock = assumeMock(useParams)
 useLocationMock.mockReturnValue(defaultLocation)
@@ -160,8 +159,8 @@ describe('AiAgentOverview', () => {
             },
         } as any)
 
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({
-            data: { amount: 53000 }, // $530 in cents
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { amount: 53000, currency: 'USD' }, // $530 in cents
         } as any)
 
         // Mock billing utils

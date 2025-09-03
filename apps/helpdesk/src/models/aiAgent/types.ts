@@ -406,3 +406,7 @@ export type TriggerAIJourneyResponse = {
         executionId: string
     }
 }
+
+export type AiAgentUpgradePlanResponse = {
+    aiAgentUpgradePlanId: string
+}
