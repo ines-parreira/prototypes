@@ -14,6 +14,10 @@ import {
     initDraftOrderPayload,
 } from '../draftOrder'
 
+jest.mock('ulidx', () => ({
+    ulid: () => '01FZ8K3G6TVY2Z7X3Z1XG5Y6TA',
+}))
+
 describe('initDraftOrderPayload()', () => {
     it('should return draft order payload for the given order', () => {
         const product = fromJS(

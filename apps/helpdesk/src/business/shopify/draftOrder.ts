@@ -1,4 +1,5 @@
 import { fromJS, List, Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import { Product, Variant } from '../../constants/integrations/types/shopify'
 import { refreshAppliedDiscounts } from './discount'
@@ -73,6 +74,7 @@ export function initDraftOrderPayload(
                         lineItem,
                         order,
                     ),
+                    localId: lineItem.get('localId') || ulid(),
                 }) as Map<any, any>
             },
         ),
@@ -121,6 +123,7 @@ export function addVariant(
                       product_exists: true,
                       properties: [],
                       newly_added: true,
+                      localId: ulid(),
                   }),
               ),
           )

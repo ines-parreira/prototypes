@@ -120,7 +120,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 <div>
                   <button
                     class="button btn btn-link"
-                    id="applied-discount-8345093387_31128766316567"
+                    id="applied-discount-01FZ8K3G6TVY2Z7X3Z1XG5Y6TA"
                     tabindex="0"
                     type="button"
                   >
@@ -280,7 +280,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 <div>
                   <button
                     class="button btn btn-link"
-                    id="applied-discount-8345093387_31128766349335"
+                    id="applied-discount-01FZ8K3G6TVY2Z7X3Z1XG5Y6TA"
                     tabindex="0"
                     type="button"
                   >

@@ -34,6 +34,9 @@ jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
 
 jest.mock('../../../../infobar/actions')
 jest.useFakeTimers()
+jest.mock('ulidx', () => ({
+    ulid: () => '01FZ8K3G6TVY2Z7X3Z1XG5Y6TA',
+}))
 
 describe('infobarActions.shopify.createOrder actions', () => {
     const middlewares = [thunk]

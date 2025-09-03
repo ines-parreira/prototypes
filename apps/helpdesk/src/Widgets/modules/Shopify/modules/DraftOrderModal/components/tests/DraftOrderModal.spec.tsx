@@ -164,6 +164,10 @@ jest.mock(
         },
 )
 
+jest.mock('ulidx', () => ({
+    ulid: () => '01FZ8K3G6TVY2Z7X3Z1XG5Y6TA',
+}))
+
 function getProducts(order: Map<any, any>) {
     const products = new window.Map()
 
