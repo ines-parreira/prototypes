@@ -289,6 +289,85 @@ describe('registerDevice', () => {
             )
         })
     })
+
+    it('should set audio constraints when audio is available', async () => {
+        const setAudioConstraintsMock = jest.fn().mockResolvedValue(undefined)
+
+        const deviceWithAudio = {
+            ...device,
+            register: jest.fn(),
+            audio: {
+                setAudioConstraints: setAudioConstraintsMock,
+            },
+        } as unknown as Device
+
+        const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
+
+        await registerDevice(deviceWithAudio, dispatch, actions)
+
+        await waitFor(() => {
+            expect(deviceWithAudio.register).toHaveBeenCalledTimes(1)
+            expect(setAudioConstraintsMock).toHaveBeenCalledWith({
+                noiseSuppression: true,
+            })
+            expect(handleDeviceEvents).toHaveBeenCalledWith(
+                deviceWithAudio,
+                dispatch,
+                actions,
+            )
+        })
+    })
+
+    it('should handle when audio is not available', async () => {
+        const deviceWithoutAudio = {
+            ...device,
+            register: jest.fn(),
+            audio: null,
+        } as unknown as Device
+
+        const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
+
+        await registerDevice(deviceWithoutAudio, dispatch, actions)
+
+        await waitFor(() => {
+            expect(deviceWithoutAudio.register).toHaveBeenCalledTimes(1)
+            expect(handleDeviceEvents).toHaveBeenCalledWith(
+                deviceWithoutAudio,
+                dispatch,
+                actions,
+            )
+        })
+    })
+
+    it('should handle audio constraints promise rejection', async () => {
+        const setAudioConstraintsMock = jest
+            .fn()
+            .mockRejectedValue(new Error('Audio constraints failed'))
+
+        const deviceWithFailingAudio = {
+            ...device,
+            register: jest.fn(),
+            audio: {
+                setAudioConstraints: setAudioConstraintsMock,
+            },
+        } as unknown as Device
+
+        const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
+
+        await registerDevice(deviceWithFailingAudio, dispatch, actions)
+
+        await waitFor(() => {
+            expect(deviceWithFailingAudio.register).toHaveBeenCalledTimes(1)
+            expect(setAudioConstraintsMock).toHaveBeenCalledWith({
+                noiseSuppression: true,
+            })
+            expect(handleDeviceEvents).toHaveBeenCalledWith(
+                deviceWithFailingAudio,
+                dispatch,
+                actions,
+            )
+        })
+    })
 })
 
 describe('handleDeviceEvents', () => {

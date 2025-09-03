@@ -114,12 +114,28 @@ export const createDevice = (token: string): Device => {
     })
 }
 
+export async function setAudioConstraints(device: Device) {
+    if (!device.audio) {
+        return
+    }
+
+    try {
+        await device.audio.setAudioConstraints({
+            noiseSuppression: true,
+        })
+    } catch {
+        reportError(new Error('Could not set audio constraints'))
+    }
+}
+
 export async function registerDevice(
     device: Device,
     dispatch: StoreDispatch,
     actions: VoiceDeviceActions,
 ) {
     await device.register()
+    await setAudioConstraints(device)
+
     utils.handleDeviceEvents(device, dispatch, actions)
 }
 
