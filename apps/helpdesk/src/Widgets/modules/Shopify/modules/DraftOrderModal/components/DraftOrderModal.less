@@ -6,7 +6,7 @@
     }
 
     .formHeader {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         display: flex;
         padding: 20px 24px;
 
@@ -51,5 +51,11 @@
         align-items: center;
         display: flex;
         gap: 8px;
+    }
+}
+
+.axiom :local {
+    .formHeader {
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -40,12 +40,12 @@
         border-radius: 4px;
         &:hover {
             color: var(--neutral-grey-6);
-            background-color: var(--main-primary-0);
+            background-color: var(--main-primary-0); // legacy
         }
         &.active,
         &:active {
             color: var(--main-primary);
-            background-color: var(--main-primary-0);
+            background-color: var(--main-primary-0); // legacy
         }
     }
 
@@ -66,5 +66,17 @@
 
     .asideLink {
         margin-top: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .link {
+        &:hover {
+            background-color: var(--surface-neutral-primary);
+        }
+        &.active,
+        &:active {
+            background-color: var(--surface-neutral-primary);
+        }
     }
 }

@@ -5,7 +5,15 @@
     .field {
         margin-bottom: var(--layout-spacing-s);
         input {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .field {
+        input {
+            background-color: var(--elevation-neutral-default);
         }
     }
 }

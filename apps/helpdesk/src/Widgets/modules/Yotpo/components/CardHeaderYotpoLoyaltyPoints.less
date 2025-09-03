@@ -12,11 +12,17 @@
     .star {
         color: var(--neutral-grey-6);
         font-size: 20px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         vertical-align: bottom;
     }
     .pill {
         font-size: 12px;
         font-weight: 500;
+    }
+}
+
+.axiom :local {
+    .star {
+        background-color: var(--elevation-neutral-default);
     }
 }

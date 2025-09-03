@@ -7,7 +7,7 @@
         border-radius: 4px;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
 
             .toggleButton {
                 display: block;
@@ -48,7 +48,7 @@
         position: absolute;
         top: var(--layout-spacing-s);
         right: 12px;
-        background-color: var(--neutral-grey-0) !important;
+        background-color: var(--neutral-grey-0) !important; // legacy
         box-shadow: 0px 2px 4px 0px
             hsla(
                 var(--neutral-grey-5-h),
@@ -64,5 +64,17 @@
 
     .icon {
         color: var(--neutral-grey-5);
+    }
+}
+
+.axiom :local {
+    .container {
+        &:hover {
+            background: var(--hover-default);
+        }
+    }
+
+    .toggleButton {
+        background-color: var(--elevation-neutral-default) !important;
     }
 }

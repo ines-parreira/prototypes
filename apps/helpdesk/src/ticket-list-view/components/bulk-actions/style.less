@@ -13,7 +13,7 @@
         padding: 0 4px;
 
         &.isOpen {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             color: var(--neutral-grey-6);
         }
     }
@@ -42,6 +42,14 @@
             display: inline-block;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+    }
+}
+
+.axiom :local {
+    .button.button.button {
+        &.isOpen {
+            background-color: var(--surface-neutral-secondary);
         }
     }
 }

@@ -11,8 +11,16 @@
         padding: 6px;
 
         &.isOpen {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             color: var(--neutral-grey-6);
+        }
+    }
+}
+
+.axiom :local {
+    .icon.icon.icon {
+        &.isOpen {
+            background-color: var(--surface-neutral-secondary);
         }
     }
 }

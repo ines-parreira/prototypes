@@ -32,7 +32,7 @@
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        background-color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-6); // legacy
         color: var(--neutral-grey-0);
         display: flex;
         justify-content: center;
@@ -45,5 +45,11 @@
         width: max-content;
         align-self: center;
         color: var(--neutral-grey-6);
+    }
+}
+
+.axiom :local {
+    .stepIndicator {
+        background-color: var(--content-neutral-default);
     }
 }

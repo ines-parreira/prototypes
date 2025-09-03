@@ -2,7 +2,7 @@
     .card {
         position: relative;
         margin-top: 12px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border: 1px solid var(--neutral-grey-0);
         border-radius: 4px;
         .card {
@@ -17,7 +17,7 @@
         }
 
         [data-dragging='true'] & {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             border-color: transparent;
         }
     }
@@ -37,7 +37,7 @@
             padding-top: var(--layout-spacing-s);
             padding-bottom: var(--layout-spacing-s);
             width: 100%;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             border-radius: 4px;
             border: 1px solid var(--neutral-grey-4);
         }
@@ -45,5 +45,21 @@
 
     .cardHeaderPlaceholder {
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .card {
+        background-color: var(--elevation-neutral-default);
+
+        [data-dragging='true'] & {
+            background-color: var(--surface-neutral-secondary);
+        }
+    }
+
+    [data-dragging='true'] {
+        & .cardContent.canDrop {
+            background-color: var(--elevation-neutral-default);
+        }
     }
 }

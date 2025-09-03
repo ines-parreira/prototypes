@@ -24,7 +24,7 @@
             left: 1px;
             bottom: 0;
             width: 3px;
-            background-color: var(--main-primary-1);
+            background-color: var(--main-primary-1); // legacy
             opacity: 0;
             transition-property: opacity;
             transition-duration: 0.25s;
@@ -34,6 +34,14 @@
 
         &:hover::after {
             opacity: 1;
+        }
+    }
+}
+
+.axiom :local {
+    .handle {
+        &::after {
+            background-color: var(--surface-additional-blue);
         }
     }
 }

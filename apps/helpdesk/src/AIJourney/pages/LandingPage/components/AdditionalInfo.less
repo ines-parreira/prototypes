@@ -37,7 +37,7 @@
         align-items: center;
         gap: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         max-width: 320px;
     }
 
@@ -56,7 +56,7 @@
         width: 72px;
         height: 72px;
         border-radius: var(--layout-spacing-s);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .textContainer {
@@ -102,7 +102,7 @@
         position: relative;
         width: 200px;
         border-radius: var(--layout-spacing-s);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .speedometerImage img {
@@ -123,5 +123,19 @@
         position: absolute;
         color: #0eb263;
         font-weight: 600;
+    }
+}
+
+.axiom :local {
+    .demo {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .productImage {
+        background: var(--elevation-neutral-default);
+    }
+
+    .speedometerImage {
+        background: var(--elevation-neutral-default);
     }
 }

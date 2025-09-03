@@ -24,7 +24,7 @@
         width: 432px;
         justify-content: center;
         align-items: center;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
 
         .recommendationBanner {
             margin-left: 0;
@@ -39,7 +39,7 @@
     }
 
     .campaignPreview {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .forceLeft {
@@ -83,5 +83,15 @@
         color: var(--natural-grey-5);
 
         .caption-regular;
+    }
+}
+
+.axiom :local {
+    .rightSide {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .campaignPreview {
+        background-color: var(--surface-neutral-secondary);
     }
 }
