@@ -27,8 +27,29 @@ jest.mock('pages/common/forms/DatePicker', () => {
                         singleDatePicker:
                             props.initialSettings?.singleDatePicker,
                         opens: props.initialSettings?.opens,
+                        hasOnHide: typeof props.onHide === 'function',
+                        hasOnCancel: typeof props.onCancel === 'function',
+                        hasOnClear: typeof props.onClear === 'function',
                     })}
                 </div>
+                <button
+                    data-testid="trigger-onHide"
+                    onClick={() => props.onHide?.()}
+                >
+                    Hide
+                </button>
+                <button
+                    data-testid="trigger-onCancel"
+                    onClick={() => props.onCancel?.()}
+                >
+                    Cancel
+                </button>
+                <button
+                    data-testid="trigger-onClear"
+                    onClick={() => props.onClear?.()}
+                >
+                    Clear
+                </button>
                 {props.children}
             </div>
         )
@@ -269,6 +290,81 @@ describe('TimeFrameSelector', () => {
         it('requires onCancel prop to be provided', () => {
             expect(defaultProps.onCancel).toBeDefined()
             expect(typeof defaultProps.onCancel).toBe('function')
+        })
+    })
+
+    describe('Close event handlers', () => {
+        it('passes onHide, onCancel, and onClear handlers to DatePicker', () => {
+            render(<TimeFrameSelector {...defaultProps} />)
+
+            const propsData = JSON.parse(
+                screen.getByTestId('picker-props').textContent || '{}',
+            )
+
+            expect(propsData.hasOnHide).toBe(true)
+            expect(propsData.hasOnCancel).toBe(true)
+            expect(propsData.hasOnClear).toBe(true)
+        })
+
+        it('calls onSubmit and onCancel when onHide is triggered', () => {
+            render(<TimeFrameSelector {...defaultProps} />)
+
+            const hideButton = screen.getByTestId('trigger-onHide')
+            hideButton.click()
+
+            expect(mockOnSubmit).toHaveBeenCalledTimes(1)
+            expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onSubmit and onCancel when onCancel handler is triggered', () => {
+            mockOnSubmit.mockClear()
+            mockOnCancel.mockClear()
+
+            render(<TimeFrameSelector {...defaultProps} />)
+
+            const cancelButton = screen.getByTestId('trigger-onCancel')
+            cancelButton.click()
+
+            expect(mockOnSubmit).toHaveBeenCalledTimes(1)
+            expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onSubmit and onCancel when onClear is triggered', () => {
+            mockOnSubmit.mockClear()
+            mockOnCancel.mockClear()
+
+            render(<TimeFrameSelector {...defaultProps} />)
+
+            const clearButton = screen.getByTestId('trigger-onClear')
+            clearButton.click()
+
+            expect(mockOnSubmit).toHaveBeenCalledTimes(1)
+            expect(mockOnCancel).toHaveBeenCalledTimes(1)
+        })
+
+        it('all close handlers use the same handleClear function', () => {
+            mockOnSubmit.mockClear()
+            mockOnCancel.mockClear()
+
+            render(<TimeFrameSelector {...defaultProps} />)
+
+            const hideButton = screen.getByTestId('trigger-onHide')
+            const cancelButton = screen.getByTestId('trigger-onCancel')
+            const clearButton = screen.getByTestId('trigger-onClear')
+
+            hideButton.click()
+            const firstCallArgs = mockOnSubmit.mock.calls[0]
+
+            mockOnSubmit.mockClear()
+            cancelButton.click()
+            const secondCallArgs = mockOnSubmit.mock.calls[0]
+
+            mockOnSubmit.mockClear()
+            clearButton.click()
+            const thirdCallArgs = mockOnSubmit.mock.calls[0]
+
+            expect(firstCallArgs).toEqual(secondCallArgs)
+            expect(secondCallArgs).toEqual(thirdCallArgs)
         })
     })
 })

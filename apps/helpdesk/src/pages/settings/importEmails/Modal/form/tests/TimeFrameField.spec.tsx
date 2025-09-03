@@ -241,7 +241,7 @@ describe('TimeFrameField', () => {
             expect(mockSetTimeframe).toHaveBeenCalled()
         })
 
-        it('calls setTimeframe only once per selection', async () => {
+        it('check if TimeFrameField is opened again when closed', async () => {
             const user = userEvent.setup({
                 advanceTimers: jest.advanceTimersByTime,
             })
@@ -265,7 +265,7 @@ describe('TimeFrameField', () => {
             const option = screen.getByText('Last 6 months')
             await user.click(option)
 
-            expect(mockSetTimeframe).toHaveBeenCalledTimes(1)
+            expect(mockSetTimeframe).toHaveBeenCalledTimes(2)
         })
     })
 

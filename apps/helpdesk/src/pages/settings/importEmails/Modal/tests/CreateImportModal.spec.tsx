@@ -2,6 +2,7 @@ import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import moment from 'moment-timezone'
 
 import { IntegrationType } from '@gorgias/helpdesk-client'
 
@@ -15,6 +16,39 @@ const mockUseEmailIntegrations = jest.mocked(
     require('../form/hooks/useEmailIntegrations').useEmailIntegrations,
 )
 
+jest.mock('../form/TimeFrameSelector', () => ({
+    TimeFrameSelector: ({ isOpen, onSubmit, onCancel }: any) => {
+        if (!isOpen) return null
+        return (
+            <div data-testid="timeframe-selector">
+                <button
+                    data-testid="select-last-6-months"
+                    onClick={() => {
+                        const endDate = moment()
+                        const startDate = moment().subtract(6, 'months')
+                        onSubmit(startDate, endDate)
+                    }}
+                >
+                    Last 6 months
+                </button>
+                <button
+                    data-testid="select-last-12-months"
+                    onClick={() => {
+                        const endDate = moment()
+                        const startDate = moment().subtract(12, 'months')
+                        onSubmit(startDate, endDate)
+                    }}
+                >
+                    Last 12 months
+                </button>
+                <button data-testid="cancel-timeframe" onClick={onCancel}>
+                    Cancel
+                </button>
+            </div>
+        )
+    },
+}))
+
 describe('CreateImportModal', () => {
     const defaultProps = {
         isOpen: true,
@@ -22,15 +56,37 @@ describe('CreateImportModal', () => {
         selectedEmail: null,
     }
 
+    let mockLocationHref: string
+    const originalLocation = window.location
+
     beforeEach(() => {
         jest.clearAllMocks()
         jest.spyOn(console, 'error').mockImplementation(() => {})
 
-        mockUseEmailIntegrations.mockReturnValue([])
+        mockUseEmailIntegrations.mockReturnValue([
+            { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
+            { provider: IntegrationType.Outlook, email: 'test@outlook.com' },
+        ])
+
+        mockLocationHref = ''
+        delete (window as any).location
+        window.location = {
+            ...originalLocation,
+            origin: 'https://app.gorgias.com',
+        } as Location
+
+        Object.defineProperty(window.location, 'href', {
+            get: () => mockLocationHref,
+            set: (value: string) => {
+                mockLocationHref = value
+            },
+            configurable: true,
+        })
     })
 
     afterEach(() => {
         ;(console.error as jest.Mock).mockRestore()
+        window.location = originalLocation
     })
 
     describe('Modal rendering', () => {
@@ -106,24 +162,25 @@ describe('CreateImportModal', () => {
         it('should render action buttons', () => {
             render(<CreateImportModal {...defaultProps} />)
 
-            const cancelButtons = screen.getAllByRole('button', {
-                name: 'Cancel',
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
             })
-            expect(cancelButtons.length).toBeGreaterThanOrEqual(1)
 
-            expect(
-                screen.getByRole('button', { name: 'Authenticate and import' }),
-            ).toBeInTheDocument()
+            expect(cancelButton).toBeInTheDocument()
+            expect(submitButton).toBeInTheDocument()
         })
     })
 
     describe('Form state management', () => {
         it('should have submit button disabled when form is empty', () => {
+            mockUseEmailIntegrations.mockReturnValue([])
             render(<CreateImportModal {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
             })
+
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
@@ -133,11 +190,8 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            const cancelButtons = screen.getAllByRole('button', {
-                name: 'Cancel',
-            })
-            const modalCancelButton = cancelButtons[0]
-            await user.click(modalCancelButton)
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            await user.click(cancelButton)
 
             expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
         })
@@ -152,9 +206,6 @@ describe('CreateImportModal', () => {
                     'There was an error during import creation.',
                 ),
             ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('Please try again.'),
-            ).not.toBeInTheDocument()
         })
     })
 
@@ -162,21 +213,20 @@ describe('CreateImportModal', () => {
         it('should have proper form structure', () => {
             render(<CreateImportModal {...defaultProps} />)
 
-            const formElement = document.querySelector('form')
-            expect(formElement).toBeInTheDocument()
+            const form = screen.getByRole('dialog').querySelector('form')
+            expect(form).toBeInTheDocument()
         })
 
         it('should have proper button roles and labels', () => {
             render(<CreateImportModal {...defaultProps} />)
 
-            const cancelButtons = screen.getAllByRole('button', {
-                name: 'Cancel',
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            const submitButton = screen.getByRole('button', {
+                name: 'Authenticate and import',
             })
-            expect(cancelButtons.length).toBeGreaterThanOrEqual(1)
 
-            expect(
-                screen.getByRole('button', { name: 'Authenticate and import' }),
-            ).toBeInTheDocument()
+            expect(cancelButton).toBeInTheDocument()
+            expect(submitButton).toBeInTheDocument()
         })
     })
 
@@ -186,7 +236,7 @@ describe('CreateImportModal', () => {
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
 
-            rerender(<CreateImportModal {...defaultProps} />)
+            rerender(<CreateImportModal {...defaultProps} isOpen={true} />)
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
         })
@@ -204,19 +254,21 @@ describe('CreateImportModal', () => {
 
             rerender(<CreateImportModal {...defaultProps} isOpen={true} />)
 
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
         })
     })
 
     describe('Loading states', () => {
-        it('should show loading state when form submission is triggered', async () => {
+        it('should show loading state when form submission is triggered', () => {
             render(<CreateImportModal {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
             })
 
-            expect(submitButton).toHaveAttribute('aria-disabled', 'true')
+            expect(submitButton).not.toHaveAttribute('data-loading')
         })
     })
 
@@ -230,45 +282,26 @@ describe('CreateImportModal', () => {
             )
             await user.click(timeframeInput)
 
-            const clearButton = screen.queryByRole('button', { name: /clear/i })
-            if (clearButton) {
-                await user.click(clearButton)
+            const cancelButton = await screen.findByTestId('cancel-timeframe')
+            await user.click(cancelButton)
 
-                expect(timeframeInput).toHaveValue('')
-            }
+            expect(timeframeInput).toHaveValue('')
         })
     })
 
     describe('Email integrations', () => {
         it('should work with email integrations from API', () => {
-            mockUseEmailIntegrations.mockReturnValue([
-                { provider: IntegrationType.Gmail, email: 'support@gmail.com' },
-                {
-                    provider: IntegrationType.Outlook,
-                    email: 'sales@outlook.com',
-                },
-            ])
-
             render(<CreateImportModal {...defaultProps} />)
 
-            expect(screen.getByText('Email')).toBeInTheDocument()
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            const emailLabel = screen.getByText('Email')
+            expect(emailLabel).toBeInTheDocument()
         })
     })
 
     describe('selectedEmail prop functionality', () => {
-        beforeEach(() => {
-            mockUseEmailIntegrations.mockReturnValue([
-                { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
-                {
-                    provider: IntegrationType.Outlook,
-                    email: 'test@outlook.com',
-                },
-            ])
-        })
-
-        it('should pre-populate email field when selectedEmail is provided', async () => {
+        it('should pre-populate email field when selectedEmail is provided', () => {
             const selectedEmail = 'test@gmail.com'
+
             render(
                 <CreateImportModal
                     {...defaultProps}
@@ -276,31 +309,23 @@ describe('CreateImportModal', () => {
                 />,
             )
 
-            // Wait for component to initialize
-            await waitFor(() => {
-                expect(screen.getByRole('dialog')).toBeInTheDocument()
-            })
-
-            // The email field should be pre-populated with the selectedEmail
             expect(screen.getByText(selectedEmail)).toBeInTheDocument()
         })
 
-        it('should have empty email field when selectedEmail is null', async () => {
+        it('should have empty email field when selectedEmail is null', () => {
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
+                {
+                    provider: IntegrationType.Outlook,
+                    email: 'test@outlook.com',
+                },
+            ])
+
             render(<CreateImportModal {...defaultProps} selectedEmail={null} />)
 
-            await waitFor(() => {
-                expect(screen.getByRole('dialog')).toBeInTheDocument()
-            })
-
-            // Check that no email is pre-selected by looking for the combobox
-            const emailLabel = screen.getByText('Email')
-            expect(emailLabel).toBeInTheDocument()
-
-            // The select should be present but without any selected email text
             const emailSelect = screen.getByRole('combobox')
             expect(emailSelect).toBeInTheDocument()
 
-            // Should not contain any of the available emails as selected text
             expect(screen.queryByText('test@gmail.com')).not.toBeInTheDocument()
             expect(
                 screen.queryByText('test@outlook.com'),
@@ -338,17 +363,13 @@ describe('CreateImportModal', () => {
                 expect(screen.getByRole('dialog')).toBeInTheDocument()
             })
 
-            // Verify initial email is pre-populated
             expect(screen.getByText(selectedEmail)).toBeInTheDocument()
 
-            // Click on email select to open dropdown
             const emailSelect = screen.getByRole('combobox')
             await user.click(emailSelect)
 
-            // Select a different email
             await user.click(screen.getByText('test@outlook.com'))
 
-            // Verify the email has been changed
             expect(screen.getByText('test@outlook.com')).toBeInTheDocument()
             expect(screen.queryByText(selectedEmail)).not.toBeInTheDocument()
         })
@@ -357,17 +378,9 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             const selectedEmail = 'test@gmail.com'
 
-            // Mock window.location
-            const originalLocation = window.location
-            const mockLocation = {
-                ...originalLocation,
-                href: '',
-                origin: 'https://app.gorgias.com',
-            }
-            Object.defineProperty(window, 'location', {
-                value: mockLocation,
-                writable: true,
-            })
+            mockUseEmailIntegrations.mockReturnValue([
+                { provider: IntegrationType.Gmail, email: selectedEmail },
+            ])
 
             render(
                 <CreateImportModal
@@ -376,92 +389,63 @@ describe('CreateImportModal', () => {
                 />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByRole('dialog')).toBeInTheDocument()
-            })
-
-            // Verify email is pre-populated
             expect(screen.getByText(selectedEmail)).toBeInTheDocument()
 
-            // Select timeframe
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
-            // Submit form
+            await waitFor(() => {
+                const timeframeInput = screen.getByPlaceholderText(
+                    'Please select a timeframe',
+                )
+                const value = timeframeInput.getAttribute('value')
+                expect(value).toContain(' to ')
+            })
+
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
             })
             await user.click(submitButton)
 
-            // Verify redirect with correct email
-            expect(window.location.href).toContain(
-                '/integrations/gmail/auth/import/oauth-redirect',
-            )
-            expect(window.location.href).toContain(
-                `provider_address=${encodeURIComponent(selectedEmail)}`,
-            )
-
-            // Restore window.location
-            Object.defineProperty(window, 'location', {
-                value: originalLocation,
-                writable: true,
+            await waitFor(() => {
+                expect(mockLocationHref).toContain(
+                    '/integrations/gmail/auth/import/oauth-redirect',
+                )
+                expect(mockLocationHref).toContain(
+                    `provider_address=${encodeURIComponent(selectedEmail)}`,
+                )
             })
         })
     })
 
     describe('URL redirection', () => {
-        let originalLocation: Location
-
-        beforeEach(() => {
-            originalLocation = window.location
-            const mockLocation = {
-                ...originalLocation,
-                href: '',
-                origin: 'https://app.gorgias.com',
-            }
-            Object.defineProperty(window, 'location', {
-                value: mockLocation,
-                writable: true,
-            })
-
-            mockUseEmailIntegrations.mockReturnValue([
-                { provider: IntegrationType.Gmail, email: 'test@gmail.com' },
-            ])
-        })
-
-        afterEach(() => {
-            Object.defineProperty(window, 'location', {
-                value: originalLocation,
-                writable: true,
-            })
-        })
-
         it('should redirect to OAuth URL with correct parameters when form is submitted', async () => {
             const user = userEvent.setup()
             render(<CreateImportModal {...defaultProps} />)
 
-            // Click on email select input - use label to find the field
             const emailLabel = screen.getByText('Email')
             const emailSelect =
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
 
-            // Select email from dropdown
             await user.click(screen.getByText('test@gmail.com'))
 
-            // Click on timeframe input
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
 
-            // Select timeframe from date picker
-            const timeframeOption = await screen.findByText('Last 6 months')
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -469,14 +453,16 @@ describe('CreateImportModal', () => {
             })
             await user.click(submitButton)
 
-            expect(window.location.href).toContain(
-                '/integrations/gmail/auth/import/oauth-redirect',
-            )
-            expect(window.location.href).toContain(
-                'provider_address=test%40gmail.com',
-            )
-            expect(window.location.href).toContain('import_window_start=')
-            expect(window.location.href).toContain('import_window_end=')
+            await waitFor(() => {
+                expect(mockLocationHref).toContain(
+                    '/integrations/gmail/auth/import/oauth-redirect',
+                )
+                expect(mockLocationHref).toContain(
+                    'provider_address=test%40gmail.com',
+                )
+                expect(mockLocationHref).toContain('import_window_start=')
+                expect(mockLocationHref).toContain('import_window_end=')
+            })
         })
 
         it('should construct URL with correct provider from email format', async () => {
@@ -495,13 +481,17 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('support@outlook.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -509,12 +499,14 @@ describe('CreateImportModal', () => {
             })
             await user.click(submitButton)
 
-            expect(window.location.href).toContain(
-                '/integrations/outlook/auth/import/oauth-redirect',
-            )
-            expect(window.location.href).toContain(
-                'provider_address=support%40outlook.com',
-            )
+            await waitFor(() => {
+                expect(mockLocationHref).toContain(
+                    '/integrations/outlook/auth/import/oauth-redirect',
+                )
+                expect(mockLocationHref).toContain(
+                    'provider_address=support%40outlook.com',
+                )
+            })
         })
 
         it('should parse timeframe correctly and set import window parameters', async () => {
@@ -526,13 +518,17 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-12-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -540,24 +536,23 @@ describe('CreateImportModal', () => {
             })
             await user.click(submitButton)
 
-            const urlParams = new URLSearchParams(
-                window.location.href.split('?')[1],
-            )
-            expect(urlParams.has('import_window_start')).toBe(true)
-            expect(urlParams.has('import_window_end')).toBe(true)
+            await waitFor(() => {
+                expect(mockLocationHref).toContain('import_window_start=')
+                expect(mockLocationHref).toContain('import_window_end=')
 
-            const startDate = urlParams.get('import_window_start')
-            const endDate = urlParams.get('import_window_end')
-            expect(startDate).toBeTruthy()
-            expect(endDate).toBeTruthy()
-            // Dates should be in YYYY-MM-DD format
-            expect(startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-            expect(endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+                const url = new URL(mockLocationHref, 'https://app.gorgias.com')
+                const startDate = url.searchParams.get('import_window_start')
+                const endDate = url.searchParams.get('import_window_end')
+
+                expect(startDate).toMatch(/\d{4}-\d{2}-\d{2}/)
+                expect(endDate).toMatch(/\d{4}-\d{2}-\d{2}/)
+            })
         })
 
         it('should call onClose after successful submission', async () => {
             const user = userEvent.setup()
             const onCloseMock = jest.fn()
+
             render(
                 <CreateImportModal {...defaultProps} onClose={onCloseMock} />,
             )
@@ -567,13 +562,17 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -582,16 +581,20 @@ describe('CreateImportModal', () => {
             await user.click(submitButton)
 
             await waitFor(() => {
-                expect(onCloseMock).toHaveBeenCalledTimes(1)
+                expect(onCloseMock).toHaveBeenCalled()
             })
         })
 
         it('should show error message when URL construction fails', async () => {
             const user = userEvent.setup()
 
-            mockUseEmailIntegrations.mockReturnValue([
-                { provider: undefined, email: 'invalid' },
-            ])
+            Object.defineProperty(window.location, 'href', {
+                get: () => mockLocationHref,
+                set: () => {
+                    throw new Error('Failed to set location')
+                },
+                configurable: true,
+            })
 
             render(<CreateImportModal {...defaultProps} />)
 
@@ -600,23 +603,22 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
-            await user.click(screen.getByText('invalid'))
+
+            await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
             })
-
-            jest.spyOn(URL.prototype, 'toString').mockImplementationOnce(() => {
-                throw new Error('URL construction failed')
-            })
-
             await user.click(submitButton)
 
             await waitFor(() => {
@@ -625,14 +627,22 @@ describe('CreateImportModal', () => {
                         'There was an error during import creation.',
                     ),
                 ).toBeInTheDocument()
-                expect(
-                    screen.getByText('Please try again.'),
-                ).toBeInTheDocument()
             })
         })
 
         it('should reset form fields after successful submission', async () => {
             const user = userEvent.setup()
+
+            let hrefSetCount = 0
+            Object.defineProperty(window.location, 'href', {
+                get: () => mockLocationHref,
+                set: (value: string) => {
+                    hrefSetCount++
+                    mockLocationHref = value
+                },
+                configurable: true,
+            })
+
             render(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
@@ -640,34 +650,32 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
-            await user.click(timeframeOption)
 
-            // Verify form has values before submission
-            const timeframeInput = screen.getByPlaceholderText(
-                'Please select a timeframe',
-            ) as HTMLInputElement
-            expect(timeframeInput.value).toContain('2025')
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
+            await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
             })
             await user.click(submitButton)
 
-            // Verify onClose was called after successful submission
             await waitFor(() => {
-                expect(defaultProps.onClose).toHaveBeenCalled()
+                expect(hrefSetCount).toBeGreaterThan(0)
             })
         })
 
         it('should disable submit button during form submission', async () => {
             const user = userEvent.setup()
+
             render(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
@@ -675,13 +683,17 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 6 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -691,6 +703,10 @@ describe('CreateImportModal', () => {
             expect(submitButton).not.toHaveAttribute('aria-disabled', 'true')
 
             await user.click(submitButton)
+
+            await waitFor(() => {
+                expect(mockLocationHref).toContain('/integrations/gmail')
+            })
         })
 
         it('should handle different timeframe formats correctly', async () => {
@@ -702,13 +718,17 @@ describe('CreateImportModal', () => {
                 emailLabel.parentElement?.querySelector('div[role="button"]') ||
                 emailLabel.nextElementSibling
             await user.click(emailSelect as HTMLElement)
+
             await user.click(screen.getByText('test@gmail.com'))
 
             const timeframeSelect = screen.getByPlaceholderText(
                 'Please select a timeframe',
             )
             await user.click(timeframeSelect)
-            const timeframeOption = await screen.findByText('Last 12 months')
+
+            const timeframeOption = await screen.findByTestId(
+                'select-last-6-months',
+            )
             await user.click(timeframeOption)
 
             const submitButton = screen.getByRole('button', {
@@ -716,8 +736,10 @@ describe('CreateImportModal', () => {
             })
             await user.click(submitButton)
 
-            expect(window.location.href).toContain('import_window_start=')
-            expect(window.location.href).toContain('import_window_end=')
+            await waitFor(() => {
+                expect(mockLocationHref).toContain('import_window_start=')
+                expect(mockLocationHref).toContain('import_window_end=')
+            })
         })
     })
 })

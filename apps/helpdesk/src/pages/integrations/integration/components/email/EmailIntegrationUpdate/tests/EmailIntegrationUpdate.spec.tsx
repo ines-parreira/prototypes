@@ -1237,6 +1237,54 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             ).toBeInTheDocument()
         })
 
+        it('should not show banner for base email integrations even when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            isBaseEmailAddressMock.mockReturnValue(true)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Email,
+                    meta: {
+                        address: 'support@company.com',
+                    },
+                }),
+            }
+
+            const { queryByText } = renderWithStore(props)
+
+            expect(
+                queryByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show banner for non-base email integrations when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            isBaseEmailAddressMock.mockReturnValue(false)
+
+            const props = {
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        address: 'test@gmail.com',
+                    },
+                }),
+            }
+
+            const { getByText } = renderWithStore(props)
+
+            expect(
+                getByText(
+                    'You can import up to 2 years of email history to Gorgias. This helps you keep your past email content and metadata in one place.',
+                ),
+            ).toBeInTheDocument()
+        })
+
         it('should work with Gmail integration type', () => {
             mockUseFlag.mockReturnValue(true)
 

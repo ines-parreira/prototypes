@@ -32,6 +32,8 @@ import {
 import { getRedirectUri } from 'state/integrations/selectors'
 import { RootState } from 'state/types'
 
+import { isBaseEmailAddress } from '../helpers'
+
 type EmailIntegrationMap = Map<string, any> & {
     get(
         key: 'type',
@@ -140,6 +142,10 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
 
     const integrationJSObj = integration.toJS()
 
+    const isBaseIntegration = isBaseEmailAddress(
+        integrationJSObj?.meta?.address,
+    )
+
     return (
         <>
             <Container fluid className={settingsCss.pageContainer}>
@@ -148,7 +154,7 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
                     xl={7}
                     className={classnames('pl-0', settingsCss.mb24)}
                 >
-                    {showImportMigrationBanner && (
+                    {showImportMigrationBanner && !isBaseIntegration && (
                         <Banner
                             type="info"
                             fillStyle="fill"
