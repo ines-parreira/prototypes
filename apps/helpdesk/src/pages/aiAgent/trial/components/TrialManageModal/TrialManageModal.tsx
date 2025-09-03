@@ -25,6 +25,7 @@ export type TrialManageModalProps = {
     secondaryDescription?: ReactNode | string
     advantages: string[]
     onClose: () => void
+    isOpen?: boolean
     primaryAction?: Action
     secondaryAction?: Action
 }
@@ -37,10 +38,11 @@ export const TrialManageModal = ({
     primaryAction,
     secondaryAction,
     onClose,
+    isOpen = true,
 }: TrialManageModalProps) => {
     return (
         <Modal
-            isOpen
+            isOpen={isOpen}
             size="large"
             onClose={onClose}
             classNameContent={css.modal}

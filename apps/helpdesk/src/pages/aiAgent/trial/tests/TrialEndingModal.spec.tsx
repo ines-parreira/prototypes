@@ -12,7 +12,11 @@ import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
-import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import {
+    SHOPPING_ASSISTANT_ADVANTAGES,
+    TrialModalProps,
+    useTrialModalProps,
+} from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
@@ -134,7 +138,7 @@ const mockStoreConfiguration = getStoreConfigurationFixture({
     },
 })
 
-const mockTrialModalProps = {
+const createMockTrialModalProps = (): TrialModalProps => ({
     trialUpgradePlanModal: {
         title: 'Test Trial Upgrade Title',
         currentPlan: {
@@ -182,6 +186,11 @@ const mockTrialModalProps = {
             ],
             buttonText: 'Upgrade plan',
         },
+        isOpen: false,
+        onClose: jest.fn(),
+        onConfirm: jest.fn(),
+        onDismiss: jest.fn(),
+        isLoading: false,
     },
     trialActivatedModal: {
         title: 'Trial Activated',
@@ -218,6 +227,8 @@ const mockTrialModalProps = {
             label: 'Primary Action',
             onClick: jest.fn(),
         },
+        isOpen: false,
+        onClose: jest.fn(),
     },
     newTrialUpgradePlanModal: {
         title: 'New Trial Upgrade Plan',
@@ -263,22 +274,37 @@ const mockTrialModalProps = {
     trialEndingModal: {
         title: 'Shopping Assistant trial ends tomorrow',
         description: 'Trial ending description',
-        advantages: [
-            '10% average order value',
-            '62% conversion rate',
-            '1.5% revenue',
-        ],
+        advantages: SHOPPING_ASSISTANT_ADVANTAGES,
         secondaryDescription: 'Typical results achieved by merchants.',
     },
     trialEndedModal: {
         title: 'Your trial has ended — and it made an impact.',
         description: 'Trial ended description',
-        advantages: [
-            '10% average order value',
-            '62% conversion rate',
-            '1.5% revenue',
-        ],
+        advantages: SHOPPING_ASSISTANT_ADVANTAGES,
         secondaryDescription: 'Typical results achieved by merchants.',
+    },
+    trialManageModal: {
+        title: 'Manage trial',
+        description: 'Manage description',
+        advantages: SHOPPING_ASSISTANT_ADVANTAGES,
+        secondaryDescription: 'Secondary description',
+        onClose: jest.fn(),
+        primaryAction: {
+            label: 'Upgrade Now',
+            onClick: jest.fn(),
+        },
+        secondaryAction: {
+            label: 'Opt Out',
+            onClick: jest.fn(),
+        },
+        isOpen: false,
+    } as any,
+    trialOptOutModal: {
+        isOpen: false,
+        isTrialExtended: false,
+        trialType: TrialType.ShoppingAssistant,
+        onClose: jest.fn(),
+        onRequestTrialExtension: jest.fn(),
     },
     trialRequestModal: {
         title: 'Request your admin to start trial',
@@ -288,14 +314,14 @@ const mockTrialModalProps = {
         accountAdmins: [],
         onPrimaryAction: jest.fn(),
     },
-}
+})
 describe('TrialEndedModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         localStorageMock.getItem.mockReturnValue(null)
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
-        mockUseTrialModalProps.mockReturnValue(mockTrialModalProps)
+        mockUseTrialModalProps.mockReturnValue(createMockTrialModalProps())
         mockUseFlag.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue(createMockStoreActivations())
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -518,7 +544,7 @@ describe('TrialEndingModal', () => {
         localStorageMock.getItem.mockReturnValue(null)
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
-        mockUseTrialModalProps.mockReturnValue(mockTrialModalProps)
+        mockUseTrialModalProps.mockReturnValue(createMockTrialModalProps())
         mockUseFlag.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue(createMockStoreActivations())
         mockUseShoppingAssistantTrialFlow.mockReturnValue(

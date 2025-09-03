@@ -22,15 +22,12 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
-jest.mock('../components/TrialProgressModals', () => ({
-    TrialProgressModals: jest.fn(() => (
-        <div data-testid="trial-progress-modals" />
-    )),
-}))
 jest.mock(
-    'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal',
+    'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals',
     () => ({
-        TrialEndedModal: () => <div data-testid="trial-ended-modal" />,
+        TrialSharedModals: jest.fn(() => (
+            <div data-testid="trial-shared-modals" />
+        )),
     }),
 )
 
@@ -516,34 +513,6 @@ describe('ShoppingAssistantPromoCard', () => {
             expect(
                 screen.getByRole('button', { name: /notify admin/i }),
             ).toBeInTheDocument()
-        })
-
-        it('should return shared content for Hidden variant', () => {
-            const hiddenContent: PromoCardContent = {
-                ...basePromoContent,
-                variant: PromoCardVariant.Hidden,
-            }
-
-            mockTrialPromoCard({
-                promoCardContent: hiddenContent,
-            })
-            renderComponent()
-
-            expect(screen.getByTestId('trial-ended-modal')).toBeInTheDocument()
-        })
-
-        it('should return shared content for unknown variant', () => {
-            const unknownContent: PromoCardContent = {
-                ...basePromoContent,
-                variant: 'unknown-variant' as PromoCardVariant,
-            }
-
-            mockTrialPromoCard({
-                promoCardContent: unknownContent,
-            })
-            renderComponent()
-
-            expect(screen.getByTestId('trial-ended-modal')).toBeInTheDocument()
         })
     })
 

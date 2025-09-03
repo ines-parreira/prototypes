@@ -31,12 +31,15 @@ const SUCCESS_MODAL_NAME = 'ShoppingAssistantSuccessModal'
 const MANAGE_TRIAL_MODAL_NAME = 'ShoppingAssistantManageTrialModal'
 const TRIAL_FINISH_SETUP_MODAL_NAME = 'ShoppingAssistantTrialFinishSetupModal'
 const TRIAL_REQUEST_MODAL_NAME = 'ShoppingAssistantTrialRequestModal'
+const TRIAL_OPT_OUT_MODAL_NAME = 'ShoppingAssistantTrialOptOutModal'
+
 const AI_AGENT_TRIAL_UPGRADE_MODAL_NAME = 'AiAgentTrialUpgradeModal'
 const AI_AGENT_UPGRADE_MODAL_NAME = 'AiAgentUpgradeModal'
 const AI_AGENT_SUCCESS_MODAL_NAME = 'AiAgentSuccessModal'
 const AI_AGENT_MANAGE_TRIAL_MODAL_NAME = 'AiAgentManageTrialModal'
 const AI_AGENT_TRIAL_FINISH_SETUP_MODAL_NAME = 'AiAgentTrialFinishSetupModal'
 const AI_AGENT_TRIAL_REQUEST_MODAL_NAME = 'AiAgentTrialRequestModal'
+const AI_AGENT_OPT_OUT_MODAL_NAME = 'AiAgentTrialOptOutModal'
 
 const NOTIFY_SUCCESS_MESSAGE =
     "We've received your trial extension request! Our team will review it and get back to you within 2 days via email."
@@ -54,6 +57,8 @@ export type UseShoppingAssistantTrialFlowReturn = {
     isManageTrialModalOpen: boolean
     isUpgradePlanModalOpen: boolean
     isTrialRequestModalOpen: boolean
+    isTrialOptOutModalOpen: boolean
+    openTrialOptOutModal: () => void
     closeTrialUpgradeModal: () => void
     onDismissTrialUpgradeModal: () => void
     onDismissUpgradePlanModal: () => void
@@ -68,6 +73,7 @@ export type UseShoppingAssistantTrialFlowReturn = {
     openTrialFinishSetupModal: () => void
     openTrialRequestModal: () => void
     closeTrialRequestModal: () => void
+    closeTrialOptOutModal: () => void
     onRequestTrialExtension: (trialEndDate: string | null) => Promise<boolean>
     closeAllTrialModals: () => void
 }
@@ -81,6 +87,7 @@ const MODAL_NAMES: Record<
         manageTrialModalName: string
         trialFinishSetupModalName: string
         trialRequestModalName: string
+        trialOptOutModalName: string
     }
 > = {
     [TrialType.AiAgent]: {
@@ -90,6 +97,7 @@ const MODAL_NAMES: Record<
         manageTrialModalName: AI_AGENT_MANAGE_TRIAL_MODAL_NAME,
         trialFinishSetupModalName: AI_AGENT_TRIAL_FINISH_SETUP_MODAL_NAME,
         trialRequestModalName: AI_AGENT_TRIAL_REQUEST_MODAL_NAME,
+        trialOptOutModalName: AI_AGENT_OPT_OUT_MODAL_NAME,
     },
     [TrialType.ShoppingAssistant]: {
         trialUpgradeModalName: TRIAL_UPGRADE_MODAL_NAME,
@@ -98,6 +106,7 @@ const MODAL_NAMES: Record<
         manageTrialModalName: MANAGE_TRIAL_MODAL_NAME,
         trialFinishSetupModalName: TRIAL_FINISH_SETUP_MODAL_NAME,
         trialRequestModalName: TRIAL_REQUEST_MODAL_NAME,
+        trialOptOutModalName: TRIAL_OPT_OUT_MODAL_NAME,
     },
 }
 
@@ -116,6 +125,7 @@ export const useShoppingAssistantTrialFlow = ({
         manageTrialModalName,
         trialFinishSetupModalName,
         trialRequestModalName,
+        trialOptOutModalName,
     } = MODAL_NAMES[trialType]
 
     const trialModal = useModalManager(trialUpgradeModalName, {
@@ -134,6 +144,9 @@ export const useShoppingAssistantTrialFlow = ({
         autoDestroy: false,
     })
     const trialRequestModal = useModalManager(trialRequestModalName, {
+        autoDestroy: false,
+    })
+    const trialOptOutModal = useModalManager(trialOptOutModalName, {
         autoDestroy: false,
     })
 
@@ -324,6 +337,14 @@ export const useShoppingAssistantTrialFlow = ({
         trialRequestModal.closeModal(trialRequestModalName)
     }
 
+    const openTrialOptOutModal = () => {
+        trialOptOutModal.openModal(trialOptOutModalName)
+    }
+
+    const closeTrialOptOutModal = () => {
+        trialOptOutModal.closeModal(trialOptOutModalName)
+    }
+
     const onRequestTrialExtension = (
         trialEndDate: string | null,
     ): Promise<boolean> => {
@@ -359,6 +380,7 @@ export const useShoppingAssistantTrialFlow = ({
         manageTrialModal.closeModal(manageTrialModalName)
         trialFinishSetupModal.closeModal(trialFinishSetupModalName)
         trialRequestModal.closeModal(trialRequestModalName)
+        trialOptOutModal.closeModal(trialOptOutModalName)
     }
 
     const startTrial = isAiAgentTrial
@@ -391,8 +413,11 @@ export const useShoppingAssistantTrialFlow = ({
         isTrialRequestModalOpen: trialRequestModal.isOpen(
             trialRequestModalName,
         ),
+        openTrialOptOutModal,
+        isTrialOptOutModalOpen: trialOptOutModal.isOpen(trialOptOutModalName),
         openTrialRequestModal,
         closeTrialRequestModal,
+        closeTrialOptOutModal,
         onRequestTrialExtension,
         closeAllTrialModals,
     }

@@ -4,10 +4,9 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { TrialEndedModal } from 'pages/aiAgent/trial/components/TrialEndedModal/TrialEndedModal'
+import { TrialSharedModals } from 'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
-import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
@@ -18,7 +17,6 @@ import {
     LeadNotify,
     LeadTrialProgress,
 } from './components'
-import { TrialProgressModals } from './components/TrialProgressModals'
 import { useTrialPromoCard } from './hooks/useTrialPromoCard'
 import { PromoCardVariant } from './types/ShoppingAssistant'
 import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
@@ -62,21 +60,11 @@ export const ShoppingAssistantPromoCard: React.FC<
     }
 
     const sharedContent = (
-        <>
-            <TrialEndedModal
-                storeName={shopName}
-                trialType={trialAccess.trialType}
-            />
-            <TrialProgressModals
-                storeName={shopName}
-                trialType={trialAccess.trialType}
-            />
-            <TrialFinishSetupModal
-                {...trialModalProps.trialFinishSetupModal}
-                isOpen={trialFlow.isTrialFinishSetupModalOpen}
-                onClose={trialFlow.closeTrialFinishSetupModal}
-            />
-        </>
+        <TrialSharedModals
+            shopName={shopName}
+            trialType={trialAccess.trialType}
+            trialModalProps={trialModalProps}
+        />
     )
     const { variant } = promoContent
     let variantComponent: React.ReactNode = null

@@ -347,7 +347,10 @@ describe('useShoppingAssistantTrialFlow', () => {
             expect(mockModalManager.closeModal).toHaveBeenCalledWith(
                 'ShoppingAssistantTrialRequestModal',
             )
-            expect(mockModalManager.closeModal).toHaveBeenCalledTimes(6)
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialOptOutModal',
+            )
+            expect(mockModalManager.closeModal).toHaveBeenCalledTimes(7)
         })
 
         it('should navigate to customer engagement when closeTrialFinishSetupModal is called with ShoppingAssistant trial type', () => {
@@ -416,6 +419,85 @@ describe('useShoppingAssistantTrialFlow', () => {
                     trialType: TrialType.ShoppingAssistant,
                 },
             )
+        })
+
+        it('should open trial opt out modal when openTrialOptOutModal is called', () => {
+            const { result } = renderHookWithDefaults()
+
+            act(() => {
+                result.current.openTrialOptOutModal()
+            })
+
+            expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialOptOutModal',
+            )
+        })
+
+        it('should open trial opt out modal with AiAgent trial type when openTrialOptOutModal is called', () => {
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+            })
+
+            act(() => {
+                result.current.openTrialOptOutModal()
+            })
+
+            expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                'AiAgentTrialOptOutModal',
+            )
+        })
+
+        it('should close trial opt out modal when closeTrialOptOutModal is called', () => {
+            const { result } = renderHookWithDefaults()
+
+            act(() => {
+                result.current.closeTrialOptOutModal()
+            })
+
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialOptOutModal',
+            )
+        })
+
+        it('should close trial opt out modal with AiAgent trial type when closeTrialOptOutModal is called', () => {
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+            })
+
+            act(() => {
+                result.current.closeTrialOptOutModal()
+            })
+
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'AiAgentTrialOptOutModal',
+            )
+        })
+
+        it('should check if trial opt out modal is open', () => {
+            mockModalManager.isOpen = jest
+                .fn()
+                .mockImplementation(
+                    (modalId) =>
+                        modalId === 'ShoppingAssistantTrialOptOutModal',
+                )
+
+            const { result } = renderHookWithDefaults()
+
+            expect(result.current.isTrialOptOutModalOpen).toBe(true)
+        })
+
+        it('should check if trial opt out modal is open with AiAgent trial type', () => {
+            mockModalManager.isOpen = jest
+                .fn()
+                .mockImplementation(
+                    (modalId) => modalId === 'AiAgentTrialOptOutModal',
+                )
+
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+            })
+
+            expect(result.current.isTrialOptOutModalOpen).toBe(true)
         })
     })
 
@@ -844,7 +926,10 @@ describe('useShoppingAssistantTrialFlow', () => {
                 expect(mockModalManager.closeModal).toHaveBeenCalledWith(
                     'AiAgentTrialRequestModal',
                 )
-                expect(mockModalManager.closeModal).toHaveBeenCalledTimes(6)
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialOptOutModal',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledTimes(7)
             })
         })
 

@@ -28,5 +28,8 @@ export const getUseShoppingAssistantTrialFlowFixture = (
     closeTrialRequestModal: jest.fn(),
     onRequestTrialExtension: jest.fn().mockResolvedValue(false),
     closeAllTrialModals: jest.fn(),
+    closeTrialOptOutModal: jest.fn(),
+    isTrialOptOutModalOpen: false,
+    openTrialOptOutModal: jest.fn(),
     ...props,
 })
