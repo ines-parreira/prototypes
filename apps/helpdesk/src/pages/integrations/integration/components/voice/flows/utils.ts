@@ -9,8 +9,10 @@ import {
     IvrMenuStep,
     PlayMessageStep,
     SendToSMSStep,
+    SendToVoicemailStep,
     TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
+    VoiceCallbackRequests,
 } from '@gorgias/helpdesk-types'
 
 import { ConvergencePoint } from 'core/ui/flows/types'
@@ -347,26 +349,50 @@ export const generateNodeData = (
 ): VoiceFlowNodeData | null => {
     switch (type) {
         case VoiceFlowNodeType.TimeSplitConditional:
-            return {
+            const timeSplitConditional: TimeSplitConditionalStep = {
                 id: uuidv4(),
                 name: 'Time rule',
                 step_type: VoiceFlowNodeType.TimeSplitConditional,
-                on_true_step_id: next_step_id,
-                on_false_step_id: next_step_id,
+                on_true_step_id: next_step_id!,
+                on_false_step_id: next_step_id!,
                 rule_type: TimeSplitConditionalRuleType.BusinessHours,
-            } as TimeSplitConditionalStep
+            }
+            return timeSplitConditional
+        case VoiceFlowNodeType.IvrMenu:
+            const ivrMenu: IvrMenuStep = {
+                id: uuidv4(),
+                name: 'IVR Menu',
+                step_type: VoiceFlowNodeType.IvrMenu,
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: next_step_id!,
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: next_step_id!,
+                    },
+                ],
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: '',
+                },
+            }
+            return ivrMenu
         case VoiceFlowNodeType.PlayMessage:
-            return {
+            const playMessage: PlayMessageStep = {
                 id: uuidv4(),
                 name: 'Play message',
                 step_type: VoiceFlowNodeType.PlayMessage,
                 message: {
                     voice_message_type: 'text_to_speech',
+                    text_to_speech_content: '',
                 },
-                next_step_id,
-            } as PlayMessageStep
+                next_step_id: next_step_id!,
+            }
+            return playMessage
         case VoiceFlowNodeType.SendToVoicemail:
-            return {
+            const sendToVoicemail: SendToVoicemailStep = {
                 id: uuidv4(),
                 name: 'Send to voicemail',
                 step_type: VoiceFlowNodeType.SendToVoicemail,
@@ -378,28 +404,35 @@ export const generateNodeData = (
                 allow_to_leave_voicemail: true,
                 next_step_id: null,
             }
+            return sendToVoicemail
         case VoiceFlowNodeType.SendToSMS:
-            return {
+            const sendToSms: SendToSMSStep = {
                 id: uuidv4(),
                 name: 'Send to SMS',
                 step_type: VoiceFlowNodeType.SendToSMS,
                 confirmation_message: {
                     voice_message_type: 'text_to_speech',
+                    text_to_speech_content: '',
                 },
+                sms_content: '',
+                sms_integration_id: null!,
                 next_step_id: null,
-            } as SendToSMSStep
+            }
+            return sendToSms
         case VoiceFlowNodeType.Enqueue:
-            return {
+            const enqueue: EnqueueStep = {
                 id: uuidv4(),
                 name: 'Route to',
                 step_type: VoiceFlowNodeType.Enqueue,
                 callback_requests: {
                     ...cloneDeep(DEFAULT_CALLBACK_REQUESTS),
                     enabled: true,
-                },
+                } as VoiceCallbackRequests,
                 conditional_routing: false,
-                next_step_id,
-            } as EnqueueStep
+                queue_id: null!,
+                next_step_id: next_step_id!,
+            }
+            return enqueue
 
         default:
             return null

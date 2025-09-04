@@ -31,6 +31,11 @@ function AddStepMenuContent({
                 onClick={() => addNode(VoiceFlowNodeType.PlayMessage)}
             />
             <AddStepMenuItem
+                icon={<StepCardIcon backgroundColor="teal" name="comm-ivr" />}
+                label={'IVR Menu'}
+                onClick={() => addNode(VoiceFlowNodeType.IvrMenu)}
+            />
+            <AddStepMenuItem
                 icon={
                     <StepCardIcon
                         backgroundColor="orange"

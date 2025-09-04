@@ -763,6 +763,32 @@ describe('utils', () => {
             expect(nodeData?.id).toBeDefined()
         })
 
+        it('should generate IvrMenu node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.IvrMenu,
+                'next-step-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'IVR Menu',
+                step_type: VoiceFlowNodeType.IvrMenu,
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'next-step-id',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'next-step-id',
+                    },
+                ],
+                message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: '',
+                },
+            })
+        })
+
         it('should generate PlayMessage node data', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.PlayMessage,
