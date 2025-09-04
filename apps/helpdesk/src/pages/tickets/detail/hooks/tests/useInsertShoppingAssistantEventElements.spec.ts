@@ -22,7 +22,9 @@ describe('useInsertShoppingAssistantEventElements', () => {
         accountId: 123,
         customers: [{ id: 456, created_at: '2021-01-01T00:00:00.000Z' }],
         ticketId: 999,
-        shopifyIntegrations: [{ name: 'Test Shop' }] as ShopifyIntegration[],
+        shopifyIntegrations: [
+            { name: 'Test Shop', id: 1 },
+        ] as ShopifyIntegration[],
         orders: [
             { id: 789, order_number: 1001 },
             { id: 790, order_number: 1002 },
@@ -101,6 +103,8 @@ describe('useInsertShoppingAssistantEventElements', () => {
                 id: 789,
                 ticketId: 999,
                 createdDatetime: '2024-01-01T11:00:00Z',
+                integrationId: 1,
+                source: 'shopping-assistant',
             },
         ]
 
@@ -114,10 +118,17 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         expect(result.current).toHaveLength(3)
         expect(result.current[0]).toEqual(bodyElements[0])
-        expect(result.current[1]).toMatchObject({
+        expect(result.current[1]).toEqual({
             isShoppingAssistantEvent: true,
             type: 'influenced-order',
             created_datetime: '2024-01-01T11:00:00Z',
+            data: {
+                createdDatetime: '2024-01-01T11:00:00Z',
+                influencedBy: 'shopping-assistant',
+                orderId: 789,
+                orderNumber: 1001,
+                shopName: 'Test Shop',
+            },
         })
         expect(result.current[2]).toEqual(bodyElements[1])
     })
@@ -133,11 +144,15 @@ describe('useInsertShoppingAssistantEventElements', () => {
                 id: 789,
                 ticketId: 999,
                 createdDatetime: '2024-01-01T11:00:00Z',
+                integrationId: 1,
+                source: 'shopping-assistant',
             },
             {
                 id: 145,
                 ticketId: 111,
                 createdDatetime: '2024-01-01T11:30:00Z',
+                integrationId: 1,
+                source: 'shopping-assistant',
             },
         ]
 
@@ -151,10 +166,17 @@ describe('useInsertShoppingAssistantEventElements', () => {
 
         expect(result.current).toHaveLength(3)
         expect(result.current[0]).toEqual(bodyElements[0])
-        expect(result.current[1]).toMatchObject({
+        expect(result.current[1]).toEqual({
             isShoppingAssistantEvent: true,
             type: 'influenced-order',
             created_datetime: '2024-01-01T11:00:00Z',
+            data: {
+                createdDatetime: '2024-01-01T11:00:00Z',
+                influencedBy: 'shopping-assistant',
+                orderId: 789,
+                orderNumber: 1001,
+                shopName: 'Test Shop',
+            },
         })
         expect(result.current[2]).toEqual(bodyElements[1])
     })
@@ -178,5 +200,53 @@ describe('useInsertShoppingAssistantEventElements', () => {
         )
 
         expect(result.current).toEqual(bodyElements)
+    })
+
+    it.each([
+        { source: 'shopping-assistant', influencedBy: 'shopping-assistant' },
+        { source: 'ai-journey', influencedBy: 'ai-journey' },
+        { source: 'ai-agent', influencedBy: 'ai-agent' },
+        { source: 'anything', influencedBy: 'shopping-assistant' },
+        { source: null, influencedBy: 'shopping-assistant' },
+        { source: undefined, influencedBy: 'shopping-assistant' },
+    ])('should set influencedBy', ({ source, influencedBy }) => {
+        const bodyElements = [
+            [createMockMessage('2024-01-01T10:00:00Z', 'Message 1')],
+            [createMockMessage('2024-01-01T12:00:00Z', 'Message 2')],
+        ]
+
+        const influencedOrders = [
+            {
+                id: 789,
+                ticketId: 999,
+                createdDatetime: '2024-01-01T11:00:00Z',
+                integrationId: 1,
+                source,
+            },
+        ]
+
+        mockUseFetchInfluencedOrders.mockReturnValue({
+            data: influencedOrders,
+        } as UseQueryResult<InfluencedOrderData[]>)
+
+        const { result } = renderHook(() =>
+            useInsertShoppingAssistantEventElements(bodyElements),
+        )
+
+        expect(result.current).toHaveLength(3)
+        expect(result.current[0]).toEqual(bodyElements[0])
+        expect(result.current[1]).toEqual({
+            isShoppingAssistantEvent: true,
+            type: 'influenced-order',
+            created_datetime: '2024-01-01T11:00:00Z',
+            data: {
+                createdDatetime: '2024-01-01T11:00:00Z',
+                influencedBy,
+                orderId: 789,
+                orderNumber: 1001,
+                shopName: 'Test Shop',
+            },
+        })
+        expect(result.current[2]).toEqual(bodyElements[1])
     })
 })

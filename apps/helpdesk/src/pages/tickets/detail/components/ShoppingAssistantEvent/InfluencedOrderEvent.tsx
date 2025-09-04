@@ -1,6 +1,9 @@
 import cn from 'classnames'
 
-import { ShoppingAssistantEvent } from '../../hooks/useInsertShoppingAssistantEventElements'
+import {
+    InfluencedOrderSource,
+    ShoppingAssistantEvent,
+} from '../../hooks/useInsertShoppingAssistantEventElements'
 
 import cssEvent from '../Event.less'
 import css from './InfluencedOrderEvent.less'
@@ -31,16 +34,29 @@ export const InfluencedOrderEvent = ({ event, isLast }: Props) => (
                     </a>{' '}
                     influenced
                 </span>
-                <ViaShoppingAssistant />
+                <ViaSource influencedBy={event.data.influencedBy} />
             </div>
         </div>
     </div>
 )
 
-const ViaShoppingAssistant = () => (
+interface ViaSourceProps {
+    influencedBy: InfluencedOrderSource
+}
+
+const influencedByLabel = (influencedBy: InfluencedOrderSource): string => {
+    switch (influencedBy) {
+        case InfluencedOrderSource.AI_JOURNEY:
+            return 'AI Journey'
+        case InfluencedOrderSource.SHOPPING_ASSISTANT:
+        case InfluencedOrderSource.AI_AGENT:
+            return 'Shopping Assistant'
+    }
+}
+const ViaSource = ({ influencedBy }: ViaSourceProps) => (
     <div className={css.viaShoppingAssistant}>
         via{' '}
         <i className={cn('material-icons', css.awesomeIcon)}>auto_awesome</i>{' '}
-        Shopping Assistant
+        {influencedByLabel(influencedBy)}
     </div>
 )

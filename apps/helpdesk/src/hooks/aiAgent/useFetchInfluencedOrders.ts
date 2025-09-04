@@ -33,6 +33,7 @@ export type InfluencedOrderDataFromCube = {
     [AiSalesAgentOrdersDimension.PeriodStart]: string
     [AiSalesAgentOrdersDimension.IntegrationId]: string
     [AiSalesAgentOrdersDimension.TicketId]: string
+    [AiSalesAgentOrdersDimension.Source]: string
 }
 
 export type InfluencedOrderData = {
@@ -40,6 +41,7 @@ export type InfluencedOrderData = {
     integrationId: number
     ticketId: number
     createdDatetime: string
+    source: string | null | undefined
 }
 
 export const useFetchInfluencedOrders = ({
@@ -71,6 +73,7 @@ export const useFetchInfluencedOrders = ({
                   AiSalesAgentOrdersDimension.PeriodStart,
                   AiSalesAgentOrdersDimension.IntegrationId,
                   AiSalesAgentOrdersDimension.TicketId,
+                  AiSalesAgentOrdersDimension.Source,
               ],
               filters: [
                   {
@@ -139,6 +142,7 @@ const serializeInfluencedOrderData = (data: InfluencedOrderDataFromCube) => {
         createdDatetime: parseUTC(
             data[AiSalesAgentOrdersDimension.PeriodStart],
         ),
+        source: data[AiSalesAgentOrdersDimension.Source],
     }
 }
 

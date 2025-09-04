@@ -15,6 +15,7 @@ import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import {
+    InfluencedOrderSource,
     ShoppingAssistantEvent,
     useInsertShoppingAssistantEventElements,
 } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
@@ -85,6 +86,9 @@ const mockGetQueryData = assumeMock(getQueryData)
 jest.mock(
     'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements',
     () => ({
+        ...jest.requireActual(
+            'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements',
+        ),
         useInsertShoppingAssistantEventElements: jest.fn(),
     }),
 )
@@ -269,6 +273,7 @@ describe('TicketBody', () => {
                 orderNumber: 456,
                 shopName: 'Test Shop',
                 createdDatetime: '2023-01-01T12:00:00Z',
+                influencedBy: InfluencedOrderSource.SHOPPING_ASSISTANT,
             },
         }
 

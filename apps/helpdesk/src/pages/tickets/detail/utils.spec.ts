@@ -1,7 +1,10 @@
 import { TicketChannel, TicketVia } from 'business/types/ticket'
 import { TicketElement, TicketMessage } from 'models/ticket/types'
 
-import { ShoppingAssistantEvent } from './hooks/useInsertShoppingAssistantEventElements'
+import {
+    InfluencedOrderSource,
+    ShoppingAssistantEvent,
+} from './hooks/useInsertShoppingAssistantEventElements'
 import { isShoppingAssistantEvent } from './utils'
 
 describe('isShoppingAssistantEvent', () => {
@@ -15,6 +18,7 @@ describe('isShoppingAssistantEvent', () => {
                 orderNumber: 456,
                 shopName: 'Test Shop',
                 createdDatetime: '2024-03-21T12:00:00Z',
+                influencedBy: InfluencedOrderSource.SHOPPING_ASSISTANT,
             },
         }
 

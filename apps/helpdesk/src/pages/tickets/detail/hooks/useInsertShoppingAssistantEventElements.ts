@@ -5,6 +5,13 @@ import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetch
 import { ShopifyIntegration } from 'models/integration/types'
 import { TicketElement, TicketMessage } from 'models/ticket/types'
 
+// Source https://github.com/gorgias/analytics/blob/main/schemas/ai_sales_agent/AiSalesAgentConversations.js#L68
+export enum InfluencedOrderSource {
+    AI_JOURNEY = 'ai-journey',
+    SHOPPING_ASSISTANT = 'shopping-assistant',
+    AI_AGENT = 'ai-agent',
+}
+
 export type ShoppingAssistantEvent = {
     type: 'influenced-order'
     isShoppingAssistantEvent: boolean
@@ -14,6 +21,7 @@ export type ShoppingAssistantEvent = {
         orderNumber: number
         shopName: string
         createdDatetime: string
+        influencedBy: InfluencedOrderSource
     }
 }
 
@@ -63,7 +71,7 @@ export const useInsertShoppingAssistantEventElements = (
 
         const allElements = [...bodyElements, ...influencedOrderEvents]
 
-        const sortedElements = allElements.sort((a, b) => {
+        return allElements.sort((a, b) => {
             const createdDatetimeA = Array.isArray(a)
                 ? a[0].created_datetime
                 : a.created_datetime
@@ -76,9 +84,22 @@ export const useInsertShoppingAssistantEventElements = (
 
             return aTimestamp - bTimestamp
         })
-
-        return sortedElements
     }, [bodyElements, influencedOrders, orders, shopifyIntegrations, ticketId])
+}
+
+const sourceToInfluencedOrderSource = (
+    source: string | null | undefined,
+): InfluencedOrderSource => {
+    switch (source) {
+        case 'ai-journey':
+            return InfluencedOrderSource.AI_JOURNEY
+        case 'ai-agent':
+            return InfluencedOrderSource.AI_AGENT
+        case 'shopping-assistant':
+            return InfluencedOrderSource.SHOPPING_ASSISTANT
+        default:
+            return InfluencedOrderSource.SHOPPING_ASSISTANT
+    }
 }
 
 const buildInfluencedOrderEvent = (
@@ -107,6 +128,7 @@ const buildInfluencedOrderEvent = (
             orderId: influencedOrder.id,
             orderNumber: shopifyOrder.order_number,
             shopName: shopifyIntegration.name,
+            influencedBy: sourceToInfluencedOrderSource(influencedOrder.source),
             createdDatetime,
         },
     }

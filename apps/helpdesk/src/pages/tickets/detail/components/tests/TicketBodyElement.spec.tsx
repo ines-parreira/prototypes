@@ -13,6 +13,7 @@ import {
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import { InfluencedOrderSource } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import { RootState } from 'state/types'
 import { reportError } from 'utils/errors'
 
@@ -260,6 +261,8 @@ describe('TicketBodyElement', () => {
                             orderNumber: 1001,
                             shopName: 'Test Shop',
                             createdDatetime: '2024-03-21T11:00:00Z',
+                            influencedBy:
+                                InfluencedOrderSource.SHOPPING_ASSISTANT,
                         },
                     }}
                 />

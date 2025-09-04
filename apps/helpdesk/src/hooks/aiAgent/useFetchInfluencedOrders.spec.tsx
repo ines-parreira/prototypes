@@ -50,6 +50,7 @@ describe('useFetchInfluencedOrders', () => {
                 [AiSalesAgentOrdersDimension.PeriodStart]:
                     '2025-05-16T00:00:00',
                 [AiSalesAgentOrdersDimension.TicketId]: '3',
+                [AiSalesAgentOrdersDimension.Source]: 'ai-journey',
             },
         ],
     }
@@ -85,6 +86,7 @@ describe('useFetchInfluencedOrders', () => {
                     AiSalesAgentOrdersDimension.PeriodStart,
                     AiSalesAgentOrdersDimension.IntegrationId,
                     AiSalesAgentOrdersDimension.TicketId,
+                    AiSalesAgentOrdersDimension.Source,
                 ],
                 filters: [
                     {
@@ -135,6 +137,7 @@ describe('useFetchInfluencedOrders', () => {
                     integrationId: 2,
                     createdDatetime: '2025-05-16T00:00:00.000Z',
                     ticketId: 3,
+                    source: 'ai-journey',
                 },
             ]),
         )
