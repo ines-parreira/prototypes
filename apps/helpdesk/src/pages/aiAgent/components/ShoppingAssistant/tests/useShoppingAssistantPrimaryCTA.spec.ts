@@ -320,13 +320,14 @@ describe('useShoppingAssistantPrimaryCTA', () => {
         expect(mockOpenTrialRequestModal).toHaveBeenCalled()
     })
 
-    it('returns AdminDemo variant with demo button for user who can book demo', () => {
+    it('returns AdminTrial variant with trial button for PRO+ admin ', () => {
         const props = {
             trialAccess: createMockTrialAccess({
                 hasCurrentStoreTrialStarted: false,
-                canSeeTrialCTA: false,
+                canSeeTrialCTA: true,
                 canNotifyAdmin: false,
                 canBookDemo: true,
+                isAdminUser: true,
             }),
             trialFlow: createMockTrialFlow(),
             isDisabled: false,
@@ -339,11 +340,9 @@ describe('useShoppingAssistantPrimaryCTA', () => {
             useShoppingAssistantPrimaryCTA(props),
         )
         expect(result.current).toEqual({
-            variant: PromoCardVariant.AdminDemo,
+            variant: PromoCardVariant.AdminTrial,
             button: {
-                label: 'Book a demo',
-                href: expect.any(String),
-                target: '_blank',
+                label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                 onClick: expect.any(Function),
                 disabled: false,
             },
@@ -351,7 +350,7 @@ describe('useShoppingAssistantPrimaryCTA', () => {
 
         result.current?.button?.onClick?.()
         expect(mockLogTrialBannerEvent).toHaveBeenCalledWith(
-            TrialEventType.Demo,
+            TrialEventType.StartTrial,
             TrialType.ShoppingAssistant,
         )
     })

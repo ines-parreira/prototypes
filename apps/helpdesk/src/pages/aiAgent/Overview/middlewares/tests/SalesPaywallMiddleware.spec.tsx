@@ -1103,7 +1103,7 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should show "Book a demo" button when canBookDemo is true', () => {
+        it('should show "Book a demo" link when canBookDemo is true', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
@@ -1127,11 +1127,6 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             expect(screen.getByText('Book a demo')).toBeInTheDocument()
-            expect(
-                screen.queryByText(
-                    `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
-                ),
-            ).not.toBeInTheDocument()
         })
 
         it('should open external URL when "Book a demo" button is clicked', () => {
@@ -1288,7 +1283,7 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should prioritize Book a demo button over other secondary buttons', () => {
+        it('should prioritize Book a demo link over other secondary buttons', () => {
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,

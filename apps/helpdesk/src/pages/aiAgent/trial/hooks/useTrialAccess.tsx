@@ -207,7 +207,9 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             !hasCurrentStoreTrialStarted &&
             !hasCurrentStoreTrialExpired &&
             (isOnStarterOrBasicPlan ||
-                isAiShoppingAssistantTrialMerchantsEnabled),
+                isAiShoppingAssistantTrialMerchantsEnabled ||
+                (isAiAgentExpandingTrialExperienceForAllEnabled &&
+                    isOnProPlusPlan)),
     )
 
     // Team leads can notify admin if trial CTA conditions are met (except admin check)

@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
+import { useFlag } from 'core/flags'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -15,7 +18,7 @@ import { logInTrialEvent, logTrialBannerEvent } from '../utils/eventLogger'
 /**
  * Returns the secondary CTA for the Shopping Assistant based on the trial type
  * Pre-Trial:
- * - Admin / Lean:
+ * - Admin / Lead:
  *   - Basic / Starter plan: Learn more
  *   - Pro + plan: Book a demo
  * In-Trial:
@@ -30,14 +33,20 @@ export const useShoppingAssistantSecondaryCTA = (
     trialAccess: ReturnType<typeof useTrialAccess>,
     trialFlow: UseShoppingAssistantTrialFlowReturn,
 ): ButtonConfig | undefined => {
+    const isAiAgentExpandingTrialExperienceForAll = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
     return useMemo<ButtonConfig | undefined>(() => {
         const isAdminTrialProgress =
             variant === PromoCardVariant.AdminTrialProgress
         const isLeadTrialProgress =
             variant === PromoCardVariant.LeadTrialProgress
         const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
-        const canShowDemo =
-            trialAccess.canNotifyAdmin && trialAccess.canBookDemo
+        // Should be deleted once we remove the feature flag isAiAgentExpandingTrialExperienceForAll
+        const canShowDemo = isAiAgentExpandingTrialExperienceForAll
+            ? trialAccess.canBookDemo
+            : trialAccess.canNotifyAdmin
 
         // ===== Button factories =====
         const manageTrialButton = (): ButtonConfig => ({
@@ -92,5 +101,6 @@ export const useShoppingAssistantSecondaryCTA = (
         trialAccess.canNotifyAdmin,
         trialAccess.canBookDemo,
         trialFlow,
+        isAiAgentExpandingTrialExperienceForAll,
     ])
 }

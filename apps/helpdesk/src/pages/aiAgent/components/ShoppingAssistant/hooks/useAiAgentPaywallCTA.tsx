@@ -164,7 +164,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 size="medium"
                 onClick={openDemoPage}
             >
-                Let&apos;s Talk?
+                Let’s Talk?
                 <span className={css.bookDemoButtonText}>Book a demo</span>
             </Button>
         ),

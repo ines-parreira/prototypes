@@ -402,7 +402,7 @@ describe('useTrialPromoCard', () => {
         beforeEach(() => {
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
-                canSeeTrialCTA: false,
+                canSeeTrialCTA: true,
                 canBookDemo: true,
                 canNotifyAdmin: false,
             })
@@ -417,7 +417,7 @@ describe('useTrialPromoCard', () => {
             )
 
             expect(result.current?.promoCardContent).toEqual({
-                variant: 'admin-demo',
+                variant: 'admin-trial',
                 title: 'Unlock new AI Agent skills',
                 description: 'Go beyond automation and grow revenue by 1.5%.',
                 shouldShowDescriptionIcon: false,
@@ -427,20 +427,22 @@ describe('useTrialPromoCard', () => {
                 progressText: undefined,
                 showProgressBar: false,
                 primaryButton: {
+                    label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+                    onClick: expect.any(Function),
+                    disabled: false,
+                },
+                secondaryButton: {
                     label: 'Book a demo',
                     href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
                     target: '_blank',
                     onClick: expect.any(Function),
                     disabled: false,
                 },
-                secondaryButton: {
-                    label: 'Learn more',
-                    href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
-                    target: '_blank',
+                videoModalButton: {
+                    label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
                     onClick: expect.any(Function),
                     disabled: false,
                 },
-                videoModalButton: undefined,
             })
         })
 
@@ -456,7 +458,7 @@ describe('useTrialPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewCTAClicked,
-                { CTA: 'Demo', trialType: TrialType.ShoppingAssistant },
+                { CTA: 'Start Trial', trialType: TrialType.ShoppingAssistant },
             )
         })
     })

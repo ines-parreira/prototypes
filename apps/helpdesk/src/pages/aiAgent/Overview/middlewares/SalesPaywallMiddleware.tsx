@@ -352,6 +352,10 @@ const PaywallWrapperComponent = ({
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
 
+    const isAiAgentExpandingTrialExperienceForAll = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
     const queryParams = new URLSearchParams(location.search)
 
     const isFromEmailOrNotification =
@@ -394,7 +398,7 @@ const PaywallWrapperComponent = ({
     }, [shouldStartTrial])
 
     const renderSecondaryActionButton = () => {
-        if (canBookDemo) {
+        if (!isAiAgentExpandingTrialExperienceForAll && canBookDemo) {
             return (
                 <Button
                     fillStyle="ghost"
@@ -407,7 +411,6 @@ const PaywallWrapperComponent = ({
                 </Button>
             )
         }
-
         if (canNotifyAdmin) {
             return (
                 <Button
@@ -463,7 +466,7 @@ const PaywallWrapperComponent = ({
                 <AiAgentPaywallView
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
-                    <div className={css.buttonsWrapper}>
+                    <>
                         {displayUpgradeButton && (
                             <Button
                                 size="medium"
@@ -491,7 +494,31 @@ const PaywallWrapperComponent = ({
                             </Button>
                         )}
                         {renderSecondaryActionButton()}
-                    </div>
+
+                        {canBookDemo &&
+                            isAiAgentExpandingTrialExperienceForAll && (
+                                <div className={css.bookDemoButton}>
+                                    <Button
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        size="medium"
+                                        onClick={() => {
+                                            window.open(
+                                                EXTERNAL_URLS.BOOK_DEMO,
+                                                '_blank',
+                                            )
+                                        }}
+                                    >
+                                        Let’s Talk?
+                                        <span
+                                            className={css.bookDemoButtonText}
+                                        >
+                                            Book a demo
+                                        </span>
+                                    </Button>
+                                </div>
+                            )}
+                    </>
                 </AiAgentPaywallView>
                 {earlyAccessModal}
             </PaywallWrapper>

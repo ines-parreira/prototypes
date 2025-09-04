@@ -7,6 +7,7 @@
     .buttonsWrapper {
         display: flex;
         gap: var(--layout-spacing-xs);
+        flex-wrap: wrap;
     }
 
     // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
@@ -31,5 +32,16 @@
 
     .trialButton {
         color: var(--neutral-grey-5) !important;
+    }
+
+    .bookDemoButton {
+        flex: 0 0 100%;
+        margin-top: var(--layout-spacing-xs);
+        margin-left: -5px;
+    }
+
+    .bookDemoButtonText {
+        margin-left: var(--layout-spacing-xxs);
+        color: var(--neutral-grey-6);
     }
 }

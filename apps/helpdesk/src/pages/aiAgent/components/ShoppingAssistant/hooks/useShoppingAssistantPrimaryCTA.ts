@@ -188,6 +188,7 @@ export const useShoppingAssistantPrimaryCTA = ({
     }
 
     // ===== PRE-TRIAL (Admin can book demo) =====
+    // Should be deleted once we remove the feature flag isAiAgentExpandingTrialExperienceForAll
     if (trialAccess.canBookDemo) {
         return {
             variant: PromoCardVariant.AdminDemo,
@@ -196,6 +197,7 @@ export const useShoppingAssistantPrimaryCTA = ({
     }
 
     // ===== PRE-TRIAL (Lead notify admin only) =====
+    // Should be deleted once we remove the feature flag isAiAgentExpandingTrialExperienceForAll
     if (trialAccess.canNotifyAdmin) {
         return {
             variant: PromoCardVariant.LeadNotify,
