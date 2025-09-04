@@ -1,354 +1,328 @@
 import React from 'react'
 
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import moment from 'moment'
 import { Provider } from 'react-redux'
 
-import useFlag from 'core/flags/hooks/useFlag'
-import { fetchRecommendedResourcesTimeSeries } from 'domains/reporting/hooks/automate/timeSeries'
-import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
-import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { IntegrationType } from 'models/integration/constants'
+import {
+    CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE,
+    useIsArticleRecommendationsEnabledWhileSunset,
+} from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { mockStore } from 'utils/testing'
 
-// Mock dependencies
-jest.mock('core/flags/hooks/useFlag')
-jest.mock('domains/reporting/hooks/automate/timeSeries')
-
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
-const mockFetchRecommendedResourcesTimeSeries =
-    fetchRecommendedResourcesTimeSeries as jest.MockedFunction<
-        typeof fetchRecommendedResourcesTimeSeries
-    >
-
 describe('useIsArticleRecommendationsEnabledWhileSunset', () => {
-    const mockTimezone = 'America/New_York'
-    const store = mockStore({
-        currentUser: fromJS({
-            timezone: mockTimezone,
-        }),
-    })
-
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
-    )
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-        // Mock console.error to avoid noise in test output
-        jest.spyOn(console, 'error').mockImplementation(() => {})
-    })
-
-    afterEach(() => {
-        jest.restoreAllMocks()
-    })
-
-    describe('when feature flag is enabled', () => {
-        it('should return enabled true and not fetch usage data', async () => {
-            mockUseFlag.mockReturnValue(true)
-
-            const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            expect(result.current.enabled).toBe(true)
-            expect(
-                mockFetchRecommendedResourcesTimeSeries,
-            ).not.toHaveBeenCalled()
+    const createStoreWithIntegrationsAndAccount = ({
+        integrations = [],
+        accountCreatedDate = '2024-01-01T00:00:00Z',
+    }: {
+        integrations?: Array<{ id: number; type: string }>
+        accountCreatedDate?: string
+    }) => {
+        return mockStore({
+            currentAccount: fromJS({
+                created_datetime: accountCreatedDate,
+            }),
+            integrations: fromJS({
+                integrations: integrations,
+            }),
         })
-    })
+    }
 
-    describe('when feature flag is disabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(false)
-        })
+    const wrapper = ({
+        children,
+        store,
+    }: {
+        children: React.ReactNode
+        store: any
+    }) => <Provider store={store}>{children}</Provider>
 
-        it('should return enabled true when there is recent usage', async () => {
-            const mockTimeSeriesData = [
-                [
-                    {
-                        dateTime: '2024-01-01',
-                        value: 10,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                    {
-                        dateTime: '2024-01-02',
-                        value: 5,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
+    describe('when merchant has non-Shopify integrations', () => {
+        it('should return enabled true when merchant has BigCommerce integration', () => {
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [
+                    { id: 1, type: IntegrationType.BigCommerce },
+                    { id: 2, type: IntegrationType.Shopify },
                 ],
-                [
-                    {
-                        dateTime: '2024-01-01',
-                        value: 3,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                    {
-                        dateTime: '2024-01-02',
-                        value: 7,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                ],
-            ]
-
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue(
-                mockTimeSeriesData,
-            )
+                accountCreatedDate: '2026-01-01T00:00:00Z', // New merchant
+            })
 
             const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            // Initially should be true (default state)
-            expect(result.current.enabled).toBe(true)
-
-            // Wait for the async effect to complete
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledWith(
-                    {
-                        period: {
-                            start_datetime: moment()
-                                .subtract(1, 'month')
-                                .startOf('day')
-                                .format(),
-                            end_datetime: moment().format(),
-                        },
-                    },
-                    mockTimezone,
-                    ReportingGranularity.Month,
-                )
-            })
-
-            // Total usage is 25 (10 + 5 + 3 + 7), so it should be enabled
-            expect(result.current.enabled).toBe(true)
-        })
-
-        it('should return enabled false when there is no recent usage', async () => {
-            const mockTimeSeriesData = [
-                [
-                    {
-                        dateTime: '2024-01-01',
-                        value: 0,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                    {
-                        dateTime: '2024-01-02',
-                        value: 0,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                ],
-                [
-                    {
-                        dateTime: '2024-01-01',
-                        value: 0,
-                        label: AutomationDatasetMeasure.AutomatedInteractions,
-                    },
-                ],
-            ]
-
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue(
-                mockTimeSeriesData,
-            )
-
-            const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalled()
-            })
-
-            // Total usage is 0, so it should be disabled
-            expect(result.current.enabled).toBe(false)
-        })
-
-        it('should return enabled false when API returns empty data', async () => {
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue([])
-
-            const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalled()
-            })
-
-            expect(result.current.enabled).toBe(false)
-        })
-
-        it('should return enabled true when API call fails', async () => {
-            const mockError = new Error('API Error')
-            mockFetchRecommendedResourcesTimeSeries.mockRejectedValue(mockError)
-
-            const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalled()
-            })
-
-            // Should default to true on error
-            expect(result.current.enabled).toBe(true)
-            expect(console.error).toHaveBeenCalledWith(
-                'Error checking article recommendation usage:',
-                mockError,
-            )
-        })
-    })
-
-    describe('when feature flag is undefined', () => {
-        it('should default to true and not fetch usage data', async () => {
-            // When using the new useFlag hook, it will return the default value (true) when undefined
-            mockUseFlag.mockReturnValue(true)
-
-            const { result } = renderHook(
-                () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
-            )
-
-            expect(result.current.enabled).toBe(true)
-            expect(
-                mockFetchRecommendedResourcesTimeSeries,
-            ).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('when user timezone is not set', () => {
-        it('should use UTC as default timezone', async () => {
-            const storeWithoutTimezone = mockStore({
-                currentUser: fromJS({}),
-            })
-
-            const wrapperWithoutTimezone = ({
-                children,
-            }: {
-                children: React.ReactNode
-            }) => <Provider store={storeWithoutTimezone}>{children}</Provider>
-
-            mockUseFlag.mockReturnValue(false)
-
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue([[]])
-
-            renderHook(() => useIsArticleRecommendationsEnabledWhileSunset(), {
-                wrapper: wrapperWithoutTimezone,
-            })
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledWith(
-                    expect.any(Object),
-                    'UTC',
-                    ReportingGranularity.Month,
-                )
-            })
-        })
-    })
-
-    describe('re-fetching behavior', () => {
-        it('should re-fetch when userTimezone changes', async () => {
-            mockUseFlag.mockReturnValue(false)
-
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue([[]])
-
-            // Start with initial timezone
-            const initialStore = mockStore({
-                currentUser: fromJS({
-                    timezone: 'America/New_York',
-                }),
-            })
-
-            const { unmount } = renderHook(
                 () => useIsArticleRecommendationsEnabledWhileSunset(),
                 {
-                    wrapper: ({ children }) => (
-                        <Provider store={initialStore}>{children}</Provider>
-                    ),
+                    wrapper: ({ children }) => wrapper({ children, store }),
                 },
             )
 
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledTimes(1)
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledWith(
-                    expect.any(Object),
-                    'America/New_York',
-                    ReportingGranularity.Month,
+            expect(result.current.enabled).toBe(true)
+        })
+
+        it('should return enabled true when merchant has Magento2 integration', () => {
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [
+                    { id: 1, type: IntegrationType.Magento2 },
+                    { id: 2, type: IntegrationType.Shopify },
+                ],
+                accountCreatedDate: '2026-01-01T00:00:00Z', // New merchant
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            expect(result.current.enabled).toBe(true)
+        })
+
+        it('should return enabled true when merchant has both BigCommerce and Magento2', () => {
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [
+                    { id: 1, type: IntegrationType.BigCommerce },
+                    { id: 2, type: IntegrationType.Magento2 },
+                ],
+                accountCreatedDate: '2026-01-01T00:00:00Z', // New merchant
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            expect(result.current.enabled).toBe(true)
+        })
+    })
+
+    describe('when merchant only has Shopify integrations', () => {
+        describe('for old merchants (created before sunset date)', () => {
+            it('should return enabled true when account was created before sunset date', () => {
+                const oldDate = new Date(
+                    CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE,
                 )
-            })
+                oldDate.setDate(oldDate.getDate() - 1) // One day before sunset date
 
-            // Clean up and create new component with different timezone
-            unmount()
-            mockFetchRecommendedResourcesTimeSeries.mockClear()
+                const store = createStoreWithIntegrationsAndAccount({
+                    integrations: [{ id: 1, type: IntegrationType.Shopify }],
+                    accountCreatedDate: oldDate.toISOString(),
+                })
 
-            const newStore = mockStore({
-                currentUser: fromJS({
-                    timezone: 'Europe/London',
-                }),
-            })
-
-            renderHook(() => useIsArticleRecommendationsEnabledWhileSunset(), {
-                wrapper: ({ children }) => (
-                    <Provider store={newStore}>{children}</Provider>
-                ),
-            })
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledTimes(1)
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledWith(
-                    expect.any(Object),
-                    'Europe/London',
-                    ReportingGranularity.Month,
+                const { result } = renderHook(
+                    () => useIsArticleRecommendationsEnabledWhileSunset(),
+                    {
+                        wrapper: ({ children }) => wrapper({ children, store }),
+                    },
                 )
+
+                expect(result.current.enabled).toBe(true)
+            })
+
+            it('should return enabled true when account was created exactly on sunset date', () => {
+                const store = createStoreWithIntegrationsAndAccount({
+                    integrations: [{ id: 1, type: IntegrationType.Shopify }],
+                    accountCreatedDate:
+                        CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE.toISOString(),
+                })
+
+                const { result } = renderHook(
+                    () => useIsArticleRecommendationsEnabledWhileSunset(),
+                    {
+                        wrapper: ({ children }) => wrapper({ children, store }),
+                    },
+                )
+
+                expect(result.current.enabled).toBe(true)
             })
         })
 
-        it('should re-fetch when feature flag changes from true to false', async () => {
-            mockUseFlag.mockReturnValue(true)
+        describe('for new merchants (created after sunset date)', () => {
+            it('should return enabled false when account was created after sunset date', () => {
+                const newDate = new Date(
+                    CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE,
+                )
+                newDate.setDate(newDate.getDate() + 1) // One day after sunset date
 
-            mockFetchRecommendedResourcesTimeSeries.mockResolvedValue([[]])
+                const store = createStoreWithIntegrationsAndAccount({
+                    integrations: [{ id: 1, type: IntegrationType.Shopify }],
+                    accountCreatedDate: newDate.toISOString(),
+                })
 
-            const { rerender } = renderHook(
+                const { result } = renderHook(
+                    () => useIsArticleRecommendationsEnabledWhileSunset(),
+                    {
+                        wrapper: ({ children }) => wrapper({ children, store }),
+                    },
+                )
+
+                expect(result.current.enabled).toBe(false)
+            })
+
+            it('should return enabled false for recent accounts with only Shopify', () => {
+                const store = createStoreWithIntegrationsAndAccount({
+                    integrations: [{ id: 1, type: IntegrationType.Shopify }],
+                    accountCreatedDate: '2026-01-01T00:00:00Z',
+                })
+
+                const { result } = renderHook(
+                    () => useIsArticleRecommendationsEnabledWhileSunset(),
+                    {
+                        wrapper: ({ children }) => wrapper({ children, store }),
+                    },
+                )
+
+                expect(result.current.enabled).toBe(false)
+            })
+        })
+    })
+
+    describe('when merchant has no integrations', () => {
+        it('should return enabled true for old merchants without integrations', () => {
+            const oldDate = new Date(CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE)
+            oldDate.setFullYear(oldDate.getFullYear() - 1) // One year before sunset
+
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [],
+                accountCreatedDate: oldDate.toISOString(),
+            })
+
+            const { result } = renderHook(
                 () => useIsArticleRecommendationsEnabledWhileSunset(),
-                { wrapper },
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
             )
 
-            expect(
-                mockFetchRecommendedResourcesTimeSeries,
-            ).not.toHaveBeenCalled()
+            expect(result.current.enabled).toBe(true)
+        })
 
-            // Change feature flag to false
-            mockUseFlag.mockReturnValue(false)
+        it('should return enabled false for new merchants without integrations', () => {
+            const newDate = new Date(CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE)
+            newDate.setMonth(newDate.getMonth() + 1) // One month after sunset
 
-            rerender()
-
-            await waitFor(() => {
-                expect(
-                    mockFetchRecommendedResourcesTimeSeries,
-                ).toHaveBeenCalledTimes(1)
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [],
+                accountCreatedDate: newDate.toISOString(),
             })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            expect(result.current.enabled).toBe(false)
+        })
+    })
+
+    describe('when merchant has other integration types', () => {
+        it('should ignore non-ecommerce integrations', () => {
+            const newDate = new Date(CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE)
+            newDate.setDate(newDate.getDate() + 10)
+
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [
+                    { id: 1, type: 'email' },
+                    { id: 2, type: 'instagram' },
+                    { id: 3, type: 'facebook' },
+                ],
+                accountCreatedDate: newDate.toISOString(),
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            expect(result.current.enabled).toBe(false)
+        })
+
+        it('should return enabled true when has non-Shopify ecommerce integration mixed with others', () => {
+            const newDate = new Date(CHAT_ARTICLE_RECOMMENDATION_SUNSET_DATE)
+            newDate.setDate(newDate.getDate() + 10)
+
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [
+                    { id: 1, type: 'email' },
+                    { id: 2, type: IntegrationType.BigCommerce },
+                    { id: 3, type: 'facebook' },
+                ],
+                accountCreatedDate: newDate.toISOString(),
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            expect(result.current.enabled).toBe(true)
+        })
+    })
+
+    describe('edge cases', () => {
+        it('should handle invalid account creation date gracefully', () => {
+            const store = createStoreWithIntegrationsAndAccount({
+                integrations: [],
+                accountCreatedDate: 'invalid-date',
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            // Invalid date would be parsed as NaN, which makes isNewMerchant false
+            // Since no non-Shopify integrations and not new merchant, should be enabled
+            expect(result.current.enabled).toBe(true)
+        })
+
+        it('should handle missing account creation date', () => {
+            const store = mockStore({
+                currentAccount: fromJS({}),
+                integrations: fromJS({
+                    integrations: [],
+                }),
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            // Missing date would be parsed as NaN, which makes isNewMerchant false
+            // Since no non-Shopify integrations and not new merchant, should be enabled
+            expect(result.current.enabled).toBe(true)
+        })
+
+        it('should handle empty integrations array', () => {
+            const store = mockStore({
+                currentAccount: fromJS({
+                    created_datetime: '2026-01-01T00:00:00Z',
+                }),
+                integrations: fromJS({
+                    integrations: [],
+                }),
+            })
+
+            const { result } = renderHook(
+                () => useIsArticleRecommendationsEnabledWhileSunset(),
+                {
+                    wrapper: ({ children }) => wrapper({ children, store }),
+                },
+            )
+
+            // No integrations and new merchant, should be disabled
+            expect(result.current.enabled).toBe(false)
         })
     })
 })

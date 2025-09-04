@@ -655,24 +655,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                 />
                 <div
                   class="legend legend legendOnLeft"
-                >
-                  <div
-                    class="legendCheckbox"
-                  >
-                    <label
-                      class="ui-label-label-3864 label"
-                      for="checkbox-undefined"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-undefined"
-                        name="checkbox-undefined"
-                        type="checkbox"
-                      />
-                      Autoresponders (deprecated)
-                    </label>
-                  </div>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -2084,24 +2067,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 />
                 <div
                   class="legend legend legendOnLeft"
-                >
-                  <div
-                    class="legendCheckbox"
-                  >
-                    <label
-                      class="ui-label-label-3864 label"
-                      for="checkbox-undefined"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-undefined"
-                        name="checkbox-undefined"
-                        type="checkbox"
-                      />
-                      Quick Responses (deprecated)
-                    </label>
-                  </div>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -2807,24 +2773,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 />
                 <div
                   class="legend legend legendOnLeft"
-                >
-                  <div
-                    class="legendCheckbox"
-                  >
-                    <label
-                      class="ui-label-label-3864 label"
-                      for="checkbox-undefined"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-undefined"
-                        name="checkbox-undefined"
-                        type="checkbox"
-                      />
-                      Others
-                    </label>
-                  </div>
-                </div>
+                />
               </div>
             </div>
           </div>
@@ -3530,24 +3479,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                 />
                 <div
                   class="legend legend legendOnLeft"
-                >
-                  <div
-                    class="legendCheckbox"
-                  >
-                    <label
-                      class="ui-label-label-3864 label"
-                      for="checkbox-undefined"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-undefined"
-                        name="checkbox-undefined"
-                        type="checkbox"
-                      />
-                      Others
-                    </label>
-                  </div>
-                </div>
+                />
               </div>
             </div>
           </div>

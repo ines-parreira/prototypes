@@ -8,6 +8,7 @@ import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'domains/reporting/hooks/automate/useAutomationDataset'
+import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomatedInteractionsPerFeatureGraphChart } from 'domains/reporting/pages/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
@@ -25,6 +26,12 @@ const useAutomateMetricsTimeSeriesMock = assumeMock(
 )
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 const useNewAutomateFiltersMock = assumeMock(useAutomateFilters)
+jest.mock(
+    'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries',
+)
+const useFilteredAutomatedInteractionTimeSeriesMock = assumeMock(
+    useFilteredAutomatedInteractionTimeSeries,
+)
 
 describe('AutomatedInteractionsPerFeatureGraphChart', () => {
     const statsFilters = {
@@ -81,6 +88,11 @@ describe('AutomatedInteractionsPerFeatureGraphChart', () => {
         useAutomateMetricsTimeSeriesMock.mockReturnValue(
             automateMetricsTimeSeries,
         )
+        useFilteredAutomatedInteractionTimeSeriesMock.mockReturnValue({
+            filteredData: [],
+            colors: [],
+            isArticleRecommendationsEnabled: true,
+        })
         LineChartMock.mockImplementation(() => <div />)
     })
 

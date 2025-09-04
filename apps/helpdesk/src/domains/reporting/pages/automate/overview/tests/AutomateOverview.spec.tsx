@@ -12,6 +12,7 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
+import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
 import { useAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
@@ -25,6 +26,7 @@ import { useAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automat
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
+import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries'
 import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import {
@@ -168,6 +170,14 @@ jest.mock(
 )
 const useAIAgentInteractionsBySkillTimeSeriesMock = assumeMock(
     useAIAgentInteractionsBySkillTimeSeries,
+)
+
+jest.mock(
+    'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries',
+)
+
+const useFilteredAutomatedInteractionTimeSeriesMock = assumeMock(
+    useFilteredAutomatedInteractionTimeSeries,
 )
 
 describe('<AutomateOverview />', () => {
@@ -377,6 +387,12 @@ describe('<AutomateOverview />', () => {
             isLoading: false,
             isError: false,
         } as any)
+
+        useFilteredAutomatedInteractionTimeSeriesMock.mockReturnValue({
+            filteredData: [],
+            colors: [],
+            isArticleRecommendationsEnabled: true,
+        })
     })
 
     it('should display paywall', () => {
@@ -578,6 +594,16 @@ describe('<AutomateOverview />', () => {
 
     describe('Autoresponder deprecation', () => {
         it('should display autoresponder filter label', () => {
+            useFilteredAutomatedInteractionTimeSeriesMock.mockReturnValue({
+                filteredData: [
+                    {
+                        label: DisplayEventType.AUTORESPONDERS,
+                        values: [{ x: '2022-02-02T12:45:33.122', y: 23 }],
+                    },
+                ],
+                colors: ['#123456'],
+                isArticleRecommendationsEnabled: true,
+            })
             const automateMetricsTimeseries: AutomateTimeseries = {
                 isFetching: false,
                 isError: false,
@@ -720,6 +746,16 @@ describe('<AutomateOverview />', () => {
 
     describe('Quickresponse deprecation', () => {
         it('should display quickresponse filter label', () => {
+            useFilteredAutomatedInteractionTimeSeriesMock.mockReturnValue({
+                filteredData: [
+                    {
+                        label: DisplayEventType.QUICK_RESPONSES_DEPRECATED,
+                        values: [{ x: '2022-02-02T12:45:33.122', y: 23 }],
+                    },
+                ],
+                colors: ['#123456'],
+                isArticleRecommendationsEnabled: true,
+            })
             const automateMetricsTimeseries: AutomateTimeseries = {
                 isFetching: false,
                 isError: false,
