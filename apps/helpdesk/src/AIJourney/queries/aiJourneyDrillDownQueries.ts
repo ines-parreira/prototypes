@@ -1,6 +1,7 @@
 import {
     aiJourneyRepliedMessagesQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
+    aiJourneyUniqClicksQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
 import {
     AiSalesAgentConversationsCube,
@@ -57,6 +58,31 @@ export const aiJourneyResponseRateDrillDownQueryFactory = (
         integrationId,
         filters,
         timezone,
+        journeyId,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyClickThroughRateDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyUniqClicksQueryFactory(
+        filters,
+        timezone,
+        integrationId,
         journeyId,
     ),
     measures: [],

@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import {
     TimeSeriesDataItem,
@@ -68,6 +69,7 @@ describe('useClickThroughRate', () => {
                 userTimezone,
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -89,6 +91,13 @@ describe('useClickThroughRate', () => {
                     value: 50,
                 },
             ],
+            drilldown: {
+                title: 'Click Through Rate',
+                metricName: AIJourneyMetric.ClickThroughRate,
+                integrationId: '123',
+                journeyId: undefined,
+                shopName: 'shopName',
+            },
         })
     })
 
@@ -108,6 +117,7 @@ describe('useClickThroughRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
@@ -120,6 +130,13 @@ describe('useClickThroughRate', () => {
             prevValue: 0,
             value: 0,
             series: [],
+            drilldown: {
+                title: 'Click Through Rate',
+                metricName: AIJourneyMetric.ClickThroughRate,
+                integrationId: '123',
+                journeyId: undefined,
+                shopName: 'shopName',
+            },
         })
     })
 
@@ -142,9 +159,93 @@ describe('useClickThroughRate', () => {
                 'UTC',
                 mockFilters,
                 ReportingGranularity.Week,
+                'shopName',
             ),
         )
 
         expect(result.current.currency).toBe('EUR')
+    })
+
+    it('should include drilldown with journeyId when provided', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 75, prevValue: 25 },
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [],
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useClickThroughRate(
+                'integration123',
+                'America/Los_Angeles',
+                mockFilters,
+                ReportingGranularity.Day,
+                'testShopName',
+                'journey456',
+            ),
+        )
+
+        expect(result.current.drilldown).toEqual({
+            title: 'Click Through Rate',
+            metricName: AIJourneyMetric.ClickThroughRate,
+            integrationId: 'integration123',
+            journeyId: 'journey456',
+            shopName: 'testShopName',
+        })
+    })
+
+    it('should include drilldown with undefined journeyId when not provided', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 30, prevValue: 60 },
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [],
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useClickThroughRate(
+                'integration789',
+                'Europe/Paris',
+                mockFilters,
+                ReportingGranularity.Month,
+                'anotherShopName',
+            ),
+        )
+
+        expect(result.current.drilldown).toEqual({
+            title: 'Click Through Rate',
+            metricName: AIJourneyMetric.ClickThroughRate,
+            integrationId: 'integration789',
+            journeyId: undefined,
+            shopName: 'anotherShopName',
+        })
+    })
+
+    it('should use correct title from AIJourneyMetricsConfig', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 0, prevValue: 0 },
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [],
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useClickThroughRate(
+                '123',
+                'UTC',
+                mockFilters,
+                ReportingGranularity.Week,
+                'shopName',
+            ),
+        )
+
+        expect(result.current.label).toBe('Click Through Rate')
+        expect(result.current.drilldown?.title).toBe('Click Through Rate')
     })
 })

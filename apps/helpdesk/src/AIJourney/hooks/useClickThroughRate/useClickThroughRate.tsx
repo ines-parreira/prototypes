@@ -1,5 +1,9 @@
 import { useMemo } from 'react'
 
+import {
+    AIJourneyMetric,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
     aiJourneyTotalNumberOfSalesConversationsQueryFactory,
@@ -22,6 +26,7 @@ export const useClickThroughRate = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
+    shopName: string,
     journeyId?: string,
 ): MetricProps => {
     const { currency } = useCurrency()
@@ -140,7 +145,7 @@ export const useClickThroughRate = (
     }, [clicksTimeSeriesData, conversationsTimeSeriesData])
 
     return {
-        label: 'Click Through Rate',
+        label: AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate].title,
         value: clickThroughRateValue,
         prevValue: clickThroughRateValueDataPrevValue,
         series: clickThroughRateTimeSeries,
@@ -152,5 +157,13 @@ export const useClickThroughRate = (
             isFetchingTotalContactsEnrolled ||
             isFetchingClicksSeries ||
             isFetchingConversationsSeries,
+        drilldown: {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate]
+                .title,
+            metricName: AIJourneyMetric.ClickThroughRate,
+            integrationId,
+            journeyId,
+            shopName,
+        },
     }
 }

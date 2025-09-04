@@ -2,6 +2,7 @@ import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 import {
+    aiJourneyClickThroughRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from './aiJourneyDrillDownQueries'
@@ -421,6 +422,201 @@ describe('aiJourneyDrillDownQueries', () => {
                 limit: 100,
                 measures: [],
                 metricName: 'ai-journey-replied-messages',
+                order: [['AiSalesAgentConversations.ticketId', 'asc']],
+                timezone,
+            })
+        })
+    })
+
+    describe('aiJourneyClickThroughRateDrillDownQueryFactory', () => {
+        it('should produce query without sorting and journeyId', () => {
+            const query = aiJourneyClickThroughRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.clicked',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-uniq-clicks',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with sorting', () => {
+            const sorting = OrderDirection.Desc
+            const query = aiJourneyClickThroughRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.clicked',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-uniq-clicks',
+                order: [['AiSalesAgentConversations.ticketId', 'desc']],
+                timezone,
+            })
+        })
+
+        it('should produce query with journeyId', () => {
+            const query = aiJourneyClickThroughRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                undefined,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.clicked',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-uniq-clicks',
+                order: [],
+                timezone,
+            })
+        })
+
+        it('should produce query with both sorting and journeyId', () => {
+            const sorting = OrderDirection.Asc
+            const query = aiJourneyClickThroughRateDrillDownQueryFactory(
+                statsFilters,
+                timezone,
+                integrationId,
+                sorting,
+                journeyId,
+            )
+
+            expect(query).toEqual({
+                dimensions: ['AiSalesAgentConversations.ticketId'],
+                filters: [
+                    {
+                        member: 'AiSalesAgentConversations.source',
+                        operator: 'equals',
+                        values: ['ai-journey'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.storeIntegrationId',
+                        operator: 'equals',
+                        values: ['12345'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.clicked',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-08-29T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-05T12:00:00.000'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyId',
+                        operator: 'equals',
+                        values: ['journey-123'],
+                    },
+                ],
+                limit: 100,
+                measures: [],
+                metricName: 'ai-journey-uniq-clicks',
                 order: [['AiSalesAgentConversations.ticketId', 'asc']],
                 timezone,
             })

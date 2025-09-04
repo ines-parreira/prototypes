@@ -95,6 +95,7 @@ export const useAIJourneyKpis = (
         userTimezone,
         filters,
         granularity,
+        shopName,
     )
 
     const responseRate = useAIJourneyResponseRate(

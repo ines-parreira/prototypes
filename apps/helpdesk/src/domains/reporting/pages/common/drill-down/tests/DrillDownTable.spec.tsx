@@ -892,4 +892,65 @@ describe('<DrillDownTable />', () => {
             expect(screen.getByText('Emmanuel Gomez')).toBeInTheDocument()
         })
     })
+
+    describe('with AIJourneyMetric.ClickThroughRate', () => {
+        const metricData: DrillDownMetric = {
+            ...AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate],
+            integrationId: '1',
+            metricName: AIJourneyMetric.ClickThroughRate,
+        }
+
+        const exampleRow = {
+            ticket: {
+                id: '223105548',
+                subject:
+                    'AI Journey click through for journey 01K0SPSFVAP1XSX3JZYJWTR9Q8',
+                description:
+                    'Customer clicked on the recommended product link in the AI Journey message.',
+                channel: 'email',
+                isRead: false,
+                created: '2025-09-01T18:05:01.138718',
+                contactReason: null,
+                status: 'open',
+            },
+            assignee: { id: 518103190, name: 'AI Agent Bot' },
+            rowData: {
+                'AiSalesAgentConversations.ticketId': '223105548',
+                'Ticket.subject':
+                    'AI Journey click through for journey 01K0SPSFVAP1XSX3JZYJWTR9Q8',
+                'Ticket.customer_name': 'Jane Smith',
+            },
+            intent: 'Product::Inquiry::Click',
+            order: {},
+            product: { titles: [], variants: [] },
+        }
+
+        const renderTableForClickThroughRate = (
+            metricData: DrillDownMetric,
+        ) => {
+            return renderTable(metricData, TicketDrillDownTableContent)
+        }
+
+        it('should render expected columns for ClickThroughRate metric', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForClickThroughRate(metricData)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'AI Journey click through for journey 01K0SPSFVAP1XSX3JZYJWTR9Q8',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
+            expect(screen.getByText('Jane Smith')).toBeInTheDocument()
+        })
+    })
 })

@@ -25,6 +25,15 @@ describe('AIJourneyDrillDownConfig', () => {
             ])
         })
 
+        it('should return default fields plus customer name for ClickThroughRate metric', () => {
+            const result = getEnrichmentFields(AIJourneyMetric.ClickThroughRate)
+
+            expect(result).toEqual([
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+            ])
+        })
+
         it('should return only default fields for unknown metric', () => {
             const result = getEnrichmentFields('unknownMetric')
 

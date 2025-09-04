@@ -86,6 +86,10 @@ export const extraEnrichmentFieldsPerMetric: Record<
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,
     ],
+    [AIJourneyMetric.ClickThroughRate]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.CustomerName,
+    ],
 }
 
 export const getDrillDownMetricOrder = (

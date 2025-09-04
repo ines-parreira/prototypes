@@ -82,6 +82,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ProductsPerTicketColumn.TicketVolume,
     AIJourneyMetric.TotalOrders,
     AIJourneyMetric.ResponseRate,
+    AIJourneyMetric.ClickThroughRate,
 ]
 
 describe('MetricsConfig', () => {

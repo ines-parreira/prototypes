@@ -164,6 +164,9 @@ export const TicketDrillDownTableContent = ({
     const isAiJourneyResponseRateMetric =
         metricData.metricName === AIJourneyMetric.ResponseRate
 
+    const isAiJourneyClickThroughRateMetric =
+        metricData.metricName === AIJourneyMetric.ClickThroughRate
+
     const isAiSalesAgentDiscountOfferedMetric =
         metricData.metricName === AiSalesAgentChart.AiSalesDiscountOffered
 
@@ -248,7 +251,8 @@ export const TicketDrillDownTableContent = ({
                         />
                     </>
                 )}
-                {isAiJourneyResponseRateMetric && (
+                {(isAiJourneyResponseRateMetric ||
+                    isAiJourneyClickThroughRateMetric) && (
                     <HeaderCellProperty
                         title="Customer"
                         width={columnWidths.order}
@@ -308,7 +312,8 @@ export const TicketDrillDownTableContent = ({
                 )}
                 {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
-                    isAiJourneyResponseRateMetric) && (
+                    isAiJourneyResponseRateMetric ||
+                    isAiJourneyClickThroughRateMetric) && (
                     <HeaderCellProperty
                         title="Assignee"
                         width={columnWidths.assignee}
@@ -416,7 +421,8 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentTotalProductRecommendationsMetric ||
                     isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
-                    isAiJourneyResponseRateMetric
+                    isAiJourneyResponseRateMetric ||
+                    isAiJourneyClickThroughRateMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"
@@ -486,7 +492,8 @@ export const TicketDrillDownTableContent = ({
                                     </BodyCell>
                                 </>
                             )}
-                            {isAiJourneyResponseRateMetric && (
+                            {(isAiJourneyResponseRateMetric ||
+                                isAiJourneyClickThroughRateMetric) && (
                                 <BodyCell width={columnWidths.order}>
                                     {item?.rowData?.[
                                         EnrichmentFields.CustomerName
@@ -568,7 +575,8 @@ export const TicketDrillDownTableContent = ({
                                 </BodyCell>
                             )}
                             {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
-                                isAiJourneyResponseRateMetric) && (
+                                isAiJourneyResponseRateMetric ||
+                                isAiJourneyClickThroughRateMetric) && (
                                 <BodyCell width={columnWidths.assignee}>
                                     {item.assignee && (
                                         <AgentAvatar
@@ -660,7 +668,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric ||
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
-                                isAiJourneyResponseRateMetric
+                                isAiJourneyResponseRateMetric ||
+                                isAiJourneyClickThroughRateMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (

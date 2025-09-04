@@ -117,6 +117,7 @@ describe('useAIJourneyKpis', () => {
             'America/New_York',
             expectedFilters,
             ReportingGranularity.Week,
+            'shopName',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
@@ -161,6 +162,7 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'shopName',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
