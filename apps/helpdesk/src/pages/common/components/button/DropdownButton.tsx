@@ -2,7 +2,7 @@ import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
 
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { Button, ButtonGroup } from '@gorgias/axiom'
 
 import IconButton from './IconButton'
 
@@ -31,27 +31,29 @@ const DropdownButton = (
 ) => {
     return (
         <div className={classnames(className, css.wrapper)} ref={ref}>
-            <Button
-                className={classnames(css.mainAction, css[size || ''])}
-                fillStyle={fillStyle}
-                size={size}
-                {...others}
-            >
-                {children}
-            </Button>
-            <IconButton
-                className={classnames(css.toggle, css[size || ''])}
-                fillStyle={fillStyle}
-                id={toggleId}
-                intent={others.intent}
-                onClick={onToggleClick}
-                ref={toggleRef}
-                size={size}
-                isDisabled={others.isDisabled}
-                data-candu-id={toggleCanduId}
-            >
-                arrow_drop_down
-            </IconButton>
+            <ButtonGroup>
+                <Button
+                    className={classnames(css.mainAction, css[size || ''])}
+                    fillStyle={fillStyle}
+                    size={size}
+                    {...others}
+                >
+                    {children}
+                </Button>
+                <IconButton
+                    className={classnames(css.toggle, css[size || ''])}
+                    fillStyle={fillStyle}
+                    id={toggleId}
+                    intent={others.intent}
+                    onClick={onToggleClick}
+                    ref={toggleRef}
+                    size={size}
+                    isDisabled={others.isDisabled}
+                    data-candu-id={toggleCanduId}
+                >
+                    arrow_drop_down
+                </IconButton>
+            </ButtonGroup>
         </div>
     )
 }

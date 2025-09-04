@@ -1,5 +1,6 @@
+import { ButtonGroup } from '@gorgias/axiom'
+
 import IconButton from 'pages/common/components/button/IconButton'
-import Group from 'pages/common/components/layout/Group'
 
 type Props = {
     className?: string
@@ -21,23 +22,25 @@ export default function Navigation({
     }
 
     return (
-        <Group className={className}>
-            <IconButton
-                id="prev-btn"
-                intent="secondary"
-                isDisabled={!hasPrevItems}
-                onClick={fetchPrevItems}
-            >
-                keyboard_arrow_left
-            </IconButton>
-            <IconButton
-                id="next-btn"
-                intent="secondary"
-                isDisabled={!hasNextItems}
-                onClick={fetchNextItems}
-            >
-                keyboard_arrow_right
-            </IconButton>
-        </Group>
+        <div className={className}>
+            <ButtonGroup>
+                <IconButton
+                    id="prev-btn"
+                    intent="secondary"
+                    isDisabled={!hasPrevItems}
+                    onClick={fetchPrevItems}
+                >
+                    keyboard_arrow_left
+                </IconButton>
+                <IconButton
+                    id="next-btn"
+                    intent="secondary"
+                    isDisabled={!hasNextItems}
+                    onClick={fetchNextItems}
+                >
+                    keyboard_arrow_right
+                </IconButton>
+            </ButtonGroup>
+        </div>
     )
 }

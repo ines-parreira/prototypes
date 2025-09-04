@@ -7,12 +7,11 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import Group from 'pages/common/components/layout/Group'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EDITOR_MODAL_CONTAINER_ID,
@@ -242,7 +241,7 @@ const ArticleEditor: React.FC<Props> = ({
                     <footer className={css.footer}>
                         <div className={css.actions}>
                             <UncontrolledDropdown id="article-save-button-wrapper">
-                                <Group>
+                                <ButtonGroup>
                                     <Button
                                         id="save-changes-button"
                                         data-testid="save-changes-button"
@@ -269,7 +268,7 @@ const ArticleEditor: React.FC<Props> = ({
                                             </IconButton>
                                         </DropdownToggle>
                                     )}
-                                </Group>
+                                </ButtonGroup>
                                 <DropdownMenu right style={{ width: '100%' }}>
                                     <DropdownItem
                                         onClick={() =>

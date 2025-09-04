@@ -36,6 +36,11 @@ export const GroupContext = createContext<GroupContextState | null>(null)
 export const GroupPositionContext =
     createContext<GroupPositionContextState | null>(null)
 
+/**
+ * @deprecated This component is being phased out. Please use `ButtonGroup` from `@gorgias/axiom` instead.
+ * @date 2025-09-02
+ * @type ui-kit-migration
+ */
 export default function Group({
     children,
     className,

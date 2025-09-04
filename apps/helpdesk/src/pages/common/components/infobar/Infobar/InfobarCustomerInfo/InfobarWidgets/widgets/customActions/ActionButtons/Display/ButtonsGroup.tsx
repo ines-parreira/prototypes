@@ -3,6 +3,8 @@ import React, { ComponentProps, memo, useRef } from 'react'
 import classnames from 'classnames'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
+import { ButtonGroup } from '@gorgias/axiom'
+
 import { ContentType } from 'models/api/types'
 import { Source } from 'models/widget/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -17,7 +19,6 @@ import {
     Action,
     Button as ButtonType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import Group from 'pages/common/components/layout/Group'
 
 import Button from './Button'
 
@@ -43,36 +44,38 @@ function ButtonsGroup({ buttons, source }: Props) {
 
     return (
         <div ref={containerRef}>
-            <Group className={classnames(css.actionButtons)}>
-                {displayedButtons.map((button, index) => {
-                    return (
-                        <TemplatedButton
-                            key={index}
-                            button={button}
-                            source={source}
-                        />
-                    )
-                })}
-                {dropdownButtons.length > 0 && (
-                    <UncontrolledDropdown>
-                        <DropdownToggle tag={'span'}>
-                            <IconButton size="small" intent="secondary">
-                                more_horiz
-                            </IconButton>
-                        </DropdownToggle>
-                        <DropdownMenu persist right>
-                            {dropdownButtons.map((button, index) => (
-                                <TemplatedButton
-                                    key={index}
-                                    button={button}
-                                    source={source}
-                                    isDropdown
-                                />
-                            ))}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                )}
-            </Group>
+            <div className={classnames(css.actionButtons)}>
+                <ButtonGroup>
+                    {displayedButtons.map((button, index) => {
+                        return (
+                            <TemplatedButton
+                                key={index}
+                                button={button}
+                                source={source}
+                            />
+                        )
+                    })}
+                    {dropdownButtons.length > 0 && (
+                        <UncontrolledDropdown>
+                            <DropdownToggle tag={'span'}>
+                                <IconButton size="small" intent="secondary">
+                                    more_horiz
+                                </IconButton>
+                            </DropdownToggle>
+                            <DropdownMenu persist right>
+                                {dropdownButtons.map((button, index) => (
+                                    <TemplatedButton
+                                        key={index}
+                                        button={button}
+                                        source={source}
+                                        isDropdown
+                                    />
+                                ))}
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    )}
+                </ButtonGroup>
+            </div>
         </div>
     )
 }

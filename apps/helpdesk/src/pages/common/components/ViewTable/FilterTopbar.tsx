@@ -30,7 +30,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getConfigByName } from 'config/views'
@@ -49,7 +49,6 @@ import {
 } from 'models/view/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
-import Group from 'pages/common/components/layout/Group'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { Separator } from 'pages/common/components/Separator/Separator'
@@ -485,7 +484,7 @@ export const FilterTopbar = ({
                                             toggleDropdownOpen(!isDropdownOpen)
                                         }}
                                     >
-                                        <Group>
+                                        <ButtonGroup>
                                             <ConfirmationPopover
                                                 buttonProps={{
                                                     type: 'submit',
@@ -561,7 +560,7 @@ export const FilterTopbar = ({
                                                     view before saving it.
                                                 </Tooltip>
                                             )}
-                                        </Group>
+                                        </ButtonGroup>
                                         <DropdownToggle tag="span" />
                                         <DropdownMenu right>
                                             <DropdownItem

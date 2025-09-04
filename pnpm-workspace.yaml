@@ -17,7 +17,7 @@ overrides:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '^0.45.0'
+    '@gorgias/axiom': '^0.48.3'
   rest-api-sdk:
     '@gorgias/ecommerce-storage-client': '^0.2.2'
     '@gorgias/ecommerce-storage-mocks': '^0.2.2'

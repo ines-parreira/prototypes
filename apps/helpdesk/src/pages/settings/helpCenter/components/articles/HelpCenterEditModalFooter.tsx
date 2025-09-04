@@ -8,14 +8,13 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 
 import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
 import { Rating } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import Group from 'pages/common/components/layout/Group'
 
 import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useRatingScore } from '../../hooks/useRatingScore'
@@ -73,7 +72,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     const buttonsForModified = (mode: ArticleModeModified) => (
         <UncontrolledDropdown id="article-save-button-wrapper">
-            <Group>
+            <ButtonGroup>
                 <Button
                     isDisabled={canManageArticle ? !canSave : true}
                     onClick={() => mode.onSave(true)}
@@ -87,7 +86,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
                 )}
-            </Group>
+            </ButtonGroup>
             {requiredFields.length >= 1 && (
                 <Tooltip
                     disabled={canManageArticle ? canSave : true}
@@ -111,7 +110,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     const buttonsForNew = (mode: ArticleModeNew) => (
         <UncontrolledDropdown id="article-save-button-wrapper">
-            <Group>
+            <ButtonGroup>
                 <Button
                     onClick={() => mode.onCreate(true)}
                     isDisabled={canManageArticle ? !canSave : true}
@@ -124,7 +123,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
                 )}
-            </Group>
+            </ButtonGroup>
 
             {requiredFields.length >= 1 && (
                 <Tooltip

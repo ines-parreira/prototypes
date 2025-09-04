@@ -1,166 +1,176 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionButtonsGroup component should not render the dropdown if there 3 or less actions 1`] = `
-<span
-  class="container group horizontal"
+<div
+  class="container"
 >
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-1"
-    type="button"
+  <div
+    class="ui-buttongroup-group-fd03"
+    style="display: flex;"
   >
-    <span
-      class="ui-button-content-a432"
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-1"
+      type="button"
     >
       <span
-        id="action-button-1-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-2"
-    type="button"
-  >
-    <span
-      class="ui-button-content-a432"
+        class="ui-button-content-a432"
+      >
+        <span
+          id="action-button-1-tooltip-target"
+        />
+        <div>
+          Option 1
+        </div>
+      </span>
+    </button>
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-2"
+      type="button"
     >
       <span
-        id="action-button-2-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-3"
-    type="button"
-  >
-    <span
-      class="ui-button-content-a432"
+        class="ui-button-content-a432"
+      >
+        <span
+          id="action-button-2-tooltip-target"
+        />
+        <div>
+          Option 1
+        </div>
+      </span>
+    </button>
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-3"
+      type="button"
     >
       <span
-        id="action-button-3-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
-</span>
+        class="ui-button-content-a432"
+      >
+        <span
+          id="action-button-3-tooltip-target"
+        />
+        <div>
+          Option 1
+        </div>
+      </span>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`ActionButtonsGroup component should render null if there's no actions 1`] = `null`;
 
 exports[`ActionButtonsGroup component should render the dropdown if there more than 3 actions 1`] = `
-<span
-  class="container group horizontal"
+<div
+  class="container"
 >
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-4"
-    type="button"
-  >
-    <span
-      class="ui-button-content-a432"
-    >
-      <span
-        id="action-button-4-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-5"
-    type="button"
-  >
-    <span
-      class="ui-button-content-a432"
-    >
-      <span
-        id="action-button-5-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
-  <button
-    aria-disabled="false"
-    class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-    id="action-button-6"
-    type="button"
-  >
-    <span
-      class="ui-button-content-a432"
-    >
-      <span
-        id="action-button-6-tooltip-target"
-      />
-      <div>
-        Option 1
-      </div>
-    </span>
-  </button>
   <div
-    class="dropdown"
+    class="ui-buttongroup-group-fd03"
+    style="display: flex;"
   >
-    <span
-      aria-expanded="false"
-      aria-haspopup="true"
-      class=""
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-4"
+      type="button"
     >
-      <button
-        aria-disabled="false"
-        class="ui-button-wrapper-a432 wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-        type="button"
+      <span
+        class="ui-button-content-a432"
       >
         <span
-          class="ui-button-content-a432"
-        >
-          <i
-            class="material-icons icon"
-          >
-            more_horiz
-          </i>
-        </span>
-      </button>
-    </span>
-    <div
-      aria-hidden="true"
-      class="dropdown-menu dropdown-menu-right"
-      role="menu"
-      tabindex="-1"
-    >
-      <button
-        class="dropdownItem dropdown-item"
-        id="action-button-7"
-        intent="secondary"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <span
-          id="action-button-7-tooltip-target"
+          id="action-button-4-tooltip-target"
         />
         <div>
           Option 1
         </div>
-      </button>
+      </span>
+    </button>
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-5"
+      type="button"
+    >
+      <span
+        class="ui-button-content-a432"
+      >
+        <span
+          id="action-button-5-tooltip-target"
+        />
+        <div>
+          Option 1
+        </div>
+      </span>
+    </button>
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      id="action-button-6"
+      type="button"
+    >
+      <span
+        class="ui-button-content-a432"
+      >
+        <span
+          id="action-button-6-tooltip-target"
+        />
+        <div>
+          Option 1
+        </div>
+      </span>
+    </button>
+    <div
+      class="dropdown"
+    >
+      <span
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+      >
+        <button
+          aria-disabled="false"
+          class="ui-button-wrapper-a432 wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+          type="button"
+        >
+          <span
+            class="ui-button-content-a432"
+          >
+            <i
+              class="material-icons icon"
+            >
+              more_horiz
+            </i>
+          </span>
+        </button>
+      </span>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <button
+          class="dropdownItem dropdown-item"
+          id="action-button-7"
+          intent="secondary"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            id="action-button-7-tooltip-target"
+          />
+          <div>
+            Option 1
+          </div>
+        </button>
+      </div>
     </div>
   </div>
-</span>
+</div>
 `;

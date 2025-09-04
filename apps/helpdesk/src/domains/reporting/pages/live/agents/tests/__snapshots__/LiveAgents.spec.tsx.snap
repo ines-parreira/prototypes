@@ -533,42 +533,45 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
       <div
         class="navigationWrapper"
       >
-        <span
-          class="group horizontal"
-        >
-          <button
-            aria-disabled="true"
-            class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
-            id="prev-btn"
-            type="button"
+        <div>
+          <div
+            class="ui-buttongroup-group-fd03"
+            style="display: flex;"
           >
-            <span
-              class="ui-button-content-a432"
+            <button
+              aria-disabled="true"
+              class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+              id="prev-btn"
+              type="button"
             >
-              <i
-                class="material-icons icon"
+              <span
+                class="ui-button-content-a432"
               >
-                keyboard_arrow_left
-              </i>
-            </span>
-          </button>
-          <button
-            aria-disabled="false"
-            class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432"
-            id="next-btn"
-            type="button"
-          >
-            <span
-              class="ui-button-content-a432"
+                <i
+                  class="material-icons icon"
+                >
+                  keyboard_arrow_left
+                </i>
+              </span>
+            </button>
+            <button
+              aria-disabled="false"
+              class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432"
+              id="next-btn"
+              type="button"
             >
-              <i
-                class="material-icons icon"
+              <span
+                class="ui-button-content-a432"
               >
-                keyboard_arrow_right
-              </i>
-            </span>
-          </button>
-        </span>
+                <i
+                  class="material-icons icon"
+                >
+                  keyboard_arrow_right
+                </i>
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

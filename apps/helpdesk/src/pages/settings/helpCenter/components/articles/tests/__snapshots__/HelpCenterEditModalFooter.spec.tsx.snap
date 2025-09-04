@@ -15,8 +15,9 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           class="dropdown"
           id="article-save-button-wrapper"
         >
-          <span
-            class="group horizontal"
+          <div
+            class="ui-buttongroup-group-fd03"
+            style="display: flex;"
           >
             <button
               aria-disabled="false"
@@ -51,7 +52,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
                 </span>
               </button>
             </span>
-          </span>
+          </div>
           <div
             aria-hidden="true"
             class="dropdown-menu dropdown-menu-right"

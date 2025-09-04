@@ -2,32 +2,37 @@
 
 exports[`<ActionButtons/> should render the action buttons if isEditing is set to false 1`] = `
 <div>
-  <span
-    class="actionButtons group horizontal"
+  <div
+    class="actionButtons"
   >
-    <button
-      aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-      type="button"
+    <div
+      class="ui-buttongroup-group-fd03"
+      style="display: flex;"
     >
-      <span
-        class="ui-button-content-a432"
+      <button
+        aria-disabled="false"
+        class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        type="button"
       >
-        I am in snapshots
-      </span>
-    </button>
-    <button
-      aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
-      type="button"
-    >
-      <span
-        class="ui-button-content-a432"
+        <span
+          class="ui-button-content-a432"
+        >
+          I am in snapshots
+        </span>
+      </button>
+      <button
+        aria-disabled="false"
+        class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        type="button"
       >
-        I am in snapshots too
-      </span>
-    </button>
-  </span>
+        <span
+          class="ui-button-content-a432"
+        >
+          I am in snapshots too
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 `;
 

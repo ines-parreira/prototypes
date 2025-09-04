@@ -11,7 +11,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Button, IconButton } from '@gorgias/axiom'
+import { Button, ButtonGroup, IconButton } from '@gorgias/axiom'
 import { JobType } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -23,7 +23,6 @@ import useShortcuts from 'hooks/useShortcuts'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemInternal from 'pages/common/components/dropdown/DropdownItem'
-import Group from 'pages/common/components/layout/Group'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import css from 'pages/tickets/list/components/TicketListActions.less'
@@ -345,7 +344,7 @@ export const TicketListActions = ({
     return (
         <div className={css.wrapper}>
             <UncontrolledButtonDropdown>
-                <Group>
+                <ButtonGroup>
                     <Button
                         intent="secondary"
                         onClick={() => bulkUpdate('status', 'closed')}
@@ -364,7 +363,7 @@ export const TicketListActions = ({
                             className={css.arrow}
                         />
                     </DropdownToggle>
-                </Group>
+                </ButtonGroup>
                 <DropdownMenu right>
                     <DropdownItem header>SET STATUS</DropdownItem>
                     <DropdownItem
@@ -381,7 +380,7 @@ export const TicketListActions = ({
                 toggle={toggleAgentsDropdown}
                 a11y={false}
             >
-                <Group>
+                <ButtonGroup>
                     <Button
                         intent="secondary"
                         size="small"
@@ -405,7 +404,7 @@ export const TicketListActions = ({
                             className={css.arrow}
                         />
                     </DropdownToggle>
-                </Group>
+                </ButtonGroup>
                 <DropdownMenu right className={css['assignee-dropdown-list']}>
                     <DropdownItem header className="mb-2">
                         ASSIGN TO:
