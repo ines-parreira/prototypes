@@ -1,5 +1,6 @@
 import { Edge, Node } from '@xyflow/react'
 
+import { DEFAULT_INTERMEDIARY_NODE_ID } from './constants'
 import { ConvergencePoint } from './types'
 
 export function createFlowGraph<TNode extends Node>(
@@ -109,6 +110,10 @@ export function findPathFromRoot<TNode extends Node>(
     return dfs(rootId) ? path : null
 }
 
+export function getIntermediaryNodeId(rootId: string): string {
+    return `${DEFAULT_INTERMEDIARY_NODE_ID}_${rootId}`
+}
+
 export function findLowestCommonAncestor<TNode extends Node>(
     nodes: TNode[],
     nodeIds: string[],
@@ -153,6 +158,7 @@ export function insertConvergenceNodes<
     findConvergencePointsInFlow: (nodes: TNode[]) => ConvergencePoint[],
     createIntermediaryNode: (
         convergence: ConvergencePoint,
+        id?: string | null,
     ) => TIntermediaryNode,
     insertIntermediaryNode: (
         intermediaryNode: TIntermediaryNode,
@@ -174,7 +180,16 @@ export function insertConvergenceNodes<
     while (convergencePoints.length) {
         const convergence = convergencePoints[0]
 
-        const intermediaryNode = createIntermediaryNode(convergence)
+        const lca = findLowestCommonAncestor(
+            modifiedNodes,
+            convergence.convergingNodes,
+            firstNodeId,
+            getNextNodes,
+        )
+        const intermediaryNode = createIntermediaryNode(
+            convergence,
+            lca ? getIntermediaryNodeId(lca) : null,
+        )
         modifiedNodes = insertIntermediaryNode(
             intermediaryNode,
             convergence,
@@ -236,10 +251,13 @@ export function insertConvergenceNodes<
 
                 // create intermediary node if there are at least 2 intersecting nodes
                 if (intersectingHere.length > 1) {
-                    const subIntermediaryNode = createIntermediaryNode({
-                        targetNodeId: intermediaryNode.id,
-                        convergingNodes: intersectingHere,
-                    })
+                    const subIntermediaryNode = createIntermediaryNode(
+                        {
+                            targetNodeId: intermediaryNode.id,
+                            convergingNodes: intersectingHere,
+                        },
+                        getIntermediaryNodeId(currentNode),
+                    )
                     modifiedNodes = insertIntermediaryNode(
                         subIntermediaryNode,
                         {
@@ -275,35 +293,4 @@ export function insertConvergenceNodes<
     }
 
     return modifiedNodes
-}
-
-export function findIntermediaryNodeForRoot<TNode extends Node>(
-    nodes: TNode[],
-    rootId: string,
-    getNextNodes: (node: TNode, nodes: TNode[]) => string[],
-    intermediaryNodeType: string,
-): TNode | null {
-    const incomingEdgesMap = buildIncomingEdgesMap(nodes, getNextNodes)
-
-    const intermediaryNodes = nodes.filter(
-        (node) => node.type === intermediaryNodeType,
-    )
-
-    const intermediaryNodeForRoot = intermediaryNodes.find(
-        (intermediaryNode) => {
-            const incomingNodes = incomingEdgesMap[intermediaryNode.id]
-            const lca = findLowestCommonAncestor(
-                nodes,
-                incomingNodes,
-                rootId,
-                getNextNodes,
-            )
-
-            if (lca === rootId) {
-                return true
-            }
-        },
-    )
-
-    return intermediaryNodeForRoot ?? null
 }

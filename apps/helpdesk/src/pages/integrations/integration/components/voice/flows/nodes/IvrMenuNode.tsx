@@ -16,14 +16,14 @@ import {
 import { FormField } from 'core/forms'
 import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
-import { findIntermediaryNodeForRoot } from 'core/ui/flows/utils'
+import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
 import { type IvrMenuNode, IvrOptionNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
-import { createIvrOptionNode, getNextNodes } from '../utils'
+import { createIvrOptionNode } from '../utils'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -33,7 +33,7 @@ type IvrMenuNodeProps = NodeProps<IvrMenuNode>
 export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
-    const { updateNodeData, getNodes, addNodes } = useVoiceFlow()
+    const { updateNodeData, getNodes, addNodes, getNode } = useVoiceFlow()
 
     const { id } = data
     const step: IvrMenuStep = useWatch({ name: `steps.${id}` })
@@ -63,14 +63,8 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         return errors
     }, [step])
 
-    /* can't be memoized because intermediary node id changes */
     const intermediaryNodeId =
-        findIntermediaryNodeForRoot(
-            getNodes(),
-            id,
-            getNextNodes,
-            VoiceFlowNodeType.Intermediary,
-        )?.id ?? END_CALL_NODE.id
+        getNode(getIntermediaryNodeId(id))?.id ?? END_CALL_NODE.id
 
     const isNestedIvr = useMemo(() => {
         const nodes = getNodes()

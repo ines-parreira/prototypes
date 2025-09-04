@@ -7,9 +7,9 @@ import {
     buildIncomingEdgesMap,
     createFlowGraph,
     findConvergencePoints,
-    findIntermediaryNodeForRoot,
     findLowestCommonAncestor,
     findPathFromRoot,
+    getIntermediaryNodeId,
     insertConvergenceNodes,
 } from '../utils'
 
@@ -837,27 +837,9 @@ describe('insertConvergenceNodes', () => {
     })
 })
 
-describe('findIntermediaryNodeForRoot', () => {
-    it('should return null when no intermediary node is found', () => {
-        // the flow is linear, there is no node connecting other nodes with the same lowest common ancestor
-        const result = findIntermediaryNodeForRoot(
-            linearFlowNodes,
-            'start',
-            getNextNodes,
-            'merge',
-        )
-        expect(result).toBeNull()
-    })
-
-    it('should return the intermediary node connecting decision node branches when it is found', () => {
-        const result = findIntermediaryNodeForRoot(
-            branchedFlowNodes,
-            'decision',
-            getNextNodes,
-            'merge',
-        )
-
-        const mergeNode = branchedFlowNodes.find((node) => node.id === 'merge')
-        expect(result).toBe(mergeNode)
+describe('getIntermediaryNodeId', () => {
+    it('should return the correct intermediary node id', () => {
+        const result = getIntermediaryNodeId('start')
+        expect(result).toBe('intermediary_for_start')
     })
 })

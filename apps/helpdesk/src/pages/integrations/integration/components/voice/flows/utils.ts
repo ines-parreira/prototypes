@@ -274,9 +274,10 @@ export const findConvergencePointsInVoiceFlow = (
 
 export const createIntermediaryNode = (
     convergence: ConvergencePoint,
+    id?: string | null,
 ): IntermediaryNode => {
     return {
-        id: uuidv4(),
+        id: id || uuidv4(),
         type: VoiceFlowNodeType.Intermediary,
         data: {
             next_step_id: convergence.targetNodeId,
