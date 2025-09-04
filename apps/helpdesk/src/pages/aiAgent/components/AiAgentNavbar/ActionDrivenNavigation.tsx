@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
     aiAgentRoutes,
@@ -12,8 +13,10 @@ import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import { useCanEnableAiAgentDuringTrial } from 'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
 import { useActionDrivenNavbarSections } from './useActionDrivenNavbarSections'
@@ -39,6 +42,11 @@ export const ActionDrivenNavigation = () => {
         hasCurrentStoreTrialStarted,
     } = useTrialAccess(selectedStore)
 
+    const hasAutomate = useAppSelector(getHasAutomate)
+    const { isDuringTrial } = useCanEnableAiAgentDuringTrial(selectedStore)
+
+    const shouldDisplayAIAgentItems = hasAutomate || isDuringTrial
+
     const onboardingState = useAiAgentOnboardingState(selectedStore || '')
     const isOnboarded = onboardingState === OnboardingState.Onboarded
     const isActionsInternalPlatformEnabled = useFlag(
@@ -48,6 +56,7 @@ export const ActionDrivenNavigation = () => {
         !!selectedStore &&
         !!getStoreActivationStatus &&
         getStoreActivationStatus(selectedStore)
+
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
     )
@@ -57,13 +66,23 @@ export const ActionDrivenNavigation = () => {
         hasCurrentStoreTrialExpired ||
         hasCurrentStoreTrialOptedOut
 
+    const shouldRenderCollapsedItem =
+        !!selectedStore &&
+        (!shouldDisplayAIAgentItems ||
+            (onboardingState === OnboardingState.OnboardingWizard && !isActive))
+
+    const shouldRenderAIAgentItems =
+        !!selectedStore &&
+        shouldDisplayAIAgentItems &&
+        (isActive || isOnboarded)
+
     return (
         <Navigation.Root
             className={css.navigation}
             value={expandedSections}
             onValueChange={handleExpandedSectionsChange}
         >
-            {isActionsInternalPlatformEnabled && (
+            {hasAutomate && isActionsInternalPlatformEnabled && (
                 <Navigation.SectionItem
                     as={NavLink}
                     to={aiAgentRoutes.actionsPlatform}
@@ -72,6 +91,7 @@ export const ActionDrivenNavigation = () => {
                     Actions platform
                 </Navigation.SectionItem>
             )}
+
             <div className={css.storeSelector}>
                 <StoreSelector
                     integrations={storeIntegrations}
@@ -99,23 +119,20 @@ export const ActionDrivenNavigation = () => {
                 />
             </div>
 
-            {selectedStore &&
-                onboardingState === OnboardingState.OnboardingWizard &&
-                !isActive && (
-                    <Navigation.SectionItem
-                        as={NavLink}
-                        to={getAiAgentBasePath(selectedStore)}
-                        exact
-                        displayType="indent"
-                    >
-                        {!isAiAgentExpandingTrialExperienceForAllEnabled ||
-                        hasTrial
-                            ? 'Get Started'
-                            : 'Try for free'}
-                    </Navigation.SectionItem>
-                )}
+            {shouldRenderCollapsedItem && (
+                <Navigation.SectionItem
+                    as={NavLink}
+                    to={getAiAgentBasePath(selectedStore!)}
+                    exact
+                    displayType="indent"
+                >
+                    {!isAiAgentExpandingTrialExperienceForAllEnabled || hasTrial
+                        ? 'Get Started'
+                        : 'Try for free'}
+                </Navigation.SectionItem>
+            )}
 
-            {selectedStore && (isActive || isOnboarded) && (
+            {shouldRenderAIAgentItems && (
                 <ActionDrivenNavigationItems
                     navigationItems={navigationItems}
                     selectedStore={selectedStore}

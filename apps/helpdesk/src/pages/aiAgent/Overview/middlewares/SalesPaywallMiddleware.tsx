@@ -39,6 +39,8 @@ import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
+import { TrialPaywallMiddleware } from './TrialPaywallMiddleware'
+
 import css from './SalesPaywallMiddleware.less'
 
 type PaywallWrapperProps = {
@@ -68,6 +70,7 @@ export const SalesPaywallMiddleware =
         const trialMilestone = useSalesTrialRevampMilestone()
         const { shopName } = useParams<{ shopName?: string }>()
         const currentStore = shopName ? storeActivations[shopName] : undefined
+
         const {
             canSeeTrialCTA,
             hasCurrentStoreTrialStarted,
@@ -79,7 +82,7 @@ export const SalesPaywallMiddleware =
             isLoading: isTrialAccessLoading,
             trialType,
             isAdminUser,
-        } = useTrialAccess(currentStore?.name)
+        } = useTrialAccess(currentStore?.name ?? shopName)
 
         const currentStoreHasActiveTrial =
             trialMilestone === 'milestone-1'
@@ -230,12 +233,14 @@ export const SalesPaywallMiddleware =
             }
         }
 
-        if (!hasAutomate) {
+        if (
+            !hasAutomate &&
+            !isTrialAccessLoading &&
+            !(hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired)
+        ) {
             return (
                 <PaywallWrapper>
-                    <AiAgentPaywallView
-                        aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
-                    />
+                    <TrialPaywallMiddleware shopName={shopName} />
                 </PaywallWrapper>
             )
         }

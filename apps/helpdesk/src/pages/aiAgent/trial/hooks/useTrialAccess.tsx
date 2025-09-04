@@ -45,6 +45,7 @@ export type TrialAccess = {
 
     isAdminUser: boolean
     isLoading?: boolean
+    isError?: boolean
     trialType: TrialType
     currentAutomatePlan: AutomatePlan | undefined
 }
@@ -76,8 +77,11 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const { storeConfigurations, isLoading: isStoreConfigsLoading } =
         useStoreConfigurations(accountDomain)
 
-    const { data: trials, isLoading: isTrialsLoading } =
-        useGetTrials(accountDomain)
+    const {
+        data: trials,
+        isLoading: isTrialsLoading,
+        isError: isTrialsError,
+    } = useGetTrials(accountDomain)
 
     const isLoading = isStoreConfigsLoading || isTrialsLoading
 
@@ -252,6 +256,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
 
         isAdminUser,
         isLoading,
+        isError: isTrialsError,
         trialType,
         currentAutomatePlan,
     }

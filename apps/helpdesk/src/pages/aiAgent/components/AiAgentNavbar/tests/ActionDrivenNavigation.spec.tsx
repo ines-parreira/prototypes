@@ -102,6 +102,9 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
         hasAnyTrialActive: false,
         hasAnyTrialExpired: false,
         hasAnyTrialStarted: false,
+        hasCurrentStoreTrialOptedOut: false,
+        hasCurrentStoreTrialExpired: false,
+        hasCurrentStoreTrialStarted: false,
     })),
 }))
 
@@ -118,14 +121,34 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     })),
 }))
 
+// Mock useCanEnableAiAgentDuringTrial
+jest.mock(
+    'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial',
+    () => ({
+        useCanEnableAiAgentDuringTrial: jest.fn(() => ({
+            isDuringTrial: true,
+            canEnableAiAgent: true,
+        })),
+    }),
+)
+
+// Mock useAppSelector
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(() => true),
+}))
+
 const mockedOnboardingHook = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentOnboardingState',
 ).useAiAgentOnboardingState as jest.Mock
 
-// We don't need to reference this mock since we're not changing its behavior in tests
-const __mockedTrialAccessHook = jest.requireMock(
+const mockedTrialAccessHook = jest.requireMock(
     'pages/aiAgent/trial/hooks/useTrialAccess',
 ).useTrialAccess as jest.Mock
+
+const mockedCanEnableAiAgentDuringTrial = jest.requireMock(
+    'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial',
+).useCanEnableAiAgentDuringTrial as jest.Mock
 
 const mockShopifyIntegration: StoreIntegration = {
     id: 1,
@@ -177,8 +200,27 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlag.mockImplementation((key) => {
+            if (key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll) {
+                return true
+            }
+            return false
+        })
         mockedOnboardingHook.mockReturnValue('onboarded')
+        mockedTrialAccessHook.mockReturnValue({
+            hasAnyTrialOptedOut: false,
+            hasAnyTrialOptedIn: false,
+            hasAnyTrialActive: false,
+            hasAnyTrialExpired: false,
+            hasAnyTrialStarted: false,
+            hasCurrentStoreTrialOptedOut: false,
+            hasCurrentStoreTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+        })
+        mockedCanEnableAiAgentDuringTrial.mockReturnValue({
+            isDuringTrial: true,
+            canEnableAiAgent: true,
+        })
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
             selectedStoreIntegration: mockShopifyIntegration,
@@ -218,6 +260,7 @@ describe('ActionDrivenNavigation', () => {
     })
 
     it('renders navigation items', () => {
+        mockGetStoreActivationStatus.mockReturnValue(true)
         renderComponent()
 
         expect(screen.getByText('Overview')).toBeInTheDocument()
@@ -226,7 +269,7 @@ describe('ActionDrivenNavigation', () => {
 
     it('renders Actions platform link when flag enabled', () => {
         mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.ActionsInternalPlatform || false,
+            (key) => key === FeatureFlagKey.ActionsInternalPlatform,
         )
 
         renderComponent()
@@ -238,10 +281,14 @@ describe('ActionDrivenNavigation', () => {
         )
     })
 
-    it('renders Get Started and hides nav items when in onboarding', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('renders Try for free and hides nav items when in onboarding', () => {
         mockedOnboardingHook.mockReturnValue('onboardingWizard')
         mockGetStoreActivationStatus.mockReturnValue(false)
+        mockedTrialAccessHook.mockReturnValue({
+            hasCurrentStoreTrialOptedOut: false,
+            hasCurrentStoreTrialExpired: false,
+            hasCurrentStoreTrialStarted: false,
+        })
 
         renderComponent()
 
@@ -347,5 +394,17 @@ describe('ActionDrivenNavigation', () => {
         await act(() => user.click(options[1]))
 
         expect(mockHandleStoreSelect).toHaveBeenCalled()
+    })
+
+    it('renders Get Started for stores with trial history', () => {
+        mockedOnboardingHook.mockReturnValue('onboardingWizard')
+        mockGetStoreActivationStatus.mockReturnValue(false)
+        mockedTrialAccessHook.mockReturnValue({
+            hasCurrentStoreTrialStarted: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('Get Started')).toBeInTheDocument()
     })
 })

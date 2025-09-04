@@ -13,6 +13,9 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
+import { useCanEnableAiAgentDuringTrial } from '../Overview/hooks/useCanEnableAiAgentDuringTrial'
+import { TrialPaywallMiddleware } from '../Overview/middlewares/TrialPaywallMiddleware'
+
 import css from './AiAgentAccountConfigurationProvider.less'
 
 type Props = {
@@ -27,8 +30,12 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
     )
     const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
 
+    const { storeIntegration, isDuringTrial, isLoading, isError } =
+        useCanEnableAiAgentDuringTrial()
+
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+        'loading_state',
     )
 
     const accountId = currentAccount.get('id')
@@ -44,11 +51,31 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
         )
 
     if (
-        !(
-            hasAiAgentPreview ||
-            hasAutomate ||
-            isAiAgentExpandingTrialExperienceForAllEnabled
-        ) ||
+        !isError &&
+        (isAiAgentExpandingTrialExperienceForAllEnabled === 'loading_state' ||
+            isLoading)
+    ) {
+        return (
+            <div className={css.spinner}>
+                <LoadingSpinner size="big" />
+            </div>
+        )
+    }
+
+    if (!hasAutomate && isDuringTrial) {
+        return <>{children}</>
+    }
+
+    if (!hasAutomate && isAiAgentExpandingTrialExperienceForAllEnabled) {
+        return (
+            <TrialPaywallMiddleware
+                shopName={storeIntegration?.meta.shop_name}
+            />
+        )
+    }
+
+    if (
+        !(hasAiAgentPreview || hasAutomate) ||
         accountConfigRetrievalStatus === 'error'
     ) {
         return <Redirect to="/app/automation" />
