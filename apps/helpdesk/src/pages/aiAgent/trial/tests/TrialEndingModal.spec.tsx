@@ -17,6 +17,7 @@ import {
     TrialModalProps,
     useTrialModalProps,
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
@@ -26,6 +27,7 @@ import { TrialEndingModal } from '../components/TrialEndingModal/TrialEndingModa
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
+jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -83,6 +85,7 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,
 )
+const mockUseUpgradePlan = assumeMock(useUpgradePlan)
 
 const createMockShoppingAssistantTrialFlow = (overrides = {}) =>
     getUseShoppingAssistantTrialFlowFixture({
@@ -327,6 +330,14 @@ describe('TrialEndedModal', () => {
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             createMockShoppingAssistantTrialFlow(),
         )
+        mockUseUpgradePlan.mockReturnValue({
+            upgradePlan: jest.fn(),
+            upgradePlanAsync: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+            error: null,
+            isSuccess: false,
+            isError: false,
+        })
 
         // Mock moment to control "now" - this is crucial for the date logic tests
         jest.spyOn(moment, 'now').mockReturnValue(
@@ -503,8 +514,18 @@ describe('TrialEndedModal', () => {
         })
     })
 
-    it('should call empty function when primary action is clicked', async () => {
+    it('should call upgradePlanAsync when primary action is clicked', async () => {
         const user = userEvent.setup()
+        const mockUpgradePlanAsync = jest.fn().mockResolvedValue(undefined)
+
+        mockUseUpgradePlan.mockReturnValue({
+            upgradePlan: jest.fn(),
+            upgradePlanAsync: mockUpgradePlanAsync,
+            isLoading: false,
+            error: null,
+            isSuccess: false,
+            isError: false,
+        })
 
         mockUseTrialEnding.mockReturnValue({
             trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
@@ -528,13 +549,7 @@ describe('TrialEndedModal', () => {
             await user.click(primaryButton)
         })
 
-        // Should not crash (empty function)
-        expect(primaryButton).toBeInTheDocument()
-
-        // Wait for any pending state updates
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 0))
-        })
+        expect(mockUpgradePlanAsync).toHaveBeenCalled()
     })
 })
 
@@ -550,6 +565,14 @@ describe('TrialEndingModal', () => {
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             createMockShoppingAssistantTrialFlow(),
         )
+        mockUseUpgradePlan.mockReturnValue({
+            upgradePlan: jest.fn(),
+            upgradePlanAsync: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+            error: null,
+            isSuccess: false,
+            isError: false,
+        })
 
         // Mock moment to control "now" - this is crucial for the date logic tests
         jest.spyOn(moment, 'now').mockReturnValue(

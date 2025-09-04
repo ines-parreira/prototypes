@@ -7,17 +7,12 @@ import {
     useUpgradeSalesSubscriptionMutation,
     useUpgradeSubscriptionMutation,
 } from 'models/aiAgent/queries'
-import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
-import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 export const useUpgradePlan = () => {
-    const { onUpgradePlanClick } = useActivation()
-    const trialMilestone = useSalesTrialRevampMilestone()
     const dispatch = useAppDispatch()
 
-    const isRevampTrialMilestone1Enabled = trialMilestone === 'milestone-1'
     const isExpandingTrialExperienceEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
     )
@@ -32,10 +27,7 @@ export const useUpgradePlan = () => {
             if (isExpandingTrialExperienceEnabled) {
                 return upgradeSubscriptionMutation.mutateAsync([])
             }
-            if (isRevampTrialMilestone1Enabled) {
-                return upgradeSalesSubscriptionMutation.mutateAsync([])
-            }
-            return onUpgradePlanClick()
+            return upgradeSalesSubscriptionMutation.mutateAsync([])
         },
         onSuccess: () => {
             void dispatch(

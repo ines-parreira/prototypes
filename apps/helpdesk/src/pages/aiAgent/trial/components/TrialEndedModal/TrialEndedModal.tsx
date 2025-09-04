@@ -11,6 +11,8 @@ import {
     isTrialEndedModalDismissed,
 } from 'pages/aiAgent/trial/utils/utils'
 
+import { useUpgradePlan } from '../../hooks/useUpgradePlan'
+
 export const TrialEndedModal = ({
     storeName,
     trialType,
@@ -41,6 +43,9 @@ export const TrialEndedModal = ({
     const isModalOpen =
         terminatedLessThan3DaysAgo && !!optedOutDatetime && !isModalDismissed
 
+    const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
+        useUpgradePlan()
+
     if (!isModalOpen) {
         return null
     }
@@ -54,7 +59,8 @@ export const TrialEndedModal = ({
             onClose={dismissModal}
             primaryAction={{
                 label: 'Upgrade to Reactivate',
-                onClick: () => {}, // TODO: Implement this
+                isLoading: isUpgradePlanLoading,
+                onClick: upgradePlanAsync,
             }}
             secondaryAction={{
                 label: 'No, thanks',

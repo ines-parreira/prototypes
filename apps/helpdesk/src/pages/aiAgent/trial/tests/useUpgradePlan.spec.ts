@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { useMutation } from '@tanstack/react-query'
 
@@ -7,8 +8,6 @@ import {
     useUpgradeSalesSubscriptionMutation,
     useUpgradeSubscriptionMutation,
 } from 'models/aiAgent/queries'
-import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
-import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -26,14 +25,6 @@ jest.mock('models/aiAgent/queries', () => ({
     useUpgradeSubscriptionMutation: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
-    useActivation: jest.fn(),
-}))
-
-jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone', () => ({
-    useSalesTrialRevampMilestone: jest.fn(),
-}))
-
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
@@ -44,22 +35,17 @@ jest.mock('core/flags', () => ({
 
 const useMutationMock = assumeMock(useMutation)
 const useAppDispatchMock = assumeMock(useAppDispatch)
-const useActivationMock = assumeMock(useActivation)
 const useUpgradeSalesSubscriptionMutationMock = assumeMock(
     useUpgradeSalesSubscriptionMutation,
 )
 const useUpgradeSubscriptionMutationMock = assumeMock(
     useUpgradeSubscriptionMutation,
 )
-const useSalesTrialRevampMilestoneMock = assumeMock(
-    useSalesTrialRevampMilestone,
-)
 const notifyMock = assumeMock(notify)
 const useFlagMock = assumeMock(useFlag)
 
 describe('useUpgradePlan', () => {
     const mockDispatch = jest.fn()
-    const mockOnUpgradePlanClick = jest.fn()
     const mockMutate = jest.fn()
     const mockMutateAsync = jest.fn()
     const mockUpgradeSalesSubscriptionMutateAsync = jest.fn()
@@ -105,15 +91,6 @@ describe('useUpgradePlan', () => {
         })
 
         useAppDispatchMock.mockReturnValue(mockDispatch)
-        useActivationMock.mockReturnValue({
-            isOnNewPlan: false,
-            showEarlyAccessModal: jest.fn(),
-            showActivationModal: jest.fn(),
-            onUpgradePlanClick: mockOnUpgradePlanClick,
-            activationModal: {} as any,
-            earlyAccessModal: {} as any,
-        })
-        useSalesTrialRevampMilestoneMock.mockReturnValue('off')
         useUpgradeSalesSubscriptionMutationMock.mockReturnValue(
             mockUpgradeSalesSubscriptionResult as any,
         )
@@ -131,7 +108,6 @@ describe('useUpgradePlan', () => {
             context: undefined,
         } as any)
 
-        mockOnUpgradePlanClick.mockResolvedValue(undefined)
         mockUpgradeSalesSubscriptionMutateAsync.mockResolvedValue(undefined)
         mockUpgradeSubscriptionMutateAsync.mockResolvedValue(undefined)
     })
@@ -164,32 +140,8 @@ describe('useUpgradePlan', () => {
     })
 
     describe('mutationFn', () => {
-        it('should call onUpgradePlanClick when milestone is not milestone-1', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('off')
-
-            renderHook(() => useUpgradePlan())
-
-            const mutationOptions = useMutationMock.mock.calls[0][0] as any
-            const mutationFn = mutationOptions.mutationFn
-            await mutationFn()
-
-            expect(mockOnUpgradePlanClick).toHaveBeenCalledTimes(1)
-        })
-
-        it('should call onUpgradePlanClick when milestone is milestone-0', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
-
-            renderHook(() => useUpgradePlan())
-
-            const mutationOptions = useMutationMock.mock.calls[0][0] as any
-            const mutationFn = mutationOptions.mutationFn
-            await mutationFn()
-
-            expect(mockOnUpgradePlanClick).toHaveBeenCalledTimes(1)
-        })
-
-        it('should call upgradeSalesSubscription when milestone is milestone-1', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
+        it('should call upgradeSalesSubscriptionMutation when feature flag is disabled', async () => {
+            useFlagMock.mockReturnValue(false)
 
             renderHook(() => useUpgradePlan())
 
@@ -200,25 +152,28 @@ describe('useUpgradePlan', () => {
             expect(
                 mockUpgradeSalesSubscriptionMutateAsync,
             ).toHaveBeenCalledWith([])
-            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
+            expect(mockUpgradeSubscriptionMutateAsync).not.toHaveBeenCalled()
         })
 
-        it('should handle onUpgradePlanClick errors', async () => {
-            const error = new Error('Upgrade failed')
-            mockOnUpgradePlanClick.mockRejectedValue(error)
+        it('should call upgradeSubscriptionMutation when feature flag is enabled', async () => {
+            useFlagMock.mockReturnValue(true)
 
             renderHook(() => useUpgradePlan())
 
             const mutationOptions = useMutationMock.mock.calls[0][0] as any
             const mutationFn = mutationOptions.mutationFn
+            await mutationFn()
 
-            await expect(mutationFn()).rejects.toThrow('Upgrade failed')
+            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
+            expect(
+                mockUpgradeSalesSubscriptionMutateAsync,
+            ).not.toHaveBeenCalled()
         })
 
-        it('should handle upgradeSalesSubscription errors when milestone is milestone-1', async () => {
+        it('should handle upgradeSalesSubscription errors', async () => {
             const error = new Error('Subscription upgrade failed')
             mockUpgradeSalesSubscriptionMutateAsync.mockRejectedValue(error)
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
+            useFlagMock.mockReturnValue(false)
 
             renderHook(() => useUpgradePlan())
 
@@ -227,6 +182,21 @@ describe('useUpgradePlan', () => {
 
             await expect(mutationFn()).rejects.toThrow(
                 'Subscription upgrade failed',
+            )
+        })
+
+        it('should handle upgradeSubscription errors', async () => {
+            const error = new Error('Upgrade subscription failed')
+            mockUpgradeSubscriptionMutateAsync.mockRejectedValue(error)
+            useFlagMock.mockReturnValue(true)
+
+            renderHook(() => useUpgradePlan())
+
+            const mutationOptions = useMutationMock.mock.calls[0][0] as any
+            const mutationFn = mutationOptions.mutationFn
+
+            await expect(mutationFn()).rejects.toThrow(
+                'Upgrade subscription failed',
             )
         })
     })
@@ -275,29 +245,26 @@ describe('useUpgradePlan', () => {
         })
     })
 
-    describe('milestone detection', () => {
-        it('should correctly detect milestone-1 as revamp trial', () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
+    describe('feature flag detection', () => {
+        it('should check the correct feature flag', () => {
+            useFlagMock.mockReturnValue(false)
 
             renderHook(() => useUpgradePlan())
 
-            expect(useSalesTrialRevampMilestoneMock).toHaveBeenCalledTimes(1)
+            expect(useFlagMock).toHaveBeenCalledWith(
+                FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+            )
         })
 
-        it('should correctly detect off as not revamp trial', () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('off')
+        it('should use the feature flag value correctly', () => {
+            useFlagMock.mockReturnValue(true)
 
             renderHook(() => useUpgradePlan())
 
-            expect(useSalesTrialRevampMilestoneMock).toHaveBeenCalledTimes(1)
-        })
-
-        it('should correctly detect milestone-0 as not revamp trial', () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
-
-            renderHook(() => useUpgradePlan())
-
-            expect(useSalesTrialRevampMilestoneMock).toHaveBeenCalledTimes(1)
+            expect(useFlagMock).toHaveBeenCalledTimes(1)
+            expect(useFlagMock).toHaveBeenCalledWith(
+                FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+            )
         })
     })
 
@@ -362,41 +329,7 @@ describe('useUpgradePlan', () => {
             useFlagMock.mockReturnValue(true)
         })
 
-        it('should call upgradeSubscriptionMutation instead of onUpgradePlanClick', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('off')
-
-            renderHook(() => useUpgradePlan())
-
-            const mutationOptions = useMutationMock.mock.calls[0][0] as any
-            const mutationFn = mutationOptions.mutationFn
-            await mutationFn()
-
-            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
-            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
-            expect(
-                mockUpgradeSalesSubscriptionMutateAsync,
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should call upgradeSubscriptionMutation even when milestone is milestone-0', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
-
-            renderHook(() => useUpgradePlan())
-
-            const mutationOptions = useMutationMock.mock.calls[0][0] as any
-            const mutationFn = mutationOptions.mutationFn
-            await mutationFn()
-
-            expect(mockUpgradeSubscriptionMutateAsync).toHaveBeenCalledWith([])
-            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
-            expect(
-                mockUpgradeSalesSubscriptionMutateAsync,
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should prioritize upgradeSubscriptionMutation over upgradeSalesSubscription when milestone is milestone-1', async () => {
-            useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
-
+        it('should call upgradeSubscriptionMutation', async () => {
             renderHook(() => useUpgradePlan())
 
             const mutationOptions = useMutationMock.mock.calls[0][0] as any
@@ -407,7 +340,6 @@ describe('useUpgradePlan', () => {
             expect(
                 mockUpgradeSalesSubscriptionMutateAsync,
             ).not.toHaveBeenCalled()
-            expect(mockOnUpgradePlanClick).not.toHaveBeenCalled()
         })
 
         it('should handle upgradeSubscriptionMutation errors', async () => {
