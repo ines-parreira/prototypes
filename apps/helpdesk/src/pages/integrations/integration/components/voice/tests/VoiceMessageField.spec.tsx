@@ -411,57 +411,6 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             })
         })
 
-        it('should allow replacing a custom recording', async () => {
-            const file = new File(['audio data'], 'example.mp3', {
-                type: 'audio/mpeg',
-            })
-
-            const message: VoiceMessage = {
-                voice_message_type: VoiceMessageType.VoiceRecording,
-                voice_recording_file_path:
-                    'https://example.com/old-recording.mp3',
-            }
-
-            const { container } = renderWithUpload(message)
-            ;(
-                useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                    typeof useUploadCustomVoiceRecording
-                >
-            ).mock.calls[0][0]?.mutation?.onSuccess!(
-                axiosSuccessResponse<UploadedCustomRecording>({
-                    url: 'https://example.com/voice-recording.mp3',
-                    name: 'example.mp3',
-                    content_type: 'audio/mpeg',
-                    size: 23,
-                }),
-                '' as any,
-                '' as any,
-            )
-
-            const input = container.querySelector('input[type="file"]')
-            expect(input).toBeInTheDocument()
-            act(() => {
-                if (input) {
-                    fireEvent.change(input, { target: { files: [file] } })
-                }
-            })
-
-            await waitFor(() => {
-                expect(mutateUploadMock).toHaveBeenCalledWith({
-                    data: { file },
-                    params: {
-                        type: CustomRecordingType.VoicemailNotification,
-                        replaces: message.voice_recording_file_path,
-                    },
-                })
-                expect(onChange).toHaveBeenCalledWith({
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    voice_recording_file_path:
-                        'https://example.com/voice-recording.mp3',
-                })
-            })
-        })
-
         it('disabled the upload button when the file is uploading', () => {
             const mutateUploadMock = jest.fn()
             const uploadResponse = () =>

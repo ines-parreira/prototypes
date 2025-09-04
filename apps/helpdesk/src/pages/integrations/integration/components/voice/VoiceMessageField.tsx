@@ -120,9 +120,6 @@ const VoiceMessageField = ({
                 const { uploadedFile } = voiceRecordingUpload
                 const params = {
                     type: customRecordingType,
-                    ...(value.voice_recording_file_path
-                        ? { replaces: value.voice_recording_file_path }
-                        : {}),
                 }
                 uploadFile({ data: { file: uploadedFile }, params })
             } else {
