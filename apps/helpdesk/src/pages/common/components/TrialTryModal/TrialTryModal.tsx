@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { useGetTrials } from 'models/aiAgent/queries'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import {
+    hasTrialExpired,
+    hasTrialOptedIn,
+} from 'pages/aiAgent/trial/utils/utils'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './TrialTryModal.less'
 
@@ -63,10 +70,12 @@ const FeatureCard = ({
 
 const TermsCheckbox = ({
     isChecked,
+    isDisabled,
     hasError,
     onChange,
 }: {
     isChecked: boolean
+    isDisabled: boolean
     hasError: boolean
     onChange: (val: boolean) => void
 }) => (
@@ -74,6 +83,7 @@ const TermsCheckbox = ({
         <CheckBoxField
             value={isChecked}
             onChange={onChange}
+            isDisabled={isDisabled}
             className={hasError ? css.checkboxFieldError : css.checkboxField}
             label={
                 <span className={css.checkboxLabel}>
@@ -204,9 +214,23 @@ const TrialTryModal = ({
     newPlan,
     features,
 }: TrialTryModalProps) => {
-    const [isTermsChecked, setIsTermsChecked] = useState(false)
-    const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const { data: trials, isLoading: isTrialsLoading } =
+        useGetTrials(accountDomain)
 
+    const hasAnyOptedInTrial = !!trials?.some(
+        (trial) => hasTrialOptedIn(trial) && !hasTrialExpired(trial),
+    )
+
+    const [isTermsManuallyChecked, setTermsManuallyChecked] = useState(false)
+
+    // If there is at least one opted-in trial (and not expired) then terms
+    // are checked and they cannot be unchecked
+    const isTermsChecked = hasAnyOptedInTrial || isTermsManuallyChecked
+    const isTermsDisabled = hasAnyOptedInTrial
+
+    const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
     const handlePrimaryAction = () => {
         if (showTermsCheckbox && !isTermsChecked) {
             setHasAttemptedSubmit(true)
@@ -219,10 +243,12 @@ const TrialTryModal = ({
 
     useEffect(() => {
         if (!isOpen) {
-            setIsTermsChecked(false)
+            setTermsManuallyChecked(false)
             setHasAttemptedSubmit(false)
         }
     }, [isOpen])
+
+    if (isTrialsLoading) return null
 
     return (
         <Modal
@@ -246,8 +272,9 @@ const TrialTryModal = ({
                     {showTermsCheckbox && (
                         <TermsCheckbox
                             isChecked={isTermsChecked}
+                            isDisabled={isTermsDisabled}
                             hasError={hasCheckboxError}
-                            onChange={setIsTermsChecked}
+                            onChange={setTermsManuallyChecked}
                         />
                     )}
 

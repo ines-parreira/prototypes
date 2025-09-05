@@ -10,6 +10,7 @@ import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/u
 import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
@@ -120,13 +121,25 @@ describe('ShoppingAssistantPromoCard', () => {
         jest.resetAllMocks()
         localStorage.clear()
 
-        mockUseAppSelector.mockReturnValue([
-            {
-                meta: {
-                    shop_name: 'test-shop',
+        const mockAccount = {
+            get: jest.fn((key: string) => {
+                if (key === 'domain') return 'test-domain'
+                return null
+            }),
+        }
+
+        mockUseAppSelector.mockImplementation((selector: any) => {
+            if (selector === getCurrentAccountState) {
+                return mockAccount
+            }
+            return [
+                {
+                    meta: {
+                        shop_name: 'test-shop',
+                    },
                 },
-            },
-        ])
+            ]
+        })
 
         // Mock useTrialEnding to return values that make the modal show
         mockUseTrialEnding.mockReturnValue({
