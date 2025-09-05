@@ -85,11 +85,15 @@ function GlobalNavigationItemTooltip({
     return (
         <Tooltip
             target={targetId}
-            boundariesElement="viewport"
             delay={delay ?? tooltipDelay}
             offset="0, 8"
             placement="right"
             trigger={['hover']}
+            innerProps={{
+                modifiers: {
+                    preventOverflow: { boundariesElement: 'viewport' },
+                },
+            }}
         >
             <div className={navbarCss.tooltipContent}>{children}</div>
         </Tooltip>
