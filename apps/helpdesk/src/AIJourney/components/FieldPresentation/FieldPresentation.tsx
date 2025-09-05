@@ -8,18 +8,23 @@ type FieldPresentationProps = {
     name: string
     description?: string
     tooltip?: string
+    optional?: boolean
 }
 
 export const FieldPresentation = ({
     name,
     description,
     tooltip,
+    optional = false,
 }: FieldPresentationProps) => {
     const id = useId()
     return (
         <div className={css.fieldPresentation}>
             <div className={css.fieldName}>
-                <span>{name}</span>
+                <span>{name}</span>{' '}
+                {optional && (
+                    <span className={css.optionalDecorator}>(optional)</span>
+                )}
                 {tooltip && (
                     <>
                         {' '}

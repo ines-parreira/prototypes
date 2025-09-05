@@ -34,4 +34,16 @@ describe('<FieldPresentation />', () => {
         })
         expect(screen.getByText('This is a tooltip')).toBeInTheDocument()
     })
+
+    it('should render optional decorator properly', async () => {
+        render(
+            <FieldPresentation
+                name={'Nice field'}
+                description={'This is a nice field'}
+                optional
+            />,
+        )
+
+        expect(screen.getByText('(optional)')).toBeInTheDocument()
+    })
 })
