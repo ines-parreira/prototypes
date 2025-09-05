@@ -1,29 +1,31 @@
 import { render, screen } from '@testing-library/react'
 
+import { ARROW_DOWN, ARROW_UP } from '../helper'
 import { TrendIcon } from '../TrendIcon'
 
 describe('TrendIcon', () => {
     it('should render and contain the correct classNames', () => {
         render(<TrendIcon value={1} />)
 
-        expect(screen.getByText('arrow_upward')).toBeInTheDocument()
-        expect(screen.getByText('arrow_upward')).toHaveClass('icon-12')
-        expect(screen.getByText('arrow_upward')).toHaveClass('mr-1')
-        expect(screen.getByText('arrow_upward')).toHaveClass(
-            'material-icons-round',
-        )
+        expect(screen.getByRole('img', { name: ARROW_UP })).toBeInTheDocument()
     })
 
     it('should render with negative sign', () => {
         render(<TrendIcon value={-1} />)
 
-        expect(screen.getByText('arrow_downward')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: ARROW_DOWN }),
+        ).toBeInTheDocument()
     })
 
     it('should render with zero sign', () => {
         render(<TrendIcon value={0} />)
 
-        expect(screen.queryByText('arrow_upward')).not.toBeInTheDocument()
-        expect(screen.queryByText('arrow_downward')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: ARROW_UP }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: ARROW_DOWN }),
+        ).not.toBeInTheDocument()
     })
 })

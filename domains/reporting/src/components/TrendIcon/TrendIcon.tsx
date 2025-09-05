@@ -1,3 +1,5 @@
+import { Icon } from '@gorgias/axiom'
+
 import { getIconNameFromValue } from './helper'
 
 /**
@@ -10,17 +12,17 @@ import { getIconNameFromValue } from './helper'
  * Props:
  * - value: number
  *   Each value is associated with a specific icon:
- *    1: 'arrow_upward'
- *   -1: 'arrow_downward'
+ *    Positive > 0: 'arrow-up'
+ *    Negative < 0: 'arrow-down'
  *    0: no icon
  *
  * @see Figma design for visual details
  */
 
 export const TrendIcon = ({ value }: { value: number }) => {
-    return (
-        <i className="material-icons-round mr-1 icon-12">
-            {getIconNameFromValue(value)}
-        </i>
-    )
+    const iconName = getIconNameFromValue(value)
+
+    if (!iconName) return null
+
+    return <Icon name={iconName} size={12} />
 }

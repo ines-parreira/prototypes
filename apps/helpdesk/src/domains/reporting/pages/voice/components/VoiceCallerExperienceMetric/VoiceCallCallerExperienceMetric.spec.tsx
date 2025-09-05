@@ -87,10 +87,10 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             isFetching: false,
         }
 
-        const { getByText, container } = renderComponent(trendValue)
+        const { getByRole, getByText, container } = renderComponent(trendValue)
 
         expect(getByText('Total duration')).toBeInTheDocument()
-        expect(getByText('arrow_upward')).toBeInTheDocument()
+        expect(getByRole('img', { name: 'arrow-up' })).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('negative')
         expect(getByText('15s')).toBeInTheDocument()
         fireEvent.mouseOver(getByText('50%'))

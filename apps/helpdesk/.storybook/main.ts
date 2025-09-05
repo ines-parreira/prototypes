@@ -14,7 +14,13 @@ function getAbsolutePath(value: string): any {
 
 const config: StorybookConfig = {
     stories: ['../src/**/*.stories.(js|jsx|ts|tsx)'],
-    staticDirs: [srcDir],
+    staticDirs: [
+        srcDir,
+        {
+            from: '../node_modules/@gorgias/axiom/dist/assets',
+            to: 'gorgias/axiom',
+        },
+    ],
     addons: [
         '@storybook/addon-links',
         '@storybook/addon-essentials',

@@ -16,7 +16,8 @@
     },
     "peerDependencies": {
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "@gorgias/axiom": "catalog:axiom"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
