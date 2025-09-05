@@ -10,7 +10,7 @@ import {
 } from 'AIJourney/components'
 import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
-import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
+import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneyData, useJourneys } from 'AIJourney/queries'
@@ -26,7 +26,7 @@ import css from './Performance.less'
 const digestContent = (
     revenueVariation: string,
     conversionVariationContent: string,
-    messagesSent: string,
+    conversations: string,
     hasDiscount?: boolean,
     hasMaxFollowUpMessages?: boolean,
 ) => (
@@ -35,7 +35,8 @@ const digestContent = (
         <b>{revenueVariation}</b>, converting at{' '}
         <b>{conversionVariationContent}</b>, with{' '}
         <b>
-            {messagesSent} {messagesSent === '1' ? 'message' : 'messages'} sent
+            {conversations}{' '}
+            {conversations === '1' ? 'conversation' : 'conversations'}
         </b>
         .{' '}
         {(!hasDiscount || !hasMaxFollowUpMessages) && (
@@ -108,14 +109,14 @@ export const Performance = () => {
 
     const filters = useFilters()
 
-    const totalMessagesSent = useAIJourneyTotalMessages({
+    const totalConversations = useAIJourneyTotalConversations({
         journeyId: abandonedCartJourney?.id,
         filters,
     })
-    const formattedTotalMessagesSent =
-        totalMessagesSent?.value > 1000
-            ? `${(totalMessagesSent.value / 1000).toFixed(1)}k`
-            : totalMessagesSent.value.toString()
+    const formattedTotalConversationsSent =
+        totalConversations?.value > 1000
+            ? `${(totalConversations.value / 1000).toFixed(1)}k`
+            : totalConversations.value.toString()
 
     const {
         offer_discount: isDiscountEnabled,
@@ -218,7 +219,7 @@ export const Performance = () => {
                 content={digestContent(
                     metricsContent.revenueVariationContent,
                     metricsContent.conversionVariationContent,
-                    formattedTotalMessagesSent,
+                    formattedTotalConversationsSent,
                     isDiscountEnabled,
                     !!maxFollowUpMessages,
                 )}
@@ -252,7 +253,7 @@ export const Performance = () => {
                             journeyData={journeyData}
                             integrationId={integrationId}
                             abandonedCartJourney={abandonedCartJourney}
-                            totalSent={formattedTotalMessagesSent}
+                            totalConversations={formattedTotalConversationsSent}
                             key={abandonedCartJourney?.id}
                         />
                     ))}

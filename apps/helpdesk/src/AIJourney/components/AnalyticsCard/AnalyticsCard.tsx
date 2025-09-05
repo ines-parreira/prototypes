@@ -10,6 +10,7 @@ import {
 } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
+import { TotalConversationsCard } from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
@@ -23,7 +24,6 @@ import { NotificationStatus } from 'state/notifications/types'
 import { EmptyState } from './components/EmptyState/EmptyState'
 import { Footer } from './components/Footer/Footer'
 import { MoreOptions } from './components/MoreOptions/MoreOptions'
-import { TotalMessagesSentCard } from './components/TotalMessagesSentCard/TotalMessagesSentCard'
 
 import css from './AnalyticsCard.less'
 
@@ -33,7 +33,7 @@ type AnalyticsCardProps = {
     integrationId?: number
     currentIntegration?: Integration
     abandonedCartJourney: Omit<JourneyApiDTO, 'created_datetime'>
-    totalSent?: string
+    totalConversations?: string
     period: {
         start: string
         end: string
@@ -46,7 +46,7 @@ export const AnalyticsCard = ({
     journeyData,
     integrationId,
     abandonedCartJourney,
-    totalSent,
+    totalConversations,
 }: AnalyticsCardProps) => {
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
@@ -142,8 +142,8 @@ export const AnalyticsCard = ({
                         <AnalyticsData data={analyticsData} period={period} />
                     </>
                 )}
-                <TotalMessagesSentCard
-                    totalSent={totalSent}
+                <TotalConversationsCard
+                    totalConversations={totalConversations}
                     ticketViewId={ticketViewId}
                 />
             </div>

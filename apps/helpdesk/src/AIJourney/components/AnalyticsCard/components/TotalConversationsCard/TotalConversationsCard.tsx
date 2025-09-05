@@ -1,26 +1,27 @@
 import { useHistory } from 'react-router-dom'
 
-import css from './TotalMessagesSentCard.less'
+import css from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard.less'
 
 type TotalMessagesSentCardProps = {
-    totalSent?: string
+    totalConversations?: string
     ticketViewId?: unknown
 }
 
-export const TotalMessagesSentCard = ({
-    totalSent,
+export const TotalConversationsCard = ({
+    totalConversations,
     ticketViewId,
 }: TotalMessagesSentCardProps) => {
     const history = useHistory()
 
-    const hasSentMessages = !!totalSent && totalSent !== '0'
+    const hasSentMessages = !!totalConversations && totalConversations !== '0'
     const shouldRenderRedirectButton = hasSentMessages && !!ticketViewId
 
     return (
         <div className={css.totalMessagesSentCard}>
             <div className={css.totalMessages}>
                 <i className="material-icons-outlined">sms</i>
-                {totalSent} {totalSent === '1' ? 'message' : 'messages'} sent
+                {totalConversations}{' '}
+                {totalConversations === '1' ? 'conversation' : 'conversations'}
             </div>
             {shouldRenderRedirectButton && (
                 <button

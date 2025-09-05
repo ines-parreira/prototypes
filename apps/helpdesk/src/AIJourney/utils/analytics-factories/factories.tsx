@@ -378,7 +378,7 @@ export const aiJourneyUniqClicksTimeSeriesQuery = (
     }
 }
 
-export const aiJourneyTotalMessagesQueryFactory = (
+export const aiJourneyTotalConversationsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     journeyId?: string,
@@ -399,8 +399,8 @@ export const aiJourneyTotalMessagesQueryFactory = (
         : []
 
     return {
-        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_MESSAGES,
-        measures: [AiSalesAgentConversationsMeasure.AiJourneyTotalMessages],
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS,
+        measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [...journeyIdFilter, ...baseFilters],
         timezone,

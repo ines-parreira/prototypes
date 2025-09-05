@@ -1,18 +1,18 @@
 import { renderHook } from '@testing-library/react'
 
-import { aiJourneyTotalMessagesQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
+import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import useAppSelector from 'hooks/useAppSelector'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
-import { useAIJourneyTotalMessages } from './useAIJourneyTotalMessages'
+import { useAIJourneyTotalConversations } from './useAIJourneyTotalConversations'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 jest.mock('AIJourney/utils/analytics-factories/factories')
 
-describe('useAIJourneyTotalMessages', () => {
+describe('useAIJourneyTotalConversations', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
     const mockUseMetric = useMetric as jest.Mock
     const filters = {
@@ -43,11 +43,11 @@ describe('useAIJourneyTotalMessages', () => {
     it('should return metric data with correct formatting', () => {
         const journeyId = 'test-journey-id'
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages({ journeyId, filters }),
+            useAIJourneyTotalConversations({ journeyId, filters }),
         )
 
         expect(result.current).toEqual({
-            label: 'Total Messages Sent',
+            label: 'Total Conversations',
             value: 42,
             interpretAs: 'more-is-better',
             metricFormat: 'decimal-precision-1',
@@ -55,7 +55,7 @@ describe('useAIJourneyTotalMessages', () => {
             isLoading: false,
         })
 
-        expect(aiJourneyTotalMessagesQueryFactory).toHaveBeenCalledWith(
+        expect(aiJourneyTotalConversationsQueryFactory).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: expect.objectContaining({
                     start_datetime: expect.any(String),
@@ -74,7 +74,7 @@ describe('useAIJourneyTotalMessages', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages({
+            useAIJourneyTotalConversations({
                 journeyId: 'test-journey-id',
                 filters,
             }),
@@ -86,17 +86,17 @@ describe('useAIJourneyTotalMessages', () => {
 
     it('should handle undefined journeyId', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages({ journeyId: undefined, filters }),
+            useAIJourneyTotalConversations({ journeyId: undefined, filters }),
         )
 
-        expect(aiJourneyTotalMessagesQueryFactory).toHaveBeenCalledWith(
+        expect(aiJourneyTotalConversationsQueryFactory).toHaveBeenCalledWith(
             expect.any(Object),
             'America/New_York',
             undefined,
         )
 
         expect(result.current).toEqual({
-            label: 'Total Messages Sent',
+            label: 'Total Conversations',
             value: 42,
             interpretAs: 'more-is-better',
             metricFormat: 'decimal-precision-1',
