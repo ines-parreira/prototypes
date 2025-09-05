@@ -177,7 +177,7 @@ export const useActivation = (
             <EarlyAccessModal
                 isLoading={isLoading}
                 isUpgrading={isSubscriptionUpdating}
-                isOpen={isPreviewModalVisible}
+                isOpen={false} // [AIFLY-955] due to clash with AI Agent trial,temporarily disable to prevent showing until future of this is decided
                 onClose={() => {
                     closeEarlyAccessModal('clicked-on-cross-or-outside')
                 }}

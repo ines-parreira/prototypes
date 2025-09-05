@@ -271,7 +271,8 @@ describe('useActivation', () => {
     })
 
     describe('activationModal', () => {
-        it('should show early access modal when clicking on learn more', async () => {
+        // more context in [AIFLY-955]
+        it.skip('should show early access modal when clicking on learn more', async () => {
             const { result } = renderHookWithRouter()
 
             await act(() => {
@@ -298,7 +299,8 @@ describe('useActivation', () => {
                 )
             })
 
-            it('should handle sales change and show early access modal when not on new plan', async () => {
+            // more context in [AIFLY-955]
+            it.skip('should handle sales change and show early access modal when not on new plan', async () => {
                 const { result } = renderHookWithRouter()
 
                 await act(() => {
@@ -536,7 +538,8 @@ describe('useActivation', () => {
             expect(result.current.earlyAccessModal.props.isOpen).toBe(false)
         })
 
-        it('should auto-display early access modal when account is not on new automate plan', async () => {
+        // more context in [AIFLY-955]
+        it.skip('should auto-display early access modal when account is not on new automate plan', async () => {
             const store = {
                 ...defaultState,
                 currentAccount: fromJS({
