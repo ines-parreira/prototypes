@@ -22,7 +22,7 @@
         color: var(--neutral-grey-6);
         font-weight: 600;
         border: 0;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         margin-right: 8px;
         padding: 0 8px;
         outline-color: var(--main-primary);
@@ -102,7 +102,7 @@
         background-clip: padding-box;
         -webkit-background-clip: padding-box;
         background-image: none;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         color: #464a4c;
         font-size: 1rem;
         white-space: nowrap;
@@ -128,5 +128,16 @@
                 font-size: 20px;
             }
         }
+    }
+}
+
+.axiom :local {
+    .titleInput,
+    .titleInput:disabled {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .inlineLanguageSelect {
+        background-color: var(--elevation-neutral-default);
     }
 }

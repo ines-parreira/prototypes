@@ -3,7 +3,7 @@
         overflow-y: scroll;
         flex-grow: 1;
         padding: 16px;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-bottom: 1px solid var(--neutral-grey-3);
     }
 
@@ -25,7 +25,7 @@
 
     .titleInput {
         input {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
     }
 
@@ -69,6 +69,18 @@
 
         & > * {
             flex: 1 100%;
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background-color: var(--surface-neutral-primary);
+    }
+
+    .titleInput {
+        input {
+            background-color: var(--elevation-neutral-default);
         }
     }
 }

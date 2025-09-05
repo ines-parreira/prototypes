@@ -22,7 +22,7 @@
 
         .icon {
             font-size: 20px;
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             padding: 8px;
             border-radius: 20px;
             color: var(--neutral-grey-5);
@@ -83,5 +83,13 @@
 
     .additionalDetails {
         margin: 24px 0;
+    }
+}
+
+.axiom :local {
+    .feature {
+        .icon {
+            background: var(--surface-neutral-secondary);
+        }
     }
 }

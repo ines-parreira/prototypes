@@ -13,7 +13,7 @@
         .modal {
             width: 70vw;
             max-width: 828px;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             position: absolute;
             top: 0;
             height: 100%;
@@ -38,6 +38,14 @@
                 width: 100vw;
                 max-width: 100%;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .modal-container {
+        .modal {
+            background-color: var(--elevation-neutral-default);
         }
     }
 }

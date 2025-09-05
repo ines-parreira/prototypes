@@ -15,7 +15,7 @@
     }
     .icon {
         font-size: 20px;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         padding: var(--layout-spacing-xs);
         border-radius: 20px;
         color: var(--neutral-grey-5);
@@ -23,5 +23,11 @@
         width: 36px;
         display: flex;
         justify-content: center;
+    }
+}
+
+.axiom :local {
+    .icon {
+        background: var(--surface-neutral-secondary);
     }
 }

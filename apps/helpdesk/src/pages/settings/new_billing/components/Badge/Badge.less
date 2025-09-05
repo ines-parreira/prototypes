@@ -9,23 +9,43 @@
         letter-spacing: 0.05em;
 
         &.success {
-            background-color: var(--accessory-green-1);
+            background-color: var(--accessory-green-1); // legacy
             color: var(--accessory-green-3);
         }
 
         &.warning {
-            background-color: var(--accessory-orange-1);
+            background-color: var(--accessory-orange-1); // legacy
             color: var(--feedback-warning);
         }
 
         &.error {
-            background-color: var(--accessory-red-1);
+            background-color: var(--accessory-red-1); // legacy
             color: var(--feedback-error);
         }
 
         &.info {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             color: var(--neutral-grey-5);
+        }
+    }
+}
+
+.axiom :local {
+    .badge {
+        &.success {
+            background-color: var(--surface-success-primary);
+        }
+
+        &.warning {
+            background-color: var(--surface-warning-primary);
+        }
+
+        &.error {
+            background-color: var(--surface-error-primary);
+        }
+
+        &.info {
+            background-color: var(--surface-neutral-primary);
         }
     }
 }

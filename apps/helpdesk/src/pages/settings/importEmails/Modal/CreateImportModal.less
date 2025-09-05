@@ -10,7 +10,6 @@
     .helpText {
         display: flex;
         flex-direction: column;
-        background-color: var(--neutral-grey-1);
     }
 
     .errorText {
@@ -31,7 +30,7 @@
     }
 
     .helpText {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border: 1px solid var(--neutral-grey-2);
         border-radius: 4px;
         padding: var(--layout-spacing-s);
@@ -88,12 +87,22 @@
         padding: 0 8px;
         min-height: 36px;
         color: var(--primary-blue-5);
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .addEmailIcon {
         font-size: 20px;
         margin-right: 8px;
         color: var(--primary-blue-5);
+    }
+}
+
+.axiom :local {
+    .helpText {
+        background-color: var(--surface-neutral-primary);
+    }
+
+    .addEmailContainer {
+        background-color: var(--surface-neutral-secondary);
     }
 }

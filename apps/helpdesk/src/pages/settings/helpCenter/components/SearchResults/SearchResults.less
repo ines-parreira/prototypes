@@ -22,11 +22,11 @@
     }
 
     .row {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         height: 67px;
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -44,5 +44,15 @@
         margin-right: 16px;
         color: var(--neutral-grey-4);
         font-size: 22px;
+    }
+}
+
+.axiom :local {
+    .row {
+        background-color: var(--elevation-neutral-default);
+
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
+        }
     }
 }

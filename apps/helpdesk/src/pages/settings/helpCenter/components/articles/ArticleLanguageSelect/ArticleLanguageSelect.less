@@ -33,7 +33,7 @@
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
 
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0px 2px 4px fade(black, 16%);
         z-index: 100;
 
@@ -57,10 +57,10 @@
             transition: background 250ms ease-out;
 
             &:hover {
-                background: var(--neutral-grey-2);
+                background: var(--neutral-grey-2); // legacy
 
                 .status:not(.completed) {
-                    background: var(--feedback-success);
+                    background: var(--feedback-success); // legacy
                 }
             }
         }
@@ -70,5 +70,19 @@
         display: flex;
         align-items: flex-end;
         margin-left: 40px;
+    }
+}
+
+.axiom :local {
+    .dropdown {
+        background: var(--elevation-neutral-default);
+
+        li:hover {
+            background: var(--surface-neutral-secondary);
+
+            .status:not(.completed) {
+                background: var(--surface-success-primary);
+            }
+        }
     }
 }

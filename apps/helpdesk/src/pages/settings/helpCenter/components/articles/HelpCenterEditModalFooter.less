@@ -5,7 +5,7 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         padding: 16px;
     }
 
@@ -72,5 +72,11 @@
                 margin-right: 5px;
             }
         }
+    }
+}
+
+.axiom :local {
+    .footer {
+        background-color: var(--surface-neutral-secondary);
     }
 }

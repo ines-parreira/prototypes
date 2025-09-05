@@ -6,11 +6,11 @@
     }
 
     .row {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         height: 67px;
 
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
 
             .actions {
                 opacity: 1;
@@ -33,6 +33,16 @@
         }
         .rating-icon {
             padding-right: 5px;
+        }
+    }
+}
+
+.axiom :local {
+    .row {
+        background-color: var(--surface-neutral-secondary);
+
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
         }
     }
 }

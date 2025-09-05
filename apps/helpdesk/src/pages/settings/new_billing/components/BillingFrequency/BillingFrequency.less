@@ -16,7 +16,7 @@
         align-items: flex-start;
         gap: 8px;
         padding: 12px;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
         color: var(--neutral-grey-6);
@@ -29,5 +29,11 @@
             margin-top: 1px;
             flex-shrink: 0;
         }
+    }
+}
+
+.axiom :local {
+    .disabledMessage {
+        background-color: var(--surface-neutral-primary);
     }
 }

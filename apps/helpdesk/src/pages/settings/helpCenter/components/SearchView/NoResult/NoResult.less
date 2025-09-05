@@ -7,7 +7,7 @@
     .circle {
         width: 80px;
         height: 80px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -23,5 +23,11 @@
         text-align: center;
         color: var(--neutral-grey-5);
         margin-top: 16px;
+    }
+}
+
+.axiom :local {
+    .circle {
+        background-color: var(--surface-neutral-secondary);
     }
 }

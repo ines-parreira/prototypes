@@ -17,7 +17,7 @@
         background-clip: padding-box;
         -webkit-background-clip: padding-box;
         background-image: none;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         font-size: 1rem;
         color: var(--neutral-grey-6);
         white-space: nowrap;
@@ -73,7 +73,7 @@
         position: absolute;
         z-index: 3;
         margin-top: 8px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 4px;
         box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
         padding: 16px;
@@ -86,5 +86,15 @@
     .dropdownIcon {
         font-size: 20px;
         color: var(--neutral-grey-4);
+    }
+}
+
+.axiom :local {
+    .select {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .notificationWrapper {
+        background-color: var(--elevation-neutral-default);
     }
 }
