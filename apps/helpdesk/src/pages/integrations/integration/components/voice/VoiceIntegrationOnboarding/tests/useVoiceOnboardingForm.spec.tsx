@@ -16,7 +16,9 @@ import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
+import { useFlag } from '../../../../../../../core/flags'
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
+import { DEFAULT_IVR_INTEGRATION_FLOW, VOICEMAIL_FLOW_STEP } from '../constants'
 import {
     useOnboardingForm,
     validateOnboardingForm,
@@ -44,6 +46,11 @@ useAppDispatchMock.mockReturnValue(mockDispatch)
 jest.mock('state/integrations/actions')
 const fetchIntegrationsMock = assumeMock(fetchIntegrations)
 fetchIntegrationsMock.mockReturnValue('mockFetchIntegrations' as any)
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const useFlagMock = assumeMock(useFlag)
 
 describe('validateOnboardingForm', () => {
     it('should return errors when name is empty', () => {
@@ -103,6 +110,10 @@ describe('validateOnboardingForm', () => {
 describe('useOnboardingForm', () => {
     const history = createMemoryHistory()
 
+    beforeEach(() => {
+        useFlagMock.mockReturnValue(true)
+    })
+
     const renderUseOnboardingForm = () =>
         renderHook(() => useOnboardingForm(), {
             wrapper: ({ children }) => (
@@ -138,12 +149,87 @@ describe('useOnboardingForm', () => {
         expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
         expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
         expect(createIntegrationMock).toHaveBeenCalledWith(
-            data as CreateIntegrationBody,
+            {
+                ...data,
+                meta: {
+                    ...data.meta,
+                    flow: {
+                        first_step_id: 'voicemail',
+                        steps: { voicemail: VOICEMAIL_FLOW_STEP },
+                    },
+                },
+            },
             undefined,
         )
     })
 
     it('should call createIntegration with correct data for IVR', async () => {
+        createIntegrationMock.mockResolvedValue({
+            data: { name: 'Test Integration' },
+        } as any)
+
+        const { result } = renderUseOnboardingForm()
+        const data: PhoneIntegration = {
+            name: 'Test Integration',
+            meta: {
+                phone_number_id: 1,
+                function: PhoneFunction.Ivr,
+            },
+        } as any
+
+        await act(async () => {
+            result.current.onSubmit(data)
+        })
+
+        expect(mockNotify.success).toHaveBeenCalledWith(
+            'Test Integration successfully created.',
+        )
+        expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
+        expect(createIntegrationMock).toHaveBeenCalledWith(
+            {
+                ...data,
+                meta: {
+                    ...data.meta,
+                    ivr: DEFAULT_IVR_SETTINGS,
+                    flow: DEFAULT_IVR_INTEGRATION_FLOW,
+                },
+            },
+            undefined,
+        )
+    })
+
+    it('should call createIntegration with correct data FF off', async () => {
+        useFlagMock.mockReturnValue(false)
+        createIntegrationMock.mockResolvedValue({
+            data: { name: 'Test Integration' },
+        } as any)
+
+        const { result } = renderUseOnboardingForm()
+        const data: PhoneIntegration = {
+            name: 'Test Integration',
+            meta: {
+                phone_number_id: 1,
+                function: PhoneFunction.Standard,
+            },
+        } as any
+
+        await act(async () => {
+            result.current.onSubmit(data)
+        })
+
+        expect(mockNotify.success).toHaveBeenCalledWith(
+            'Test Integration successfully created.',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
+        expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
+        expect(createIntegrationMock).toHaveBeenCalledWith(
+            data as CreateIntegrationBody,
+            undefined,
+        )
+    })
+
+    it('should call createIntegration with correct data for IVR FF off', async () => {
+        useFlagMock.mockReturnValue(false)
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },
         } as any)
