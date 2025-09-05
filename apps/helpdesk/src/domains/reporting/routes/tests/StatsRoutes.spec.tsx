@@ -92,6 +92,13 @@ const defaultState = {
         },
     }),
     billing: initialState.mergeDeep(billingFixtures.billingState),
+    integrations: fromJS({
+        integrations: [],
+    }),
+    currentUser: fromJS({
+        id: 1,
+        role: { name: 'admin' },
+    }),
 }
 
 jest.mock('core/flags')
@@ -217,6 +224,11 @@ jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview',
 )
 const AiSalesAgentSalesOverviewMock = assumeMock(AiSalesAgentSalesOverview)
+
+// Mock the SalesPaywallMiddleware to simply render the component it wraps
+jest.mock('pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware', () => ({
+    SalesPaywallMiddleware: (Component: ComponentType) => Component,
+}))
 
 describe('StatsRoutes', () => {
     beforeEach(() => {

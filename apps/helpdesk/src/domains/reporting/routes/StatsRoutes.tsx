@@ -47,6 +47,7 @@ import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
 import VoiceAgents from 'domains/reporting/pages/voice/pages/VoiceAgents'
 import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
 import useAppSelector from 'hooks/useAppSelector'
+import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
@@ -517,7 +518,9 @@ export const StatsRoutes = () => {
                         path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`}
                         render={() => (
                             <App
-                                content={AiSalesAgentSalesOverview}
+                                content={SalesPaywallMiddleware(
+                                    AiSalesAgentSalesOverview,
+                                )}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

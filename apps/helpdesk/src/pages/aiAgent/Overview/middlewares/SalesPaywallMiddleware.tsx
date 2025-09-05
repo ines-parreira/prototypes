@@ -33,6 +33,7 @@ import {
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
@@ -135,7 +136,9 @@ export const SalesPaywallMiddleware =
             isSuccessModalOpen,
             closeTrialUpgradeModal,
             closeSuccessModal,
+            isTrialRequestModalOpen,
             openTrialUpgradeModal,
+            closeTrialRequestModal,
             openUpgradePlanModal,
             closeUpgradePlanModal,
             closeManageTrialModal,
@@ -290,7 +293,11 @@ export const SalesPaywallMiddleware =
                             {...trialModalProps.newTrialUpgradePlanModal}
                             isOpen={isTrialModalOpen}
                         />
-
+                        <RequestTrialModal
+                            {...trialModalProps.trialRequestModal}
+                            isOpen={isTrialRequestModalOpen}
+                            onClose={closeTrialRequestModal}
+                        />
                         <TrialFinishSetupModal
                             {...trialModalProps.trialFinishSetupModal}
                             isOpen={isTrialFinishSetupModalOpen}
