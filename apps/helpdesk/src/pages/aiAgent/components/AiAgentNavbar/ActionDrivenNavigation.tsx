@@ -37,6 +37,7 @@ export const ActionDrivenNavigation = () => {
     } = useActionDrivenNavbarSections()
 
     const {
+        currentAutomatePlan,
         hasCurrentStoreTrialOptedOut,
         hasCurrentStoreTrialExpired,
         hasCurrentStoreTrialStarted,
@@ -126,7 +127,9 @@ export const ActionDrivenNavigation = () => {
                     exact
                     displayType="indent"
                 >
-                    {!isAiAgentExpandingTrialExperienceForAllEnabled || hasTrial
+                    {!isAiAgentExpandingTrialExperienceForAllEnabled ||
+                    hasTrial ||
+                    currentAutomatePlan
                         ? 'Get Started'
                         : 'Try for free'}
                 </Navigation.SectionItem>
