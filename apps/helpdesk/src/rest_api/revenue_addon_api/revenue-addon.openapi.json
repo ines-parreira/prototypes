@@ -648,7 +648,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/DiscountOfferCreateRequestSchema"
+                                "$ref": "#/components/schemas/DiscountOfferCreateApiDTO"
                             }
                         }
                     }
@@ -659,7 +659,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DiscountOfferResponseSchema"
+                                    "$ref": "#/components/schemas/DiscountOfferApiDTO"
                                 }
                             }
                         }
@@ -713,7 +713,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/DiscountOfferResponseSchema"
+                                        "$ref": "#/components/schemas/DiscountOfferApiDTO"
                                     },
                                     "title": "Response Get Discount Offers"
                                 }
@@ -756,7 +756,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DiscountOfferResponseSchema"
+                                    "$ref": "#/components/schemas/DiscountOfferApiDTO"
                                 }
                             }
                         }
@@ -794,7 +794,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/DiscountOfferPatchRequestSchema"
+                                "$ref": "#/components/schemas/DiscountOfferPatchApiDTO"
                             }
                         }
                     }
@@ -805,7 +805,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/DiscountOfferResponseSchema"
+                                    "$ref": "#/components/schemas/DiscountOfferApiDTO"
                                 }
                             }
                         }
@@ -2164,13 +2164,383 @@
                 }
             }
         },
-        "/shoppers/lookup": {
+        "/private/journeys": {
             "get": {
-                "tags": ["shoppers"],
-                "summary": "Lookup",
-                "operationId": "shopper_lookup",
+                "tags": ["private-journeys"],
+                "summary": "Get All Journeys For Apps",
+                "description": "Get enabled journeys for the Flink app to process the events.",
+                "operationId": "get_all_journeys_private",
+                "security": [{ "APIKeyHeader": [] }],
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/components/schemas/JourneyTypeEnum"
+                                },
+                                { "type": "null" }
+                            ],
+                            "description": "Filter by type",
+                            "title": "Type"
+                        },
+                        "description": "Filter by type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/JourneyPrivateApiDTO"
+                                    },
+                                    "title": "Response Get All Journeys Private"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/journeys": {
+            "get": {
+                "tags": ["journeys"],
+                "summary": "Get All Journeys",
+                "operationId": "get_all_journeys_public",
                 "security": [{ "HTTPBearer": [] }],
                 "parameters": [
+                    {
+                        "name": "integration_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "Filter by integration ID",
+                            "title": "Integration Id"
+                        },
+                        "description": "Filter by integration ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/JourneyApiDTO"
+                                    },
+                                    "title": "Response Get All Journeys Public"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["journeys"],
+                "summary": "Create Journey",
+                "operationId": "create_journey",
+                "security": [{ "HTTPBearer": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateJourneyApiDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JourneyDetailApiDTO"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/journeys/{journey_id}": {
+            "get": {
+                "tags": ["journeys"],
+                "summary": "Get Journey Details",
+                "operationId": "get_journey_details",
+                "security": [{ "HTTPBearer": [] }],
+                "parameters": [
+                    {
+                        "name": "journey_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string", "title": "Journey Id" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JourneyDetailApiDTO"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["journeys"],
+                "summary": "Patch Journey",
+                "operationId": "patch_journey",
+                "security": [{ "HTTPBearer": [] }],
+                "parameters": [
+                    {
+                        "name": "journey_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string", "title": "Journey Id" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateJourneyApiDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JourneyDetailApiDTO"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sms-integrations": {
+            "get": {
+                "tags": ["journeys"],
+                "summary": "Get Sms Integration",
+                "operationId": "get_sms_integrations",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/SMSIntegrationApiDTO"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Sms Integrations"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{ "HTTPBearer": [] }]
+            }
+        },
+        "/journeys/{journey_id}/test": {
+            "post": {
+                "tags": ["journeys"],
+                "summary": "Test Journey",
+                "operationId": "test_journey",
+                "security": [{ "HTTPBearer": [] }],
+                "parameters": [
+                    {
+                        "name": "journey_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string", "title": "Journey Id" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CartAbandonedCartTestApiDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": { "application/json": { "schema": {} } }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{account_id}/stores/{store_integration_id}/run": {
+            "post": {
+                "tags": ["journeys"],
+                "summary": "Run Ai Journey Engine",
+                "operationId": "run_ai_journey_engine",
+                "security": [{ "APIKeyHeader": [] }],
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer", "title": "Account Id" }
+                    },
+                    {
+                        "name": "store_integration_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Store Integration Id"
+                        }
+                    },
+                    {
+                        "name": "customer_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                { "type": "integer" },
+                                { "type": "null" }
+                            ],
+                            "description": "Customer ID for the cart",
+                            "title": "Customer Id"
+                        },
+                        "description": "Customer ID for the cart"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShopifyCartPayloadApiDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RunAiJourneyEngineResponseApiDTO"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shoppers/interest-lookup": {
+            "get": {
+                "tags": ["shoppers"],
+                "summary": "Interest Lookup",
+                "operationId": "shopper_interest_lookup",
+                "security": [{ "IDPBearerToken": [] }],
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "description": "Helpdesk account ID",
+                            "title": "Account Id"
+                        },
+                        "description": "Helpdesk account ID"
+                    },
                     {
                         "name": "store_integration_id",
                         "in": "query",
@@ -2185,13 +2555,39 @@
                     {
                         "name": "marketing_id",
                         "in": "query",
-                        "required": true,
+                        "required": false,
                         "schema": {
-                            "type": "string",
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "Marketing ID of the shopper (revenue_id)",
                             "title": "Marketing Id"
                         },
                         "description": "Marketing ID of the shopper (revenue_id)"
+                    },
+                    {
+                        "name": "customer_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                { "type": "integer" },
+                                { "type": "null" }
+                            ],
+                            "description": "Helpdesk Customer ID",
+                            "title": "Customer Id"
+                        },
+                        "description": "Helpdesk Customer ID"
+                    },
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                { "enum": ["v1.0", "v2.0"], "type": "string" },
+                                { "type": "null" }
+                            ],
+                            "title": "Version"
+                        }
                     }
                 ],
                 "responses": {
@@ -2200,7 +2596,59 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ShopperLookupResponse"
+                                    "$ref": "#/components/schemas/ShopperInterestLookupResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["shoppers"],
+                "summary": "Interest Lookup Post",
+                "operationId": "shopper_interest_lookup_post",
+                "security": [{ "IDPBearerToken": [] }],
+                "parameters": [
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                { "enum": ["v1.0", "v2.0"], "type": "string" },
+                                { "type": "null" }
+                            ],
+                            "title": "Version"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShopperInterestLookupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShopperInterestLookupResponse"
                                 }
                             }
                         }
@@ -2498,11 +2946,7 @@
                 "properties": {
                     "state": {
                         "anyOf": [
-                            {
-                                "type": "string",
-                                "enum": ["inactive"],
-                                "const": "inactive"
-                            },
+                            { "type": "string", "const": "inactive" },
                             { "type": "null" }
                         ],
                         "title": "State"
@@ -2611,7 +3055,6 @@
                 "properties": {
                     "contentType": {
                         "type": "string",
-                        "enum": ["application/discountOffer"],
                         "const": "application/discountOffer",
                         "title": "Contenttype"
                     },
@@ -2696,7 +3139,6 @@
                 "properties": {
                     "contentType": {
                         "type": "string",
-                        "enum": ["application/productRecommendation"],
                         "const": "application/productRecommendation",
                         "title": "Contenttype"
                     },
@@ -2713,7 +3155,6 @@
                 "properties": {
                     "contentType": {
                         "type": "string",
-                        "enum": ["application/productCard"],
                         "const": "application/productCard",
                         "title": "Contenttype"
                     },
@@ -2772,7 +3213,6 @@
                 "properties": {
                     "contentType": {
                         "type": "string",
-                        "enum": ["application/visitorForm"],
                         "const": "application/visitorForm",
                         "title": "Contenttype"
                     },
@@ -3538,46 +3978,132 @@
                 "required": ["message_text", "id"],
                 "title": "CampaignVariantResponseSchema"
             },
+            "CartAbandonedCartTestApiDTO": {
+                "properties": {
+                    "phone_number": {
+                        "type": "string",
+                        "title": "Phone Number"
+                    },
+                    "products": {
+                        "items": {
+                            "$ref": "#/components/schemas/CartAbandonedProductApiDTO"
+                        },
+                        "type": "array",
+                        "title": "Products"
+                    }
+                },
+                "type": "object",
+                "required": ["phone_number", "products"],
+                "title": "CartAbandonedCartTestApiDTO"
+            },
+            "CartAbandonedJourneyConfigurationApiDTO": {
+                "properties": {
+                    "max_follow_up_messages": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Max Follow Up Messages"
+                    },
+                    "sms_sender_number": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Sms Sender Number"
+                    },
+                    "sms_sender_integration_id": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Sms Sender Integration Id"
+                    },
+                    "offer_discount": {
+                        "type": "boolean",
+                        "title": "Offer Discount",
+                        "default": false
+                    },
+                    "max_discount_percent": {
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
+                        "title": "Max Discount Percent"
+                    },
+                    "discount_code_message_threshold": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Discount Code Message Threshold"
+                    },
+                    "include_image": {
+                        "type": "boolean",
+                        "title": "Include Image",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "title": "CartAbandonedJourneyConfigurationApiDTO"
+            },
+            "CartAbandonedJourneyConfigurationPrivateApiDTO": {
+                "properties": {
+                    "cart_abandoned_wait_minutes": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Cart Abandoned Wait Minutes"
+                    }
+                },
+                "type": "object",
+                "title": "CartAbandonedJourneyConfigurationPrivateApiDTO"
+            },
+            "CartAbandonedProductApiDTO": {
+                "properties": {
+                    "product_id": { "type": "string", "title": "Product Id" },
+                    "variant_id": { "type": "string", "title": "Variant Id" },
+                    "title": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Title"
+                    },
+                    "price": {
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
+                        "title": "Price"
+                    }
+                },
+                "type": "object",
+                "required": ["product_id", "variant_id"],
+                "title": "CartAbandonedProductApiDTO"
+            },
             "CartItemSchema": {
                 "properties": {
                     "product": {
                         "$ref": "#/components/schemas/InteractedProductSchema"
                     },
-                    "quantity": { "type": "integer", "title": "Quantity" },
+                    "quantity": {
+                        "type": "integer",
+                        "title": "Quantity",
+                        "default": 1
+                    },
                     "total": {
-                        "anyOf": [{ "type": "number" }, { "type": "integer" }],
+                        "anyOf": [{ "type": "string" }, { "type": "number" }],
                         "title": "Total"
                     },
                     "original_total": {
-                        "anyOf": [{ "type": "number" }, { "type": "null" }],
+                        "anyOf": [
+                            { "type": "string" },
+                            { "type": "number" },
+                            { "type": "null" }
+                        ],
                         "title": "Original Total"
                     }
                 },
                 "type": "object",
-                "required": ["product", "quantity", "total"],
+                "required": ["product", "total"],
                 "title": "CartItemSchema"
             },
             "CartSchema": {
                 "properties": {
+                    "last_update_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Last Update Datetime"
+                    },
+                    "currency": { "type": "string", "title": "Currency" },
                     "items": {
                         "items": {
                             "$ref": "#/components/schemas/CartItemSchema"
                         },
                         "type": "array",
                         "title": "Items"
-                    },
-                    "currency": {
-                        "anyOf": [{ "type": "string" }, { "type": "null" }],
-                        "title": "Currency"
-                    },
-                    "last_updated_timestamp": {
-                        "type": "string",
-                        "format": "date-time",
-                        "title": "Last Updated Timestamp"
                     }
                 },
                 "type": "object",
-                "required": ["items", "last_updated_timestamp"],
+                "required": ["last_update_datetime", "currency"],
                 "title": "CartSchema"
             },
             "ChannelConnectionCreateRequestSchema": {
@@ -3704,8 +4230,23 @@
             "ChannelType": {
                 "type": "string",
                 "enum": ["widget"],
-                "const": "widget",
                 "title": "ChannelType"
+            },
+            "CommunicationOptInSchema": {
+                "properties": {
+                    "email": {
+                        "type": "boolean",
+                        "title": "Email",
+                        "default": false
+                    },
+                    "sms": {
+                        "type": "boolean",
+                        "title": "Sms",
+                        "default": false
+                    }
+                },
+                "type": "object",
+                "title": "CommunicationOptInSchema"
             },
             "ConfigResponseSchema": {
                 "properties": {
@@ -3737,6 +4278,37 @@
                 "type": "object",
                 "required": ["subscription", "campaigns", "id"],
                 "title": "ConfigResponseSchema"
+            },
+            "CreateJourneyApiDTO": {
+                "properties": {
+                    "type": { "$ref": "#/components/schemas/JourneyTypeEnum" },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id"
+                    },
+                    "store_name": { "type": "string", "title": "Store Name" },
+                    "store_type": { "type": "string", "title": "Store Type" },
+                    "message_instructions": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Message Instructions"
+                    },
+                    "configuration": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CartAbandonedJourneyConfigurationApiDTO"
+                            },
+                            { "type": "null" }
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "type",
+                    "store_integration_id",
+                    "store_name",
+                    "store_type"
+                ],
+                "title": "CreateJourneyApiDTO"
             },
             "CustomDomainOperationSchema": {
                 "properties": {
@@ -3776,7 +4348,82 @@
                 "required": ["days", "from_time", "to_time"],
                 "title": "CustomScheduleSchema"
             },
-            "DiscountOfferCreateRequestSchema": {
+            "DiscountOfferApiDTO": {
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/DiscountOfferTypeEnum"
+                    },
+                    "prefix": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "minLength": 1,
+                        "title": "Prefix"
+                    },
+                    "value": {
+                        "anyOf": [
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
+                        ],
+                        "title": "Value"
+                    },
+                    "minimum_purchase_amount": {
+                        "anyOf": [
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
+                        ],
+                        "title": "Minimum Purchase Amount"
+                    },
+                    "external_customer_segment_ids": {
+                        "anyOf": [
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
+                        ],
+                        "title": "External Customer Segment Ids"
+                    },
+                    "external_collection_ids": {
+                        "anyOf": [
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
+                        ],
+                        "title": "External Collection Ids"
+                    },
+                    "external_product_ids": {
+                        "anyOf": [
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
+                        ],
+                        "title": "External Product Ids"
+                    },
+                    "id": { "type": "string", "title": "Id" },
+                    "store_integration_id": {
+                        "type": "string",
+                        "title": "Store Integration Id"
+                    },
+                    "updated_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Updated Datetime"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "type",
+                    "prefix",
+                    "id",
+                    "store_integration_id",
+                    "updated_datetime",
+                    "created_datetime"
+                ],
+                "title": "DiscountOfferApiDTO"
+            },
+            "DiscountOfferCreateApiDTO": {
                 "properties": {
                     "type": {
                         "$ref": "#/components/schemas/DiscountOfferTypeEnum"
@@ -3831,9 +4478,9 @@
                 },
                 "type": "object",
                 "required": ["type", "prefix", "store_integration_id"],
-                "title": "DiscountOfferCreateRequestSchema"
+                "title": "DiscountOfferCreateApiDTO"
             },
-            "DiscountOfferPatchRequestSchema": {
+            "DiscountOfferPatchApiDTO": {
                 "properties": {
                     "type": {
                         "anyOf": [
@@ -3893,65 +4540,7 @@
                     }
                 },
                 "type": "object",
-                "title": "DiscountOfferPatchRequestSchema"
-            },
-            "DiscountOfferResponseSchema": {
-                "properties": {
-                    "type": {
-                        "$ref": "#/components/schemas/DiscountOfferTypeEnum"
-                    },
-                    "prefix": {
-                        "type": "string",
-                        "maxLength": 10,
-                        "minLength": 1,
-                        "title": "Prefix"
-                    },
-                    "value": {
-                        "anyOf": [
-                            { "type": "number", "minimum": 0.0 },
-                            { "type": "string" },
-                            { "type": "null" }
-                        ],
-                        "title": "Value"
-                    },
-                    "minimum_purchase_amount": {
-                        "anyOf": [
-                            { "type": "number", "minimum": 0.0 },
-                            { "type": "string" },
-                            { "type": "null" }
-                        ],
-                        "title": "Minimum Purchase Amount"
-                    },
-                    "external_customer_segment_ids": {
-                        "anyOf": [
-                            { "items": { "type": "string" }, "type": "array" },
-                            { "type": "null" }
-                        ],
-                        "title": "External Customer Segment Ids"
-                    },
-                    "external_collection_ids": {
-                        "anyOf": [
-                            { "items": { "type": "string" }, "type": "array" },
-                            { "type": "null" }
-                        ],
-                        "title": "External Collection Ids"
-                    },
-                    "external_product_ids": {
-                        "anyOf": [
-                            { "items": { "type": "string" }, "type": "array" },
-                            { "type": "null" }
-                        ],
-                        "title": "External Product Ids"
-                    },
-                    "id": { "type": "string", "title": "Id" },
-                    "store_integration_id": {
-                        "type": "string",
-                        "title": "Store Integration Id"
-                    }
-                },
-                "type": "object",
-                "required": ["type", "prefix", "id", "store_integration_id"],
-                "title": "DiscountOfferResponseSchema"
+                "title": "DiscountOfferPatchApiDTO"
             },
             "DiscountOfferTypeEnum": {
                 "type": "string",
@@ -4076,7 +4665,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-janbalaz.eu.ngrok.io/loader.js"
+                        "default": "https://bundle-mlaccetti.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -4121,6 +4710,137 @@
                 "required": ["token"],
                 "title": "JWTTokenSchema"
             },
+            "JourneyApiDTO": {
+                "properties": {
+                    "id": { "type": "string", "title": "Id" },
+                    "type": { "$ref": "#/components/schemas/JourneyTypeEnum" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id"
+                    },
+                    "store_name": { "type": "string", "title": "Store Name" },
+                    "store_type": { "type": "string", "title": "Store Type" },
+                    "state": {
+                        "$ref": "#/components/schemas/JourneyStatusEnum"
+                    },
+                    "message_instructions": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Message Instructions"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "meta": { "type": "object", "title": "Meta" }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "type",
+                    "account_id",
+                    "store_integration_id",
+                    "store_name",
+                    "store_type",
+                    "state",
+                    "created_datetime"
+                ],
+                "title": "JourneyApiDTO"
+            },
+            "JourneyDetailApiDTO": {
+                "properties": {
+                    "id": { "type": "string", "title": "Id" },
+                    "type": { "$ref": "#/components/schemas/JourneyTypeEnum" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id"
+                    },
+                    "store_name": { "type": "string", "title": "Store Name" },
+                    "store_type": { "type": "string", "title": "Store Type" },
+                    "state": {
+                        "$ref": "#/components/schemas/JourneyStatusEnum"
+                    },
+                    "message_instructions": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Message Instructions"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "meta": { "type": "object", "title": "Meta" },
+                    "configuration": {
+                        "$ref": "#/components/schemas/CartAbandonedJourneyConfigurationApiDTO"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "type",
+                    "account_id",
+                    "store_integration_id",
+                    "store_name",
+                    "store_type",
+                    "state",
+                    "created_datetime",
+                    "configuration"
+                ],
+                "title": "JourneyDetailApiDTO"
+            },
+            "JourneyPrivateApiDTO": {
+                "properties": {
+                    "id": { "type": "string", "title": "Id" },
+                    "type": { "$ref": "#/components/schemas/JourneyTypeEnum" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id"
+                    },
+                    "store_name": { "type": "string", "title": "Store Name" },
+                    "store_type": { "type": "string", "title": "Store Type" },
+                    "state": {
+                        "$ref": "#/components/schemas/JourneyStatusEnum"
+                    },
+                    "message_instructions": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Message Instructions"
+                    },
+                    "created_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created Datetime"
+                    },
+                    "configuration": {
+                        "$ref": "#/components/schemas/CartAbandonedJourneyConfigurationPrivateApiDTO"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "type",
+                    "account_id",
+                    "store_integration_id",
+                    "store_name",
+                    "store_type",
+                    "state",
+                    "created_datetime",
+                    "configuration"
+                ],
+                "title": "JourneyPrivateApiDTO"
+            },
+            "JourneyStatusEnum": {
+                "type": "string",
+                "enum": ["active", "draft", "paused"],
+                "title": "JourneyStatusEnum"
+            },
+            "JourneyTypeEnum": {
+                "type": "string",
+                "enum": ["cart_abandoned"],
+                "title": "JourneyTypeEnum"
+            },
             "MaxCampaignDisplaysInSession": {
                 "properties": {
                     "value": { "type": "integer", "title": "Value" }
@@ -4143,41 +4863,39 @@
                 "required": ["value", "unit"],
                 "title": "MinimumTimeBetweenCampaigns"
             },
-            "PageViewSchema": {
+            "PastActivitySchema": {
                 "properties": {
-                    "url": {
-                        "anyOf": [{ "type": "string" }, { "type": "null" }],
-                        "title": "Url"
+                    "past_sessions": {
+                        "items": {
+                            "$ref": "#/components/schemas/ShopperSessionSchema"
+                        },
+                        "type": "array",
+                        "title": "Past Sessions"
                     },
-                    "product": {
+                    "top_visited_pages": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitedPageSchema"
+                        },
+                        "type": "array",
+                        "title": "Top Visited Pages"
+                    },
+                    "top_visited_product_pages": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitedProductPageSchema"
+                        },
+                        "type": "array",
+                        "title": "Top Visited Product Pages"
+                    },
+                    "last_cart_abandonment_datetime": {
                         "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/InteractedProductSchema"
-                            },
+                            { "type": "string", "format": "date-time" },
                             { "type": "null" }
-                        ]
-                    },
-                    "page_title": {
-                        "anyOf": [{ "type": "string" }, { "type": "null" }],
-                        "title": "Page Title"
-                    },
-                    "search_query": {
-                        "anyOf": [{ "type": "string" }, { "type": "null" }],
-                        "title": "Search Query"
-                    },
-                    "visit_count": {
-                        "type": "integer",
-                        "title": "Visit Count"
-                    },
-                    "last_visit_timestamp": {
-                        "type": "string",
-                        "format": "date-time",
-                        "title": "Last Visit Timestamp"
+                        ],
+                        "title": "Last Cart Abandonment Datetime"
                     }
                 },
                 "type": "object",
-                "required": ["visit_count", "last_visit_timestamp"],
-                "title": "PageViewSchema"
+                "title": "PastActivitySchema"
             },
             "ProductInfoSchema": {
                 "properties": {
@@ -4631,6 +5349,35 @@
                 ],
                 "title": "RuleType"
             },
+            "RunAiJourneyEngineResponseApiDTO": {
+                "properties": {
+                    "event": { "type": "object", "title": "Event" },
+                    "success": { "type": "boolean", "title": "Success" }
+                },
+                "type": "object",
+                "required": ["event", "success"],
+                "title": "RunAiJourneyEngineResponseApiDTO"
+            },
+            "SMSIntegrationApiDTO": {
+                "properties": {
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id"
+                    },
+                    "phone_number": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Phone Number"
+                    },
+                    "sms_integration_id": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Sms Integration Id"
+                    }
+                },
+                "type": "object",
+                "required": ["account_id", "store_integration_id"],
+                "title": "SMSIntegrationApiDTO"
+            },
             "ScheduleRequestSchema": {
                 "properties": {
                     "start_datetime": {
@@ -4726,35 +5473,199 @@
                 "enum": [
                     "performance_report_visible_fields",
                     "email_disclaimer",
-                    "campaign_frequency"
+                    "campaign_frequency",
+                    "ai_journey"
                 ],
                 "title": "SettingType"
             },
-            "ShopperLookupResponse": {
+            "ShopifyCartItemApiDTO": {
                 "properties": {
-                    "page_views": {
+                    "variant_id": { "type": "integer", "title": "Variant Id" },
+                    "product_id": { "type": "integer", "title": "Product Id" },
+                    "quantity": { "type": "integer", "title": "Quantity" },
+                    "price": { "type": "integer", "title": "Price" },
+                    "original_price": {
+                        "type": "integer",
+                        "title": "Original Price"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "variant_id",
+                    "product_id",
+                    "quantity",
+                    "price",
+                    "original_price"
+                ],
+                "title": "ShopifyCartItemApiDTO"
+            },
+            "ShopifyCartPayloadApiDTO": {
+                "properties": {
+                    "token": { "type": "string", "title": "Token" },
+                    "currency": { "type": "string", "title": "Currency" },
+                    "items": {
                         "items": {
-                            "$ref": "#/components/schemas/PageViewSchema"
+                            "$ref": "#/components/schemas/ShopifyCartItemApiDTO"
                         },
                         "type": "array",
-                        "title": "Page Views"
+                        "title": "Items"
+                    },
+                    "total_price": {
+                        "type": "integer",
+                        "title": "Total Price"
+                    },
+                    "item_count": { "type": "integer", "title": "Item Count" }
+                },
+                "type": "object",
+                "required": [
+                    "token",
+                    "currency",
+                    "items",
+                    "total_price",
+                    "item_count"
+                ],
+                "title": "ShopifyCartPayloadApiDTO"
+            },
+            "ShopperInterestLookupRequest": {
+                "properties": {
+                    "account_id": {
+                        "type": "integer",
+                        "title": "Account Id",
+                        "description": "Helpdesk account ID"
+                    },
+                    "store_integration_id": {
+                        "type": "integer",
+                        "title": "Store Integration Id",
+                        "description": "Helpdesk store integration ID"
+                    },
+                    "marketing_id": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Marketing Id",
+                        "description": "Marketing ID of the shopper (revenue_id)"
+                    },
+                    "customer_id": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Customer Id",
+                        "description": "Helpdesk Customer ID"
+                    },
+                    "email": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Email",
+                        "description": "Email of the shopper"
+                    },
+                    "phone": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Phone",
+                        "description": "Phone of the shopper"
+                    }
+                },
+                "type": "object",
+                "required": ["account_id", "store_integration_id"],
+                "title": "ShopperInterestLookupRequest"
+            },
+            "ShopperInterestLookupResponse": {
+                "properties": {
+                    "current_session": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ShopperSessionSchema"
+                            },
+                            { "type": "null" }
+                        ]
+                    },
+                    "latest_session": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ShopperSessionSchema"
+                            },
+                            { "type": "null" }
+                        ]
+                    },
+                    "past_activity": {
+                        "$ref": "#/components/schemas/PastActivitySchema"
+                    },
+                    "communication_opt_in": {
+                        "$ref": "#/components/schemas/CommunicationOptInSchema"
+                    },
+                    "attributed_orders": {
+                        "anyOf": [
+                            { "$ref": "#/components/schemas/PurchasesSchema" },
+                            { "type": "null" }
+                        ]
+                    },
+                    "customer_id": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Customer Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "current_session",
+                    "latest_session",
+                    "past_activity",
+                    "communication_opt_in"
+                ],
+                "title": "ShopperInterestLookupResponse"
+            },
+            "ShopperSessionSchema": {
+                "properties": {
+                    "start_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Start Datetime"
+                    },
+                    "end_datetime": {
+                        "anyOf": [
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
+                        ],
+                        "title": "End Datetime"
+                    },
+                    "duration_seconds": {
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                        "title": "Duration Seconds"
+                    },
+                    "top_visited_pages": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitedPageSchema"
+                        },
+                        "type": "array",
+                        "title": "Top Visited Pages"
+                    },
+                    "top_visited_product_pages": {
+                        "items": {
+                            "$ref": "#/components/schemas/VisitedProductPageSchema"
+                        },
+                        "type": "array",
+                        "title": "Top Visited Product Pages"
+                    },
+                    "total_visited_pages_count": {
+                        "type": "integer",
+                        "title": "Total Visited Pages Count",
+                        "default": 0
+                    },
+                    "traffic_source": {
+                        "anyOf": [
+                            { "$ref": "#/components/schemas/TrafficSource" },
+                            { "type": "null" }
+                        ]
+                    },
+                    "traffic_metadata": {
+                        "anyOf": [
+                            { "$ref": "#/components/schemas/TrafficMetadata" },
+                            { "type": "null" }
+                        ]
                     },
                     "cart": {
                         "anyOf": [
                             { "$ref": "#/components/schemas/CartSchema" },
                             { "type": "null" }
                         ]
-                    },
-                    "purchases": {
-                        "anyOf": [
-                            { "$ref": "#/components/schemas/PurchasesSchema" },
-                            { "type": "null" }
-                        ]
                     }
                 },
                 "type": "object",
-                "required": ["page_views"],
-                "title": "ShopperLookupResponse"
+                "required": ["start_datetime"],
+                "title": "ShopperSessionSchema"
             },
             "StatusEnum": {
                 "type": "string",
@@ -4871,6 +5782,56 @@
                 "enum": ["seconds", "minutes", "hours"],
                 "title": "TimeUnit"
             },
+            "TrafficMetadata": {
+                "properties": {
+                    "referrer": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Referrer"
+                    },
+                    "utm_source": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Utm Source"
+                    },
+                    "utm_medium": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Utm Medium"
+                    },
+                    "utm_campaign": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Utm Campaign"
+                    },
+                    "utm_term": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Utm Term"
+                    },
+                    "utm_content": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Utm Content"
+                    },
+                    "gclid": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Gclid"
+                    },
+                    "fbclid": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Fbclid"
+                    }
+                },
+                "additionalProperties": false,
+                "type": "object",
+                "title": "TrafficMetadata"
+            },
+            "TrafficSource": {
+                "type": "string",
+                "enum": [
+                    "paid-search",
+                    "direct-traffic",
+                    "referral",
+                    "social-traffic",
+                    "organic-search"
+                ],
+                "title": "TrafficSource"
+            },
             "URLBulkSchema": {
                 "properties": {
                     "urls": {
@@ -4914,6 +5875,7 @@
                             "$ref": "#/components/schemas/URLCreateSchema"
                         },
                         "type": "array",
+                        "maxItems": 100,
                         "minItems": 1,
                         "title": "Urls"
                     }
@@ -5059,6 +6021,32 @@
                 "required": ["enabled"],
                 "title": "UpdateAutoUpgradeSchema"
             },
+            "UpdateJourneyApiDTO": {
+                "properties": {
+                    "state": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/JourneyStatusEnum"
+                            },
+                            { "type": "null" }
+                        ]
+                    },
+                    "message_instructions": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Message Instructions"
+                    },
+                    "configuration": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/CartAbandonedJourneyConfigurationApiDTO"
+                            },
+                            { "type": "null" }
+                        ]
+                    }
+                },
+                "type": "object",
+                "title": "UpdateJourneyApiDTO"
+            },
             "ValidationError": {
                 "properties": {
                     "loc": {
@@ -5077,6 +6065,79 @@
                 "type": "object",
                 "required": ["loc", "msg", "type"],
                 "title": "ValidationError"
+            },
+            "VisitedPageSchema": {
+                "properties": {
+                    "url": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Url"
+                    },
+                    "page_title": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Page Title"
+                    },
+                    "search_query": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Search Query"
+                    },
+                    "visit_count": {
+                        "type": "integer",
+                        "title": "Visit Count",
+                        "default": 1
+                    },
+                    "last_visit_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Last Visit Datetime"
+                    },
+                    "type": {
+                        "type": "string",
+                        "const": "other",
+                        "title": "Type",
+                        "default": "other"
+                    }
+                },
+                "type": "object",
+                "required": ["last_visit_datetime"],
+                "title": "VisitedPageSchema"
+            },
+            "VisitedProductPageSchema": {
+                "properties": {
+                    "url": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Url"
+                    },
+                    "page_title": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Page Title"
+                    },
+                    "search_query": {
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
+                        "title": "Search Query"
+                    },
+                    "visit_count": {
+                        "type": "integer",
+                        "title": "Visit Count",
+                        "default": 1
+                    },
+                    "last_visit_datetime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Last Visit Datetime"
+                    },
+                    "type": {
+                        "type": "string",
+                        "const": "product",
+                        "title": "Type",
+                        "default": "product"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/InteractedProductSchema"
+                    }
+                },
+                "type": "object",
+                "required": ["last_visit_datetime", "product"],
+                "title": "VisitedProductPageSchema"
             },
             "VisitorFormFieldName": {
                 "type": "string",
@@ -5146,12 +6207,7 @@
                     },
                     "phone": {
                         "anyOf": [
-                            {
-                                "type": "string",
-                                "maxLength": 64,
-                                "minLength": 7,
-                                "format": "phone"
-                            },
+                            { "type": "string", "format": "phone" },
                             { "type": "null" }
                         ],
                         "title": "Phone"
@@ -5223,7 +6279,8 @@
                 "type": "apiKey",
                 "in": "header",
                 "name": "X-API-Key"
-            }
+            },
+            "IDPBearerToken": { "type": "http", "scheme": "bearer" }
         }
     }
 }

@@ -102,6 +102,8 @@ describe('<DiscountOfferTicketAttachment />', () => {
             id: '3',
             prefix: 'test',
             store_integration_id: '3',
+            updated_datetime: '2024-01-01T00:00:00Z',
+            created_datetime: '2024-01-01T00:00:00Z',
         }
         useGetDiscountOfferMock.mockReturnValue({
             data: mockDiscountResponse,
@@ -129,6 +131,8 @@ describe('<DiscountOfferTicketAttachment />', () => {
             prefix: 'test',
             store_integration_id: '3',
             value: '20',
+            updated_datetime: '2024-01-01T00:00:00Z',
+            created_datetime: '2024-01-01T00:00:00Z',
         }
         useGetDiscountOfferMock.mockReturnValue({
             data: mockDiscountResponse,
@@ -158,6 +162,8 @@ describe('<DiscountOfferTicketAttachment />', () => {
             prefix: 'test',
             store_integration_id: '3',
             value: '20',
+            updated_datetime: '2024-01-01T00:00:00Z',
+            created_datetime: '2024-01-01T00:00:00Z',
         }
         useGetDiscountOfferMock.mockReturnValue({
             data: mockDiscountResponse,
@@ -185,6 +191,8 @@ describe('<DiscountOfferTicketAttachment />', () => {
             prefix: 'test',
             store_integration_id: '3',
             value: '20',
+            updated_datetime: '2024-01-01T00:00:00Z',
+            created_datetime: '2024-01-01T00:00:00Z',
         }
         useGetDiscountOfferMock.mockReturnValue({
             data: mockDiscountResponse,

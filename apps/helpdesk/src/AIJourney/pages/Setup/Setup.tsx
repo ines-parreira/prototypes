@@ -13,11 +13,13 @@ import { useCreateNewJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import {
     EnableDiscountField,
+    EnableImageField,
     JourneyMessageInstructionsField,
     MaximumDiscountField,
     MessagesToSendField,
@@ -34,6 +36,7 @@ export const Setup = () => {
     const customInstructionEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomInstructions,
     )
+    const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
     const isAiJourneyPlaygroundEnabled = useFlag(
         FeatureFlagKey.AiJourneyPlaygroundEnabled,
     )
@@ -82,6 +85,10 @@ export const Setup = () => {
     >(currentPhoneNumber)
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
         useState<string>(abandonedCartJourney?.message_instructions || '')
+    const [isImageEnabled, setIsImageEnabled] = useState(
+        (journeyParams as CartAbandonedJourneyConfigurationApiDTO)
+            ?.include_image || false,
+    )
 
     useEffect(() => {
         if (journeyParams) {
@@ -95,6 +102,13 @@ export const Setup = () => {
             setPhoneNumberValue(currentPhoneNumber)
             setDiscountCodeThreshold(
                 journeyParams.discount_code_message_threshold ?? 1,
+            )
+            setIsImageEnabled(
+                (
+                    journeyParams as CartAbandonedJourneyConfigurationApiDTO & {
+                        include_image?: boolean
+                    }
+                ).include_image || false,
             )
         }
     }, [journeyParams, currentPhoneNumber])
@@ -126,6 +140,10 @@ export const Setup = () => {
     const handleNumberOfMessageChange = (newValue: number) => {
         setNumberOfMessageValue(newValue)
         setDiscountCodeThreshold(1)
+    }
+
+    const handleImageToggle = () => {
+        setIsImageEnabled((prev: boolean) => !prev)
     }
 
     const handleCreate = async () => {
@@ -181,6 +199,7 @@ export const Setup = () => {
         discountCodeThresholdValue: isDiscountEnabled
             ? discountCodeThreshold
             : undefined,
+        includeImage: isImageEnabled,
     })
 
     const handleContinue = async () => {
@@ -234,6 +253,12 @@ export const Setup = () => {
                 value={numberOfMessageValue}
                 onChange={handleNumberOfMessageChange}
             />
+            {smsImagesEnabled && (
+                <EnableImageField
+                    isEnabled={isImageEnabled}
+                    onChange={handleImageToggle}
+                />
+            )}
             <EnableDiscountField
                 isEnabled={isDiscountEnabled}
                 onChange={handleDiscountToggle}

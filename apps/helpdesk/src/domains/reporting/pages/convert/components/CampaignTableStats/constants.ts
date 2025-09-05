@@ -8,6 +8,7 @@ export const enum CampaignSettingType {
     PerformanceReportVisibleFields = 'performance_report_visible_fields',
     EmailDisclaimer = 'email_disclaimer',
     CampaignFrequency = 'campaign_frequency',
+    AiJourney = 'ai_journey',
 }
 
 export const CampaignTableColumnDefaultSelect: CampaignTableKeys[] = [

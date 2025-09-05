@@ -2,14 +2,12 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
-    CartAbandonedJourneyConfigurationApiDTO,
-    JourneyStatusEnum,
-} from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -21,6 +19,7 @@ type UseJourneyActionsParams = {
     discountValue?: string
     phoneNumberValue?: NewPhoneNumber
     discountCodeThresholdValue?: number
+    includeImage?: boolean
 }
 
 export const useJourneyUpdateHandler = ({
@@ -31,6 +30,7 @@ export const useJourneyUpdateHandler = ({
     discountValue,
     phoneNumberValue,
     discountCodeThresholdValue,
+    includeImage,
 }: UseJourneyActionsParams) => {
     const queryClient = useQueryClient()
 
@@ -67,6 +67,7 @@ export const useJourneyUpdateHandler = ({
                         sms_sender_number: phoneNumberValue?.phone_number,
                         discount_code_message_threshold:
                             discountCodeThresholdValue,
+                        include_image: includeImage,
                     }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(
@@ -106,6 +107,7 @@ export const useJourneyUpdateHandler = ({
             discountValue,
             phoneNumberValue,
             discountCodeThresholdValue,
+            includeImage,
             updateJourney,
             dispatch,
             queryClient,

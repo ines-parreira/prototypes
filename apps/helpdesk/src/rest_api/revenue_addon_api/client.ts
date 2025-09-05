@@ -4,7 +4,7 @@ import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import { Client } from './client.generated'
+import { Client, Components } from './client.generated'
 import OpenAPIDoc from './revenue-addon.openapi.json'
 
 export function getGorgiasRevenueAddonApiBaseUrl(): string {
@@ -50,3 +50,6 @@ export const getRevenueAddonApiClient = memoize(
 )
 
 export type RevenueAddonClient = Client
+
+export type CartAbandonedJourneyConfigurationApiDTO =
+    Components.Schemas.CartAbandonedJourneyConfigurationApiDTO

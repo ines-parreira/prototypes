@@ -1,4 +1,4 @@
-import {
+import type {
     AxiosRequestConfig,
     OpenAPIClient,
     OperationResponse,
@@ -15,24 +15,26 @@ declare namespace Components {
             /**
              * Winner Variant Id
              */
-            winner_variant_id?: string | null
-            status: ABGroupStatus
+            winner_variant_id?: /* Winner Variant Id */ string | null
+            status: /* ABGroupStatus */ ABGroupStatus
             /**
              * Started Datetime
              */
-            started_datetime?: string /* date-time */ | null
+            started_datetime?: /* Started Datetime */
+            string /* date-time */ | null
             /**
              * Stopped Datetime
              */
-            stopped_datetime?: string /* date-time */ | null
+            stopped_datetime?: /* Stopped Datetime */
+            string /* date-time */ | null
             /**
              * Campaign Id
              */
-            campaign_id?: string | null
+            campaign_id?: /* Campaign Id */ string | null
             /**
              * Generated Campaign Id
              */
-            generated_campaign_id?: string | null
+            generated_campaign_id?: /* Generated Campaign Id */ string | null
         }
         /**
          * ABGroupStatus
@@ -45,7 +47,7 @@ declare namespace Components {
             /**
              * Winner Variant Id
              */
-            winner_variant_id?: string | null
+            winner_variant_id?: /* Winner Variant Id */ string | null
         }
         /**
          * ABTestConfigurationResponseSchema
@@ -55,7 +57,7 @@ declare namespace Components {
              * Active
              */
             active?: boolean
-            configuration: ABTestConfigurationSchema | null
+            configuration: /* ABTestConfigurationSchema */ ABTestConfigurationSchema | null
         }
         /**
          * ABTestConfigurationSchema
@@ -81,7 +83,7 @@ declare namespace Components {
             /**
              * Store Integration Id
              */
-            store_integration_id?: number | null
+            store_integration_id?: /* Store Integration Id */ number | null
             /**
              * Ratio
              */
@@ -98,11 +100,11 @@ declare namespace Components {
             /**
              * State
              */
-            state?: 'inactive' | null
+            state?: /* State */ 'inactive' | null
             /**
              * Report Link
              */
-            report_link?: string /* uri */ | null
+            report_link?: /* Report Link */ string /* uri */ | null
         }
         /**
          * ABTestResponseSchema
@@ -116,7 +118,7 @@ declare namespace Components {
              * Ratio
              */
             ratio: number
-            state: ABTestState
+            state: /* ABTestState */ ABTestState
             /**
              * Start Datetime
              */
@@ -124,15 +126,15 @@ declare namespace Components {
             /**
              * End Datetime
              */
-            end_datetime: string /* date-time */ | null
+            end_datetime: /* End Datetime */ string /* date-time */ | null
             /**
              * Report Link
              */
-            report_link: string | null
+            report_link: /* Report Link */ string | null
             /**
              * Campaigns
              */
-            campaigns?: string[] | null
+            campaigns?: /* Campaigns */ string[] | null
         }
         /**
          * ABTestState
@@ -142,12 +144,19 @@ declare namespace Components {
          * BaseCampaignTriggerSchema
          */
         export interface BaseCampaignTriggerSchema {
-            type: CampaignTriggerType
-            operator: CampaignTriggerOperator
+            type: /* CampaignTriggerType */ CampaignTriggerType
+            operator: /* CampaignTriggerOperator */ CampaignTriggerOperator
             /**
              * Value
              */
-            value: number | boolean | string | any[] | {}
+            value: /* Value */
+            | number
+                | boolean
+                | string
+                | any[]
+                | {
+                      [key: string]: any
+                  }
         }
         /**
          * BundleOnboardingStatus
@@ -177,8 +186,8 @@ declare namespace Components {
             /**
              * Url
              */
-            url?: string | null
-            extra?: CampaignAttachmentDiscountOfferExtraSchema | null
+            url?: /* Url */ string | null
+            extra?: /* CampaignAttachmentDiscountOfferExtraSchema */ CampaignAttachmentDiscountOfferExtraSchema | null
         }
         /**
          * CampaignAttachmentProductExtraSchema
@@ -191,24 +200,24 @@ declare namespace Components {
             /**
              * Price
              */
-            price?: number | null
+            price?: /* Price */ number | null
             /**
              * Compare At Price
              */
-            compare_at_price?: number | null
+            compare_at_price?: /* Compare At Price */ number | null
             /**
              * Currency
              */
-            currency?: string | null
+            currency?: /* Currency */ string | null
             /**
              * Product Link
              */
-            product_link?: string | null
+            product_link?: /* Product Link */ string | null
             /**
              * Variant Name
              */
-            variant_name?: string | null
-            position?: CampaignAttachmentProductPositionSchema | null
+            variant_name?: /* Variant Name */ string | null
+            position?: /* CampaignAttachmentProductPositionSchema */ CampaignAttachmentProductPositionSchema | null
         }
         /**
          * CampaignAttachmentProductPositionSchema
@@ -243,7 +252,7 @@ declare namespace Components {
              * Id
              */
             id: string
-            scenario: ProductRecommendationScenarioType
+            scenario: /* ProductRecommendationScenarioType */ ProductRecommendationScenarioType
         }
         /**
          * CampaignAttachmentProductRecommendationSchema
@@ -257,7 +266,7 @@ declare namespace Components {
              * Name
              */
             name: string
-            extra: CampaignAttachmentProductRecommendationExtraSchema
+            extra: /* CampaignAttachmentProductRecommendationExtraSchema */ CampaignAttachmentProductRecommendationExtraSchema
         }
         /**
          * CampaignAttachmentProductSchema
@@ -274,12 +283,12 @@ declare namespace Components {
             /**
              * Url
              */
-            url?: string | null
+            url?: /* Url */ string | null
             /**
              * Size
              */
-            size?: number | null
-            extra?: CampaignAttachmentProductExtraSchema | null
+            size?: /* Size */ number | null
+            extra?: /* CampaignAttachmentProductExtraSchema */ CampaignAttachmentProductExtraSchema | null
         }
         /**
          * CampaignAttachmentVisitorFormExtraSchema
@@ -288,12 +297,12 @@ declare namespace Components {
             /**
              * Steps
              */
-            steps: VisitorFormStepSchema[]
-            on_success_content?: VisitorFormOnSuccessContentSchema | null
+            steps: /* VisitorFormStepSchema */ VisitorFormStepSchema[]
+            on_success_content?: /* VisitorFormOnSuccessContentSchema */ VisitorFormOnSuccessContentSchema | null
             /**
              * Targets
              */
-            targets: VisitorFormTargetsSchema[]
+            targets: /* VisitorFormTargetsSchema */ VisitorFormTargetsSchema[]
         }
         /**
          * CampaignAttachmentVisitorFormSchema
@@ -307,7 +316,7 @@ declare namespace Components {
              * Name
              */
             name: string
-            extra?: CampaignAttachmentVisitorFormExtraSchema | null
+            extra?: /* CampaignAttachmentVisitorFormExtraSchema */ CampaignAttachmentVisitorFormExtraSchema | null
         }
         /**
          * CampaignCopySuggestionRequestSchema
@@ -320,7 +329,7 @@ declare namespace Components {
             /**
              * Title
              */
-            title?: string | null
+            title?: /* Title */ string | null
             /**
              * Language
              */
@@ -328,11 +337,12 @@ declare namespace Components {
             /**
              * Message
              */
-            message?: string | null
+            message?: /* Message */ string | null
             /**
              * Triggers
              */
-            triggers?: BaseCampaignTriggerSchema[] | null
+            triggers?: /* Triggers */ /* BaseCampaignTriggerSchema */
+            BaseCampaignTriggerSchema[] | null
         }
         /**
          * CampaignCopySuggestionResponseSchema
@@ -354,7 +364,7 @@ declare namespace Components {
             /**
              * Description
              */
-            description?: string | null
+            description?: /* Description */ string | null
             /**
              * Message Text
              */
@@ -362,12 +372,12 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Language
              */
-            language?: string | null
-            status: CampaignStatus
+            language?: /* Language */ string | null
+            status: /* CampaignStatus */ CampaignStatus
             /**
              * Trigger Rule
              */
@@ -375,37 +385,40 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
-            meta?: CampaignMetaSchema | null
+            meta?: /* CampaignMetaSchema */ CampaignMetaSchema | null
             /**
              * Triggers
              */
-            triggers: CampaignTriggerSchema[]
+            triggers: /* CampaignTriggerSchema */ CampaignTriggerSchema[]
             /**
              * Channel Connection Id
              */
             channel_connection_id: string
-            publish_mode?: CampaignPublishType | null
+            publish_mode?: /* CampaignPublishType */ CampaignPublishType | null
             /**
              * External Tag Id
              */
-            external_tag_id?: number | null
+            external_tag_id?: /* External Tag Id */ number | null
             /**
              * Template Id
              */
-            template_id?: string | null
-            schedule?: ScheduleRequestSchema | null
+            template_id?: /* Template Id */ string | null
+            schedule?: /* ScheduleRequestSchema */ ScheduleRequestSchema | null
             /**
              * Variants
              */
-            variants?: CampaignVariantRequestSchema[]
+            variants?: [
+                /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
+                /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
+            ]
         }
         /**
          * CampaignMetaSchema
@@ -414,29 +427,29 @@ declare namespace Components {
             /**
              * Noreply
              */
-            noReply?: boolean | null
+            noReply?: /* Noreply */ boolean | null
             /**
              * Delay
              */
-            delay?: number | null
+            delay?: /* Delay */ number | null
             /**
              * Agentemail
              */
-            agentEmail?: string | null
+            agentEmail?: /* Agentemail */ string | null
             /**
              * Agentname
              */
-            agentName?: string | null
+            agentName?: /* Agentname */ string | null
             /**
              * Agentavatarurl
              */
-            agentAvatarUrl?: string | null
-            minimumTimeBetweenCampaigns?: MinimumTimeBetweenCampaigns | null
-            maxCampaignDisplaysInSession?: MaxCampaignDisplaysInSession | null
+            agentAvatarUrl?: /* Agentavatarurl */ string | null
+            minimumTimeBetweenCampaigns?: /* MinimumTimeBetweenCampaigns */ MinimumTimeBetweenCampaigns | null
+            maxCampaignDisplaysInSession?: /* MaxCampaignDisplaysInSession */ MaxCampaignDisplaysInSession | null
             /**
              * Copysuggestion
              */
-            copySuggestion?: string | null
+            copySuggestion?: /* Copysuggestion */ string | null
         }
         /**
          * CampaignPatchRequestSchema
@@ -450,58 +463,64 @@ declare namespace Components {
             /**
              * Name
              */
-            name?: string | null
+            name?: /* Name */ string | null
             /**
              * Description
              */
-            description?: string | null
+            description?: /* Description */ string | null
             /**
              * Message Text
              */
-            message_text?: string | null
+            message_text?: /* Message Text */ string | null
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Language
              */
-            language?: string | null
-            status?: CampaignStatus | null
+            language?: /* Language */ string | null
+            status?: /* CampaignStatus */ CampaignStatus | null
             /**
              * Trigger Rule
              */
-            trigger_rule?: string | null
+            trigger_rule?: /* Trigger Rule */ string | null
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
-            meta?: CampaignMetaSchema | null
-            publish_mode?: CampaignPublishType | null
+            meta?: /* CampaignMetaSchema */ CampaignMetaSchema | null
+            publish_mode?: /* CampaignPublishType */ CampaignPublishType | null
             /**
              * Triggers
              */
-            triggers?: CampaignTriggerSchema[] | null
-            schedule?: ScheduleRequestSchema | null
+            triggers?: /* Triggers */ /* CampaignTriggerSchema */
+            CampaignTriggerSchema[] | null
+            schedule?: /* ScheduleRequestSchema */ ScheduleRequestSchema | null
             /**
              * Variants
              */
-            variants?: CampaignVariantRequestSchema[] | null
+            variants?: /* Variants */
+            | [
+                      /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
+                      /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
+                  ]
+                | null
             /**
              * External Tag Id
              */
-            external_tag_id?: number | null
+            external_tag_id?: /* External Tag Id */ number | null
             /**
              * Template Id
              */
-            template_id?: string | null
+            template_id?: /* Template Id */ string | null
         }
         /**
          * CampaignPublishType
@@ -521,7 +540,7 @@ declare namespace Components {
             /**
              * Description
              */
-            description?: string | null
+            description?: /* Description */ string | null
             /**
              * Message Text
              */
@@ -529,12 +548,12 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Language
              */
-            language?: string | null
-            status: CampaignStatus
+            language?: /* Language */ string | null
+            status: /* CampaignStatus */ CampaignStatus
             /**
              * Trigger Rule
              */
@@ -542,18 +561,20 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
              * Meta
              */
-            meta?: {} | null
+            meta?: /* Meta */ {
+                [key: string]: any
+            } | null
             /**
              * Id
              */
@@ -561,13 +582,13 @@ declare namespace Components {
             /**
              * Triggers
              */
-            triggers: CampaignTriggerSchema[]
-            ab_group?: ABGroupResponseSchema | null
+            triggers: /* CampaignTriggerSchema */ CampaignTriggerSchema[]
+            ab_group?: /* ABGroupResponseSchema */ ABGroupResponseSchema | null
             /**
              * Variants
              */
-            variants: CampaignVariantResponseSchema[]
-            schedule?: ScheduleResponseSchema | null
+            variants: /* CampaignVariantResponseSchema */ CampaignVariantResponseSchema[]
+            schedule?: /* ScheduleResponseSchema */ ScheduleResponseSchema | null
             /**
              * Is Light
              */
@@ -583,11 +604,12 @@ declare namespace Components {
             /**
              * Deleted Datetime
              */
-            deleted_datetime?: string /* date-time */ | null
+            deleted_datetime?: /* Deleted Datetime */
+            string /* date-time */ | null
             /**
              * Template Id
              */
-            template_id?: string | null
+            template_id?: /* Template Id */ string | null
         }
         /**
          * CampaignSchema
@@ -600,7 +622,7 @@ declare namespace Components {
             /**
              * Rules
              */
-            rules: RuleSchema[]
+            rules: /* RuleSchema */ RuleSchema[]
         }
         /**
          * CampaignStatus
@@ -628,12 +650,19 @@ declare namespace Components {
          * CampaignTriggerSchema
          */
         export interface CampaignTriggerSchema {
-            type: CampaignTriggerType
-            operator: CampaignTriggerOperator
+            type: /* CampaignTriggerType */ CampaignTriggerType
+            operator: /* CampaignTriggerOperator */ CampaignTriggerOperator
             /**
              * Value
              */
-            value: number | boolean | string | any[] | {}
+            value: /* Value */
+            | number
+                | boolean
+                | string
+                | any[]
+                | {
+                      [key: string]: any
+                  }
             /**
              * Id
              */
@@ -672,16 +701,16 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -700,16 +729,16 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -719,46 +748,127 @@ declare namespace Components {
             /**
              * Started Datetime
              */
-            started_datetime?: string /* date-time */ | null
+            started_datetime?: /* Started Datetime */
+            string /* date-time */ | null
             /**
              * Stopped Datetime
              */
-            stopped_datetime?: string /* date-time */ | null
+            stopped_datetime?: /* Stopped Datetime */
+            string /* date-time */ | null
+        }
+        /**
+         * CartAbandonedCartTestApiDTO
+         */
+        export interface CartAbandonedCartTestApiDTO {
+            /**
+             * Phone Number
+             */
+            phone_number: string
+            /**
+             * Products
+             */
+            products: /* CartAbandonedProductApiDTO */ CartAbandonedProductApiDTO[]
+        }
+        /**
+         * CartAbandonedJourneyConfigurationApiDTO
+         */
+        export interface CartAbandonedJourneyConfigurationApiDTO {
+            /**
+             * Max Follow Up Messages
+             */
+            max_follow_up_messages?: /* Max Follow Up Messages */ number | null
+            /**
+             * Sms Sender Number
+             */
+            sms_sender_number?: /* Sms Sender Number */ string | null
+            /**
+             * Sms Sender Integration Id
+             */
+            sms_sender_integration_id?: /* Sms Sender Integration Id */
+            number | null
+            /**
+             * Offer Discount
+             */
+            offer_discount?: boolean
+            /**
+             * Max Discount Percent
+             */
+            max_discount_percent?: /* Max Discount Percent */ number | null
+            /**
+             * Discount Code Message Threshold
+             */
+            discount_code_message_threshold?: /* Discount Code Message Threshold */
+            number | null
+            /**
+             * Include Image
+             */
+            include_image?: boolean
+        }
+        /**
+         * CartAbandonedJourneyConfigurationPrivateApiDTO
+         */
+        export interface CartAbandonedJourneyConfigurationPrivateApiDTO {
+            /**
+             * Cart Abandoned Wait Minutes
+             */
+            cart_abandoned_wait_minutes?: /* Cart Abandoned Wait Minutes */
+            number | null
+        }
+        /**
+         * CartAbandonedProductApiDTO
+         */
+        export interface CartAbandonedProductApiDTO {
+            /**
+             * Product Id
+             */
+            product_id: string
+            /**
+             * Variant Id
+             */
+            variant_id: string
+            /**
+             * Title
+             */
+            title?: /* Title */ string | null
+            /**
+             * Price
+             */
+            price?: /* Price */ number | null
         }
         /**
          * CartItemSchema
          */
         export interface CartItemSchema {
-            product: InteractedProductSchema
+            product: /* InteractedProductSchema */ InteractedProductSchema
             /**
              * Quantity
              */
-            quantity: number
+            quantity?: number
             /**
              * Total
              */
-            total: number | number
+            total: /* Total */ string | number
             /**
              * Original Total
              */
-            original_total?: number | null
+            original_total?: /* Original Total */ string | number | null
         }
         /**
          * CartSchema
          */
         export interface CartSchema {
             /**
-             * Items
+             * Last Update Datetime
              */
-            items: CartItemSchema[]
+            last_update_datetime: string // date-time
             /**
              * Currency
              */
-            currency?: string | null
+            currency: string
             /**
-             * Last Updated Timestamp
+             * Items
              */
-            last_updated_timestamp: string // date-time
+            items?: /* CartItemSchema */ CartItemSchema[]
         }
         /**
          * ChannelConnectionCreateRequestSchema
@@ -767,15 +877,16 @@ declare namespace Components {
             /**
              * Store Integration Id
              */
-            store_integration_id?: number | null
+            store_integration_id?: /* Store Integration Id */ number | null
             /**
              * External Id
              */
-            external_id?: string | null
+            external_id?: /* External Id */ string | null
             /**
              * External Installation Status
              */
-            external_installation_status?: string | null
+            external_installation_status?: /* External Installation Status */
+            string | null
             /**
              * Is Setup
              */
@@ -792,7 +903,7 @@ declare namespace Components {
              * Utm Enabled
              */
             utm_enabled?: boolean
-            channel: ChannelType
+            channel: /* ChannelType */ ChannelType
         }
         /**
          * ChannelConnectionResponseSchema
@@ -801,15 +912,16 @@ declare namespace Components {
             /**
              * Store Integration Id
              */
-            store_integration_id?: number | null
+            store_integration_id?: /* Store Integration Id */ number | null
             /**
              * External Id
              */
-            external_id?: string | null
+            external_id?: /* External Id */ string | null
             /**
              * External Installation Status
              */
-            external_installation_status?: string | null
+            external_installation_status?: /* External Installation Status */
+            string | null
             /**
              * Is Setup
              */
@@ -826,7 +938,7 @@ declare namespace Components {
              * Utm Enabled
              */
             utm_enabled?: boolean
-            channel: ChannelType
+            channel: /* ChannelType */ ChannelType
             /**
              * Account Id
              */
@@ -846,15 +958,16 @@ declare namespace Components {
             /**
              * Store Integration Id
              */
-            store_integration_id?: number | null
+            store_integration_id?: /* Store Integration Id */ number | null
             /**
              * External Id
              */
-            external_id?: string | null
+            external_id?: /* External Id */ string | null
             /**
              * External Installation Status
              */
-            external_installation_status?: string | null
+            external_installation_status?: /* External Installation Status */
+            string | null
             /**
              * Is Setup
              */
@@ -877,25 +990,67 @@ declare namespace Components {
          */
         export type ChannelType = 'widget'
         /**
+         * CommunicationOptInSchema
+         */
+        export interface CommunicationOptInSchema {
+            /**
+             * Email
+             */
+            email?: boolean
+            /**
+             * Sms
+             */
+            sms?: boolean
+        }
+        /**
          * ConfigResponseSchema
          */
         export interface ConfigResponseSchema {
-            subscription: SubscriptionStatusSchema
+            subscription: /* SubscriptionStatusSchema */ SubscriptionStatusSchema
             /**
              * Campaigns
              */
-            campaigns: PublicCampaignResponseSchema[]
-            ab_test?: ABTestConfigurationResponseSchema | null
+            campaigns: /**
+             * PublicCampaignResponseSchema
+             * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
+             */
+            PublicCampaignResponseSchema[]
+            ab_test?: /* ABTestConfigurationResponseSchema */ ABTestConfigurationResponseSchema | null
             /**
              * Settings
              */
             settings?: {
-                [name: string]: {}
+                [name: string]: {
+                    [key: string]: any
+                }
             }
             /**
              * Id
              */
             id: string
+        }
+        /**
+         * CreateJourneyApiDTO
+         */
+        export interface CreateJourneyApiDTO {
+            type: /* JourneyTypeEnum */ JourneyTypeEnum
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: number
+            /**
+             * Store Name
+             */
+            store_name: string
+            /**
+             * Store Type
+             */
+            store_type: string
+            /**
+             * Message Instructions
+             */
+            message_instructions?: /* Message Instructions */ string | null
+            configuration?: /* CartAbandonedJourneyConfigurationApiDTO */ CartAbandonedJourneyConfigurationApiDTO | null
         }
         /**
          * CustomDomainOperationSchema
@@ -905,7 +1060,7 @@ declare namespace Components {
              * Hostname
              */
             hostname: string
-            zone?: CustomDomainZone | null
+            zone?: /* CustomDomainZone */ CustomDomainZone | null
         }
         /**
          * CustomDomainSchema
@@ -942,10 +1097,10 @@ declare namespace Components {
             to_time: string
         }
         /**
-         * DiscountOfferCreateRequestSchema
+         * DiscountOfferApiDTO
          */
-        export interface DiscountOfferCreateRequestSchema {
-            type: DiscountOfferTypeEnum
+        export interface DiscountOfferApiDTO {
+            type: /* DiscountOfferTypeEnum */ DiscountOfferTypeEnum
             /**
              * Prefix
              */
@@ -953,87 +1108,26 @@ declare namespace Components {
             /**
              * Value
              */
-            value?: number | string | null
+            value?: /* Value */ number | string | null
             /**
              * Minimum Purchase Amount
              */
-            minimum_purchase_amount?: number | string | null
+            minimum_purchase_amount?: /* Minimum Purchase Amount */
+            number | string | null
             /**
              * External Customer Segment Ids
              */
-            external_customer_segment_ids?: string[] | null
+            external_customer_segment_ids?: /* External Customer Segment Ids */
+            string[] | null
             /**
              * External Collection Ids
              */
-            external_collection_ids?: string[] | null
+            external_collection_ids?: /* External Collection Ids */
+            string[] | null
             /**
              * External Product Ids
              */
-            external_product_ids?: string[] | null
-            /**
-             * Store Integration Id
-             */
-            store_integration_id: string
-        }
-        /**
-         * DiscountOfferPatchRequestSchema
-         */
-        export interface DiscountOfferPatchRequestSchema {
-            type?: DiscountOfferTypeEnum | null
-            /**
-             * Prefix
-             */
-            prefix?: string | null
-            /**
-             * Value
-             */
-            value?: number | string | null
-            /**
-             * Minimum Purchase Amount
-             */
-            minimum_purchase_amount?: number | string | null
-            /**
-             * External Customer Segment Ids
-             */
-            external_customer_segment_ids?: string[] | null
-            /**
-             * External Collection Ids
-             */
-            external_collection_ids?: string[] | null
-            /**
-             * External Product Ids
-             */
-            external_product_ids?: string[] | null
-        }
-        /**
-         * DiscountOfferResponseSchema
-         */
-        export interface DiscountOfferResponseSchema {
-            type: DiscountOfferTypeEnum
-            /**
-             * Prefix
-             */
-            prefix: string
-            /**
-             * Value
-             */
-            value?: number | string | null
-            /**
-             * Minimum Purchase Amount
-             */
-            minimum_purchase_amount?: number | string | null
-            /**
-             * External Customer Segment Ids
-             */
-            external_customer_segment_ids?: string[] | null
-            /**
-             * External Collection Ids
-             */
-            external_collection_ids?: string[] | null
-            /**
-             * External Product Ids
-             */
-            external_product_ids?: string[] | null
+            external_product_ids?: /* External Product Ids */ string[] | null
             /**
              * Id
              */
@@ -1042,6 +1136,84 @@ declare namespace Components {
              * Store Integration Id
              */
             store_integration_id: string
+            /**
+             * Updated Datetime
+             */
+            updated_datetime: string // date-time
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+        }
+        /**
+         * DiscountOfferCreateApiDTO
+         */
+        export interface DiscountOfferCreateApiDTO {
+            type: /* DiscountOfferTypeEnum */ DiscountOfferTypeEnum
+            /**
+             * Prefix
+             */
+            prefix: string
+            /**
+             * Value
+             */
+            value?: /* Value */ number | string | null
+            /**
+             * Minimum Purchase Amount
+             */
+            minimum_purchase_amount?: /* Minimum Purchase Amount */
+            number | string | null
+            /**
+             * External Customer Segment Ids
+             */
+            external_customer_segment_ids?: /* External Customer Segment Ids */
+            string[] | null
+            /**
+             * External Collection Ids
+             */
+            external_collection_ids?: /* External Collection Ids */
+            string[] | null
+            /**
+             * External Product Ids
+             */
+            external_product_ids?: /* External Product Ids */ string[] | null
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: string
+        }
+        /**
+         * DiscountOfferPatchApiDTO
+         */
+        export interface DiscountOfferPatchApiDTO {
+            type?: /* DiscountOfferTypeEnum */ DiscountOfferTypeEnum | null
+            /**
+             * Prefix
+             */
+            prefix?: /* Prefix */ string | null
+            /**
+             * Value
+             */
+            value?: /* Value */ number | string | null
+            /**
+             * Minimum Purchase Amount
+             */
+            minimum_purchase_amount?: /* Minimum Purchase Amount */
+            number | string | null
+            /**
+             * External Customer Segment Ids
+             */
+            external_customer_segment_ids?: /* External Customer Segment Ids */
+            string[] | null
+            /**
+             * External Collection Ids
+             */
+            external_collection_ids?: /* External Collection Ids */
+            string[] | null
+            /**
+             * External Product Ids
+             */
+            external_product_ids?: /* External Product Ids */ string[] | null
         }
         /**
          * DiscountOfferTypeEnum
@@ -1061,14 +1233,14 @@ declare namespace Components {
             /**
              * Rules
              */
-            rules: EvaluatedRuleSchema[]
+            rules: /* EvaluatedRuleSchema */ EvaluatedRuleSchema[]
         }
         /**
          * EvaluatedRuleSchema
          */
         export interface EvaluatedRuleSchema {
-            key: RuleType
-            operator: RuleOperator
+            key: /* RuleType */ RuleType
+            operator: /* RuleOperator */ RuleOperator
             /**
              * Value
              */
@@ -1089,7 +1261,7 @@ declare namespace Components {
             /**
              * Customer Id
              */
-            customer_id?: number | null
+            customer_id?: /* Customer Id */ number | null
             /**
              * Account Id
              */
@@ -1097,7 +1269,7 @@ declare namespace Components {
             /**
              * Campaigns
              */
-            campaigns: CampaignSchema[]
+            campaigns: /* CampaignSchema */ CampaignSchema[]
         }
         /**
          * EvaluationResponseSchema
@@ -1106,7 +1278,7 @@ declare namespace Components {
             /**
              * Campaigns
              */
-            campaigns: EvaluatedCampaignSchema[]
+            campaigns: /* EvaluatedCampaignSchema */ EvaluatedCampaignSchema[]
             /**
              * Visitor Identified
              */
@@ -1119,7 +1291,7 @@ declare namespace Components {
             /**
              * Detail
              */
-            detail?: ValidationError[]
+            detail?: /* ValidationError */ ValidationError[]
         }
         /**
          * InstallationSchema
@@ -1140,21 +1312,24 @@ declare namespace Components {
             /**
              * Shop Name
              */
-            shop_name?: string | null
+            shop_name?: /* Shop Name */ string | null
             /**
              * Script Tag Id
              */
-            script_tag_id?: string | null
-            status: StatusEnum
-            method: MethodEnum
+            script_tag_id?: /* Script Tag Id */ string | null
+            status: /* StatusEnum */ StatusEnum
+            method: /* MethodEnum */ MethodEnum
             /**
              * Config
              */
-            config: {}
+            config: {
+                [key: string]: any
+            }
             /**
              * Last Loaded Datetime
              */
-            last_loaded_datetime?: string | null
+            last_loaded_datetime?: /* Last Loaded Datetime */
+            string /* date-time */ | null
             /**
              * Created Datetime
              */
@@ -1162,7 +1337,8 @@ declare namespace Components {
             /**
              * Deactivated Datetime
              */
-            deactivated_datetime?: string /* date-time */ | null
+            deactivated_datetime?: /* Deactivated Datetime */
+            string /* date-time */ | null
             /**
              * Bundle Url
              */
@@ -1175,7 +1351,9 @@ declare namespace Components {
             /**
              * Config
              */
-            config: {}
+            config: {
+                [key: string]: any
+            }
         }
         /**
          * InteractedProductSchema
@@ -1188,7 +1366,7 @@ declare namespace Components {
             /**
              * Variant Id
              */
-            variant_id?: number | null
+            variant_id?: /* Variant Id */ number | null
             /**
              * Title
              */
@@ -1207,6 +1385,133 @@ declare namespace Components {
              */
             token: string
         }
+        /**
+         * JourneyApiDTO
+         */
+        export interface JourneyApiDTO {
+            /**
+             * Id
+             */
+            id: string
+            type: /* JourneyTypeEnum */ JourneyTypeEnum
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: number
+            /**
+             * Store Name
+             */
+            store_name: string
+            /**
+             * Store Type
+             */
+            store_type: string
+            state: /* JourneyStatusEnum */ JourneyStatusEnum
+            /**
+             * Message Instructions
+             */
+            message_instructions?: /* Message Instructions */ string | null
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+            /**
+             * Meta
+             */
+            meta?: {
+                [key: string]: any
+            }
+        }
+        /**
+         * JourneyDetailApiDTO
+         */
+        export interface JourneyDetailApiDTO {
+            /**
+             * Id
+             */
+            id: string
+            type: /* JourneyTypeEnum */ JourneyTypeEnum
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: number
+            /**
+             * Store Name
+             */
+            store_name: string
+            /**
+             * Store Type
+             */
+            store_type: string
+            state: /* JourneyStatusEnum */ JourneyStatusEnum
+            /**
+             * Message Instructions
+             */
+            message_instructions?: /* Message Instructions */ string | null
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+            /**
+             * Meta
+             */
+            meta?: {
+                [key: string]: any
+            }
+            configuration: /* CartAbandonedJourneyConfigurationApiDTO */ CartAbandonedJourneyConfigurationApiDTO
+        }
+        /**
+         * JourneyPrivateApiDTO
+         */
+        export interface JourneyPrivateApiDTO {
+            /**
+             * Id
+             */
+            id: string
+            type: /* JourneyTypeEnum */ JourneyTypeEnum
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: number
+            /**
+             * Store Name
+             */
+            store_name: string
+            /**
+             * Store Type
+             */
+            store_type: string
+            state: /* JourneyStatusEnum */ JourneyStatusEnum
+            /**
+             * Message Instructions
+             */
+            message_instructions?: /* Message Instructions */ string | null
+            /**
+             * Created Datetime
+             */
+            created_datetime: string // date-time
+            configuration: /* CartAbandonedJourneyConfigurationPrivateApiDTO */ CartAbandonedJourneyConfigurationPrivateApiDTO
+        }
+        /**
+         * JourneyStatusEnum
+         */
+        export type JourneyStatusEnum = 'active' | 'draft' | 'paused'
+        /**
+         * JourneyTypeEnum
+         */
+        export type JourneyTypeEnum = 'cart_abandoned'
         /**
          * MaxCampaignDisplaysInSession
          */
@@ -1228,33 +1533,29 @@ declare namespace Components {
              * Value
              */
             value: number
-            unit: TimeUnit
+            unit: /* TimeUnit */ TimeUnit
         }
         /**
-         * PageViewSchema
+         * PastActivitySchema
          */
-        export interface PageViewSchema {
+        export interface PastActivitySchema {
             /**
-             * Url
+             * Past Sessions
              */
-            url?: string | null
-            product?: InteractedProductSchema | null
+            past_sessions?: /* ShopperSessionSchema */ ShopperSessionSchema[]
             /**
-             * Page Title
+             * Top Visited Pages
              */
-            page_title?: string | null
+            top_visited_pages?: /* VisitedPageSchema */ VisitedPageSchema[]
             /**
-             * Search Query
+             * Top Visited Product Pages
              */
-            search_query?: string | null
+            top_visited_product_pages?: /* VisitedProductPageSchema */ VisitedProductPageSchema[]
             /**
-             * Visit Count
+             * Last Cart Abandonment Datetime
              */
-            visit_count: number
-            /**
-             * Last Visit Timestamp
-             */
-            last_visit_timestamp: string // date-time
+            last_cart_abandonment_datetime?: /* Last Cart Abandonment Datetime */
+            string /* date-time */ | null
         }
         /**
          * ProductInfoSchema
@@ -1293,11 +1594,11 @@ declare namespace Components {
             /**
              * Shop Name
              */
-            shop_name?: string | null
+            shop_name?: /* Shop Name */ string | null
             /**
              * Installation Id
              */
-            installation_id?: string | null
+            installation_id?: /* Installation Id */ string | null
             /**
              * Widget App Id
              */
@@ -1306,7 +1607,7 @@ declare namespace Components {
              * Campaign Id
              */
             campaign_id: string
-            scenario: ProductRecommendationScenarioType
+            scenario: /* ProductRecommendationScenarioType */ ProductRecommendationScenarioType
             /**
              * Guest Id
              */
@@ -1314,16 +1615,16 @@ declare namespace Components {
             /**
              * Customer Id
              */
-            customer_id?: number | null
-            current_product?: ProductInfoSchema | null
+            customer_id?: /* Customer Id */ number | null
+            current_product?: /* ProductInfoSchema */ ProductInfoSchema | null
             /**
              * Visited Products
              */
-            visited_products: ProductInfoSchema[]
+            visited_products: /* ProductInfoSchema */ ProductInfoSchema[]
             /**
              * Cart Products
              */
-            cart_products: ProductInfoSchema[]
+            cart_products: /* ProductInfoSchema */ ProductInfoSchema[]
         }
         /**
          * ProductRecommendationResponseSchema
@@ -1332,7 +1633,7 @@ declare namespace Components {
             /**
              * Products
              */
-            products: ProductSchema[]
+            products: /* ProductSchema */ ProductSchema[]
         }
         /**
          * ProductRecommendationScenarioType
@@ -1362,15 +1663,15 @@ declare namespace Components {
             /**
              * Variants
              */
-            variants: ProductVariant[]
+            variants: /* ProductVariant */ ProductVariant[]
             /**
              * Options
              */
-            options: ProductOption[]
+            options: /* ProductOption */ ProductOption[]
             /**
              * Image Url
              */
-            image_url: string | null
+            image_url: /* Image Url */ string | null
         }
         /**
          * ProductVariant
@@ -1387,7 +1688,7 @@ declare namespace Components {
             /**
              * Price
              */
-            price: number | string
+            price: /* Price */ number | string
             /**
              * Options
              */
@@ -1397,7 +1698,7 @@ declare namespace Components {
          * PublicABGroupResponseSchema
          */
         export interface PublicABGroupResponseSchema {
-            status: ABGroupStatus
+            status: /* ABGroupStatus */ ABGroupStatus
         }
         /**
          * PublicCampaignResponseSchema
@@ -1411,7 +1712,7 @@ declare namespace Components {
             /**
              * Description
              */
-            description?: string | null
+            description?: /* Description */ string | null
             /**
              * Message Text
              */
@@ -1419,12 +1720,12 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Language
              */
-            language?: string | null
-            status: CampaignStatus
+            language?: /* Language */ string | null
+            status: /* CampaignStatus */ CampaignStatus
             /**
              * Trigger Rule
              */
@@ -1432,22 +1733,24 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
              * Meta
              */
-            meta?: {} | null
+            meta?: /* Meta */ {
+                [key: string]: any
+            } | null
             /**
              * Triggers
              */
-            triggers: CampaignTriggerSchema[]
+            triggers: /* CampaignTriggerSchema */ CampaignTriggerSchema[]
             /**
              * Id
              */
@@ -1467,13 +1770,14 @@ declare namespace Components {
             /**
              * Deleted Datetime
              */
-            deleted_datetime?: string /* date-time */ | null
+            deleted_datetime?: /* Deleted Datetime */
+            string /* date-time */ | null
             /**
              * Variants
              */
-            variants: PublicCampaignVariantResponseSchema[]
-            ab_group?: PublicABGroupResponseSchema | null
-            schedule?: ScheduleResponseSchema | null
+            variants: /* PublicCampaignVariantResponseSchema */ PublicCampaignVariantResponseSchema[]
+            ab_group?: /* PublicABGroupResponseSchema */ PublicABGroupResponseSchema | null
+            schedule?: /* ScheduleResponseSchema */ ScheduleResponseSchema | null
         }
         /**
          * PublicCampaignVariantResponseSchema
@@ -1486,16 +1790,16 @@ declare namespace Components {
             /**
              * Message Html
              */
-            message_html?: string | null
+            message_html?: /* Message Html */ string | null
             /**
              * Attachments
              */
-            attachments?:
-                | (
+            attachments?: /* Attachments */
+            | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
-                      | CampaignAttachmentDiscountOfferSchema
-                      | CampaignAttachmentVisitorFormSchema
-                      | CampaignAttachmentProductRecommendationSchema
+                      | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
+                      | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
+                      | /* CampaignAttachmentProductRecommendationSchema */ CampaignAttachmentProductRecommendationSchema
                   )[]
                 | null
             /**
@@ -1510,15 +1814,15 @@ declare namespace Components {
             /**
              * Products
              */
-            products: InteractedProductSchema[]
+            products: /* InteractedProductSchema */ InteractedProductSchema[]
             /**
              * Total Amount Spent
              */
-            total_amount_spent?: number | null
+            total_amount_spent?: /* Total Amount Spent */ number | null
             /**
              * Total Orders Count
              */
-            total_orders_count?: number | null
+            total_orders_count?: /* Total Orders Count */ number | null
         }
         /**
          * RequestSettingSchema
@@ -1527,8 +1831,10 @@ declare namespace Components {
             /**
              * Data
              */
-            data: {}
-            type: SettingType
+            data: {
+                [key: string]: any
+            }
+            type: /* SettingType */ SettingType
         }
         /**
          * RevealDiscountCodeRequestSchema
@@ -1551,7 +1857,7 @@ declare namespace Components {
              * Code
              */
             code: string
-            type: DiscountOfferTypeEnum
+            type: /* DiscountOfferTypeEnum */ DiscountOfferTypeEnum
             /**
              * Value
              */
@@ -1577,8 +1883,8 @@ declare namespace Components {
          * RuleSchema
          */
         export interface RuleSchema {
-            key: RuleType
-            operator: RuleOperator
+            key: /* RuleType */ RuleType
+            operator: /* RuleOperator */ RuleOperator
             /**
              * Value
              */
@@ -1594,6 +1900,42 @@ declare namespace Components {
             | 'customer_tags'
             | 'country_code'
         /**
+         * RunAiJourneyEngineResponseApiDTO
+         */
+        export interface RunAiJourneyEngineResponseApiDTO {
+            /**
+             * Event
+             */
+            event: {
+                [key: string]: any
+            }
+            /**
+             * Success
+             */
+            success: boolean
+        }
+        /**
+         * SMSIntegrationApiDTO
+         */
+        export interface SMSIntegrationApiDTO {
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: number
+            /**
+             * Phone Number
+             */
+            phone_number?: /* Phone Number */ string | null
+            /**
+             * Sms Integration Id
+             */
+            sms_integration_id?: /* Sms Integration Id */ number | null
+        }
+        /**
          * ScheduleRequestSchema
          */
         export interface ScheduleRequestSchema {
@@ -1604,12 +1946,13 @@ declare namespace Components {
             /**
              * End Datetime
              */
-            end_datetime?: string /* date-time */ | null
-            schedule_rule: ScheduleRule
+            end_datetime?: /* End Datetime */ string /* date-time */ | null
+            schedule_rule: /* ScheduleRule */ ScheduleRule
             /**
              * Custom Schedule
              */
-            custom_schedule: CustomScheduleSchema[] | null
+            custom_schedule: /* Custom Schedule */ /* CustomScheduleSchema */
+            CustomScheduleSchema[] | null
         }
         /**
          * ScheduleResponseSchema
@@ -1622,12 +1965,13 @@ declare namespace Components {
             /**
              * End Datetime
              */
-            end_datetime?: string /* date-time */ | null
-            schedule_rule: ScheduleRule
+            end_datetime?: /* End Datetime */ string /* date-time */ | null
+            schedule_rule: /* ScheduleRule */ ScheduleRule
             /**
              * Custom Schedule
              */
-            custom_schedule: CustomScheduleSchema[] | null
+            custom_schedule: /* Custom Schedule */ /* CustomScheduleSchema */
+            CustomScheduleSchema[] | null
         }
         /**
          * ScheduleRule
@@ -1637,11 +1981,13 @@ declare namespace Components {
          * SettingResponseSchema
          */
         export interface SettingResponseSchema {
-            type: SettingType
+            type: /* SettingType */ SettingType
             /**
              * Data
              */
-            data: {}
+            data: {
+                [key: string]: any
+            }
         }
         /**
          * SettingType
@@ -1650,16 +1996,153 @@ declare namespace Components {
             | 'performance_report_visible_fields'
             | 'email_disclaimer'
             | 'campaign_frequency'
+            | 'ai_journey'
         /**
-         * ShopperLookupResponse
+         * ShopifyCartItemApiDTO
          */
-        export interface ShopperLookupResponse {
+        export interface ShopifyCartItemApiDTO {
             /**
-             * Page Views
+             * Variant Id
              */
-            page_views: PageViewSchema[]
-            cart?: CartSchema | null
-            purchases?: PurchasesSchema | null
+            variant_id: number
+            /**
+             * Product Id
+             */
+            product_id: number
+            /**
+             * Quantity
+             */
+            quantity: number
+            /**
+             * Price
+             */
+            price: number
+            /**
+             * Original Price
+             */
+            original_price: number
+        }
+        /**
+         * ShopifyCartPayloadApiDTO
+         */
+        export interface ShopifyCartPayloadApiDTO {
+            /**
+             * Token
+             */
+            token: string
+            /**
+             * Currency
+             */
+            currency: string
+            /**
+             * Items
+             */
+            items: /* ShopifyCartItemApiDTO */ ShopifyCartItemApiDTO[]
+            /**
+             * Total Price
+             */
+            total_price: number
+            /**
+             * Item Count
+             */
+            item_count: number
+        }
+        /**
+         * ShopperInterestLookupRequest
+         */
+        export interface ShopperInterestLookupRequest {
+            /**
+             * Account Id
+             * Helpdesk account ID
+             */
+            account_id: number
+            /**
+             * Store Integration Id
+             * Helpdesk store integration ID
+             */
+            store_integration_id: number
+            /**
+             * Marketing Id
+             * Marketing ID of the shopper (revenue_id)
+             */
+            marketing_id?: /**
+             * Marketing Id
+             * Marketing ID of the shopper (revenue_id)
+             */
+            string | null
+            /**
+             * Customer Id
+             * Helpdesk Customer ID
+             */
+            customer_id?: /**
+             * Customer Id
+             * Helpdesk Customer ID
+             */
+            number | null
+            /**
+             * Email
+             * Email of the shopper
+             */
+            email?: /**
+             * Email
+             * Email of the shopper
+             */
+            string | null
+            /**
+             * Phone
+             * Phone of the shopper
+             */
+            phone?: /**
+             * Phone
+             * Phone of the shopper
+             */
+            string | null
+        }
+        /**
+         * ShopperInterestLookupResponse
+         */
+        export interface ShopperInterestLookupResponse {
+            current_session: /* ShopperSessionSchema */ ShopperSessionSchema | null
+            latest_session: /* ShopperSessionSchema */ ShopperSessionSchema | null
+            past_activity: /* PastActivitySchema */ PastActivitySchema
+            communication_opt_in: /* CommunicationOptInSchema */ CommunicationOptInSchema
+            attributed_orders?: /* PurchasesSchema */ PurchasesSchema | null
+            /**
+             * Customer Id
+             */
+            customer_id?: /* Customer Id */ number | null
+        }
+        /**
+         * ShopperSessionSchema
+         */
+        export interface ShopperSessionSchema {
+            /**
+             * Start Datetime
+             */
+            start_datetime: string // date-time
+            /**
+             * End Datetime
+             */
+            end_datetime?: /* End Datetime */ string /* date-time */ | null
+            /**
+             * Duration Seconds
+             */
+            duration_seconds?: /* Duration Seconds */ number | null
+            /**
+             * Top Visited Pages
+             */
+            top_visited_pages?: /* VisitedPageSchema */ VisitedPageSchema[]
+            /**
+             * Top Visited Product Pages
+             */
+            top_visited_product_pages?: /* VisitedProductPageSchema */ VisitedProductPageSchema[]
+            /**
+             * Total Visited Pages Count
+             */
+            total_visited_pages_count?: number
+            traffic_source?: /* TrafficSource */ TrafficSource | null
+            traffic_metadata?: /* TrafficMetadata */ TrafficMetadata | null
+            cart?: /* CartSchema */ CartSchema | null
         }
         /**
          * StatusEnum
@@ -1673,23 +2156,23 @@ declare namespace Components {
          * SubscriptionStatusSchema
          */
         export interface SubscriptionStatusSchema {
-            status: SubscriptionStatus
-            usage_status: SubscriptionUsageStatus
+            status: /* SubscriptionStatus */ SubscriptionStatus
+            usage_status: /* SubscriptionUsageStatus */ SubscriptionUsageStatus
         }
         /**
          * SubscriptionUsageAndBundleStatusSchema
          */
         export interface SubscriptionUsageAndBundleStatusSchema {
-            status: SubscriptionStatus
-            usage_status: SubscriptionUsageStatus
+            status: /* SubscriptionStatus */ SubscriptionStatus
+            usage_status: /* SubscriptionUsageStatus */ SubscriptionUsageStatus
             /**
              * Usage
              */
-            usage?: number | null
+            usage?: /* Usage */ number | null
             /**
              * Limit
              */
-            limit?: number | null
+            limit?: /* Limit */ number | null
             /**
              * Auto Upgrade Enabled
              */
@@ -1697,36 +2180,41 @@ declare namespace Components {
             /**
              * Last Auto Upgrade At
              */
-            last_auto_upgrade_at?: string /* date-time */ | null
+            last_auto_upgrade_at?: /* Last Auto Upgrade At */
+            string /* date-time */ | null
             /**
              * Last Warning 90 At
              */
-            last_warning_90_at?: string /* date-time */ | null
+            last_warning_90_at?: /* Last Warning 90 At */
+            string /* date-time */ | null
             /**
              * Last Warning 100 At
              */
-            last_warning_100_at?: string /* date-time */ | null
+            last_warning_100_at?: /* Last Warning 100 At */
+            string /* date-time */ | null
             /**
              * Last Block At
              */
-            last_block_at?: string /* date-time */ | null
+            last_block_at?: /* Last Block At */ string /* date-time */ | null
             /**
              * Estimated Usage Percentage
              */
-            estimated_usage_percentage?: number | null
+            estimated_usage_percentage?: /* Estimated Usage Percentage */
+            number | null
             /**
              * Estimated Reach Date
              */
-            estimated_reach_date?: string /* date-time */ | null
+            estimated_reach_date?: /* Estimated Reach Date */
+            string /* date-time */ | null
             /**
              * Cycle Start
              */
-            cycle_start?: string /* date-time */ | null
+            cycle_start?: /* Cycle Start */ string /* date-time */ | null
             /**
              * Cycle End
              */
-            cycle_end?: string /* date-time */ | null
-            bundle_status: BundleOnboardingStatus
+            cycle_end?: /* Cycle End */ string /* date-time */ | null
+            bundle_status: /* BundleOnboardingStatus */ BundleOnboardingStatus
         }
         /**
          * SubscriptionUsageStatus
@@ -1737,13 +2225,59 @@ declare namespace Components {
          */
         export type TimeUnit = 'seconds' | 'minutes' | 'hours'
         /**
+         * TrafficMetadata
+         */
+        export interface TrafficMetadata {
+            /**
+             * Referrer
+             */
+            referrer?: /* Referrer */ string | null
+            /**
+             * Utm Source
+             */
+            utm_source?: /* Utm Source */ string | null
+            /**
+             * Utm Medium
+             */
+            utm_medium?: /* Utm Medium */ string | null
+            /**
+             * Utm Campaign
+             */
+            utm_campaign?: /* Utm Campaign */ string | null
+            /**
+             * Utm Term
+             */
+            utm_term?: /* Utm Term */ string | null
+            /**
+             * Utm Content
+             */
+            utm_content?: /* Utm Content */ string | null
+            /**
+             * Gclid
+             */
+            gclid?: /* Gclid */ string | null
+            /**
+             * Fbclid
+             */
+            fbclid?: /* Fbclid */ string | null
+        }
+        /**
+         * TrafficSource
+         */
+        export type TrafficSource =
+            | 'paid-search'
+            | 'direct-traffic'
+            | 'referral'
+            | 'social-traffic'
+            | 'organic-search'
+        /**
          * URLBulkSchema
          */
         export interface URLBulkSchema {
             /**
              * Urls
              */
-            urls: URLSchema[]
+            urls: /* URLSchema */ URLSchema[]
         }
         /**
          * URLClickSchema
@@ -1752,15 +2286,15 @@ declare namespace Components {
             /**
              * Client Ip
              */
-            client_ip?: string | null
+            client_ip?: /* Client Ip */ string | null
             /**
              * Client Agent
              */
-            client_agent?: string | null
+            client_agent?: /* Client Agent */ string | null
             /**
              * Client Referrer
              */
-            client_referrer?: string | null
+            client_referrer?: /* Client Referrer */ string | null
             /**
              * Created Datetime
              */
@@ -1773,7 +2307,108 @@ declare namespace Components {
             /**
              * Urls
              */
-            urls: URLCreateSchema[]
+            urls: [
+                /* URLCreateSchema */ URLCreateSchema,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+                /* URLCreateSchema */ URLCreateSchema?,
+            ]
         }
         /**
          * URLCreateSchema
@@ -1790,7 +2425,7 @@ declare namespace Components {
             /**
              * Channel
              */
-            channel?: string | null
+            channel?: /* Channel */ string | null
             /**
              * Url
              */
@@ -1798,7 +2433,9 @@ declare namespace Components {
             /**
              * Meta
              */
-            meta?: {}
+            meta?: {
+                [key: string]: any
+            }
             /**
              * Alias
              */
@@ -1835,12 +2472,12 @@ declare namespace Components {
             /**
              * Short Url
              */
-            short_url?: string | null
+            short_url?: /* Short Url */ string | null
             /**
              * Channel
              */
-            channel?: string | null
-            custom_domain?: CustomDomainSchema | null
+            channel?: /* Channel */ string | null
+            custom_domain?: /* CustomDomainSchema */ CustomDomainSchema | null
         }
         /**
          * URLWithClicksSchema
@@ -1873,16 +2510,16 @@ declare namespace Components {
             /**
              * Short Url
              */
-            short_url?: string | null
+            short_url?: /* Short Url */ string | null
             /**
              * Channel
              */
-            channel?: string | null
-            custom_domain?: CustomDomainSchema | null
+            channel?: /* Channel */ string | null
+            custom_domain?: /* CustomDomainSchema */ CustomDomainSchema | null
             /**
              * Clicks
              */
-            clicks: URLClickSchema[]
+            clicks: /* URLClickSchema */ URLClickSchema[]
         }
         /**
          * UpdateAutoUpgradeSchema
@@ -1892,6 +2529,17 @@ declare namespace Components {
              * Enabled
              */
             enabled: boolean
+        }
+        /**
+         * UpdateJourneyApiDTO
+         */
+        export interface UpdateJourneyApiDTO {
+            state?: /* JourneyStatusEnum */ JourneyStatusEnum | null
+            /**
+             * Message Instructions
+             */
+            message_instructions?: /* Message Instructions */ string | null
+            configuration?: /* CartAbandonedJourneyConfigurationApiDTO */ CartAbandonedJourneyConfigurationApiDTO | null
         }
         /**
          * ValidationError
@@ -1911,6 +2559,65 @@ declare namespace Components {
             type: string
         }
         /**
+         * VisitedPageSchema
+         */
+        export interface VisitedPageSchema {
+            /**
+             * Url
+             */
+            url?: /* Url */ string | null
+            /**
+             * Page Title
+             */
+            page_title?: /* Page Title */ string | null
+            /**
+             * Search Query
+             */
+            search_query?: /* Search Query */ string | null
+            /**
+             * Visit Count
+             */
+            visit_count?: number
+            /**
+             * Last Visit Datetime
+             */
+            last_visit_datetime: string // date-time
+            /**
+             * Type
+             */
+            type?: 'other'
+        }
+        /**
+         * VisitedProductPageSchema
+         */
+        export interface VisitedProductPageSchema {
+            /**
+             * Url
+             */
+            url?: /* Url */ string | null
+            /**
+             * Page Title
+             */
+            page_title?: /* Page Title */ string | null
+            /**
+             * Search Query
+             */
+            search_query?: /* Search Query */ string | null
+            /**
+             * Visit Count
+             */
+            visit_count?: number
+            /**
+             * Last Visit Datetime
+             */
+            last_visit_datetime: string // date-time
+            /**
+             * Type
+             */
+            type?: 'product'
+            product: /* InteractedProductSchema */ InteractedProductSchema
+        }
+        /**
          * VisitorFormFieldName
          */
         export type VisitorFormFieldName =
@@ -1926,12 +2633,12 @@ declare namespace Components {
          * VisitorFormFieldsSchema
          */
         export interface VisitorFormFieldsSchema {
-            name: VisitorFormFieldName
+            name: /* VisitorFormFieldName */ VisitorFormFieldName
             /**
              * Label
              */
-            label?: string | null
-            type: VisitorFormFieldType
+            label?: /* Label */ string | null
+            type: /* VisitorFormFieldType */ VisitorFormFieldType
             /**
              * Required
              */
@@ -1944,7 +2651,7 @@ declare namespace Components {
             /**
              * Message
              */
-            message?: string | null
+            message?: /* Message */ string | null
         }
         /**
          * VisitorFormStepSchema
@@ -1953,11 +2660,11 @@ declare namespace Components {
             /**
              * Cta
              */
-            cta?: string | null
+            cta?: /* Cta */ string | null
             /**
              * Fields
              */
-            fields: VisitorFormFieldsSchema[]
+            fields: /* VisitorFormFieldsSchema */ VisitorFormFieldsSchema[]
         }
         /**
          * VisitorFormSubmissionSchema
@@ -1966,19 +2673,19 @@ declare namespace Components {
             /**
              * First Name
              */
-            first_name?: string | null
+            first_name?: /* First Name */ string | null
             /**
              * Last Name
              */
-            last_name?: string | null
+            last_name?: /* Last Name */ string | null
             /**
              * Phone
              */
-            phone?: string /* phone */ | null
+            phone?: /* Phone */ string /* phone */ | null
             /**
              * Email
              */
-            email?: string /* email */ | null
+            email?: /* Email */ string /* email */ | null
             /**
              * Campaign Id
              */
@@ -1990,15 +2697,15 @@ declare namespace Components {
             /**
              * Guest Id
              */
-            guest_id?: string | null
+            guest_id?: /* Guest Id */ string | null
             /**
              * Session Id
              */
-            session_id?: string | null
+            session_id?: /* Session Id */ string | null
             /**
              * Ab Variant
              */
-            ab_variant?: string | null
+            ab_variant?: /* Ab Variant */ string | null
         }
         /**
          * VisitorFormSubscriberType
@@ -2012,27 +2719,29 @@ declare namespace Components {
          * VisitorFormTargetsSchema
          */
         export interface VisitorFormTargetsSchema {
-            type: VisitorFormTargetType
+            type: /* VisitorFormTargetType */ VisitorFormTargetType
             /**
              * Subscriber Types
              */
-            subscriber_types: VisitorFormSubscriberType[]
+            subscriber_types: /* VisitorFormSubscriberType */ VisitorFormSubscriberType[]
             /**
              * Tags
              */
-            tags?: string[] | null
+            tags?: /* Tags */ string[] | null
         }
     }
 }
 declare namespace Paths {
     namespace CheckCustomDomain {
         namespace Responses {
-            export type $200 = Components.Schemas.CustomDomainSchema
+            export type $200 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
         }
     }
     namespace CheckCustomDomainsCheckPost {
         namespace Responses {
-            export type $200 = Components.Schemas.CustomDomainSchema
+            export type $200 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
         }
     }
     namespace CreateAbGroup {
@@ -2043,70 +2752,102 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ABGroupResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABGroupResponseSchema */ Components.Schemas.ABGroupResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateAbTest {
-        export type RequestBody = Components.Schemas.ABTestCreateRequestSchema
+        export type RequestBody =
+            /* ABTestCreateRequestSchema */ Components.Schemas.ABTestCreateRequestSchema
         namespace Responses {
-            export type $201 = Components.Schemas.ABTestResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* ABTestResponseSchema */ Components.Schemas.ABTestResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateBulkClickTrackingBulkPost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $201 = Components.Schemas.URLBulkSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* URLBulkSchema */ Components.Schemas.URLBulkSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateCampaign {
-        export type RequestBody = Components.Schemas.CampaignCreateRequestSchema
+        export type RequestBody =
+            /* CampaignCreateRequestSchema */ Components.Schemas.CampaignCreateRequestSchema
         namespace Responses {
-            export type $201 = Components.Schemas.CampaignResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* CampaignResponseSchema */ Components.Schemas.CampaignResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateChannelConnection {
         export type RequestBody =
-            Components.Schemas.ChannelConnectionCreateRequestSchema
+            /* ChannelConnectionCreateRequestSchema */ Components.Schemas.ChannelConnectionCreateRequestSchema
         namespace Responses {
             export type $201 =
-                Components.Schemas.ChannelConnectionResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* ChannelConnectionResponseSchema */ Components.Schemas.ChannelConnectionResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateClickTrackingPost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $201 = Components.Schemas.URLSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 = /* URLSchema */ Components.Schemas.URLSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateCustomDomain {
-        export type RequestBody = Components.Schemas.CustomDomainOperationSchema
+        export type RequestBody =
+            /* CustomDomainOperationSchema */ Components.Schemas.CustomDomainOperationSchema
         namespace Responses {
-            export type $201 = Components.Schemas.CustomDomainSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateCustomDomainsPost {
-        export type RequestBody = Components.Schemas.CustomDomainOperationSchema
+        export type RequestBody =
+            /* CustomDomainOperationSchema */ Components.Schemas.CustomDomainOperationSchema
         namespace Responses {
-            export type $201 = Components.Schemas.CustomDomainSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateDiscountOffer {
         export type RequestBody =
-            Components.Schemas.DiscountOfferCreateRequestSchema
+            /* DiscountOfferCreateApiDTO */ Components.Schemas.DiscountOfferCreateApiDTO
         namespace Responses {
-            export type $201 = Components.Schemas.DiscountOfferResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* DiscountOfferApiDTO */ Components.Schemas.DiscountOfferApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace CreateJourney {
+        export type RequestBody =
+            /* CreateJourneyApiDTO */ Components.Schemas.CreateJourneyApiDTO
+        namespace Responses {
+            export type $201 =
+                /* JourneyDetailApiDTO */ Components.Schemas.JourneyDetailApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace DeleteCampaign {
@@ -2117,10 +2858,12 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
         namespace Responses {
-            export type $422 = Components.Schemas.HTTPValidationError
+            export interface $204 {}
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace DeleteChannelConnection {
@@ -2131,10 +2874,22 @@ declare namespace Paths {
             export type ChannelConnectionId = string
         }
         export interface PathParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id: /* Channel Connection Id */ Parameters.ChannelConnectionId
         }
         namespace Responses {
-            export type $422 = Components.Schemas.HTTPValidationError
+            export interface $204 {}
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace DeleteCustomDomain {
+        namespace Responses {
+            export interface $204 {}
+        }
+    }
+    namespace DeleteCustomDomainsDelete {
+        namespace Responses {
+            export interface $204 {}
         }
     }
     namespace DeleteDiscountOffer {
@@ -2145,26 +2900,31 @@ declare namespace Paths {
             export type DiscountOfferId = string
         }
         export interface PathParameters {
-            discount_offer_id: Parameters.DiscountOfferId
+            discount_offer_id: /* Discount Offer Id */ Parameters.DiscountOfferId
         }
         namespace Responses {
-            export type $422 = Components.Schemas.HTTPValidationError
+            export interface $204 {}
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace EvaluateCampaignRules {
         export interface HeaderParameters {
-            'cf-ipcountry'?: Parameters.CfIpcountry
+            'cf-ipcountry'?: /* Cf-Ipcountry */ Parameters.CfIpcountry
         }
         namespace Parameters {
             /**
              * Cf-Ipcountry
              */
-            export type CfIpcountry = string | null
+            export type CfIpcountry = /* Cf-Ipcountry */ string | null
         }
-        export type RequestBody = Components.Schemas.EvaluationRequestSchema
+        export type RequestBody =
+            /* EvaluationRequestSchema */ Components.Schemas.EvaluationRequestSchema
         namespace Responses {
-            export type $200 = Components.Schemas.EvaluationResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* EvaluationResponseSchema */ Components.Schemas.EvaluationResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetAbTest {
@@ -2175,11 +2935,13 @@ declare namespace Paths {
             export type AbTestId = string
         }
         export interface PathParameters {
-            ab_test_id: Parameters.AbTestId
+            ab_test_id: /* Ab Test Id */ Parameters.AbTestId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ABTestResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABTestResponseSchema */ Components.Schemas.ABTestResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetAbTests {
@@ -2188,41 +2950,118 @@ declare namespace Paths {
              * Channel Connection Id
              * Channel connection ID to which AB tests belong
              */
-            export type ChannelConnectionId = string | null
+            export type ChannelConnectionId =
+                /**
+                 * Channel Connection Id
+                 * Channel connection ID to which AB tests belong
+                 */
+                string | null
             /**
              * State
              * State of A/B test
              */
-            export type State = Components.Schemas.ABTestState | null
+            export type State =
+                /**
+                 * State
+                 * State of A/B test
+                 */
+                /* ABTestState */ Components.Schemas.ABTestState | null
         }
         export interface QueryParameters {
-            channel_connection_id?: Parameters.ChannelConnectionId
-            state?: Parameters.State
+            channel_connection_id?: /**
+             * Channel Connection Id
+             * Channel connection ID to which AB tests belong
+             */
+            Parameters.ChannelConnectionId
+            state?: /**
+             * State
+             * State of A/B test
+             */
+            Parameters.State
         }
         namespace Responses {
             /**
              * Response Get Ab Tests
              */
-            export type $200 = Components.Schemas.ABTestResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABTestResponseSchema */ Components.Schemas.ABTestResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetAllCampaigns {
         export interface HeaderParameters {
-            'data-token'?: Parameters.DataToken
+            'data-token'?: /* Data-Token */ Parameters.DataToken
         }
         namespace Parameters {
             /**
              * Data-Token
              */
-            export type DataToken = string | null
+            export type DataToken = /* Data-Token */ string | null
         }
         namespace Responses {
             /**
              * Response Get All Campaigns
              */
-            export type $200 = Components.Schemas.CampaignResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* CampaignResponseSchema */ Components.Schemas.CampaignResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetAllJourneysPrivate {
+        namespace Parameters {
+            /**
+             * Type
+             * Filter by type
+             */
+            export type Type =
+                /**
+                 * Type
+                 * Filter by type
+                 */
+                /* JourneyTypeEnum */ Components.Schemas.JourneyTypeEnum | null
+        }
+        export interface QueryParameters {
+            type?: /**
+             * Type
+             * Filter by type
+             */
+            Parameters.Type
+        }
+        namespace Responses {
+            /**
+             * Response Get All Journeys Private
+             */
+            export type $200 =
+                /* JourneyPrivateApiDTO */ Components.Schemas.JourneyPrivateApiDTO[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetAllJourneysPublic {
+        namespace Parameters {
+            /**
+             * Integration Id
+             * Filter by integration ID
+             */
+            export type IntegrationId = number
+        }
+        export interface QueryParameters {
+            integration_id: /**
+             * Integration Id
+             * Filter by integration ID
+             */
+            Parameters.IntegrationId
+        }
+        namespace Responses {
+            /**
+             * Response Get All Journeys Public
+             */
+            export type $200 =
+                /* JourneyApiDTO */ Components.Schemas.JourneyApiDTO[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetBundleInstallation {
@@ -2233,11 +3072,13 @@ declare namespace Paths {
             export type Id = string
         }
         export interface PathParameters {
-            id: Parameters.Id
+            id: /* Id */ Parameters.Id
         }
         namespace Responses {
-            export type $200 = Components.Schemas.InstallationSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetCampaign {
@@ -2248,11 +3089,13 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.CampaignResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* CampaignResponseSchema */ Components.Schemas.CampaignResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetCampaigns {
@@ -2261,12 +3104,22 @@ declare namespace Paths {
              * Channel Connection External Ids
              * Channel connection external ID
              */
-            export type ChannelConnectionExternalIds = string[] | null
+            export type ChannelConnectionExternalIds =
+                /**
+                 * Channel Connection External Ids
+                 * Channel connection external ID
+                 */
+                string[] | null
             /**
              * Channel Connection Id
              * Channel connection ID to which campaigns belong
              */
-            export type ChannelConnectionId = string | null
+            export type ChannelConnectionId =
+                /**
+                 * Channel Connection Id
+                 * Channel connection ID to which campaigns belong
+                 */
+                string | null
             /**
              * Deleted
              * Include deleted campaigns
@@ -2274,16 +3127,30 @@ declare namespace Paths {
             export type Deleted = boolean
         }
         export interface QueryParameters {
-            channel_connection_id?: Parameters.ChannelConnectionId
-            channel_connection_external_ids?: Parameters.ChannelConnectionExternalIds
-            deleted?: Parameters.Deleted
+            channel_connection_id?: /**
+             * Channel Connection Id
+             * Channel connection ID to which campaigns belong
+             */
+            Parameters.ChannelConnectionId
+            channel_connection_external_ids?: /**
+             * Channel Connection External Ids
+             * Channel connection external ID
+             */
+            Parameters.ChannelConnectionExternalIds
+            deleted?: /**
+             * Deleted
+             * Include deleted campaigns
+             */
+            Parameters.Deleted
         }
         namespace Responses {
             /**
              * Response Get Campaigns
              */
-            export type $200 = Components.Schemas.CampaignResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* CampaignResponseSchema */ Components.Schemas.CampaignResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetChannelConnection {
@@ -2294,12 +3161,13 @@ declare namespace Paths {
             export type ChannelConnectionId = string
         }
         export interface PathParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id: /* Channel Connection Id */ Parameters.ChannelConnectionId
         }
         namespace Responses {
             export type $200 =
-                Components.Schemas.ChannelConnectionResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* ChannelConnectionResponseSchema */ Components.Schemas.ChannelConnectionResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetChannelConnections {
@@ -2308,33 +3176,61 @@ declare namespace Paths {
              * Channel
              * Channel type, e.g. widget
              */
-            export type Channel = Components.Schemas.ChannelType | null
+            export type Channel =
+                /**
+                 * Channel
+                 * Channel type, e.g. widget
+                 */
+                /* ChannelType */ Components.Schemas.ChannelType | null
             /**
              * External Id
              * External ID connected to the Channel connection, usually dependent on the channel type
              */
-            export type ExternalId = string | null
+            export type ExternalId =
+                /**
+                 * External Id
+                 * External ID connected to the Channel connection, usually dependent on the channel type
+                 */
+                string | null
             /**
              * Store Integration Id
              * Gorgias integration ID for the store
              */
-            export type StoreIntegrationId = number | null
+            export type StoreIntegrationId =
+                /**
+                 * Store Integration Id
+                 * Gorgias integration ID for the store
+                 */
+                number | null
         }
         export interface QueryParameters {
-            store_integration_id?: Parameters.StoreIntegrationId
-            external_id?: Parameters.ExternalId
-            channel?: Parameters.Channel
+            store_integration_id?: /**
+             * Store Integration Id
+             * Gorgias integration ID for the store
+             */
+            Parameters.StoreIntegrationId
+            external_id?: /**
+             * External Id
+             * External ID connected to the Channel connection, usually dependent on the channel type
+             */
+            Parameters.ExternalId
+            channel?: /**
+             * Channel
+             * Channel type, e.g. widget
+             */
+            Parameters.Channel
         }
         namespace Responses {
             /**
              * Response Get Channel Connections
              */
             export type $200 =
-                Components.Schemas.ChannelConnectionResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* ChannelConnectionResponseSchema */ Components.Schemas.ChannelConnectionResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
-    namespace GetConfigAssistantConfigsRevenue_InstallationId_Get {
+    namespace GetConfigAssistantConfigsRevenueInstallationIdGet {
         namespace Parameters {
             /**
              * Installation Id
@@ -2343,17 +3239,19 @@ declare namespace Paths {
             /**
              * Widget-App-Id
              */
-            export type WidgetAppId = string | null
+            export type WidgetAppId = /* Widget-App-Id */ string | null
         }
         export interface PathParameters {
-            installation_id: Parameters.InstallationId
+            installation_id: /* Installation Id */ Parameters.InstallationId
         }
         export interface QueryParameters {
-            'widget-app-id'?: Parameters.WidgetAppId
+            'widget-app-id'?: /* Widget-App-Id */ Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ConfigResponseSchema */ Components.Schemas.ConfigResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetConfigByRevenueId {
@@ -2365,17 +3263,19 @@ declare namespace Paths {
             /**
              * Widget-App-Id
              */
-            export type WidgetAppId = string | null
+            export type WidgetAppId = /* Widget-App-Id */ string | null
         }
         export interface PathParameters {
-            installation_id: Parameters.InstallationId
+            installation_id: /* Installation Id */ Parameters.InstallationId
         }
         export interface QueryParameters {
-            'widget-app-id'?: Parameters.WidgetAppId
+            'widget-app-id'?: /* Widget-App-Id */ Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ConfigResponseSchema */ Components.Schemas.ConfigResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetConfigByShopName {
@@ -2387,22 +3287,25 @@ declare namespace Paths {
             /**
              * Widget-App-Id
              */
-            export type WidgetAppId = string | null
+            export type WidgetAppId = /* Widget-App-Id */ string | null
         }
         export interface PathParameters {
-            shop_name: Parameters.ShopName
+            shop_name: /* Shop Name */ Parameters.ShopName
         }
         export interface QueryParameters {
-            'widget-app-id'?: Parameters.WidgetAppId
+            'widget-app-id'?: /* Widget-App-Id */ Parameters.WidgetAppId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ConfigResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ConfigResponseSchema */ Components.Schemas.ConfigResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetCustomDomain {
         namespace Responses {
-            export type $200 = Components.Schemas.CustomDomainSchema
+            export type $200 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
         }
     }
     namespace GetDiscountOffer {
@@ -2413,11 +3316,13 @@ declare namespace Paths {
             export type DiscountOfferId = string
         }
         export interface PathParameters {
-            discount_offer_id: Parameters.DiscountOfferId
+            discount_offer_id: /* Discount Offer Id */ Parameters.DiscountOfferId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.DiscountOfferResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* DiscountOfferApiDTO */ Components.Schemas.DiscountOfferApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetDiscountOffers {
@@ -2426,7 +3331,12 @@ declare namespace Paths {
              * Search
              * Search by prefix
              */
-            export type Search = string | null
+            export type Search =
+                /**
+                 * Search
+                 * Search by prefix
+                 */
+                string | null
             /**
              * Store Integration Id
              * Helpdesk store integration id
@@ -2434,15 +3344,42 @@ declare namespace Paths {
             export type StoreIntegrationId = string
         }
         export interface QueryParameters {
-            search?: Parameters.Search
-            store_integration_id: Parameters.StoreIntegrationId
+            search?: /**
+             * Search
+             * Search by prefix
+             */
+            Parameters.Search
+            store_integration_id: /**
+             * Store Integration Id
+             * Helpdesk store integration id
+             */
+            Parameters.StoreIntegrationId
         }
         namespace Responses {
             /**
              * Response Get Discount Offers
              */
-            export type $200 = Components.Schemas.DiscountOfferResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* DiscountOfferApiDTO */ Components.Schemas.DiscountOfferApiDTO[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetJourneyDetails {
+        namespace Parameters {
+            /**
+             * Journey Id
+             */
+            export type JourneyId = string
+        }
+        export interface PathParameters {
+            journey_id: /* Journey Id */ Parameters.JourneyId
+        }
+        namespace Responses {
+            export type $200 =
+                /* JourneyDetailApiDTO */ Components.Schemas.JourneyDetailApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetSettings {
@@ -2455,20 +3392,40 @@ declare namespace Paths {
              * Setting Type
              * Get settings by type
              */
-            export type SettingType = string | null
+            export type SettingType =
+                /**
+                 * Setting Type
+                 * Get settings by type
+                 */
+                string | null
         }
         export interface PathParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id: /* Channel Connection Id */ Parameters.ChannelConnectionId
         }
         export interface QueryParameters {
-            setting_type?: Parameters.SettingType
+            setting_type?: /**
+             * Setting Type
+             * Get settings by type
+             */
+            Parameters.SettingType
         }
         namespace Responses {
             /**
              * Response Get Settings
              */
-            export type $200 = Components.Schemas.SettingResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* SettingResponseSchema */ Components.Schemas.SettingResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetSmsIntegrations {
+        namespace Responses {
+            /**
+             * Response Get Sms Integrations
+             */
+            export type $200 =
+                /* SMSIntegrationApiDTO */ Components.Schemas.SMSIntegrationApiDTO[]
         }
     }
     namespace GetStatusAndUsage {
@@ -2476,21 +3433,34 @@ declare namespace Paths {
             /**
              * Shop Integration Id
              */
-            export type ShopIntegrationId = number | null
+            export type ShopIntegrationId =
+                /* Shop Integration Id */
+                number | null
         }
         export interface QueryParameters {
-            shop_integration_id?: Parameters.ShopIntegrationId
+            shop_integration_id?: /* Shop Integration Id */ Parameters.ShopIntegrationId
         }
         namespace Responses {
             export type $200 =
-                Components.Schemas.SubscriptionUsageAndBundleStatusSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* SubscriptionUsageAndBundleStatusSchema */ Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace GetSubscriptionStatuses {
         namespace Responses {
             /**
              * Response Get Subscription Statuses
+             */
+            export interface $200 {
+                [name: string]: string
+            }
+        }
+    }
+    namespace HealthCheckGet {
+        namespace Responses {
+            /**
+             * Response Health Check  Get
              */
             export interface $200 {
                 [name: string]: string
@@ -2507,22 +3477,13 @@ declare namespace Paths {
             }
         }
     }
-    namespace HealthCheck_Get {
-        namespace Responses {
-            /**
-             * Response Health Check  Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
     namespace ListBundleInstallation {
         namespace Responses {
             /**
              * Response List Bundle Installation
              */
-            export type $200 = Components.Schemas.InstallationSchema[]
+            export type $200 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema[]
         }
     }
     namespace PatchAbTest {
@@ -2533,12 +3494,15 @@ declare namespace Paths {
             export type AbTestId = string
         }
         export interface PathParameters {
-            ab_test_id: Parameters.AbTestId
+            ab_test_id: /* Ab Test Id */ Parameters.AbTestId
         }
-        export type RequestBody = Components.Schemas.ABTestPatchRequestSchema
+        export type RequestBody =
+            /* ABTestPatchRequestSchema */ Components.Schemas.ABTestPatchRequestSchema
         namespace Responses {
-            export type $200 = Components.Schemas.ABTestResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABTestResponseSchema */ Components.Schemas.ABTestResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace PatchCampaign {
@@ -2549,12 +3513,23 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
-        export type RequestBody = Components.Schemas.CampaignPatchRequestSchema
+        export type RequestBody =
+            /**
+             * CampaignPatchRequestSchema
+             * Defines the fields that can be patched and accepts any subset of the fields.
+             * Validates `triggers` and `trigger_rule` fields as required together - it has to be done this way
+             * as long as the IDs are generated on the frontend.
+             * Skips advanced validation, it will be handled in PATCH endpoint:
+             *     see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch
+             */
+            Components.Schemas.CampaignPatchRequestSchema
         namespace Responses {
-            export type $200 = Components.Schemas.CampaignResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* CampaignResponseSchema */ Components.Schemas.CampaignResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace PatchChannelConnection {
@@ -2565,13 +3540,21 @@ declare namespace Paths {
             export type ChannelConnectionId = string
         }
         export interface PathParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id: /* Channel Connection Id */ Parameters.ChannelConnectionId
         }
-        export type RequestBody = Components.Schemas.ChannelPatchRequestSchema
+        export type RequestBody =
+            /**
+             * ChannelPatchRequestSchema
+             * Defines the fields that can be patched and accepts any subset of the fields.
+             * Skips advanced validation, it will be handled in PATCH endpoint:
+             *     see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch
+             */
+            Components.Schemas.ChannelPatchRequestSchema
         namespace Responses {
             export type $200 =
-                Components.Schemas.ChannelConnectionResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* ChannelConnectionResponseSchema */ Components.Schemas.ChannelConnectionResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace PatchDiscountOffer {
@@ -2582,13 +3565,34 @@ declare namespace Paths {
             export type DiscountOfferId = string
         }
         export interface PathParameters {
-            discount_offer_id: Parameters.DiscountOfferId
+            discount_offer_id: /* Discount Offer Id */ Parameters.DiscountOfferId
         }
         export type RequestBody =
-            Components.Schemas.DiscountOfferPatchRequestSchema
+            /* DiscountOfferPatchApiDTO */ Components.Schemas.DiscountOfferPatchApiDTO
         namespace Responses {
-            export type $200 = Components.Schemas.DiscountOfferResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* DiscountOfferApiDTO */ Components.Schemas.DiscountOfferApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace PatchJourney {
+        namespace Parameters {
+            /**
+             * Journey Id
+             */
+            export type JourneyId = string
+        }
+        export interface PathParameters {
+            journey_id: /* Journey Id */ Parameters.JourneyId
+        }
+        export type RequestBody =
+            /* UpdateJourneyApiDTO */ Components.Schemas.UpdateJourneyApiDTO
+        namespace Responses {
+            export type $200 =
+                /* JourneyDetailApiDTO */ Components.Schemas.JourneyDetailApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace PauseAbGroup {
@@ -2599,26 +3603,29 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ABGroupResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABGroupResponseSchema */ Components.Schemas.ABGroupResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace RecommendationsProduct {
         export type RequestBody =
-            Components.Schemas.ProductRecommendationRequestSchema
+            /* ProductRecommendationRequestSchema */ Components.Schemas.ProductRecommendationRequestSchema
         namespace Responses {
             export type $200 =
-                Components.Schemas.ProductRecommendationResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* ProductRecommendationResponseSchema */ Components.Schemas.ProductRecommendationResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
-    namespace RedirectR_Alias_Get {
+    namespace RedirectRAliasGet {
         export interface HeaderParameters {
-            referrer?: Parameters.Referrer
-            'user-agent'?: Parameters.UserAgent
+            referrer?: /* Referrer */ Parameters.Referrer
+            'user-agent'?: /* User-Agent */ Parameters.UserAgent
         }
         namespace Parameters {
             /**
@@ -2628,92 +3635,215 @@ declare namespace Paths {
             /**
              * Referrer
              */
-            export type Referrer = string | null
+            export type Referrer = /* Referrer */ string | null
             /**
              * User-Agent
              */
             export type UserAgent = string
         }
         export interface PathParameters {
-            alias: Parameters.Alias
+            alias: /* Alias */ Parameters.Alias
         }
         namespace Responses {
             export type $302 = any
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace RetrieveCustomDomainsGet {
         namespace Responses {
-            export type $200 = Components.Schemas.CustomDomainSchema
+            export type $200 =
+                /* CustomDomainSchema */ Components.Schemas.CustomDomainSchema
         }
     }
     namespace RetrieveUrlsByMetaClickTrackingCheckPost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
             /**
              * Response Retrieve Urls By Meta Click Tracking Check Post
              */
-            export type $201 = Components.Schemas.URLWithClicksSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* URLWithClicksSchema */ Components.Schemas.URLWithClicksSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace RevealDiscountCode {
         export type RequestBody =
-            Components.Schemas.RevealDiscountCodeRequestSchema
+            /* RevealDiscountCodeRequestSchema */ Components.Schemas.RevealDiscountCodeRequestSchema
         namespace Responses {
             export type $200 =
-                Components.Schemas.RevealDiscountCodeResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* RevealDiscountCodeResponseSchema */ Components.Schemas.RevealDiscountCodeResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace RunAiJourneyEngine {
+        namespace Parameters {
+            /**
+             * Account Id
+             */
+            export type AccountId = number
+            /**
+             * Customer Id
+             * Customer ID for the cart
+             */
+            export type CustomerId =
+                /**
+                 * Customer Id
+                 * Customer ID for the cart
+                 */
+                number | null
+            /**
+             * Store Integration Id
+             */
+            export type StoreIntegrationId = number
+        }
+        export interface PathParameters {
+            account_id: /* Account Id */ Parameters.AccountId
+            store_integration_id: /* Store Integration Id */ Parameters.StoreIntegrationId
+        }
+        export interface QueryParameters {
+            customer_id?: /**
+             * Customer Id
+             * Customer ID for the cart
+             */
+            Parameters.CustomerId
+        }
+        export type RequestBody =
+            /* ShopifyCartPayloadApiDTO */ Components.Schemas.ShopifyCartPayloadApiDTO
+        namespace Responses {
+            export type $200 =
+                /* RunAiJourneyEngineResponseApiDTO */ Components.Schemas.RunAiJourneyEngineResponseApiDTO
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace ServiceInstallationGetOrCreateBundleInstallationsManagePost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $201 = Components.Schemas.InstallationSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace ServiceInstallationStatusUpdateBundleInstallationsManagePut {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $200 = Components.Schemas.InstallationSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace ServiceRetrieveInstallationBundleInstallationsManageRetrievePost {
-        export type RequestBody = Components.Schemas.JWTTokenSchema
+        export type RequestBody =
+            /* JWTTokenSchema */ Components.Schemas.JWTTokenSchema
         namespace Responses {
-            export type $200 = Components.Schemas.InstallationSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
-    namespace ShopperLookup {
+    namespace ShopperInterestLookup {
         namespace Parameters {
+            /**
+             * Account Id
+             * Helpdesk account ID
+             */
+            export type AccountId = number
+            /**
+             * Customer Id
+             * Helpdesk Customer ID
+             */
+            export type CustomerId =
+                /**
+                 * Customer Id
+                 * Helpdesk Customer ID
+                 */
+                number | null
             /**
              * Marketing Id
              * Marketing ID of the shopper (revenue_id)
              */
-            export type MarketingId = string
+            export type MarketingId =
+                /**
+                 * Marketing Id
+                 * Marketing ID of the shopper (revenue_id)
+                 */
+                string | null
             /**
              * Store Integration Id
              * Helpdesk store integration ID
              */
             export type StoreIntegrationId = number
+            /**
+             * Version
+             */
+            export type Version = /* Version */ ('v1.0' | 'v2.0') | null
         }
         export interface QueryParameters {
-            store_integration_id: Parameters.StoreIntegrationId
-            marketing_id: Parameters.MarketingId
+            account_id: /**
+             * Account Id
+             * Helpdesk account ID
+             */
+            Parameters.AccountId
+            store_integration_id: /**
+             * Store Integration Id
+             * Helpdesk store integration ID
+             */
+            Parameters.StoreIntegrationId
+            marketing_id?: /**
+             * Marketing Id
+             * Marketing ID of the shopper (revenue_id)
+             */
+            Parameters.MarketingId
+            customer_id?: /**
+             * Customer Id
+             * Helpdesk Customer ID
+             */
+            Parameters.CustomerId
+            version?: /* Version */ Parameters.Version
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ShopperLookupResponse
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ShopperInterestLookupResponse */ Components.Schemas.ShopperInterestLookupResponse
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace ShopperInterestLookupPost {
+        namespace Parameters {
+            /**
+             * Version
+             */
+            export type Version = /* Version */ ('v1.0' | 'v2.0') | null
+        }
+        export interface QueryParameters {
+            version?: /* Version */ Parameters.Version
+        }
+        export type RequestBody =
+            /* ShopperInterestLookupRequest */ Components.Schemas.ShopperInterestLookupRequest
+        namespace Responses {
+            export type $200 =
+                /* ShopperInterestLookupResponse */ Components.Schemas.ShopperInterestLookupResponse
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace ShortenShortenPost {
-        export type RequestBody = Components.Schemas.URLCreateBulkSchema
+        export type RequestBody =
+            /* URLCreateBulkSchema */ Components.Schemas.URLCreateBulkSchema
         namespace Responses {
-            export type $201 = Components.Schemas.URLBulkSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $201 =
+                /* URLBulkSchema */ Components.Schemas.URLBulkSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace StartAbGroup {
@@ -2724,11 +3854,13 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
         namespace Responses {
-            export type $200 = Components.Schemas.ABGroupResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABGroupResponseSchema */ Components.Schemas.ABGroupResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace StopAbGroup {
@@ -2739,12 +3871,15 @@ declare namespace Paths {
             export type CampaignId = string
         }
         export interface PathParameters {
-            campaign_id: Parameters.CampaignId
+            campaign_id: /* Campaign Id */ Parameters.CampaignId
         }
-        export type RequestBody = Components.Schemas.ABGroupStopRequestSchema
+        export type RequestBody =
+            /* ABGroupStopRequestSchema */ Components.Schemas.ABGroupStopRequestSchema
         namespace Responses {
-            export type $200 = Components.Schemas.ABGroupResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* ABGroupResponseSchema */ Components.Schemas.ABGroupResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace SubmitContactForm {
@@ -2755,31 +3890,55 @@ declare namespace Paths {
             export type RevenueId = string
         }
         export interface PathParameters {
-            revenue_id: Parameters.RevenueId
+            revenue_id: /* Revenue Id */ Parameters.RevenueId
         }
-        export type RequestBody = Components.Schemas.VisitorFormSubmissionSchema
+        export type RequestBody =
+            /* VisitorFormSubmissionSchema */ Components.Schemas.VisitorFormSubmissionSchema
         namespace Responses {
             /**
              * Response Submit Contact Form
              */
             export interface $202 {}
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace SuggestCampaignCopy {
         export type RequestBody =
-            Components.Schemas.CampaignCopySuggestionRequestSchema
+            /* CampaignCopySuggestionRequestSchema */ Components.Schemas.CampaignCopySuggestionRequestSchema
         namespace Responses {
             export type $200 =
-                Components.Schemas.CampaignCopySuggestionResponseSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+                /* CampaignCopySuggestionResponseSchema */ Components.Schemas.CampaignCopySuggestionResponseSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace TestJourney {
+        namespace Parameters {
+            /**
+             * Journey Id
+             */
+            export type JourneyId = string
+        }
+        export interface PathParameters {
+            journey_id: /* Journey Id */ Parameters.JourneyId
+        }
+        export type RequestBody =
+            /* CartAbandonedCartTestApiDTO */ Components.Schemas.CartAbandonedCartTestApiDTO
+        namespace Responses {
+            export type $201 = any
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace UpdateAutoUpgradeFlag {
-        export type RequestBody = Components.Schemas.UpdateAutoUpgradeSchema
+        export type RequestBody =
+            /* UpdateAutoUpgradeSchema */ Components.Schemas.UpdateAutoUpgradeSchema
         namespace Responses {
-            export type $200 = Components.Schemas.UpdateAutoUpgradeSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* UpdateAutoUpgradeSchema */ Components.Schemas.UpdateAutoUpgradeSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace UpdateBundleInstallation {
@@ -2790,13 +3949,15 @@ declare namespace Paths {
             export type Id = string
         }
         export interface PathParameters {
-            id: Parameters.Id
+            id: /* Id */ Parameters.Id
         }
         export type RequestBody =
-            Components.Schemas.InstallationUpdateConfigSchema
+            /* InstallationUpdateConfigSchema */ Components.Schemas.InstallationUpdateConfigSchema
         namespace Responses {
-            export type $200 = Components.Schemas.InstallationSchema
-            export type $422 = Components.Schemas.HTTPValidationError
+            export type $200 =
+                /* InstallationSchema */ Components.Schemas.InstallationSchema
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
     namespace UpdateSetting {
@@ -2807,22 +3968,25 @@ declare namespace Paths {
             export type ChannelConnectionId = string
         }
         export interface PathParameters {
-            channel_connection_id: Parameters.ChannelConnectionId
+            channel_connection_id: /* Channel Connection Id */ Parameters.ChannelConnectionId
         }
         /**
          * Payload
          */
         export type RequestBody =
+            /* Payload */ /* RequestSettingSchema */
             | Components.Schemas.RequestSettingSchema
-            | Components.Schemas.RequestSettingSchema[]
+            | /* RequestSettingSchema */ Components.Schemas.RequestSettingSchema[]
         namespace Responses {
             /**
              * Response Update Setting
              */
             export type $202 =
+                /* Response Update Setting */ /* SettingResponseSchema */
                 | Components.Schemas.SettingResponseSchema
-                | Components.Schemas.SettingResponseSchema[]
-            export type $422 = Components.Schemas.HTTPValidationError
+                | /* SettingResponseSchema */ Components.Schemas.SettingResponseSchema[]
+            export type $422 =
+                /* HTTPValidationError */ Components.Schemas.HTTPValidationError
         }
     }
 }
@@ -2835,9 +3999,7 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
-    >
+    ): OperationResponse<Paths.GetAbTests.Responses.$200>
     /**
      * create_ab_test - Create Ab Test
      */
@@ -2845,29 +4007,23 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateAbTest.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.CreateAbTest.Responses.$201 | Paths.CreateAbTest.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateAbTest.Responses.$201>
     /**
      * get_ab_test - Get Ab Test
      */
     'get_ab_test'(
-        parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+        parameters: Parameters<Paths.GetAbTest.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
-    >
+    ): OperationResponse<Paths.GetAbTest.Responses.$200>
     /**
      * patch_ab_test - Patch Ab Test
      */
     'patch_ab_test'(
-        parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+        parameters: Parameters<Paths.PatchAbTest.PathParameters>,
         data?: Paths.PatchAbTest.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
-    >
+    ): OperationResponse<Paths.PatchAbTest.Responses.$200>
     /**
      * evaluate_campaign_rules - Evaluate Campaign Rules
      */
@@ -2875,52 +4031,40 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
         data?: Paths.EvaluateCampaignRules.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.EvaluateCampaignRules.Responses.$200
-        | Paths.EvaluateCampaignRules.Responses.$422
-    >
+    ): OperationResponse<Paths.EvaluateCampaignRules.Responses.$200>
     /**
      * get_config_assistant_configs_revenue__installation_id__get - Get Config
      */
     'get_config_assistant_configs_revenue__installation_id__get'(
-        parameters?: Parameters<
-            Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.PathParameters &
-                Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.QueryParameters &
+                Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
-        | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
-    >
+    ): OperationResponse<Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.Responses.$200>
     /**
      * get_config_by_revenue_id - Get Config
      */
     'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetConfigByRevenueId.QueryParameters &
+                Paths.GetConfigByRevenueId.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
+    ): OperationResponse<Paths.GetConfigByRevenueId.Responses.$200>
     /**
      * get_config_by_shop_name - Get Config By Shop Name
      */
     'get_config_by_shop_name'(
-        parameters?: Parameters<
-            Paths.GetConfigByShopName.PathParameters &
-                Paths.GetConfigByShopName.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetConfigByShopName.QueryParameters &
+                Paths.GetConfigByShopName.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetConfigByShopName.Responses.$200
-        | Paths.GetConfigByShopName.Responses.$422
-    >
+    ): OperationResponse<Paths.GetConfigByShopName.Responses.$200>
     /**
      * reveal_discount_code - Reveal
      */
@@ -2928,10 +4072,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RevealDiscountCode.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.RevealDiscountCode.Responses.$200
-        | Paths.RevealDiscountCode.Responses.$422
-    >
+    ): OperationResponse<Paths.RevealDiscountCode.Responses.$200>
     /**
      * recommendations_product - Recommend Products
      */
@@ -2939,43 +4080,33 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RecommendationsProduct.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.RecommendationsProduct.Responses.$200
-        | Paths.RecommendationsProduct.Responses.$422
-    >
+    ): OperationResponse<Paths.RecommendationsProduct.Responses.$200>
     /**
      * submit_contact_form - Submit Contact Form
      */
     'submit_contact_form'(
-        parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
+        parameters: Parameters<Paths.SubmitContactForm.PathParameters>,
         data?: Paths.SubmitContactForm.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.SubmitContactForm.Responses.$202
-        | Paths.SubmitContactForm.Responses.$422
-    >
+    ): OperationResponse<Paths.SubmitContactForm.Responses.$202>
     /**
      * get_settings - Get Settings For Channel Connection
      */
     'get_settings'(
-        parameters?: Parameters<
-            Paths.GetSettings.PathParameters & Paths.GetSettings.QueryParameters
-        > | null,
+        parameters: Parameters<
+            Paths.GetSettings.QueryParameters & Paths.GetSettings.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
-    >
+    ): OperationResponse<Paths.GetSettings.Responses.$200>
     /**
      * update_setting - Update Setting For Channel Connection
      */
     'update_setting'(
-        parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateSetting.PathParameters>,
         data?: Paths.UpdateSetting.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.UpdateSetting.Responses.$202 | Paths.UpdateSetting.Responses.$422
-    >
+    ): OperationResponse<Paths.UpdateSetting.Responses.$202>
     /**
      * get_discount_offers - Get Discount Offers
      */
@@ -2983,10 +4114,7 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetDiscountOffers.Responses.$200
-        | Paths.GetDiscountOffers.Responses.$422
-    >
+    ): OperationResponse<Paths.GetDiscountOffers.Responses.$200>
     /**
      * create_discount_offer - Create Discount Offer
      */
@@ -2994,40 +4122,31 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateDiscountOffer.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateDiscountOffer.Responses.$201
-        | Paths.CreateDiscountOffer.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateDiscountOffer.Responses.$201>
     /**
      * get_discount_offer - Get Discount Offer
      */
     'get_discount_offer'(
-        parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
+        parameters: Parameters<Paths.GetDiscountOffer.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetDiscountOffer.Responses.$200
-        | Paths.GetDiscountOffer.Responses.$422
-    >
+    ): OperationResponse<Paths.GetDiscountOffer.Responses.$200>
     /**
      * patch_discount_offer - Patch Discount Offer
      */
     'patch_discount_offer'(
-        parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
+        parameters: Parameters<Paths.PatchDiscountOffer.PathParameters>,
         data?: Paths.PatchDiscountOffer.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.PatchDiscountOffer.Responses.$200
-        | Paths.PatchDiscountOffer.Responses.$422
-    >
+    ): OperationResponse<Paths.PatchDiscountOffer.Responses.$200>
     /**
      * delete_discount_offer - Delete Discount Offer
      */
     'delete_discount_offer'(
-        parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteDiscountOffer.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
+    ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$204>
     /**
      * service_installation_status_update_bundle_installations_manage_put - Service Installation Status Update
      */
@@ -3035,10 +4154,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200
-        | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$422
-    >
+    ): OperationResponse<Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200>
     /**
      * service_installation_get_or_create_bundle_installations_manage_post - Service Installation Get Or Create
      */
@@ -3046,10 +4162,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201
-        | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$422
-    >
+    ): OperationResponse<Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201>
     /**
      * service_retrieve_installation_bundle_installations_manage_retrieve_post - Service Retrieve Installation
      */
@@ -3057,10 +4170,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200
-        | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$422
-    >
+    ): OperationResponse<Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200>
     /**
      * list_bundle_installation - Installation List
      */
@@ -3073,24 +4183,18 @@ export interface OperationMethods {
      * get_bundle_installation - Retrieve
      */
     'get_bundle_installation'(
-        parameters?: Parameters<Paths.GetBundleInstallation.PathParameters> | null,
+        parameters: Parameters<Paths.GetBundleInstallation.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetBundleInstallation.Responses.$200
-        | Paths.GetBundleInstallation.Responses.$422
-    >
+    ): OperationResponse<Paths.GetBundleInstallation.Responses.$200>
     /**
      * update_bundle_installation - Update
      */
     'update_bundle_installation'(
-        parameters?: Parameters<Paths.UpdateBundleInstallation.PathParameters> | null,
+        parameters: Parameters<Paths.UpdateBundleInstallation.PathParameters>,
         data?: Paths.UpdateBundleInstallation.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.UpdateBundleInstallation.Responses.$200
-        | Paths.UpdateBundleInstallation.Responses.$422
-    >
+    ): OperationResponse<Paths.UpdateBundleInstallation.Responses.$200>
     /**
      * create_click_tracking_post - Create
      */
@@ -3098,10 +4202,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateClickTrackingPost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateClickTrackingPost.Responses.$201
-        | Paths.CreateClickTrackingPost.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateClickTrackingPost.Responses.$201>
     /**
      * create_bulk_click_tracking_bulk_post - Create Bulk
      */
@@ -3109,10 +4210,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
-        | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateBulkClickTrackingBulkPost.Responses.$201>
     /**
      * shorten_shorten_post - Shorten
      */
@@ -3120,10 +4218,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ShortenShortenPost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.ShortenShortenPost.Responses.$201
-        | Paths.ShortenShortenPost.Responses.$422
-    >
+    ): OperationResponse<Paths.ShortenShortenPost.Responses.$201>
     /**
      * retrieve_urls_by_meta_click_tracking_check_post - Retrieve Urls By Meta
      */
@@ -3131,24 +4226,18 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
-        | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
-    >
+    ): OperationResponse<Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201>
     /**
      * redirect_r__alias__get - Redirect
      */
     'redirect_r__alias__get'(
-        parameters?: Parameters<
-            Paths.RedirectR_Alias_Get.PathParameters &
-                Paths.RedirectR_Alias_Get.HeaderParameters
-        > | null,
+        parameters: Parameters<
+            Paths.RedirectRAliasGet.HeaderParameters &
+                Paths.RedirectRAliasGet.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.RedirectR_Alias_Get.Responses.$302
-        | Paths.RedirectR_Alias_Get.Responses.$422
-    >
+    ): OperationResponse<any>
     /**
      * get_custom_domain - Retrieve
      */
@@ -3164,10 +4253,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCustomDomain.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateCustomDomain.Responses.$201
-        | Paths.CreateCustomDomain.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
     /**
      * delete_custom_domain - Delete
      */
@@ -3175,7 +4261,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCustomDomain.Responses.$204>
     /**
      * check_custom_domain - Check
      */
@@ -3199,10 +4285,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCustomDomainsPost.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateCustomDomainsPost.Responses.$201
-        | Paths.CreateCustomDomainsPost.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateCustomDomainsPost.Responses.$201>
     /**
      * delete_custom_domains_delete - Delete
      */
@@ -3210,7 +4293,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<any>
+    ): OperationResponse<Paths.DeleteCustomDomainsDelete.Responses.$204>
     /**
      * check_custom_domains_check_post - Check
      */
@@ -3226,9 +4309,7 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
-    >
+    ): OperationResponse<Paths.GetCampaigns.Responses.$200>
     /**
      * create_campaign - Create Campaign
      */
@@ -3236,10 +4317,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCampaign.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateCampaign.Responses.$201
-        | Paths.CreateCampaign.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateCampaign.Responses.$201>
     /**
      * get_all_campaigns - Get All Campaigns
      */
@@ -3247,78 +4325,63 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetAllCampaigns.Responses.$200
-        | Paths.GetAllCampaigns.Responses.$422
-    >
+    ): OperationResponse<Paths.GetAllCampaigns.Responses.$200>
     /**
      * get_campaign - Get Campaign
      */
     'get_campaign'(
-        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+        parameters: Parameters<Paths.GetCampaign.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-    >
+    ): OperationResponse<Paths.GetCampaign.Responses.$200>
     /**
      * patch_campaign - Patch Campaign
      */
     'patch_campaign'(
-        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+        parameters: Parameters<Paths.PatchCampaign.PathParameters>,
         data?: Paths.PatchCampaign.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
-    >
+    ): OperationResponse<Paths.PatchCampaign.Responses.$200>
     /**
      * delete_campaign - Delete Campaign
      */
     'delete_campaign'(
-        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteCampaign.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+    ): OperationResponse<Paths.DeleteCampaign.Responses.$204>
     /**
      * create_ab_group - Create Ab Group
      */
     'create_ab_group'(
-        parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
+        parameters: Parameters<Paths.CreateAbGroup.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.CreateAbGroup.Responses.$200 | Paths.CreateAbGroup.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateAbGroup.Responses.$200>
     /**
      * start_ab_group - Start Ab Group
      */
     'start_ab_group'(
-        parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
+        parameters: Parameters<Paths.StartAbGroup.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.StartAbGroup.Responses.$200 | Paths.StartAbGroup.Responses.$422
-    >
+    ): OperationResponse<Paths.StartAbGroup.Responses.$200>
     /**
      * pause_ab_group - Pause Ab Group
      */
     'pause_ab_group'(
-        parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
+        parameters: Parameters<Paths.PauseAbGroup.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.PauseAbGroup.Responses.$200 | Paths.PauseAbGroup.Responses.$422
-    >
+    ): OperationResponse<Paths.PauseAbGroup.Responses.$200>
     /**
      * stop_ab_group - Stop Ab Group
      */
     'stop_ab_group'(
-        parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
+        parameters: Parameters<Paths.StopAbGroup.PathParameters>,
         data?: Paths.StopAbGroup.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
-    >
+    ): OperationResponse<Paths.StopAbGroup.Responses.$200>
     /**
      * suggest_campaign_copy - Suggest Campaign Copy
      */
@@ -3326,10 +4389,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.SuggestCampaignCopy.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.SuggestCampaignCopy.Responses.$200
-        | Paths.SuggestCampaignCopy.Responses.$422
-    >
+    ): OperationResponse<Paths.SuggestCampaignCopy.Responses.$200>
     /**
      * get_channel_connections - Get Channel Connections
      */
@@ -3337,10 +4397,7 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetChannelConnections.Responses.$200
-        | Paths.GetChannelConnections.Responses.$422
-    >
+    ): OperationResponse<Paths.GetChannelConnections.Responses.$200>
     /**
      * create_channel_connection - Create Channel Connection
      */
@@ -3348,50 +4405,116 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateChannelConnection.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.CreateChannelConnection.Responses.$201
-        | Paths.CreateChannelConnection.Responses.$422
-    >
+    ): OperationResponse<Paths.CreateChannelConnection.Responses.$201>
     /**
      * get_channel_connection - Get Channel Connection
      */
     'get_channel_connection'(
-        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+        parameters: Parameters<Paths.GetChannelConnection.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetChannelConnection.Responses.$200
-        | Paths.GetChannelConnection.Responses.$422
-    >
+    ): OperationResponse<Paths.GetChannelConnection.Responses.$200>
     /**
      * patch_channel_connection - Patch Channel Connection
      */
     'patch_channel_connection'(
-        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+        parameters: Parameters<Paths.PatchChannelConnection.PathParameters>,
         data?: Paths.PatchChannelConnection.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.PatchChannelConnection.Responses.$200
-        | Paths.PatchChannelConnection.Responses.$422
-    >
+    ): OperationResponse<Paths.PatchChannelConnection.Responses.$200>
     /**
      * delete_channel_connection - Delete Channel Connection
      */
     'delete_channel_connection'(
-        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+        parameters: Parameters<Paths.DeleteChannelConnection.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$204>
     /**
-     * shopper_lookup - Lookup
+     * get_all_journeys_private - Get All Journeys For Apps
+     *
+     * Get enabled journeys for the Flink app to process the events.
      */
-    'shopper_lookup'(
-        parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
+    'get_all_journeys_private'(
+        parameters?: Parameters<Paths.GetAllJourneysPrivate.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        Paths.ShopperLookup.Responses.$200 | Paths.ShopperLookup.Responses.$422
-    >
+    ): OperationResponse<Paths.GetAllJourneysPrivate.Responses.$200>
+    /**
+     * get_all_journeys_public - Get All Journeys
+     */
+    'get_all_journeys_public'(
+        parameters?: Parameters<Paths.GetAllJourneysPublic.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetAllJourneysPublic.Responses.$200>
+    /**
+     * create_journey - Create Journey
+     */
+    'create_journey'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateJourney.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CreateJourney.Responses.$201>
+    /**
+     * get_journey_details - Get Journey Details
+     */
+    'get_journey_details'(
+        parameters: Parameters<Paths.GetJourneyDetails.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetJourneyDetails.Responses.$200>
+    /**
+     * patch_journey - Patch Journey
+     */
+    'patch_journey'(
+        parameters: Parameters<Paths.PatchJourney.PathParameters>,
+        data?: Paths.PatchJourney.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PatchJourney.Responses.$200>
+    /**
+     * get_sms_integrations - Get Sms Integration
+     */
+    'get_sms_integrations'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetSmsIntegrations.Responses.$200>
+    /**
+     * test_journey - Test Journey
+     */
+    'test_journey'(
+        parameters: Parameters<Paths.TestJourney.PathParameters>,
+        data?: Paths.TestJourney.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.TestJourney.Responses.$201>
+    /**
+     * run_ai_journey_engine - Run Ai Journey Engine
+     */
+    'run_ai_journey_engine'(
+        parameters: Parameters<
+            Paths.RunAiJourneyEngine.QueryParameters &
+                Paths.RunAiJourneyEngine.PathParameters
+        >,
+        data?: Paths.RunAiJourneyEngine.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.RunAiJourneyEngine.Responses.$200>
+    /**
+     * shopper_interest_lookup - Interest Lookup
+     */
+    'shopper_interest_lookup'(
+        parameters?: Parameters<Paths.ShopperInterestLookup.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ShopperInterestLookup.Responses.$200>
+    /**
+     * shopper_interest_lookup_post - Interest Lookup Post
+     */
+    'shopper_interest_lookup_post'(
+        parameters?: Parameters<Paths.ShopperInterestLookupPost.QueryParameters> | null,
+        data?: Paths.ShopperInterestLookupPost.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ShopperInterestLookupPost.Responses.$200>
     /**
      * get_status_and_usage - Get Status And Usage
      */
@@ -3399,10 +4522,7 @@ export interface OperationMethods {
         parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.GetStatusAndUsage.Responses.$200
-        | Paths.GetStatusAndUsage.Responses.$422
-    >
+    ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
     /**
      * update_auto_upgrade_flag - Update Auto Upgrade Flag
      */
@@ -3410,10 +4530,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
         config?: AxiosRequestConfig,
-    ): OperationResponse<
-        | Paths.UpdateAutoUpgradeFlag.Responses.$200
-        | Paths.UpdateAutoUpgradeFlag.Responses.$422
-    >
+    ): OperationResponse<Paths.UpdateAutoUpgradeFlag.Responses.$200>
     /**
      * get_subscription_statuses - Get Subscription Statuses
      */
@@ -3437,7 +4554,7 @@ export interface OperationMethods {
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
+    ): OperationResponse<Paths.HealthCheckGet.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -3449,10 +4566,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateAbTest.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateAbTest.Responses.$201
-            | Paths.CreateAbTest.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateAbTest.Responses.$201>
         /**
          * get_ab_tests - Get Ab Tests
          */
@@ -3460,31 +4574,25 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
-        >
+        ): OperationResponse<Paths.GetAbTests.Responses.$200>
     }
     ['/ab-tests/{ab_test_id}']: {
         /**
          * get_ab_test - Get Ab Test
          */
         'get'(
-            parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+            parameters: Parameters<Paths.GetAbTest.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
-        >
+        ): OperationResponse<Paths.GetAbTest.Responses.$200>
         /**
          * patch_ab_test - Patch Ab Test
          */
         'patch'(
-            parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+            parameters: Parameters<Paths.PatchAbTest.PathParameters>,
             data?: Paths.PatchAbTest.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
-        >
+        ): OperationResponse<Paths.PatchAbTest.Responses.$200>
     }
     ['/assistant/evaluations']: {
         /**
@@ -3494,58 +4602,46 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
             data?: Paths.EvaluateCampaignRules.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.EvaluateCampaignRules.Responses.$200
-            | Paths.EvaluateCampaignRules.Responses.$422
-        >
+        ): OperationResponse<Paths.EvaluateCampaignRules.Responses.$200>
     }
     ['/assistant/configs/revenue/{installation_id}']: {
         /**
          * get_config_assistant_configs_revenue__installation_id__get - Get Config
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.PathParameters &
-                    Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.QueryParameters &
+                    Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
-            | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
-        >
+        ): OperationResponse<Paths.GetConfigAssistantConfigsRevenueInstallationIdGet.Responses.$200>
     }
     ['/assistant/configs/{installation_id}']: {
         /**
          * get_config_by_revenue_id - Get Config
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetConfigByRevenueId.PathParameters &
-                    Paths.GetConfigByRevenueId.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetConfigByRevenueId.QueryParameters &
+                    Paths.GetConfigByRevenueId.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetConfigByRevenueId.Responses.$200
-            | Paths.GetConfigByRevenueId.Responses.$422
-        >
+        ): OperationResponse<Paths.GetConfigByRevenueId.Responses.$200>
     }
     ['/assistant/configs/shop/{shop_name}']: {
         /**
          * get_config_by_shop_name - Get Config By Shop Name
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetConfigByShopName.PathParameters &
-                    Paths.GetConfigByShopName.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetConfigByShopName.QueryParameters &
+                    Paths.GetConfigByShopName.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetConfigByShopName.Responses.$200
-            | Paths.GetConfigByShopName.Responses.$422
-        >
+        ): OperationResponse<Paths.GetConfigByShopName.Responses.$200>
     }
     ['/assistant/discount-codes/reveal']: {
         /**
@@ -3555,10 +4651,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RevealDiscountCode.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.RevealDiscountCode.Responses.$200
-            | Paths.RevealDiscountCode.Responses.$422
-        >
+        ): OperationResponse<Paths.RevealDiscountCode.Responses.$200>
     }
     ['/assistant/recommend/p']: {
         /**
@@ -3568,49 +4661,38 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RecommendationsProduct.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.RecommendationsProduct.Responses.$200
-            | Paths.RecommendationsProduct.Responses.$422
-        >
+        ): OperationResponse<Paths.RecommendationsProduct.Responses.$200>
     }
     ['/assistant/contact-form/{revenue_id}']: {
         /**
          * submit_contact_form - Submit Contact Form
          */
         'post'(
-            parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
+            parameters: Parameters<Paths.SubmitContactForm.PathParameters>,
             data?: Paths.SubmitContactForm.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.SubmitContactForm.Responses.$202
-            | Paths.SubmitContactForm.Responses.$422
-        >
+        ): OperationResponse<Paths.SubmitContactForm.Responses.$202>
     }
     ['/settings/{channel_connection_id}']: {
         /**
          * get_settings - Get Settings For Channel Connection
          */
         'get'(
-            parameters?: Parameters<
-                Paths.GetSettings.PathParameters &
-                    Paths.GetSettings.QueryParameters
-            > | null,
+            parameters: Parameters<
+                Paths.GetSettings.QueryParameters &
+                    Paths.GetSettings.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
-        >
+        ): OperationResponse<Paths.GetSettings.Responses.$200>
         /**
          * update_setting - Update Setting For Channel Connection
          */
         'put'(
-            parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateSetting.PathParameters>,
             data?: Paths.UpdateSetting.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.UpdateSetting.Responses.$202
-            | Paths.UpdateSetting.Responses.$422
-        >
+        ): OperationResponse<Paths.UpdateSetting.Responses.$202>
     }
     ['/discount-offers']: {
         /**
@@ -3620,10 +4702,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateDiscountOffer.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateDiscountOffer.Responses.$201
-            | Paths.CreateDiscountOffer.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateDiscountOffer.Responses.$201>
         /**
          * get_discount_offers - Get Discount Offers
          */
@@ -3631,42 +4710,33 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetDiscountOffers.Responses.$200
-            | Paths.GetDiscountOffers.Responses.$422
-        >
+        ): OperationResponse<Paths.GetDiscountOffers.Responses.$200>
     }
     ['/discount-offers/{discount_offer_id}']: {
         /**
          * get_discount_offer - Get Discount Offer
          */
         'get'(
-            parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
+            parameters: Parameters<Paths.GetDiscountOffer.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetDiscountOffer.Responses.$200
-            | Paths.GetDiscountOffer.Responses.$422
-        >
+        ): OperationResponse<Paths.GetDiscountOffer.Responses.$200>
         /**
          * patch_discount_offer - Patch Discount Offer
          */
         'patch'(
-            parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
+            parameters: Parameters<Paths.PatchDiscountOffer.PathParameters>,
             data?: Paths.PatchDiscountOffer.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.PatchDiscountOffer.Responses.$200
-            | Paths.PatchDiscountOffer.Responses.$422
-        >
+        ): OperationResponse<Paths.PatchDiscountOffer.Responses.$200>
         /**
          * delete_discount_offer - Delete Discount Offer
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteDiscountOffer.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
+        ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$204>
     }
     ['/bundle/installations/manage']: {
         /**
@@ -3676,10 +4746,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200
-            | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$422
-        >
+        ): OperationResponse<Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200>
         /**
          * service_installation_get_or_create_bundle_installations_manage_post - Service Installation Get Or Create
          */
@@ -3687,10 +4754,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201
-            | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$422
-        >
+        ): OperationResponse<Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201>
     }
     ['/bundle/installations/manage/retrieve']: {
         /**
@@ -3700,10 +4764,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200
-            | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$422
-        >
+        ): OperationResponse<Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200>
     }
     ['/bundle/installations']: {
         /**
@@ -3720,24 +4781,18 @@ export interface PathsDictionary {
          * get_bundle_installation - Retrieve
          */
         'get'(
-            parameters?: Parameters<Paths.GetBundleInstallation.PathParameters> | null,
+            parameters: Parameters<Paths.GetBundleInstallation.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetBundleInstallation.Responses.$200
-            | Paths.GetBundleInstallation.Responses.$422
-        >
+        ): OperationResponse<Paths.GetBundleInstallation.Responses.$200>
         /**
          * update_bundle_installation - Update
          */
         'patch'(
-            parameters?: Parameters<Paths.UpdateBundleInstallation.PathParameters> | null,
+            parameters: Parameters<Paths.UpdateBundleInstallation.PathParameters>,
             data?: Paths.UpdateBundleInstallation.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.UpdateBundleInstallation.Responses.$200
-            | Paths.UpdateBundleInstallation.Responses.$422
-        >
+        ): OperationResponse<Paths.UpdateBundleInstallation.Responses.$200>
     }
     ['/click-tracking']: {
         /**
@@ -3747,10 +4802,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateClickTrackingPost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateClickTrackingPost.Responses.$201
-            | Paths.CreateClickTrackingPost.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateClickTrackingPost.Responses.$201>
     }
     ['/click-tracking/bulk']: {
         /**
@@ -3760,10 +4812,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
-            | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateBulkClickTrackingBulkPost.Responses.$201>
     }
     ['/shorten']: {
         /**
@@ -3773,10 +4822,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ShortenShortenPost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.ShortenShortenPost.Responses.$201
-            | Paths.ShortenShortenPost.Responses.$422
-        >
+        ): OperationResponse<Paths.ShortenShortenPost.Responses.$201>
     }
     ['/click-tracking/check']: {
         /**
@@ -3786,26 +4832,20 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
-            | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
-        >
+        ): OperationResponse<Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201>
     }
     ['/r/{alias}']: {
         /**
          * redirect_r__alias__get - Redirect
          */
         'get'(
-            parameters?: Parameters<
-                Paths.RedirectR_Alias_Get.PathParameters &
-                    Paths.RedirectR_Alias_Get.HeaderParameters
-            > | null,
+            parameters: Parameters<
+                Paths.RedirectRAliasGet.HeaderParameters &
+                    Paths.RedirectRAliasGet.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.RedirectR_Alias_Get.Responses.$302
-            | Paths.RedirectR_Alias_Get.Responses.$422
-        >
+        ): OperationResponse<any>
     }
     ['/click-tracking/custom-domains']: {
         /**
@@ -3823,10 +4863,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCustomDomain.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateCustomDomain.Responses.$201
-            | Paths.CreateCustomDomain.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
         /**
          * delete_custom_domain - Delete
          */
@@ -3834,7 +4871,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCustomDomain.Responses.$204>
     }
     ['/click-tracking/custom-domains/check']: {
         /**
@@ -3862,10 +4899,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCustomDomainsPost.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateCustomDomainsPost.Responses.$201
-            | Paths.CreateCustomDomainsPost.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateCustomDomainsPost.Responses.$201>
         /**
          * delete_custom_domains_delete - Delete
          */
@@ -3873,7 +4907,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<any>
+        ): OperationResponse<Paths.DeleteCustomDomainsDelete.Responses.$204>
     }
     ['/custom-domains/check']: {
         /**
@@ -3893,10 +4927,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCampaign.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateCampaign.Responses.$201
-            | Paths.CreateCampaign.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateCampaign.Responses.$201>
         /**
          * get_campaigns - Get Campaigns
          */
@@ -3904,10 +4935,7 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetCampaigns.Responses.$200
-            | Paths.GetCampaigns.Responses.$422
-        >
+        ): OperationResponse<Paths.GetCampaigns.Responses.$200>
     }
     ['/campaigns/all']: {
         /**
@@ -3917,92 +4945,73 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetAllCampaigns.Responses.$200
-            | Paths.GetAllCampaigns.Responses.$422
-        >
+        ): OperationResponse<Paths.GetAllCampaigns.Responses.$200>
     }
     ['/campaigns/{campaign_id}']: {
         /**
          * get_campaign - Get Campaign
          */
         'get'(
-            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+            parameters: Parameters<Paths.GetCampaign.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-        >
+        ): OperationResponse<Paths.GetCampaign.Responses.$200>
         /**
          * patch_campaign - Patch Campaign
          */
         'patch'(
-            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+            parameters: Parameters<Paths.PatchCampaign.PathParameters>,
             data?: Paths.PatchCampaign.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.PatchCampaign.Responses.$200
-            | Paths.PatchCampaign.Responses.$422
-        >
+        ): OperationResponse<Paths.PatchCampaign.Responses.$200>
         /**
          * delete_campaign - Delete Campaign
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteCampaign.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
+        ): OperationResponse<Paths.DeleteCampaign.Responses.$204>
     }
     ['/campaigns/{campaign_id}/ab-test']: {
         /**
          * create_ab_group - Create Ab Group
          */
         'post'(
-            parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
+            parameters: Parameters<Paths.CreateAbGroup.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateAbGroup.Responses.$200
-            | Paths.CreateAbGroup.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateAbGroup.Responses.$200>
     }
     ['/campaigns/{campaign_id}/ab-test/start']: {
         /**
          * start_ab_group - Start Ab Group
          */
         'post'(
-            parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
+            parameters: Parameters<Paths.StartAbGroup.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.StartAbGroup.Responses.$200
-            | Paths.StartAbGroup.Responses.$422
-        >
+        ): OperationResponse<Paths.StartAbGroup.Responses.$200>
     }
     ['/campaigns/{campaign_id}/ab-test/pause']: {
         /**
          * pause_ab_group - Pause Ab Group
          */
         'post'(
-            parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
+            parameters: Parameters<Paths.PauseAbGroup.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.PauseAbGroup.Responses.$200
-            | Paths.PauseAbGroup.Responses.$422
-        >
+        ): OperationResponse<Paths.PauseAbGroup.Responses.$200>
     }
     ['/campaigns/{campaign_id}/ab-test/stop']: {
         /**
          * stop_ab_group - Stop Ab Group
          */
         'post'(
-            parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
+            parameters: Parameters<Paths.StopAbGroup.PathParameters>,
             data?: Paths.StopAbGroup.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
-        >
+        ): OperationResponse<Paths.StopAbGroup.Responses.$200>
     }
     ['/campaigns/suggest-copy']: {
         /**
@@ -4012,10 +5021,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.SuggestCampaignCopy.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.SuggestCampaignCopy.Responses.$200
-            | Paths.SuggestCampaignCopy.Responses.$422
-        >
+        ): OperationResponse<Paths.SuggestCampaignCopy.Responses.$200>
     }
     ['/channel-connections']: {
         /**
@@ -4025,10 +5031,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateChannelConnection.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.CreateChannelConnection.Responses.$201
-            | Paths.CreateChannelConnection.Responses.$422
-        >
+        ): OperationResponse<Paths.CreateChannelConnection.Responses.$201>
         /**
          * get_channel_connections - Get Channel Connections
          */
@@ -4036,55 +5039,132 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetChannelConnections.Responses.$200
-            | Paths.GetChannelConnections.Responses.$422
-        >
+        ): OperationResponse<Paths.GetChannelConnections.Responses.$200>
     }
     ['/channel-connections/{channel_connection_id}']: {
         /**
          * get_channel_connection - Get Channel Connection
          */
         'get'(
-            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+            parameters: Parameters<Paths.GetChannelConnection.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetChannelConnection.Responses.$200
-            | Paths.GetChannelConnection.Responses.$422
-        >
+        ): OperationResponse<Paths.GetChannelConnection.Responses.$200>
         /**
          * patch_channel_connection - Patch Channel Connection
          */
         'patch'(
-            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+            parameters: Parameters<Paths.PatchChannelConnection.PathParameters>,
             data?: Paths.PatchChannelConnection.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.PatchChannelConnection.Responses.$200
-            | Paths.PatchChannelConnection.Responses.$422
-        >
+        ): OperationResponse<Paths.PatchChannelConnection.Responses.$200>
         /**
          * delete_channel_connection - Delete Channel Connection
          */
         'delete'(
-            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+            parameters: Parameters<Paths.DeleteChannelConnection.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$204>
     }
-    ['/shoppers/lookup']: {
+    ['/private/journeys']: {
         /**
-         * shopper_lookup - Lookup
+         * get_all_journeys_private - Get All Journeys For Apps
+         *
+         * Get enabled journeys for the Flink app to process the events.
          */
         'get'(
-            parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
+            parameters?: Parameters<Paths.GetAllJourneysPrivate.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.ShopperLookup.Responses.$200
-            | Paths.ShopperLookup.Responses.$422
-        >
+        ): OperationResponse<Paths.GetAllJourneysPrivate.Responses.$200>
+    }
+    ['/journeys']: {
+        /**
+         * get_all_journeys_public - Get All Journeys
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAllJourneysPublic.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetAllJourneysPublic.Responses.$200>
+        /**
+         * create_journey - Create Journey
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateJourney.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.CreateJourney.Responses.$201>
+    }
+    ['/journeys/{journey_id}']: {
+        /**
+         * get_journey_details - Get Journey Details
+         */
+        'get'(
+            parameters: Parameters<Paths.GetJourneyDetails.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetJourneyDetails.Responses.$200>
+        /**
+         * patch_journey - Patch Journey
+         */
+        'patch'(
+            parameters: Parameters<Paths.PatchJourney.PathParameters>,
+            data?: Paths.PatchJourney.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.PatchJourney.Responses.$200>
+    }
+    ['/sms-integrations']: {
+        /**
+         * get_sms_integrations - Get Sms Integration
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetSmsIntegrations.Responses.$200>
+    }
+    ['/journeys/{journey_id}/test']: {
+        /**
+         * test_journey - Test Journey
+         */
+        'post'(
+            parameters: Parameters<Paths.TestJourney.PathParameters>,
+            data?: Paths.TestJourney.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.TestJourney.Responses.$201>
+    }
+    ['/accounts/{account_id}/stores/{store_integration_id}/run']: {
+        /**
+         * run_ai_journey_engine - Run Ai Journey Engine
+         */
+        'post'(
+            parameters: Parameters<
+                Paths.RunAiJourneyEngine.QueryParameters &
+                    Paths.RunAiJourneyEngine.PathParameters
+            >,
+            data?: Paths.RunAiJourneyEngine.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.RunAiJourneyEngine.Responses.$200>
+    }
+    ['/shoppers/interest-lookup']: {
+        /**
+         * shopper_interest_lookup - Interest Lookup
+         */
+        'get'(
+            parameters?: Parameters<Paths.ShopperInterestLookup.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ShopperInterestLookup.Responses.$200>
+        /**
+         * shopper_interest_lookup_post - Interest Lookup Post
+         */
+        'post'(
+            parameters?: Parameters<Paths.ShopperInterestLookupPost.QueryParameters> | null,
+            data?: Paths.ShopperInterestLookupPost.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ShopperInterestLookupPost.Responses.$200>
     }
     ['/billing/subscriptions/account-status']: {
         /**
@@ -4094,10 +5174,7 @@ export interface PathsDictionary {
             parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.GetStatusAndUsage.Responses.$200
-            | Paths.GetStatusAndUsage.Responses.$422
-        >
+        ): OperationResponse<Paths.GetStatusAndUsage.Responses.$200>
     }
     ['/billing/subscriptions/auto-upgrade']: {
         /**
@@ -4107,10 +5184,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
             config?: AxiosRequestConfig,
-        ): OperationResponse<
-            | Paths.UpdateAutoUpgradeFlag.Responses.$200
-            | Paths.UpdateAutoUpgradeFlag.Responses.$422
-        >
+        ): OperationResponse<Paths.UpdateAutoUpgradeFlag.Responses.$200>
     }
     ['/billing/subscriptions/account-status/all']: {
         /**
@@ -4140,7 +5214,7 @@ export interface PathsDictionary {
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
+        ): OperationResponse<Paths.HealthCheckGet.Responses.$200>
     }
 }
 

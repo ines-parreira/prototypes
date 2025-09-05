@@ -188,7 +188,7 @@ describe('Campaign queries', () => {
                 'useUpdateCampaign',
                 'mockUpdateCampaign',
                 id,
-                campaign as CampaignUpdatePayload,
+                campaign as unknown as CampaignUpdatePayload,
             ],
             ['useDeleteCampaign', 'mockDeleteCampaign', id, undefined],
             [

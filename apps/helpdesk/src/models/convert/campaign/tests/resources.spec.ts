@@ -53,7 +53,7 @@ describe('Campaign resources', () => {
                     'deleted_datetime',
                 ]),
                 channel_connection_id: channelConnectionId,
-            } as CampaignCreatePayload)
+            } as unknown as CampaignCreatePayload)
             expect(res).toEqual(campaign)
         })
     })
