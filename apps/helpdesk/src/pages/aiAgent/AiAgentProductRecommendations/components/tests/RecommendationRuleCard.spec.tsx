@@ -455,4 +455,118 @@ describe('RecommendationRuleCard', () => {
             ).toHaveLength(2)
         })
     })
+
+    it('should render See All button with correct text and aria-label when more than 4 items', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+                { id: '3', title: 'Product 3' },
+                { id: '4', title: 'Product 4' },
+                { id: '5', title: 'Product 5' },
+            ],
+            itemLabelSingular: 'product',
+            itemLabelPlural: 'products',
+        })
+
+        const seeAllButton = screen.getByRole('button', {
+            name: 'See All Excluded Products',
+        })
+        expect(seeAllButton).toBeInTheDocument()
+        expect(seeAllButton).toHaveTextContent('See All Excluded Products')
+    })
+
+    it('should not render See All button when 4 or fewer items', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+                { id: '3', title: 'Product 3' },
+                { id: '4', title: 'Product 4' },
+            ],
+        })
+
+        const seeAllButton = screen.queryByRole('button', {
+            name: 'See All Excluded Products',
+        })
+        expect(seeAllButton).not.toBeInTheDocument()
+    })
+
+    it('should handle click on See All button', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Product 1' },
+                { id: '2', title: 'Product 2' },
+                { id: '3', title: 'Product 3' },
+                { id: '4', title: 'Product 4' },
+                { id: '5', title: 'Product 5' },
+            ],
+        })
+
+        const seeAllButton = screen.getByRole('button', {
+            name: 'See All Excluded Products',
+        })
+        fireEvent.click(seeAllButton)
+
+        expect(mockOnSeeAllClick).toHaveBeenCalledTimes(1)
+    })
+
+    it('should render See All button with custom item label', () => {
+        const screen = renderComponent({
+            items: [
+                { id: '1', title: 'Tag 1' },
+                { id: '2', title: 'Tag 2' },
+                { id: '3', title: 'Tag 3' },
+                { id: '4', title: 'Tag 4' },
+                { id: '5', title: 'Tag 5' },
+            ],
+            itemLabelSingular: 'tag',
+            itemLabelPlural: 'tags',
+        })
+
+        const seeAllButton = screen.getByRole('button', {
+            name: 'See All Excluded Tags',
+        })
+        expect(seeAllButton).toBeInTheDocument()
+        expect(seeAllButton).toHaveTextContent('See All Excluded Tags')
+    })
+
+    it('should render See All button with Promoted text for promote type', () => {
+        const store = createMockStore()
+        const { getByRole } = render(
+            <Provider store={store}>
+                <RecommendationRuleCard
+                    title="Promote products"
+                    description="Choose products to prioritize in recommendations."
+                    isLoading={false}
+                    disableActions={false}
+                    hasImages={true}
+                    badge={{ label: '★ Promoted', type: 'light-success' }}
+                    type="promote"
+                    addButton={{
+                        label: 'Select products',
+                        onClick: mockOnAddButtonClick,
+                    }}
+                    itemLabelSingular="product"
+                    itemLabelPlural="products"
+                    items={[
+                        { id: '1', title: 'Product 1' },
+                        { id: '2', title: 'Product 2' },
+                        { id: '3', title: 'Product 3' },
+                        { id: '4', title: 'Product 4' },
+                        { id: '5', title: 'Product 5' },
+                    ]}
+                    onDelete={mockOnDelete}
+                    onSeeAllClick={mockOnSeeAllClick}
+                    ruleType="product"
+                />
+            </Provider>,
+        )
+
+        const seeAllButton = getByRole('button', {
+            name: 'See All Promoted Products',
+        })
+        expect(seeAllButton).toBeInTheDocument()
+        expect(seeAllButton).toHaveTextContent('See All Promoted Products')
+    })
 })

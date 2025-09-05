@@ -196,10 +196,11 @@ export const RecommendationRuleCard = ({
                         fillStyle="ghost"
                         onClick={onSeeAllClick}
                         isDisabled={disableActions}
-                        aria-label={`See All ${itemLabelPlural[0].toUpperCase()}${itemLabelPlural.slice(1)}`}
+                        aria-label={`See All ${type === 'promote' ? 'Promoted' : 'Excluded'} ${itemLabelPlural.charAt(0).toUpperCase() + itemLabelPlural.slice(1)}`}
                     >
-                        See All {itemLabelPlural[0].toUpperCase()}
-                        {itemLabelPlural.slice(1)}
+                        See All {type === 'promote' ? 'Promoted' : 'Excluded'}{' '}
+                        {itemLabelPlural.charAt(0).toUpperCase() +
+                            itemLabelPlural.slice(1)}
                     </Button>
                 </div>
             )}

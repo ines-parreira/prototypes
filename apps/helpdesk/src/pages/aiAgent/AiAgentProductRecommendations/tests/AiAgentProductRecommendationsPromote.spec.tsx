@@ -314,7 +314,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
 
         const seeAllButton = queryAllByTextAccessible(
             screen,
-            'See All Products',
+            'See All Promoted Products',
         )[0]
         fireEvent.click(seeAllButton)
 
@@ -448,7 +448,10 @@ describe('AiAgentProductRecommendationsPromote', () => {
             ],
         })
 
-        const seeAllButton = queryAllByTextAccessible(screen, 'See All Tags')[0]
+        const seeAllButton = queryAllByTextAccessible(
+            screen,
+            'See All Promoted Tags',
+        )[0]
         fireEvent.click(seeAllButton)
 
         const product1 = queryAllByTextAccessible(screen, 'Gym Gear')[1]
@@ -575,7 +578,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
 
         const seeAllButton = queryAllByTextAccessible(
             screen,
-            'See All Vendors',
+            'See All Promoted Vendors',
         )[0]
         fireEvent.click(seeAllButton)
 
