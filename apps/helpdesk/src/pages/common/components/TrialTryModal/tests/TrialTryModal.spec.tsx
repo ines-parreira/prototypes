@@ -347,4 +347,251 @@ describe('<TrialTryModal />', () => {
         expect(checkbox).toBeChecked()
         expect(checkbox).toBeDisabled()
     })
+
+    describe('Primary Action Validation', () => {
+        it('disables primary button when primaryAction.isDisabled is true', () => {
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('displays error message when primaryAction.isDisabled is true and errorMessage is provided', () => {
+            const errorMessage =
+                'AI Agent must be set up for this store to start the trial. Make sure AI agent is deployed on at least one channel.'
+
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                    errorMessage,
+                },
+            })
+
+            expect(screen.getByText(errorMessage)).toBeInTheDocument()
+        })
+
+        it('displays JSX error message with link when primaryAction.isDisabled is true and errorMessage is JSX', () => {
+            const errorMessage = (
+                <span>
+                    AI Agent must be set up for this store to start the trial.
+                    Make sure AI agent is{' '}
+                    <a
+                        href="/app/ai-agent/shopify/test-store/deploy/chat"
+                        className="deployLink"
+                    >
+                        deployed on at least one channel
+                    </a>
+                    .
+                </span>
+            )
+
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                    errorMessage,
+                },
+            })
+
+            expect(
+                screen.getByText(
+                    /AI Agent must be set up for this store to start the trial\. Make sure AI agent is/,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('deployed on at least one channel'),
+            ).toBeInTheDocument()
+
+            const deployLink = screen.getByRole('link', {
+                name: 'deployed on at least one channel',
+            })
+            expect(deployLink).toHaveAttribute(
+                'href',
+                '/app/ai-agent/shopify/test-store/deploy/chat',
+            )
+            expect(deployLink).toHaveClass('deployLink')
+        })
+
+        it('does not display error message when primaryAction.isDisabled is false', () => {
+            const errorMessage =
+                'AI Agent must be set up for this store to start the trial. Make sure AI agent is deployed on at least one channel.'
+
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: false,
+                    errorMessage,
+                },
+            })
+
+            expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
+        })
+
+        it('does not display JSX error message when primaryAction.isDisabled is false', () => {
+            const errorMessage = (
+                <span>
+                    AI Agent must be set up for this store to start the trial.
+                    Make sure AI agent is{' '}
+                    <a
+                        href="/app/ai-agent/shopify/test-store/deploy/chat"
+                        className="deployLink"
+                    >
+                        deployed on at least one channel
+                    </a>
+                    .
+                </span>
+            )
+
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: false,
+                    errorMessage,
+                },
+            })
+
+            expect(
+                screen.queryByText(
+                    /AI Agent must be set up for this store to start the trial\. Make sure AI agent is/,
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('deployed on at least one channel'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('link', {
+                    name: 'deployed on at least one channel',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not call primaryAction.onClick when button is disabled', async () => {
+            const user = userEvent.setup()
+            const mockOnClick = jest.fn()
+
+            renderWithProviders({
+                showTermsCheckbox: false,
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    onClick: mockOnClick,
+                    isDisabled: true,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            await user.click(primaryButton)
+
+            expect(mockOnClick).not.toHaveBeenCalled()
+        })
+
+        it('enables primary button when primaryAction.isDisabled is false', () => {
+            renderWithProviders({
+                showTermsCheckbox: false,
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: false,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).not.toBeDisabled()
+        })
+
+        it('enables primary button when primaryAction.isDisabled is undefined', () => {
+            renderWithProviders({
+                showTermsCheckbox: false,
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).not.toBeDisabled()
+        })
+
+        it('does not display error message when errorMessage is undefined', () => {
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                    errorMessage: undefined,
+                },
+            })
+
+            expect(
+                screen.queryByText(/AI Agent must be set up/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('link', {
+                    name: 'deployed on at least one channel',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not display error message when errorMessage is null', () => {
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                    errorMessage: null,
+                },
+            })
+
+            expect(
+                screen.queryByText(/AI Agent must be set up/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('link', {
+                    name: 'deployed on at least one channel',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('disables button when loading even if primaryAction.isDisabled is false', () => {
+            renderWithProviders({
+                isLoading: true,
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: false,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: `Loading... ${defaultProps.primaryAction.label}`,
+            })
+
+            expect(primaryButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('disables button when both loading and primaryAction.isDisabled are true', () => {
+            renderWithProviders({
+                isLoading: true,
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    isDisabled: true,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: `Loading... ${defaultProps.primaryAction.label}`,
+            })
+
+            expect(primaryButton).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
 })

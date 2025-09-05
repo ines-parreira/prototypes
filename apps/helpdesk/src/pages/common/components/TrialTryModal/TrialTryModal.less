@@ -72,6 +72,41 @@
         gap: var(--layout-spacing-xxs);
     }
 
+    .primaryActionError {
+        .caption-regular;
+        color: var(--feedback-error-3);
+        margin-top: var(--layout-spacing-xs);
+        text-align: left;
+    }
+
+    .deployLink {
+        color: var(--feedback-error-3);
+        text-decoration-line: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-thickness: auto !important;
+        text-underline-offset: auto !important;
+        text-underline-position: from-font !important;
+
+        &:hover {
+            color: var(--feedback-error-3);
+        }
+    }
+
+    .primaryActionError a {
+        color: var(--feedback-error-3);
+        text-decoration-line: underline !important;
+        text-decoration-style: solid !important;
+        text-decoration-skip-ink: none !important;
+        text-decoration-thickness: auto !important;
+        text-underline-offset: auto !important;
+        text-underline-position: from-font !important;
+
+        &:hover {
+            color: var(--feedback-error-3);
+        }
+    }
+
     .modalContent .body .primaryActionButton {
         background-color: var(--neutral-grey-6) !important;
         color: var(--neutral-grey-0) !important;

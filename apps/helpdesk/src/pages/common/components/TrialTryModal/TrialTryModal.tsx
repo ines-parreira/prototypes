@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -32,6 +32,8 @@ export type TrialTryModalProps = {
     primaryAction?: {
         label: string
         onClick: (optedInForUpgrade?: boolean) => void
+        isDisabled?: boolean
+        errorMessage?: ReactNode
     }
     secondaryAction?: {
         label: string
@@ -114,21 +116,33 @@ const ActionButtons = ({
 }: {
     isLoading: boolean
     onPrimaryClick: () => void
-    primaryAction?: { label: string; onClick: () => void }
+    primaryAction?: {
+        label: string
+        onClick: () => void
+        isDisabled?: boolean
+        errorMessage?: ReactNode
+    }
     secondaryAction?: { label: string; onClick: () => void }
 }) => (
     <div className={css.actionsContainer}>
         {primaryAction && (
-            <Button
-                intent="primary"
-                onClick={onPrimaryClick}
-                className={css.primaryActionButton}
-                size="large"
-                isDisabled={isLoading}
-                isLoading={isLoading}
-            >
-                {primaryAction.label}
-            </Button>
+            <>
+                <Button
+                    intent="primary"
+                    onClick={onPrimaryClick}
+                    className={css.primaryActionButton}
+                    size="large"
+                    isDisabled={isLoading || primaryAction.isDisabled}
+                    isLoading={isLoading}
+                >
+                    {primaryAction.label}
+                </Button>
+                {primaryAction.errorMessage && primaryAction.isDisabled && (
+                    <div className={css.primaryActionError}>
+                        {primaryAction.errorMessage}
+                    </div>
+                )}
+            </>
         )}
         {secondaryAction && (
             <Button
@@ -232,6 +246,9 @@ const TrialTryModal = ({
 
     const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
     const handlePrimaryAction = () => {
+        if (primaryAction?.isDisabled) {
+            return
+        }
         if (showTermsCheckbox && !isTermsChecked) {
             setHasAttemptedSubmit(true)
             return

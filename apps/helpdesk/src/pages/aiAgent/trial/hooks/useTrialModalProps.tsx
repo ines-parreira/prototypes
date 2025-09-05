@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { SegmentEvent } from 'common/segment'
 import { logEvent } from 'common/segment/segment'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
@@ -34,6 +36,7 @@ import {
     useTrialMetrics,
 } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import {
@@ -401,6 +404,51 @@ const useNewTrialUpgradePlanModal = (
             trialType,
         })
 
+    // Validation logic for both AI Agent and Shopping Assistant trials
+    const getValidationState = useCallback(
+        (onClose?: () => void) => {
+            const storeActivation = storeActivations[storeName ?? '']
+
+            if (!storeActivation) {
+                return {
+                    isValid: false,
+                    errorMessage: (
+                        <span>
+                            AI Agent must be set up for this store to start the
+                            trial.
+                        </span>
+                    ),
+                }
+            }
+
+            const aiAgentEnabled = isAiAgentEnabledForStore(
+                storeActivation.configuration,
+            )
+
+            if (!aiAgentEnabled) {
+                return {
+                    isValid: false,
+                    errorMessage: (
+                        <span>
+                            AI Agent must be set up for this store to start the
+                            trial. Make sure AI agent is{' '}
+                            <Link
+                                to={`/app/ai-agent/shopify/${storeName}/deploy/chat`}
+                                onClick={onClose}
+                            >
+                                deployed on at least one channel
+                            </Link>
+                            .
+                        </span>
+                    ),
+                }
+            }
+
+            return { isValid: true }
+        },
+        [storeName, storeActivations],
+    )
+
     const aiAgentProps = useMemo(() => {
         const planModalData = createPlanModalData(
             '',
@@ -447,8 +495,10 @@ const useNewTrialUpgradePlanModal = (
         isMultiStore,
     ])
 
-    const shoppingAssistantProps = useMemo(
-        () => ({
+    const shoppingAssistantProps = useMemo(() => {
+        const validationState = getValidationState(closeTrialUpgradeModal)
+
+        return {
             ...createPlanModalData(
                 'Unlock new AI Agent skills at no extra cost',
                 planDetails,
@@ -465,6 +515,8 @@ const useNewTrialUpgradePlanModal = (
                 label: 'Start trial now',
                 onClick: (optedInForUpgrade?: boolean) =>
                     startTrial(optedInForUpgrade),
+                isDisabled: !validationState.isValid,
+                errorMessage: validationState.errorMessage,
             },
             secondaryAction: {
                 label: 'No, thanks',
@@ -472,15 +524,15 @@ const useNewTrialUpgradePlanModal = (
             },
             onClose: closeTrialUpgradeModal,
             features: SHOPPING_ASSISTANT_TRIAL_FEATURES,
-        }),
-        [
-            planDetails,
-            startTrial,
-            onDismissTrialUpgradeModal,
-            closeTrialUpgradeModal,
-            isMultiStore,
-        ],
-    )
+        }
+    }, [
+        planDetails,
+        startTrial,
+        onDismissTrialUpgradeModal,
+        closeTrialUpgradeModal,
+        isMultiStore,
+        getValidationState,
+    ])
 
     return trialType === TrialType.AiAgent
         ? aiAgentProps

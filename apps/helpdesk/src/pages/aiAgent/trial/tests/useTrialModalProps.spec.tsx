@@ -15,6 +15,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
+import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -3103,6 +3104,249 @@ describe('useTrialModalProps', () => {
                 result.current.newTrialUpgradePlanModal?.onClose?.()
 
                 expect(mockCloseTrialUpgradeModal).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('Primary Action Validation', () => {
+            beforeEach(() => {
+                jest.clearAllMocks()
+            })
+
+            const store = storeActivationFixture()
+
+            describe('for ShoppingAssistant trial type', () => {
+                it('should disable primary action when store activation is not found', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            canSeeTrialCTA: true,
+                            isAdminUser: true,
+                            trialType: TrialType.ShoppingAssistant,
+                        }),
+                    )
+
+                    // Mock empty store activations
+                    mockUseStoreActivations.mockReturnValue({
+                        storeActivations: {},
+                        progressPercentage: 0,
+                        isFetchLoading: false,
+                        isSaveLoading: false,
+                        changeSales: jest.fn(),
+                        changeSupport: jest.fn(),
+                        changeSupportChat: jest.fn(),
+                        changeSupportEmail: jest.fn(),
+                        saveStoreConfigurations: jest.fn(),
+                        migrateToNewPricing: jest.fn(),
+                        endTrial: jest.fn(),
+                        activation: jest.fn(),
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: 'nonexistent-store' }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.primaryAction?.isDisabled).toBe(true)
+
+                    // Check that errorMessage is a JSX element and render it to test content
+                    const errorMessage = modal.primaryAction
+                        ?.errorMessage as any
+                    expect(errorMessage?.type).toBe('span')
+
+                    // Render the error message to test its content
+                    const { container } = render(<>{errorMessage}</>)
+                    expect(container.textContent).toBe(
+                        'AI Agent must be set up for this store to start the trial.',
+                    )
+                })
+
+                it('should disable primary action when AI agent is not enabled for store', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            canSeeTrialCTA: true,
+                            isAdminUser: true,
+                            trialType: TrialType.ShoppingAssistant,
+                        }),
+                    )
+
+                    // Mock store activations with AI agent disabled
+                    const mockStoreActivations = {
+                        'test-store': {
+                            ...store,
+                            configuration: {
+                                ...store.configuration,
+                                chatChannelDeactivatedDatetime:
+                                    '2023-01-01T00:00:00.000Z',
+                                emailChannelDeactivatedDatetime:
+                                    '2023-01-01T00:00:00.000Z',
+                            },
+                        },
+                    }
+
+                    mockUseStoreActivations.mockReturnValue({
+                        storeActivations: mockStoreActivations,
+                        progressPercentage: 0,
+                        isFetchLoading: false,
+                        isSaveLoading: false,
+                        changeSales: jest.fn(),
+                        changeSupport: jest.fn(),
+                        changeSupportChat: jest.fn(),
+                        changeSupportEmail: jest.fn(),
+                        saveStoreConfigurations: jest.fn(),
+                        migrateToNewPricing: jest.fn(),
+                        endTrial: jest.fn(),
+                        activation: jest.fn(),
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: 'test-store' }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.primaryAction?.isDisabled).toBe(true)
+
+                    // Check that errorMessage is a JSX element with Link
+                    const errorMessage = modal.primaryAction
+                        ?.errorMessage as any
+                    expect(errorMessage?.type).toBe('span')
+
+                    // Test the JSX structure directly
+                    const children = errorMessage?.props?.children
+                    expect(children).toHaveLength(4)
+                    expect(children?.[0]).toBe(
+                        'AI Agent must be set up for this store to start the trial. Make sure AI agent is',
+                    )
+                    expect(children?.[1]).toBe(' ')
+                    expect(children?.[2]?.type?.name).toBe('Link')
+                    expect(children?.[2]?.props?.children).toBe(
+                        'deployed on at least one channel',
+                    )
+                    expect(children?.[2]?.props?.to).toBe(
+                        '/app/ai-agent/shopify/test-store/deploy/chat',
+                    )
+                })
+
+                it('should call onClose when link is clicked', () => {
+                    const mockOnClose = jest.fn()
+
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            canSeeTrialCTA: true,
+                            isAdminUser: true,
+                            trialType: TrialType.ShoppingAssistant,
+                        }),
+                    )
+
+                    // Mock store activations with AI agent disabled
+                    const mockStoreActivations = {
+                        'test-store': {
+                            ...store,
+                            configuration: {
+                                ...store.configuration,
+                                chatChannelDeactivatedDatetime:
+                                    '2023-01-01T00:00:00.000Z',
+                                emailChannelDeactivatedDatetime:
+                                    '2023-01-01T00:00:00.000Z',
+                            },
+                        },
+                    }
+
+                    mockUseStoreActivations.mockReturnValue({
+                        storeActivations: mockStoreActivations,
+                        progressPercentage: 0,
+                        isFetchLoading: false,
+                        isSaveLoading: false,
+                        changeSales: jest.fn(),
+                        changeSupport: jest.fn(),
+                        changeSupportChat: jest.fn(),
+                        changeSupportEmail: jest.fn(),
+                        saveStoreConfigurations: jest.fn(),
+                        migrateToNewPricing: jest.fn(),
+                        endTrial: jest.fn(),
+                        activation: jest.fn(),
+                    })
+
+                    // Mock the close function
+                    mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                        ...defaultMockUseShoppingAssistantTrialFlow,
+                        closeTrialUpgradeModal: mockOnClose,
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: 'test-store' }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+                    const errorMessage = modal.primaryAction
+                        ?.errorMessage as any
+
+                    // Test the Link component's onClick handler directly
+                    const children = errorMessage?.props?.children
+                    const linkElement = children?.[2] // Link is at index 2
+
+                    // Verify the Link component structure
+                    expect(linkElement?.type?.name).toBe('Link')
+                    expect(linkElement?.props?.children).toBe(
+                        'deployed on at least one channel',
+                    )
+                    expect(linkElement?.props?.to).toBe(
+                        '/app/ai-agent/shopify/test-store/deploy/chat',
+                    )
+
+                    // Test the onClick handler
+                    expect(linkElement?.props?.onClick).toBeDefined()
+                    linkElement?.props?.onClick()
+
+                    expect(mockOnClose).toHaveBeenCalledTimes(1)
+                })
+
+                it('should enable primary action when AI agent is enabled for store', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            canSeeTrialCTA: true,
+                            isAdminUser: true,
+                            trialType: TrialType.ShoppingAssistant,
+                        }),
+                    )
+
+                    // Mock store activations with AI agent enabled (channels not deactivated)
+                    const mockStoreActivations = {
+                        'test-store': {
+                            ...store,
+                            configuration: {
+                                ...store.configuration,
+                                // AI agent is enabled when channels are not deactivated
+                                chatChannelDeactivatedDatetime: null,
+                                emailChannelDeactivatedDatetime: null,
+                            },
+                        },
+                    }
+
+                    mockUseStoreActivations.mockReturnValue({
+                        storeActivations: mockStoreActivations,
+                        progressPercentage: 0,
+                        isFetchLoading: false,
+                        isSaveLoading: false,
+                        changeSales: jest.fn(),
+                        changeSupport: jest.fn(),
+                        changeSupportChat: jest.fn(),
+                        changeSupportEmail: jest.fn(),
+                        saveStoreConfigurations: jest.fn(),
+                        migrateToNewPricing: jest.fn(),
+                        endTrial: jest.fn(),
+                        activation: jest.fn(),
+                    })
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: 'test-store' }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.primaryAction?.isDisabled).toBe(false)
+                    expect(modal.primaryAction?.errorMessage).toBeUndefined()
+                })
             })
         })
     })
