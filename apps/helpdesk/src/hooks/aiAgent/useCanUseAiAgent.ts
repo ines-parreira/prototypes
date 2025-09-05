@@ -1,6 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -11,11 +10,12 @@ import { getIntegrationsByType } from 'state/integrations/selectors'
  * @param shopName - Optional shop name parameter, if not provided it will be extracted from URL
  * @returns boolean - true if store is during trial period, false otherwise
  */
-export const useCanEnableAiAgentDuringTrial = (
+export const useCanUseAiAgent = (
     shopName?: string,
 ): {
     storeIntegration?: ShopifyIntegration
-    isDuringTrial: boolean
+    isCurrentStoreDuringTrial: boolean
+    hasAnyActiveTrial: boolean
     isLoading: boolean
     isError: boolean
 } => {
@@ -33,14 +33,10 @@ export const useCanEnableAiAgentDuringTrial = (
 
     const trialAccess = useTrialAccess(currentShopName)
 
-    const isDuringTrial =
-        trialAccess.trialType === TrialType.AiAgent &&
-        trialAccess.hasCurrentStoreTrialStarted &&
-        !trialAccess.hasCurrentStoreTrialExpired
-
     return {
         storeIntegration,
-        isDuringTrial,
+        isCurrentStoreDuringTrial: trialAccess.isInAiAgentTrial,
+        hasAnyActiveTrial: trialAccess.hasAnyTrialActive,
         isLoading: trialAccess.isLoading || false,
         isError: trialAccess.isError || false,
     }

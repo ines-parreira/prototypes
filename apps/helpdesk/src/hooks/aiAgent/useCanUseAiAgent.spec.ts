@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { IntegrationType } from 'models/integration/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
-import { useCanEnableAiAgentDuringTrial } from '../useCanEnableAiAgentDuringTrial'
+import { useCanUseAiAgent } from './useCanUseAiAgent'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
@@ -46,16 +46,14 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: true,
+            isInAiAgentTrial: true,
             isLoading: false,
         })
 
-        const { result } = renderHook(() =>
-            useCanEnableAiAgentDuringTrial('other-shop'),
-        )
+        const { result } = renderHook(() => useCanUseAiAgent('other-shop'))
 
-        expect(result.current.isDuringTrial).toBe(true)
+        expect(result.current.isCurrentStoreDuringTrial).toBe(true)
         expect(result.current.storeIntegration).toEqual(
             mockShopifyIntegrations[1],
         )
@@ -72,14 +70,14 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: true,
+            hasAnyTrialActive: false,
+            isInAiAgentTrial: false,
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
-        expect(result.current.isDuringTrial).toBe(false)
+        expect(result.current.isCurrentStoreDuringTrial).toBe(false)
         expect(result.current.storeIntegration).toEqual(
             mockShopifyIntegrations[0],
         )
@@ -95,14 +93,14 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: false,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: false,
+            isInAiAgentTrial: false,
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
-        expect(result.current.isDuringTrial).toBe(false)
+        expect(result.current.isCurrentStoreDuringTrial).toBe(false)
         expect(result.current.storeIntegration).toEqual(
             mockShopifyIntegrations[0],
         )
@@ -118,14 +116,15 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.ShoppingAssistant,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: true,
+            isInAiAgentTrial: false,
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
-        expect(result.current.isDuringTrial).toBe(false)
+        expect(result.current.isCurrentStoreDuringTrial).toBe(false)
+        expect(result.current.hasAnyActiveTrial).toBe(true)
         expect(result.current.storeIntegration).toEqual(
             mockShopifyIntegrations[0],
         )
@@ -142,15 +141,14 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockExtractShopNameFromUrl.mockReturnValue('test-shop')
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: true,
+            isInAiAgentTrial: false,
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
         expect(result.current.storeIntegration).toBeUndefined()
-        expect(result.current.isDuringTrial).toBe(true)
     })
 
     it('should handle loading state from useTrialAccess', () => {
@@ -161,12 +159,12 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: true,
+            isInAiAgentTrial: false,
             isLoading: true,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
         expect(result.current.isLoading).toBe(true)
     })
@@ -179,13 +177,13 @@ describe('useCanEnableAiAgentDuringTrial', () => {
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.AiAgent,
-            hasCurrentStoreTrialStarted: true,
-            hasCurrentStoreTrialExpired: false,
+            hasAnyTrialActive: true,
+            isInAiAgentTrial: false,
             isLoading: false,
             isError: true,
         })
 
-        const { result } = renderHook(() => useCanEnableAiAgentDuringTrial())
+        const { result } = renderHook(() => useCanUseAiAgent())
 
         expect(result.current.isError).toBe(true)
     })

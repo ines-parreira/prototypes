@@ -122,15 +122,12 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
 }))
 
 // Mock useCanEnableAiAgentDuringTrial
-jest.mock(
-    'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial',
-    () => ({
-        useCanEnableAiAgentDuringTrial: jest.fn(() => ({
-            isDuringTrial: true,
-            canEnableAiAgent: true,
-        })),
-    }),
-)
+jest.mock('hooks/aiAgent/useCanUseAiAgent', () => ({
+    useCanUseAiAgent: jest.fn(() => ({
+        isCurrentStoreDuringTrial: true,
+        hasAnyActiveTrial: true,
+    })),
+}))
 
 // Mock useAppSelector
 jest.mock('hooks/useAppSelector', () => ({
@@ -146,9 +143,8 @@ const mockedTrialAccessHook = jest.requireMock(
     'pages/aiAgent/trial/hooks/useTrialAccess',
 ).useTrialAccess as jest.Mock
 
-const mockedCanEnableAiAgentDuringTrial = jest.requireMock(
-    'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial',
-).useCanEnableAiAgentDuringTrial as jest.Mock
+const mockedCanUseAiAgent = jest.requireMock('hooks/aiAgent/useCanUseAiAgent')
+    .useCanUseAiAgent as jest.Mock
 
 const mockShopifyIntegration: StoreIntegration = {
     id: 1,
@@ -217,9 +213,9 @@ describe('ActionDrivenNavigation', () => {
             hasCurrentStoreTrialExpired: false,
             hasCurrentStoreTrialStarted: false,
         })
-        mockedCanEnableAiAgentDuringTrial.mockReturnValue({
-            isDuringTrial: true,
-            canEnableAiAgent: true,
+        mockedCanUseAiAgent.mockReturnValue({
+            isCurrentStoreDuringTrial: true,
+            hasAnyActiveTrial: true,
         })
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',

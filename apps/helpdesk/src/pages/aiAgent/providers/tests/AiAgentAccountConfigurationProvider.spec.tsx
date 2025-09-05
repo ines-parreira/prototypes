@@ -8,16 +8,16 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
+import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { ShopifyIntegration } from 'models/integration/types'
-import { useCanEnableAiAgentDuringTrial } from 'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial'
 import { getHasAutomate } from 'state/billing/selectors'
 import { renderWithRouter } from 'utils/testing'
 
 import { AiAgentAccountConfigurationProvider } from '../AiAgentAccountConfigurationProvider'
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
-jest.mock('pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial')
+jest.mock('hooks/aiAgent/useCanUseAiAgent')
 jest.mock('pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware', () => ({
     TrialPaywallMiddleware: ({ shopName }: { shopName?: string }) => (
         <div data-testid="trial-paywall-middleware">
@@ -75,9 +75,7 @@ const mockGetHasAutomate = jest.mocked(getHasAutomate)
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
-const mockUseCanEnableAiAgentDuringTrial = jest.mocked(
-    useCanEnableAiAgentDuringTrial,
-)
+const mockUseCanUseAiAgent = jest.mocked(useCanUseAiAgent)
 
 const renderComponent = () =>
     renderWithRouter(
@@ -97,9 +95,10 @@ describe('AiAgentAccountConfigurationProvider', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseFlag.mockReturnValue(false)
-        mockUseCanEnableAiAgentDuringTrial.mockReturnValue({
+        mockUseCanUseAiAgent.mockReturnValue({
             storeIntegration: undefined,
-            isDuringTrial: false,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
             isLoading: false,
             isError: false,
         })
@@ -164,9 +163,10 @@ describe('AiAgentAccountConfigurationProvider', () => {
 
     it('should render children when not automate but during trial', () => {
         mockGetHasAutomate.mockReturnValue(false)
-        mockUseCanEnableAiAgentDuringTrial.mockReturnValue({
+        mockUseCanUseAiAgent.mockReturnValue({
             storeIntegration: undefined,
-            isDuringTrial: true,
+            isCurrentStoreDuringTrial: true,
+            hasAnyActiveTrial: true,
             isLoading: false,
             isError: false,
         })
@@ -183,7 +183,7 @@ describe('AiAgentAccountConfigurationProvider', () => {
                 key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
                 false,
         )
-        mockUseCanEnableAiAgentDuringTrial.mockReturnValue({
+        mockUseCanUseAiAgent.mockReturnValue({
             storeIntegration: {
                 id: 123,
                 type: IntegrationType.Shopify,
@@ -191,7 +191,8 @@ describe('AiAgentAccountConfigurationProvider', () => {
                     shop_name: 'Test Store',
                 },
             } as ShopifyIntegration,
-            isDuringTrial: false,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
             isLoading: false,
             isError: false,
         })
@@ -220,9 +221,10 @@ describe('AiAgentAccountConfigurationProvider', () => {
     })
 
     it('should render loader when trial check is loading', () => {
-        mockUseCanEnableAiAgentDuringTrial.mockReturnValue({
+        mockUseCanUseAiAgent.mockReturnValue({
             storeIntegration: undefined,
-            isDuringTrial: false,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
             isLoading: true,
             isError: false,
         })

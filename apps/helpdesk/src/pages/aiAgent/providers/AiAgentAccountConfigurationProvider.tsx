@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom'
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
+import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
@@ -13,7 +14,6 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import { useCanEnableAiAgentDuringTrial } from '../Overview/hooks/useCanEnableAiAgentDuringTrial'
 import { TrialPaywallMiddleware } from '../Overview/middlewares/TrialPaywallMiddleware'
 
 import css from './AiAgentAccountConfigurationProvider.less'
@@ -30,8 +30,8 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
     )
     const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
 
-    const { storeIntegration, isDuringTrial, isLoading, isError } =
-        useCanEnableAiAgentDuringTrial()
+    const { storeIntegration, isCurrentStoreDuringTrial, isLoading, isError } =
+        useCanUseAiAgent()
 
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
@@ -62,7 +62,7 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
         )
     }
 
-    if (!hasAutomate && isDuringTrial) {
+    if (!hasAutomate && isCurrentStoreDuringTrial) {
         return <>{children}</>
     }
 

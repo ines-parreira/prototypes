@@ -14,6 +14,7 @@ import { TrialPaywallMiddleware } from '../TrialPaywallMiddleware'
 jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
     AiAgentPaywallView: jest.fn(() => <div data-testid="paywall-view"></div>),
 }))
@@ -34,6 +35,13 @@ const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
 describe('TrialPaywallMiddleware', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+
+        // Default flag mock - enable AiAgentExpandingTrialExperienceForAll by default
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
+                return true
+            return false
+        })
 
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getCurrentAccountState) {
@@ -85,12 +93,6 @@ describe('TrialPaywallMiddleware', () => {
     })
 
     it('should render welcome page when feature flag is enabled and integrations exist', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return true
-            return false
-        })
-
         useStoreIntegrationsMock.mockReturnValue([
             {
                 id: 1,
@@ -105,12 +107,6 @@ describe('TrialPaywallMiddleware', () => {
     })
 
     it('should use provided shop name when specified', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return true
-            return false
-        })
-
         const shopName = 'Specified Shop'
 
         useStoreIntegrationsMock.mockReturnValue([
@@ -134,12 +130,6 @@ describe('TrialPaywallMiddleware', () => {
     })
 
     it('should use first integration when specified shop name is not found', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return true
-            return false
-        })
-
         const shopName = 'Non-existent Shop'
 
         useStoreIntegrationsMock.mockReturnValue([

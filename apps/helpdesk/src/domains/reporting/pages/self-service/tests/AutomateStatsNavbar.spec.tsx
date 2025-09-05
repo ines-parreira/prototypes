@@ -6,7 +6,8 @@ import { useFlag } from 'core/flags'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
-import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
+import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
@@ -19,25 +20,17 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => {
-    const actualModule = jest.requireActual(
-        'hooks/aiAgent/useCanUseAiSalesAgent',
-    )
-    return {
-        ...actualModule,
-        useAtLeastOneStoreHasActiveTrial: jest.fn(),
-        useAtleastOneStoreHasActiveTrialOnSpecificStores: jest.fn(),
-        useCanUseAiSalesAgent: jest.fn(),
-    }
-})
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
+    useCanUseAiSalesAgent: jest.fn(),
+}))
 
-const mockUseAtleastOneStoreHasActiveTrial = assumeMock(
-    useAtLeastOneStoreHasActiveTrial,
-)
+jest.mock('hooks/aiAgent/useCanUseAiAgent', () => ({
+    useCanUseAiAgent: jest.fn(),
+}))
+
 const mockUseFlag = assumeMock(useFlag)
-const mockUseCanUseAiSalesAgent = assumeMock(
-    require('hooks/aiAgent/useCanUseAiSalesAgent').useCanUseAiSalesAgent,
-)
+const mockUseCanUseAiSalesAgent = assumeMock(useCanUseAiSalesAgent)
+const mockUseCanUseAiAgent = assumeMock(useCanUseAiAgent)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -56,12 +49,25 @@ describe('<AutomateStatsNavbar />', () => {
             isModuleRestrictedToCurrentUser: () => false,
         })
         mockUseFlag.mockImplementation(() => false)
-        mockUseAtleastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
     })
 
     it('should render with upgrade icon when automate is not enabled', () => {
         mockUseAppSelector.mockImplementation(() => false)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
         const { getByText, getByRole } = renderWithRouter(
             <Navigation.Root>
                 <AutomateStatsNavbar />
@@ -78,13 +84,20 @@ describe('<AutomateStatsNavbar />', () => {
         mockUseFlag.mockImplementation((flag) => {
             if (
                 flag === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                FeatureFlagKey.AIAgentStatsPage
+                flag === FeatureFlagKey.AIAgentStatsPage
             )
                 return true
             return false
         })
 
         mockUseAppSelector.mockImplementation(() => true)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
         const { getAllByRole, getByRole } = renderWithRouter(
             <Navigation.Root>
                 <AutomateStatsNavbar />
@@ -124,6 +137,14 @@ describe('<AutomateStatsNavbar />', () => {
             return false
         })
 
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
+
         const { queryByText, getByRole } = renderWithRouter(
             <Navigation.Root>
                 <AutomateStatsNavbar />
@@ -146,6 +167,14 @@ describe('<AutomateStatsNavbar />', () => {
             if (selector === getCurrentAutomatePlan) return { generation: 6 }
             if (selector === isTrialing) return false
             return undefined
+        })
+
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -180,6 +209,14 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
+
         const { getByText, getByRole } = renderWithRouter(
             <Navigation.Root>
                 <AutomateStatsNavbar />
@@ -212,7 +249,13 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
-        mockUseAtleastOneStoreHasActiveTrial.mockReturnValue(true)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: true,
+            isLoading: false,
+            isError: false,
+        })
 
         const { getByText, getByRole } = renderWithRouter(
             <Navigation.Root>
@@ -246,6 +289,14 @@ describe('<AutomateStatsNavbar />', () => {
             if (selector === getCurrentAutomatePlan) return { generation: 5 }
             if (selector === isTrialing) return false
             return undefined
+        })
+
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -283,6 +334,13 @@ describe('<AutomateStatsNavbar />', () => {
         })
 
         mockUseCanUseAiSalesAgent.mockReturnValue(false)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
 
         const { getByText, getByRole } = renderWithRouter(
             <Navigation.Root>

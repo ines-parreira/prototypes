@@ -13,6 +13,7 @@ import {
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'domains/reporting/pages/self-service/constants'
+import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
@@ -33,6 +34,9 @@ export function AutomateStatsNavbar() {
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
+    const { hasAnyActiveTrial } = useCanUseAiAgent()
+
+    const canBypassPaywall = hasAutomate || hasAnyActiveTrial
 
     return (
         <Navigation.Section value={StatsNavbarViewSections.Automate}>
@@ -41,7 +45,7 @@ export function AutomateStatsNavbar() {
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>
             <Navigation.SectionContent className={css.sectionContent}>
-                {!hasAutomate ? (
+                {!canBypassPaywall ? (
                     <ProtectedRoute path={OVERVIEW_PATH}>
                         <Navigation.SectionItem
                             as={NavLink}

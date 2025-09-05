@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'
+import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
@@ -13,7 +14,6 @@ import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
-import { useCanEnableAiAgentDuringTrial } from 'pages/aiAgent/Overview/hooks/useCanEnableAiAgentDuringTrial'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -43,9 +43,9 @@ export const ActionDrivenNavigation = () => {
     } = useTrialAccess(selectedStore)
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const { isDuringTrial } = useCanEnableAiAgentDuringTrial(selectedStore)
+    const { isCurrentStoreDuringTrial } = useCanUseAiAgent(selectedStore)
 
-    const shouldDisplayAIAgentItems = hasAutomate || isDuringTrial
+    const shouldDisplayAIAgentItems = hasAutomate || isCurrentStoreDuringTrial
 
     const onboardingState = useAiAgentOnboardingState(selectedStore || '')
     const isOnboarded = onboardingState === OnboardingState.Onboarded
