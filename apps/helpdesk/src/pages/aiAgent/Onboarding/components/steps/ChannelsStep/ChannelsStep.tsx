@@ -199,7 +199,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     }, [storeConfigurations])
 
     const dispatch = useAppDispatch()
-    const scopes = useAiAgentScopesForAutomationPlan()
+    const scopes = useAiAgentScopesForAutomationPlan(shopName)
     const isFirstStep = currentStep === 1
 
     useCheckStoreIntegration({ shouldCheck: !isFirstStep })

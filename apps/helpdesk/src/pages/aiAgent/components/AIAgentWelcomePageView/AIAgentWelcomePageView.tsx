@@ -14,10 +14,16 @@ import {
 } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
+import { useAiAgentCtas } from 'pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -28,8 +34,6 @@ import {
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-
-import { useAiAgentCtas } from '../ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 
 export type DynamicItem = {
     checked: boolean
@@ -53,6 +57,10 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         handleOnPerformActionPostReceivedNotification,
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({ shopName: props.shopName })
+
+    const isOnStorePage =
+        extractShopNameFromUrl(window.location.href) === props.shopName
+    const onboardingState = useAiAgentOnboardingState(props.shopName)
 
     const trialAccess = useTrialAccess(props.shopName)
 
@@ -161,22 +169,24 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     ])
 
     /*
-     * We reached this component, so it means onboarding wizard is not finished yet (logic of the parent component).
-     * We need to open back the onboarding wizard if the trial is currently active - it is a required step to continue with trial.
+     *  We need to open back the onboarding wizard if the trial is currently active and onboarding not completed - it is a required step to continue with trial.
      */
     useEffect(() => {
-        const isAiAgentTrial =
-            trialAccess.trialType === TrialType.AiAgent &&
-            trialAccess.hasCurrentStoreTrialStarted &&
-            !trialAccess.hasCurrentStoreTrialExpired
+        if (!isOnStorePage || onboardingState === OnboardingState.Loading)
+            return
 
-        if (isAiAgentTrial) {
+        const requiresOnboardingWizard =
+            onboardingState === OnboardingState.OnboardingWizard &&
+            trialAccess.isInAiAgentTrial
+
+        if (requiresOnboardingWizard) {
             onOnboardingWizardClick()
         }
     }, [
-        trialAccess.trialType,
-        trialAccess.hasCurrentStoreTrialStarted,
-        trialAccess.hasCurrentStoreTrialExpired,
+        isOnStorePage,
+        onboardingState,
+        props.shopName,
+        trialAccess.isInAiAgentTrial,
         onOnboardingWizardClick,
     ])
 

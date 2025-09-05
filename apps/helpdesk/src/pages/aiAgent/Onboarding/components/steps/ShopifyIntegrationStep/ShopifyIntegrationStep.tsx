@@ -75,7 +75,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations = useShopifyIntegrations()
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
-    const scopes = useAiAgentScopesForAutomationPlan()
+    const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()

@@ -19,6 +19,8 @@ import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboa
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useStandaloneIntegrationUpsert } from 'pages/standalone/hooks/useStandaloneIntegrationUpsert'
 import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { notify } from 'state/notifications/actions'
@@ -86,6 +88,9 @@ const mockUpsert = jest.fn()
 const mockUseStandaloneIntegrationUpsert = assumeMock(
     useStandaloneIntegrationUpsert,
 )
+
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const mockUseTrialAccess = assumeMock(useTrialAccess)
 
 const mockGoToStep = jest.fn()
 
@@ -158,6 +163,8 @@ describe('HandoverStep', () => {
             upsert: mockUpsert,
             currentIntegrationType: HelpdeskIntegrationOptions.ZENDESK,
         })
+
+        mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
     })
 
     beforeAll(() => {

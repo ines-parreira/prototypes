@@ -17,7 +17,7 @@ export const useSteps = ({
 }) => {
     const { integration } = useShopifyIntegrationAndScope(shopName)
     const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
-    const scopes = useAiAgentScopesForAutomationPlan()
+    const scopes = useAiAgentScopesForAutomationPlan(shopName)
     const handoverEnabled = useFlag(
         FeatureFlagKey.StandaloneHandoverCapabilities,
     )

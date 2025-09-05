@@ -15,6 +15,7 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { shopifyIntegration } from 'fixtures/integrations'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { RootState, StoreDispatch } from 'state/types'
@@ -41,6 +42,22 @@ const MOCK_WIZARD_VALUES = {
 
 const SHOP_NAME = 'my-store'
 const SHOP_TYPE = 'shopify'
+
+const DEFAULT_TRIAL_ACCESS_MOCK = {
+    hasAnyTrialStarted: false,
+    hasAnyTrialActive: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasAnyTrialOptedOut: false,
+    canSeeTrialCTA: false,
+    isAdminUser: false,
+    canBookDemo: false,
+    canNotifyAdmin: false,
+    hasCurrentStoreTrialStarted: false,
+    hasCurrentStoreTrialExpired: false,
+    currentAutomatePlan: null,
+    trialType: TrialType.AiAgent,
+}
 
 jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(() => ({
@@ -71,6 +88,47 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
 }))
 const mockUseTrialAccess = require('pages/aiAgent/trial/hooks/useTrialAccess')
     .useTrialAccess as jest.MockedFunction<any>
+
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState', () => ({
+    useAiAgentOnboardingState: jest.fn(),
+    OnboardingState: {
+        Loading: 'loading',
+        OnboardingWizard: 'onboardingWizard',
+        Onboarded: 'onboarded',
+    },
+}))
+const mockUseAiAgentOnboardingState =
+    require('pages/aiAgent/hooks/useAiAgentOnboardingState')
+        .useAiAgentOnboardingState as jest.MockedFunction<any>
+
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: jest.fn(),
+}))
+const mockUseStoreActivations =
+    require('pages/aiAgent/Activation/hooks/useStoreActivations')
+        .useStoreActivations as jest.MockedFunction<any>
+
+jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps', () => ({
+    useTrialModalProps: jest.fn(),
+    EXTERNAL_URLS: {},
+}))
+const mockUseTrialModalProps =
+    require('pages/aiAgent/trial/hooks/useTrialModalProps')
+        .useTrialModalProps as jest.MockedFunction<any>
+
+jest.mock('../ShoppingAssistant/hooks/useAiAgentPaywallCTA', () => ({
+    useAiAgentCtas: jest.fn(),
+}))
+const mockUseAiAgentCtas =
+    require('../ShoppingAssistant/hooks/useAiAgentPaywallCTA')
+        .useAiAgentCtas as jest.MockedFunction<any>
+
+jest.mock('../ShoppingAssistant/utils/extractShopNameFromUrl', () => ({
+    extractShopNameFromUrl: jest.fn(),
+}))
+const mockExtractShopNameFromUrl =
+    require('../ShoppingAssistant/utils/extractShopNameFromUrl')
+        .extractShopNameFromUrl as jest.MockedFunction<any>
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -117,20 +175,42 @@ describe('<AIAgentWelcomePageView />', () => {
             return false
         })
 
-        mockUseTrialAccess.mockReturnValue({
-            hasAnyTrialStarted: false,
-            hasAnyTrialActive: false,
-            hasAnyTrialExpired: false,
-            hasAnyTrialOptedIn: false,
-            hasAnyTrialOptedOut: false,
-            canSeeTrialCTA: false,
-            isAdminUser: false,
-            canBookDemo: false,
-            canNotifyAdmin: false,
+        mockUseTrialAccess.mockReturnValue(DEFAULT_TRIAL_ACCESS_MOCK)
 
-            currentAutomatePlan: null,
-            trialType: 'aiAgent',
+        mockUseAiAgentOnboardingState.mockReturnValue('onboarded')
+
+        mockUseStoreActivations.mockReturnValue({
+            storeActivations: [],
         })
+
+        mockUseTrialModalProps.mockReturnValue({
+            newTrialUpgradePlanModal: { isOpen: false },
+            trialRequestModal: { isOpen: false },
+        })
+
+        mockUseAiAgentCtas.mockImplementation(
+            ({
+                onOpenWizard,
+                isOnUpdateOnboardingWizard,
+            }: {
+                onOpenWizard: () => void
+                isOnUpdateOnboardingWizard: boolean
+            }) => ({
+                ctas: (
+                    <button onClick={onOpenWizard}>
+                        <span>
+                            {isOnUpdateOnboardingWizard
+                                ? 'Continue Setup'
+                                : 'Set Up AI Agent'}
+                        </span>
+                    </button>
+                ),
+                modals: null,
+                afterCtas: null,
+            }),
+        )
+
+        mockExtractShopNameFromUrl.mockReturnValue(SHOP_NAME)
     })
 
     const assertButtonAndLearnMore = () => {
@@ -295,5 +375,98 @@ describe('<AIAgentWelcomePageView />', () => {
                 name: /Continue Setup/i,
             }),
         ).toBeInTheDocument()
+    })
+
+    describe('Automatic onboarding wizard navigation for trial users', () => {
+        it('should redirect when all conditions are met', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: true,
+            })
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).toHaveBeenCalledWith({
+                pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
+                search: '',
+            })
+        })
+
+        it('should NOT redirect when onboarding state is Loading', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('loading')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: true,
+            })
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
+
+        it('should NOT redirect when already onboarded', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboarded')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: true,
+            })
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
+
+        it('should NOT redirect for ShoppingAssistant trial type', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: false,
+            })
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
+
+        it('should NOT redirect when trial has not started', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
+            mockUseTrialAccess.mockReturnValue(DEFAULT_TRIAL_ACCESS_MOCK)
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
+
+        it('should NOT redirect when not on store page', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: true,
+            })
+            mockExtractShopNameFromUrl.mockReturnValue('different-store')
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
     })
 })

@@ -30,7 +30,7 @@ export const defaultOnboardingData = (
 
 export const useGetOnboardingData = (shopName?: string) => {
     const { data: onboardingList, isLoading, isFetching } = useGetOnboardings()
-    const scopes = useAiAgentScopesForAutomationPlan()
+    const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
     const data = useMemo(():
         | OnboardingData

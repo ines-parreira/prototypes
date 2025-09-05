@@ -10,12 +10,17 @@ import {
     getAiAgentNavigationRoutes,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import IconButton from 'pages/common/components/button/IconButton'
 import history from 'pages/history'
 
 import css from './ConvAiOnboardingLayout.less'
 
-const onClose = (shopName?: string) => {
+const onClose = (isInAiAgentTrial: boolean, shopName?: string) => {
+    if (isInAiAgentTrial) {
+        history.push('/app/home')
+        return
+    }
     if (shopName) {
         history.push(getAiAgentNavigationRoutes(shopName).main)
         return
@@ -68,13 +73,15 @@ export const OnboardingPreviewContainer: React.FC<{
 }> = ({ children, isLoading, icon, caption }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
+    const { isInAiAgentTrial } = useTrialAccess(shopName)
+
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             step,
             shopName,
             type: 'close',
         })
-        onClose(shopName)
+        onClose(isInAiAgentTrial, shopName)
     }
 
     return (
@@ -120,13 +127,15 @@ export const OnboardingContentContainer: React.FC<{
 }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
+    const { isInAiAgentTrial } = useTrialAccess(shopName)
+
     const onCloseAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
             shopName,
             type: 'close',
         })
-        onClose(shopName)
+        onClose(isInAiAgentTrial, shopName)
     }
 
     const onNextAction = () => {

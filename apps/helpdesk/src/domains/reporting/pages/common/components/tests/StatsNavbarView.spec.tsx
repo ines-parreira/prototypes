@@ -21,11 +21,17 @@ import {
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
 import { IntegrationType } from 'models/integration/constants'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { STATS_ROUTES } from 'routes/constants'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const useTrialAccessMock = assumeMock(useTrialAccess)
+useTrialAccessMock.mockReturnValue(createMockTrialAccess())
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)

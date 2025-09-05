@@ -35,7 +35,18 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     },
 }))
 
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const mockUseTrialAccess = jest.fn()
+
+jest.requireMock('pages/aiAgent/trial/hooks/useTrialAccess').useTrialAccess =
+    mockUseTrialAccess
+
 describe('ConvAiOnboardingLayout', () => {
+    beforeEach(() => {
+        mockUseTrialAccess.mockReturnValue({
+            isInAiAgentTrial: false,
+        })
+    })
     it('should redirect to overview page when clicking on Close when no shop name is provided', () => {
         renderWithRouter(
             <OnboardingContentContainer
@@ -119,6 +130,28 @@ describe('ConvAiOnboardingLayout', () => {
             })
         })
     })
+
+    it('should redirect to home when clicking on Close during AI Agent trial', () => {
+        mockUseTrialAccess.mockReturnValueOnce({
+            isInAiAgentTrial: true,
+        })
+
+        renderWithRouter(
+            <OnboardingContentContainer
+                totalSteps={7}
+                currentStep={1}
+                onNextClick={() => {}}
+                onBackClick={() => {}}
+            >
+                Content
+            </OnboardingContentContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
+        expect(historyPushMock).toHaveBeenCalledWith('/app/home')
+    })
 })
 
 describe('OnboardingPreviewContainer', () => {
@@ -175,5 +208,22 @@ describe('OnboardingPreviewContainer', () => {
         userEvent.click(closeButton)
 
         expect(historyPushMock).toHaveBeenCalledWith('/app/ai-agent/overview')
+    })
+
+    it('should redirect to home when clicking on Preview Close during AI Agent trial', () => {
+        mockUseTrialAccess.mockReturnValueOnce({
+            isInAiAgentTrial: true,
+        })
+
+        renderWithRouter(
+            <OnboardingPreviewContainer isLoading={false} icon="info">
+                Content
+            </OnboardingPreviewContainer>,
+        )
+
+        const closeButton = screen.getByText(/close/)
+        userEvent.click(closeButton)
+
+        expect(historyPushMock).toHaveBeenCalledWith('/app/home')
     })
 })

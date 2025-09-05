@@ -241,9 +241,9 @@ describe('ShopifyIntegrationStep', () => {
             { id: 2, name: 'Test Store 1', type: 'shopify' },
         ] as StoreIntegration[]
         const storeConfigurations = [
-            { storeName: 'Test Store' },
-            { storeName: 'Test Store 1' },
-        ] as StoreConfiguration[]
+            { storeName: 'Test Store', monitoredChatIntegrations: [] },
+            { storeName: 'Test Store 1', monitoredChatIntegrations: [] },
+        ] as unknown as StoreConfiguration[]
 
         renderComponent(integrations, storeConfigurations)
         expect(screen.queryByText('arrow_drop_down')).not.toBeInTheDocument()
@@ -260,8 +260,8 @@ describe('ShopifyIntegrationStep', () => {
             { id: 2, name: 'Test Store 1', type: 'shopify' },
         ] as StoreIntegration[]
         const storeConfigurations = [
-            { storeName: 'Test Store' },
-        ] as StoreConfiguration[]
+            { storeName: 'Test Store', monitoredChatIntegrations: [] },
+        ] as unknown as StoreConfiguration[]
 
         renderComponent(integrations, storeConfigurations)
         expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()

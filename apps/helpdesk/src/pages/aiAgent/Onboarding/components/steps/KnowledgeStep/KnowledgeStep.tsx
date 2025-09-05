@@ -1,9 +1,11 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
@@ -39,6 +41,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 }) => {
     const history = useHistory()
 
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    )
+
     const { shopName } = useParams<{ shopName: string }>()
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
@@ -56,6 +62,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     const { knowledgeSources, helpCenters } =
         useGetKnowledgeSourceStatuses(shopName)
+
+    const nextPath = !!isAiAgentExpandingTrialExperienceForAllEnabled
+        ? routes.perShopOverview
+        : routes.overview
 
     const onNextClick = () => {
         if (data && 'id' in data) {
@@ -82,7 +92,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                             },
                         )
                         history.push({
-                            pathname: routes.overview,
+                            pathname: nextPath,
                             search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
                         })
                     },

@@ -18,5 +18,6 @@ export const createMockTrialAccess = (overrides = {}) => ({
     trialType: TrialType.ShoppingAssistant,
     currentAutomatePlan: undefined,
     isError: false,
+    isInAiAgentTrial: false,
     ...overrides,
 })

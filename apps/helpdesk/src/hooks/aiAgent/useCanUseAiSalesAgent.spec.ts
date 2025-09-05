@@ -7,6 +7,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import {
     getAiSalesAgentTrialState,
     TrialState,
@@ -35,11 +37,17 @@ const useFlagMock = useFlag as jest.Mock
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const useTrialAccessMock = assumeMock(useTrialAccess)
+
 jest.mock('pages/aiAgent/utils/aiSalesAgentTrialUtils')
 const getAiSalesAgentTrialStateMock = assumeMock(getAiSalesAgentTrialState)
 describe('useCanUseAiSalesAgent', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        useTrialAccessMock.mockReturnValue(
+            createMockTrialAccess({ isInAiAgentTrial: false }),
+        )
     })
 
     it('should return true when isTrialing is true', () => {
@@ -169,6 +177,26 @@ describe('useCanUseAiSalesAgent', () => {
             FeatureFlagKey.AiSalesAgentBypassPlanCheck,
             false,
         )
+    })
+
+    it('should return true when only isInAiAgentTrial is true', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getIsTrialing) {
+                return false
+            }
+            return null
+        })
+        useFlagMock.mockReturnValue(false)
+        useTrialAccessMock.mockReturnValue(
+            createMockTrialAccess({ isInAiAgentTrial: true }),
+        )
+
+        const { result } = renderHook(() => useCanUseAiSalesAgent())
+
+        expect(result.current).toBe(true)
     })
 })
 

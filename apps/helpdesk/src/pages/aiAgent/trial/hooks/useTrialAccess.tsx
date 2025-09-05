@@ -48,6 +48,7 @@ export type TrialAccess = {
     isError?: boolean
     trialType: TrialType
     currentAutomatePlan: AutomatePlan | undefined
+    isInAiAgentTrial: boolean
 }
 
 /**
@@ -167,6 +168,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             isLoading: false,
             trialType: TrialType.ShoppingAssistant,
             currentAutomatePlan,
+            isInAiAgentTrial: false,
         }
     }
     const isAdminUser = isAdmin(currentUser)
@@ -239,6 +241,11 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             isAiShoppingAssistantTrialMerchantsEnabled === false,
     )
 
+    const isInAiAgentTrial =
+        trialType === TrialType.AiAgent &&
+        hasCurrentStoreTrialStarted &&
+        !hasCurrentStoreTrialExpired
+
     return {
         canNotifyAdmin,
         canBookDemo,
@@ -259,5 +266,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         isError: isTrialsError,
         trialType,
         currentAutomatePlan,
+        isInAiAgentTrial,
     }
 }
