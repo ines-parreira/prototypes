@@ -13,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import {
     useTrialEligibility,
@@ -908,6 +909,9 @@ describe('SalesPaywallMiddleware', () => {
             )
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/trial-link-paywall-viewed',
+                {
+                    trialType: TrialType.ShoppingAssistant,
+                },
             )
         })
 
@@ -1441,6 +1445,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasTrialExpired: false,
                 hasAnyTrialOptedIn: true,
                 isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
             })
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -1479,7 +1484,7 @@ describe('SalesPaywallMiddleware', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/pricing-modal-clicked',
-                { type: 'upgraded' },
+                { type: 'upgraded', trialType: TrialType.ShoppingAssistant },
             )
         })
 

@@ -242,6 +242,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                     userId: 2,
                     userRole: 'admin',
                     type: 'system-banner',
+                    trialType: 'shoppingAssistant',
                 },
             )
         })

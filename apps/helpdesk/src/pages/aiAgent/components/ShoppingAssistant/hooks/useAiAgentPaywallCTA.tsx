@@ -7,6 +7,9 @@ import LinkButton from 'pages/common/components/button/LinkButton'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 
+import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
+import { logInTrialEventFromPaywall } from '../utils/eventLogger'
+
 import css from './useAiAgentPaywallCTA.less'
 
 export type AiAgentCtasParams = {
@@ -93,7 +96,13 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 intent="primary"
                 size="medium"
                 className={css.upgradeButton}
-                onClick={onOpenSubscribeModal}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.UpgradePlan,
+                        TrialType.AiAgent,
+                    )
+                    onOpenSubscribeModal()
+                }}
             >
                 Subscribe now
             </Button>
@@ -105,7 +114,13 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         () => (
             <Button
                 size="medium"
-                onClick={onOpenTrialUpgradeModal}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.StartTrial,
+                        TrialType.AiAgent,
+                    )
+                    onOpenTrialUpgradeModal()
+                }}
                 className={css.upgradeButton}
             >
                 Try for free
@@ -118,7 +133,13 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         () => (
             <Button
                 size="medium"
-                onClick={onOpenTrialRequestModal}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.NotifyAdmin,
+                        TrialType.AiAgent,
+                    )
+                    onOpenTrialRequestModal()
+                }}
                 className={!isNotifyAdminDisabled ? css.upgradeButton : ''}
                 leadingIcon="notifications_none"
                 isDisabled={isNotifyAdminDisabled}
@@ -136,6 +157,12 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 target="blank"
                 fillStyle="ghost"
                 href={learnMoreUrl}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.Learn,
+                        TrialType.AiAgent,
+                    )
+                }}
             >
                 Learn more
             </LinkButton>
@@ -148,7 +175,13 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
             <LinkButton
                 className={css.learnMoreButton}
                 fillStyle="ghost"
-                onClick={onOpenSubscribeModal}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.UpgradePlan,
+                        TrialType.AiAgent,
+                    )
+                    onOpenSubscribeModal()
+                }}
             >
                 Subscribe now
             </LinkButton>
@@ -162,7 +195,13 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 fillStyle="ghost"
                 intent="secondary"
                 size="medium"
-                onClick={openDemoPage}
+                onClick={() => {
+                    logInTrialEventFromPaywall(
+                        TrialEventType.Demo,
+                        TrialType.AiAgent,
+                    )
+                    openDemoPage()
+                }}
             >
                 Let’s Talk?
                 <span className={css.bookDemoButtonText}>Book a demo</span>

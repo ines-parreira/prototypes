@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react'
 
 import moment from 'moment'
 
+import { SegmentEvent } from 'common/segment'
+import { logEvent } from 'common/segment/segment'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
@@ -60,7 +62,13 @@ export const TrialEndedModal = ({
             primaryAction={{
                 label: 'Upgrade to Reactivate',
                 isLoading: isUpgradePlanLoading,
-                onClick: upgradePlanAsync,
+                onClick: () => {
+                    logEvent(SegmentEvent.PricingModalClicked, {
+                        type: 'upgraded',
+                        trialType,
+                    })
+                    upgradePlanAsync()
+                },
             }}
             secondaryAction={{
                 label: 'No, thanks',

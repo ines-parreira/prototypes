@@ -195,7 +195,13 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             version: 'Basic',
             store: props.shopName,
         })
-    }, [props.shopName])
+
+        if (trialAccess.canSeeTrialCTA) {
+            logEvent(SegmentEvent.TrialLinkPaywallViewed, {
+                trialType: TrialType.AiAgent,
+            })
+        }
+    }, [props.shopName, trialAccess.canSeeTrialCTA])
 
     const handleOnStartSetupNotification = useCallback(async () => {
         const isStartedSetup =

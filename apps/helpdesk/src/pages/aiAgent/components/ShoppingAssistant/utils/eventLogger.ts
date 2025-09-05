@@ -42,3 +42,27 @@ export const logInTrialEvent = (
         console.warn(`Unsupported event type: ${eventType}`)
     }
 }
+
+export const logInTrialEventFromPaywall = (
+    eventType: TrialEventType,
+    trialType: TrialType = TrialType.ShoppingAssistant,
+) => {
+    const validEvents = [
+        TrialEventType.StartTrial,
+        TrialEventType.Demo,
+        TrialEventType.Learn,
+        TrialEventType.NotifyAdmin,
+        TrialEventType.UpgradePlan,
+        TrialEventType.ManageTrial,
+        TrialEventType.SetUpSalesStrategy,
+    ]
+
+    if (validEvents.includes(eventType)) {
+        logEvent(SegmentEvent.TrialLinkPaywallClicked, {
+            CTA: eventType,
+            trialType,
+        })
+    } else {
+        console.warn(`Unsupported event type: ${eventType}`)
+    }
+}

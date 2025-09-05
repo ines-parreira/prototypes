@@ -92,6 +92,7 @@ export const AiAgentOverview = () => {
         ) {
             logEvent(SegmentEvent.TrialBannerOverviewViewed, {
                 type: canBookDemo ? 'Demo' : 'Trial',
+                trialType,
             })
         }
     }, [
@@ -99,6 +100,7 @@ export const AiAgentOverview = () => {
         canBookDemo,
         hasAnyTrialStarted,
         isShoppingAssistantTrialImprovement,
+        trialType,
     ])
 
     const onConfirmModal = () => handleModalAction('confirm')

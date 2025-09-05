@@ -76,6 +76,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     <AdminTrialProgress
                         className={className}
                         promoContent={promoContent}
+                        trialType={trialAccess.trialType}
                     />
                 </>
             )
@@ -87,6 +88,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     <LeadTrialProgress
                         className={className}
                         promoContent={promoContent}
+                        trialType={trialAccess.trialType}
                     />
                 </>
             )

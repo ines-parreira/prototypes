@@ -27,7 +27,7 @@ export const useShoppingAssistantTrialBanner = () => {
         pathname.includes('tickets') || pathname.includes('views')
 
     // Check if the banner should be hidden
-    const { canSeeSystemBanner } = useTrialAccess()
+    const { canSeeSystemBanner, trialType } = useTrialAccess()
 
     const displayBanner = useMemo(
         () => !isTicketsPage && canSeeSystemBanner,
@@ -40,8 +40,9 @@ export const useShoppingAssistantTrialBanner = () => {
             userId: currentUser.get('id'),
             userRole: userRole || '',
             type: 'system-banner',
+            trialType,
         }),
-        [currentAccount, currentUser, userRole],
+        [currentAccount, currentUser, userRole, trialType],
     )
 
     const firstStore = Object.values(storeActivations)[0]

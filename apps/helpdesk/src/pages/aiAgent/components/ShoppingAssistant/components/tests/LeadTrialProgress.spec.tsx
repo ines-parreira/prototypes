@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 
-import { PromoCardVariant } from '../../types/ShoppingAssistant'
+import { PromoCardVariant, TrialType } from '../../types/ShoppingAssistant'
 import { LeadTrialProgress } from '../LeadTrialProgress'
 
 jest.mock('common/segment/segment', () => ({
@@ -47,24 +47,42 @@ describe('LeadTrialProgress', () => {
 
     describe('when component mounts', () => {
         it('should log the trial banner settings viewed event', () => {
-            render(<LeadTrialProgress promoContent={defaultPromoContent} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerSettingsViewed,
+                {
+                    trialType: TrialType.ShoppingAssistant,
+                },
             )
         })
     })
 
     describe('when rendering basic content', () => {
         it('should render the title and description', () => {
-            render(<LeadTrialProgress promoContent={defaultPromoContent} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(screen.getByText('Test Title')).toBeInTheDocument()
             expect(screen.getByText('Test Description')).toBeInTheDocument()
         })
 
         it('should render the primary button with correct label', () => {
-            render(<LeadTrialProgress promoContent={defaultPromoContent} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(
                 screen.getByRole('button', { name: /test button/i }),
@@ -77,6 +95,7 @@ describe('LeadTrialProgress', () => {
                 <LeadTrialProgress
                     className={customClass}
                     promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -92,14 +111,24 @@ describe('LeadTrialProgress', () => {
                 shouldShowDescriptionIcon: true,
             }
 
-            render(<LeadTrialProgress promoContent={promoContentWithIcon} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={promoContentWithIcon}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(screen.getByTestId('gmv-icon')).toBeInTheDocument()
             expect(screen.getByText('Test Description')).toBeInTheDocument()
         })
 
         it('should not render the GMV icon when shouldShowDescriptionIcon is false', () => {
-            render(<LeadTrialProgress promoContent={defaultPromoContent} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(screen.queryByTestId('gmv-icon')).not.toBeInTheDocument()
         })
@@ -115,6 +144,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithNotification}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -122,7 +152,12 @@ describe('LeadTrialProgress', () => {
         })
 
         it('should not render the notification icon when shouldShowNotificationIcon is false', () => {
-            render(<LeadTrialProgress promoContent={defaultPromoContent} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={defaultPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(
                 screen.queryByTestId('notification-icon'),
@@ -140,7 +175,10 @@ describe('LeadTrialProgress', () => {
             }
 
             render(
-                <LeadTrialProgress promoContent={promoContentWithProgress} />,
+                <LeadTrialProgress
+                    promoContent={promoContentWithProgress}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(screen.getByText('3 of 4 completed')).toBeInTheDocument()
@@ -154,7 +192,10 @@ describe('LeadTrialProgress', () => {
             }
 
             render(
-                <LeadTrialProgress promoContent={promoContentWithProgress} />,
+                <LeadTrialProgress
+                    promoContent={promoContentWithProgress}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             // Progress bar should be rendered but no progress text
@@ -172,6 +213,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithoutProgress}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -190,6 +232,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithoutPercentage}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -212,6 +255,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithDisabledButton}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -229,7 +273,12 @@ describe('LeadTrialProgress', () => {
                 },
             }
 
-            render(<LeadTrialProgress promoContent={promoContentWithHref} />)
+            render(
+                <LeadTrialProgress
+                    promoContent={promoContentWithHref}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             const link = screen.getByRole('link', { name: /test button/i })
             expect(link).toHaveAttribute('href', 'https://example.com')
@@ -247,6 +296,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithoutDescription}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -270,6 +320,7 @@ describe('LeadTrialProgress', () => {
             render(
                 <LeadTrialProgress
                     promoContent={promoContentWithoutButtonLabel}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 

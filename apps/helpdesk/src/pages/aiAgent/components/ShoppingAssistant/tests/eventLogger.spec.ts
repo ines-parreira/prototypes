@@ -1,13 +1,18 @@
 import { logEvent, SegmentEvent } from 'common/segment'
 
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
-import { logInTrialEvent, logTrialBannerEvent } from '../utils/eventLogger'
+import {
+    logInTrialEvent,
+    logInTrialEventFromPaywall,
+    logTrialBannerEvent,
+} from '../utils/eventLogger'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         TrialBannerOverviewCTAClicked: 'TrialBannerOverviewCTAClicked',
         TrialBannerSettingsClicked: 'TrialBannerSettingsClicked',
+        TrialLinkPaywallClicked: 'TrialLinkPaywallClicked',
     },
 }))
 
@@ -123,6 +128,106 @@ describe('logInTrialEvent', () => {
 
         // @ts-ignore - Testing invalid event type
         logInTrialEvent('InvalidEventType')
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
+        expect(consoleSpy).toHaveBeenCalledWith(
+            'Unsupported event type: InvalidEventType',
+        )
+
+        consoleSpy.mockRestore()
+    })
+})
+
+describe('logInTrialEventFromPaywall', () => {
+    it('logs StartTrial event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.StartTrial)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.StartTrial,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs Demo event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.Demo)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.Demo,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs Learn event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.Learn)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.Learn,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs NotifyAdmin event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.NotifyAdmin)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.NotifyAdmin,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs UpgradePlan event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.UpgradePlan)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.UpgradePlan,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs ManageTrial event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.ManageTrial)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.ManageTrial,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('logs SetUpSalesStrategy event correctly', () => {
+        logInTrialEventFromPaywall(TrialEventType.SetUpSalesStrategy)
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.TrialLinkPaywallClicked,
+            {
+                CTA: TrialEventType.SetUpSalesStrategy,
+                trialType: TrialType.ShoppingAssistant,
+            },
+        )
+    })
+
+    it('handles invalid event types with warning', () => {
+        const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+
+        // @ts-ignore - Testing invalid event type
+        logInTrialEventFromPaywall('InvalidEventType')
 
         expect(mockLogEvent).not.toHaveBeenCalled()
         expect(consoleSpy).toHaveBeenCalledWith(

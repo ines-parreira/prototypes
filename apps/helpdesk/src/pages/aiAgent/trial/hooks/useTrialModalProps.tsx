@@ -12,7 +12,11 @@ import {
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
     SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
 } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import {
+    TrialEventType,
+    TrialType,
+} from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { logTrialBannerEvent } from 'pages/aiAgent/components/ShoppingAssistant/utils/eventLogger'
 import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
@@ -562,10 +566,17 @@ const useTrialStartedBanner = (
         } else {
             logEvent(SegmentEvent.TrialBannerSettingsClicked, {
                 pageName,
+                trialType,
             })
             openUpgradePlanModal(false)
         }
-    }, [openUpgradePlanModal, pageName, hasAnyTrialOptedIn, upgradePlanAsync])
+    }, [
+        openUpgradePlanModal,
+        pageName,
+        hasAnyTrialOptedIn,
+        upgradePlanAsync,
+        trialType,
+    ])
 
     const secondaryAction = useMemo(() => {
         if (!isRevampTrialMilestone1Enabled || hasCurrentStoreTrialOptedOut) {
@@ -637,19 +648,17 @@ const useTrialAlertBanner = ({
 }: {
     onConfirmTrial?: () => void
 }): TrialModalProps['trialAlertBanner'] => {
-    const { canBookDemo } = useTrialAccess()
+    const { canBookDemo, trialType } = useTrialAccess()
 
     const secondaryAction = useMemo(() => {
         return {
             label: 'How AI Agent can 2x conversion rate',
             onClick: () => {
                 window.open(EXTERNAL_URLS.SHOPPING_ASSISTANT_INFO, '_blank')
-                logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
-                    CTA: 'Learn',
-                })
+                logTrialBannerEvent(TrialEventType.Learn, trialType)
             },
         }
-    }, [])
+    }, [trialType])
 
     const primaryAction = useMemo(() => {
         if (canBookDemo) {
@@ -657,9 +666,7 @@ const useTrialAlertBanner = ({
                 label: 'Book a demo',
                 onClick: () => {
                     window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
-                    logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
-                        CTA: 'Demo',
-                    })
+                    logTrialBannerEvent(TrialEventType.Demo, trialType)
                 },
             }
         }
@@ -667,13 +674,11 @@ const useTrialAlertBanner = ({
         return {
             label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             onClick: () => {
+                logTrialBannerEvent(TrialEventType.StartTrial, trialType)
                 onConfirmTrial?.()
-                logEvent(SegmentEvent.TrialBannerOverviewCTAClicked, {
-                    CTA: 'Start Trial',
-                })
             },
         }
-    }, [canBookDemo, onConfirmTrial])
+    }, [canBookDemo, onConfirmTrial, trialType])
 
     return useMemo(
         () => ({

@@ -20,6 +20,7 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { SALES } from 'pages/aiAgent/constants'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -218,6 +219,7 @@ export const SalesPaywallMiddleware =
         const onUpgradeClick = useCallback(async () => {
             logEvent(SegmentEvent.PricingModalClicked, {
                 type: 'upgraded',
+                trialType: TrialType.ShoppingAssistant,
             })
             await upgradePlanAsync()
             closeManageTrialModal()
@@ -393,7 +395,9 @@ const PaywallWrapperComponent = ({
                 ...eventData,
             })
 
-            logEvent(SegmentEvent.TrialLinkPaywallViewed)
+            logEvent(SegmentEvent.TrialLinkPaywallViewed, {
+                trialType: TrialType.ShoppingAssistant,
+            })
         }
     }, [
         displayTrialButton,

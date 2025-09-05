@@ -462,6 +462,7 @@ describe('TrialManageWorkflow', () => {
                 canSeeSystemBanner: false,
                 canNotifyAdmin: false,
                 canBookDemo: false,
+                trialType: 'shoppingAssistant',
             })
 
             render(
@@ -475,6 +476,7 @@ describe('TrialManageWorkflow', () => {
                 'ai-agent/trial-banner-settings-viewed',
                 {
                     type: 'Strategy',
+                    trialType: 'shoppingAssistant',
                 },
             )
         })
@@ -493,6 +495,7 @@ describe('TrialManageWorkflow', () => {
                 canSeeSystemBanner: false,
                 canNotifyAdmin: false,
                 canBookDemo: false,
+                trialType: 'shoppingAssistant',
             })
 
             render(
@@ -506,6 +509,7 @@ describe('TrialManageWorkflow', () => {
                 'ai-agent/trial-banner-settings-viewed',
                 {
                     type: 'Engagement',
+                    trialType: 'shoppingAssistant',
                 },
             )
         })

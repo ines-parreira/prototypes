@@ -708,7 +708,7 @@ describe('useTrialPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
-                { type: 'Trial' },
+                { type: 'Trial', trialType: TrialType.ShoppingAssistant },
             )
         })
 
@@ -727,7 +727,7 @@ describe('useTrialPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
-                { type: 'Demo' },
+                { type: 'Demo', trialType: TrialType.ShoppingAssistant },
             )
         })
 
@@ -746,7 +746,7 @@ describe('useTrialPromoCard', () => {
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerOverviewViewed,
-                { type: 'Notify' },
+                { type: 'Notify', trialType: TrialType.ShoppingAssistant },
             )
         })
 

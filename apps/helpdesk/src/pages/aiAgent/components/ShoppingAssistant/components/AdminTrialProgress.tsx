@@ -6,7 +6,7 @@ import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
-import { PromoCardContent } from '../types/ShoppingAssistant'
+import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
 import { GMVIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'
@@ -14,11 +14,13 @@ import css from '../../AiAgentNavbar/AiAgentNavbar.less'
 interface AdminTrialProgressProps {
     className?: string
     promoContent: PromoCardContent
+    trialType: TrialType
 }
 
 export const AdminTrialProgress: React.FC<AdminTrialProgressProps> = ({
     className,
     promoContent,
+    trialType,
 }) => {
     const {
         title,
@@ -33,7 +35,9 @@ export const AdminTrialProgress: React.FC<AdminTrialProgressProps> = ({
     } = promoContent
 
     useEffectOnce(() => {
-        logEvent(SegmentEvent.TrialBannerSettingsViewed)
+        logEvent(SegmentEvent.TrialBannerSettingsViewed, {
+            trialType,
+        })
     })
 
     return (

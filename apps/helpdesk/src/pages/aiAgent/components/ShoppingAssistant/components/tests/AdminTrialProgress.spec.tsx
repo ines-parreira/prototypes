@@ -7,6 +7,7 @@ import { SegmentEvent } from 'common/segment/types'
 import {
     PromoCardContent,
     PromoCardVariant,
+    TrialType,
 } from '../../types/ShoppingAssistant'
 import { AdminTrialProgress } from '../AdminTrialProgress'
 
@@ -51,7 +52,12 @@ describe('AdminTrialProgress', () => {
 
     describe('Basic Rendering', () => {
         it('should render with required props', () => {
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(screen.getByText('Trial Progress Title')).toBeInTheDocument()
             expect(
@@ -68,6 +74,7 @@ describe('AdminTrialProgress', () => {
                 <AdminTrialProgress
                     className={customClass}
                     promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -76,7 +83,12 @@ describe('AdminTrialProgress', () => {
         })
 
         it('should render with correct variant in promoContent', () => {
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(basePromoContent.variant).toBe(
                 PromoCardVariant.AdminTrialProgress,
@@ -86,10 +98,18 @@ describe('AdminTrialProgress', () => {
 
     describe('Segment Event Logging', () => {
         it('should log TrialBannerSettingsViewed event on mount', () => {
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.TrialBannerSettingsViewed,
+                {
+                    trialType: TrialType.ShoppingAssistant,
+                },
             )
             expect(mockLogEvent).toHaveBeenCalledTimes(1)
         })
@@ -102,7 +122,12 @@ describe('AdminTrialProgress', () => {
                 shouldShowDescriptionIcon: true,
             }
 
-            render(<AdminTrialProgress promoContent={promoContentWithIcon} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={promoContentWithIcon}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             const iconElement = document.querySelector('.descriptionIcon')
             expect(iconElement).toBeInTheDocument()
@@ -115,7 +140,10 @@ describe('AdminTrialProgress', () => {
             }
 
             render(
-                <AdminTrialProgress promoContent={promoContentWithoutIcon} />,
+                <AdminTrialProgress
+                    promoContent={promoContentWithoutIcon}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             const iconElement = document.querySelector('.descriptionIcon')
@@ -132,7 +160,10 @@ describe('AdminTrialProgress', () => {
             }
 
             const { container } = render(
-                <AdminTrialProgress promoContent={promoContentWithProgress} />,
+                <AdminTrialProgress
+                    promoContent={promoContentWithProgress}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             const progressBarTrack = container.querySelector(
@@ -151,6 +182,7 @@ describe('AdminTrialProgress', () => {
             const { container } = render(
                 <AdminTrialProgress
                     promoContent={promoContentWithoutProgress}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -170,6 +202,7 @@ describe('AdminTrialProgress', () => {
             const { container } = render(
                 <AdminTrialProgress
                     promoContent={promoContentWithoutPercentage}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -191,6 +224,7 @@ describe('AdminTrialProgress', () => {
             render(
                 <AdminTrialProgress
                     promoContent={promoContentWithProgressText}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -207,6 +241,7 @@ describe('AdminTrialProgress', () => {
             const { container } = render(
                 <AdminTrialProgress
                     promoContent={promoContentWithoutProgressText}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -231,7 +266,12 @@ describe('AdminTrialProgress', () => {
                 primaryButton: primaryButtonWithHref,
             }
 
-            render(<AdminTrialProgress promoContent={promoContentWithHref} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={promoContentWithHref}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             const primaryButton = screen.getByRole('link', {
                 name: /upgrade now/i,
@@ -243,7 +283,12 @@ describe('AdminTrialProgress', () => {
 
         it('should handle primary button click', async () => {
             const user = userEvent.setup()
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             const primaryButton = screen.getByRole('button', {
                 name: /primary action/i,
@@ -267,6 +312,7 @@ describe('AdminTrialProgress', () => {
             render(
                 <AdminTrialProgress
                     promoContent={promoContentWithDisabledButton}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -290,6 +336,7 @@ describe('AdminTrialProgress', () => {
             render(
                 <AdminTrialProgress
                     promoContent={promoContentWithLoadingButton}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -309,7 +356,10 @@ describe('AdminTrialProgress', () => {
             }
 
             render(
-                <AdminTrialProgress promoContent={promoContentWithSecondary} />,
+                <AdminTrialProgress
+                    promoContent={promoContentWithSecondary}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(
@@ -318,7 +368,12 @@ describe('AdminTrialProgress', () => {
         })
 
         it('should not render secondary button when not provided', () => {
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             expect(
                 screen.queryByRole('button', { name: /secondary action/i }),
@@ -333,7 +388,10 @@ describe('AdminTrialProgress', () => {
             }
 
             render(
-                <AdminTrialProgress promoContent={promoContentWithSecondary} />,
+                <AdminTrialProgress
+                    promoContent={promoContentWithSecondary}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             const secondaryButton = screen.getByRole('button', {
@@ -359,6 +417,7 @@ describe('AdminTrialProgress', () => {
             render(
                 <AdminTrialProgress
                     promoContent={promoContentWithSecondaryLink}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -372,7 +431,12 @@ describe('AdminTrialProgress', () => {
 
     describe('PromoCard Configuration', () => {
         it('should render collapsible PromoCard with defaultCollapsed set to false', () => {
-            render(<AdminTrialProgress promoContent={basePromoContent} />)
+            render(
+                <AdminTrialProgress
+                    promoContent={basePromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
+            )
 
             const collapseButton = screen.queryByRole('button', {
                 name: /collapse/i,
@@ -391,6 +455,7 @@ describe('AdminTrialProgress', () => {
             render(
                 <AdminTrialProgress
                     promoContent={promoContentWithoutDescription}
+                    trialType={TrialType.ShoppingAssistant}
                 />,
             )
 
@@ -411,7 +476,10 @@ describe('AdminTrialProgress', () => {
             }
 
             const { container } = render(
-                <AdminTrialProgress promoContent={complexPromoContent} />,
+                <AdminTrialProgress
+                    promoContent={complexPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                />,
             )
 
             expect(screen.getByText('Trial Progress Title')).toBeInTheDocument()

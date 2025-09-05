@@ -191,6 +191,7 @@ export const useShoppingAssistantTrialFlow = ({
     const startTrialDeprecated = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
+            trialType,
         })
         triggerTrialMutation(
             {
@@ -214,7 +215,7 @@ export const useShoppingAssistantTrialFlow = ({
     const startShoppingAssistantTrial = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
-            trialType: TrialType.ShoppingAssistant,
+            trialType,
         })
         triggerTrialMutation(
             {
@@ -236,7 +237,7 @@ export const useShoppingAssistantTrialFlow = ({
     const startAiAgentTrial = (optedInForUpgrade?: boolean) => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'ai_agent_trial_started',
-            trialType: TrialType.AiAgent,
+            trialType,
         })
         triggerAiAgentTrialMutation(['shopify', shopName, optedInForUpgrade], {
             onSuccess: async () => {

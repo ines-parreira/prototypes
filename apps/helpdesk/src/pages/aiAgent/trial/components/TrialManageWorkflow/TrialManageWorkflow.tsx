@@ -26,8 +26,11 @@ export const TrialManageWorkflow = ({
         false,
     )
 
-    const { hasCurrentStoreTrialStarted, hasCurrentStoreTrialExpired } =
-        useTrialAccess(storeConfiguration.storeName)
+    const {
+        hasCurrentStoreTrialStarted,
+        hasCurrentStoreTrialExpired,
+        trialType,
+    } = useTrialAccess(storeConfiguration.storeName)
 
     const trialModalProps = useTrialModalProps({
         pageName,
@@ -41,9 +44,10 @@ export const TrialManageWorkflow = ({
         if (displayTrialBanner) {
             logEvent(SegmentEvent.TrialBannerSettingsViewed, {
                 type: pageName,
+                trialType,
             })
         }
-    }, [pageName, displayTrialBanner])
+    }, [pageName, displayTrialBanner, trialType])
 
     const trialMilestone = useSalesTrialRevampMilestone()
     if (trialMilestone === 'off') return undefined

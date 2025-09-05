@@ -199,6 +199,7 @@ export const useTrialPromoCard = (
         if (eventType) {
             logEvent(SegmentEvent.TrialBannerOverviewViewed, {
                 type: eventType,
+                trialType: trialAccess.trialType,
             })
         }
     }, [trialAccess, promoCardContent])
