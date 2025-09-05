@@ -49,7 +49,8 @@ export const optimisticallyUpdateFeedback =
             switch (item.feedbackType) {
                 case AiAgentFeedbackTypeEnum.TICKET_RATING:
                 case AiAgentFeedbackTypeEnum.TICKET_BAD_INTERACTION_REASON:
-                case AiAgentFeedbackTypeEnum.TICKET_FREEFORM: {
+                case AiAgentFeedbackTypeEnum.TICKET_FREEFORM:
+                case AiAgentFeedbackTypeEnum.REASONING_BINARY: {
                     if (item.feedbackValue === null) {
                         for (const execution of newData.data.executions) {
                             const index = execution.feedback.findIndex(

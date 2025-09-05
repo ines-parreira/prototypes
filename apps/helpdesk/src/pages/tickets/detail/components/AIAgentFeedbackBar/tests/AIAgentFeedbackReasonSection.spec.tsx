@@ -473,7 +473,7 @@ describe('AIAgentFeedbackReasonSection', () => {
                 feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
                 feedbackType: 'TICKET_FREEFORM',
             },
-        ]
+        ] as any
 
         act(() => {
             rerender(

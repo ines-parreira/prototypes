@@ -15,11 +15,17 @@
     }
     @keyframes shimmer {
         0% {
-            background-position: -100% 0;
+            background-position: 0% 0;
         }
         100% {
-            background-position: 100% 0;
+            background-position: 200% 0;
         }
+    }
+
+    .executionContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
     }
 
     .executionId {
@@ -137,10 +143,7 @@
         }
 
         .text {
-            font-family: Inter;
-            font-size: 12px;
-            font-style: normal;
-            font-weight: 600;
+            .caption-semibold();
             color: var(--neutral-grey-6, #222);
 
             &.loading {
@@ -148,7 +151,7 @@
                 background: linear-gradient(
                     90deg,
                     var(--neutral-grey-6, #222) 0%,
-                    var(--neutral-grey-4, #999) 50%,
+                    var(--neutral-grey-0, #999) 50%,
                     var(--neutral-grey-6, #222) 100%
                 );
                 background-size: 200% 100%;
@@ -237,7 +240,6 @@
         &.expanded {
             max-height: 64px;
             opacity: 1;
-            margin-top: var(--layout-spacing-xxs);
         }
 
         &.static {
@@ -292,6 +294,41 @@
         line-height: 16px;
         margin-block-start: 0 !important;
         margin-block-end: 0 !important;
+    }
+
+    .feedbackSection {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .feedbackText {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .feedbackButtons {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .feedbackIcon {
+        &:global(.axiom-button) {
+            min-width: 24px !important;
+            width: 24px !important;
+            height: 24px !important;
+            padding: 0 !important;
+        }
+
+        &.positiveFeedback {
+            color: var(--feedback-success) !important;
+            transition: all 0.2s ease-in-out;
+        }
+
+        &.negativeFeedback {
+            color: var(--feedback-error) !important;
+            transition: all 0.2s ease-in-out;
+        }
     }
 }
 

@@ -287,7 +287,7 @@ describe('AIAgentFeedbackRatingSection', () => {
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
             },
-        ]
+        ] as any
 
         render(
             <AIAgentFeedbackRatingSection

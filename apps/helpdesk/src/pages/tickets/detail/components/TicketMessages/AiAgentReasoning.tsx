@@ -21,6 +21,7 @@ import { getTicketState } from 'state/ticket/selectors'
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
+import { AiAgentReasoningFeedback } from './AiAgentReasoningFeedback'
 import { AiAgentReasoningContent } from './AiReasoningContent'
 
 import css from './AiAgentReasoning.less'
@@ -392,34 +393,68 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 {isStatic ? (
                     <span>{staticMessage}</span>
                 ) : (
-                    <AiAgentReasoningContent
-                        reasoningContent={reasoningContent}
-                        reasoningResources={reasoningResources}
-                        data={reasoningMetadata?.data}
-                        storeConfiguration={
-                            messageAiReasoning?.storeConfiguration
-                        }
-                        openPreview={openPreview}
-                    />
+                    <>
+                        <AiAgentReasoningContent
+                            reasoningContent={reasoningContent}
+                            reasoningResources={reasoningResources}
+                            data={reasoningMetadata?.data}
+                            storeConfiguration={
+                                messageAiReasoning?.storeConfiguration
+                            }
+                            openPreview={openPreview}
+                        />
+                    </>
                 )}
             </div>
         )
     }
 
     const renderFooter = () => {
-        const executionComponent = isImpersonated ? (
-            messageAiReasoning?.storeConfiguration?.executionId && (
+        const executionId = messageAiReasoning?.storeConfiguration?.executionId
+
+        if (!executionId) {
+            return null
+        }
+
+        const renderExecutionId = () => {
+            if (!isImpersonated) {
+                return null
+            }
+
+            return (
                 <div className={css.executionId}>
-                    {`Execution ID: ${messageAiReasoning.storeConfiguration.executionId}`}
+                    {`Execution ID: ${executionId}`}
                 </div>
             )
-        ) : (
-            <></>
+        }
+
+        const renderFeedbackSection = () => {
+            if (isError) {
+                return null
+            }
+
+            return (
+                <AiAgentReasoningFeedback
+                    ticketId={ticketId}
+                    accountId={accountId}
+                    userId={userId}
+                    executionId={executionId}
+                    messageId={messageId}
+                />
+            )
+        }
+
+        const content = (
+            <div className={css.executionContainer}>
+                {renderFeedbackSection()}
+                {renderExecutionId()}
+            </div>
         )
 
         if (isError) {
-            return executionComponent
+            return isImpersonated ? content : null
         }
+
         return (
             <div
                 className={classNames(css.footer, {
@@ -428,7 +463,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     [css.static]: isStatic,
                 })}
             >
-                {executionComponent}
+                {content}
             </div>
         )
     }

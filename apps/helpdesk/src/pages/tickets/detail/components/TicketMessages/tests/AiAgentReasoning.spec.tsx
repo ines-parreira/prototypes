@@ -191,6 +191,27 @@ jest.mock('services/activityTracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 
+jest.mock('../AiAgentReasoningFeedback', () => ({
+    AiAgentReasoningFeedback: ({
+        ticketId,
+        accountId,
+        userId,
+        executionId,
+        messageId,
+    }: any) => (
+        <div
+            data-testid="ai-agent-reasoning-feedback"
+            data-ticket-id={ticketId}
+            data-account-id={accountId}
+            data-user-id={userId}
+            data-execution-id={executionId}
+            data-message-id={messageId}
+        >
+            Reasoning Feedback Component
+        </div>
+    ),
+}))
+
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useNavBarMock = assumeMock(useNavBar)
@@ -934,6 +955,22 @@ describe('AiAgentReasoning', () => {
 
             expect(screen.getByText('Show reasoning')).toBeInTheDocument()
         })
+
+        it('should not fetch reasoning when messageId is missing', () => {
+            renderComponent({ id: undefined })
+
+            const showReasoningButton = screen.getByText('Show reasoning')
+            fireEvent.click(showReasoningButton)
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    messageId: '0',
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
     })
 
     describe('Content rendering', () => {
@@ -1279,7 +1316,7 @@ describe('AiAgentReasoning', () => {
             ).mockReturnValue(originalIsSessionImpersonated)
         })
 
-        it('should show execution ID in error state when impersonated', () => {
+        it('should show execution ID in error state when impersonated but NOT show feedback component', () => {
             const originalIsSessionImpersonated = isSessionImpersonated
             jest.spyOn(
                 require('services/activityTracker/utils'),
@@ -1329,9 +1366,15 @@ describe('AiAgentReasoning', () => {
                 )
             })
 
+            // Should show execution ID when impersonated
             expect(
                 screen.getByText('Execution ID: exec-456'),
             ).toBeInTheDocument()
+
+            // But should NOT show the feedback component in error state
+            expect(
+                screen.queryByTestId('ai-agent-reasoning-feedback'),
+            ).not.toBeInTheDocument()
 
             jest.spyOn(
                 require('services/activityTracker/utils'),
@@ -1378,6 +1421,99 @@ describe('AiAgentReasoning', () => {
 
             expect(screen.getByText(/Test reasoning/)).toBeInTheDocument()
         })
+    })
+
+    it('should render AiAgentReasoningFeedback when executionId exists', () => {
+        mockUseGetMessageAiReasoning.mockReturnValue({
+            data: {
+                reasoning: [
+                    {
+                        responseType: 'OUTCOME',
+                        value: 'Test reasoning',
+                    },
+                ],
+                resources: [],
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId: 'exec-123',
+                },
+            },
+            isLoading: false,
+            refetch: jest.fn(),
+        } as any)
+
+        renderComponent()
+        expandComponent()
+
+        const feedbackComponent = screen.getByTestId(
+            'ai-agent-reasoning-feedback',
+        )
+        expect(feedbackComponent).toBeInTheDocument()
+        expect(feedbackComponent).toHaveAttribute('data-ticket-id', '123')
+        expect(feedbackComponent).toHaveAttribute('data-account-id', '1')
+        expect(feedbackComponent).toHaveAttribute('data-user-id', '2')
+        expect(feedbackComponent).toHaveAttribute(
+            'data-execution-id',
+            'exec-123',
+        )
+        expect(feedbackComponent).toHaveAttribute('data-message-id', '1')
+    })
+
+    it('should not render AiAgentReasoningFeedback when executionId is missing', () => {
+        mockUseGetMessageAiReasoning.mockReturnValue({
+            data: {
+                reasoning: [
+                    {
+                        responseType: 'OUTCOME',
+                        value: 'Test reasoning',
+                    },
+                ],
+                resources: [],
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            refetch: jest.fn(),
+        } as any)
+
+        renderComponent()
+        expandComponent()
+
+        expect(
+            screen.queryByTestId('ai-agent-reasoning-feedback'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should NOT render AiAgentReasoningFeedback in error state', () => {
+        setupMocks({
+            messageAiReasoningData: {
+                reasoning: [],
+                resources: [],
+                storeConfiguration: {
+                    executionId: 'exec-456',
+                },
+            },
+        })
+
+        const { rerender } = renderComponent()
+        const showReasoningButton = screen.getByText('Show reasoning')
+        fireEvent.click(showReasoningButton)
+
+        act(() => {
+            rerender(
+                createComponentWrapper(
+                    <AiAgentReasoning message={createMockMessage()} />,
+                ),
+            )
+        })
+
+        // Should NOT render the feedback component in error state
+        expect(
+            screen.queryByTestId('ai-agent-reasoning-feedback'),
+        ).not.toBeInTheDocument()
     })
 
     describe('Give Feedback button states', () => {
