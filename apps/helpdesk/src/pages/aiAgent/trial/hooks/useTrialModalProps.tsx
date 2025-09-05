@@ -1002,7 +1002,7 @@ const useTrialManageModal = (
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations({ storeName })
     const accountDomain = currentAccount.get('domain')
-    const { automationRate } = trialMetrics
+    const { automationRate, gmvInfluencedRate } = trialMetrics
     const automationRateValue = automationRate?.value ?? 0
     const hasSignificantAutomationRateImpact =
         automationRateValue > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD
@@ -1046,11 +1046,15 @@ const useTrialManageModal = (
                 <span>
                     AI Agent handled{' '}
                     <b>
-                        {toPercentage(automationRateValue)}% of customer
+                        {toPercentage(automationRateValue)} of customer
                         inquiries
                     </b>{' '}
-                    and automatically <b>drove a xx% lift in revenue</b>.
-                    Don&apos;t lose momentum now - keep the gains going by
+                    and automatically{' '}
+                    <b>
+                        drove a {toPercentage(gmvInfluencedRate)} lift in
+                        revenue
+                    </b>
+                    . Don&apos;t lose momentum now - keep the gains going by
                     upgrading today.
                 </span>
             )
@@ -1067,6 +1071,7 @@ const useTrialManageModal = (
         isAiAgentTrial,
         automationRateValue,
         hasSignificantAutomationRateImpact,
+        gmvInfluencedRate,
     ])
 
     const modalProps: TrialManageModalProps = useMemo(
