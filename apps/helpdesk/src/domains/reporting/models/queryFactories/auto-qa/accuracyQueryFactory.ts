@@ -46,6 +46,7 @@ export const accuracyQueryFactory = (
 export const accuracyPerAgentQueryFactory = perDimensionQueryFactory(
     accuracyQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_ACCURACY_PER_AGENT,
 )
 
 export const accuracyDrillDownQueryFactory = (

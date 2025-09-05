@@ -106,7 +106,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 onlineTimePerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
-                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [
                     {
@@ -134,7 +134,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
             ).toEqual({
-                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME,
+                metricName: METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [
                     {

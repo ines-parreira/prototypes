@@ -98,11 +98,13 @@ export const zeroTouchTicketsTimeSeriesQueryFactory = (
 export const zeroTouchTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     zeroTouchTicketsQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT,
 )
 
 export const zeroTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     zeroTouchTicketsQueryFactory,
     CHANNEL_DIMENSION,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_CHANNEL,
 )
 
 export const zeroTouchTicketsPerTicketDrillDownQueryFactory = (

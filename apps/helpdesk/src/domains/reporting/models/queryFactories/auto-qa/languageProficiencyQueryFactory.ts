@@ -51,6 +51,7 @@ export const languageProficiencyQueryFactory = (
 export const languageProficiencyPerAgentQueryFactory = perDimensionQueryFactory(
     languageProficiencyQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_LANGUAGE_PROFICIENCY_PER_AGENT,
 )
 
 export const languageProficiencyDrillDownQueryFactory = (

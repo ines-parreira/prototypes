@@ -85,7 +85,11 @@ export const ticketsCreatedQueryFactory = (
 }
 
 export const ticketsCreatedPerChannelPerChannelQueryFactory =
-    perDimensionQueryFactory(ticketsCreatedQueryFactory, CHANNEL_DIMENSION)
+    perDimensionQueryFactory(
+        ticketsCreatedQueryFactory,
+        CHANNEL_DIMENSION,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_CHANNEL,
+    )
 
 export const ticketsCreatedTimeSeriesQueryFactory = (
     filters: StatsFilters,

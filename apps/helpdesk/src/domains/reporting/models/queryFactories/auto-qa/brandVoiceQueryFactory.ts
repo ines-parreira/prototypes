@@ -46,6 +46,7 @@ export const brandVoiceQueryFactory = (
 export const brandVoicePerAgentQueryFactory = perDimensionQueryFactory(
     brandVoiceQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_BRAND_VOICE_PER_AGENT,
 )
 
 export const brandVoiceDrillDownQueryFactory = (

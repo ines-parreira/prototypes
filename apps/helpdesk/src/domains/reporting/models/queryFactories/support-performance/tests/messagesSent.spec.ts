@@ -185,6 +185,8 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
         ).toEqual({
             ...messagesSentQueryFactory(statsFilters, timezone),
             dimensions: [HelpdeskMessageDimension.SenderId],
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT,
         })
     })
 
@@ -198,6 +200,8 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
             messagesSentMetricPerAgentQueryFactory(filters, timezone, sorting),
         ).toEqual({
             ...messagesSentQueryFactory(filters, timezone),
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT,
             dimensions: [HelpdeskMessageDimension.SenderId],
             order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
         })

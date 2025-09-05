@@ -51,6 +51,7 @@ export const communicationSkillsQueryFactory = (
 export const communicationSkillsPerAgentQueryFactory = perDimensionQueryFactory(
     communicationSkillsQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_COMMUNICATION_SKILLS_PER_AGENT,
 )
 
 export const communicationSkillsDrillDownQueryFactory = (

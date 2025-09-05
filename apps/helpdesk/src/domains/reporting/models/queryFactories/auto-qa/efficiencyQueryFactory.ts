@@ -46,6 +46,7 @@ export const efficiencyQueryFactory = (
 export const efficiencyPerAgentQueryFactory = perDimensionQueryFactory(
     efficiencyQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_EFFICIENCY_PER_AGENT,
 )
 
 export const efficiencyDrillDownQueryFactory = (

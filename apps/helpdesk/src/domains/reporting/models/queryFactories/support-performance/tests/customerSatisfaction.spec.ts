@@ -62,7 +62,7 @@ describe('CustomerSatisfaction', () => {
                 ),
             ).toEqual({
                 metricName:
-                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION,
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -112,7 +112,7 @@ describe('CustomerSatisfaction', () => {
                 ),
             ).toEqual({
                 metricName:
-                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION,
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,

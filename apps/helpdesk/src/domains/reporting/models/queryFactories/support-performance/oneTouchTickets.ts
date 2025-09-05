@@ -98,11 +98,13 @@ export const oneTouchTicketsTimeSeriesQueryFactory = (
 export const oneTouchTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     oneTouchTicketsQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT,
 )
 
 export const oneTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     oneTouchTicketsQueryFactory,
     CHANNEL_DIMENSION,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL,
 )
 
 export const oneTouchTicketsPerTicketDrillDownQueryFactory = (

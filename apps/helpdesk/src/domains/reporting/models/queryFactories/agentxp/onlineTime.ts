@@ -38,4 +38,5 @@ export const onlineTimeQueryFactory = (
 export const onlineTimePerAgentQueryFactory = perDimensionQueryFactory(
     onlineTimeQueryFactory,
     AgentTimeTrackingDimension.UserId,
+    METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
 )

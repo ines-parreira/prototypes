@@ -87,9 +87,12 @@ export const METRIC_NAMES = {
         'ai-sales-agent-discount-codes-offered-drill-down',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
+    AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',
     AGENTXP_TICKET_AVERAGE_HANDLE_TIME: 'agentxp-ticket-average-handle-time',
     AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT:
         'agentxp-ticket-average-handle-time-per-agent',
+    AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL:
+        'agentxp-ticket-average-handle-time-per-agent-per-channel',
     AGENTXP_TICKET_HANDLE_TIME: 'agentxp-ticket-handle-time',
     AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN:
         'agentxp-ticket-handle-time-per-ticket-drill-down',
@@ -116,13 +119,26 @@ export const METRIC_NAMES = {
 
     // Auto QA
     AUTO_QA_ACCURACY: 'auto-qa-accuracy',
+    AUTO_QA_ACCURACY_PER_AGENT: 'auto-qa-accuracy-per-agent',
     AUTO_QA_BRAND_VOICE: 'auto-qa-brand-voice',
+    AUTO_QA_BRAND_VOICE_PER_AGENT: 'auto-qa-brand-voice-per-agent',
     AUTO_QA_COMMUNICATION_SKILLS: 'auto-qa-communication-skills',
+    AUTO_QA_COMMUNICATION_SKILLS_PER_AGENT:
+        'auto-qa-communication-skills-per-agent',
     AUTO_QA_EFFICIENCY: 'auto-qa-efficiency',
+    AUTO_QA_EFFICIENCY_PER_AGENT: 'auto-qa-efficiency-per-agent',
     AUTO_QA_INTERNAL_COMPLIANCE: 'auto-qa-internal-compliance',
+    AUTO_QA_INTERNAL_COMPLIANCE_PER_AGENT:
+        'auto-qa-internal-compliance-per-agent',
     AUTO_QA_LANGUAGE_PROFICIENCY: 'auto-qa-language-proficiency',
+    AUTO_QA_LANGUAGE_PROFICIENCY_PER_AGENT:
+        'auto-qa-language-proficiency-per-agent',
     AUTO_QA_RESOLUTION_COMPLETENESS: 'auto-qa-resolution-completeness',
+    AUTO_QA_RESOLUTION_COMPLETENESS_PER_AGENT:
+        'auto-qa-resolution-completeness-per-agent',
     AUTO_QA_REVIEWED_CLOSED_TICKETS: 'auto-qa-reviewed-closed-tickets',
+    AUTO_QA_REVIEWED_CLOSED_TICKETS_PER_AGENT:
+        'auto-qa-reviewed-closed-tickets-per-agent',
     AUTO_QA_RESOLUTION_COMPLETENESS_DRILL_DOWN:
         'auto-qa-resolution-completeness-drill-down',
     AUTO_QA_REVIEWED_CLOSED_TICKETS_DRILL_DOWN:
@@ -203,12 +219,20 @@ export const METRIC_NAMES = {
 
     // Support Performance
     SUPPORT_PERFORMANCE_CLOSED_TICKETS: 'support-performance-closed-tickets',
+    SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT:
+        'support-performance-closed-tickets-per-agent',
+    SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL:
+        'support-performance-closed-tickets-per-channel',
     SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_TICKET_DRILL_DOWN:
         'support-performance-closed-tickets-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES:
         'support-performance-closed-tickets-time-series',
     SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION:
         'support-performance-customer-satisfaction',
+    SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_AGENT:
+        'support-performance-customer-satisfaction-per-agent',
+    SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_CHANNEL:
+        'support-performance-customer-satisfaction-per-channel',
     SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_FOR_AI_AGENT_TICKETS:
         'support-performance-customer-satisfaction-for-ai-agent-tickets',
     SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_TICKET_DRILL_DOWN:
@@ -231,6 +255,10 @@ export const METRIC_NAMES = {
         'support-performance-median-first-response-time-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME:
         'support-performance-median-resolution-time',
+    SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT:
+        'support-performance-median-resolution-time-per-agent',
+    SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL:
+        'support-performance-median-resolution-time-per-channel',
     SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_TICKET_DRILL_DOWN:
         'support-performance-median-resolution-time-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME:
@@ -247,17 +275,29 @@ export const METRIC_NAMES = {
         'support-performance-messages-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MESSAGES_RECEIVED:
         'support-performance-messages-received',
+    SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_AGENT:
+        'support-performance-messages-received-per-agent',
+    SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_CHANNEL:
+        'support-performance-messages-received-per-channel',
     SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_TICKET_DRILL_DOWN:
         'support-performance-messages-received-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES:
         'support-performance-messages-received-time-series',
     SUPPORT_PERFORMANCE_MESSAGES_SENT: 'support-performance-messages-sent',
+    SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT:
+        'support-performance-messages-sent-per-agent',
+    SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_CHANNEL:
+        'support-performance-messages-sent-per-channel',
     SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN:
         'support-performance-messages-sent-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MESSAGES_SENT_TIME_SERIES:
         'support-performance-messages-sent-time-series',
     SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS:
         'support-performance-one-touch-tickets',
+    SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT:
+        'support-performance-one-touch-tickets-per-agent',
+    SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL:
+        'support-performance-one-touch-tickets-per-channel',
     SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN:
         'support-performance-one-touch-tickets-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES:
@@ -269,11 +309,17 @@ export const METRIC_NAMES = {
     SUPPORT_PERFORMANCE_SURVEYS_SENT_PER_TICKET_DRILL_DOWN:
         'support-performance-surveys-sent-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_TICKETS_CREATED: 'support-performance-tickets-created',
+    SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_CHANNEL:
+        'support-performance-tickets-created-per-channel',
     SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_TICKET_DRILL_DOWN:
         'support-performance-tickets-created-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES:
         'support-performance-tickets-created-time-series',
     SUPPORT_PERFORMANCE_TICKETS_REPLIED: 'support-performance-tickets-replied',
+    SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT:
+        'support-performance-tickets-replied-per-agent',
+    SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL:
+        'support-performance-tickets-replied-per-channel',
     SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_TICKET_DRILL_DOWN:
         'support-performance-tickets-replied-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES:
@@ -282,6 +328,10 @@ export const METRIC_NAMES = {
         'support-performance-workload-per-channel',
     SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS:
         'support-performance-zero-touch-tickets',
+    SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT:
+        'support-performance-zero-touch-tickets-per-agent',
+    SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_CHANNEL:
+        'support-performance-zero-touch-tickets-per-channel',
     SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN:
         'support-performance-zero-touch-tickets-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES:

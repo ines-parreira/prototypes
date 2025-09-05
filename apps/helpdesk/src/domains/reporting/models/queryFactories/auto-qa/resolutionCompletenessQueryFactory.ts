@@ -52,6 +52,7 @@ export const resolutionCompletenessPerAgentQueryFactory =
     perDimensionQueryFactory(
         resolutionCompletenessQueryFactory,
         TicketDimension.AssigneeUserId,
+        METRIC_NAMES.AUTO_QA_RESOLUTION_COMPLETENESS_PER_AGENT,
     )
 
 export const resolutionCompletenessDrillDownQueryFactory = (

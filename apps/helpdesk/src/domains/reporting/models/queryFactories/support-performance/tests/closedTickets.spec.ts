@@ -57,7 +57,8 @@ describe('closedTickets', () => {
             expect(
                 closedTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -106,7 +107,8 @@ describe('closedTickets', () => {
                     sorting,
                 ),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -154,7 +156,8 @@ describe('closedTickets', () => {
             expect(
                 closedTicketsPerChannelQueryFactory(statsFilters, timezone),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -203,7 +206,8 @@ describe('closedTickets', () => {
                     sorting,
                 ),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL,
                 dimensions: [CHANNEL_DIMENSION],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,

@@ -51,6 +51,7 @@ export const internalComplianceQueryFactory = (
 export const internalCompliancePerAgentQueryFactory = perDimensionQueryFactory(
     internalComplianceQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.AUTO_QA_INTERNAL_COMPLIANCE_PER_AGENT,
 )
 
 export const internalComplianceDrillDownQueryFactory = (

@@ -65,7 +65,8 @@ describe('zeroTouchTickets', () => {
             expect(
                 zeroTouchTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -139,7 +140,8 @@ describe('zeroTouchTickets', () => {
                     sorting,
                 ),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,

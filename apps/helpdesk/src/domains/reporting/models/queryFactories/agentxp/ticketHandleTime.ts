@@ -61,6 +61,7 @@ export const ticketAverageHandleTimePerAgentPerChannelQueryFactory =
     perDimensionQueryFactory(
         ticketAverageHandleTimePerAgentQueryFactory,
         CHANNEL_DIMENSION,
+        METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL,
     )
 
 export const ticketHandleTimeQueryFactory = (

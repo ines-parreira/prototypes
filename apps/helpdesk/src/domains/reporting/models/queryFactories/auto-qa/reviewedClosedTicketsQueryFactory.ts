@@ -47,6 +47,7 @@ export const reviewedClosedTicketsPerAgentQueryFactory =
     perDimensionQueryFactory(
         reviewedClosedTicketsQueryFactory,
         TicketDimension.AssigneeUserId,
+        METRIC_NAMES.AUTO_QA_REVIEWED_CLOSED_TICKETS_PER_AGENT,
     )
 
 export const reviewedClosedTicketsDrillDownQueryFactory = (

@@ -146,6 +146,8 @@ describe('messagesReceivedMetricPerAgentQueryFactory', () => {
         ).toEqual({
             ...messagesReceivedQueryFactory(statsFilters, timezone),
             dimensions: [TicketDimension.AssigneeUserId],
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_AGENT,
         })
     })
 
@@ -163,7 +165,8 @@ describe('messagesReceivedMetricPerAgentQueryFactory', () => {
             ),
         ).toEqual({
             ...messagesReceivedQueryFactory(filters, timezone),
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_AGENT,
             dimensions: [TicketDimension.AssigneeUserId],
             order: [
                 [
@@ -201,19 +204,23 @@ describe('messagesReceivedMetricPerChannelQueryFactory', () => {
         ).toEqual({
             ...messagesReceivedQueryFactory(statsFilters, timezone),
             dimensions: [CHANNEL_DIMENSION],
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_CHANNEL,
         })
     })
 
     it('should build a query with selected sorting direction', () => {
         expect(
-            messagesReceivedMetricPerAgentQueryFactory(
+            messagesReceivedMetricPerChannelQueryFactory(
                 statsFilters,
                 timezone,
                 sorting,
             ),
         ).toEqual({
             ...messagesReceivedQueryFactory(statsFilters, timezone),
-            dimensions: [TicketDimension.AssigneeUserId],
+            dimensions: [CHANNEL_DIMENSION],
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_CHANNEL,
             order: [
                 [
                     HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,

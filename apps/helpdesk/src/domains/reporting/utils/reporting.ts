@@ -2,6 +2,7 @@ import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
 import moment, { Moment } from 'moment'
 
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -400,10 +401,12 @@ export const perDimensionQueryFactory =
     <T extends Cube>(
         queryFactory: QueryFactory<T>,
         dimension: T['dimensions'],
+        metricName: MetricName,
     ) =>
     (filters: StatsFilters, timezone: string, sorting?: OrderDirection) => ({
         ...queryFactory(filters, timezone, sorting),
         dimensions: [dimension],
+        metricName,
     })
 
 export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({

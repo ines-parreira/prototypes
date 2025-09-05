@@ -88,10 +88,15 @@ export const messagesSentTimeSeriesQueryFactory = (
 export const messagesSentMetricPerAgentQueryFactory = perDimensionQueryFactory(
     messagesSentQueryFactory,
     HelpdeskMessageDimension.SenderId,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT,
 )
 
 export const messagesSentMetricPerChannelQueryFactory =
-    perDimensionQueryFactory(messagesSentQueryFactory, CHANNEL_DIMENSION)
+    perDimensionQueryFactory(
+        messagesSentQueryFactory,
+        CHANNEL_DIMENSION,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_CHANNEL,
+    )
 
 export const messagesSentMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,

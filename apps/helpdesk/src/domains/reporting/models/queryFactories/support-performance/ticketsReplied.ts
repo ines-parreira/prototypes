@@ -96,10 +96,15 @@ export const ticketsRepliedMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         ticketsRepliedQueryFactory,
         TicketDimension.MessageSenderId,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT,
     )
 
 export const ticketsRepliedMetricPerChannelQueryFactory =
-    perDimensionQueryFactory(ticketsRepliedQueryFactory, CHANNEL_DIMENSION)
+    perDimensionQueryFactory(
+        ticketsRepliedQueryFactory,
+        CHANNEL_DIMENSION,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL,
+    )
 
 export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,

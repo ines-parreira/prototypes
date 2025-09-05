@@ -53,12 +53,14 @@ export const medianResolutionTimeMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         medianResolutionTimeQueryFactory,
         TicketDimension.AssigneeUserId,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
     )
 
 export const medianResolutionTimeMetricPerChannelQueryFactory =
     perDimensionQueryFactory(
         medianResolutionTimeQueryFactory,
         CHANNEL_DIMENSION,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL,
     )
 
 export const resolutionTimeMetricPerTicketDrillDownQueryFactory = (

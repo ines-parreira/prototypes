@@ -128,12 +128,14 @@ export const customerSatisfactionMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         customerSatisfactionQueryFactory,
         TicketDimension.AssigneeUserId,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_AGENT,
     )
 
 export const customerSatisfactionMetricPerChannelQueryFactory =
     perDimensionQueryFactory(
         customerSatisfactionQueryFactory,
         CHANNEL_DIMENSION,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION_PER_CHANNEL,
     )
 
 export const customerSatisfactionMetricDrillDownQueryFactory = (

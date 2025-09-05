@@ -64,7 +64,8 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 timezone,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -113,7 +114,8 @@ describe('medianResolutionTimeMetricPerAgent', () => {
                 sorting,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -189,7 +191,8 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 timezone,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL,
             dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -238,7 +241,8 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
                 sorting,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL,
             dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,

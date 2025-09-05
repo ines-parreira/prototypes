@@ -64,11 +64,13 @@ export const closedTicketsTimeSeriesQueryFactory = (
 export const closedTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     closedTicketsQueryFactory,
     TicketDimension.AssigneeUserId,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT,
 )
 
 export const closedTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     closedTicketsQueryFactory,
     CHANNEL_DIMENSION,
+    METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL,
 )
 
 export const closedTicketsPerTicketDrillDownQueryFactory = (

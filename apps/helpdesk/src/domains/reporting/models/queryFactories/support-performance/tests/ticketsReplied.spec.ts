@@ -191,7 +191,8 @@ describe('ticketsRepliedMetricPerAgent', () => {
         expect(
             ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT,
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
@@ -261,7 +262,8 @@ describe('ticketsRepliedMetricPerAgent', () => {
                 sorting,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED,
+            metricName:
+                METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT,
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,

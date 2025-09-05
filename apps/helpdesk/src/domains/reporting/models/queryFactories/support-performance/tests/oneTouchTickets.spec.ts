@@ -65,7 +65,8 @@ describe('OneTouchTickets', () => {
             expect(
                 oneTouchTicketsPerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
@@ -142,7 +143,8 @@ describe('OneTouchTickets', () => {
                     sorting,
                 ),
             ).toEqual({
-                metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS,
+                metricName:
+                    METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT,
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
