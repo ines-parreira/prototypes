@@ -70,8 +70,8 @@ const UpdatePaymentTerms = () => {
                     <Form<UpdatePaymentTermsFormInput>
                         defaultValues={{
                             payment_terms:
-                                paymentTermsQueryResult.data?.data
-                                    .payment_terms || DEFAULT_PAYMENT_TERMS,
+                                paymentTermsQueryResult.data ||
+                                DEFAULT_PAYMENT_TERMS,
                         }}
                         mode="onChange"
                         onValidSubmit={onSubmit}

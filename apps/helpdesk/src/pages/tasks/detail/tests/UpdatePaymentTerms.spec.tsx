@@ -29,7 +29,7 @@ const useGetPaymentTermsWithSideEffectsMock = jest.requireMock(
 
 useGetPaymentTermsWithSideEffectsMock.mockImplementation(() => {
     return {
-        data: { data: { payment_terms: 45 } },
+        data: 45,
         isLoading: false,
     }
 })
@@ -47,7 +47,7 @@ describe('Update Payment Terms Page', () => {
 
         useGetPaymentTermsWithSideEffectsMock.mockImplementation(() => {
             return {
-                data: { data: { payment_terms: 45 } },
+                data: 45,
                 isLoading: false,
             }
         })

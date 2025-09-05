@@ -1,35 +1,15 @@
-import { useEffect } from 'react'
-
-import { useGetPaymentTerms } from '@gorgias/helpdesk-queries'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { FETCH_BILLING_PAYMENT_TERMS_ERROR } from 'state/billing/constants'
+import { useBillingStateWithSideEffects } from './useBillingStateWithSideEffects'
 
 export const useGetPaymentTermsWithSideEffects = (
-    overrides?: Omit<
-        Parameters<typeof useGetPaymentTerms>['0'],
-        'onSuccess' | 'onError' | 'onSettled'
-    >,
+    overrides?: Parameters<typeof useBillingStateWithSideEffects>['0'],
 ) => {
-    const dispatch = useAppDispatch()
+    const { data: billingState, ...result } =
+        useBillingStateWithSideEffects(overrides)
 
-    const result = useGetPaymentTerms({
-        ...overrides,
-        query: {
-            staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
-            refetchOnWindowFocus: false,
-        },
-    })
+    const paymentTermInDays = billingState?.customer?.payment_term_days
 
-    useEffect(() => {
-        if (result.isError && result.error) {
-            dispatch({
-                type: FETCH_BILLING_PAYMENT_TERMS_ERROR,
-                error: result.error,
-                reason: 'Unable to fetch payment terms.',
-            })
-        }
-    }, [dispatch, result.error, result.isError])
-
-    return result
+    return {
+        data: paymentTermInDays,
+        ...result,
+    }
 }

@@ -223,6 +223,7 @@ type CustomerSummary = {
     shopify_billing?: ShopifyBilling | null
     ach_debit_bank_account?: AchDebitBankAccount | null
     ach_credit_bank_account?: AchCreditBankAccount | null
+    payment_term_days: number | null
 }
 
 export type CurrentPlans = {

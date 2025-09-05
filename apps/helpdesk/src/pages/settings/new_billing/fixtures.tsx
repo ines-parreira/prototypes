@@ -150,6 +150,7 @@ export const payingWithCreditCard: BillingState = {
         shopify_billing: null,
         ach_debit_bank_account: null,
         ach_credit_bank_account: null,
+        payment_term_days: null,
     },
     current_plans: {
         helpdesk: basicMonthlyHelpdeskPlan,
@@ -234,6 +235,7 @@ export const trial: BillingState = {
         shopify_billing: null,
         ach_debit_bank_account: null,
         ach_credit_bank_account: null,
+        payment_term_days: null,
     },
     current_plans: {
         helpdesk: proMonthlyHelpdeskPlan,
