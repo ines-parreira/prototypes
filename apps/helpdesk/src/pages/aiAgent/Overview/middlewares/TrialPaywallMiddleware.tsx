@@ -6,6 +6,7 @@ import { IntegrationType } from 'models/integration/types'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentWelcomePageView } from 'pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -30,12 +31,16 @@ export function TrialPaywallMiddleware({
 
     const hasIntegrations = storeIntegrations && storeIntegrations.length > 0
 
-    if (!isAiAgentExpandingTrialExperienceForAllEnabled || !hasIntegrations) {
+    if (!isAiAgentExpandingTrialExperienceForAllEnabled) {
         return (
             <AiAgentPaywallView
                 aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
             />
         )
+    }
+
+    if (!hasIntegrations) {
+        return <StoreIntegrationView title={'AI Agent'} />
     }
 
     const storeIntegration = storeIntegrations.find(

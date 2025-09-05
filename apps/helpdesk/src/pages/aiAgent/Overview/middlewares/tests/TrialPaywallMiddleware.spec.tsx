@@ -68,7 +68,7 @@ describe('TrialPaywallMiddleware', () => {
         expect(screen.getByTestId('paywall-view')).toBeInTheDocument()
     })
 
-    it('should render paywall when there are no integrations', () => {
+    it('should render missing integrations page when there are no integrations', () => {
         useFlagMock.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
                 return true
@@ -79,7 +79,9 @@ describe('TrialPaywallMiddleware', () => {
 
         renderWithStoreAndQueryClientAndRouter(<TrialPaywallMiddleware />)
 
-        expect(screen.getByTestId('paywall-view')).toBeInTheDocument()
+        expect(
+            screen.getByText('You don’t have a store connected'),
+        ).toBeInTheDocument()
     })
 
     it('should render welcome page when feature flag is enabled and integrations exist', () => {
