@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
@@ -19,7 +20,7 @@ import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
-import { FilterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useClickThroughRate = (
     integrationId: string,

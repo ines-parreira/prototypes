@@ -1,7 +1,4 @@
-import { useMemo } from 'react'
-
-import moment from 'moment'
-
+import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
@@ -11,13 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
-
-export type filterType = {
-    period: {
-        start_datetime: string
-        end_datetime: string
-    }
-}
 
 export type MetricProps = {
     label: string
@@ -33,31 +23,16 @@ export type MetricProps = {
 export const useAbandonedCartKpis = ({
     integrationId,
     journeyId,
-    customStartDate,
-    customEndDate,
     shopName,
+    filters,
 }: {
     integrationId: string
     journeyId?: string
-    customStartDate?: string
-    customEndDate?: string
     shopName: string
+    filters: FilterType
 }) => {
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const filters: filterType = useMemo(() => {
-        const start_datetime =
-            customStartDate ??
-            moment().subtract(28, 'days').startOf('day').format()
-        const end_datetime = customEndDate ?? moment().endOf('day').format()
-
-        return {
-            period: {
-                start_datetime,
-                end_datetime,
-            },
-        }
-    }, [customStartDate, customEndDate])
 
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
@@ -85,10 +60,6 @@ export const useAbandonedCartKpis = ({
     )
 
     return {
-        period: {
-            start: filters.period.start_datetime,
-            end: filters.period.end_datetime,
-        },
         metrics: [gmvInfluenced, conversionRate, responseRate],
     }
 }

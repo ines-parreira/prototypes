@@ -23,6 +23,12 @@ describe('useAbandonedCartKpis', () => {
     const mockUseAIJourneyConversionRate =
         useAIJourneyConversionRate as jest.Mock
     const mockUseAIJourneyResponseRate = useAIJourneyResponseRate as jest.Mock
+    const filters = {
+        period: {
+            start_datetime: '2025-08-07T00:00:00.000Z',
+            end_datetime: '2025-09-04T23:59:59.999Z',
+        },
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -53,6 +59,7 @@ describe('useAbandonedCartKpis', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
+                filters,
             }),
         )
 
@@ -72,39 +79,33 @@ describe('useAbandonedCartKpis', () => {
     })
 
     it('should call all KPI hooks with correct parameters', () => {
-        const expectedFilters = {
-            period: {
-                start_datetime: '2023-12-04T00:00:00Z',
-                end_datetime: '2024-01-01T23:59:59Z',
-            },
-        }
-
         renderHook(() =>
             useAbandonedCartKpis({
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
+                filters,
             }),
         )
 
         expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
             '123',
             'America/New_York',
-            expectedFilters,
+            filters,
             ReportingGranularity.Week,
             'journey-id',
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
-            expectedFilters,
+            filters,
             ReportingGranularity.Week,
             'journey-id',
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
-            expectedFilters,
+            filters,
             ReportingGranularity.Week,
             'shopName',
             'journey-id',
@@ -121,6 +122,7 @@ describe('useAbandonedCartKpis', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
+                filters,
             }),
         )
 
@@ -161,6 +163,7 @@ describe('useAbandonedCartKpis', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
+                filters,
             }),
         )
 

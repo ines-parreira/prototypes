@@ -11,6 +11,7 @@ import {
 import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalMessages } from 'AIJourney/hooks/useAIJourneyTotalMessages/useAIJourneyTotalMessages'
+import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneyData, useJourneys } from 'AIJourney/queries'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -105,9 +106,12 @@ export const Performance = () => {
 
     const { configuration: journeyParams } = journeyData || {}
 
-    const totalMessagesSent = useAIJourneyTotalMessages(
-        abandonedCartJourney?.id,
-    )
+    const filters = useFilters()
+
+    const totalMessagesSent = useAIJourneyTotalMessages({
+        journeyId: abandonedCartJourney?.id,
+        filters,
+    })
     const formattedTotalMessagesSent =
         totalMessagesSent?.value > 1000
             ? `${(totalMessagesSent.value / 1000).toFixed(1)}k`
@@ -142,15 +146,17 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
-    const { metrics } = useAIJourneyKpis(
-        integrationId.toString(),
-        namespacedShopName,
-    )
+    const { metrics } = useAIJourneyKpis({
+        integrationId: integrationId.toString(),
+        shopName: namespacedShopName,
+        filters,
+    })
 
-    const { metrics: journeyMetrics, period } = useAbandonedCartKpis({
+    const { metrics: journeyMetrics } = useAbandonedCartKpis({
         integrationId: integrationId.toString(),
         journeyId: abandonedCartJourney?.id,
         shopName,
+        filters,
     })
 
     const metricsContent = useMemo(() => {
@@ -238,7 +244,10 @@ export const Performance = () => {
                 {abandonedCartJourney &&
                     filteredUserJourneys.map(() => (
                         <AnalyticsCard
-                            period={period}
+                            period={{
+                                start: filters.period.start_datetime,
+                                end: filters.period.end_datetime,
+                            }}
                             analyticsData={journeyMetrics}
                             journeyData={journeyData}
                             integrationId={integrationId}

@@ -15,6 +15,12 @@ jest.mock('AIJourney/utils/analytics-factories/factories')
 describe('useAIJourneyTotalMessages', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
     const mockUseMetric = useMetric as jest.Mock
+    const filters = {
+        period: {
+            start_datetime: '2025-08-07T00:00:00.000Z',
+            end_datetime: '2025-09-04T23:59:59.999Z',
+        },
+    }
 
     beforeEach(() => {
         // Setup mocks
@@ -37,7 +43,7 @@ describe('useAIJourneyTotalMessages', () => {
     it('should return metric data with correct formatting', () => {
         const journeyId = 'test-journey-id'
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages(journeyId),
+            useAIJourneyTotalMessages({ journeyId, filters }),
         )
 
         expect(result.current).toEqual({
@@ -68,7 +74,10 @@ describe('useAIJourneyTotalMessages', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages('test-journey-id'),
+            useAIJourneyTotalMessages({
+                journeyId: 'test-journey-id',
+                filters,
+            }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -77,7 +86,7 @@ describe('useAIJourneyTotalMessages', () => {
 
     it('should handle undefined journeyId', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalMessages(undefined),
+            useAIJourneyTotalMessages({ journeyId: undefined, filters }),
         )
 
         expect(aiJourneyTotalMessagesQueryFactory).toHaveBeenCalledWith(

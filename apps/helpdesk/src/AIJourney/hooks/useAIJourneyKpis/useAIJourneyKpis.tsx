@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 
-import moment from 'moment'
-
+import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
@@ -17,13 +16,6 @@ import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourn
 import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
 import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
 
-export type FilterType = {
-    period: {
-        start_datetime: string
-        end_datetime: string
-    }
-}
-
 export type MetricProps = {
     label: string
     value: number
@@ -36,29 +28,21 @@ export type MetricProps = {
     drilldown?: DrillDownMetric
 }
 
-export const useAIJourneyKpis = (
-    integrationId: string,
-    shopName: string,
-    customStartDate?: string,
-    customEndDate?: string,
-) => {
+export type UseAIJourneyKpisParams = {
+    integrationId: string
+    shopName: string
+    filters: FilterType
+}
+
+export const useAIJourneyKpis = ({
+    integrationId,
+    shopName,
+    filters,
+}: UseAIJourneyKpisParams) => {
     const dispatch = useAppDispatch()
 
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const filters: FilterType = useMemo(() => {
-        const start_datetime =
-            customStartDate ??
-            moment().subtract(28, 'days').startOf('day').format()
-        const end_datetime = customEndDate ?? moment().endOf('day').format()
-
-        return {
-            period: {
-                start_datetime,
-                end_datetime,
-            },
-        }
-    }, [customStartDate, customEndDate])
 
     useEffect(() => {
         dispatch(
@@ -107,10 +91,6 @@ export const useAIJourneyKpis = (
     )
 
     return {
-        period: {
-            start: filters.period.start_datetime,
-            end: filters.period.end_datetime,
-        },
         metrics: [
             gmvInfluenced,
             totalOrders,

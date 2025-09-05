@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
@@ -15,7 +16,7 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-import { FilterType, MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyTotalOrders = (
     integrationId: string,
