@@ -18,6 +18,17 @@ describe('<FieldPresentation />', () => {
         expect(screen.getByText('This is a nice field')).toBeInTheDocument()
     })
 
+    it('should not render description when not passed', () => {
+        const { container } = render(<FieldPresentation name={'Nice field'} />)
+
+        expect(screen.getByText('Nice field')).toBeInTheDocument()
+
+        const fieldPresentationElement =
+            container.querySelector('.fieldPresentation')
+        expect(fieldPresentationElement).toBeInTheDocument()
+        expect(fieldPresentationElement?.children).toHaveLength(1)
+    })
+
     it('should render tooltip properly', async () => {
         render(
             <FieldPresentation

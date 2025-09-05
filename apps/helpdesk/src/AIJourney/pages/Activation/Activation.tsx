@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
@@ -54,6 +55,9 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         shopName,
         isLoading: isLoadingJourneyData,
     } = useJourneyContext()
+
+    const { data: currentUser } = useGetCurrentUser()
+    const customerName = currentUser?.data?.name || 'John Doe'
 
     const testSms = useTestSms()
 
@@ -204,6 +208,8 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             <ProductSelectField
                 options={products}
                 onChange={handleProductSelectChange}
+                name="Customer scenario"
+                description={`Customer ${customerName} has left their cart with the following product`}
             />
             <TestSMSField
                 value={testSmsNumber}

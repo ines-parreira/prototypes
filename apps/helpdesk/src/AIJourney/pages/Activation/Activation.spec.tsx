@@ -7,11 +7,14 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { IntegrationType } from '@gorgias/helpdesk-types'
+
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import { shopifyProductResult } from 'fixtures/shopify'
+import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListProducts } from 'models/integration/queries'
 import { NotificationStatus } from 'state/notifications/types'
@@ -45,6 +48,21 @@ jest.mock(
         useIntegrations: jest.fn(),
     }),
 )
+jest.mock('hooks/useAllIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
+;(useAllIntegrations as jest.Mock).mockReturnValue({
+    integrations: [
+        {
+            id: 1,
+            type: IntegrationType.Shopify,
+            name: 'shopify-store',
+            meta: { shop_name: 'shopify-store' },
+        },
+    ],
+    isLoading: false,
+})
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
@@ -78,6 +96,13 @@ const useListProductsMock = assumeMock(useListProducts)
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
 const mockUseAppSelector = useAppSelector as jest.Mock
+
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetCurrentUser: jest.fn(() => ({
+        data: { data: { name: 'Jane Smith' } },
+    })),
+}))
 
 describe('<Activation />', () => {
     const mockStore = configureMockStore([thunk])()
@@ -232,6 +257,50 @@ describe('<Activation />', () => {
             'href',
             '/app/ai-journey/shopify-store/conversation-setup',
         )
+    })
+
+    it('should render correct user name when available', async () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Activation />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+        expect(
+            await screen.findByText(
+                'Customer Jane Smith has left their cart with the following product',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should fallback to John Doe when user name is not available', async () => {
+        const mockUseGetCurrentUser = require('@gorgias/helpdesk-queries')
+            .useGetCurrentUser as jest.Mock
+        mockUseGetCurrentUser.mockImplementation(() => ({
+            data: { data: { name: undefined } },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Activation />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+        expect(
+            await screen.findByText(
+                'Customer John Doe has left their cart with the following product',
+            ),
+        ).toBeInTheDocument()
     })
 
     describe('handleTestSms', () => {

@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -88,12 +88,16 @@ describe('<ProductSelectField />', () => {
 
         renderWithQueryClientProvider(
             <Provider store={mockStore}>
-                <ProductSelectField options={options} />
+                <ProductSelectField
+                    name="Customer scenario"
+                    description="Customer John doe has left their cart with the following product"
+                    options={options}
+                />
             </Provider>,
         )
         expect(
             await screen.findByText(
-                'Customer Jane Smith has left their cart with the following product',
+                'Customer John doe has left their cart with the following product',
             ),
         ).toBeInTheDocument()
         expect(screen.getAllByText('New Balance 2002R')).toHaveLength(2)
@@ -112,10 +116,18 @@ describe('<ProductSelectField />', () => {
         const onChange = jest.fn()
         renderWithQueryClientProvider(
             <Provider store={mockStore}>
-                <ProductSelectField options={options} onChange={onChange} />
+                <ProductSelectField
+                    name="Customer scenario"
+                    options={options}
+                    onChange={onChange}
+                />
             </Provider>,
         )
-        await userEvent.click(screen.getByText('New Very Old 2006R'))
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('New Very Old 2006R'))
+        })
+
         expect(onChange).toHaveBeenCalledWith({
             id: '942562',
             title: 'New Very Old 2006R',
@@ -126,23 +138,5 @@ describe('<ProductSelectField />', () => {
                 },
             ],
         })
-    })
-
-    it('shows fallback name when user data is not available', async () => {
-        mockUseGetCurrentUser.mockReturnValue({
-            data: undefined,
-        } as any)
-
-        renderWithQueryClientProvider(
-            <Provider store={mockStore}>
-                <ProductSelectField options={options} />
-            </Provider>,
-        )
-        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
-        expect(
-            await screen.findByText(
-                'Customer John Doe has left their cart with the following product',
-            ),
-        ).toBeInTheDocument()
     })
 })
