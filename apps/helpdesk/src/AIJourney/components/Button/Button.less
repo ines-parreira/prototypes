@@ -21,7 +21,7 @@
         }
     }
 
-    .button {
+    .primaryButton {
         position: relative;
         width: 100%;
         max-width: 156px;
@@ -63,7 +63,41 @@
         }
     }
 
-    .buttonContent {
+    .secondaryButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        max-width: 400px;
+        height: 34px;
+
+        border-radius: var(--xs-8, 8px);
+        border-width: 0px;
+
+        padding: var(--layout-spacing-s) var(--layout-spacing-s);
+
+        background: radial-gradient(
+            661.12% 257.71% at 38.05% 22.06%,
+            #d922fb 3.29%,
+            #e98aff 34.62%,
+            #a420bc 56.85%,
+            #d432f6 100%
+        );
+
+        &:hover {
+            filter: opacity(0.9);
+        }
+    }
+
+    .secondaryButtonContent {
+        z-index: 1;
+        font-weight: 600;
+        pointer-events: none;
+        white-space: nowrap;
+        color: #fff; // forced white
+    }
+
+    .primaryButtonContent {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -95,7 +129,7 @@
 }
 
 .axiom :local {
-    .button {
+    .primaryButton {
         color: var(--content-inverse-primary);
         background: var(--surface-additional-blue);
     }

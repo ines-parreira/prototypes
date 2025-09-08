@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import css from './Button.less'
 
-export type ButtonVariant = 'primary' | 'link'
+export type ButtonVariant = 'primary' | 'secondary' | 'link'
 
 export const Button = ({
     variant = 'primary',
@@ -30,15 +30,27 @@ export const Button = ({
         )
     }
 
+    if (variant === 'secondary') {
+        return (
+            <button
+                onClick={onClick}
+                disabled={isDisabled}
+                className={css.secondaryButton}
+            >
+                <span className={css.secondaryButtonContent}>{label}</span>
+            </button>
+        )
+    }
+
     return (
         <div className={fakeBorderClass}>
             <button
                 onClick={onClick}
                 disabled={isDisabled}
-                className={css.button}
+                className={css.primaryButton}
                 data-testid="ai-journey-button"
             />
-            <span className={css.buttonContent}>{label}</span>
+            <span className={css.primaryButtonContent}>{label}</span>
         </div>
     )
 }
