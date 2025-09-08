@@ -290,6 +290,10 @@ describe('stats components utils', () => {
             expect(formatMetricValue(null, 'decimal')).toBe(NOT_AVAILABLE_TEXT)
         })
 
+        it('should return fallback when value is NaN', () => {
+            expect(formatMetricValue(NaN, 'decimal')).toBe(NOT_AVAILABLE_TEXT)
+        })
+
         it('should return percent on 0-1 float representing percentage', () => {
             expect(formatMetricValue(0.5, 'decimal-to-percent')).toBe('50%')
         })

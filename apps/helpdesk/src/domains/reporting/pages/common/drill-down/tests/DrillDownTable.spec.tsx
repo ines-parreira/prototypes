@@ -729,7 +729,7 @@ describe('<DrillDownTable />', () => {
                     'AiSalesAgentOrders.orderId': '6146766766294',
                     'AiSalesAgentOrders.ticketId': '222846848',
                     'AiSalesAgentOrders.totalAmount': '1892.59',
-                    'AiSalesAgentOrders.gmvUsd': '1892.59',
+                    'AiSalesAgentOrders.gmvUsd': '1892.591111111',
                     'Ticket.subject':
                         'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
                     'Ticket.status': 'closed',
@@ -771,7 +771,7 @@ describe('<DrillDownTable />', () => {
                 ),
             ).toBeInTheDocument()
             expect(screen.getByText('6146766766294')).toBeInTheDocument()
-            expect(screen.getByText('1892.59')).toBeInTheDocument()
+            expect(screen.getByText('$1,892.59')).toBeInTheDocument()
             expect(screen.getByText('Kahlil Adams')).toBeInTheDocument()
             expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
         })
@@ -793,6 +793,46 @@ describe('<DrillDownTable />', () => {
                 metricValue: '6146766766294',
                 assignee: { id: 518103189, name: 'AI Agent Bot' },
                 rowData: {},
+                slas: {},
+                outcome: 'Automated::Snooze::With message',
+                product: { titles: [], variants: [] },
+            }
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
+            } as any)
+
+            renderTableForTotalOrders(metricData)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
+        })
+
+        it('should render expected columns for TotalOrders metric with missing rowData', () => {
+            const exampleRow = {
+                ticket: {
+                    id: '222846848',
+                    subject:
+                        'AI Journey started for journey 01K0SPSFVAP1XSX3JZYJWTR9Q7',
+                    description:
+                        "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
+                    channel: 'sms',
+                    isRead: false,
+                    created: '2025-08-30T21:30:01.011352',
+                    contactReason: null,
+                    status: 'closed',
+                },
+                metricValue: '6146766766294',
+                assignee: { id: 518103189, name: 'AI Agent Bot' },
                 slas: {},
                 outcome: 'Automated::Snooze::With message',
                 product: { titles: [], variants: [] },

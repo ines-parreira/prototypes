@@ -483,9 +483,15 @@ export const TicketDrillDownTableContent = ({
                                         {item.order?.id}
                                     </BodyCell>
                                     <BodyCell width={columnWidths.order}>
-                                        {item?.rowData?.[
-                                            AiSalesAgentOrdersMeasure.GmvUsd
-                                        ] ?? NOT_AVAILABLE_PLACEHOLDER}
+                                        {formatMetricValue(
+                                            parseFloat(
+                                                item?.rowData?.[
+                                                    AiSalesAgentOrdersMeasure
+                                                        .GmvUsd
+                                                ],
+                                            ),
+                                            'currency',
+                                        )}
                                     </BodyCell>
                                     <BodyCell width={columnWidths.order}>
                                         {item.order?.customer}

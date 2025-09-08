@@ -240,7 +240,7 @@ export const formatMetricValue = (
     notAvailableText: string = NOT_AVAILABLE_TEXT,
     currency: string = 'USD',
 ) => {
-    if (value === null || value === undefined) {
+    if (value === null || value === undefined || Number.isNaN(value)) {
         return notAvailableText
     }
 
