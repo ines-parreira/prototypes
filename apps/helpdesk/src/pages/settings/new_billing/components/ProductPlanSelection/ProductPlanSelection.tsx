@@ -7,8 +7,12 @@ import { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, HelpdeskPlan, Plan, ProductType } from 'models/billing/types'
-import { getProductLabel, isStarterTier } from 'models/billing/utils'
+import { Cadence, Plan, ProductType } from 'models/billing/types'
+import {
+    getProductLabel,
+    isHelpdesk,
+    isStarterTier,
+} from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'
 import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
@@ -31,10 +35,6 @@ import CancelProductModal from '../CancelProductModal/CancelProductModal'
 import CounterText from '../CounterText'
 
 import css from './ProductPlanSelection.less'
-
-function isHelpdeskPlan(plan: Plan): plan is HelpdeskPlan {
-    return 'features' in plan && 'integrations' in plan
-}
 
 export type ProductPlanSelectionProps = {
     type: ProductType
@@ -81,9 +81,9 @@ const ProductPlanSelection = ({
     const isStarterHelpdeskPlanDisabled = useCallback(
         (plan: Plan) => {
             if (
-                isHelpdeskPlan(plan) &&
+                isHelpdesk(plan) &&
                 isStarterTier(plan) &&
-                cadence === Cadence.Year
+                cadence !== Cadence.Month
             ) {
                 return {
                     isDisabled: true,
@@ -138,11 +138,9 @@ const ProductPlanSelection = ({
                     return true
                 })
                 .map((plan) => ({
-                    value: plan.plan_id ?? '',
+                    value: plan.plan_id,
                     label: getLabel(plan),
-                    isDisabled: isStarterHelpdeskPlanDisabled(plan).isDisabled,
-                    tooltipText:
-                        isStarterHelpdeskPlanDisabled(plan).tooltipText,
+                    ...isStarterHelpdeskPlanDisabled(plan),
                 })),
             {
                 value: ENTERPRISE_PLAN_ID,

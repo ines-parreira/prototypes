@@ -12,6 +12,7 @@ import {
     basicMonthlyHelpdeskPlan,
     convertPlan1,
     HELPDESK_PRODUCT_ID,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
@@ -81,6 +82,7 @@ describe('ProductPlanSelection', () => {
 
     const currentPlan = basicMonthlyHelpdeskPlan
     const availablePlans = [
+        starterHelpdeskPlan,
         basicMonthlyHelpdeskPlan,
         {
             ...basicMonthlyHelpdeskPlan,
@@ -193,7 +195,7 @@ describe('ProductPlanSelection', () => {
             name: 'Cancel auto-renewal',
         })
         expect(CancelProductModalMock).toHaveBeenCalledWith(expectedProps, {})
-        await userEvent.click(cancelAutoRenewalButton)
+        await act(() => userEvent.click(cancelAutoRenewalButton))
         expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
 
         expect(CancelProductModalMock).toHaveBeenCalledWith(
@@ -231,23 +233,48 @@ describe('ProductPlanSelection', () => {
             currentPlan.num_quota_tickets.toString(),
         )
 
-        await userEvent.click(selectedPlan)
+        await act(() => userEvent.click(selectedPlan))
 
         const items = screen.getAllByRole('menuitem')
 
-        expect(items[0]).toHaveTextContent(
-            availablePlans[0].num_quota_tickets.toString(),
-        )
-        expect(items[1]).toHaveTextContent(
-            availablePlans[1].num_quota_tickets.toString(),
-        )
-        expect(items[2]).toHaveTextContent(
-            availablePlans[2].num_quota_tickets.toString(),
-        )
+        expect(items).toHaveLength(availablePlans.length + 1) // +1 for enterprise
+        for (const index in availablePlans) {
+            expect(items[index]).toHaveTextContent(
+                availablePlans[index].num_quota_tickets.toString(),
+            )
+        }
 
-        await userEvent.click(items[1])
+        await act(() => userEvent.click(items[1]))
 
         expect(mockSetSelectedPlans).toHaveBeenCalledTimes(1)
+    })
+
+    it.each(
+        Object.values(Cadence).filter((cadence) => cadence !== Cadence.Month),
+    )('disables the starter plan for %p cadence', async (cadence) => {
+        render(
+            <Provider store={store}>
+                <ProductPlanSelection {...props} cadence={cadence} />
+            </Provider>,
+        )
+
+        const selectedPlan = screen.getByLabelText('Price value')
+        await act(() => userEvent.click(selectedPlan))
+
+        // N.B. the disabled item is not assigned the menuitem role
+        const item = screen.getByRole('button', {
+            name: starterHelpdeskPlan.num_quota_tickets.toString(),
+        })
+        expect(item).toBeInTheDocument()
+        expect(item).toBeDisabled()
+
+        await act(() => userEvent.hover(item))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toBeInTheDocument()
+        expect(tooltip).toHaveTextContent(
+            'Switch to monthly billing to downgrade to a Starter plan.',
+        )
     })
 
     it('displays the active badge when product is active', () => {
@@ -554,9 +581,7 @@ describe('ProductPlanSelection', () => {
                 `#priceSelectInfo_${productType}`,
             )
 
-            await act(async () => {
-                await user.hover(infoIcon!)
-            })
+            await act(() => user.hover(infoIcon!))
 
             const tooltip = screen.getByText(productInfo.tooltip)
             expect(tooltip).toBeInTheDocument()
