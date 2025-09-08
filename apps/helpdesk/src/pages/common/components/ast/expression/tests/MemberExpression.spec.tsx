@@ -243,7 +243,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        expect(screen.queryByText('Custom fields')).not.toBeInTheDocument()
+        expect(screen.queryByText('Ticket fields')).not.toBeInTheDocument()
     })
 
     it('should show custom fields option when the flag is enabled', () => {
@@ -251,7 +251,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        expect(screen.queryByText('Custom fields')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket fields')).toBeInTheDocument()
     })
 
     it('should handle custom fields selection and show second dropdown', async () => {
@@ -259,7 +259,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         await waitFor(() => {
             expect(screen.getAllByText('Input field')).toHaveLength(2)
@@ -284,7 +284,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         await waitFor(() => {
             // Click on a different custom field to trigger handleSelectCustomField
@@ -313,7 +313,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         expect(screen.getByText('Loading custom fields...')).toBeInTheDocument()
     })
@@ -338,7 +338,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         expect(screen.getAllByText('Input field')).toHaveLength(2)
         expect(screen.queryByText('Deactivated Field')).not.toBeInTheDocument()
@@ -460,7 +460,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         expect(screen.queryByText('Input field')).not.toBeInTheDocument()
         expect(screen.queryByText('Dropdown field')).not.toBeInTheDocument()
@@ -488,7 +488,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         expect(screen.queryByText('Input field')).not.toBeInTheDocument()
         expect(screen.queryByText('Dropdown field')).not.toBeInTheDocument()
@@ -499,7 +499,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         expect(mockUseCustomFieldDefinitions).toHaveBeenCalledWith(
             {
@@ -542,7 +542,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
 
         const actionCalls = (
             minProps.actions.modifyCodeAST as jest.MockedFunction<
@@ -558,7 +558,7 @@ describe('<MemberExpression/>', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))
-        fireEvent.click(screen.getByText('Custom fields'))
+        fireEvent.click(screen.getByText('Ticket fields'))
         fireEvent.click(screen.getByText('Dropdown field'))
 
         const actionCalls = (

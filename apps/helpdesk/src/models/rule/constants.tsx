@@ -199,11 +199,6 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.created_datetime',
         },
         {
-            label: 'Custom fields',
-            text: 'ticket custom fields',
-            value: 'ticket.custom_fields',
-        },
-        {
             label: 'From agent',
             text: 'ticket from agent',
             value: 'ticket.from_agent',
@@ -257,6 +252,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: 'Tags',
             text: 'ticket tags',
             value: 'ticket.tags.name',
+        },
+        {
+            label: 'Ticket fields',
+            text: 'ticket fields',
+            value: 'ticket.custom_fields',
         },
         {
             label: 'Unsnooze date',
