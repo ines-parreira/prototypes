@@ -101,7 +101,7 @@ const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
         icon: 'star_outline',
         title: 'Day 14',
         description:
-            'Your new AI Agent plan kicks in automatically after the trial so you can keep automating support and growing revenue.',
+            'Your new AI Agent plan kicks in automatically after the trial so you can keep automating support and growing revenue, unless you cancel during your trial.',
     },
 ]
 
