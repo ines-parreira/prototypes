@@ -46,7 +46,10 @@ describe('useCanUseAiSalesAgent', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useTrialAccessMock.mockReturnValue(
-            createMockTrialAccess({ isInAiAgentTrial: false }),
+            createMockTrialAccess({
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+            }),
         )
     })
 
@@ -63,7 +66,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(true)
     })
@@ -81,7 +84,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(true)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(true)
     })
@@ -99,7 +102,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(true)
     })
@@ -117,7 +120,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(false)
     })
@@ -135,7 +138,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(true)
     })
@@ -153,7 +156,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        const { result } = renderHook(() => useCanUseAiSalesAgent())
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(false)
     })
@@ -171,7 +174,7 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
 
-        renderHook(() => useCanUseAiSalesAgent())
+        renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(useFlagMock).toHaveBeenCalledWith(
             FeatureFlagKey.AiSalesAgentBypassPlanCheck,
@@ -179,7 +182,7 @@ describe('useCanUseAiSalesAgent', () => {
         )
     })
 
-    it('should return true when only isInAiAgentTrial is true', () => {
+    it('should return true when only is in AI or Shopping Assistant trial', () => {
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getCurrentAutomatePlan) {
                 return { generation: 5 }
@@ -191,12 +194,87 @@ describe('useCanUseAiSalesAgent', () => {
         })
         useFlagMock.mockReturnValue(false)
         useTrialAccessMock.mockReturnValue(
-            createMockTrialAccess({ isInAiAgentTrial: true }),
+            createMockTrialAccess({
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: false,
+            }),
+        )
+
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
+
+        expect(result.current).toBe(true)
+    })
+
+    it('should return false when trial is started but expired', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getIsTrialing) {
+                return false
+            }
+            return null
+        })
+        useFlagMock.mockReturnValue(false)
+        useTrialAccessMock.mockReturnValue(
+            createMockTrialAccess({
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: true,
+                hasAnyTrialActive: true,
+            }),
+        )
+
+        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
+
+        expect(result.current).toBe(false)
+    })
+
+    it('should return true when shop name is not passed and hasAnyTrialActive is true', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getIsTrialing) {
+                return false
+            }
+            return null
+        })
+        useFlagMock.mockReturnValue(false)
+        useTrialAccessMock.mockReturnValue(
+            createMockTrialAccess({
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialActive: true,
+            }),
         )
 
         const { result } = renderHook(() => useCanUseAiSalesAgent())
 
         expect(result.current).toBe(true)
+    })
+
+    it('should return false when shop name is not passed and hasAnyTrialActive is false', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getCurrentAutomatePlan) {
+                return { generation: 5 }
+            }
+            if (selector === getIsTrialing) {
+                return false
+            }
+            return null
+        })
+        useFlagMock.mockReturnValue(false)
+        useTrialAccessMock.mockReturnValue(
+            createMockTrialAccess({
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialActive: false,
+            }),
+        )
+
+        const { result } = renderHook(() => useCanUseAiSalesAgent())
+
+        expect(result.current).toBe(false)
     })
 })
 

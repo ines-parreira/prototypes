@@ -28,12 +28,18 @@ export const useCanUseAiSalesAgent = (shopName?: string) => {
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
-    const trialAccess = useTrialAccess(shopName)
+    const {
+        hasAnyTrialActive,
+        hasCurrentStoreTrialStarted,
+        hasCurrentStoreTrialExpired,
+    } = useTrialAccess(shopName)
     const isTrialing = useAppSelector(getIsTrialing)
+
     const bypassPlanCheck =
         useFlag(FeatureFlagKey.AiSalesAgentBypassPlanCheck, false) ||
         isTrialing ||
-        trialAccess.isInAiAgentTrial
+        (hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired) ||
+        (!shopName && hasAnyTrialActive)
 
     return bypassPlanCheck || hasNewAutomatePlan
 }

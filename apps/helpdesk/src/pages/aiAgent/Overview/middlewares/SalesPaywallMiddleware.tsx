@@ -8,7 +8,6 @@ import { Button } from '@gorgias/axiom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import AIAgentTrialSuccessModal, {
@@ -72,11 +71,13 @@ export const SalesPaywallMiddleware =
         const trialMilestone = useSalesTrialRevampMilestone()
         const { shopName } = useParams<{ shopName?: string }>()
         const currentStore = shopName ? storeActivations[shopName] : undefined
+        const currentStoreName = currentStore?.name ?? shopName
 
         const {
             canSeeTrialCTA,
             hasCurrentStoreTrialStarted,
             hasCurrentStoreTrialExpired,
+            hasAnyTrialActive,
             hasAnyTrialOptedIn,
             canBookDemo,
             hasCurrentStoreTrialOptedOut,
@@ -84,14 +85,11 @@ export const SalesPaywallMiddleware =
             isLoading: isTrialAccessLoading,
             trialType,
             isAdminUser,
-        } = useTrialAccess(currentStore?.name ?? shopName)
+        } = useTrialAccess(currentStoreName)
 
         const currentStoreHasActiveTrial =
-            trialMilestone === 'milestone-1'
-                ? hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired
-                : atLeastOneStoreHasActiveTrialOnSpecificStores(
-                      storeActivations,
-                  )
+            (hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired) ||
+            (!currentStoreName && hasAnyTrialActive)
         const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
         const currentAccount = useAppSelector(getCurrentAccountState)
         const currentUser = useAppSelector(getCurrentUser)
