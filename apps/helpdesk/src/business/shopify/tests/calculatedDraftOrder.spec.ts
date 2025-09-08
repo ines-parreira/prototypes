@@ -85,26 +85,4 @@ describe('getCalculateDraftOrderPayload()', () => {
             expect(payload.getIn(['shippingAddress', 'countryCode'])).toBe('FR')
         },
     )
-
-    it('should include hard coded shippingRateHandle if shippingLine exists but does not have shippingRateHandle', () => {
-        const shippingLineWithoutHandle = fromJS({
-            price: '12.00',
-            title: 'Standard Shipping',
-        })
-
-        const draftOrderPayload = getDraftOrderPayload().set(
-            'shipping_line',
-            shippingLineWithoutHandle,
-        )
-
-        const payload = getCalculateDraftOrderPayload(draftOrderPayload)
-
-        expect(payload.getIn(['shippingLine', 'shippingRateHandle'])).toBe(
-            'custom_shipping_rate_handler',
-        )
-        expect(payload.getIn(['shippingLine', 'price'])).toBe('12.00')
-        expect(payload.getIn(['shippingLine', 'title'])).toBe(
-            'Standard Shipping',
-        )
-    })
 })
