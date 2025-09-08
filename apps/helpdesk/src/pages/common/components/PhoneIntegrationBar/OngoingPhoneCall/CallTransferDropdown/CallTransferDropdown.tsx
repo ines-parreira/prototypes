@@ -77,10 +77,16 @@ const CallTransferDropdown = ({
         clearAlertBannerData()
     }
 
+    const [selectedPhoneNumber, setSelectedPhoneNumber] = useState<string>('')
+    const [selectedCustomer, setSelectedCustomer] = useState<
+        UserSearchResult | undefined
+    >(undefined)
     const handleSelectedExternalPhoneNumberChange = (
         phoneNumber: string,
         customer?: UserSearchResult,
     ) => {
+        setSelectedPhoneNumber(phoneNumber)
+        setSelectedCustomer(customer)
         setSelectedTarget({
             type: TransferType.External,
             value: phoneNumber,
@@ -94,11 +100,22 @@ const CallTransferDropdown = ({
     }
 
     const handleSelectedTransferTypeChange = (transferType: TransferType) => {
+        // not needed, just use selected id or selected phone number
         setSelectedTransferType(transferType)
         switch (transferType) {
             case TransferType.Agent:
                 if (selectedAgentId) {
                     handleSelectedAgentIdChange(selectedAgentId)
+                } else {
+                    setSelectedTarget(null)
+                }
+                break
+            case TransferType.External:
+                if (selectedPhoneNumber !== '') {
+                    handleSelectedExternalPhoneNumberChange(
+                        selectedPhoneNumber,
+                        selectedCustomer,
+                    )
                 } else {
                     setSelectedTarget(null)
                 }
@@ -161,11 +178,6 @@ const CallTransferDropdown = ({
                 call_sid: getCallSid(call),
             },
         })
-
-        // the external dropdown doesn't keep state, so let's reset it
-        if (selectedTarget.type === TransferType.External) {
-            setSelectedTarget(null)
-        }
     }
 
     return (
@@ -204,6 +216,8 @@ const CallTransferDropdown = ({
             )}
             {selectedTransferType === TransferType.External && (
                 <ExternalCallTransferDropdownContent
+                    phoneNumber={selectedPhoneNumber}
+                    customer={selectedCustomer}
                     setSelectedExternalPhoneNumber={
                         handleSelectedExternalPhoneNumberChange
                     }

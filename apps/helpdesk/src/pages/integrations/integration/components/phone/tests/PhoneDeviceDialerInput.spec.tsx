@@ -402,6 +402,22 @@ describe('PhoneDeviceDialerInput', () => {
         renderComponent()
 
         expect(usePhoneDeviceDialerInputMock).toHaveBeenCalledWith({
+            value: undefined,
+            onValueChange,
+            onCustomerEnter: onConfirm,
+            onValidationChange,
+        })
+    })
+
+    it('passes value to usePhoneDeviceDialerInput hook', () => {
+        const value = {
+            phoneNumber: '+15551234567',
+            customer: mockCustomer,
+        }
+        renderComponent({ value })
+
+        expect(usePhoneDeviceDialerInputMock).toHaveBeenCalledWith({
+            value,
             onValueChange,
             onCustomerEnter: onConfirm,
             onValidationChange,

@@ -51,6 +51,8 @@ jest.mock(
     () => ({
         __esModule: true,
         default: ({
+            phoneNumber,
+            customer,
             setSelectedExternalPhoneNumber,
             onPhoneNumberValidationChange,
         }: any) => {
@@ -86,6 +88,26 @@ jest.mock(
                     >
                         Mark Invalid
                     </button>
+                    <button
+                        onClick={() => {
+                            setSelectedExternalPhoneNumber('+15559876543', {
+                                customer: {
+                                    id: 456,
+                                    name: 'Guybrush Threepwood',
+                                },
+                            })
+                            onPhoneNumberValidationChange?.(true)
+                        }}
+                        aria-label="Set external with customer"
+                    >
+                        Set External With Customer
+                    </button>
+                    <div data-testid="current-phone-number">{phoneNumber}</div>
+                    {customer && (
+                        <div data-testid="current-customer-name">
+                            {customer.customer?.name}
+                        </div>
+                    )}
                 </div>
             )
         },
@@ -307,7 +329,6 @@ describe('CallTransferDropdown', () => {
 
         renderComponent()
 
-        // Select an agent and trigger transfer failure
         const selectAgent = screen.getByLabelText(/select agent 1/i)
         await act(() => user.click(selectAgent))
 
@@ -322,7 +343,6 @@ describe('CallTransferDropdown', () => {
             ).toBeInTheDocument()
         })
 
-        // Click clear errors button
         const clearButton = screen.getByLabelText(/clear errors/i)
         await act(() => user.click(clearButton))
 
@@ -421,11 +441,9 @@ describe('CallTransferDropdown', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        // Select an agent on the Agents tab
         const selectAgent = screen.getByLabelText(/select agent 1/i)
         await act(() => user.click(selectAgent))
 
-        // Switch to External tab
         const externalTab = screen.getByRole('radio', { name: /external/i })
         await act(() => user.click(externalTab))
 
@@ -436,7 +454,6 @@ describe('CallTransferDropdown', () => {
             screen.queryByTestId('agent-transfer-content'),
         ).not.toBeInTheDocument()
 
-        // Switch back to Agents tab
         const agentsTab = screen.getByRole('radio', { name: /agents/i })
         await act(() => user.click(agentsTab))
 
@@ -445,7 +462,72 @@ describe('CallTransferDropdown', () => {
             screen.queryByTestId('external-transfer-content'),
         ).not.toBeInTheDocument()
 
-        // Transfer button should be enabled because agent selection was preserved
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        expect(transferButton).toBeAriaEnabled()
+    })
+
+    it('preserves external phone number when switching between tabs', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        const externalTab = screen.getByRole('radio', { name: /external/i })
+        await act(() => user.click(externalTab))
+
+        const setExternal = screen.getByLabelText(/set external number/i)
+        await act(() => user.click(setExternal))
+
+        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
+            '+15551234567',
+        )
+
+        const agentsTab = screen.getByRole('radio', { name: /agents/i })
+        await act(() => user.click(agentsTab))
+
+        await act(() => user.click(externalTab))
+
+        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
+            '+15551234567',
+        )
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        expect(transferButton).toBeAriaEnabled()
+    })
+
+    it('preserves external customer when switching between tabs', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        const externalTab = screen.getByRole('radio', { name: /external/i })
+        await act(() => user.click(externalTab))
+
+        const setExternalWithCustomer = screen.getByLabelText(
+            /set external with customer/i,
+        )
+        await act(() => user.click(setExternalWithCustomer))
+
+        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
+            '+15559876543',
+        )
+        expect(screen.getByTestId('current-customer-name')).toHaveTextContent(
+            'Guybrush Threepwood',
+        )
+
+        const agentsTab = screen.getByRole('radio', { name: /agents/i })
+        await act(() => user.click(agentsTab))
+
+        await act(() => user.click(externalTab))
+
+        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
+            '+15559876543',
+        )
+        expect(screen.getByTestId('current-customer-name')).toHaveTextContent(
+            'Guybrush Threepwood',
+        )
+
         const transferButton = screen.getByRole('button', {
             name: /transfer call/i,
         })

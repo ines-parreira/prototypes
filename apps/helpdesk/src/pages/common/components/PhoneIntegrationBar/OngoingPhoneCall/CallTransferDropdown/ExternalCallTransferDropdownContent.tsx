@@ -5,6 +5,8 @@ import PhoneDeviceDialerInput from 'pages/integrations/integration/components/ph
 import css from './CallTransferDropdown.less'
 
 type Props = {
+    phoneNumber: string
+    customer?: UserSearchResult
     setSelectedExternalPhoneNumber: (
         phoneNumber: string,
         customer?: UserSearchResult,
@@ -14,6 +16,8 @@ type Props = {
 }
 
 const ExternalCallTransferDropdownContent = ({
+    phoneNumber,
+    customer,
     setSelectedExternalPhoneNumber,
     handleTransferCall,
     onPhoneNumberValidationChange,
@@ -21,6 +25,7 @@ const ExternalCallTransferDropdownContent = ({
     return (
         <DropdownBody className={css.externalDropdownBody}>
             <PhoneDeviceDialerInput
+                value={{ phoneNumber, customer }}
                 onValueChange={setSelectedExternalPhoneNumber}
                 onConfirm={handleTransferCall}
                 onValidationChange={onPhoneNumberValidationChange}

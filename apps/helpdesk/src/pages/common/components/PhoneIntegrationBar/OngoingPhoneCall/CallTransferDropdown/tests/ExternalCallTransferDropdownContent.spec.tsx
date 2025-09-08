@@ -3,6 +3,7 @@ import { createRef } from 'react'
 import { act, cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { UserSearchResult } from 'models/search/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
 
@@ -11,10 +12,12 @@ jest.mock(
     () => ({
         __esModule: true,
         default: ({
+            value,
             onValueChange,
             onConfirm,
             onValidationChange,
         }: {
+            value?: { phoneNumber: string; customer?: any }
             onValueChange: (phoneNumber: string, customer?: any) => void
             onConfirm: () => void
             onValidationChange?: (isValid: boolean) => void
@@ -24,6 +27,7 @@ jest.mock(
                     type="text"
                     placeholder="Enter phone number"
                     aria-label="Phone number input"
+                    defaultValue={value?.phoneNumber || ''}
                     onChange={(e) => {
                         const value = e.target.value
                         if (value) {
@@ -49,6 +53,11 @@ jest.mock(
                 <button onClick={onConfirm} aria-label="Confirm transfer">
                     Confirm Transfer
                 </button>
+                {value?.customer && (
+                    <div data-testid="displayed-customer">
+                        {value.customer.customer?.name}
+                    </div>
+                )}
             </div>
         ),
     }),
@@ -59,7 +68,14 @@ describe('ExternalCallTransferDropdownContent', () => {
     const handleTransferCall = jest.fn()
     const onPhoneNumberValidationChange = jest.fn()
 
-    const renderComponent = (props = {}) =>
+    const renderComponent = (
+        {
+            phoneNumber,
+            customer,
+        }: { phoneNumber: string; customer?: UserSearchResult } = {
+            phoneNumber: '',
+        },
+    ) =>
         render(
             <Dropdown
                 isOpen={true}
@@ -67,6 +83,8 @@ describe('ExternalCallTransferDropdownContent', () => {
                 target={createRef<HTMLElement>()}
             >
                 <ExternalCallTransferDropdownContent
+                    phoneNumber={phoneNumber}
+                    customer={customer}
                     setSelectedExternalPhoneNumber={
                         setSelectedExternalPhoneNumber
                     }
@@ -74,7 +92,6 @@ describe('ExternalCallTransferDropdownContent', () => {
                     onPhoneNumberValidationChange={
                         onPhoneNumberValidationChange
                     }
-                    {...props}
                 />
             </Dropdown>,
         )
@@ -146,5 +163,27 @@ describe('ExternalCallTransferDropdownContent', () => {
         await act(() => user.click(confirmButton))
 
         expect(handleTransferCall).toHaveBeenCalledTimes(1)
+    })
+
+    it('passes phoneNumber prop to PhoneDeviceDialerInput', () => {
+        renderComponent({ phoneNumber: '+15559876543' })
+
+        const phoneInput = screen.getByLabelText(/phone number input/i)
+        expect(phoneInput).toHaveValue('+15559876543')
+    })
+
+    it('passes both phoneNumber and customer props', () => {
+        renderComponent({
+            phoneNumber: '+15559876543',
+            customer: {
+                customer: { id: 789, name: 'LeChuck' },
+            } as UserSearchResult,
+        })
+
+        const phoneInput = screen.getByLabelText(/phone number input/i)
+        expect(phoneInput).toHaveValue('+15559876543')
+        expect(screen.getByTestId('displayed-customer')).toHaveTextContent(
+            'LeChuck',
+        )
     })
 })

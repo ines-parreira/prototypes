@@ -41,9 +41,13 @@ describe('usePhoneDeviceDialerInput', () => {
         },
     ]
 
-    const setup = () => {
+    const setup = (value?: {
+        phoneNumber: string
+        customer?: UserSearchResult
+    }) => {
         return renderHook(() =>
             usePhoneDeviceDialerInput({
+                value,
                 onValueChange,
                 onValidationChange,
                 onCustomerEnter,
@@ -344,6 +348,59 @@ describe('usePhoneDeviceDialerInput', () => {
 
             expect(isValidNumberMock).not.toHaveBeenCalled()
             expect(result.current.phoneNumberError).toBeUndefined()
+        })
+    })
+
+    describe('controlled component behavior', () => {
+        it('uses values prop with only phone number', () => {
+            const value = { phoneNumber: '+15551234567', customer: undefined }
+            const { result } = setup(value)
+
+            expect(result.current.inputValue).toBe('+15551234567')
+            expect(result.current.selectedCustomer).toBeNull()
+        })
+
+        it('uses value prop with customer when provided', () => {
+            const value = {
+                phoneNumber: '+15551234567',
+                customer: mockCustomers[0],
+            }
+            const { result } = setup(value)
+
+            expect(result.current.inputValue).toBe('+15551234567')
+            expect(result.current.selectedCustomer).toBe(mockCustomers[0])
+        })
+
+        it('uses internal state when searching for customer but value has no customer', () => {
+            const value = {
+                phoneNumber: '+15551234567',
+                customer: undefined,
+            }
+            const { result } = setup(value)
+
+            act(() => {
+                result.current.handleChange('Guy')
+            })
+
+            expect(result.current.inputValue).toBe('Guy')
+            expect(result.current.selectedCustomer).toBeNull()
+            expect(result.current.isSearchTypeCustomer).toBe(true)
+        })
+
+        it('uses customer name from value when searching for customer and we have a customer', () => {
+            const value = {
+                phoneNumber: '+15551234567',
+                customer: mockCustomers[0],
+            }
+            const { result } = setup(value)
+
+            act(() => {
+                result.current.handleChange('Guybrush')
+            })
+
+            expect(result.current.inputValue).toBe('Guybrush Threepwood')
+            expect(result.current.selectedCustomer).toBe(mockCustomers[0])
+            expect(result.current.isSearchTypeCustomer).toBe(true)
         })
     })
 })

@@ -15,6 +15,7 @@ import PhoneDeviceDialerBody from './PhoneDeviceDialerBody'
 import css from './PhoneDevice.less'
 
 type Props = {
+    value?: { phoneNumber: string; customer?: UserSearchResult }
     onValueChange?: (phoneNumber: string, customer?: UserSearchResult) => void
     onConfirm?: () => void
     country?: CountryCode
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export default function PhoneDeviceDialerInput({
+    value,
     onValueChange = () => {},
     onConfirm = () => {},
     country,
@@ -43,6 +45,7 @@ export default function PhoneDeviceDialerInput({
         handleInputKeyDown,
         phoneNumberError,
     } = usePhoneDeviceDialerInput({
+        value,
         onValueChange,
         onCustomerEnter: onConfirm,
         onValidationChange,
