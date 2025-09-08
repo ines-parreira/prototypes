@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { Navigation } from 'components/Navigation/Navigation'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
@@ -18,11 +20,41 @@ jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     })),
 }))
 
-jest.mock('pages/aiAgent/hooks/useOpportunitiesCount', () => ({
-    useOpportunitiesCount: jest.fn(() => ({
+const mockUseOpportunitiesCount = jest.fn((arg1: any, arg2: any, arg3: any) => {
+    void arg1
+    void arg2
+    void arg3
+    return {
         count: 5,
         isLoading: false,
-    })),
+    }
+})
+
+jest.mock('pages/aiAgent/hooks/useOpportunitiesCount', () => ({
+    useOpportunitiesCount: (...args: [number, string, string]) =>
+        mockUseOpportunitiesCount(...args),
+}))
+
+const mockUseGetStoresConfigurationForAccount = jest.fn(
+    (arg1: any, arg2: any) => {
+        void arg1
+        void arg2
+        return {
+            data: {
+                storeConfigurations: [
+                    {
+                        storeName: 'test-store',
+                        helpCenterId: 123,
+                    },
+                ],
+            },
+        }
+    },
+)
+
+jest.mock('models/aiAgent/queries', () => ({
+    useGetStoresConfigurationForAccount: (...args: [object, object]) =>
+        mockUseGetStoresConfigurationForAccount(...args),
 }))
 
 const mockNavigationItems: NavigationItem[] = [
@@ -74,24 +106,65 @@ const mockNavigationItems: NavigationItem[] = [
 
 describe('ActionDrivenNavigationItems', () => {
     const mockGetChannelStatus = jest.fn()
-    const store = mockStore({
-        ui: {
-            helpCenter: {
-                viewLanguage: 'en-US',
+    const createStore = (customState: any = {}) => {
+        const defaultState = {
+            ui: {
+                helpCenter: {
+                    currentLanguage: 'en-US',
+                },
             },
-        },
-    })
+            currentAccount: fromJS({
+                domain: 'test-domain.com',
+            }),
+        }
+
+        // Deep merge the custom state
+        const mergedState = {
+            ...defaultState,
+            ...customState,
+            ui: {
+                ...defaultState.ui,
+                ...customState.ui,
+                helpCenter: {
+                    ...defaultState.ui.helpCenter,
+                    ...customState.ui?.helpCenter,
+                },
+            },
+            // Ensure currentAccount is preserved if not overridden
+            currentAccount:
+                customState.currentAccount !== undefined
+                    ? customState.currentAccount
+                    : defaultState.currentAccount,
+        }
+
+        return mockStore(mergedState)
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
         mockGetChannelStatus.mockReturnValue(false)
+        mockUseOpportunitiesCount.mockReturnValue({
+            count: 5,
+            isLoading: false,
+        })
+        mockUseGetStoresConfigurationForAccount.mockReturnValue({
+            data: {
+                storeConfigurations: [
+                    {
+                        storeName: 'test-store',
+                        helpCenterId: 123,
+                    },
+                ],
+            },
+        })
     })
 
     const renderComponent = (
         props: Partial<Parameters<typeof ActionDrivenNavigationItems>[0]> = {},
+        customStore = createStore(),
     ) => {
         return render(
-            <Provider store={store}>
+            <Provider store={customStore}>
                 <MemoryRouter>
                     <Navigation.Root value={['analyze', 'deploy']}>
                         <ActionDrivenNavigationItems
@@ -108,7 +181,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('renders null when selectedStore is not provided', () => {
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root>
                         <ActionDrivenNavigationItems
@@ -129,7 +202,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('renders null when navigationItems is not provided', () => {
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root>
                         <ActionDrivenNavigationItems
@@ -234,7 +307,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('handles getChannelStatus not provided', () => {
         render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root value={['deploy']}>
                         <ActionDrivenNavigationItems
@@ -287,6 +360,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('allows expanding and collapsing sections', async () => {
         const user = userEventLib.setup()
+        const store = createStore()
         const { rerender } = render(
             <Provider store={store}>
                 <MemoryRouter>
@@ -325,7 +399,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     it('handles empty navigation items array', () => {
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root>
                         <ActionDrivenNavigationItems
@@ -365,7 +439,7 @@ describe('ActionDrivenNavigationItems', () => {
         ]
 
         render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root value={['section']}>
                         <ActionDrivenNavigationItems
@@ -397,7 +471,7 @@ describe('ActionDrivenNavigationItems', () => {
         ]
 
         render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root>
                         <ActionDrivenNavigationItems
@@ -421,7 +495,7 @@ describe('ActionDrivenNavigationItems', () => {
         mockGetChannelStatus.mockImplementation((channel) => channel === 'chat')
 
         render(
-            <Provider store={store}>
+            <Provider store={createStore()}>
                 <MemoryRouter>
                     <Navigation.Root value={['deploy']}>
                         <ActionDrivenNavigationItems
@@ -440,5 +514,344 @@ describe('ActionDrivenNavigationItems', () => {
         expect(mockGetChannelStatus).toHaveBeenCalledWith('chat')
         expect(mockGetChannelStatus).toHaveBeenCalledWith('email')
         expect(mockGetChannelStatus).toHaveBeenCalledTimes(2)
+    })
+
+    describe('Opportunities feature', () => {
+        it('renders Opportunities with NEW badge and count in nested items', () => {
+            const navItemsWithOpportunities: NavigationItem[] = [
+                {
+                    route: '',
+                    title: 'Analyze',
+                    items: [
+                        {
+                            route: '/app/ai-agent/shopify/test-store/analyze/opportunities',
+                            title: OPPORTUNITIES,
+                        },
+                    ],
+                },
+            ]
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root value={['analyze']}>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItemsWithOpportunities}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText(OPPORTUNITIES)).toBeInTheDocument()
+            expect(screen.getByText('NEW')).toBeInTheDocument()
+            expect(screen.getByText('5')).toBeInTheDocument()
+        })
+
+        it('renders Opportunities with NEW badge and count in top-level items', () => {
+            const navItemsWithOpportunities: NavigationItem[] = [
+                {
+                    route: '/app/ai-agent/shopify/test-store/opportunities',
+                    title: OPPORTUNITIES,
+                },
+            ]
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItemsWithOpportunities}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText(OPPORTUNITIES)).toBeInTheDocument()
+            expect(screen.getByText('NEW')).toBeInTheDocument()
+            expect(screen.getByText('5')).toBeInTheDocument()
+        })
+
+        it('shows 0 when opportunities are loading', () => {
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 10,
+                isLoading: true,
+            })
+
+            const navItemsWithOpportunities: NavigationItem[] = [
+                {
+                    route: '/app/ai-agent/shopify/test-store/opportunities',
+                    title: OPPORTUNITIES,
+                },
+            ]
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItemsWithOpportunities}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('0')).toBeInTheDocument()
+        })
+
+        it('shows opportunities count when not loading', () => {
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 15,
+                isLoading: false,
+            })
+
+            const navItemsWithOpportunities: NavigationItem[] = [
+                {
+                    route: '/app/ai-agent/shopify/test-store/opportunities',
+                    title: OPPORTUNITIES,
+                },
+            ]
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItemsWithOpportunities}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('15')).toBeInTheDocument()
+        })
+    })
+
+    describe('Store configuration', () => {
+        it('fetches store configuration when store and domain are provided', () => {
+            renderComponent()
+
+            expect(
+                mockUseGetStoresConfigurationForAccount,
+            ).toHaveBeenCalledWith(
+                { accountDomain: 'test-domain.com' },
+                expect.objectContaining({
+                    enabled: true,
+                    staleTime: 5 * 60 * 1000,
+                }),
+            )
+        })
+
+        it('does not fetch store configuration when store is not provided', () => {
+            mockUseGetStoresConfigurationForAccount.mockClear()
+
+            renderComponent({ selectedStore: undefined })
+
+            expect(
+                mockUseGetStoresConfigurationForAccount,
+            ).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('does not fetch store configuration when domain is not provided', () => {
+            mockUseGetStoresConfigurationForAccount.mockClear()
+            const storeWithoutDomain = createStore({
+                currentAccount: fromJS({
+                    domain: undefined,
+                }),
+            })
+
+            renderComponent({}, storeWithoutDomain)
+
+            expect(
+                mockUseGetStoresConfigurationForAccount,
+            ).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('uses correct helpCenterId from store configuration', () => {
+            mockUseGetStoresConfigurationForAccount.mockReturnValue({
+                data: {
+                    storeConfigurations: [
+                        {
+                            storeName: 'test-store',
+                            helpCenterId: 999,
+                        },
+                    ],
+                },
+            })
+
+            renderComponent()
+
+            expect(mockUseOpportunitiesCount).toHaveBeenCalledWith(
+                999,
+                'en-US',
+                'test-store',
+            )
+        })
+
+        it('handles missing store configuration', () => {
+            mockUseGetStoresConfigurationForAccount.mockReturnValue({
+                data: {
+                    storeConfigurations: [
+                        {
+                            storeName: 'other-store',
+                            helpCenterId: 456,
+                        },
+                    ],
+                },
+            })
+
+            renderComponent()
+
+            expect(mockUseOpportunitiesCount).toHaveBeenCalledWith(
+                0,
+                'en-US',
+                'test-store',
+            )
+        })
+
+        it('handles undefined store configurations data', () => {
+            mockUseGetStoresConfigurationForAccount.mockReturnValue({
+                data: undefined as any,
+            })
+
+            renderComponent()
+
+            expect(mockUseOpportunitiesCount).toHaveBeenCalledWith(
+                0,
+                'en-US',
+                'test-store',
+            )
+        })
+    })
+
+    describe('Language support', () => {
+        it('uses view language from state', () => {
+            const storeWithLanguage = createStore({
+                ui: {
+                    helpCenter: {
+                        currentLanguage: 'fr-FR',
+                    },
+                },
+            })
+
+            renderComponent({}, storeWithLanguage)
+
+            expect(mockUseOpportunitiesCount).toHaveBeenCalledWith(
+                expect.any(Number),
+                'fr-FR',
+                'test-store',
+            )
+        })
+
+        it('uses default locale when viewLanguage is not set', () => {
+            const storeWithoutLanguage = createStore({
+                ui: {
+                    helpCenter: {
+                        currentLanguage: undefined,
+                    },
+                },
+            })
+
+            renderComponent({}, storeWithoutLanguage)
+
+            expect(mockUseOpportunitiesCount).toHaveBeenCalledWith(
+                expect.any(Number),
+                'en-US',
+                'test-store',
+            )
+        })
+    })
+
+    describe('StatusIndicator component', () => {
+        it('renders active status with success icon', () => {
+            const navItems: NavigationItem[] = [
+                {
+                    route: '',
+                    title: 'Deploy',
+                    items: [
+                        {
+                            route: '/chat',
+                            title: 'Chat',
+                        },
+                    ],
+                },
+            ]
+
+            mockGetChannelStatus.mockReturnValue(true)
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root value={['deploy']}>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItems}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            const statusIcon = screen.getByAltText('status icon')
+            expect(statusIcon).toBeInTheDocument()
+            expect(statusIcon).toHaveAttribute('src', 'test-file-stub')
+        })
+
+        it('renders inactive status with error icon', () => {
+            const navItems: NavigationItem[] = [
+                {
+                    route: '',
+                    title: 'Deploy',
+                    items: [
+                        {
+                            route: '/email',
+                            title: 'Email',
+                        },
+                    ],
+                },
+            ]
+
+            mockGetChannelStatus.mockReturnValue(false)
+
+            render(
+                <Provider store={createStore()}>
+                    <MemoryRouter>
+                        <Navigation.Root value={['deploy']}>
+                            <ActionDrivenNavigationItems
+                                navigationItems={navItems}
+                                selectedStore="test-store"
+                                getChannelStatus={mockGetChannelStatus}
+                            />
+                        </Navigation.Root>
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            const statusIcon = screen.getByAltText('status icon')
+            expect(statusIcon).toBeInTheDocument()
+            expect(statusIcon).toHaveAttribute('src', 'test-file-stub')
+        })
     })
 })

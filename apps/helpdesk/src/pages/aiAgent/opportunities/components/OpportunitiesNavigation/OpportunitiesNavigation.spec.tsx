@@ -30,18 +30,21 @@ describe('OpportunitiesNavigation', () => {
     const mockOpportunities: Opportunity[] = [
         {
             id: '1',
+            key: 'ai_1',
             title: 'First Opportunity',
             content: 'First content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         },
         {
             id: '2',
+            key: 'ai_2',
             title: 'Second Opportunity',
             content: 'Second content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         },
         {
             id: '3',
+            key: 'ai_3',
             title: 'Third Opportunity',
             content: 'Third content',
             type: OpportunityType.RESOLVE_CONFLICT,

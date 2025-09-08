@@ -8,11 +8,12 @@ import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import { Navigation } from 'components/Navigation/Navigation'
 import useAppSelector from 'hooks/useAppSelector'
+import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
-import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { NavigationChannelType } from './utils'
@@ -51,12 +52,27 @@ export const ActionDrivenNavigationItems = ({
 }: Props) => {
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
-    const faqHelpCenter = useAiAgentHelpCenter({
-        shopName: selectedStore ?? '',
-        helpCenterType: 'faq',
-    })
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+
+    const { data } = useGetStoresConfigurationForAccount(
+        { accountDomain },
+        {
+            enabled: !!selectedStore && !!accountDomain,
+            staleTime: 5 * 60 * 1000,
+        },
+    )
+
+    const storeConfig = data?.storeConfigurations.find(
+        (config) => config.storeName === selectedStore,
+    )
+
     const { count: opportunitiesCount, isLoading: isLoadingOpportunities } =
-        useOpportunitiesCount(faqHelpCenter?.id ?? 0, locale, selectedStore)
+        useOpportunitiesCount(
+            storeConfig?.helpCenterId ?? 0,
+            locale,
+            selectedStore,
+        )
 
     if (!selectedStore || !navigationItems) {
         return null

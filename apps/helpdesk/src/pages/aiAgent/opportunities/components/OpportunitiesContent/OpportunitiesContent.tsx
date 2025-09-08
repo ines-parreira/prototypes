@@ -9,11 +9,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ArticleTemplateReviewAction } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import {
     aiArticleKeys,
@@ -65,7 +62,7 @@ export const OpportunitiesContent = ({
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const [isLoading, setIsLoading] = useState(false)
-    const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false)
+    const [isDismissModalOpen, setIsDismissModalOpen] = useState(false)
     const [currentFormData, setCurrentFormData] = useState<GuidanceFormFields>({
         name: selectedOpportunity?.title || '',
         content: selectedOpportunity?.content || '',
@@ -89,12 +86,12 @@ export const OpportunitiesContent = ({
                 queryKey: aiArticleKeys.list(helpCenterId),
             })
 
-            markArticleAsReviewed(body.template_key, body.action)
+            markArticleAsReviewed(`ai_${body.template_key}`, body.action)
 
             if (body.action === 'archive') {
-                onArchive(body.template_key)
+                onArchive(`ai_${body.template_key}`)
             } else if (body.action === 'publish') {
-                onPublish(body.template_key)
+                onPublish(`ai_${body.template_key}`)
             }
         },
         onError: async (__error, [__client, __pathParameters, __body]) => {
@@ -104,11 +101,11 @@ export const OpportunitiesContent = ({
         },
     })
 
-    const handleOpenArchiveModal = useCallback(() => {
-        setIsArchiveModalOpen(true)
+    const handleOpenDismissModal = useCallback(() => {
+        setIsDismissModalOpen(true)
     }, [])
 
-    const handleConfirmArchive = useCallback(() => {
+    const handleConfirmDismiss = useCallback(() => {
         if (!selectedOpportunity) return
 
         setIsLoading(true)
@@ -117,16 +114,16 @@ export const OpportunitiesContent = ({
             { help_center_id: helpCenterId },
             {
                 action: 'archive',
-                template_key: selectedOpportunity.id,
-                reason: null,
+                template_key: `ai_${selectedOpportunity.id}`,
+                reason: 'Dismissed with feedback',
             },
         ])
-        setIsArchiveModalOpen(false)
+        setIsDismissModalOpen(false)
         setIsLoading(false)
     }, [selectedOpportunity, helpCenterId, reviewArticle])
 
-    const handleCancelArchive = useCallback(() => {
-        setIsArchiveModalOpen(false)
+    const handleCancelDismiss = useCallback(() => {
+        setIsDismissModalOpen(false)
     }, [])
     const { guidanceCount, isLoading: isLoadingGuidanceCount } =
         useGuidanceCount({
@@ -169,7 +166,7 @@ export const OpportunitiesContent = ({
                 { help_center_id: helpCenterId },
                 {
                     action: 'archive',
-                    template_key: selectedOpportunity.id,
+                    template_key: `ai_${selectedOpportunity.id}`,
                     reason: 'Created as guidance',
                 },
             ])
@@ -216,7 +213,7 @@ export const OpportunitiesContent = ({
                         <Button
                             intent="secondary"
                             fillStyle="ghost"
-                            onClick={handleOpenArchiveModal}
+                            onClick={handleOpenDismissModal}
                         >
                             Dismiss
                         </Button>
@@ -282,7 +279,7 @@ export const OpportunitiesContent = ({
                         />
                         <div className={css.guidanceFormWrapper}>
                             <GuidanceForm
-                                key={selectedOpportunity.id}
+                                key={selectedOpportunity.key}
                                 availableActions={guidanceActions}
                                 shopName={shopName}
                                 isLoading={
@@ -314,27 +311,12 @@ export const OpportunitiesContent = ({
                 )}
             </div>
 
-            <Modal
-                isOpen={isArchiveModalOpen}
-                onClose={handleCancelArchive}
-                size="small"
-            >
-                <ModalHeader title="Dismiss opportunity?" />
-                <ModalBody>
-                    <p>
-                        Dismissing this opportunity will delete the associated
-                        knowledge and cannot be undone.
-                    </p>
-                </ModalBody>
-                <ModalActionsFooter>
-                    <Button intent="secondary" onClick={handleCancelArchive}>
-                        Cancel
-                    </Button>
-                    <Button intent="destructive" onClick={handleConfirmArchive}>
-                        Dismiss
-                    </Button>
-                </ModalActionsFooter>
-            </Modal>
+            <DismissOpportunityModal
+                isOpen={isDismissModalOpen}
+                opportunity={selectedOpportunity}
+                onClose={handleCancelDismiss}
+                onConfirm={handleConfirmDismiss}
+            />
         </div>
     )
 }

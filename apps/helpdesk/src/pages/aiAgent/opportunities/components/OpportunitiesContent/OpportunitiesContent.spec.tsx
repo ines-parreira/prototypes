@@ -54,6 +54,7 @@ jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
 )
 jest.mock('pages/settings/helpCenter/queries')
+jest.mock('models/knowledgeService/mutations')
 
 const mockUseGuidanceCount = jest.fn(() => ({
     guidanceCount: 0,
@@ -98,6 +99,7 @@ describe('OpportunitiesContent', () => {
     const mockMarkArticleAsReviewed = jest.fn()
     const mockOnArchive = jest.fn()
     const mockOnPublish = jest.fn()
+    const mockUpsertFeedback = jest.fn()
 
     const defaultProps = {
         selectedOpportunity: null,
@@ -150,6 +152,14 @@ describe('OpportunitiesContent', () => {
             mutate: mockReviewArticleMutate,
             isLoading: false,
         })
+
+        const {
+            useUpsertFeedback,
+        } = require('models/knowledgeService/mutations')
+        ;(useUpsertFeedback as jest.Mock).mockReturnValue({
+            mutateAsync: mockUpsertFeedback.mockResolvedValue({}),
+            isLoading: false,
+        })
     })
 
     it('should render content header with title', () => {
@@ -169,6 +179,7 @@ describe('OpportunitiesContent', () => {
     it('should render opportunity details and action buttons when selected', () => {
         const selectedOpportunity: Opportunity = {
             id: '1',
+            key: 'key-1',
             title: "What's your return policy?",
             content: 'Return policy content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
@@ -198,6 +209,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -227,6 +239,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -243,6 +256,27 @@ describe('OpportunitiesContent', () => {
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
         })
 
+        const dropdown = screen.getByRole('combobox')
+        act(() => {
+            userEvent.click(dropdown)
+        })
+
+        await waitFor(() => {
+            expect(screen.getAllByRole('option')).toHaveLength(4)
+        })
+
+        const firstOption = screen.getAllByRole('option')[0]
+        act(() => {
+            userEvent.click(firstOption)
+        })
+
+        await waitFor(() => {
+            const confirmButton = screen.getAllByRole('button', {
+                name: /Dismiss/i,
+            })[1]
+            expect(confirmButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
         const confirmButton = screen.getAllByRole('button', {
             name: /Dismiss/i,
         })[1]
@@ -256,8 +290,8 @@ describe('OpportunitiesContent', () => {
                 { help_center_id: 1 },
                 {
                     action: 'archive',
-                    template_key: '1',
-                    reason: null,
+                    template_key: 'ai_1',
+                    reason: 'Dismissed with feedback',
                 },
             ])
         })
@@ -269,6 +303,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -303,6 +338,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
@@ -343,7 +379,7 @@ describe('OpportunitiesContent', () => {
                 { help_center_id: 1 },
                 {
                     action: 'archive',
-                    template_key: '1',
+                    template_key: 'ai_1',
                     reason: 'Created as guidance',
                 },
             ])
@@ -356,6 +392,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         mockCreateGuidanceArticle.mockRejectedValueOnce(new Error('API Error'))
@@ -396,6 +433,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -418,6 +456,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -435,6 +474,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -470,10 +510,10 @@ describe('OpportunitiesContent', () => {
 
         await waitFor(() => {
             expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
-                'test-key',
+                'ai_test-key',
                 'archive',
             )
-            expect(mockOnArchive).toHaveBeenCalledWith('test-key')
+            expect(mockOnArchive).toHaveBeenCalledWith('ai_test-key')
         })
     })
 
@@ -498,10 +538,10 @@ describe('OpportunitiesContent', () => {
 
         await waitFor(() => {
             expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
-                'test-key',
+                'ai_test-key',
                 'publish',
             )
-            expect(mockOnPublish).toHaveBeenCalledWith('test-key')
+            expect(mockOnPublish).toHaveBeenCalledWith('ai_test-key')
         })
     })
 
@@ -541,6 +581,7 @@ describe('OpportunitiesContent', () => {
             title: 'Topic',
             content: 'Conflict content',
             type: OpportunityType.RESOLVE_CONFLICT,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -560,6 +601,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -594,6 +636,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -615,6 +658,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -650,6 +694,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -672,6 +717,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -699,6 +745,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -738,6 +785,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
@@ -779,6 +827,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
@@ -801,7 +850,7 @@ describe('OpportunitiesContent', () => {
                 { help_center_id: 1 },
                 {
                     action: 'archive',
-                    template_key: '1',
+                    template_key: 'ai_1',
                     reason: 'Created as guidance',
                 },
             ])
@@ -814,6 +863,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({
@@ -837,12 +887,6 @@ describe('OpportunitiesContent', () => {
         act(() => {
             userEvent.click(confirmButton)
         })
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('Dismiss opportunity?'),
-            ).not.toBeInTheDocument()
-        })
     })
 
     it('should not show tooltip when guidanceCount is still loading', async () => {
@@ -856,6 +900,7 @@ describe('OpportunitiesContent', () => {
             title: 'Test opportunity',
             content: 'Test content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
         }
 
         renderComponent({

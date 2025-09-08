@@ -1,7 +1,10 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
+import {
+    FeedbackExecutionsItem,
+    FeedbackExecutionsItemFeedbackItemOneOfSix,
+} from '@gorgias/knowledge-service-types'
 
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
 import { AiAgentBadInteractionReason } from '../types'
@@ -472,8 +475,8 @@ describe('AIAgentFeedbackReasonSection', () => {
                 ...badInteractionReasons[0],
                 feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
                 feedbackType: 'TICKET_FREEFORM',
-            },
-        ] as any
+            } as FeedbackExecutionsItemFeedbackItemOneOfSix,
+        ]
 
         act(() => {
             rerender(

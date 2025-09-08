@@ -13,6 +13,7 @@ describe('OpportunitiesSidebar', () => {
     const mockOpportunities: Opportunity[] = [
         {
             id: '1',
+            key: 'ai_1',
             title: "What's your return policy?",
             content:
                 'You can request a return or exchange within 14 days of your delivery date.',
@@ -20,6 +21,7 @@ describe('OpportunitiesSidebar', () => {
         },
         {
             id: '2',
+            key: 'ai_2',
             title: 'How do I access my store account?',
             content:
                 "You can access your account by clicking the 'My Account' link in the top right corner.",
@@ -27,6 +29,7 @@ describe('OpportunitiesSidebar', () => {
         },
         {
             id: '3',
+            key: 'ai_3',
             title: 'How can I apply a discount?',
             content:
                 "Enter your discount code at checkout in the 'Promo Code' field.",
@@ -34,6 +37,7 @@ describe('OpportunitiesSidebar', () => {
         },
         {
             id: '4',
+            key: 'ai_4',
             title: 'Topic',
             content: 'Resolve this conflict in your guidance.',
             type: OpportunityType.RESOLVE_CONFLICT,
@@ -118,6 +122,7 @@ describe('OpportunitiesSidebar', () => {
                 content:
                     'You can request a return or exchange within 14 days of your delivery date.',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
             })
         })
     })
@@ -142,6 +147,7 @@ describe('OpportunitiesSidebar', () => {
         await waitFor(() => {
             expect(mockOnSelectOpportunity).toHaveBeenCalledWith({
                 id: '2',
+                key: 'ai_2',
                 title: 'How do I access my store account?',
                 content:
                     "You can access your account by clicking the 'My Account' link in the top right corner.",

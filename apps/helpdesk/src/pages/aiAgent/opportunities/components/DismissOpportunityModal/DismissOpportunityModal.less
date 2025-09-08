@@ -1,0 +1,18 @@
+@import '~css/typography';
+@import '~css/util';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+
+:local {
+    .modalContent {
+        .body-regular();
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+    }
+
+    .dropdownContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+}

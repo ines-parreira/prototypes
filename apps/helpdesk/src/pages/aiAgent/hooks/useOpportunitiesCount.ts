@@ -15,8 +15,9 @@ export const useOpportunitiesCount = (
     )
 
     const opportunitiesCount = useMemo(() => {
+        if (!helpCenterId) return 0
         return aiArticles?.length ?? 0
-    }, [aiArticles])
+    }, [aiArticles, helpCenterId])
 
     return {
         count: opportunitiesCount,

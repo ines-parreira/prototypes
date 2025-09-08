@@ -25,8 +25,8 @@
     "devDependencies": {
         "@repo/config": "workspace:*",
         "@repo/navigation": "workspace:*",
-        "@repo/testing": "workspace:*",
         "@repo/reporting": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

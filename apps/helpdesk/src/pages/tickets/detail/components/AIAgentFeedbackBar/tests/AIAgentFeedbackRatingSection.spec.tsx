@@ -2,7 +2,10 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
+import {
+    FeedbackExecutionsItem,
+    FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+} from '@gorgias/knowledge-service-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
@@ -286,8 +289,8 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            },
-        ] as any
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+        ]
 
         render(
             <AIAgentFeedbackRatingSection

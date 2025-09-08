@@ -174,6 +174,7 @@ describe('OpportunitiesLayout', () => {
         mockMapAiArticlesToOpportunities.mockImplementation((articles) =>
             articles.map((article: any) => ({
                 id: article.key,
+                key: article.key,
                 title: article.title,
                 content: article.html_content,
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,

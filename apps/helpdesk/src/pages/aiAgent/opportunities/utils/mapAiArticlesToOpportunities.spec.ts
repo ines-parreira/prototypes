@@ -26,6 +26,7 @@ describe('mapAiArticlesToOpportunities', () => {
             title: 'Test Article Title',
             content: '<p>Test article content</p>',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'test-article-1',
         })
     })
 
@@ -55,18 +56,21 @@ describe('mapAiArticlesToOpportunities', () => {
             title: 'Test Article Title',
             content: '<p>Test article content</p>',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'test-article-1',
         })
         expect(result[1]).toEqual({
             id: 'test-article-2',
             title: 'Second Article',
             content: '<p>Second article content</p>',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'test-article-2',
         })
         expect(result[2]).toEqual({
             id: 'test-article-3',
             title: 'Third Article',
             content: '<p>Third article content</p>',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'test-article-3',
         })
     })
 

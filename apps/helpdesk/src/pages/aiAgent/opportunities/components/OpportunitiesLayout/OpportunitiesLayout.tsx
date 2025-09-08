@@ -46,16 +46,16 @@ export const OpportunitiesLayout = () => {
     const [selectedOpportunity, setSelectedOpportunity] =
         useState<Opportunity | null>(null)
 
-    const opportunities: Opportunity[] = useMemo(
-        () => mapAiArticlesToOpportunities(aiArticles),
-        [aiArticles],
-    )
+    const opportunities: Opportunity[] = useMemo(() => {
+        if (!storeConfiguration?.helpCenterId) return []
+        return mapAiArticlesToOpportunities(aiArticles)
+    }, [aiArticles, storeConfiguration?.helpCenterId])
 
     const selectNextOpportunity = (articleKey: string) => {
         // If the published opportunity was selected, select the next one
-        if (selectedOpportunity?.id === articleKey) {
+        if (selectedOpportunity?.key === articleKey) {
             const remainingOpportunities = opportunities.filter(
-                (opp) => opp.id !== articleKey,
+                (opp) => opp.key !== articleKey,
             )
             setSelectedOpportunity(remainingOpportunities[0] || null)
         }
@@ -89,7 +89,7 @@ export const OpportunitiesLayout = () => {
                     selectedOpportunity={selectedOpportunity}
                 />
                 <OpportunitiesContent
-                    key={selectedOpportunity?.id}
+                    key={selectedOpportunity?.key}
                     selectedOpportunity={selectedOpportunity}
                     shopName={shopName}
                     helpCenterId={storeConfiguration?.helpCenterId ?? 0}
