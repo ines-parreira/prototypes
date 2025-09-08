@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 
-import axios, { CancelToken, CancelTokenSource } from 'axios'
-
-import { listUsers } from '@gorgias/helpdesk-client'
-import { ListUsersParams, useListUsers } from '@gorgias/helpdesk-queries'
+import {
+    ListUsersParams,
+    ListUsersResult,
+    useListUsers,
+} from '@gorgias/helpdesk-queries'
 import {
     ListUsersOrderBy,
     ListUsersRelationshipsItem,
@@ -21,6 +22,7 @@ export const USERS_PER_PAGE = 15
 
 type UseUserListResult = {
     params: ListUsersParams
+    isFetching: boolean
     isLoading: boolean
     isError: boolean
     users: User[]
@@ -36,14 +38,11 @@ type UseUserListResult = {
 }
 
 export function useUserList(): UseUserListResult {
-    const [users, setUsers] = useState<User[]>([])
-    const [nextCursor, setNextCursor] = useState<string | null>(null)
     const [params, setParams] = useState<ListUsersParams>({
         order_by: ListUsersOrderBy.NameAsc,
     })
-    const cancelTokenSourceRef = useRef<CancelTokenSource | null>(null)
 
-    const { data, isLoading, isError } = useListUsers(
+    const { data, isLoading, isFetching, isError } = useListUsers(
         {
             ...params,
             relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
@@ -51,113 +50,63 @@ export function useUserList(): UseUserListResult {
             cursor: params.cursor,
         },
         {
-            query: { staleTime: STALE_TIME_MS, keepPreviousData: true },
+            query: {
+                staleTime: STALE_TIME_MS,
+                keepPreviousData: true,
+                select: (data) => {
+                    return extractResponse(data)
+                },
+            },
         },
     )
 
-    const validPageUsers = useMemo(
-        () => filterUsers(data?.data.data ?? []),
-        [data],
-    )
-    const prevCursor = data?.data.meta.prev_cursor ?? null
+    const prevCursor = data?.meta?.prev_cursor
+    const nextCursor = data?.meta?.next_cursor
+
     const hasPrevItems = !!prevCursor
     const hasNextItems = !!nextCursor
 
-    const cancelFetchMore = useCallback(() => {
-        if (cancelTokenSourceRef.current) {
-            cancelTokenSourceRef.current.cancel()
-            cancelTokenSourceRef.current = null
-        }
-    }, [])
-
-    const onValidPageUsers = useCallback(
-        (users: User[], cursor: string | null) => {
-            cancelFetchMore()
-            const source = axios.CancelToken.source()
-            cancelTokenSourceRef.current = source
-
-            completeUsers(params, users, cursor, source.token)
-                .then((result) => {
-                    setNextCursor(result.cursor)
-                    setUsers(result.users)
-                })
-                .catch((error) => {
-                    if (axios.isCancel(error)) {
-                        return
-                    }
-
-                    // In case of error while fetching more, we can still render the page users:
-                    // it might contain fewer users than expected, but it's still valid rows to render.
-                    setNextCursor(cursor)
-                    setUsers(users)
-                })
-        },
-        [params, cancelFetchMore],
-    )
-
-    useEffect(() => {
-        if (!isLoading && validPageUsers) {
-            onValidPageUsers(
-                validPageUsers,
-                data?.data.meta.next_cursor ?? null,
-            )
-        }
-    }, [
-        isLoading,
-        validPageUsers,
-        data?.data.meta.next_cursor,
-        onValidPageUsers,
-    ])
-
     const fetchPrevItems = useCallback(() => {
-        setParams({
-            ...params,
+        setParams((prevParams) => ({
+            ...prevParams,
             cursor: prevCursor ?? undefined,
-        })
-    }, [prevCursor, params])
+        }))
+    }, [prevCursor])
 
     const fetchNextItems = useCallback(() => {
-        setParams({
-            ...params,
+        setParams((prevParams) => ({
+            ...prevParams,
             cursor: nextCursor ?? undefined,
-        })
-    }, [nextCursor, params])
+        }))
+    }, [nextCursor])
 
     const setOrderBy = useCallback(
         (orderBy: UserSortableProperties, orderDir: OrderDirection) => {
-            setParams({
-                ...params,
+            setParams((prevParams) => ({
+                ...prevParams,
                 order_by: `${orderBy}:${orderDir}` as ListUsersOrderBy,
                 cursor: undefined,
-            })
+            }))
             logEvent(SegmentEvent.SettingsUsersSort, { orderBy, orderDir })
         },
-        [params],
+        [],
     )
 
-    const setSearch = useCallback(
-        (search: string) => {
-            setParams({
-                ...params,
-                search,
-                cursor: undefined,
-            })
-            logEvent(SegmentEvent.SettingsUsersSearch)
-        },
-        [params],
-    )
-
-    useEffect(() => {
-        return () => {
-            cancelFetchMore()
-        }
-    }, [cancelFetchMore])
+    const setSearch = useCallback((search: string) => {
+        setParams((prevParams) => ({
+            ...prevParams,
+            search,
+            cursor: undefined,
+        }))
+        logEvent(SegmentEvent.SettingsUsersSearch)
+    }, [])
 
     return {
         params,
+        isFetching,
         isLoading,
         isError,
-        users,
+        users: data?.filteredUsers ?? [],
         hasPrevItems,
         hasNextItems,
         fetchPrevItems,
@@ -167,45 +116,20 @@ export function useUserList(): UseUserListResult {
     }
 }
 
+function extractResponse(data: ListUsersResult) {
+    const users = data?.data?.data
+    const meta = data?.data?.meta
+
+    return {
+        filteredUsers: filterUsers(users),
+        meta,
+    }
+}
+
 function filterUsers(users: User[]): User[] {
     return users.filter(
         (user) =>
             user.role?.name !== UserRole.Bot ||
             user.client_id === AI_AGENT_CLIENT_ID,
     )
-}
-
-function shouldFetchMore(users: User[], cursor: string | null): boolean {
-    return users.length < USERS_PER_PAGE && !!cursor
-}
-
-type CompleteUsersResult = {
-    users: User[]
-    cursor: string | null
-}
-
-async function completeUsers(
-    params: ListUsersParams,
-    users: User[],
-    cursor: string | null,
-    cancelToken?: CancelToken,
-): Promise<CompleteUsersResult> {
-    while (shouldFetchMore(users, cursor)) {
-        const limit = USERS_PER_PAGE - users.length
-        const response = await listUsers(
-            {
-                ...params,
-                relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
-                cursor: cursor ?? undefined,
-                limit,
-            },
-            { cancelToken },
-        )
-        const json = response.data
-
-        users.push(...filterUsers(json.data))
-        cursor = json.meta.next_cursor
-    }
-
-    return { users, cursor }
 }

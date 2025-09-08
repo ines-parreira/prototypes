@@ -3,38 +3,19 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
 import { ListUsersParams } from '@gorgias/helpdesk-queries'
 import { User } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import { UsersSettingsItem } from '../UsersSettingsItem'
 import { UsersSettingsTable } from '../UsersSettingsTable'
 
-jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: jest.fn(() => <div data-testid="loading-spinner" />),
-}))
-
 jest.mock('pages/common/components/table/cells/HeaderCellProperty', () =>
-    jest.fn(() => <div data-testid="header-cell" />),
-)
-
-jest.mock('pages/common/components/table/cells/BodyCell', () =>
-    jest.fn(({ children, innerClassName }) => (
-        <div data-testid={`body-cell-${innerClassName}`}>{children}</div>
-    )),
-)
-
-jest.mock('pages/common/components/table/TableBodyRow', () =>
-    jest.fn(({ children }) => (
-        <div data-testid="table-body-row">{children}</div>
-    )),
+    jest.fn(() => <th data-testid="header-cell" />),
 )
 
 jest.mock('../UsersSettingsItem', () => ({
@@ -42,10 +23,7 @@ jest.mock('../UsersSettingsItem', () => ({
 }))
 
 const mockedHeaderCellProperty = assumeMock(HeaderCellProperty)
-assumeMock(BodyCell)
-assumeMock(TableBodyRow)
 const mockedUsersSettingsItem = assumeMock(UsersSettingsItem)
-const mockedLoadingSpinner = assumeMock(LoadingSpinner)
 
 describe('<UsersSettingsTable />', () => {
     const defaultProps = {
@@ -73,11 +51,18 @@ describe('<UsersSettingsTable />', () => {
         }
     })
 
-    it('should render loading spinner when isLoading is true', () => {
+    it('should render skeleton when isLoading is true', () => {
         render(<UsersSettingsTable {...defaultProps} isLoading={true} />)
 
-        expect(mockedLoadingSpinner).toHaveBeenCalledTimes(1)
-        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+        // Check that skeleton is rendered instead of users
+        expect(mockedUsersSettingsItem).not.toHaveBeenCalled()
+
+        // Check for skeleton elements in the table body
+        const tableBody = screen.getByRole('table').querySelector('tbody')
+        expect(tableBody).toBeInTheDocument()
+
+        // Verify that no user items are rendered
+        expect(screen.queryAllByTestId('user-item')).toHaveLength(0)
     })
 
     it('should render users when provided', () => {

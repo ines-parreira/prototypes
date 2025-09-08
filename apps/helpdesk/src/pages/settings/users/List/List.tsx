@@ -29,6 +29,7 @@ const UserList = () => {
     const hasNoResults =
         usersList.params.search &&
         !usersList.isLoading &&
+        !usersList.isFetching &&
         !usersList.users.length
 
     useEffect(() => {
@@ -88,7 +89,9 @@ const UserList = () => {
                         </p>
                         <div className={css.table}>
                             <UsersSettingsTable
-                                isLoading={usersList.isLoading}
+                                isLoading={
+                                    usersList.isLoading || usersList.isFetching
+                                }
                                 users={usersList.users}
                                 onSortOptionsChange={usersList.setOrderBy}
                                 options={usersList.params}

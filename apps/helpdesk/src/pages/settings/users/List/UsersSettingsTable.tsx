@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { Skeleton } from '@gorgias/axiom'
 import { ListUsersParams } from '@gorgias/helpdesk-queries'
 import { User } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -115,11 +114,22 @@ export function UsersSettingsTable({
             </thead>
             <TableBody>
                 {isLoading ? (
-                    <TableBodyRow>
-                        <BodyCell innerClassName={css.empty} colSpan={4}>
-                            <LoadingSpinner size="medium" />
-                        </BodyCell>
-                    </TableBodyRow>
+                    <>
+                        <TableBodyRow>
+                            <td className="p-4">
+                                <Skeleton height="30" width="100" count={15} />
+                            </td>
+                            <td className="p-4">
+                                <Skeleton height="20" width="100" count={15} />
+                            </td>
+                            <td className="p-4">
+                                <Skeleton height="20" width="100" count={15} />
+                            </td>
+                            <td className="p-4">
+                                <Skeleton height="20" width="100" count={15} />
+                            </td>
+                        </TableBodyRow>
+                    </>
                 ) : (
                     users.map((user: User) => (
                         <UsersSettingsItem key={user.id} user={user} />
