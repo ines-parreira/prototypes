@@ -12,9 +12,9 @@ export type ExpressionProps = {
     parent: List<any>
     rule: Map<any, any>
     schemas: Map<any, any>
-    leftsiblings: Maybe<List<any>>
+    leftsiblings?: Maybe<List<any>>
     type: string
-    depth: number
+    depth?: number
     elements?: React.ReactNode
 }
 

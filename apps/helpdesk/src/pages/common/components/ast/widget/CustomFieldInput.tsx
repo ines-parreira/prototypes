@@ -12,10 +12,13 @@ import NumberInput from 'pages/common/forms/input/NumberInput'
 type Props = {
     customField: CustomField
     value?: CustomFieldValue
-    onChange: (value: Maybe<CustomFieldValue>) => void
+    onChange: (value: Maybe<CustomFieldValue | CustomFieldValue[]>) => void
     className?: any
     isRequired?: boolean
-}
+} & Pick<
+    ComponentProps<typeof MultiLevelSelect>,
+    'allowMultiValues' | 'CustomInput' | 'autoWidth'
+>
 
 /**
  * Component that shows the relevant value input for a given custom field.
@@ -26,6 +29,7 @@ function CustomFieldInput({
     value,
     className,
     isRequired,
+    allowMultiValues,
     ...props
 }: Props) {
     const definition = customField.definition
@@ -66,9 +70,11 @@ function CustomFieldInput({
             value:
                 typeof value === 'number'
                     ? value
-                    : typeof value === 'string'
-                      ? parseInt(value, 10)
-                      : undefined,
+                    : value === ''
+                      ? undefined
+                      : typeof value === 'string'
+                        ? parseInt(value, 10)
+                        : undefined,
         }
         if (definition.input_settings.min !== undefined) {
             numberFieldProps.min = Number(definition.input_settings.min)
@@ -86,13 +92,13 @@ function CustomFieldInput({
     ) {
         const choices = definition.input_settings.choices
         const dropdownProps = {
-            ...baseFieldProps,
-            value:
-                value !== undefined &&
-                choices &&
-                (choices as CustomFieldValue[]).includes(value)
-                    ? value
-                    : undefined,
+            value: allowMultiValues
+                ? value
+                : value !== undefined &&
+                    choices &&
+                    (choices as CustomFieldValue[]).includes(value)
+                  ? value
+                  : undefined,
             placeholder: 'Select an option',
             choices: choices || [],
             id: customField.id,
@@ -100,6 +106,8 @@ function CustomFieldInput({
             showFullValue: true,
             autoWidth: true,
             inputId: `rule-custom-field-${customField.id}`,
+            allowMultiValues,
+            ...baseFieldProps,
         }
         return (
             <div

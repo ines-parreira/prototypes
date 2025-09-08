@@ -1,11 +1,11 @@
-import React from 'react'
-
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { appQueryClient } from 'api/queryClient'
 import { emptyRule } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { RootState, StoreDispatch } from 'state/types'
@@ -32,7 +32,9 @@ describe('<DefaultRuleEditor/>', () => {
     it('should render correctly', () => {
         const { container } = render(
             <Provider store={store}>
-                <DefaultRuleEditor {...minProps} />
+                <QueryClientProvider client={appQueryClient}>
+                    <DefaultRuleEditor {...minProps} />
+                </QueryClientProvider>
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()

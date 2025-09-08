@@ -1,14 +1,15 @@
-import React from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { appQueryClient } from 'api/queryClient'
 import CallExpression from 'pages/common/components/ast/expression/CallExpression'
 import Expression from 'pages/common/components/ast/expression/Expression'
 import Statement from 'pages/common/components/ast/statements/Statement'
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 import { RuleItemActions } from 'pages/settings/rules/types'
-import { ObjectExpressionPropertyKey } from 'state/rules/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(
@@ -22,26 +23,29 @@ const commonProps = {
     arguments: ['a', { properties: [] }],
     schemas: fromJS({ foo: 'schemas' }),
     depth: 0,
+    callee: {
+        type: 'Identifier' as const,
+        name: 'eq',
+    },
+    parent: fromJS(['body', 0, 'test']),
 }
+
+const renderComponent = (
+    props?: Partial<ComponentProps<typeof CallExpression>>,
+) =>
+    renderWithStore(
+        <QueryClientProvider client={appQueryClient}>
+            <RuleContext.Provider value={{ Expression, Statement }}>
+                <CallExpression {...commonProps} {...props} />
+            </RuleContext.Provider>
+        </QueryClientProvider>,
+        {},
+    )
 
 describe('<CallExpression />', () => {
     describe('Expression is a condition', () => {
-        const callee: ObjectExpressionPropertyKey = {
-            type: 'Identifier',
-            name: 'eq',
-        }
-
         it('should not render `delete` icon because the expression is the only line of the test condition', () => {
-            const { container } = renderWithStore(
-                <RuleContext.Provider value={{ Expression, Statement }}>
-                    <CallExpression
-                        {...commonProps}
-                        parent={fromJS(['body', 0, 'test'])}
-                        callee={callee}
-                    />
-                </RuleContext.Provider>,
-                {},
-            )
+            const { container } = renderComponent()
             fireEvent.mouseEnter(container.firstChild!)
 
             expect(
@@ -53,16 +57,10 @@ describe('<CallExpression />', () => {
             'should render `delete` icon because the expression is not the only line of the test condition and the ' +
                 'expression is hovered',
             () => {
-                const { container } = renderWithStore(
-                    <RuleContext.Provider value={{ Expression, Statement }}>
-                        <CallExpression
-                            {...commonProps}
-                            parent={fromJS(['body', 0, 'test', 'left'])}
-                            callee={callee}
-                        />
-                    </RuleContext.Provider>,
-                    {},
-                )
+                const { container } = renderComponent({
+                    parent: fromJS(['body', 0, 'test', 'left']),
+                })
+
                 expect(
                     screen.queryByText('DeleteBinaryExpressionMock'),
                 ).not.toBeInTheDocument()
@@ -77,21 +75,14 @@ describe('<CallExpression />', () => {
     })
 
     describe('Expression is an action', () => {
-        const callee: ObjectExpressionPropertyKey = {
-            type: 'Identifier',
-            name: 'Action',
-        }
-
         it('should render action select', () => {
-            render(
-                <RuleContext.Provider value={{ Expression, Statement }}>
-                    <CallExpression
-                        {...commonProps}
-                        parent={fromJS(['body', 0, 'expression'])}
-                        callee={callee}
-                    />
-                </RuleContext.Provider>,
-            )
+            renderComponent({
+                parent: fromJS(['body', 0, 'expression']),
+                callee: {
+                    type: 'Identifier',
+                    name: 'Action',
+                },
+            })
 
             expect(screen.getByText('Select action')).toBeInTheDocument()
         })

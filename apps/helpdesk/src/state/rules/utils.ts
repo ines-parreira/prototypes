@@ -22,6 +22,36 @@ import {
 } from './types'
 
 /**
+ * Convert a path array to a valid JavaScript expression
+ * Handles custom field IDs with bracket notation
+ */
+function pathToJavaScript(path: Array<Maybe<string>>): string {
+    if (!path || path.length === 0) {
+        return ''
+    }
+
+    let result = ''
+    for (let i = 0; i < path.length; i++) {
+        const part = path[i]
+        if (!part) continue
+
+        // Check if this part is a number (custom field ID)
+        const isNumber = !isNaN(Number(part as string)) && part !== ''
+
+        if (i === 0) {
+            result = part
+        } else if (isNumber) {
+            // For custom field IDs, use bracket notation
+            result += `['${part}']`
+        } else {
+            // For regular properties, use dot notation
+            result += `.${part}`
+        }
+    }
+    return result
+}
+
+/**
  * Generate a path until the stop path was reached.
  *
  *  Example:
@@ -66,6 +96,17 @@ function partialPath(
             case 'Identifier': {
                 objectPath.push(expr.get('name'))
                 walk(null, [...path, 'name'])
+                break
+            }
+            case 'Literal': {
+                // Handle Literal nodes (like the custom field ID)
+                const value = expr.get('value')
+                if (typeof value === 'string' || typeof value === 'number') {
+                    // For custom field IDs, we just push the value as a string
+                    // The system will handle the bracket notation when generating the final JavaScript
+                    objectPath.push(String(value))
+                }
+                walk(null, [...path, 'value'])
                 break
             }
             default:
@@ -144,6 +185,9 @@ const resolveArgSchema = (
             }
         }
     }
+    if (path.includes('custom_fields')) {
+        return path.slice(0, path.length - 2) // drop the custom field value
+    }
     return path
 }
 
@@ -195,6 +239,8 @@ function resolveProperties(
             return resolveProperties(defProps, [...firstArg, key], schemas)
         }
     }
+
+    return undefined
 }
 
 /**
@@ -206,26 +252,37 @@ function resolveProperties(
 function resolveFirstArgSchema(
     firstArg: Maybe<string>[],
     schemas: Schemas,
-): [Maybe<string>[], Maybe<Map<any, any>>] {
+    schemaDefinitionKey?: string,
+): [Maybe<string>[], Maybe<Map<any, any>>, Maybe<string>[] | undefined] {
     // Based on the first arg, try to get our schema
     const schemaPath = resolveArgSchema(firstArg, schemas)
     const firstArgSchema = schemas.getIn(schemaPath) as Map<any, any>
 
     if (firstArgSchema) {
+        const path = firstArg.includes('custom_fields')
+            ? ['meta', 'operators', schemaDefinitionKey]
+            : ['meta', 'operators']
         // if the schemas supports operators all good, return the schema and the path
-        const operators = firstArgSchema.getIn(['meta', 'operators']) as string
+        const operators = firstArgSchema.getIn(path) as Map<any, any>
+
         if (operators) {
-            return [firstArg, firstArgSchema]
+            return [firstArg, firstArgSchema, path]
         }
 
         // no operators means we have to dig deeper into it's properties
         const props = firstArgSchema.toJS() as Record<string, unknown>
-        const args = resolveProperties(props, firstArg, schemas)
-        return resolveFirstArgSchema(
-            ...(args as ArgumentsOf<typeof resolveFirstArgSchema>),
-        )
+        const resolveResult = resolveProperties(props, firstArg, schemas)
+        if (resolveResult) {
+            const [nextFirstArg] = resolveResult as [Maybe<string>[]]
+            return resolveFirstArgSchema(
+                nextFirstArg,
+                schemas,
+                schemaDefinitionKey,
+            )
+        }
+        return [firstArg, null, undefined]
     }
-    return [firstArg, null]
+    return [firstArg, null, undefined]
 }
 
 /**
@@ -235,6 +292,7 @@ function resolveFirstArg(
     callExpression: Map<any, any>,
     stopPath: List<any>,
     schemas: Schemas,
+    schemaDefinitionKey?: string,
 ) {
     const memberExpression = callExpression.getIn(['arguments', 0]) as Map<
         any,
@@ -248,7 +306,7 @@ function resolveFirstArg(
     // looking at the schema and selecting the first valid property that supports operations.
     // Ex: `ticket.sender` -> `ticket.sender.channel`
     fullStop = false
-    return resolveFirstArgSchema(firstArg, schemas)
+    return resolveFirstArgSchema(firstArg, schemas, schemaDefinitionKey)
 }
 
 /**
@@ -259,15 +317,14 @@ function resolveFirstArg(
 export function resolveCallee(
     callExpression: Map<any, any>,
     firstArgSchema: Schemas,
+    path: Maybe<string>[] = ['meta', 'operators'],
 ): string {
     const oldCallee = callExpression.getIn(['callee', 'name'], '') as string
     let callee: Maybe<string> = oldCallee
 
-    if (firstArgSchema && firstArgSchema.getIn(['meta', 'operators'])) {
+    if (firstArgSchema && firstArgSchema.getIn(path)) {
         const operators = Object.keys(
-            (
-                firstArgSchema.getIn(['meta', 'operators']) as Map<any, any>
-            ).toJS(),
+            (firstArgSchema.getIn(path) as Map<any, any>).toJS(),
         )
 
         callee = operators.find((operator) => operator === oldCallee)
@@ -305,6 +362,7 @@ export function resolveSecondArg(
     callee: string,
     reset: boolean,
     firstArgSchema?: Schemas,
+    schemaDefinitionKey?: string, // present if this is a custom field argument
 ): Maybe<string> {
     // empty operators have only one argument
     if (Object.keys(UNARY_OPERATORS).includes(callee)) {
@@ -314,8 +372,8 @@ export function resolveSecondArg(
     const hasEnum = <T extends object>(enumType: T) =>
         Object.values(enumType).includes(callee)
     const isCollectionCallee = hasEnum(CollectionOperator)
-    const isTimedeltaCallee = hasEnum(TimedeltaOperator)
-    const isDatetimeCallee = hasEnum(DatetimeOperator)
+    const isTimedeltaCallee = hasEnum(TimedeltaOperator) && !schemaDefinitionKey
+    const isDatetimeCallee = hasEnum(DatetimeOperator) && !schemaDefinitionKey
 
     const args = (callExpression.getIn(['arguments', 1]) || fromJS({})) as Map<
         any,
@@ -449,6 +507,7 @@ export function updateCallExpression(
     state: Map<any, any>,
     path: List<any>,
     schemas: Schemas,
+    schemaDefinitionKey?: string,
 ) {
     // nothing to do if it's just a value change, just return the same state
     // `value`: value of an AST Literal
@@ -482,11 +541,15 @@ export function updateCallExpression(
 
     const callExpression = (state.getIn(callExpressionPath.toJS()) ||
         fromJS({})) as Map<any, any>
-    const [firstArg, firstArgSchema] = resolveFirstArg(
+
+    const [firstArg, firstArgSchema, pathToOperators] = resolveFirstArg(
         callExpression,
         stopPath,
         schemas,
+        schemaDefinitionKey,
     )
+
+    // get firstArgSchema for custom fields
     let callee = null
     let secondArg = null
     if (firstArg && firstArg.includes('self_service_flow')) {
@@ -494,17 +557,22 @@ export function updateCallExpression(
         callee = callExpression.getIn(['callee', 'name'], '') as string
         secondArg = "''"
     } else {
-        callee = resolveCallee(callExpression, firstArgSchema as Map<any, any>)
+        callee = resolveCallee(
+            callExpression,
+            firstArgSchema as Map<any, any>,
+            pathToOperators,
+        )
         secondArg = resolveSecondArg(
             callExpression,
             callee,
             hasPropertyChanged,
             firstArgSchema as Map<any, any>,
+            schemaDefinitionKey,
         )
     }
 
     // generate the new CallExpression and replace the old one
-    let rawCallExpression = `${callee}(${firstArg.join('.')}`
+    let rawCallExpression = `${callee}(${pathToJavaScript(firstArg)}`
 
     if (secondArg) {
         rawCallExpression += `, ${secondArg}`

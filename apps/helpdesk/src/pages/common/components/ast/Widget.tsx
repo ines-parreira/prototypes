@@ -37,8 +37,14 @@ import { stringToDatetime } from 'utils/date'
 import { convertToHTML, getPlainText } from 'utils/editor'
 import { removeSuffix } from 'utils/string'
 
+import {
+    getCustomFieldOperators,
+    getFieldSchemaDefinitionKey,
+} from '../ViewTable/Filters/utils'
+import { getCustomFieldIdFromPath } from './utils'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
+import { CustomDropdownInput } from './widget/CustomDropdownInput'
 import CustomFieldIdInput from './widget/CustomFieldIdInput'
 import CustomFieldSelect from './widget/CustomFieldSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
@@ -50,6 +56,7 @@ import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
 import StatusSelect from './widget/StatusSelect'
 import TagsSelect from './widget/TagsSelect'
+import { useGetCustomFieldById } from './widget/useGetCustomFieldById'
 
 import css from './Widget.less'
 
@@ -104,6 +111,10 @@ const getTextField = (
     }
 }
 
+// For custom fields, we need to resolve to the custom_fields schema
+// and then use the field type to determine the appropriate operators
+const customFieldPath = ['definitions', 'Ticket', 'properties', 'custom_fields']
+
 const Widget = ({
     rule,
     value,
@@ -122,6 +133,14 @@ const Widget = ({
             DateAndTimeFormatting.CompactDateWithTime,
         ),
     )
+    const customField = useGetCustomFieldById(
+        getCustomFieldIdFromPath(leftsiblings),
+    )
+
+    const schemaDefinitionKey = customField
+        ? getFieldSchemaDefinitionKey(customField)
+        : undefined
+
     // State for rich field text field handling
     const [textFieldState, setTextFieldState] = useState<TextFieldState | null>(
         () => {
@@ -165,9 +184,15 @@ const Widget = ({
                 newValue = absValue
             }
 
-            return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
+            return actions.modifyCodeAST(
+                parent,
+                newValue,
+                RuleOperation.Update,
+                undefined,
+                schemaDefinitionKey,
+            )
         },
-        [actions, parent],
+        [actions, parent, schemaDefinitionKey],
     )
 
     const input = useCallback(
@@ -357,6 +382,26 @@ const Widget = ({
 
     const resolveLeft = useCallback(
         (left: List<any>, schemas: Map<any, any>): List<any> => {
+            // Check if this is a custom field path
+            if (left.includes('custom_fields')) {
+                const customFieldId = getCustomFieldIdFromPath(left)
+                if (customFieldId) {
+                    // Check if we're dealing with operators for custom fields
+                    if (left.last() === 'operators') {
+                        // Return the custom field operators schema path
+                        return List([...customFieldPath, 'meta', 'operators'])
+                    }
+
+                    // Check if we're dealing with value input for custom fields
+                    if (left.last() === 'value') {
+                        // Return the custom field value schema path
+                        return List([...customFieldPath, 'meta', 'value'])
+                    }
+
+                    return List(customFieldPath)
+                }
+            }
+
             // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
             const path = []
             for (const item of left.toJS()) {
@@ -465,7 +510,21 @@ const Widget = ({
             operators = fromJS(BASIC_OPERATORS)
         }
 
-        if (operators) {
+        if (leftsiblings.includes('custom_fields')) {
+            // Get custom field operators from schemas based on field type
+            const customFieldOperators = getCustomFieldOperators(
+                schemas,
+                customField,
+            )
+
+            // Convert operators object to array format expected by widget
+            widget.options = Object.entries(customFieldOperators).map(
+                ([key, value]) => ({
+                    value: key,
+                    label: (value as any)?.label || key,
+                }),
+            )
+        } else if (operators) {
             // exclude deprecated operators which are not already used
             operators = operators.filter((ope: any, operatorName: string) => {
                 if (deprecatedOperators.includes(operatorName)) {
@@ -563,6 +622,10 @@ const Widget = ({
             ).toJS()
 
             widget.description = right.get('description')
+        }
+
+        if (left.includes('custom_fields')) {
+            widget.type = 'custom_field-input'
         }
     }
 
@@ -709,10 +772,28 @@ const Widget = ({
                 />
             )
         case 'custom_field-input': {
-            const customFieldId = properties[0].value.value // A custom field input is always preceded by a custom field select
+            const isConditionalCustomField =
+                leftsiblings.includes('custom_fields')
+            // Try to get custom field ID from properties first (for action-based custom fields)
+            // If not available in properties, try to extract from the path (for condition-based custom fields)
+            const customFieldId = isConditionalCustomField
+                ? getCustomFieldIdFromPath(leftsiblings)
+                : (properties[0]?.value.value as number | null)
+
             if (!customFieldId) {
                 return null
             }
+            const allowMultiValues =
+                isConditionalCustomField && schemaDefinitionKey === 'dropdown'
+
+            const customFieldProps =
+                allowMultiValues || schemaDefinitionKey === 'boolean'
+                    ? {
+                          autoWidth: false,
+                          CustomInput: CustomDropdownInput,
+                      }
+                    : {}
+
             return (
                 <CustomFieldIdInput
                     {...widget}
@@ -720,6 +801,8 @@ const Widget = ({
                     className={className}
                     value={widget.value}
                     onChange={handleChange}
+                    allowMultiValues={allowMultiValues}
+                    {...customFieldProps}
                 />
             )
         }

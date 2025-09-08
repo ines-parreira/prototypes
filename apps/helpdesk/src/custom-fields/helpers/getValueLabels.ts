@@ -14,6 +14,16 @@ export function getValueLabel(value?: CustomFieldValue | CustomFieldValue[]) {
             .split(DROPDOWN_NESTING_DELIMITER)
             .join(DROPDOWN_NESTING_FANCY_DELIMITER)
     }
+    if (Array.isArray(value)) {
+        return value
+            .map((item) =>
+                item
+                    .toString()
+                    .split(DROPDOWN_NESTING_DELIMITER)
+                    .join(DROPDOWN_NESTING_FANCY_DELIMITER),
+            )
+            .join(',')
+    }
 
     return value.toString()
 }

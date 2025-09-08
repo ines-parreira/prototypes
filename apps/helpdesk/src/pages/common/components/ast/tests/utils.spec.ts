@@ -118,7 +118,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
             expect(newAst).toMatchSnapshot()
         })
 
-        it('should update property name and reset value (last attribute name changed)', () => {
+        it('should update property name and reset value (last attribute name changed', () => {
             // eq(ticket.subject, 'hello') -> eq(ticket.from_agent, true)
             const path = fromJS([
                 'body',
@@ -186,7 +186,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
             expect(newAst).toMatchSnapshot()
         })
 
-        it('should update property and reset value (first attribute changed', () => {
+        it('should update property and reset value (first attribute changed)', () => {
             // E.g: ticket.subject -> message.channel
             const path = fromJS([
                 'body',

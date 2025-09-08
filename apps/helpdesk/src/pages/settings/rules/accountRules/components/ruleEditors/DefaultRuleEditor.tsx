@@ -197,9 +197,10 @@ const DefaultRuleEditor = (
 
     const modifyCodeAST = (
         path: List<any>,
-        value: Maybe<string | Record<string, unknown>>,
+        value: string | Record<string, unknown> | Map<any, any> | null,
         operation: RuleOperation,
         code_ast?: CodeASTType,
+        schemaDefinitionKey?: string,
     ): esprima.Program => {
         const { code, ast } = updateCodeAst(
             schemas,
@@ -207,6 +208,7 @@ const DefaultRuleEditor = (
             path,
             value,
             operation,
+            schemaDefinitionKey,
         )
         setRuleDraft({ ...ruleDraft, code, code_ast: ast })
         return ast

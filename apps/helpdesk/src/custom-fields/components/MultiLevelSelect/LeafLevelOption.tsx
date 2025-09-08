@@ -11,7 +11,6 @@ import css from './MultiLevelSelect.less'
 
 type LeafLevelOptionProps = {
     className?: string
-    key: string
     choice: CustomFieldValue
     value?: CustomFieldValue | CustomFieldValue[]
     fullValue: CustomFieldValue
@@ -24,7 +23,6 @@ type LeafLevelOptionProps = {
 
 export function LeafLevelOption({
     className,
-    key,
     choice,
     value,
     fullValue,
@@ -38,7 +36,6 @@ export function LeafLevelOption({
     return (
         <DropdownItem
             className={className}
-            key={key}
             tag="button"
             onClick={onClick}
             option={{ label, value: choice }}

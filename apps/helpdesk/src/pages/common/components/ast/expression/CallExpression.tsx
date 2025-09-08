@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { List, Map } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
@@ -78,7 +78,7 @@ export default function CallExpression({
         }
 
         return (
-            <span ref={setRef}>
+            <span className="flex flex-wrap" ref={setRef}>
                 <Expression
                     {...firstArg}
                     parent={parent.push('arguments', 0)}

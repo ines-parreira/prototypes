@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
@@ -47,7 +47,7 @@ const SetCustomFieldValueAction = ({
     )
 
     const handleFieldValueChange = useCallback(
-        (newValue: Maybe<CustomFieldValue>) =>
+        (newValue: Maybe<CustomFieldValue | CustomFieldValue[]>) =>
             updateActionArgs(index, fromJS({ ...args, value: newValue })),
         [updateActionArgs, index, args],
     )

@@ -157,8 +157,32 @@ describe('<MultiLevelSelect />', () => {
         )
 
         expect(screen.getByRole('textbox')).toHaveValue(
-            's1::ss2::c1,s1::ss2::c2',
+            's1 > ss2 > c1,s1 > ss2 > c2',
         )
+    })
+
+    it('should render single item array value correctly', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                allowMultiValues
+                value={['s2']}
+            />,
+        )
+
+        expect(screen.getByRole('textbox')).toHaveValue('s2')
+    })
+
+    it('should render mixed level array values correctly', () => {
+        render(
+            <MultiLevelSelect
+                {...initialProps}
+                allowMultiValues
+                value={['s2', 's1::ss2::c1', 's3']}
+            />,
+        )
+
+        expect(screen.getByRole('textbox')).toHaveValue('s2,s1 > ss2 > c1,s3')
     })
 
     it('should call onChange with correct params when multiple values are selected, and keep textbox open', async () => {

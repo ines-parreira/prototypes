@@ -8,7 +8,7 @@ import getFieldSchemaDefinitionKey from './getFieldSchemaDefinitionKey'
 
 export default function getCustomFieldOperators(
     schemas: Schemas,
-    customField?: CustomField,
+    customField?: CustomField | null,
 ) {
     const customFieldSchemas = findProperty('ticket.custom_fields', schemas)
 
@@ -16,9 +16,9 @@ export default function getCustomFieldOperators(
         | Record<string, Record<string, OperatorType>>
         | undefined
 
-    if (fieldOperatorsSchema && !!customField) {
-        const schemaDefinitionKey = getFieldSchemaDefinitionKey(customField)
+    const schemaDefinitionKey = getFieldSchemaDefinitionKey(customField)
 
+    if (fieldOperatorsSchema && !!schemaDefinitionKey) {
         return fieldOperatorsSchema[schemaDefinitionKey]
     }
 

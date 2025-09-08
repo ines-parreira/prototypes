@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (first attribute changed 1`] = `
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property and reset value (first attribute changed) 1`] = `
 {
   "ast": Script {
     "body": [
@@ -616,7 +616,7 @@ exports[`ast utils updateCodeAst CallExpression changed arguments changed should
 }
 `;
 
-exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property name and reset value (last attribute name changed) 1`] = `
+exports[`ast utils updateCodeAst CallExpression changed arguments changed should update property name and reset value (last attribute name changed 1`] = `
 {
   "ast": Script {
     "body": [

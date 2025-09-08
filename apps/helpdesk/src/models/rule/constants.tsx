@@ -199,6 +199,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.created_datetime',
         },
         {
+            label: 'Custom fields',
+            text: 'ticket custom fields',
+            value: 'ticket.custom_fields',
+        },
+        {
             label: 'From agent',
             text: 'ticket from agent',
             value: 'ticket.from_agent',

@@ -9,6 +9,7 @@ import { Label } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'
+import { CustomFieldValue } from 'custom-fields/types'
 import { getIconFromActionType } from 'models/macroAction/helpers'
 import { MacroActionName } from 'models/macroAction/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
@@ -103,7 +104,15 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         { leading: true, trailing: false },
     )
 
-    setValue(key: string, value: number | string | boolean) {
+    setValue(
+        key: string,
+        value:
+            | number
+            | string
+            | boolean
+            | CustomFieldValue
+            | CustomFieldValue[],
+    ) {
         const action = this.getAction()
 
         const newValue = (

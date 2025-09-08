@@ -1,12 +1,14 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { emptyRule, rules } from 'fixtures/rule'
 import { user } from 'fixtures/users'
@@ -76,6 +78,19 @@ describe('<RuleDetailForm />', () => {
         notify: notifyMock,
     } as any as ComponentProps<typeof RuleDetailForm>
 
+    const renderComponent = (
+        props?: Partial<ComponentProps<typeof RuleDetailForm>>,
+    ) =>
+        render(
+            <Router history={history}>
+                <Provider store={mockStore(defaultStore)}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <RuleDetailForm {...minProps} {...props} />
+                    </QueryClientProvider>
+                </Provider>
+            </Router>,
+        )
+
     beforeEach(() => {
         mockUseParams.mockReturnValue({ ruleId: '1' })
     })
@@ -87,24 +102,13 @@ describe('<RuleDetailForm />', () => {
     describe('rendering', () => {
         it('should render an empty form when no rule id', async () => {
             mockUseParams.mockReturnValue({})
-            const { container } = render(
-                <Router history={history}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <RuleDetailForm {...minProps} />
-                    </Provider>
-                </Router>,
-            )
+            const { container } = renderComponent()
+
             await waitFor(() => expect(container.firstChild).toMatchSnapshot())
         })
 
         it('should render a loader when rule id before fetched', () => {
-            const { container } = render(
-                <Router history={history}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <RuleDetailForm {...minProps} />
-                    </Provider>
-                </Router>,
-            )
+            const { container } = renderComponent()
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -112,13 +116,7 @@ describe('<RuleDetailForm />', () => {
             fetchRulesMock.mockResolvedValue({
                 data: [emptyRule],
             } as unknown as ApiListResponseLegacyPagination<Rule[]>)
-            const { container } = render(
-                <Router history={history}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <RuleDetailForm {...minProps} />
-                    </Provider>
-                </Router>,
-            )
+            const { container } = renderComponent()
 
             await waitFor(() => {
                 expect(rulesFetchedMock.mock.calls).toMatchSnapshot()
@@ -131,13 +129,7 @@ describe('<RuleDetailForm />', () => {
         it('should notify user and send them back to rules on failed fetch', async () => {
             fetchRulesMock.mockRejectedValue('error')
             mockUseParams.mockReturnValue({ ruleId: '404' })
-            render(
-                <Router history={history}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <RuleDetailForm {...minProps} />
-                    </Provider>
-                </Router>,
-            )
+            renderComponent()
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenNthCalledWith(1, {
                     message: 'Could not find rule with id: 404',
@@ -153,15 +145,11 @@ describe('<RuleDetailForm />', () => {
 
     describe('navbar', () => {
         it('should navigate to ticket list on click', () => {
-            const { getByText } = render(
-                <Router history={history}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <RuleDetailForm {...minProps} />
-                    </Provider>
-                </Router>,
-            )
-            fireEvent.click(getByText('Affected tickets'))
-            getByText("This rule hasn't fired yet.")
+            renderComponent()
+            fireEvent.click(screen.getByText('Affected tickets'))
+            expect(
+                screen.getByText("This rule hasn't fired yet."),
+            ).toBeInTheDocument()
         })
     })
 })

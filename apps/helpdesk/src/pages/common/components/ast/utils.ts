@@ -57,12 +57,31 @@ export const getSyntaxTreeLeaves = (
     }
 }
 
+export function getCustomFieldIdFromPath(path?: List<any>) {
+    if (!path) {
+        return null
+    }
+
+    const pathString = path.join('.')
+
+    const regex = /\.(\d+)\./
+    const match = pathString.match(regex)
+
+    if (!match) {
+        return null
+    }
+
+    const customFieldId = match[1]
+    return parseInt(customFieldId, 10)
+}
+
 export const updateCodeAst = (
     schemas: SchemasState,
     ast: CodeASTType,
     path: List<any>,
-    value: Maybe<string | Record<string, unknown>>,
+    value: string | Record<string, unknown> | Map<any, any> | null,
     operation: `${RuleOperation}`,
+    schemaDefinitionKey?: string,
 ) => {
     const immutableAst = toImmutable<Map<any, any>, CodeASTType>(ast)
     const immutablePath = toImmutable<List<any>, List<any>>(path)
@@ -72,7 +91,6 @@ export const updateCodeAst = (
     if (operation === RuleOperation.Update) {
         // First set the value directly based on the full path
         newAst = immutableAst.setIn(immutablePath.toJS(), value)
-
         /* When we do an update for a node, the possible choices after that
          * node will be generated with a default value
          * Ex: if(eq(ticket.status,'open')){}
@@ -83,7 +101,12 @@ export const updateCodeAst = (
         // Do the updates only in the IfStatement.test
         if (immutablePath.contains('test')) {
             // generate a new CallExpression based on changes and schemas
-            newAst = updateCallExpression(newAst, immutablePath, schemas)
+            newAst = updateCallExpression(
+                newAst,
+                immutablePath,
+                schemas,
+                schemaDefinitionKey,
+            )
         } else {
             // Update the arguments for actions when action name is updated
             const argumentsIndex = immutablePath.lastIndexOf('arguments')

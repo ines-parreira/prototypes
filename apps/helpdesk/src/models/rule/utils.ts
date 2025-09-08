@@ -1,17 +1,24 @@
+import { Expression } from 'estree'
+
 import { ObjectExpressionPropertyKey } from '../../state/rules/types'
 import { IdentifierCategoryKey, RuleObject } from './types'
 
 export function getAstPath(
     property: ObjectExpressionPropertyKey,
-    object: RuleObject | ObjectExpressionPropertyKey,
+    object: RuleObject | Expression,
 ): string[] {
     if ((object as ObjectExpressionPropertyKey).name) {
         return [(object as ObjectExpressionPropertyKey).name, property.name]
     }
+    if (property.name)
+        return getAstPath(
+            (object as RuleObject).property,
+            (object as RuleObject).object,
+        ).concat([property.name])
     return getAstPath(
         (object as RuleObject).property,
         (object as RuleObject).object,
-    ).concat([property.name])
+    )
 }
 
 export function generateExpression([
@@ -37,7 +44,6 @@ export function generateExpression([
 
 export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
     const jointPath = path.slice(0, path.length - 1).join('.')
-
     if (jointPath.includes('shopify.last_order')) {
         return IdentifierCategoryKey.ShopifyLastOrder
     } else if (jointPath.includes('shopify.customer')) {

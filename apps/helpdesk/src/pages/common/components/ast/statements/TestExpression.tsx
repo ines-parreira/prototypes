@@ -21,7 +21,7 @@ const TestExpression = ({
 }: TestExpressionProps) => {
     return (
         <div
-            className="test"
+            className="test flex flex-wrap"
             style={{ paddingLeft: computeLeftPadding(depth) }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

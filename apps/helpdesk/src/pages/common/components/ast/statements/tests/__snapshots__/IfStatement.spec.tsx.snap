@@ -5,7 +5,7 @@ exports[`IfStatement component should not render alternate because there is none
   class="IfStatement"
 >
   <div
-    class="test"
+    class="test flex flex-wrap"
     style="padding-left: 0px;"
   >
     <span
@@ -105,7 +105,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
   class="IfStatement"
 >
   <div
-    class="test"
+    class="test flex flex-wrap"
     style="padding-left: 0px;"
   >
     <span

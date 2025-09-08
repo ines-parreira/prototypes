@@ -784,7 +784,6 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should render priority filter', () => {
-        mockUseFlag.mockReturnValue(true)
         render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
