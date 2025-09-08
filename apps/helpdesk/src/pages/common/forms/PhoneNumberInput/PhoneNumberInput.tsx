@@ -64,6 +64,7 @@ type Props = {
     isClearable?: boolean
     isLoading?: boolean
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
+    suppressUIJumps?: boolean
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = (
@@ -84,6 +85,7 @@ const PhoneNumberInput = (
         isClearable,
         isLoading,
         onKeyDown,
+        suppressUIJumps = false,
         ...other
     }: Props,
     ref: ForwardedRef<PhoneNumberInputHandle>,
@@ -301,6 +303,8 @@ const PhoneNumberInput = (
             )}
             {error && <Caption error={error}>{error}</Caption>}
             {!hasError && caption && <Caption>{caption}</Caption>}
+            {/** Show empty caption to avoid jumping up and down based on error presence */}
+            {suppressUIJumps && !hasError && !caption && <Caption></Caption>}
         </div>
     )
 }

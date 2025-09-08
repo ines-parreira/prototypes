@@ -17,19 +17,17 @@ import css from './PhoneDevice.less'
 type Props = {
     onValueChange?: (phoneNumber: string, customer?: UserSearchResult) => void
     onConfirm?: () => void
-    phoneNumberInputError?: string
-    resetError?: () => void
     country?: CountryCode
     onCountryChange?: (country: CountryCode) => void
+    onValidationChange?: (isValid: boolean) => void
 }
 
 export default function PhoneDeviceDialerInput({
     onValueChange = () => {},
     onConfirm = () => {},
-    phoneNumberInputError,
-    resetError = () => {},
     country,
     onCountryChange,
+    onValidationChange,
 }: Props) {
     const {
         inputValue,
@@ -43,10 +41,11 @@ export default function PhoneDeviceDialerInput({
         handleChange,
         handleSelectCustomer,
         handleInputKeyDown,
+        phoneNumberError,
     } = usePhoneDeviceDialerInput({
         onValueChange,
-        resetError,
         onCustomerEnter: onConfirm,
+        onValidationChange,
     })
 
     useEffect(() => {
@@ -56,7 +55,7 @@ export default function PhoneDeviceDialerInput({
     }, [country, phoneNumberInputRef])
 
     return (
-        <>
+        <div className={css.dialerInputWrapper}>
             {isSearchTypeCustomer || selectedCustomer ? (
                 <TextInput
                     ref={textInputRef}
@@ -79,7 +78,6 @@ export default function PhoneDeviceDialerInput({
                     }
                     onChange={handleChange}
                     autoFocus
-                    className={css.dialpadInput}
                     onKeyDown={handleInputKeyDown}
                 />
             ) : (
@@ -88,13 +86,13 @@ export default function PhoneDeviceDialerInput({
                     onLetterEntered={handleChange}
                     onCountryChange={onCountryChange}
                     value={inputValue}
-                    error={phoneNumberInputError}
+                    error={phoneNumberError}
                     autoFocus
-                    className={css.dialpadInput}
                     isClearable
                     isLoading={isSearchingCustomers}
                     ref={phoneNumberInputRef}
                     onKeyDown={handleInputKeyDown}
+                    suppressUIJumps
                 />
             )}
 
@@ -110,6 +108,6 @@ export default function PhoneDeviceDialerInput({
                 onCustomerSelect={handleSelectCustomer}
                 highlightedResultIndex={highlightedResultIndex}
             />
-        </>
+        </div>
     )
 }

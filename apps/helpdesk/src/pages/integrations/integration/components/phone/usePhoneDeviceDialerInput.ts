@@ -1,20 +1,25 @@
-import { useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
+
+import { isValidNumber } from 'libphonenumber-js'
+import { debounce } from 'lodash'
 
 import { UserSearchResult } from 'models/search/types'
 import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
 
+const VALIDATE_DEBOUNCE_VALUE = 500
+
 type UsePhoneDeviceDialerInputArgs = {
     onValueChange: (phoneNumber: string, customer?: UserSearchResult) => void
-    resetError: () => void
     onCustomerEnter: () => void
+    onValidationChange?: (isValid: boolean) => void
 }
 
 export default function usePhoneDeviceDialerInput({
     onValueChange,
-    resetError,
     onCustomerEnter,
+    onValidationChange,
 }: UsePhoneDeviceDialerInputArgs) {
     const [inputValue, setInputValue] = useState('')
     const [selectedCustomer, setSelectedCustomer] =
@@ -24,16 +29,54 @@ export default function usePhoneDeviceDialerInput({
 
     const [isSearchTypeCustomer, setIsSearchTypeCustomer] = useState(false)
 
+    const [phoneNumberError, setPhoneNumberError] = useState<
+        string | undefined
+    >(undefined)
+
+    const validate = useCallback(
+        (value: string) => {
+            if (isValidNumber(value)) {
+                setPhoneNumberError(undefined)
+                onValidationChange?.(true)
+            } else {
+                setPhoneNumberError('Invalid phone number')
+                onValidationChange?.(false)
+            }
+        },
+        [onValidationChange],
+    )
+
+    const debouncedValidate = useMemo(
+        () => debounce(validate, VALIDATE_DEBOUNCE_VALUE),
+        [validate],
+    )
+
+    const scheduleValidation = (value: string) => {
+        setPhoneNumberError(undefined)
+        debouncedValidate(value)
+        onValidationChange?.(false)
+    }
+
+    const cancelValidation = (isValid = false) => {
+        setPhoneNumberError(undefined)
+        debouncedValidate.cancel()
+        onValidationChange?.(isValid)
+    }
+
     const handleChange = (value: string) => {
         setInputValue(value)
         if (!/[a-zA-Z]/.test(value)) {
             onValueChange(value)
-            resetError()
             setIsSearchTypeCustomer(false)
+            if (value !== '') {
+                scheduleValidation(value)
+            } else {
+                cancelValidation()
+            }
         } else {
             onValueChange('')
-            resetError()
             setIsSearchTypeCustomer(true)
+            cancelValidation()
         }
         setSelectedCustomer(null)
 
@@ -43,8 +86,8 @@ export default function usePhoneDeviceDialerInput({
     const handleSelectCustomer = (customer: UserSearchResult) => {
         setInputValue(customer.customer.name)
         onValueChange(customer.address, customer)
-        resetError()
         setSelectedCustomer(customer)
+        cancelValidation(true)
     }
 
     const {
@@ -71,5 +114,6 @@ export default function usePhoneDeviceDialerInput({
         handleChange,
         handleSelectCustomer,
         handleInputKeyDown,
+        phoneNumberError,
     }
 }

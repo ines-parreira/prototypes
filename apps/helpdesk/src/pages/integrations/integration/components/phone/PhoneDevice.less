@@ -1,3 +1,4 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import (reference) '~css/typography.less';
 
 :local {
@@ -9,14 +10,20 @@
     .dropdownBody {
         padding: var(--layout-spacing-s);
         overflow-y: visible;
-        min-height: 390px;
     }
 
     .dialerWrapper {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 100%;
+    }
+
+    .dialerInputWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        // we take into account also the error caption height
+        height: calc(262px + @caption-regular-line-height);
     }
 
     .dialpad {
@@ -26,7 +33,7 @@
 
     .results {
         margin-top: var(--layout-spacing-xs);
-        height: 222px;
+        flex: 1;
         overflow-y: scroll;
 
         &.noResults {

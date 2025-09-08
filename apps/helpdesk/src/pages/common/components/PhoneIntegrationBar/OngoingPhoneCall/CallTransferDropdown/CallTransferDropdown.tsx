@@ -57,11 +57,24 @@ const CallTransferDropdown = ({
     const [selectedTarget, setSelectedTarget] = useState<TransferTarget | null>(
         null,
     )
-
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
+
+    const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false)
+    const [alertBannerData, setAlertBannerData] =
+        useState<AlertBannerData | null>(null)
+    const clearAlertBannerData = () => setAlertBannerData(null)
+
+    const isTransferEnabled =
+        selectedTarget !== null &&
+        (selectedTarget.type !== TransferType.External || isPhoneNumberValid)
+
     const handleSelectedAgentIdChange = (agentId: number) => {
         setSelectedAgentId(agentId)
         setSelectedTarget({ type: TransferType.Agent, id: agentId })
+    }
+    const handlePhoneNumberValidationChange = (isValid: boolean) => {
+        setIsPhoneNumberValid(isValid)
+        clearAlertBannerData()
     }
 
     const handleSelectedExternalPhoneNumberChange = (
@@ -104,10 +117,6 @@ const CallTransferDropdown = ({
         }
     }
 
-    const [alertBannerData, setAlertBannerData] =
-        useState<AlertBannerData | null>(null)
-    const clearAlertBannerData = () => setAlertBannerData(null)
-
     const dispatch = useAppDispatch()
     const { mutate: transferCall, isLoading: isRequestingTransfer } =
         useTransferCall({
@@ -141,7 +150,9 @@ const CallTransferDropdown = ({
         })
 
     const handleTransferCall = () => {
-        if (!selectedTarget) return
+        if (!isTransferEnabled) {
+            return
+        }
 
         transferCall({
             data: {
@@ -150,6 +161,11 @@ const CallTransferDropdown = ({
                 call_sid: getCallSid(call),
             },
         })
+
+        // the external dropdown doesn't keep state, so let's reset it
+        if (selectedTarget.type === TransferType.External) {
+            setSelectedTarget(null)
+        }
     }
 
     return (
@@ -192,6 +208,9 @@ const CallTransferDropdown = ({
                         handleSelectedExternalPhoneNumberChange
                     }
                     handleTransferCall={handleTransferCall}
+                    onPhoneNumberValidationChange={
+                        handlePhoneNumberValidationChange
+                    }
                 />
             )}
             <div className={css.dropdownFooter}>
@@ -204,7 +223,7 @@ const CallTransferDropdown = ({
                 )}
                 <Button
                     className={css.cta}
-                    isDisabled={!selectedTarget}
+                    isDisabled={!isTransferEnabled}
                     onClick={handleTransferCall}
                     isLoading={isRequestingTransfer}
                 >

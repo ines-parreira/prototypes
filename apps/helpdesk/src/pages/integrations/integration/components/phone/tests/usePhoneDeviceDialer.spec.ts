@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
+import { CountryCode } from 'libphonenumber-js'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { PhoneIntegration } from 'models/integration/types/phone'
@@ -14,11 +14,9 @@ import usePhoneNumbers from '../usePhoneNumbers'
 jest.mock('hooks/useAppSelector')
 jest.mock('../useDialerOutboundCall')
 jest.mock('../usePhoneNumbers')
-jest.mock('libphonenumber-js')
 jest.mock('pages/phoneNumbers/utils')
 
 const useAppSelectorMock = assumeMock(useAppSelector)
-const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
 const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const getCountryFromPhoneNumberMock = assumeMock(getCountryFromPhoneNumber)
@@ -56,7 +54,9 @@ describe('usePhoneDeviceDialer', () => {
 
     const setup = () => {
         return renderHook(() =>
-            usePhoneDeviceDialer({ onCallInitiated: mockOnCallInitiated }),
+            usePhoneDeviceDialer({
+                onCallInitiated: mockOnCallInitiated,
+            }),
         )
     }
 
@@ -71,50 +71,44 @@ describe('usePhoneDeviceDialer', () => {
             phone_number: '+12125551234',
         })
         getCountryFromPhoneNumberMock.mockReturnValue('US' as CountryCode)
-        isValidPhoneNumberMock.mockReturnValue(true)
     })
 
     it('should initialize with default values', () => {
         const { result } = setup()
 
-        expect(result.current.phoneNumberInputError).toBeUndefined()
+        expect(result.current.isPhoneNumberValid).toBe(false)
         expect(result.current.country).toBeUndefined()
         expect(result.current.phoneIntegrations).toEqual(mockPhoneIntegrations)
         expect(result.current.selectedIntegration).toEqual(
             mockPhoneIntegrations[0],
         )
-        expect(result.current.isSelectedNumberValid).toBe(false)
-    })
-
-    describe('isSelectedNumberValid', () => {
-        it('should be true for valid phone number', () => {
-            const { result } = setup()
-
-            act(() => {
-                result.current.setSelectedNumberAndCustomer(
-                    '+15551234567',
-                    mockCustomer,
-                )
-            })
-
-            expect(result.current.isSelectedNumberValid).toBe(true)
-        })
-
-        it('should be false for invalid phone number', () => {
-            const { result } = setup()
-
-            act(() => {
-                result.current.setSelectedNumberAndCustomer('')
-            })
-
-            expect(result.current.isSelectedNumberValid).toBe(false)
-        })
     })
 
     describe('handleCall', () => {
-        it('should make call with valid phone number', () => {
-            isValidPhoneNumberMock.mockReturnValue(true)
+        it('should manage phone number validation state', () => {
             const { result } = setup()
+
+            expect(result.current.isPhoneNumberValid).toBe(false)
+
+            act(() => {
+                result.current.setIsPhoneNumberValid(true)
+            })
+
+            expect(result.current.isPhoneNumberValid).toBe(true)
+
+            act(() => {
+                result.current.setIsPhoneNumberValid(false)
+            })
+
+            expect(result.current.isPhoneNumberValid).toBe(false)
+        })
+
+        it('should make call with valid phone number', () => {
+            const { result } = setup()
+
+            act(() => {
+                result.current.setIsPhoneNumberValid(true)
+            })
 
             act(() => {
                 result.current.setSelectedNumberAndCustomer('+15551234567')
@@ -131,12 +125,14 @@ describe('usePhoneDeviceDialer', () => {
             })
             expect(mockMakeCall).toHaveBeenCalled()
             expect(mockOnCallInitiated).toHaveBeenCalled()
-            expect(result.current.phoneNumberInputError).toBeUndefined()
         })
 
         it('should make call with customer', () => {
-            isValidPhoneNumberMock.mockReturnValue(true)
             const { result } = setup()
+
+            act(() => {
+                result.current.setIsPhoneNumberValid(true)
+            })
 
             act(() => {
                 result.current.setSelectedNumberAndCustomer(
@@ -156,7 +152,6 @@ describe('usePhoneDeviceDialer', () => {
             })
             expect(mockMakeCall).toHaveBeenCalled()
             expect(mockOnCallInitiated).toHaveBeenCalled()
-            expect(result.current.phoneNumberInputError).toBeUndefined()
         })
 
         it('should not make call with empty phone number', () => {
@@ -168,11 +163,9 @@ describe('usePhoneDeviceDialer', () => {
 
             expect(mockMakeCall).not.toHaveBeenCalled()
             expect(mockOnCallInitiated).not.toHaveBeenCalled()
-            expect(result.current.phoneNumberInputError).toBeUndefined()
         })
 
         it('should not make call with invalid phone number', () => {
-            isValidPhoneNumberMock.mockReturnValue(false)
             const { result } = setup()
 
             act(() => {
@@ -183,48 +176,8 @@ describe('usePhoneDeviceDialer', () => {
                 result.current.handleCall()
             })
 
-            expect(result.current.phoneNumberInputError).toBe(
-                'Enter a valid number',
-            )
             expect(mockMakeCall).not.toHaveBeenCalled()
             expect(mockOnCallInitiated).not.toHaveBeenCalled()
-        })
-
-        it('should validate phone number before making call', () => {
-            const { result } = setup()
-
-            act(() => {
-                result.current.setSelectedNumberAndCustomer('+15551234567')
-            })
-
-            act(() => {
-                result.current.handleCall()
-            })
-
-            expect(isValidPhoneNumberMock).toHaveBeenCalledWith('+15551234567')
-        })
-
-        it('should reset error after trying to make call', () => {
-            isValidPhoneNumberMock.mockReturnValue(false)
-            const { result } = setup()
-
-            act(() => {
-                result.current.setSelectedNumberAndCustomer('123')
-            })
-
-            act(() => {
-                result.current.handleCall()
-            })
-
-            expect(result.current.phoneNumberInputError).toBe(
-                'Enter a valid number',
-            )
-
-            act(() => {
-                result.current.resetError()
-            })
-
-            expect(result.current.phoneNumberInputError).toBeUndefined()
         })
     })
 

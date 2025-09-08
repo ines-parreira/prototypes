@@ -107,8 +107,8 @@ const usePhoneDeviceDialerInputMock = assumeMock(usePhoneDeviceDialerInput)
 describe('PhoneDeviceDialerInput', () => {
     const onValueChange = jest.fn()
     const onConfirm = jest.fn()
-    const resetError = jest.fn()
     const onCountryChange = jest.fn()
+    const onValidationChange = jest.fn()
     const phoneNumberInputRef = React.createRef<PhoneNumberInputHandle>()
     const textInputRef = React.createRef<HTMLInputElement>()
 
@@ -133,6 +133,7 @@ describe('PhoneDeviceDialerInput', () => {
         textInputRef,
         handleSelectCustomer: jest.fn(),
         handleInputKeyDown: jest.fn(),
+        phoneNumberError: undefined as string | undefined,
     }
 
     const renderComponent = (props = {}) =>
@@ -141,8 +142,8 @@ describe('PhoneDeviceDialerInput', () => {
                 <PhoneDeviceDialerInput
                     onValueChange={onValueChange}
                     onConfirm={onConfirm}
-                    resetError={resetError}
                     onCountryChange={onCountryChange}
+                    onValidationChange={onValidationChange}
                     {...props}
                 />
             </Provider>,
@@ -237,7 +238,12 @@ describe('PhoneDeviceDialerInput', () => {
     })
 
     it('displays error when phone number is not valid', () => {
-        renderComponent({ phoneNumberInputError: 'Enter a valid number' })
+        usePhoneDeviceDialerInputMock.mockReturnValue({
+            ...mockPhoneDeviceDialerInputHookResult,
+            phoneNumberError: 'Enter a valid number',
+        })
+
+        renderComponent()
 
         expect(screen.getByText('Enter a valid number')).toBeInTheDocument()
     })
@@ -336,8 +342,8 @@ describe('PhoneDeviceDialerInput', () => {
                 <PhoneDeviceDialerInput
                     onValueChange={onValueChange}
                     onConfirm={onConfirm}
-                    resetError={resetError}
                     onCountryChange={onCountryChange}
+                    onValidationChange={onValidationChange}
                     country={'IT' as CountryCode}
                 />
             </Provider>,
@@ -390,5 +396,15 @@ describe('PhoneDeviceDialerInput', () => {
             }),
             {},
         )
+    })
+
+    it('passes correct values to usePhoneDeviceDialerInput hook', () => {
+        renderComponent()
+
+        expect(usePhoneDeviceDialerInputMock).toHaveBeenCalledWith({
+            onValueChange,
+            onCustomerEnter: onConfirm,
+            onValidationChange,
+        })
     })
 })

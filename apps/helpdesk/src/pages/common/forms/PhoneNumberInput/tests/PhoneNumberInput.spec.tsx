@@ -344,4 +344,31 @@ describe('<PhoneNumberInput/>', () => {
 
         expect(onChange).not.toHaveBeenCalled()
     })
+
+    it('should not render empty caption by default', () => {
+        const { container } = render(
+            <PhoneNumberInput value="+1234567890" onChange={onChange} />,
+        )
+
+        const getCaptions = () =>
+            container.querySelectorAll('[class*="caption"]')
+
+        expect(getCaptions()).toHaveLength(0)
+    })
+
+    it('should render empty caption when suppressUIJumps is true', () => {
+        const { container } = render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                suppressUIJumps
+            />,
+        )
+
+        const getCaptions = () =>
+            container.querySelectorAll('[class*="caption"]')
+
+        expect(getCaptions()).toHaveLength(1)
+        expect(getCaptions()[0].textContent).toBe('')
+    })
 })

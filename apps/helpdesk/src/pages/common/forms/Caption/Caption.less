@@ -1,3 +1,4 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -5,6 +6,7 @@
         .caption-regular();
         color: var(--neutral-grey-5);
         margin-top: 4px;
+        min-height: @caption-regular-line-height;
     }
 
     .error {

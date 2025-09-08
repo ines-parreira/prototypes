@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
+import { CountryCode } from 'libphonenumber-js'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { PhoneIntegration } from 'models/integration/types/phone'
@@ -19,11 +19,9 @@ export default function usePhoneDeviceDialer({
     onCallInitiated,
 }: UsePhoneDeviceDialerArgs) {
     const [selectedNumber, setSelectedNumber] = useState('')
+    const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false)
     const [selectedCustomer, setSelectedCustomer] =
         useState<UserSearchResult | null>(null)
-    const [phoneNumberInputError, setPhoneNumberInputError] = useState<
-        string | undefined
-    >()
     const [country, setCountry] = useState<CountryCode | undefined>()
 
     const setSelectedNumberAndCustomer = (
@@ -33,7 +31,6 @@ export default function usePhoneDeviceDialer({
         setSelectedNumber(number)
         setSelectedCustomer(customer || null)
     }
-    const resetError = () => setPhoneNumberInputError(undefined)
 
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const [selectedIntegration, setSelectedIntegration] = useState(
@@ -63,15 +60,8 @@ export default function usePhoneDeviceDialer({
         selectedIntegration,
     })
 
-    const isSelectedNumberValid = selectedNumber !== ''
-
     const handleCall = () => {
-        if (!isSelectedNumberValid) {
-            return
-        }
-
-        if (!isValidPhoneNumber(selectedNumber)) {
-            setPhoneNumberInputError('Enter a valid number')
+        if (!isPhoneNumberValid) {
             return
         }
 
@@ -80,15 +70,14 @@ export default function usePhoneDeviceDialer({
     }
 
     return {
+        isPhoneNumberValid,
+        setIsPhoneNumberValid,
         setSelectedNumberAndCustomer,
-        phoneNumberInputError,
-        resetError,
         country,
         setCountry,
         phoneIntegrations,
         selectedIntegration,
         setSelectedIntegration: handleChangeSelectedIntegration,
         handleCall,
-        isSelectedNumberValid,
     }
 }

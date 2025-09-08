@@ -13,25 +13,23 @@ type Props = {
 
 export default function PhoneDeviceDialer({ onCallInitiated }: Props) {
     const {
+        isPhoneNumberValid,
+        setIsPhoneNumberValid,
         setSelectedNumberAndCustomer,
-        phoneNumberInputError,
-        resetError,
         country,
         setCountry,
         phoneIntegrations,
         selectedIntegration,
         setSelectedIntegration,
         handleCall,
-        isSelectedNumberValid,
     } = usePhoneDeviceDialer({ onCallInitiated })
 
     return (
         <div className={css.dialerWrapper}>
             <PhoneDeviceDialerInput
                 onValueChange={setSelectedNumberAndCustomer}
+                onValidationChange={setIsPhoneNumberValid}
                 onConfirm={handleCall}
-                phoneNumberInputError={phoneNumberInputError}
-                resetError={resetError}
                 country={country}
                 onCountryChange={setCountry}
             />
@@ -42,10 +40,7 @@ export default function PhoneDeviceDialer({ onCallInitiated }: Props) {
                     options={phoneIntegrations}
                     onChange={setSelectedIntegration}
                 />
-                <Button
-                    onClick={handleCall}
-                    isDisabled={!isSelectedNumberValid}
-                >
+                <Button onClick={handleCall} isDisabled={!isPhoneNumberValid}>
                     Call
                 </Button>
             </div>

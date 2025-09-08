@@ -13,9 +13,11 @@ jest.mock(
         default: ({
             onValueChange,
             onConfirm,
+            onValidationChange,
         }: {
             onValueChange: (phoneNumber: string, customer?: any) => void
             onConfirm: () => void
+            onValidationChange?: (isValid: boolean) => void
         }) => (
             <div>
                 <input
@@ -26,17 +28,20 @@ jest.mock(
                         const value = e.target.value
                         if (value) {
                             onValueChange(value, undefined)
+                            onValidationChange?.(true)
                         } else {
                             onValueChange('', undefined)
+                            onValidationChange?.(false)
                         }
                     }}
                 />
                 <button
-                    onClick={() =>
+                    onClick={() => {
                         onValueChange('+15551234567', {
                             customer: { id: 123, name: 'Guybrush Threepwood' },
                         })
-                    }
+                        onValidationChange?.(true)
+                    }}
                     aria-label="Select customer"
                 >
                     Select Customer
@@ -52,6 +57,7 @@ jest.mock(
 describe('ExternalCallTransferDropdownContent', () => {
     const setSelectedExternalPhoneNumber = jest.fn()
     const handleTransferCall = jest.fn()
+    const onPhoneNumberValidationChange = jest.fn()
 
     const renderComponent = (props = {}) =>
         render(
@@ -65,6 +71,9 @@ describe('ExternalCallTransferDropdownContent', () => {
                         setSelectedExternalPhoneNumber
                     }
                     handleTransferCall={handleTransferCall}
+                    onPhoneNumberValidationChange={
+                        onPhoneNumberValidationChange
+                    }
                     {...props}
                 />
             </Dropdown>,
@@ -95,6 +104,7 @@ describe('ExternalCallTransferDropdownContent', () => {
             '+15551234567',
             undefined,
         )
+        expect(onPhoneNumberValidationChange).toHaveBeenLastCalledWith(true)
     })
 
     it('calls setSelectedExternalPhoneNumber with customer info when customer is selected', async () => {
@@ -110,6 +120,7 @@ describe('ExternalCallTransferDropdownContent', () => {
                 customer: { id: 123, name: 'Guybrush Threepwood' },
             },
         )
+        expect(onPhoneNumberValidationChange).toHaveBeenLastCalledWith(true)
     })
 
     it('calls setSelectedExternalPhoneNumber with empty string when the input is cleared', async () => {
@@ -124,6 +135,7 @@ describe('ExternalCallTransferDropdownContent', () => {
             '',
             undefined,
         )
+        expect(onPhoneNumberValidationChange).toHaveBeenLastCalledWith(false)
     })
 
     it('calls handleTransferCall when confirm button is clicked', async () => {

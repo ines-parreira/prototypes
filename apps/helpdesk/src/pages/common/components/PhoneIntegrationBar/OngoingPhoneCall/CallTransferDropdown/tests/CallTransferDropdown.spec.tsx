@@ -50,16 +50,41 @@ jest.mock(
     'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent',
     () => ({
         __esModule: true,
-        default: ({ setSelectedExternalPhoneNumber }: any) => {
+        default: ({
+            setSelectedExternalPhoneNumber,
+            onPhoneNumberValidationChange,
+        }: any) => {
             return (
                 <div data-testid="external-transfer-content">
                     <button
-                        onClick={() =>
+                        onClick={() => {
                             setSelectedExternalPhoneNumber('+15551234567', null)
-                        }
+                            onPhoneNumberValidationChange?.(true)
+                        }}
                         aria-label="Set external number"
                     >
                         Set External
+                    </button>
+                    <button
+                        onClick={() => {
+                            setSelectedExternalPhoneNumber('', null)
+                            onPhoneNumberValidationChange?.(false)
+                        }}
+                        aria-label="Clear external number"
+                    >
+                        Clear External
+                    </button>
+                    <button
+                        onClick={() => onPhoneNumberValidationChange?.(true)}
+                        aria-label="Mark phone valid"
+                    >
+                        Mark Valid
+                    </button>
+                    <button
+                        onClick={() => onPhoneNumberValidationChange?.(false)}
+                        aria-label="Mark phone invalid"
+                    >
+                        Mark Invalid
                     </button>
                 </div>
             )
@@ -201,7 +226,7 @@ describe('CallTransferDropdown', () => {
         ).toBeInTheDocument()
     })
 
-    it('only enables the transfer button when a target is selected', async () => {
+    it('only enables the transfer button when a target is selected, if not transferring to external number', async () => {
         const user = userEvent.setup()
         renderComponent()
 
@@ -214,6 +239,32 @@ describe('CallTransferDropdown', () => {
         expect(
             screen.getByRole('button', { name: /transfer call/i }),
         ).toBeAriaEnabled()
+    })
+
+    it('only enables transfer button when external phone number is valid, if transferring to external number', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        const externalTab = screen.getByRole('radio', { name: /external/i })
+        await act(() => user.click(externalTab))
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+
+        expect(transferButton).toBeAriaDisabled()
+
+        const markValid = screen.getByLabelText(/mark phone valid/i)
+        await act(() => user.click(markValid))
+        expect(transferButton).toBeAriaDisabled()
+
+        const setExternal = screen.getByLabelText(/set external number/i)
+        await act(() => user.click(setExternal))
+        expect(transferButton).toBeAriaEnabled()
+
+        const markInvalid = screen.getByLabelText(/mark phone invalid/i)
+        await act(() => user.click(markInvalid))
+        expect(transferButton).toBeAriaDisabled()
     })
 
     it('transfers call to selected agent', async () => {
@@ -327,6 +378,43 @@ describe('CallTransferDropdown', () => {
             })
             expect(setIsOpen).toHaveBeenCalledWith(false)
         })
+    })
+
+    it('clears alert banner when phone number validation changes', async () => {
+        const user = userEvent.setup()
+        const failedTransferHandler = mockTransferCallHandler(async () =>
+            HttpResponse.json({ error: { msg: 'Transfer failed' } } as any, {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            }),
+        )
+        server.use(failedTransferHandler.handler)
+
+        renderComponent()
+
+        const externalTab = screen.getByRole('radio', { name: /external/i })
+        await act(() => user.click(externalTab))
+
+        const setExternal = screen.getByLabelText(/set external number/i)
+        await act(() => user.click(setExternal))
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        await act(() => user.click(transferButton))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Transfer unsuccessful. Please try again.'),
+            ).toBeInTheDocument()
+        })
+
+        const markInvalid = screen.getByLabelText(/mark phone invalid/i)
+        await act(() => user.click(markInvalid))
+
+        expect(
+            screen.queryByText('Transfer unsuccessful. Please try again.'),
+        ).not.toBeInTheDocument()
     })
 
     it('preserves agent selection when switching between tabs', async () => {
