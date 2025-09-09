@@ -15,12 +15,14 @@ type Props = {
     results: UserSearchResult[]
     onCustomerSelect: (customer: UserSearchResult) => void
     highlightedResultIndex: number | null
+    className?: string
 }
 
 export default function PhoneDeviceDialerBodyResultsList({
     results,
     onCustomerSelect,
     highlightedResultIndex,
+    className,
 }: Props) {
     const listItemsRef = React.useRef<HTMLDivElement[]>([])
 
@@ -29,7 +31,7 @@ export default function PhoneDeviceDialerBodyResultsList({
     }, [results])
 
     return (
-        <div className={classNames(css.results, css.resultsFound)}>
+        <div className={classNames(css.results, css.resultsFound, className)}>
             {results.map((result, index) => (
                 <div
                     key={result.id}

@@ -45,6 +45,7 @@ export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
         case VoiceFlowNodeType.TimeSplitConditional:
         case VoiceFlowNodeType.SendToSMS:
         case VoiceFlowNodeType.Intermediary:
+        case VoiceFlowNodeType.ForwardToExternalNumber:
             return false
         default:
             return true
@@ -433,6 +434,14 @@ export const generateNodeData = (
             }
             return enqueue
 
+        case VoiceFlowNodeType.ForwardToExternalNumber:
+            return {
+                id: uuidv4(),
+                name: 'Forward to',
+                step_type: VoiceFlowNodeType.ForwardToExternalNumber,
+                external_number: '',
+                next_step_id: null,
+            }
         default:
             return null
     }

@@ -2,6 +2,7 @@ import {
     CallRoutingFlow,
     CallRoutingFlowSteps,
     EnqueueStep,
+    ForwardToExternalNumberStep,
     IvrMenuStep,
     PlayMessageStep,
     SendToSMSStep,
@@ -59,6 +60,10 @@ export type IntermediaryNode = Node<
     },
     VoiceFlowNodeType.Intermediary
 >
+export type ForwardToExternalNode = Node<
+    ForwardToExternalNumberStep,
+    VoiceFlowNodeType.ForwardToExternalNumber
+>
 
 export type VoiceFlowNodeData = CallRoutingFlowSteps[string]
 
@@ -74,6 +79,7 @@ export type VoiceFlowNode =
     | TimeSplitOptionNode
     | SendToSMSNode
     | IntermediaryNode
+    | ForwardToExternalNode
 
 export type VoiceFlowNodeBase<T extends VoiceFlowNode = VoiceFlowNode> = Pick<
     T,

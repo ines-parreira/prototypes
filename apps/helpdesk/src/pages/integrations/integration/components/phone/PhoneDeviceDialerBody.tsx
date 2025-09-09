@@ -1,11 +1,7 @@
-import classNames from 'classnames'
-
-import { Skeleton } from '@gorgias/axiom'
-
 import { UserSearchResult } from 'models/search/types'
 
 import DialPad from './DialPad'
-import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
+import PhoneSearchResultsContent from './PhoneSearchResultsContent'
 
 import css from './PhoneDevice.less'
 
@@ -42,33 +38,14 @@ export default function PhoneDeviceDialerBody({
         return dialPad
     }
 
-    if (isLoading) {
-        return (
-            <div className={classNames(css.skeleton, css.results)}>
-                {Array.from({ length: 4 }).map((_, index) => (
-                    <Skeleton key={index} height={52} count={1} />
-                ))}
-            </div>
-        )
-    }
-
-    if (isSearchTypeCustomer && !results?.length) {
-        return (
-            <div className={classNames(css.results, css.noResults)}>
-                No results
-            </div>
-        )
-    }
-
-    if (results?.length) {
-        return (
-            <PhoneDeviceDialerBodyResultsList
-                results={results}
-                onCustomerSelect={onCustomerSelect}
-                highlightedResultIndex={highlightedResultIndex}
-            />
-        )
-    }
-
-    return dialPad
+    return (
+        <PhoneSearchResultsContent
+            results={results}
+            isLoading={isLoading}
+            isSearchTypeCustomer={isSearchTypeCustomer}
+            onCustomerSelect={onCustomerSelect}
+            highlightedResultIndex={highlightedResultIndex}
+            fallbackContent={dialPad}
+        />
+    )
 }

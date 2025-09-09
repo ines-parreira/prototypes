@@ -50,6 +50,18 @@ function AddStepMenuContent({
                     <AddStepMenuItem
                         icon={
                             <StepCardIcon
+                                backgroundColor="coral"
+                                name="arrow-chevron-right-duo"
+                            />
+                        }
+                        label={'Forward to'}
+                        onClick={() =>
+                            addNode(VoiceFlowNodeType.ForwardToExternalNumber)
+                        }
+                    />
+                    <AddStepMenuItem
+                        icon={
+                            <StepCardIcon
                                 backgroundColor="green"
                                 name="comm-chat-dots"
                             />

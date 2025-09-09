@@ -15,6 +15,7 @@ type UsePhoneDeviceDialerInputArgs = {
     onValueChange: (phoneNumber: string, customer?: UserSearchResult) => void
     onCustomerEnter: () => void
     onValidationChange?: (isValid: boolean) => void
+    initialValue?: string
 }
 
 export default function usePhoneDeviceDialerInput({
@@ -22,8 +23,9 @@ export default function usePhoneDeviceDialerInput({
     onValueChange,
     onCustomerEnter,
     onValidationChange,
+    initialValue = '',
 }: UsePhoneDeviceDialerInputArgs) {
-    const [internalInputValue, setInternalInputValue] = useState('')
+    const [internalInputValue, setInternalInputValue] = useState(initialValue)
     const [internalSelectedCustomer, setInternalSelectedCustomer] =
         useState<UserSearchResult | null>(null)
     const phoneNumberInputRef = useRef<PhoneNumberInputHandle>(null)

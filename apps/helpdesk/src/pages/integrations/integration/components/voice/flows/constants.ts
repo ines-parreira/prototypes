@@ -10,6 +10,7 @@ export enum VoiceFlowNodeType {
     IvrOption = 'ivr_option',
     SendToSMS = 'send_to_sms',
     Intermediary = 'intermediary',
+    ForwardToExternalNumber = 'forward_to_external_number',
 }
 
 export const INCOMING_CALL_NODE = {

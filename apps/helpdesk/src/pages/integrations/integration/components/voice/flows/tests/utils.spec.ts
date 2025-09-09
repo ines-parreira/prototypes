@@ -24,6 +24,7 @@ import {
 } from '../constants'
 import {
     EndCallNode,
+    ForwardToExternalNode,
     IntermediaryNode,
     IvrMenuNode,
     IvrOptionNode,
@@ -73,6 +74,16 @@ describe('utils', () => {
                 id: '1',
                 position: { x: 0, y: 0 },
             } as SendToVoicemailNode
+
+            expect(canAddNewStepOnEdge(edge)).toBe(false)
+        })
+
+        it('should return false if the edge is a forward to', () => {
+            const edge = {
+                type: VoiceFlowNodeType.ForwardToExternalNumber,
+                id: '1',
+                position: { x: 0, y: 0 },
+            } as ForwardToExternalNode
 
             expect(canAddNewStepOnEdge(edge)).toBe(false)
         })
@@ -854,6 +865,21 @@ describe('utils', () => {
                 callback_requests: DEFAULT_CALLBACK_REQUESTS,
                 conditional_routing: false,
                 next_step_id: 'testing-id',
+            })
+            expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate ForwardToExternal node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.ForwardToExternalNumber,
+                'testing-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Forward to',
+                step_type: VoiceFlowNodeType.ForwardToExternalNumber,
+                external_number: '',
+                next_step_id: null,
             })
             expect(nodeData?.id).toBeDefined()
         })

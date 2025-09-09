@@ -87,6 +87,7 @@ describe('AddStepMenuContent', () => {
             expect(screen.getByText('Route to')).toBeInTheDocument()
             expect(screen.queryByText('Send to SMS')).toBeNull()
             expect(screen.queryByText('Send to voicemail')).toBeNull()
+            expect(screen.queryByText('Forward to')).toBeNull()
         })
 
         it('should render final node options when target points to EndCall', () => {
@@ -98,6 +99,7 @@ describe('AddStepMenuContent', () => {
             expect(screen.getByText('Route to')).toBeInTheDocument()
             expect(screen.getByText('Send to SMS')).toBeInTheDocument()
             expect(screen.getByText('Send to voicemail')).toBeInTheDocument()
+            expect(screen.getByText('Forward to')).toBeInTheDocument()
         })
     })
 
