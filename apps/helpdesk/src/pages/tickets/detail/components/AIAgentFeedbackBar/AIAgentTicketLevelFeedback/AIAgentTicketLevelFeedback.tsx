@@ -9,6 +9,7 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { getTicketState } from 'state/ticket/selectors'
 
+import { useGetAiAgentFeedback } from '../../../../../../models/aiAgentFeedback/queries'
 import FeedbackInternalNote from '../FeedbackInternalNote'
 import { FeedbackRating } from '../types'
 import { AIAgentFeedbackRatingSection } from './AIAgentFeedbackRatingSection'
@@ -78,6 +79,16 @@ export const AIAgentTicketLevelFeedback = ({
         }
     }, [feedback])
 
+    const { data: lastExecutionId } = useGetAiAgentFeedback<string | undefined>(
+        {
+            refetchOnWindowFocus: false,
+            select: (data) =>
+                data.data.messages
+                    .reverse()
+                    .find(({ executionId }) => !!executionId)?.executionId,
+        },
+    )
+
     const handleFeedbackChange = useCallback(
         async (
             data: {
@@ -107,7 +118,8 @@ export const AIAgentTicketLevelFeedback = ({
                                       'TICKET_BAD_INTERACTION_REASON'
                                     ? badInteractionReasons?.[0]?.executionId
                                     : null) ??
-                            feedback?.executions?.[0]?.executionId
+                            feedback?.executions?.[0]?.executionId ??
+                            lastExecutionId
 
                         if (!executionId) return
 
@@ -147,6 +159,7 @@ export const AIAgentTicketLevelFeedback = ({
             badInteractionReasons,
             loadingMutations,
             feedback?.executions,
+            lastExecutionId,
         ],
     )
 

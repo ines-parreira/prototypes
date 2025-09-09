@@ -18,9 +18,13 @@ export const aiAgentFeedbackKeys = {
         [...aiAgentFeedbackKeys.details(), messageIds.join(',')] as const,
 }
 
-export const useGetAiAgentFeedback = (
+export const useGetAiAgentFeedback = <
+    TData = Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>,
+>(
     overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>
+        Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>,
+        unknown,
+        TData
     >,
 ) => {
     const aiMessages = useAppSelector(getAIAgentMessages)

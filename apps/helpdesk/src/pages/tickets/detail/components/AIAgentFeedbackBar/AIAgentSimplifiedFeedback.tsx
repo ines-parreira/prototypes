@@ -27,13 +27,15 @@ import {
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
-import { getTicketState } from 'state/ticket/selectors'
+import { getAIAgentMessages, getTicketState } from 'state/ticket/selectors'
 import { getViewsState } from 'state/views/selectors'
 
 import { AIAgentTicketLevelFeedback } from './AIAgentTicketLevelFeedback/AIAgentTicketLevelFeedback'
 import { useEnrichFeedbackData } from './useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 import { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 import { knowledgeResourceOrder } from './useEnrichKnowledgeFeedbackData/utils'
+
+const DAYS_UNTIL_SHOWING_TICKET_LEVEL_FEEDBACK = 1 * 24 * 60 * 60 * 1000
 
 const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
@@ -51,6 +53,23 @@ const AIAgentSimplifiedFeedback = () => {
     const ticketId: number = ticket.get('id')
     const accountId: number = account.get('id')
     const userId: number = currentUser.get('id')
+
+    const aiMessages = useAppSelector(getAIAgentMessages)
+    const shouldShowTicketLevelFeedback = useMemo(() => {
+        if (
+            ticket
+                .get('tags')
+                ?.some((tag: any) => tag?.get?.('name') === 'mkt_ai_journey')
+        )
+            return true
+        const latestAIMessage = aiMessages.at(-1)?.created_datetime
+        if (!latestAIMessage) return false
+
+        return (
+            new Date(latestAIMessage) <
+            new Date(Date.now() - DAYS_UNTIL_SHOWING_TICKET_LEVEL_FEEDBACK)
+        )
+    }, [aiMessages, ticket])
 
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
         useGoToNextTicket(ticketId.toString(), TicketInfobarTab.AIFeedback)
@@ -330,7 +349,9 @@ const AIAgentSimplifiedFeedback = () => {
     return (
         <>
             <div className={css.container}>
-                {feedback && feedback.executions.length === 0 ? (
+                {feedback &&
+                feedback.executions.length === 0 &&
+                !shouldShowTicketLevelFeedback ? (
                     "We're still processing the details of this conversation. You'll be able to review shortly."
                 ) : (
                     <div className={css.feedbackSection}>
@@ -338,80 +359,91 @@ const AIAgentSimplifiedFeedback = () => {
                             upsertFeedback={upsertFeedback}
                             feedback={feedback}
                         />
-                        <Separator className={css.separator} />
-                        <div className={css.sourcesContainer}>
-                            <div className={css.heading}>
-                                <span>Review sources used</span>
-                                <AutoSaveBadge
-                                    state={
-                                        !loadingMutations
-                                            ? AutoSaveState.INITIAL
-                                            : loadingMutations.length > 0
-                                              ? AutoSaveState.SAVING
-                                              : AutoSaveState.SAVED
+                        {storeConfiguration && (
+                            <>
+                                <Separator className={css.separator} />
+                                <div className={css.sourcesContainer}>
+                                    <div className={css.heading}>
+                                        <span>Review sources used</span>
+                                        <AutoSaveBadge
+                                            state={
+                                                !loadingMutations
+                                                    ? AutoSaveState.INITIAL
+                                                    : loadingMutations.length >
+                                                        0
+                                                      ? AutoSaveState.SAVING
+                                                      : AutoSaveState.SAVED
+                                            }
+                                            updatedAt={lastUpdatedMutations}
+                                        />
+                                    </div>
+                                    <div className={css.sources}>
+                                        {isLoadingFeedback
+                                            ? Array.from({ length: 3 }).map(
+                                                  (_, index) => (
+                                                      <KnowledgeSourceFeedbackSkeleton
+                                                          key={index}
+                                                      />
+                                                  ),
+                                              )
+                                            : (feedback?.executions.flatMap(
+                                                    (execution) =>
+                                                        execution.resources,
+                                                ).length ?? 0) > 0
+                                              ? knowledgeResources
+                                              : 'No knowledge used'}
+                                    </div>
+                                </div>
+
+                                {shopName && (
+                                    <MissingKnowledgeSelect
+                                        helpCenterId={
+                                            storeConfiguration.helpCenterId
+                                        }
+                                        guidanceHelpCenterId={
+                                            storeConfiguration.guidanceHelpCenterId
+                                        }
+                                        snippetHelpCenterId={
+                                            storeConfiguration.snippetHelpCenterId
+                                        }
+                                        knowledgeResources={
+                                            enrichedData?.knowledgeResources
+                                        }
+                                        resourcesData={{
+                                            isLoading,
+                                            actions,
+                                            articles,
+                                            guidanceArticles,
+                                            sourceItems,
+                                            ingestedFiles,
+                                            storeWebsiteQuestions,
+                                            helpCenters,
+                                            products,
+                                        }}
+                                        disabled={isLoadingEnrichedData}
+                                        onSubmit={onSubmitMissingKnowledge}
+                                        onRemove={onSubmitMissingKnowledge}
+                                        initialValues={
+                                            enrichedData?.suggestedResources ??
+                                            []
+                                        }
+                                        loadingMutations={loadingMutations}
+                                        accountId={accountId}
+                                        shopName={shopName}
+                                        shopType={shopType}
+                                    />
+                                )}
+
+                                <CreateKnowledgeSection
+                                    helpCenterId={
+                                        storeConfiguration.helpCenterId
                                     }
-                                    updatedAt={lastUpdatedMutations}
+                                    onKnowledgeResourceCreateClick={
+                                        onKnowledgeResourceCreateClick
+                                    }
                                 />
-                            </div>
-                            <div className={css.sources}>
-                                {isLoadingFeedback
-                                    ? Array.from({ length: 3 }).map(
-                                          (_, index) => (
-                                              <KnowledgeSourceFeedbackSkeleton
-                                                  key={index}
-                                              />
-                                          ),
-                                      )
-                                    : (feedback?.executions.flatMap(
-                                            (execution) => execution.resources,
-                                        ).length ?? 0) > 0
-                                      ? knowledgeResources
-                                      : 'No knowledge used'}
-                            </div>
-                        </div>
-
-                        {shopName && (
-                            <MissingKnowledgeSelect
-                                helpCenterId={storeConfiguration?.helpCenterId}
-                                guidanceHelpCenterId={
-                                    storeConfiguration?.guidanceHelpCenterId
-                                }
-                                snippetHelpCenterId={
-                                    storeConfiguration?.snippetHelpCenterId
-                                }
-                                knowledgeResources={
-                                    enrichedData?.knowledgeResources
-                                }
-                                resourcesData={{
-                                    isLoading,
-                                    actions,
-                                    articles,
-                                    guidanceArticles,
-                                    sourceItems,
-                                    ingestedFiles,
-                                    storeWebsiteQuestions,
-                                    helpCenters,
-                                    products,
-                                }}
-                                disabled={isLoadingEnrichedData}
-                                onSubmit={onSubmitMissingKnowledge}
-                                onRemove={onSubmitMissingKnowledge}
-                                initialValues={
-                                    enrichedData?.suggestedResources ?? []
-                                }
-                                loadingMutations={loadingMutations}
-                                accountId={accountId}
-                                shopName={shopName}
-                                shopType={shopType}
-                            />
+                            </>
                         )}
-
-                        <CreateKnowledgeSection
-                            helpCenterId={storeConfiguration?.helpCenterId}
-                            onKnowledgeResourceCreateClick={
-                                onKnowledgeResourceCreateClick
-                            }
-                        />
                     </div>
                 )}
             </div>

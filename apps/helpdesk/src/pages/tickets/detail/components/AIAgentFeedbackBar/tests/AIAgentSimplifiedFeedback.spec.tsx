@@ -7,6 +7,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
@@ -15,7 +16,7 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
-import { getTicketState } from 'state/ticket/selectors'
+import { getAIAgentMessages, getTicketState } from 'state/ticket/selectors'
 import { getViewsState } from 'state/views/selectors'
 
 import useGoToNextTicket from '../../TicketNavigation/hooks/useGoToNextTicket'
@@ -95,6 +96,9 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     ),
 }))
 
+jest.mock('models/aiAgentFeedback/queries')
+const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
+
 const initialFeedbackData = {
     isLoading: true,
     enrichedData: {
@@ -123,7 +127,15 @@ describe('AIAgentSimplifiedFeedback', () => {
             if (selector === getViewsState) return { getIn: () => 'AI Agent' }
             if (selector === getSectionIdByName)
                 return { 'AI Agent': 'AI Agent' }
-            if (selector === getTicketState) return new Map([['id', 123]])
+            if (selector === getTicketState) {
+                return {
+                    get: (key: string) => {
+                        if (key === 'id') return 123
+                        if (key === 'tags') return null
+                        return null
+                    },
+                }
+            }
             if (selector === getCurrentAccountState)
                 return new Map([
                     ['id', 1],
@@ -133,6 +145,9 @@ describe('AIAgentSimplifiedFeedback', () => {
                 return () => 'MMMM DD, YYYY'
             if (selector.toString().includes('state.currentUser'))
                 return new Map([['id', 789]])
+            if (selector === getAIAgentMessages) {
+                return []
+            }
             return null
         })
 
@@ -179,6 +194,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             onFeedbackTabOpened: jest.fn(),
             onFeedbackGiven: jest.fn(),
         })
+        useGetAiAgentFeedbackMock.mockReturnValue({ data: undefined } as any)
     })
 
     it('should render explanation message if there are no feedback executions yet', () => {
@@ -2025,7 +2041,15 @@ describe('AIAgentSimplifiedFeedback', () => {
                     return { getIn: () => 'Different Section' } // Not 'AI Agent'
                 if (selector === getSectionIdByName)
                     return { 'AI Agent': 'AI Agent' }
-                if (selector === getTicketState) return new Map([['id', 123]])
+                if (selector === getTicketState) {
+                    return {
+                        get: (key: string) => {
+                            if (key === 'id') return 123
+                            if (key === 'tags') return null
+                            return null
+                        },
+                    }
+                }
                 if (selector === getCurrentAccountState)
                     return new Map([
                         ['id', 1],
@@ -2035,6 +2059,9 @@ describe('AIAgentSimplifiedFeedback', () => {
                     return () => 'MMMM DD, YYYY'
                 if (selector.toString().includes('state.currentUser'))
                     return new Map([['id', 789]])
+                if (selector === getAIAgentMessages) {
+                    return []
+                }
                 return null
             })
 
@@ -2620,5 +2647,197 @@ describe('AIAgentSimplifiedFeedback', () => {
             const shopifyLogos = screen.getAllByAltText('shopify logo')
             expect(shopifyLogos).toHaveLength(2)
         })
+    })
+
+    it('should show ticket level feedback when ticket has mkt_ai_journey tag', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getTicketState) {
+                return new Map([
+                    ['id', 123],
+                    ['tags', [new Map([['name', 'mkt_ai_journey']])]],
+                ] as any)
+            }
+            if (selector === getCurrentAccountState) {
+                return new Map([
+                    ['id', 456],
+                    ['domain', 'test.myshopify.com'],
+                ] as any)
+            }
+            if (selector === getAIAgentMessages) {
+                return []
+            }
+            if (selector === getDateAndTimeFormatter) {
+                return () => 'MMMM DD, YYYY'
+            }
+            if (selector === getSectionIdByName) {
+                return { 'AI Agent': 789 }
+            }
+            if (selector === getViewsState) {
+                return {
+                    getIn: jest.fn((path) => {
+                        if (path[0] === 'active' && path[1] === 'section_id') {
+                            return 789
+                        }
+                        return null
+                    }),
+                }
+            }
+            if (
+                typeof selector === 'function' &&
+                selector.toString().includes('currentUser')
+            ) {
+                return new Map([['id', 789]])
+            }
+            return null
+        })
+
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        executionId: '123',
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
+                ],
+            },
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(
+            screen.getByText('How was this conversation?'),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle fallback resources with PRODUCT_KNOWLEDGE and filter PRODUCT_RECOMMENDATION', () => {
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        executionId: '123',
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [
+                            {
+                                id: '1',
+                                resourceId: '12345',
+                                resourceTitle: 'Product 1',
+                                resourceType: 'PRODUCT_RECOMMENDATION',
+                                resourceSetId: 'set1',
+                                resourceLocale: 'en',
+                            },
+                            {
+                                id: '2',
+                                resourceId: '12345',
+                                resourceTitle: 'Product 1',
+                                resourceType: 'PRODUCT_KNOWLEDGE',
+                                resourceSetId: 'set1',
+                                resourceLocale: 'en',
+                            },
+                        ],
+                        feedback: [],
+                    },
+                ],
+            },
+        })
+
+        useEnrichFeedbackDataMock.mockReturnValue({
+            isLoading: false,
+            enrichedData: {
+                knowledgeResources: [],
+            },
+            helpCenters: [],
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(screen.getByText('Product 1')).toBeInTheDocument()
+        const productElements = screen.getAllByText('Product 1')
+        expect(productElements).toHaveLength(1)
+    })
+
+    it('should show loading skeletons when feedback is loading', () => {
+        useGetFeedbackMock.mockReturnValue({
+            isLoading: true,
+            data: undefined,
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        const skeletonElements = document.querySelectorAll('.skeletonContainer')
+        expect(skeletonElements.length).toBe(3)
+    })
+
+    it('should handle date comparison for shouldShowTicketLevelFeedback when no mkt_ai_journey tag', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getTicketState) {
+                return new Map([
+                    ['id', 123],
+                    ['tags', []],
+                ] as any)
+            }
+            if (selector === getCurrentAccountState) {
+                return new Map([
+                    ['id', 456],
+                    ['domain', 'test.myshopify.com'],
+                ] as any)
+            }
+            if (selector === getAIAgentMessages) {
+                return [
+                    {
+                        id: '1',
+                        created_datetime: new Date(
+                            Date.now() - 2 * 24 * 60 * 60 * 1000,
+                        ).toISOString(), // 2 days ago
+                    },
+                ]
+            }
+            if (selector === getDateAndTimeFormatter) {
+                return () => 'MMMM DD, YYYY'
+            }
+            if (selector === getSectionIdByName) {
+                return { 'AI Agent': 789 }
+            }
+            if (selector === getViewsState) {
+                return {
+                    getIn: jest.fn((path) => {
+                        if (path[0] === 'active' && path[1] === 'section_id') {
+                            return 789
+                        }
+                        return null
+                    }),
+                }
+            }
+            if (
+                typeof selector === 'function' &&
+                selector.toString().includes('currentUser')
+            ) {
+                return new Map([['id', 789]])
+            }
+            return null
+        })
+
+        useGetFeedbackMock.mockReturnValue({
+            data: {
+                executions: [
+                    {
+                        executionId: '123',
+                        id: 123,
+                        storeConfiguration: 'test',
+                        resources: [],
+                        feedback: [],
+                    },
+                ],
+            },
+        })
+
+        render(<AIAgentSimplifiedFeedback />)
+
+        expect(
+            screen.getByText('How was this conversation?'),
+        ).toBeInTheDocument()
     })
 })
