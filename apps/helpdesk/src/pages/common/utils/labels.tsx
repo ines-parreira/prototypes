@@ -1,7 +1,7 @@
 import { isValidElement, ReactNode, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import classnames from 'classnames'
+import classNames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Map } from 'immutable'
 
@@ -71,7 +71,7 @@ export function AgentLabel({
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
     return (
-        <div className={classnames(css.AgentLabel, className)} id={id}>
+        <div className={classNames(css.AgentLabel, className)} id={id}>
             {showAvatar ? (
                 hasTicketThreadRevamp ? (
                     <Avatar
@@ -90,10 +90,12 @@ export function AgentLabel({
                     />
                 )
             ) : (
-                !isAIAgent &&
-                !hasTicketThreadRevamp && (
+                !isAIAgent && (
                     <span
-                        className="material-icons md-2"
+                        className={classNames(
+                            css.agentIcon,
+                            'material-icons md-2',
+                        )}
                         aria-label={`${name} icon`}
                     >
                         account_circle
@@ -103,7 +105,7 @@ export function AgentLabel({
 
             {name && (
                 <span
-                    className={classnames(css.name, {
+                    className={classNames(css.name, {
                         [css.semibold]: semibold,
                         [css.aiAgent]: isAIAgent,
                     })}
@@ -133,7 +135,7 @@ export const TeamLabel = ({
     shouldDisplayAvatar?: boolean
     shouldDisplayTeamIcon?: boolean
 }) => (
-    <div className={classnames(css.TeamLabel, className)}>
+    <div className={classNames(css.TeamLabel, className)}>
         {shouldDisplayAvatar ? (
             emoji ? (
                 <span className={css.avatar}>
@@ -164,7 +166,7 @@ export const TeamLabel = ({
                 {name}
                 {shouldDisplayTeamIcon && (
                     <span
-                        className={classnames(
+                        className={classNames(
                             css.nameIcon,
                             'material-icons md-2',
                         )}
@@ -215,7 +217,7 @@ export const TimedeltaLabel = ({
         : null
 
     return (
-        <Badge className={classnames('text-center', className)} type="grey">
+        <Badge className={classNames('text-center', className)} type="grey">
             {durationArray.join(',')}
         </Badge>
     )

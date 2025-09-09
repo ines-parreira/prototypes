@@ -68,7 +68,7 @@ exports[`Event component should display correctly a successful event for a Recha
         >
           <span
             aria-label="Acme Support icon"
-            class="material-icons md-2"
+            class="agentIcon material-icons md-2"
           >
             account_circle
           </span>
@@ -184,7 +184,7 @@ exports[`Event component should display the correct label for an action 1`] = `
         >
           <span
             aria-label="Acme Support icon"
-            class="material-icons md-2"
+            class="agentIcon material-icons md-2"
           >
             account_circle
           </span>

@@ -361,13 +361,6 @@ describe('components utils: labels', () => {
             expect(screen.getByText('Avatar')).toBeInTheDocument()
         })
 
-        it('should not render the user icon if the ticket thread revamp flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
-            render(<labels.AgentLabel name="Marie Curie" />)
-
-            expect(screen.queryByText('account_circle')).not.toBeInTheDocument()
-        })
-
         it('should render the name of the agent because a name is passed', () => {
             const { getByText } = render(
                 <labels.AgentLabel name="Marie Curie" />,
