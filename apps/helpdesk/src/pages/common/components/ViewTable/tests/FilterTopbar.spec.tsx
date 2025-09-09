@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -824,32 +823,7 @@ describe('<FilterTopbar />', () => {
         expect(screen.getByText('Store')).toBeInTheDocument()
     })
 
-    it('should not render feedback filter when FF is disabled', () => {
-        mockUseFlag.mockImplementation(
-            (f) =>
-                f !==
-                FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
-        )
-        mockGetHasAutomate.mockReturnValue(true)
-
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <FilterTopbar {...minProps} />
-            </Provider>,
-        )
-
-        const addFilterButton = screen.getByLabelText('Add filter')
-        fireEvent.click(addFilterButton)
-
-        expect(screen.queryByText('AI Agent feedback')).not.toBeInTheDocument()
-    })
-
     it('should not render feedback filter when hasAutomate is false', () => {
-        mockUseFlag.mockImplementation(
-            (f) =>
-                f ===
-                FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
-        )
         mockGetHasAutomate.mockReturnValue(false)
 
         render(
@@ -864,7 +838,7 @@ describe('<FilterTopbar />', () => {
         expect(screen.queryByText('AI Agent feedback')).not.toBeInTheDocument()
     })
 
-    it('should render feedback filter when FF is enabled and hasAutomate is true', () => {
+    it('should render feedback filter when hasAutomate is true', () => {
         mockUseFlag.mockReturnValue(true)
         mockGetHasAutomate.mockReturnValue(true)
 

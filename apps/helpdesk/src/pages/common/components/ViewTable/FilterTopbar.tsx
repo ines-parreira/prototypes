@@ -376,9 +376,6 @@ export const FilterTopbar = ({
         FeatureFlagKey.FilterViewsByTicketFields,
     )
 
-    const isAIAgentFeedbackFilterEnabled = useFlag(
-        FeatureFlagKey.CreateDedicatedReviewTicketViewEnableNewFilters,
-    )
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const isFilterViewsByStoreEnabled = useFlag(
@@ -396,10 +393,7 @@ export const FilterTopbar = ({
 
                     const fieldName: string = field.get('name')
 
-                    if (
-                        fieldName === ViewField.Feedback &&
-                        (!hasAutomate || !isAIAgentFeedbackFilterEnabled)
-                    ) {
+                    if (fieldName === ViewField.Feedback && !hasAutomate) {
                         return false
                     }
 
@@ -422,7 +416,6 @@ export const FilterTopbar = ({
             isFilterViewsByStoreEnabled,
             isSearch,
             isTicketFieldsViewFilterEnabled,
-            isAIAgentFeedbackFilterEnabled,
             hasAutomate,
         ],
     )
