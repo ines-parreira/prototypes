@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
+    getScoredSurveyOrderFromColumnKey,
     ScoredSurveyDataKey,
     useScoredSurveys,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
@@ -28,12 +29,17 @@ const initialTableState: TableState = {
 
 export default function ScoredSurveysChart(props: DashboardChartProps) {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
+
+    const [tableState, setTableState] = useState(initialTableState)
+
     const { data, isFetching } = useScoredSurveys(
         cleanStatsFilters,
         userTimezone,
+        {
+            sortBy: getScoredSurveyOrderFromColumnKey(tableState.orderBy),
+            sortDirection: tableState.orderDirection,
+        },
     )
-
-    const [tableState, setTableState] = useState(initialTableState)
 
     useEffect(() => {
         setTableState((prevState) => ({ ...prevState, currentPage: 1 }))

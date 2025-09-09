@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { ScoredSurveySortDefaultValues } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { scoredSurveysQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/scoredSurveysQueryFactory'
@@ -24,9 +25,10 @@ describe('scoredSurveysQueryFactory', () => {
     }
     const timezone = 'someTimeZone'
     const limit = 30
+    const sorting = ScoredSurveySortDefaultValues
 
     it('should produce the query with default limit when not passed', () => {
-        const query = scoredSurveysQueryFactory(statsFilters, timezone)
+        const query = scoredSurveysQueryFactory(statsFilters, timezone, sorting)
 
         expect(query).toEqual({
             metricName: METRIC_NAMES.SATISFACTION_SCORED_SURVEYS,
@@ -63,7 +65,12 @@ describe('scoredSurveysQueryFactory', () => {
     })
 
     it('should produce the query with passed limit', () => {
-        const query = scoredSurveysQueryFactory(statsFilters, timezone, limit)
+        const query = scoredSurveysQueryFactory(
+            statsFilters,
+            timezone,
+            sorting,
+            limit,
+        )
 
         expect(query).toEqual({
             metricName: METRIC_NAMES.SATISFACTION_SCORED_SURVEYS,

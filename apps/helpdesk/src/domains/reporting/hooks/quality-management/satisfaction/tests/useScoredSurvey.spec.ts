@@ -3,6 +3,9 @@ import moment from 'moment'
 
 import {
     fetchScoredSurveys,
+    getScoredSurveyOrderFromColumnKey,
+    ScoredSurveyDataKey,
+    ScoredSurveySortDefaultValues,
     useScoredSurveys,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import {
@@ -68,6 +71,7 @@ describe('ScoredSurveys', () => {
     }
     const timezone = 'someTimeZone'
     const limit = 5
+    const sorting = ScoredSurveySortDefaultValues
 
     describe('useScoredSurveys', () => {
         beforeEach(() => {
@@ -78,12 +82,19 @@ describe('ScoredSurveys', () => {
             )
         })
         it('should pass query factories with 3 arguments', () => {
-            renderHook(() => useScoredSurveys(statsFilters, timezone, limit))
+            renderHook(() =>
+                useScoredSurveys(statsFilters, timezone, sorting, limit),
+            )
 
             expect(
                 useMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
-                scoredSurveysQueryFactory(statsFilters, timezone, limit),
+                scoredSurveysQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    limit,
+                ),
                 [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
                 EnrichmentFields.TicketId,
             )
@@ -91,7 +102,7 @@ describe('ScoredSurveys', () => {
 
         it('should format data', () => {
             const { result } = renderHook(() =>
-                useScoredSurveys(statsFilters, timezone, limit),
+                useScoredSurveys(statsFilters, timezone, sorting, limit),
             )
 
             expect(result.current).toEqual({
@@ -143,7 +154,7 @@ describe('ScoredSurveys', () => {
             } as any)
 
             const { result } = renderHook(() =>
-                useScoredSurveys(statsFilters, timezone, limit),
+                useScoredSurveys(statsFilters, timezone, sorting, limit),
             )
 
             expect(result.current).toEqual({
@@ -165,13 +176,18 @@ describe('ScoredSurveys', () => {
     })
 
     describe('fetchScoredSurveys', () => {
-        it('should pass query factories with 3 arguments', async () => {
-            await fetchScoredSurveys(statsFilters, timezone, limit)
+        it('should pass query factories with 4 arguments', async () => {
+            await fetchScoredSurveys(statsFilters, timezone, sorting, limit)
 
             expect(
                 fetchMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
-                scoredSurveysQueryFactory(statsFilters, timezone, limit),
+                scoredSurveysQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    limit,
+                ),
                 [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
                 EnrichmentFields.TicketId,
             )
@@ -179,7 +195,11 @@ describe('ScoredSurveys', () => {
 
         it('should handle error when rejected', async () => {
             fetchMetricPerDimensionWithEnrichmentMock.mockRejectedValueOnce({})
-            const res = await fetchScoredSurveys(statsFilters, timezone)
+            const res = await fetchScoredSurveys(
+                statsFilters,
+                timezone,
+                sorting,
+            )
 
             expect(res).toEqual({
                 data: null,
@@ -189,7 +209,12 @@ describe('ScoredSurveys', () => {
         })
 
         it('should format data', async () => {
-            const res = await fetchScoredSurveys(statsFilters, timezone, limit)
+            const res = await fetchScoredSurveys(
+                statsFilters,
+                timezone,
+                sorting,
+                limit,
+            )
 
             expect(res).toEqual({
                 data: [
@@ -239,7 +264,12 @@ describe('ScoredSurveys', () => {
                 },
             } as any)
 
-            const res = await fetchScoredSurveys(statsFilters, timezone, limit)
+            const res = await fetchScoredSurveys(
+                statsFilters,
+                timezone,
+                sorting,
+                limit,
+            )
 
             expect(res).toEqual({
                 data: [
@@ -257,5 +287,27 @@ describe('ScoredSurveys', () => {
                 isError: false,
             })
         })
+    })
+})
+
+describe('getScoredSurveyOrderFromColumnKey', () => {
+    it('should return the applicable order key for surveyScore', () => {
+        expect(
+            getScoredSurveyOrderFromColumnKey(ScoredSurveyDataKey.SURVEY_SCORE),
+        ).toEqual(TicketDimension.SurveyScore)
+    })
+
+    it('should return the applicable order key for surveyScoredDate', () => {
+        expect(
+            getScoredSurveyOrderFromColumnKey(
+                ScoredSurveyDataKey.SURVEY_SCORED_DATE,
+            ),
+        ).toEqual(TicketSatisfactionSurveyDimension.SurveyScoredDatetime)
+    })
+
+    it('should return the applicable order key for ticketId', () => {
+        expect(
+            getScoredSurveyOrderFromColumnKey(ScoredSurveyDataKey.TICKET_ID),
+        ).toEqual(TicketSatisfactionSurveyDimension.SurveyScoredDatetime)
     })
 })

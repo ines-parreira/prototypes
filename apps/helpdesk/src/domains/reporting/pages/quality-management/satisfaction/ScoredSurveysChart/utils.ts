@@ -104,18 +104,6 @@ export const sortScoredSurveyData = (
 
         const isAscending = orderDirection === OrderDirection.Asc
 
-        if (orderBy === ScoredSurveyDataKey.SURVEY_SCORE) {
-            return isAscending
-                ? Number(valA) - Number(valB)
-                : Number(valB) - Number(valA)
-        }
-
-        if (orderBy === ScoredSurveyDataKey.SURVEY_SCORED_DATE) {
-            return isAscending
-                ? new Date(valA).getTime() - new Date(valB).getTime()
-                : new Date(valB).getTime() - new Date(valA).getTime()
-        }
-
         return isAscending
             ? valA.localeCompare(valB, undefined, { sensitivity: 'base' })
             : valB.localeCompare(valA, undefined, { sensitivity: 'base' })

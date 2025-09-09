@@ -1,4 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { ScoredSurveySortingType } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -12,11 +13,11 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
 
 export const scoredSurveysQueryFactory = (
     filters: StatsFilters,
     timezone: string,
+    sorting: ScoredSurveySortingType,
     limit: number = 100,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [],
@@ -37,12 +38,7 @@ export const scoredSurveysQueryFactory = (
         },
         ...NotSpamNorTrashedTicketsFilter,
     ],
-    order: [
-        [
-            TicketSatisfactionSurveyDimension.SurveyScoredDatetime,
-            OrderDirection.Desc,
-        ],
-    ],
+    order: [[sorting.sortBy, sorting.sortDirection]],
     timezone,
     metricName: METRIC_NAMES.SATISFACTION_SCORED_SURVEYS,
     limit,

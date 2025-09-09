@@ -86,40 +86,6 @@ describe('sortScoredSurveyData', () => {
         ])
     })
 
-    it('should sort by surveyScore in descending order', () => {
-        const sorted = sortScoredSurveyData(
-            sampleScoredSurveyData,
-            ScoredSurveyDataKey.SURVEY_SCORE,
-            OrderDirection.Desc,
-        )
-        expect(sorted.map((item) => item.surveyScore)).toEqual([
-            '5',
-            '5',
-            '4',
-            '3',
-            '3',
-            '2',
-            null,
-        ])
-    })
-
-    it('should sort by surveyScoredDate in ascending order', () => {
-        const sorted = sortScoredSurveyData(
-            sampleScoredSurveyData,
-            ScoredSurveyDataKey.SURVEY_SCORED_DATE,
-            OrderDirection.Asc,
-        )
-        expect(sorted.map((item) => item.surveyScoredDate)).toEqual([
-            '2024-12-05T08:30:00.000',
-            '2025-01-10T10:45:30.000',
-            '2025-01-15T14:10:45.000',
-            '2025-02-01T12:00:00.000',
-            '2025-02-17T15:01:18.000',
-            '2025-02-20T09:15:00.000',
-            null,
-        ])
-    })
-
     it('should sort by surveyScoredDate in descending order', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,

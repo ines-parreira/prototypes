@@ -6,6 +6,7 @@ import { useSatisfactionMetrics } from 'domains/reporting/hooks/quality-manageme
 import {
     fetchScoredSurveys,
     ScoredSurveysData,
+    ScoredSurveySortDefaultValues,
     useScoredSurveys,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import { fetchSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
@@ -149,6 +150,8 @@ export const useSatisfactionReportData = () => {
     const { data, isFetching: isFetchingScoredSurveys } = useScoredSurveys(
         cleanStatsFilters,
         userTimezone,
+        // Should be replaced with the actual sorting value from redux once it's implemented in #CRMREP-4455
+        ScoredSurveySortDefaultValues,
         500,
     )
 
@@ -241,7 +244,7 @@ export const formatScoredSurveysReport = (
             }),
         ) || []
 
-    const headers = [...EXPORTABLE_COLUMNS.map((column) => column.title)]
+    const headers = EXPORTABLE_COLUMNS.map((column) => column.title)
     return createCsv([headers, ...formattedScoredSurveys])
 }
 
@@ -256,7 +259,13 @@ export const fetchScoredSurveysReportData = (
 
     const LIMIT = 500
 
-    return fetchScoredSurveys(filters, timezone, LIMIT)
+    return fetchScoredSurveys(
+        filters,
+        timezone,
+        // Should be replaced with the actual sorting once it's implemented
+        ScoredSurveySortDefaultValues,
+        LIMIT,
+    )
         .then((result) => {
             return {
                 files: {

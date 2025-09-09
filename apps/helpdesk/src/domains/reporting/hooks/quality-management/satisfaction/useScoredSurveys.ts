@@ -10,6 +10,7 @@ import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cube
 import { scoredSurveysQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/scoredSurveysQueryFactory'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import { OrderDirection } from 'models/api/types'
 
 export enum ScoredSurveyDataKey {
     ASSIGNEE = 'assignee',
@@ -19,6 +20,39 @@ export enum ScoredSurveyDataKey {
     COMMENT = 'comment',
     SURVEY_SCORED_DATE = 'surveyScoredDate',
     SURVEY_CUSTOMER_ID = 'surveyCustomerId',
+}
+
+export type ScoredSurveyColumnApplicableSortKeys =
+    | TicketDimension.SurveyScore
+    | TicketSatisfactionSurveyDimension.SurveyScoredDatetime
+
+export const getScoredSurveyOrderFromColumnKey = (
+    key: ScoredSurveyDataKey,
+): ScoredSurveyColumnApplicableSortKeys => {
+    switch (key) {
+        case ScoredSurveyDataKey.SURVEY_SCORE:
+            return TicketDimension.SurveyScore
+        case ScoredSurveyDataKey.SURVEY_SCORED_DATE:
+        // The columns below are not applicable for sorting on the backend today, but will be in the future
+        case ScoredSurveyDataKey.TICKET_ID:
+        case ScoredSurveyDataKey.ASSIGNEE:
+        case ScoredSurveyDataKey.CUSTOMER_NAME:
+        case ScoredSurveyDataKey.SURVEY_CUSTOMER_ID:
+        case ScoredSurveyDataKey.COMMENT:
+            return TicketSatisfactionSurveyDimension.SurveyScoredDatetime
+    }
+}
+
+export type ScoredSurveySortingType = {
+    sortBy: ScoredSurveyColumnApplicableSortKeys
+    sortDirection: OrderDirection
+}
+
+export const ScoredSurveySortDefaultValues: ScoredSurveySortingType = {
+    sortBy: getScoredSurveyOrderFromColumnKey(
+        ScoredSurveyDataKey.SURVEY_SCORED_DATE,
+    ),
+    sortDirection: OrderDirection.Desc,
 }
 
 export type ScoredSurveysData = Record<ScoredSurveyDataKey, string | null>
@@ -67,10 +101,11 @@ const mapScoredSurveysQueryResponse = (
 export const useScoredSurveys = (
     filters: StatsFilters,
     timezone: string,
+    sorting: ScoredSurveySortingType,
     limit?: number,
 ): ScoredSurveysQueryData => {
     const { data, isFetching, isError } = useMetricPerDimensionWithEnrichment(
-        scoredSurveysQueryFactory(filters, timezone, limit),
+        scoredSurveysQueryFactory(filters, timezone, sorting, limit),
         [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
         EnrichmentFields.TicketId,
     )
@@ -89,10 +124,11 @@ export const useScoredSurveys = (
 export const fetchScoredSurveys = (
     filters: StatsFilters,
     timezone: string,
+    sorting: ScoredSurveySortingType,
     limit?: number,
 ) =>
     fetchMetricPerDimensionWithEnrichment(
-        scoredSurveysQueryFactory(filters, timezone, limit),
+        scoredSurveysQueryFactory(filters, timezone, sorting, limit),
         [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
         EnrichmentFields.TicketId,
     )
