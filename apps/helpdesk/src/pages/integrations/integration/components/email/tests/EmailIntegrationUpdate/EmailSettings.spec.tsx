@@ -264,11 +264,11 @@ describe('EmailSettings', () => {
             expect(mockSetEnableGmailSending).toHaveBeenCalledWith(true)
         })
 
-        it('shows email imports section', () => {
+        it('does not show email imports section', () => {
             renderEmailSettings(gmailProps)
 
-            expect(screen.getByText('Email imports')).toBeInTheDocument()
-            expect(screen.getByText('Import emails')).toBeInTheDocument()
+            expect(screen.queryByText('Email imports')).not.toBeInTheDocument()
+            expect(screen.queryByText('Import emails')).not.toBeInTheDocument()
         })
     })
 
@@ -324,11 +324,11 @@ describe('EmailSettings', () => {
             expect(mockSetEnableOutlookSending).toHaveBeenCalledWith(true)
         })
 
-        it('shows email imports section', () => {
+        it('does not show email imports section', () => {
             renderEmailSettings(outlookProps)
 
-            expect(screen.getByText('Email imports')).toBeInTheDocument()
-            expect(screen.getByText('Import emails')).toBeInTheDocument()
+            expect(screen.queryByText('Email imports')).not.toBeInTheDocument()
+            expect(screen.queryByText('Import emails')).not.toBeInTheDocument()
         })
     })
 
@@ -390,54 +390,6 @@ describe('EmailSettings', () => {
         })
     })
 
-    describe('imports functionality', () => {
-        it('triggers import action when import button is clicked for Gmail', async () => {
-            const user = userEvent.setup()
-            const { importEmails } = require('state/integrations/actions')
-
-            renderEmailSettings({
-                integration: fromJS({
-                    id: 123,
-                    type: IntegrationType.Gmail,
-                    meta: { address: 'test@gmail.com' },
-                }),
-            })
-
-            const importButton = screen.getByText('Import emails')
-            await user.click(importButton)
-
-            const confirmButton = screen.getByRole('button', {
-                name: /confirm/i,
-            })
-            await user.click(confirmButton)
-
-            expect(importEmails).toHaveBeenCalled()
-        })
-
-        it('triggers import action when import button is clicked for Outlook', async () => {
-            const user = userEvent.setup()
-            const { importEmails } = require('state/integrations/actions')
-
-            renderEmailSettings({
-                integration: fromJS({
-                    id: 123,
-                    type: IntegrationType.Outlook,
-                    meta: { address: 'test@outlook.com' },
-                }),
-            })
-
-            const importButton = screen.getByText('Import emails')
-            await user.click(importButton)
-
-            const confirmButton = screen.getByRole('button', {
-                name: /confirm/i,
-            })
-            await user.click(confirmButton)
-
-            expect(importEmails).toHaveBeenCalled()
-        })
-    })
-
     describe('accordion functionality', () => {
         it('renders all accordion items for Gmail integration', () => {
             renderEmailSettings({
@@ -454,7 +406,7 @@ describe('EmailSettings', () => {
             expect(
                 screen.getByText('Advanced delivery settings'),
             ).toBeInTheDocument()
-            expect(screen.getByText('Email imports')).toBeInTheDocument()
+            expect(screen.queryByText('Email imports')).not.toBeInTheDocument()
             expect(
                 screen.queryByText('Email forwarding'),
             ).not.toBeInTheDocument()

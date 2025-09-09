@@ -1,13 +1,11 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
@@ -39,10 +37,6 @@ const Sections = {
 const SettingsNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const integrations = useStoreIntegrations()
-    const isEmailImportEnabled = useFlag(
-        FeatureFlagKey.HistoricalImports,
-        false,
-    )
 
     const [expandedCategories, setExpandedCategories] =
         useLocalStorage<AccordionValues>(
@@ -291,13 +285,11 @@ const SettingsNavbar = () => {
                             text="REST API"
                             requiredRole={ADMIN_ROLE}
                         />
-                        {isEmailImportEnabled && (
-                            <Item
-                                to="import-email"
-                                text="Email Import"
-                                requiredRole={ADMIN_ROLE}
-                            />
-                        )}
+                        <Item
+                            to="import-email"
+                            text="Email Import"
+                            requiredRole={ADMIN_ROLE}
+                        />
                         <Item
                             to="import-zendesk"
                             text="Zendesk import"

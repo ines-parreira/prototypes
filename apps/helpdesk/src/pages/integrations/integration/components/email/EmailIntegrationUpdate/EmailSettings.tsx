@@ -1,18 +1,13 @@
 import React, { useCallback, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { Form, FormGroup } from 'reactstrap'
 
 import { ToggleField, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import {
-    GMAIL_IMPORTED_EMAILS_FOR_YEARS,
-    OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
-} from 'config'
 import { EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS } from 'constants/integration'
 import { IntegrationType } from 'models/integration/constants'
 import Accordion from 'pages/common/components/accordion/Accordion'
@@ -23,18 +18,13 @@ import InputField from 'pages/common/forms/input/InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
 import EmailIntegrationDeliverabilitySettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
-import { importEmails } from 'state/integrations/actions'
 import { displayRestrictedSymbols } from 'utils'
 import { convertToHTML } from 'utils/editor'
-
-import { useFlag } from '../../../../../../core/flags'
-import Imports from './Imports'
 
 import css from './EmailIntegrationUpdate.less'
 
 type Props = {
     integration: Map<any, any>
-    loading: Map<any, any>
     domain: string
     setSignatureText: (text: string) => void
     setSignatureHtml: (html: string) => void
@@ -52,7 +42,6 @@ type Props = {
 
 const EmailSettings = ({
     integration,
-    loading,
     domain,
     name,
     useGmailCategories,
@@ -68,8 +57,6 @@ const EmailSettings = ({
     const [errors, setErrors] = useState<{ name?: string | null }>({
         name: null,
     })
-
-    const enabledHistoricalImports = useFlag(FeatureFlagKey.HistoricalImports)
 
     const isGmail = integration.get('type') === IntegrationType.Gmail
     const isOutlook = integration.get('type') === IntegrationType.Outlook
@@ -143,93 +130,6 @@ const EmailSettings = ({
 
         setName(name)
         setErrors(errors)
-    }
-
-    const outlookImportEmails = () => {
-        return importEmails(
-            fromJS({
-                id: integration.get('id'),
-                meta: (integration.get('meta') as Map<any, any>).setIn(
-                    ['import_state', 'enabled'],
-                    true,
-                ),
-            }),
-        )
-    }
-    const outlookRenderImport = () => {
-        const importActivated = integration.getIn(
-            ['meta', 'import_state', 'enabled'],
-            false,
-        )
-        const status = integration.getIn(
-            ['meta', 'import_state', 'is_over'],
-            false,
-        )
-        const mailsImported = integration.getIn(
-            ['meta', 'import_state', 'count'],
-            0,
-        )
-        const importDescription = (
-            <span>
-                the last <b>{OUTLOOK_IMPORTED_EMAILS_FOR_YEARS}</b> years of
-                emails
-            </span>
-        )
-
-        return (
-            <Imports
-                importActivated={importActivated}
-                status={status}
-                mailsImported={mailsImported}
-                importDescription={importDescription}
-                importMethod={outlookImportEmails}
-                integration={integration}
-                loading={loading}
-            />
-        )
-    }
-
-    const gmailRenderImport = () => {
-        const importActivated = integration.getIn(
-            ['meta', 'import_activated'],
-            false,
-        )
-        const status = integration.getIn(
-            ['meta', 'importation', 'status'],
-            false,
-        )
-        const mailsImported = integration.getIn(
-            ['meta', 'importation', 'count'],
-            0,
-        )
-        const importDescription = (
-            <span>
-                the last <b>{GMAIL_IMPORTED_EMAILS_FOR_YEARS}</b> years of
-                emails
-            </span>
-        )
-
-        const gmailImportEmails = () => {
-            return importEmails(
-                fromJS({
-                    id: integration.get('id'),
-                    meta: {
-                        import_activated: true,
-                    },
-                }),
-            )
-        }
-        return (
-            <Imports
-                importDescription={importDescription}
-                status={status}
-                mailsImported={mailsImported}
-                importActivated={importActivated}
-                importMethod={gmailImportEmails}
-                integration={integration}
-                loading={loading}
-            />
-        )
     }
 
     return (
@@ -344,21 +244,6 @@ const EmailSettings = ({
                                         </FormGroup>
                                     )}
                                 </Form>
-                            </AccordionBody>
-                        </AccordionItem>
-                    )}
-                    {!enabledHistoricalImports && (isGmail || isOutlook) && (
-                        <AccordionItem>
-                            <AccordionHeader>
-                                <h3 className="mb-0">Email imports</h3>
-                            </AccordionHeader>
-                            <AccordionBody>
-                                {integration.get('type') ===
-                                    IntegrationType.Outlook &&
-                                    outlookRenderImport()}
-                                {integration.get('type') ===
-                                    IntegrationType.Gmail &&
-                                    gmailRenderImport()}
                             </AccordionBody>
                         </AccordionItem>
                     )}

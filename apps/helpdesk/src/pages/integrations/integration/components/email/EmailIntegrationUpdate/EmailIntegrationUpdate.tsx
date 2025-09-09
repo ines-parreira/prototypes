@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
 
 import { Banner, Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -65,11 +63,8 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
         submitIntegration,
     } = useEmailIntegrationUpdate()
 
-    const enabledHistoricalImports = useFlag(FeatureFlagKey.HistoricalImports)
-
-    const [showImportMigrationBanner, setShowImportMigrationBanner] = useState(
-        enabledHistoricalImports,
-    )
+    const [showImportMigrationBanner, setShowImportMigrationBanner] =
+        useState(true)
 
     const dispatch = useAppDispatch()
     const domain = useAppSelector((state: RootState) =>
@@ -192,7 +187,6 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
 
                     <EmailSettings
                         integration={integration}
-                        loading={loading}
                         domain={domain}
                         setSignatureText={setSignatureText}
                         setSignatureHtml={setSignatureHtml}
