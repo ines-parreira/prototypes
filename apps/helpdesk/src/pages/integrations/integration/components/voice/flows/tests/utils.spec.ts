@@ -851,10 +851,7 @@ describe('utils', () => {
             expect(nodeData).toMatchObject({
                 name: 'Route to',
                 step_type: VoiceFlowNodeType.Enqueue,
-                callback_requests: {
-                    ...DEFAULT_CALLBACK_REQUESTS,
-                    enabled: true,
-                },
+                callback_requests: DEFAULT_CALLBACK_REQUESTS,
                 conditional_routing: false,
                 next_step_id: 'testing-id',
             })

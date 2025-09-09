@@ -426,7 +426,6 @@ export const generateNodeData = (
                 step_type: VoiceFlowNodeType.Enqueue,
                 callback_requests: {
                     ...cloneDeep(DEFAULT_CALLBACK_REQUESTS),
-                    enabled: true,
                 } as VoiceCallbackRequests,
                 conditional_routing: false,
                 queue_id: null!,
