@@ -106,9 +106,7 @@ describe('HandoverTopicsModal', () => {
     it('should update local excluded topics when ListField changes', () => {
         renderComponent()
 
-        const input = screen.getAllByPlaceholderText(
-            'e.g. Invoice and billing, Data privacy, or Complaints',
-        )[0]
+        const input = screen.getAllByPlaceholderText('e.g. Legal inquiry')[0]
 
         fireEvent.change(input, { target: { value: 'new topic' } })
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })

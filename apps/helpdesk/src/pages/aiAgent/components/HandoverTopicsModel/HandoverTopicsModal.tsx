@@ -63,7 +63,7 @@ export const HandoverTopicsModal = ({
                         onChange={(excludedTopics: List<string>) => {
                             setExcludedTopics(excludedTopics.toJS())
                         }}
-                        placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
+                        placeholder="e.g. Legal inquiry"
                         maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
                         maxItems={MAX_EXCLUDED_TOPICS}
                         addLabel="Add Topic"

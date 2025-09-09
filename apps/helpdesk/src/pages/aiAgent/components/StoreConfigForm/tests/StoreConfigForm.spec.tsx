@@ -1292,9 +1292,7 @@ describe('<StoreConfigForm />', () => {
             screen.getByRole('button', { name: /add topic/i }),
         )
 
-        const input = screen.getAllByPlaceholderText(
-            'e.g. Invoice and billing, Data privacy, or Complaints',
-        )[0]
+        const input = screen.getAllByPlaceholderText('e.g. Legal inquiry')[0]
         await userEvent.type(input, 'Test')
         // Save changes
         const saveButton = within(getDrawer()).getByRole('button', {
