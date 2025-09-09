@@ -174,4 +174,5 @@ export enum FeatureFlagKey {
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
 }

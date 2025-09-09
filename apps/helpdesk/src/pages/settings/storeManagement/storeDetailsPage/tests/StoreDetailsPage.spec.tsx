@@ -6,6 +6,8 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
+import { IntegrationType } from 'models/integration/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
@@ -39,6 +41,7 @@ jest.mock('../../hooks/useStoresWithMaps', () => ({
 
 const mockChannelsTab = assumeMock(ChannelsTab)
 const mockuseStoreGetter = assumeMock(useStoreGetter)
+const mockUseFlag = assumeMock(useFlag)
 
 describe('StoreDetailsPage', () => {
     const { QueryClientProvider } = mockQueryClientProvider()
@@ -50,6 +53,7 @@ describe('StoreDetailsPage', () => {
             data: null,
             refetchStore: jest.fn(),
         })
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render page content', async () => {
@@ -150,5 +154,161 @@ describe('StoreDetailsPage', () => {
         )
 
         expect(screen.getByText(storeName)).toBeInTheDocument()
+    })
+
+    describe('Shopify Metafields navigation link', () => {
+        it('should render Shopify Metafields link when feature flag is enabled and store is Shopify', () => {
+            const storeId = '123'
+
+            mockUseFlag.mockReturnValue(true)
+            mockuseStoreGetter.mockReturnValue({
+                isFetching: false,
+                data: {
+                    data: {
+                        id: storeId,
+                        name: 'Shopify Store',
+                        type: IntegrationType.Shopify,
+                        meta: {},
+                    },
+                } as unknown as HttpResponse<Integration>,
+                refetchStore: jest.fn(),
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={[
+                        `/app/settings/store-management/${storeId}`,
+                    ]}
+                >
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            <Route path="/app/settings/store-management/:id">
+                                <StoreDetailsPage />
+                            </Route>
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                {},
+            )
+
+            const metafieldsLink = screen.getByRole('link', {
+                name: 'Shopify Metafields',
+            })
+            expect(metafieldsLink).toBeInTheDocument()
+            expect(metafieldsLink).toHaveAttribute(
+                'href',
+                `/app/settings/store-management/${storeId}/metafields`,
+            )
+        })
+
+        it('should not render Shopify Metafields link when feature flag is disabled', () => {
+            const storeId = '123'
+
+            mockUseFlag.mockReturnValue(false)
+            mockuseStoreGetter.mockReturnValue({
+                isFetching: false,
+                data: {
+                    data: {
+                        id: storeId,
+                        name: 'Shopify Store',
+                        type: IntegrationType.Shopify,
+                        meta: {},
+                    },
+                } as unknown as HttpResponse<Integration>,
+                refetchStore: jest.fn(),
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={[
+                        `/app/settings/store-management/${storeId}`,
+                    ]}
+                >
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            <Route path="/app/settings/store-management/:id">
+                                <StoreDetailsPage />
+                            </Route>
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                {},
+            )
+
+            expect(
+                screen.queryByRole('link', { name: 'Shopify Metafields' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render Shopify Metafields link for non-Shopify stores', () => {
+            const storeId = '123'
+
+            mockUseFlag.mockReturnValue(true)
+            mockuseStoreGetter.mockReturnValue({
+                isFetching: false,
+                data: {
+                    data: {
+                        id: storeId,
+                        name: 'BigCommerce Store',
+                        type: 'bigcommerce' as any,
+                        meta: {},
+                    },
+                } as unknown as HttpResponse<Integration>,
+                refetchStore: jest.fn(),
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={[
+                        `/app/settings/store-management/${storeId}`,
+                    ]}
+                >
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            <Route path="/app/settings/store-management/:id">
+                                <StoreDetailsPage />
+                            </Route>
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                {},
+            )
+
+            expect(
+                screen.queryByRole('link', { name: 'Shopify Metafields' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render Shopify Metafields link when store data is not available', () => {
+            const storeId = '123'
+
+            mockUseFlag.mockReturnValue(true)
+            mockuseStoreGetter.mockReturnValue({
+                isFetching: false,
+                data: null,
+                refetchStore: jest.fn(),
+            })
+
+            renderWithStore(
+                <MemoryRouter
+                    initialEntries={[
+                        `/app/settings/store-management/${storeId}`,
+                    ]}
+                >
+                    <QueryClientProvider>
+                        <StoreManagementProvider>
+                            <Route path="/app/settings/store-management/:id">
+                                <StoreDetailsPage />
+                            </Route>
+                        </StoreManagementProvider>
+                    </QueryClientProvider>
+                </MemoryRouter>,
+                {},
+            )
+
+            expect(
+                screen.queryByRole('link', { name: 'Shopify Metafields' }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import {
     Link,
     NavLink,
@@ -10,7 +11,8 @@ import {
 } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { StoreIntegration } from 'models/integration/types'
+import { useFlag } from 'core/flags'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -19,12 +21,17 @@ import { useStoreManagementState } from '../StoreManagementProvider'
 import ChannelsTab from './Channels/ChannelsTab'
 import General from './General/General'
 import useStoreGetter from './General/hooks/useStoreGetter'
+import ShopifyMetafields from './ShopifyMetafields/ShopifyMetafields'
 import StoreManagementStoreSelector from './StoreManagmentStoreSelector'
 
 import css from './StoreDetailsPage.less'
 
 export default function StoreDetailsPage() {
     const { id } = useParams<{ id: string }>()
+    const enableShopifyMetafieldIngestion = useFlag(
+        FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,
+        false,
+    )
 
     const {
         isFetching: isFetchingStore,
@@ -66,6 +73,16 @@ export default function StoreDetailsPage() {
                 >
                     Channels
                 </NavLink>
+
+                {enableShopifyMetafieldIngestion &&
+                    store?.type === IntegrationType.Shopify && (
+                        <NavLink
+                            to={`/app/settings/store-management/${id}/metafields`}
+                            exact
+                        >
+                            Shopify Metafields
+                        </NavLink>
+                    )}
             </SecondaryNavbar>
             <Switch>
                 <Route path={`/app/settings/store-management/:id/channels`}>
@@ -91,6 +108,15 @@ export default function StoreDetailsPage() {
                                 }
                             />
                         )
+                    )}
+                </Route>
+                <Route path={`/app/settings/store-management/:id/metafields`}>
+                    {isFetching ? (
+                        <section className={css.detailsContainer}>
+                            <Loader role="status" />
+                        </section>
+                    ) : (
+                        <ShopifyMetafields />
                     )}
                 </Route>
                 <Route path={`/app/settings/store-management/:id/`}>
