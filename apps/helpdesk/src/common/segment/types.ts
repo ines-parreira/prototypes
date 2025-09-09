@@ -73,6 +73,7 @@ export enum SegmentEvent {
     AiAgentOptimizePageChanged = 'ai-agent-optimize-page-changed',
     AiAgentOptimizeToggleClicked = 'ai-agent-optimize-toggle-clicked',
     AiAgentOverviewPendingTaskClicked = 'ai-agent-overview-pending-task-clicked',
+    AiAgentReasoningOpened = 'ai-agent-reasoning-opened',
     AiAgentShoppingAssistantAnalyticsViewed = 'ai-agent-shopping-assistant-analytics-viewed',
     AiAgentShoppingAssistantCustomerEngagementUpdated = 'ai-agent-shopping-assistant-customer-engagement-updated',
     AiAgentShoppingAssistantCustomerEngagementViewed = 'ai-agent-shopping-assistant-customer-engagement-viewed',

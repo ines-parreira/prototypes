@@ -23,6 +23,7 @@ import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowle
 import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningFeedback } from './AiAgentReasoningFeedback'
 import { AiAgentReasoningContent } from './AiReasoningContent'
+import { useReasoningTracking } from './hooks/useReasoningTracking'
 
 import css from './AiAgentReasoning.less'
 
@@ -146,10 +147,18 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
 
     const { openPreview } = useKnowledgeSourceSideBar()
 
-    const { onFeedbackTabOpened } = useFeedbackTracking({
+    const { onFeedbackTabOpened, onKnowledgeResourceClick } =
+        useFeedbackTracking({
+            ticketId,
+            accountId,
+            userId,
+        })
+
+    const { onReasoningOpened } = useReasoningTracking({
         ticketId,
         accountId,
         userId,
+        messageId,
     })
 
     const { data: messageAiReasoning, refetch: refetchMessageAiReasoning } =
@@ -281,10 +290,11 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
             setState('loading')
+            onReasoningOpened()
         } else if (state === 'expanded') {
             setState('collapsed')
         }
-    }, [state])
+    }, [state, onReasoningOpened])
 
     const handleTryAgain = useCallback(() => {
         setState('loading')
@@ -402,6 +412,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                                 messageAiReasoning?.storeConfiguration
                             }
                             openPreview={openPreview}
+                            onKnowledgeResourceClick={onKnowledgeResourceClick}
                         />
                     </>
                 )}

@@ -79,11 +79,12 @@ const AIAgentSimplifiedFeedback = () => {
         objectType: 'TICKET',
     })
 
-    const { onKnowledgeResourceCreateClick } = useFeedbackTracking({
-        ticketId,
-        accountId,
-        userId,
-    })
+    const { onKnowledgeResourceCreateClick, onKnowledgeResourceClick } =
+        useFeedbackTracking({
+            ticketId,
+            accountId,
+            userId,
+        })
 
     const lastUpdatedMutations = useMemo(() => {
         const maxDate = feedback?.executions?.reduce((acc, execution) => {
@@ -265,6 +266,7 @@ const AIAgentSimplifiedFeedback = () => {
                 <KnowledgeSourceFeedback
                     key={resource.resource.id}
                     onIconClick={handleIconClick}
+                    onKnowledgeResourceClick={onKnowledgeResourceClick}
                     resource={resource}
                     shopName={shopName}
                     shopType={shopType}
@@ -322,6 +324,7 @@ const AIAgentSimplifiedFeedback = () => {
             <KnowledgeSourceFeedback
                 key={resource.id}
                 onIconClick={handleIconClick}
+                onKnowledgeResourceClick={onKnowledgeResourceClick}
                 resource={{
                     executionId: resource.executionId,
                     resource: {
@@ -344,7 +347,14 @@ const AIAgentSimplifiedFeedback = () => {
                 isMetadataLoading
             />
         ))
-    }, [feedback, enrichedData, shopName, shopType, handleIconClick])
+    }, [
+        feedback,
+        enrichedData,
+        shopName,
+        shopType,
+        handleIconClick,
+        onKnowledgeResourceClick,
+    ])
 
     return (
         <>

@@ -248,4 +248,63 @@ describe('KnowledgeSourceFeedback', () => {
             expect(mockOpenPreview).not.toHaveBeenCalled()
         })
     })
+
+    describe('handleLinkClick conditional logic', () => {
+        it('should call onKnowledgeResourceClick when all conditions are met', () => {
+            const mockOnKnowledgeResourceClick = jest.fn()
+            const orderResource = mockResource({
+                resource: {
+                    resourceType: 'ORDER',
+                    resourceId: 'order-123',
+                    resourceSetId: 'set-456',
+                },
+                metadata: {
+                    url: 'https://example.com/order/123',
+                    isDeleted: false,
+                },
+            })
+
+            render(
+                <KnowledgeSourceFeedback
+                    {...defaultProps}
+                    resource={orderResource}
+                    onKnowledgeResourceClick={mockOnKnowledgeResourceClick}
+                />,
+            )
+
+            const link = screen.getByRole('link')
+            fireEvent.click(link)
+
+            expect(mockOnKnowledgeResourceClick).toHaveBeenCalledTimes(1)
+            expect(mockOnKnowledgeResourceClick).toHaveBeenCalledWith(
+                'order-123',
+                'ORDER',
+                'set-456',
+            )
+        })
+
+        it('should not call onKnowledgeResourceClick when resource is not a link type', () => {
+            const mockOnKnowledgeResourceClick = jest.fn()
+            const articleResource = mockResource({
+                resource: {
+                    resourceType: 'ARTICLE',
+                    resourceId: 'article-123',
+                    resourceSetId: 'set-456',
+                },
+            })
+
+            render(
+                <KnowledgeSourceFeedback
+                    {...defaultProps}
+                    resource={articleResource}
+                    onKnowledgeResourceClick={mockOnKnowledgeResourceClick}
+                />,
+            )
+
+            const knowledgeSource = screen.getByText('Test Knowledge Title')
+            fireEvent.click(knowledgeSource)
+
+            expect(mockOnKnowledgeResourceClick).not.toHaveBeenCalled()
+        })
+    })
 })

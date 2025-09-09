@@ -34,6 +34,12 @@ export type AiAgentReasoningContentProps = {
         knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
         helpCenterId?: string
     }) => void
+
+    onKnowledgeResourceClick?: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
+    ) => void
 }
 
 export const AiAgentReasoningContent = ({
@@ -43,6 +49,7 @@ export const AiAgentReasoningContent = ({
     storeConfiguration,
 
     openPreview,
+    onKnowledgeResourceClick,
 }: AiAgentReasoningContentProps) => {
     if (reasoningContent === null) return null
 
@@ -116,6 +123,11 @@ export const AiAgentReasoningContent = ({
                                               ? resourceData.url
                                               : ''
                                       if (resourceUrl) {
+                                          onKnowledgeResourceClick?.(
+                                              resource.resourceId,
+                                              resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                                              resource.resourceSetId || '',
+                                          )
                                           window.open(resourceUrl, '_blank')
                                       }
                                   } else {

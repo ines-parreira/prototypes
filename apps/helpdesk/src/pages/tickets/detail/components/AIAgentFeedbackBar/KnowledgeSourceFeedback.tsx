@@ -29,6 +29,11 @@ type KnowledgeSourceProps = {
         value: AiAgentBinaryFeedbackEnum,
         resource: KnowledgeResource,
     ) => void
+    onKnowledgeResourceClick?: (
+        resourceId: string,
+        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceSetId: string,
+    ) => void
     shopName: string
     shopType: string
     isMetadataLoading?: boolean
@@ -47,6 +52,7 @@ type ThumbButtonProps = {
 const KnowledgeSourceFeedback = ({
     resource,
     onIconClick,
+    onKnowledgeResourceClick,
     shopName,
     shopType,
     isMetadataLoading,
@@ -91,6 +97,17 @@ const KnowledgeSourceFeedback = ({
         openPreview(popoverProps)
     }
 
+    const handleLinkClick = () => {
+        if (isLink && !isDeleted && onKnowledgeResourceClick) {
+            onKnowledgeResourceClick(
+                resource.resource.resourceId,
+                resource.resource
+                    .resourceType as AiAgentKnowledgeResourceTypeEnum,
+                resource.resource.resourceSetId || '',
+            )
+        }
+    }
+
     return (
         <div className={css.source}>
             <KnowledgeSourceRenderer
@@ -120,6 +137,7 @@ const KnowledgeSourceFeedback = ({
                             [css.deleted]: isDeleted,
                             [css.hasLink]: !isDeleted,
                         })}
+                        onClick={handleLinkClick}
                     >
                         {isMetadataLoading ? (
                             <div className={css.iconSkeleton}>
