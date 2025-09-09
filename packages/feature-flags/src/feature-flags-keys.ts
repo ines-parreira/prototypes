@@ -36,7 +36,6 @@ export enum FeatureFlagKey {
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
-    AiSalesAgentHelpOnSearchTemplateQuery = 'ai-sales-agent-help-on-search-template-query',
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AiShoppingAssistantProductRecommendations = 'ai-shopping-assistant-product-recommendations',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',

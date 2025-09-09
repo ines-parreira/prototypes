@@ -16,7 +16,6 @@ export const buildRuleEngineData = (
     pageInteractions: {} as any,
     isActivationEnabled: false,
     isAiShoppingAssistantEnabled: false,
-    isAiSalesAgentHelpOnSearchTemplateQueryEnabled: false,
     selfServiceChatChannels: [],
     ...data,
 })

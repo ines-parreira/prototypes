@@ -71,9 +71,6 @@ export const CustomerEngagementSettings = () => {
     const isAiShoppingAssistantEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
-    const isTriggerOnSearchEnabled = useFlag(
-        FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery,
-    )
 
     const canUpdateTexts =
         storeConfiguration?.monitoredChatIntegrations.length === 1
@@ -239,12 +236,10 @@ export const CustomerEngagementSettings = () => {
 
                         <div data-candu-id="ai-sales-agent-customer-engagement-settings-educational-content" />
 
-                        {isTriggerOnSearchEnabled && (
-                            <TriggerOnSearchSettings
-                                gmv={gmv}
-                                isGmvLoading={isGmvLoading}
-                            />
-                        )}
+                        <TriggerOnSearchSettings
+                            gmv={gmv}
+                            isGmvLoading={isGmvLoading}
+                        />
                         <ConversationStartersSettings
                             isEnabled={isAiShoppingAssistantEnabled}
                             gmv={gmv}

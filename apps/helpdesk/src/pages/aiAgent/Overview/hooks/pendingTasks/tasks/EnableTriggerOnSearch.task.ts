@@ -30,7 +30,6 @@ export class EnableTriggerOnSearchTask extends Task {
 
         return (
             isChatEnabled &&
-            data.isAiSalesAgentHelpOnSearchTemplateQueryEnabled &&
             !data.aiAgentStoreConfiguration.isSalesHelpOnSearchEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(AiAgentScope.Sales)
         )

@@ -60,7 +60,6 @@ export type RuleEngineData = {
     pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
     isAiShoppingAssistantEnabled: boolean
-    isAiSalesAgentHelpOnSearchTemplateQueryEnabled: boolean
     isStandaloneMerchant?: boolean
 }
 

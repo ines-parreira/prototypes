@@ -189,11 +189,6 @@ export const usePendingTasksRuleEngine = ({
         false,
     )
 
-    const isAiSalesAgentHelpOnSearchTemplateQueryEnabled = useFlag(
-        FeatureFlagKey.AiSalesAgentHelpOnSearchTemplateQuery,
-        false,
-    )
-
     // Calculate tasks using useMemo to prevent infinite rerenders
     const { completedTasks, pendingTasks } = useMemo(() => {
         if (!isReady) {
@@ -215,7 +210,6 @@ export const usePendingTasksRuleEngine = ({
                 pageInteractions: pageInteractionsData,
                 isActivationEnabled,
                 isAiShoppingAssistantEnabled,
-                isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
                 selfServiceChatChannels,
                 storeKnowledgeStatus: storeKnowledgeStatusData,
                 alreadyUsedEmailIntegrationsIds,
@@ -240,7 +234,6 @@ export const usePendingTasksRuleEngine = ({
         pageInteractionsData,
         isActivationEnabled,
         isAiShoppingAssistantEnabled,
-        isAiSalesAgentHelpOnSearchTemplateQueryEnabled,
         selfServiceChatChannels,
         storeKnowledgeStatusData,
         alreadyUsedEmailIntegrationsIds,
