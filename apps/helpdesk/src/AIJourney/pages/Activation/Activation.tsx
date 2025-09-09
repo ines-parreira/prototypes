@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
@@ -12,14 +12,13 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import { Button } from 'AIJourney/components/Button/Button'
 import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
+import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useTestSms } from 'AIJourney/queries'
 import { isValidPhoneNumber } from 'AIJourney/utils'
 import { Product } from 'constants/integrations/types/shopify'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useListProducts } from 'models/integration/queries'
-import { IntegrationDataItem } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -63,31 +62,14 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const integrationId = currentIntegration?.id
 
-    const { data: integrationItems, isLoading: isLoadingProductsList } =
-        useListProducts(
-            currentIntegration?.id ?? 0,
-            !!currentIntegration?.id,
-            { limit: 50 },
-            { refetchOnWindowFocus: false, refetchOnMount: false },
-        )
-
-    const products = useMemo(() => {
-        const data = integrationItems?.pages?.reduce(
-            (acc, page) => [...acc, ...page.data.data],
-            [] as IntegrationDataItem<Product>[],
-        )
-        return (data || [])
-            .filter((item) => item.data.status === 'active')
-            .filter((item) => !!item.data.image && !!item.data.title)
-            .map((item) => item.data)
-            .splice(0, 5) as Product[]
-    }, [integrationItems])
+    const { productList, isLoading: isLoadingProductsList } =
+        useAIJourneyProductList({ integrationId })
 
     useEffect(() => {
-        if (products.length > 0 && !selectedProduct) {
-            setSelectedProduct(products[0])
+        if (productList.length > 0 && !selectedProduct) {
+            setSelectedProduct(productList[0])
         }
-    }, [products, selectedProduct])
+    }, [productList, selectedProduct])
 
     const handleProductSelectChange = (newValue: Product) => {
         setSelectedProduct(newValue)
@@ -206,7 +188,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                 description="Impersonate a customer and test the conversation with the agent on your phone."
             />
             <ProductSelectField
-                options={products}
+                options={productList}
                 onChange={handleProductSelectChange}
                 name="Customer scenario"
                 description={`Customer ${customerName} has left their cart with the following product`}

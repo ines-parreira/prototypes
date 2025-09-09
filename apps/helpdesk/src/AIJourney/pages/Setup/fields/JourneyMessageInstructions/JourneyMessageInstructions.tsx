@@ -8,15 +8,23 @@ import TextArea from 'pages/common/forms/TextArea'
 import css from './JourneyMessageInstructions.less'
 
 type JourneyMessageInstructionsFieldProps = {
-    value?: string
-    onChange?: (value: string) => void
+    description?: string
+    hideInfoContent?: boolean
     maxLength?: number
+    name?: string
+    onChange?: (value: string) => void
+    optional?: boolean
+    value?: string
 }
 
 export const JourneyMessageInstructionsField = ({
-    value = '',
-    onChange,
+    description,
+    hideInfoContent = false,
     maxLength = 2000,
+    name,
+    onChange,
+    optional,
+    value = '',
 }: JourneyMessageInstructionsFieldProps) => {
     const handleChange = useCallback(
         (newValue: string) => {
@@ -30,8 +38,12 @@ export const JourneyMessageInstructionsField = ({
     return (
         <div className={css.journeyMessageInstructionsField}>
             <FieldPresentation
-                name="AI message instructions"
-                description="Provide instructions for the AI agent's messaging tone and style (optional)"
+                name={name ?? 'AI message instructions'}
+                description={
+                    description ??
+                    "Provide instructions for the AI agent's messaging tone and style (optional)"
+                }
+                optional={optional}
             />
             <div className={css.textareaContainer}>
                 <TextArea
@@ -52,7 +64,9 @@ export const JourneyMessageInstructionsField = ({
                     remaining
                 </div>
             </div>
-            <Info content="Guide the AI agent's communication style during cart abandonment campaigns. Examples: 'Use a friendly and conversational tone', 'Speak casually, use emojis 🛍️', 'Be professional and concise'." />
+            {!hideInfoContent && (
+                <Info content="Guide the AI agent's communication style during cart abandonment campaigns. Examples: 'Use a friendly and conversational tone', 'Speak casually, use emojis 🛍️', 'Be professional and concise'." />
+            )}
         </div>
     )
 }
