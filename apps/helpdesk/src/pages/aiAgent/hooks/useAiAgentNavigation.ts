@@ -140,10 +140,6 @@ const useNavigationItems = (
         useFlag(FeatureFlagKey.FollowUpAiAgentPreviewMode) &&
         (window.USER_IMPERSONATED || window.DEVELOPMENT)
 
-    const isAiAgentKnowledgeTabEnabled = useFlag(
-        FeatureFlagKey.AiAgentKnowledgeTab,
-    )
-
     const isAiAgentScrapeStoreDomainEnabled = useFlag(
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
@@ -200,12 +196,10 @@ const useNavigationItems = (
                             exact: true,
                         }, */
                     {
-                        route: isAiAgentKnowledgeTabEnabled
-                            ? routes.knowledge
-                            : routes.guidance,
+                        route: routes.knowledge,
                         title: KNOWLEDGE,
                         items: [
-                            isAiAgentKnowledgeTabEnabled && {
+                            {
                                 route: isAiAgentScrapeStoreDomainEnabled
                                     ? routes.knowledgeSources
                                     : routes.knowledge,
@@ -218,7 +212,7 @@ const useNavigationItems = (
                                 route: routes.guidance,
                                 title: GUIDANCE,
                             },
-                        ].filter((x) => !!x) as NavigationItem[],
+                        ],
                     },
                     {
                         route: routes.actions,
@@ -297,7 +291,6 @@ const useNavigationItems = (
             },
         ].filter((x) => !!x) as NavigationItem[]
     }, [
-        isAiAgentKnowledgeTabEnabled,
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isAiShoppingAssistantEnabled,

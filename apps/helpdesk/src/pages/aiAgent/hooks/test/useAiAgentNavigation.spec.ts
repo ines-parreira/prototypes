@@ -55,12 +55,9 @@ describe('useAiAgentNavigation', () => {
     })
 
     it('should get Knowledge Source tab to navbar if AI agent scrape store domain feature flag is on', () => {
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key === FeatureFlagKey.AiAgentKnowledgeTab ||
-                key === FeatureFlagKey.AiAgentScrapeStoreDomain ||
-                false,
-        )
+        mockUseFlag.mockReturnValue({
+            [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
+        })
 
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),

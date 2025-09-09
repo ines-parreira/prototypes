@@ -325,10 +325,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         FeatureFlagKey.AiAgentOnboardingWizard,
     )
 
-    const isAiAgentKnowledgeTabEnabled = useFlag(
-        FeatureFlagKey.AiAgentKnowledgeTab,
-    )
-
     const isAiAgentScrapeStoreDomainEnabled = useFlag(
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
@@ -520,101 +516,95 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             />
                         </AiAgentErrorBoundary>
                     )}
-                    {isAiAgentKnowledgeTabEnabled && (
-                        <AiAgentErrorBoundary
-                            section="ai-agent-knowledge"
-                            team={SentryTeam.CONVAI_KNOWLEDGE}
-                        >
-                            <Route
-                                path={`${path}/knowledge`}
-                                exact
-                                component={AiAgentKnowledgeContainer}
-                            />
-                            {isAiAgentScrapeStoreDomainEnabled && (
-                                <>
-                                    <Switch>
-                                        <Route
-                                            path={`${path}/knowledge/sources`}
-                                            exact
-                                            component={
-                                                AiAgentKnowledgeContainer
-                                            }
-                                        />
-                                        <Route
-                                            exact
-                                            path={`${path}/knowledge/sources/questions-content`}
-                                            component={
-                                                AiAgentScrapedDomainQuestionsContainer
-                                            }
-                                        />
-                                        <Route
-                                            path={`${path}/knowledge/sources/questions-content/:articleId`}
-                                            component={
-                                                AiAgentScrapedDomainQuestionsContainer
-                                            }
-                                        />
-                                        <Route
-                                            exact
-                                            path={`${path}/knowledge/sources/products-content`}
-                                            component={
-                                                AiAgentScrapedDomainProductsContainer
-                                            }
-                                        />
-                                        <Route
-                                            path={`${path}/knowledge/sources/products-content/:productId`}
-                                            component={
-                                                AiAgentScrapedDomainProductsContainer
-                                            }
-                                        />
-                                        <Route
-                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles/:articleId`}
-                                            component={
-                                                AiAgentUrlSourcesArticleContainer
-                                            }
-                                        />
-                                        <Route
-                                            path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles`}
-                                            component={
-                                                AiAgentUrlSourcesArticleContainer
-                                            }
-                                        />
-                                        <Route
-                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles/:articleId`}
-                                            component={
-                                                AiAgentExternalDocumentsArticleContainer
-                                            }
-                                        />{' '}
-                                        <Route
-                                            path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles`}
-                                            component={
-                                                AiAgentExternalDocumentsArticleContainer
-                                            }
-                                        />
-                                    </Switch>
-                                    {location.pathname.endsWith(
-                                        '/knowledge',
-                                    ) && (
-                                        <Redirect
-                                            to={location.pathname.replace(
-                                                '/knowledge',
-                                                '/knowledge/sources',
-                                            )}
-                                        />
-                                    )}
-                                    {location.pathname.includes(
-                                        '/pages-content',
-                                    ) && (
-                                        <Redirect
-                                            to={location.pathname.replace(
-                                                '/pages-content',
-                                                '/questions-content',
-                                            )}
-                                        />
-                                    )}
-                                </>
-                            )}
-                        </AiAgentErrorBoundary>
-                    )}
+                    <AiAgentErrorBoundary
+                        section="ai-agent-knowledge"
+                        team={SentryTeam.CONVAI_KNOWLEDGE}
+                    >
+                        <Route
+                            path={`${path}/knowledge`}
+                            exact
+                            component={AiAgentKnowledgeContainer}
+                        />
+                        {isAiAgentScrapeStoreDomainEnabled && (
+                            <>
+                                <Switch>
+                                    <Route
+                                        path={`${path}/knowledge/sources`}
+                                        exact
+                                        component={AiAgentKnowledgeContainer}
+                                    />
+                                    <Route
+                                        exact
+                                        path={`${path}/knowledge/sources/questions-content`}
+                                        component={
+                                            AiAgentScrapedDomainQuestionsContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/questions-content/:articleId`}
+                                        component={
+                                            AiAgentScrapedDomainQuestionsContainer
+                                        }
+                                    />
+                                    <Route
+                                        exact
+                                        path={`${path}/knowledge/sources/products-content`}
+                                        component={
+                                            AiAgentScrapedDomainProductsContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/products-content/:productId`}
+                                        component={
+                                            AiAgentScrapedDomainProductsContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles/:articleId`}
+                                        component={
+                                            AiAgentUrlSourcesArticleContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/url-articles/:articleIngestionId/articles`}
+                                        component={
+                                            AiAgentUrlSourcesArticleContainer
+                                        }
+                                    />
+                                    <Route
+                                        path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles/:articleId`}
+                                        component={
+                                            AiAgentExternalDocumentsArticleContainer
+                                        }
+                                    />{' '}
+                                    <Route
+                                        path={`${path}/knowledge/sources/file-articles/:fileIngestionId/articles`}
+                                        component={
+                                            AiAgentExternalDocumentsArticleContainer
+                                        }
+                                    />
+                                </Switch>
+                                {location.pathname.endsWith('/knowledge') && (
+                                    <Redirect
+                                        to={location.pathname.replace(
+                                            '/knowledge',
+                                            '/knowledge/sources',
+                                        )}
+                                    />
+                                )}
+                                {location.pathname.includes(
+                                    '/pages-content',
+                                ) && (
+                                    <Redirect
+                                        to={location.pathname.replace(
+                                            '/pages-content',
+                                            '/questions-content',
+                                        )}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
                         section="ai-agent-intents"
                         team={SentryTeam.CONVAI_KNOWLEDGE}

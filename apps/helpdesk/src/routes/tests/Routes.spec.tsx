@@ -646,13 +646,6 @@ describe('<Routes/>', () => {
         } as unknown as RootState
 
         it('should render knowledge page on new namespace', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiAgentKnowledgeTab) {
-                    return true
-                }
-                return false
-            })
-
             render(
                 <Provider store={mockStore(defaultState)}>
                     <MemoryRouter
