@@ -6,6 +6,7 @@ export enum FeatureFlagKey {
     ActionsInternalPlatform = 'actions-internal-platform',
     ActionSteps = 'action-steps',
     AgentActivityTracking = 'agent-activity-tracking',
+    /** @deprecated Fully evaluated to `true` */
     AiAgentActivation = 'linear.project_activate-ai-agent-per-skills-and-channels-easily.enable_activation_feature',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
     AiAgentAssistant = 'ai-agent-assistant',
@@ -15,6 +16,7 @@ export enum FeatureFlagKey {
     AiAgentExpandingTrialExperienceForAll = 'linear.expanding-trial-experience-of-ai-agent-for-all-customers',
     AiAgentFilesAndUrlsKnowledgeVisibilityButton = 'ai-agent-files-and-urls-knowledge-visibility-button',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
+    /** @deprecated Fully evaluated to `true` */
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',
     AiAgentOnboardingMLPreview = 'linear.task_MARCVT-3628.ml-preview',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
@@ -35,10 +37,14 @@ export enum FeatureFlagKey {
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
+    /** @deprecated Fully evaluated to `true` */
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
+    /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
+    /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantProductRecommendations = 'ai-shopping-assistant-product-recommendations',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',
+    /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
@@ -152,11 +158,11 @@ export enum FeatureFlagKey {
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
     ShoppingAssistantEnforceDeactivation = 'ai-shopping-assistant-enforce-deactivation',
-    /** https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production&env=staging&selected-env=staging */
+    /** @deprecated Full evaluated to `true`
+    https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production */
     ShoppingAssistantTrialImprovement = 'linear.project_post-ga-shopping-assistant-trial-improvement',
-    /** @deprecated https://app.launchdarkly.com/projects/default/flags/linear.project_shopping-assistant-trial-revamp/targeting?env=production&selected-env=production */
-    ShoppingAssistantTrialRevamp = 'linear.project_shopping-assistant-trial-revamp',
-    /** https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
+    /** @deprecated Full evaluated to `milestone-1`
+    https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
     ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',
