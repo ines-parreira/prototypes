@@ -92,16 +92,29 @@ describe('useTimeSeries', () => {
                 dateTime: '2022-01-02T00:00:00.000',
                 label: TicketMessagesMeasure.MedianFirstResponseTime,
                 value: 65,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '3.4',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+                },
             },
             {
                 dateTime: '2022-01-02T01:00:00.000',
                 label: TicketMessagesMeasure.MedianFirstResponseTime,
                 value: 32,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
+                },
             },
             {
                 dateTime: '2022-01-02T02:00:00.000',
                 label: TicketMessagesMeasure.MedianFirstResponseTime,
                 value: 0,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '4.1',
+                },
             },
             {
                 dateTime: '2022-01-02T03:00:00.000',
@@ -112,6 +125,11 @@ describe('useTimeSeries', () => {
                 dateTime: '2022-01-02T04:00:00.000',
                 label: TicketMessagesMeasure.MedianFirstResponseTime,
                 value: 139,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T04:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '1.2',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '139',
+                },
             },
         ],
         [
@@ -119,16 +137,29 @@ describe('useTimeSeries', () => {
                 dateTime: '2022-01-02T00:00:00.000',
                 label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 value: 3.4,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '3.4',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+                },
             },
             {
                 dateTime: '2022-01-02T01:00:00.000',
                 label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 value: 0,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
+                },
             },
             {
                 dateTime: '2022-01-02T02:00:00.000',
                 label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 value: 4.1,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '4.1',
+                },
             },
             {
                 dateTime: '2022-01-02T03:00:00.000',
@@ -139,6 +170,11 @@ describe('useTimeSeries', () => {
                 dateTime: '2022-01-02T04:00:00.000',
                 label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                 value: 1.2,
+                rawData: {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T04:00:00',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '1.2',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '139',
+                },
             },
         ],
     ]
@@ -208,6 +244,11 @@ describe('useTimeSeries', () => {
                     dateTime: '2023-04-17T00:00:00.000',
                     label: TicketMessagesMeasure.MedianFirstResponseTime,
                     value: 3,
+                    rawData: {
+                        [TicketDimension.CreatedDatetime]:
+                            '2023-04-17T00:00:00.000',
+                        [TicketMessagesMeasure.MedianFirstResponseTime]: 3,
+                    },
                 },
             ],
         ])
@@ -304,6 +345,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T00:00:00.000',
                             label: VALUE_FIELD,
                             value: 65,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T00:00:00',
+                                [VALUE_FIELD]: '65',
+                            },
                         },
                         {
                             dateTime: '2022-01-02T01:00:00.000',
@@ -353,6 +400,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 139,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T04:00:00',
+                                [VALUE_FIELD]: '139',
+                            },
                         },
                     ],
                 ],
@@ -382,6 +435,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 55,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${stripEscapedQuotes(unEscapedField)}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T04:00:00',
+                                [VALUE_FIELD]: '55',
+                            },
                         },
                     ],
                 ],
@@ -446,6 +505,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T00:00:00.000',
                             label: VALUE_FIELD,
                             value: 65,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T00:00:00',
+                                [VALUE_FIELD]: '65',
+                            },
                         },
                         {
                             dateTime: '2022-01-02T01:00:00.000',
@@ -495,6 +560,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 139,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T04:00:00',
+                                [VALUE_FIELD]: '139',
+                            },
                         },
                     ],
                 ],
@@ -519,6 +590,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T00:00:00.000',
                             label: VALUE_FIELD,
                             value: 65,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T00:00:00',
+                                [VALUE_FIELD]: '65',
+                            },
                         },
                         {
                             dateTime: '2022-01-02T01:00:00.000',
@@ -568,6 +645,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 139,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T04:00:00',
+                                [VALUE_FIELD]: '139',
+                            },
                         },
                     ],
                 ],
@@ -597,6 +680,12 @@ describe('TimeSeriesPerDimension', () => {
                             dateTime: '2022-01-02T04:00:00.000',
                             label: VALUE_FIELD,
                             value: 55,
+                            rawData: {
+                                [TicketCustomFieldsDimension.TicketCustomFieldsValue]: `${stripEscapedQuotes(unEscapedField)}`,
+                                [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
+                                    '2022-01-02T04:00:00',
+                                [VALUE_FIELD]: '55',
+                            },
                         },
                     ],
                 ],

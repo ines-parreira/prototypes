@@ -22,5 +22,12 @@ export const calculateRate = (
 export const getStatsByMeasure = (
     measure: string,
     dataItems?: TimeSeriesDataItem[][],
-): TimeSeriesDataItem[] =>
-    dataItems?.find((arr) => arr.some((item) => item.label === measure)) || []
+): TimeSeriesDataItem[] => {
+    const matchingArray = dataItems?.find((arr) =>
+        arr.some((item) => item.label === measure),
+    )
+    if (!matchingArray) return []
+
+    // Just return the matching array - all properties from rawItem are already included
+    return matchingArray
+}

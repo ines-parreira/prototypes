@@ -111,6 +111,7 @@ export const gmvTimeSeriesQueryFactory = (
             },
         ],
         AiSalesAgentOrdersMeasure.Gmv,
+        [AiSalesAgentOrdersDimension.Currency],
     )
 
 export const gmvUsdTimeSeriesQueryFactory = (

@@ -48,6 +48,7 @@ export type TimeSeriesDataItem = {
     dateTime: string
     value: number
     label?: string
+    [key: string]: any
 }
 
 export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
@@ -78,10 +79,16 @@ const select =
         return measures.map((_, index) => {
             return dateTimes.map((dateTime) => {
                 const values = dateTimeToValuesMap[dateTime] || []
+                const rawItem = res.find(
+                    (item) =>
+                        formatReportingQueryDate(item[String(dimension)]) ===
+                        dateTime,
+                )
                 return {
                     dateTime,
                     value: values[index] || 0,
                     label: measures[index],
+                    rawData: rawItem, // Include all properties from the raw data in a separate property
                 }
             })
         })

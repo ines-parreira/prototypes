@@ -17,9 +17,13 @@ import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesA
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { RootState } from 'state/types'
 
 jest.mock('domains/reporting/hooks/timeSeries')
+jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+
+const useCurrencyMock = assumeMock(useCurrency)
 jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
 )
@@ -132,13 +136,32 @@ describe('<GmvInfluencedOverTimeChart />', () => {
         })
 
         useGmvInfluenceOverTimeSeriesMock.mockReturnValue({
-            data: [],
+            data: [
+                [
+                    {
+                        dateTime: '2025-02-26T00:00:00.000',
+                        value: 10,
+                        label: 'AiSalesAgentOrders.gmv',
+                        rawData: {
+                            'AiSalesAgentOrders.dateTime':
+                                '2025-02-26T00:00:00.000',
+                            'AiSalesAgentOrders.gmv': '10',
+                            'AiSalesAgentOrders.currency': 'EUR',
+                        },
+                    },
+                ],
+            ],
             isFetching: false,
             isError: false,
         })
+
+        useCurrencyMock.mockReturnValue({
+            currency: 'USD',
+            isCurrencyUSD: true,
+        })
     })
 
-    it('renders', () => {
+    it('renders with currency from time series data', () => {
         render(
             <Provider store={store}>
                 <GmvInfluencedOverTimeChart />
@@ -146,6 +169,17 @@ describe('<GmvInfluencedOverTimeChart />', () => {
         )
 
         expect(screen.getByText('GMV influenced over time')).toBeInTheDocument()
+        expect(LineChartMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                renderYTickLabel: expect.any(Function),
+                _renderLegacyTooltipLabel: expect.any(Function),
+            }),
+            expect.any(Object),
+        )
+
+        // Test that it uses the currency from time series data (EUR) instead of fallback (USD)
+        const { renderYTickLabel } = LineChartMock.mock.calls[0][0]
+        expect(renderYTickLabel?.(10)).toBe('€10')
     })
 
     it('should use valid hook when banner is not visible', () => {

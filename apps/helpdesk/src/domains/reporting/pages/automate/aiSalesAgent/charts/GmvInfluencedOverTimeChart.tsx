@@ -4,6 +4,7 @@ import { TooltipItem } from 'chart.js'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -61,7 +62,7 @@ const Chart = ({
     useTimeSeries: TimeSeriesHook
 } & DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const { currency } = useCurrency()
+    const { currency: fallbackCurrency } = useCurrency()
 
     const timeSeries = useTimeSeries(
         cleanStatsFilters,
@@ -69,6 +70,11 @@ const Chart = ({
         granularity,
     )
 
+    // Get currency from time series data or fallback to useCurrency
+    const currency =
+        (timeSeries.data?.[0]?.[0]?.rawData as any)?.[
+            AiSalesAgentOrdersDimension.Currency
+        ] || fallbackCurrency
     return (
         <ChartCard
             title={title}
