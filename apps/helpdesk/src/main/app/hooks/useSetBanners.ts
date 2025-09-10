@@ -1,6 +1,7 @@
 import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialBanner'
 
 import {
+    useAiAgentTrialBanner,
     useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
@@ -25,4 +26,5 @@ export function useSetBanners() {
     useTrackingBundleInstallationWarningBanner()
     useDeprecatedAiShoppingAssistantTrialBanner()
     useShoppingAssistantTrialBanner()
+    useAiAgentTrialBanner()
 }

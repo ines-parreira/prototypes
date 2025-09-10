@@ -263,12 +263,13 @@ describe('useTrialAccess', () => {
                     false,
             )
 
-            // Set loading state for store configurations
-            mockUseStoreConfigurations.mockReturnValue({
-                storeConfigurations: [], // Empty while loading
-                storeNames: [],
+            // Set loading state for useGetTrials
+            mockUseGetTrials.mockReturnValue({
+                data: [],
                 isLoading: true,
-            })
+                error: null,
+                isError: false,
+            } as any)
 
             // Set loading state for store activations
             mockUseStoreActivations.mockReturnValue({
@@ -294,7 +295,7 @@ describe('useTrialAccess', () => {
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
-                canSeeSystemBanner: false,
+                canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
                 isAdminUser: true,
                 isLoading: true,
@@ -309,7 +310,7 @@ describe('useTrialAccess', () => {
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canNotifyAdmin: true, // Team lead can notify admin
-                canSeeSystemBanner: false, // Only admins can see system banner
+                canSeeSystemBanner: true, // Both admins and team leads can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
             })
         })
@@ -339,7 +340,7 @@ describe('useTrialAccess', () => {
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
-                canSeeSystemBanner: false, // System banner only for Starter/Basic
+                canSeeSystemBanner: true, // System banner for everyone
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
                 isAdminUser: true,
             })
@@ -354,6 +355,7 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canBookDemo: true, // Pro+ without feature flag can book demo
                 isAdminUser: true,
+                canSeeSystemBanner: true,
             })
         })
 
@@ -366,32 +368,7 @@ describe('useTrialAccess', () => {
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
                 canNotifyAdmin: true, // Team lead can notify for Pro+ with feature flag
-            })
-        })
-    })
-
-    describe('AI Agent activation status', () => {
-        it('should return false for system banner when no AI Agent on chat', () => {
-            mockUseStoreConfigurations.mockReturnValue({
-                storeConfigurations: [
-                    getStoreConfigurationFixture({
-                        storeName: 'Test Store',
-                        shopType: 'shopify',
-                        trialModeActivatedDatetime: null,
-                        monitoredChatIntegrations: [], // No chat integrations
-                    }),
-                ],
-                storeNames: ['Test Store'],
-                isLoading: false,
-            })
-
-            const { result } = renderUseTrialAccess()
-
-            expect(result.current).toEqual({
-                ...defaultExpectedValues,
-                canSeeSystemBanner: false, // No AI Agent on chat
-                canSeeTrialCTA: true, // Trial CTA doesn't require AI Agent on chat
-                isAdminUser: true,
+                canSeeSystemBanner: true, // Both admins and team leads can see system banner
             })
         })
     })

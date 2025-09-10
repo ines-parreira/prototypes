@@ -3,6 +3,7 @@ import { renderHook } from '@repo/testing'
 import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialBanner'
 
 import {
+    useAiAgentTrialBanner,
     useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
@@ -42,6 +43,7 @@ jest.mock('../banners', () => ({
     useEmailMigrationBanner: jest.fn(),
     useEmailDisconnectedBanner: jest.fn(),
     useZendeskImportFailedBanner: jest.fn(),
+    useAiAgentTrialBanner: jest.fn(),
 }))
 
 jest.mock('../useTrackingBundleInstallationWarningBanner', () => ({
@@ -62,6 +64,7 @@ describe('useSetBanners', () => {
         expect(useZendeskImportFailedBanner).toHaveBeenCalledTimes(1)
         expect(useAiShoppingAssistantTrialBanner).toHaveBeenCalledTimes(1)
         expect(useShoppingAssistantTrialBanner).toHaveBeenCalledTimes(1)
+        expect(useAiAgentTrialBanner).toHaveBeenCalledTimes(1)
         expect(
             useTrackingBundleInstallationWarningBanner,
         ).toHaveBeenCalledTimes(1)

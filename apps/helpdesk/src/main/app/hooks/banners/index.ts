@@ -1,3 +1,4 @@
+import { useAiAgentTrialBanner } from './useAiAgentTrialBanner'
 import { useEmailDisconnectedBanner } from './useEmailDisconnectedBanner'
 import { useEmailDomainVerificationBanner } from './useEmailDomainVerificationBanner'
 import { useEmailMigrationBanner } from './useEmailMigrationBanner'
@@ -10,4 +11,5 @@ export {
     useEmailDisconnectedBanner,
     useEmailMigrationBanner,
     useZendeskImportFailedBanner,
+    useAiAgentTrialBanner,
 }

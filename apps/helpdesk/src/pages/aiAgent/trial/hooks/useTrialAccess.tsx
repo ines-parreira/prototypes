@@ -6,7 +6,6 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
-import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import {
     hasTrialActive,
@@ -75,17 +74,13 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    // Get all store configurations to check trial history
-    const { storeConfigurations, isLoading: isStoreConfigsLoading } =
-        useStoreConfigurations(accountDomain)
-
     const {
         data: trials,
         isLoading: isTrialsLoading,
         isError: isTrialsError,
     } = useGetTrials(accountDomain)
 
-    const isLoading = isStoreConfigsLoading || isTrialsLoading
+    const isLoading = isTrialsLoading
 
     // Feature flag that controls the list of merchants that can start a trial
     const isAiShoppingAssistantTrialMerchantsEnabled = useFlag(
@@ -102,10 +97,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
     )
 
-    // Check if AI Agent is being used on chat (any store with monitored chat integrations)
-    const isUsingAiAgentOnChat = storeConfigurations.some(
-        (config) => config.monitoredChatIntegrations.length > 0,
-    )
     const isOnStarterOrBasicPlan =
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.STARTER ||
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.BASIC
@@ -205,10 +196,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
 
     // System Banner: Global application banner (requires AI Agent on chat)
     const canSeeSystemBanner = Boolean(
-        isAdminUser &&
-            isOnStarterOrBasicPlan &&
-            isUsingAiAgentOnChat &&
-            !hasAnyTrialStarted,
+        (isAdminUser || isTeamLeadUser) && !hasAnyTrialStarted,
     )
 
     // Trial Banner/CTA: For overview pages and sales paywall
