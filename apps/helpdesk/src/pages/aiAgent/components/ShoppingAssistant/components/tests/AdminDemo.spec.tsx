@@ -10,13 +10,31 @@ import {
 } from '../../types/ShoppingAssistant'
 import { AdminDemo } from '../AdminDemo'
 
+let capturedPromoCardProps: any = {}
+
 jest.mock('pages/common/components/PromoCard', () => {
     const MockPromoCard = ({
         children,
-        ...props
+        dismissible,
+        storageKey,
+        collapsible,
+        defaultCollapsed,
+        ...domProps
     }: {
         children: React.ReactNode
-    }) => <div {...props}>{children}</div>
+        dismissible?: boolean
+        storageKey?: string
+        collapsible?: boolean
+        defaultCollapsed?: boolean
+    }) => {
+        capturedPromoCardProps = {
+            dismissible,
+            storageKey,
+            collapsible,
+            defaultCollapsed,
+        }
+        return <div {...domProps}>{children}</div>
+    }
     MockPromoCard.Media = ({
         children,
         ...props
@@ -134,13 +152,22 @@ const mockPromoContent: PromoCardContent = {
 
 const renderAdminDemo = (
     trialType: TrialType = TrialType.ShoppingAssistant,
+    storageKey?: string,
 ) => {
     return render(
-        <AdminDemo promoContent={mockPromoContent} trialType={trialType} />,
+        <AdminDemo
+            promoContent={mockPromoContent}
+            trialType={trialType}
+            storageKey={storageKey}
+        />,
     )
 }
 
 describe('AdminDemo', () => {
+    beforeEach(() => {
+        capturedPromoCardProps = {}
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -284,6 +311,60 @@ describe('AdminDemo', () => {
                 'alt',
                 'Shopping Assistant Demo',
             )
+        })
+    })
+
+    describe('dismissible and storageKey props', () => {
+        it('passes dismissible=true and storageKey to PromoCard for AI Agent trial', () => {
+            const testStorageKey = 'test-storage-key'
+            renderAdminDemo(TrialType.AiAgent, testStorageKey)
+
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBe(testStorageKey)
+        })
+
+        it('passes dismissible=false to PromoCard for Shopping Assistant trial', () => {
+            const testStorageKey = 'test-storage-key'
+            renderAdminDemo(TrialType.ShoppingAssistant, testStorageKey)
+
+            expect(capturedPromoCardProps.dismissible).toBe(false)
+            expect(capturedPromoCardProps.storageKey).toBe(testStorageKey)
+        })
+
+        it('handles missing storageKey prop gracefully', () => {
+            renderAdminDemo(TrialType.AiAgent)
+
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBeUndefined()
+        })
+
+        it('correctly determines dismissible based on trial type', () => {
+            const { rerender } = render(
+                <AdminDemo
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.AiAgent}
+                    storageKey="test-key"
+                />,
+            )
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBe('test-key')
+
+            rerender(
+                <AdminDemo
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                    storageKey="test-key"
+                />,
+            )
+            expect(capturedPromoCardProps.dismissible).toBe(false)
+            expect(capturedPromoCardProps.storageKey).toBe('test-key')
+        })
+
+        it('passes through other PromoCard props correctly', () => {
+            renderAdminDemo(TrialType.AiAgent, 'test-key')
+
+            expect(capturedPromoCardProps.collapsible).toBeUndefined()
+            expect(capturedPromoCardProps.defaultCollapsed).toBeUndefined()
         })
     })
 })

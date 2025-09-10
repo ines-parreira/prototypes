@@ -69,6 +69,11 @@ export const ShoppingAssistantPromoCard: React.FC<
     const { variant } = promoContent
     let variantComponent: React.ReactNode = null
 
+    const getStoreSpecificStorageKey = (variant: PromoCardVariant) => {
+        const baseKey = `shopping-assistant-promo-${variant.toLowerCase()}-dismissed`
+        return shopName ? `${baseKey}-${shopName}` : baseKey
+    }
+
     switch (variant) {
         case PromoCardVariant.AdminTrialProgress:
             variantComponent = (
@@ -105,6 +110,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                         className={className}
                         promoContent={promoContent}
                         trialType={trialAccess.trialType}
+                        storageKey={getStoreSpecificStorageKey(variant)}
                     />
                 </>
             )
@@ -116,6 +122,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     className={className}
                     promoContent={promoContent}
                     trialType={trialAccess.trialType}
+                    storageKey={getStoreSpecificStorageKey(variant)}
                 />
             )
             break
@@ -132,6 +139,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                         className={className}
                         promoContent={promoContent}
                         trialType={trialAccess.trialType}
+                        storageKey={getStoreSpecificStorageKey(variant)}
                     />
                 </>
             )

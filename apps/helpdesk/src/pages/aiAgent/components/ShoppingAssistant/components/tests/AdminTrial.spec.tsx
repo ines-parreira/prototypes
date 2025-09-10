@@ -10,13 +10,31 @@ import {
 } from '../../types/ShoppingAssistant'
 import { AdminTrial } from '../AdminTrial'
 
+let capturedPromoCardProps: any = {}
+
 jest.mock('pages/common/components/PromoCard', () => {
     const MockPromoCard = ({
         children,
-        ...props
+        dismissible,
+        storageKey,
+        collapsible,
+        defaultCollapsed,
+        ...domProps
     }: {
         children: React.ReactNode
-    }) => <div {...props}>{children}</div>
+        dismissible?: boolean
+        storageKey?: string
+        collapsible?: boolean
+        defaultCollapsed?: boolean
+    }) => {
+        capturedPromoCardProps = {
+            dismissible,
+            storageKey,
+            collapsible,
+            defaultCollapsed,
+        }
+        return <div {...domProps}>{children}</div>
+    }
     MockPromoCard.Media = ({
         children,
         ...props
@@ -133,6 +151,10 @@ const mockPromoContent: PromoCardContent = {
 }
 
 describe('AdminTrial', () => {
+    beforeEach(() => {
+        capturedPromoCardProps = {}
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -387,6 +409,83 @@ describe('AdminTrial', () => {
 
             const posterImage = screen.getByTestId('video-thumbnail-poster')
             expect(posterImage).toHaveAttribute('src', 'test-file-stub')
+        })
+    })
+
+    describe('dismissible and storageKey props', () => {
+        it('passes dismissible=true and storageKey to PromoCard for AI Agent trial', () => {
+            const testStorageKey = 'test-storage-key'
+            render(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.AiAgent}
+                    storageKey={testStorageKey}
+                />,
+            )
+
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBe(testStorageKey)
+        })
+
+        it('passes dismissible=false to PromoCard for Shopping Assistant trial', () => {
+            const testStorageKey = 'test-storage-key'
+            render(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                    storageKey={testStorageKey}
+                />,
+            )
+
+            expect(capturedPromoCardProps.dismissible).toBe(false)
+            expect(capturedPromoCardProps.storageKey).toBe(testStorageKey)
+        })
+
+        it('handles missing storageKey prop gracefully', () => {
+            render(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.AiAgent}
+                />,
+            )
+
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBeUndefined()
+        })
+
+        it('correctly determines dismissible based on trial type', () => {
+            const { rerender } = render(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.AiAgent}
+                    storageKey="test-key"
+                />,
+            )
+            expect(capturedPromoCardProps.dismissible).toBe(true)
+            expect(capturedPromoCardProps.storageKey).toBe('test-key')
+
+            rerender(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.ShoppingAssistant}
+                    storageKey="test-key"
+                />,
+            )
+            expect(capturedPromoCardProps.dismissible).toBe(false)
+            expect(capturedPromoCardProps.storageKey).toBe('test-key')
+        })
+
+        it('passes through other PromoCard props correctly', () => {
+            render(
+                <AdminTrial
+                    promoContent={mockPromoContent}
+                    trialType={TrialType.AiAgent}
+                    storageKey="test-key"
+                />,
+            )
+
+            expect(capturedPromoCardProps.collapsible).toBeUndefined()
+            expect(capturedPromoCardProps.defaultCollapsed).toBeUndefined()
         })
     })
 })

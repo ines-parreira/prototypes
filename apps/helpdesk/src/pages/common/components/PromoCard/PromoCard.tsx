@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import cn from 'classnames'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
@@ -20,6 +21,9 @@ interface PromoCardContextType {
     isCollapsed: boolean
     setIsCollapsed: (collapsed: boolean) => void
     collapsible: boolean
+    isDismissed: boolean
+    dismiss: () => void
+    dismissible: boolean
 }
 
 const PromoCardContext = createContext<PromoCardContextType | undefined>(
@@ -41,6 +45,8 @@ interface PromoCardRootProps {
     className?: string
     collapsible?: boolean
     defaultCollapsed?: boolean
+    dismissible?: boolean
+    storageKey?: string
 }
 
 const PromoCardRoot = ({
@@ -48,11 +54,27 @@ const PromoCardRoot = ({
     className,
     collapsible = false,
     defaultCollapsed = false,
+    dismissible = false,
+    storageKey = 'promo-card-dismissed',
 }: PromoCardRootProps) => {
     const [showVideoModal, setShowVideoModal] = useState(false)
     const [isCollapsed, setIsCollapsed] = useState(
         collapsible && defaultCollapsed,
     )
+    const [isDismissed, setIsDismissed] = useLocalStorage(
+        dismissible ? storageKey : 'temp-key',
+        false,
+    )
+
+    const dismiss = useCallback(() => {
+        if (dismissible) {
+            setIsDismissed(true)
+        }
+    }, [dismissible, setIsDismissed])
+
+    if (isDismissed) {
+        return null
+    }
 
     return (
         <PromoCardContext.Provider
@@ -62,9 +84,15 @@ const PromoCardRoot = ({
                 isCollapsed,
                 setIsCollapsed,
                 collapsible,
+                isDismissed,
+                dismiss,
+                dismissible,
             }}
         >
-            <div className={cn(css.promoCard, className)}>{children}</div>
+            <div className={cn(css.promoCard, className)}>
+                {dismissible && <CloseButton />}
+                {children}
+            </div>
         </PromoCardContext.Provider>
     )
 }
@@ -330,6 +358,30 @@ const Actions = ({ children }: ActionsProps) => {
     )
 }
 
+interface CloseButtonProps {
+    className?: string
+}
+
+const CloseButton = ({ className }: CloseButtonProps) => {
+    const { dismiss, dismissible } = usePromoCardContext()
+
+    if (!dismissible) {
+        return null
+    }
+
+    return (
+        <IconButton
+            className={cn(css.closeButton, className)}
+            onClick={dismiss}
+            aria-label="Dismiss promo card"
+            icon="close"
+            fillStyle="ghost"
+            intent="secondary"
+            size="small"
+        />
+    )
+}
+
 interface ActionButtonProps {
     label: string
     onClick?: () => void
@@ -531,4 +583,5 @@ export const PromoCard = Object.assign(PromoCardRoot, {
     Actions,
     ActionButton,
     VideoModal,
+    CloseButton,
 })

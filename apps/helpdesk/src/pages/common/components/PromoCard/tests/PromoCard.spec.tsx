@@ -6,11 +6,22 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { PromoCard } from '../PromoCard'
 
+// Mock the useLocalStorage hook
+jest.mock('@repo/hooks', () => ({
+    useLocalStorage: jest.fn(),
+}))
+
+const mockUseLocalStorage = jest.mocked(require('@repo/hooks').useLocalStorage)
+
 // Mock assets for testing
 const mockPoster = '/test-poster.jpg'
 const mockVideoUrl = '/test-video.mp4'
 
 describe('PromoCard', () => {
+    beforeEach(() => {
+        // Reset the mock before each test
+        mockUseLocalStorage.mockReturnValue([false, jest.fn(), jest.fn()])
+    })
     describe('Callback Invocation Tests', () => {
         it('should successfully invoke ActionButton onClick callback', async () => {
             const mockOnClick = jest.fn()
@@ -1274,6 +1285,140 @@ describe('PromoCard', () => {
             })
             expect(collapseButton).toHaveAttribute('aria-expanded', 'true')
             expect(collapseButton).toHaveAttribute('aria-label', 'Collapse')
+        })
+    })
+
+    describe('Dismissible Functionality Tests', () => {
+        it('should not show close button when dismissible is false', () => {
+            mockUseLocalStorage.mockReturnValue([false, jest.fn(), jest.fn()])
+
+            render(
+                <PromoCard dismissible={false}>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>
+                                Non-Dismissible Card
+                            </PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /dismiss promo card/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show close button when dismissible is true', () => {
+            mockUseLocalStorage.mockReturnValue([false, jest.fn(), jest.fn()])
+
+            render(
+                <PromoCard dismissible>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>Dismissible Card</PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /dismiss promo card/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should dismiss card when close button is clicked', async () => {
+            const user = userEvent.setup()
+            const mockSetIsDismissed = jest.fn()
+
+            mockUseLocalStorage.mockReturnValue([
+                false,
+                mockSetIsDismissed,
+                jest.fn(),
+            ])
+
+            render(
+                <PromoCard dismissible>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>Dismissible Card</PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            const closeButton = screen.getByRole('button', {
+                name: /dismiss promo card/i,
+            })
+
+            await user.click(closeButton)
+
+            expect(mockSetIsDismissed).toHaveBeenCalledWith(true)
+        })
+
+        it('should call useLocalStorage with correct parameters when dismissible is true', () => {
+            const customKey = 'custom-promo-dismissed'
+
+            render(
+                <PromoCard dismissible storageKey={customKey}>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>Custom Key Card</PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(mockUseLocalStorage).toHaveBeenCalledWith(customKey, false)
+        })
+
+        it('should call useLocalStorage with temp key when dismissible is false', () => {
+            render(
+                <PromoCard dismissible={false}>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>
+                                Non-Dismissible Card
+                            </PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(mockUseLocalStorage).toHaveBeenCalledWith('temp-key', false)
+        })
+
+        it('should not render card when already dismissed', () => {
+            // Mock useLocalStorage to return dismissed state
+            mockUseLocalStorage.mockReturnValue([true, jest.fn(), jest.fn()])
+
+            const { container } = render(
+                <PromoCard dismissible>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>Dismissible Card</PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should render card when not dismissed', () => {
+            mockUseLocalStorage.mockReturnValue([false, jest.fn(), jest.fn()])
+
+            render(
+                <PromoCard dismissible>
+                    <PromoCard.Content>
+                        <PromoCard.Header>
+                            <PromoCard.Title>Dismissible Card</PromoCard.Title>
+                        </PromoCard.Header>
+                    </PromoCard.Content>
+                </PromoCard>,
+            )
+
+            expect(screen.getByText('Dismissible Card')).toBeInTheDocument()
         })
     })
 

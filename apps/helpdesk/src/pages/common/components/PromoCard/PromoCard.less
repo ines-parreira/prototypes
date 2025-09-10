@@ -10,6 +10,18 @@
         background: var(--neutral-grey-0, #fff);
         width: 240px;
     }
+    .closeButton {
+        position: absolute;
+        right: var(--layout-spacing-s);
+        top: var(--layout-spacing-s);
+        z-index: 1;
+        &:hover {
+            background-color: transparent !important;
+        }
+        i {
+            color: #fff !important;
+        }
+    }
 
     .contentContainer {
         padding: var(--layout-spacing-s) var(--layout-spacing-s)

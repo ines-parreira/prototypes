@@ -15,12 +15,14 @@ interface AdminDemoProps {
     className?: string
     promoContent: PromoCardContent
     trialType: TrialType
+    storageKey?: string
 }
 
 export const AdminDemo: React.FC<AdminDemoProps> = ({
     className,
     promoContent,
     trialType,
+    storageKey,
 }) => {
     const {
         title,
@@ -37,7 +39,12 @@ export const AdminDemo: React.FC<AdminDemoProps> = ({
 
     return (
         <div className={css.promoCardSection}>
-            <PromoCard className={className} data-variant={variant}>
+            <PromoCard
+                className={className}
+                data-variant={variant}
+                dismissible={isAiAgentTrial}
+                storageKey={storageKey}
+            >
                 {showVideo && (
                     <PromoCard.Media
                         style={{

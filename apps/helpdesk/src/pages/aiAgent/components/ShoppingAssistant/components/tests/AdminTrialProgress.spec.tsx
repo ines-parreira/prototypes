@@ -17,6 +17,7 @@ jest.mock('common/segment/segment', () => ({
 
 jest.mock('@repo/hooks', () => ({
     useEffectOnce: jest.fn((callback) => callback()),
+    useLocalStorage: jest.fn(() => [false, jest.fn(), jest.fn()]),
 }))
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
