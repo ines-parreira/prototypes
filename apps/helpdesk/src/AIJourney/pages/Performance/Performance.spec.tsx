@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { IntegrationsProvider, useIntegrations } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -51,9 +52,23 @@ const mockUseJourneyData = require('AIJourney/queries')
 const mockUseUpdateJourney = require('AIJourney/queries')
     .useUpdateJourney as jest.Mock
 
+jest.mock(
+    'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations',
+)
+const useAIJourneyTotalConversationsMock = assumeMock(
+    useAIJourneyTotalConversations,
+)
+
 describe('<Performance />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useAIJourneyTotalConversationsMock.mockImplementation(() => ({
+            label: 'Total Conversations',
+            value: 0,
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
+            isLoading: false,
+        }))
         mockUseJourneys.mockImplementation(() => ({
             data: [
                 { id: 'journey-123', type: 'cart_abandoned', state: 'active' },
@@ -192,4 +207,36 @@ describe('<Performance />', () => {
             ).toBeGreaterThan(0)
         })
     })
+
+    it.each([
+        { total: 0, expected: 'total recipients' },
+        { total: 1, expected: 'total recipient' },
+        { total: 42, expected: 'total recipients' },
+    ])(
+        'should render the total of recipients when $total',
+        async ({ total, expected }) => {
+            useAIJourneyTotalConversationsMock.mockClear()
+            useAIJourneyTotalConversationsMock.mockImplementation(() => ({
+                label: 'Total Conversations',
+                value: total,
+                interpretAs: 'more-is-better',
+                metricFormat: 'decimal-precision-1',
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore({})}>
+                        <IntegrationsProvider>
+                            <Performance />
+                        </IntegrationsProvider>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText(RegExp(expected), { selector: 'b' }),
+            ).toBeInTheDocument()
+        },
+    )
 })

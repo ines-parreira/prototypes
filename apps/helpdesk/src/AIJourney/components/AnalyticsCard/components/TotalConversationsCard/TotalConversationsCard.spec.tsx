@@ -19,14 +19,14 @@ describe('TotalConversationsCard', () => {
     it('should renders with total messages in plural sent when value is different than 1', () => {
         render(<TotalConversationsCard totalConversations="5" />)
 
-        expect(screen.getByText('5 conversations')).toBeInTheDocument()
+        expect(screen.getByText('5 total recipients')).toBeInTheDocument()
         expect(screen.getByText('sms')).toBeInTheDocument()
     })
 
     it('should renders with total message sent in singular when value is equal 1', () => {
         render(<TotalConversationsCard totalConversations="1" />)
 
-        expect(screen.getByText('1 conversation')).toBeInTheDocument()
+        expect(screen.getByText('1 total recipient')).toBeInTheDocument()
         expect(screen.getByText('sms')).toBeInTheDocument()
     })
 

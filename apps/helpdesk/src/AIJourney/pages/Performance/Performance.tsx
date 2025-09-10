@@ -36,7 +36,7 @@ const digestContent = (
         <b>{conversionVariationContent}</b>, with{' '}
         <b>
             {conversations}{' '}
-            {conversations === '1' ? 'conversation' : 'conversations'}
+            {conversations === '1' ? 'total recipient' : 'total recipients'}
         </b>
         .{' '}
         {(!hasDiscount || !hasMaxFollowUpMessages) && (

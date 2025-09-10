@@ -21,7 +21,9 @@ export const TotalConversationsCard = ({
             <div className={css.totalMessages}>
                 <i className="material-icons-outlined">sms</i>
                 {totalConversations}{' '}
-                {totalConversations === '1' ? 'conversation' : 'conversations'}
+                {totalConversations === '1'
+                    ? 'total recipient'
+                    : 'total recipients'}
             </div>
             {shouldRenderRedirectButton && (
                 <button

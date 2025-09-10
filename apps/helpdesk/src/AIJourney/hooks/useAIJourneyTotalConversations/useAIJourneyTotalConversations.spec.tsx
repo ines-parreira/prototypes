@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react'
 import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import useAppSelector from 'hooks/useAppSelector'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useAIJourneyTotalConversations } from './useAIJourneyTotalConversations'
 
@@ -23,9 +22,6 @@ describe('useAIJourneyTotalConversations', () => {
     }
 
     beforeEach(() => {
-        // Setup mocks
-        ;(useCurrency as jest.Mock).mockReturnValue({ currency: 'USD' })
-
         mockUseAppSelector.mockReturnValue({
             userTimezone: 'America/New_York',
         })
@@ -51,7 +47,6 @@ describe('useAIJourneyTotalConversations', () => {
             value: 42,
             interpretAs: 'more-is-better',
             metricFormat: 'decimal-precision-1',
-            currency: 'USD',
             isLoading: false,
         })
 
@@ -100,7 +95,6 @@ describe('useAIJourneyTotalConversations', () => {
             value: 42,
             interpretAs: 'more-is-better',
             metricFormat: 'decimal-precision-1',
-            currency: 'USD',
             isLoading: false,
         })
     })

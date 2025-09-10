@@ -3,7 +3,6 @@ import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analyti
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
@@ -16,7 +15,6 @@ export const useAIJourneyTotalConversations = ({
     journeyId,
     filters,
 }: UseAIJourneyTotalConversationsParams): MetricProps => {
-    const { currency } = useCurrency()
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     const { data, isFetching } = useMetric(
@@ -32,7 +30,6 @@ export const useAIJourneyTotalConversations = ({
         value: data?.value || 0,
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
-        currency,
         isLoading: isFetching,
     }
 }
