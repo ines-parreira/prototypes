@@ -8,9 +8,11 @@ describe('EnableImageField', () => {
     it('renders the toggle with correct label and unchecked by default', () => {
         render(<EnableImageField />)
 
-        expect(screen.getByText('Include an image')).toBeInTheDocument()
+        expect(screen.getByText('Send product image')).toBeInTheDocument()
         expect(
-            screen.getByText('Send an image in the first message'),
+            screen.getByText(
+                'Show the shopper an image of the items left in their cart in the first message.',
+            ),
         ).toBeInTheDocument()
 
         const toggle = screen.getByRole('checkbox')

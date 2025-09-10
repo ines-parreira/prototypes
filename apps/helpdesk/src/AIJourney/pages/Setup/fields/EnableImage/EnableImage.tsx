@@ -20,8 +20,8 @@ export const EnableImageField = ({
     return (
         <div className={css.enableImageField}>
             <FieldPresentation
-                name="Include an image"
-                description="Send an image in the first message"
+                name="Send product image"
+                description="Show the shopper an image of the items left in their cart in the first message."
             />
             <Switch isChecked={isEnabled} onChange={handleChange} />
         </div>
