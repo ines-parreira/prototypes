@@ -9,17 +9,13 @@ import thunk from 'redux-thunk'
 
 import AutomateStatsPaywall from 'domains/reporting/pages/automate/AutomateStatsPaywall'
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
-import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { TrialPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware'
-import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-jest.mock('hooks/aiAgent/useCanUseAiAgent')
-const useCanUseAiAgentMock = assumeMock(useCanUseAiAgent)
-
-jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
-const getHasAutomateMock = assumeMock(getHasAutomate)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock('domains/reporting/pages/automate/overview/AutomateOverview')
 const AutomateOverviewMock = assumeMock(AutomateOverview)
@@ -51,15 +47,10 @@ describe('AutomateStatsPaywall', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        useCanUseAiAgentMock.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
-            isError: false,
         })
-
-        getHasAutomateMock.mockReturnValue(false)
 
         AutomateOverviewMock.mockImplementation(() => (
             <div data-testid="automate-overview">AutomateOverview</div>
@@ -70,12 +61,9 @@ describe('AutomateStatsPaywall', () => {
     })
 
     it('should render loading spinner when isLoading is true', () => {
-        useCanUseAiAgentMock.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
             isLoading: true,
-            isError: false,
         })
 
         render(
@@ -90,7 +78,10 @@ describe('AutomateStatsPaywall', () => {
     })
 
     it('should render AutomateOverview when user has Automate subscription', () => {
-        getHasAutomateMock.mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
 
         render(
             <Provider store={mockStore({})}>
@@ -106,12 +97,9 @@ describe('AutomateStatsPaywall', () => {
     })
 
     it('should render AutomateOverview when user has an active trial', () => {
-        useCanUseAiAgentMock.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: true,
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         render(
@@ -128,14 +116,10 @@ describe('AutomateStatsPaywall', () => {
     })
 
     it('should render TrialPaywallMiddleware when user has no Automate subscription and no active trial', () => {
-        useCanUseAiAgentMock.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
-            isError: false,
         })
-        getHasAutomateMock.mockReturnValue(false)
 
         render(
             <Provider store={mockStore({})}>

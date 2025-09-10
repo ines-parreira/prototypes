@@ -10,6 +10,7 @@ export enum FeatureFlagKey {
     AiAgentActivation = 'linear.project_activate-ai-agent-per-skills-and-channels-easily.enable_activation_feature',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
     AiAgentAssistant = 'ai-agent-assistant',
+    /** @deprecated Fully evaluated to `true` */
     AiAgentChat = 'ai-agent-for-chat',
     AiAgentCustomLanguage = 'ai-agent-custom-language',
     AiAgentExtendedToneOfVoiceLimit = 'ai-agent-extended-tone-of-voice-limit',
@@ -20,7 +21,9 @@ export enum FeatureFlagKey {
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',
     AiAgentOnboardingMLPreview = 'linear.task_MARCVT-3628.ml-preview',
     AiAgentOnboardingNotification = 'ai-agent-onboarding-notification',
+    /** @deprecated Almost fully evaluated to `true` + not used anymore */
     AiAgentOnboardingWizard = 'ai-agent-onboarding-wizard',
+    /** @deprecated Almost fully evaluated to `true` + not used anymore */
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
     AiAgentOptimizeTab = 'ai-agent-optimize-tab',
     AiAgentOptimizeTabL2Drilldown = 'ai-agent-optimize-tab-l2-drilldown',

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { ConfigurationSection } from 'pages/aiAgent/components/ConfigurationSection/ConfigurationSection'
 import { HandoverCustomizationChatSettingsComponent } from 'pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent'
@@ -17,7 +17,6 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { SmsSettingsFormComponent } from './SmsSettingsFormComponent'
 
@@ -88,7 +87,7 @@ export const ChannelsFormComponent = ({
 
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const chatChannels: InstallationStatusInjectedChatItem[] =
         useSelfServiceChatChannels(shopType, shopName)
 
@@ -152,7 +151,7 @@ export const ChannelsFormComponent = ({
                                         )
                                     }
                                     channel="chat"
-                                    isDisabled={!hasAutomate}
+                                    isDisabled={!hasAccess}
                                     deactivatedDatetime={
                                         chatChannelDeactivatedDatetime
                                     }
@@ -202,7 +201,7 @@ export const ChannelsFormComponent = ({
                                     )
                                 }}
                                 channel="email"
-                                isDisabled={!hasAutomate}
+                                isDisabled={!hasAccess}
                                 deactivatedDatetime={
                                     emailChannelDeactivatedDatetime
                                 }
@@ -248,7 +247,7 @@ export const ChannelsFormComponent = ({
                                         )
                                     }}
                                     channel="sms"
-                                    isDisabled={!hasAutomate}
+                                    isDisabled={!hasAccess}
                                     deactivatedDatetime={
                                         smsChannelDeactivatedDatetime
                                     }

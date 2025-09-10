@@ -12,6 +12,7 @@ export const createMockTrialAccess = (overrides = {}) => ({
     hasCurrentStoreTrialExpired: false,
     hasAnyTrialExpired: false,
     hasAnyTrialOptedIn: false,
+    hasCurrentStoreTrialActive: false,
     hasAnyTrialActive: false,
     isAdminUser: false,
     isLoading: false,

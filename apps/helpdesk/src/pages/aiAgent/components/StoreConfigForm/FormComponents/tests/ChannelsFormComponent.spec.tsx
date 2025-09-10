@@ -5,6 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -14,6 +15,10 @@ import { ChannelsFormComponent } from '../ChannelsFormComponent'
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(),
+}))
+
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
 }))
 
 // Mock state selectors
@@ -165,6 +170,7 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 
 describe('ChannelsFormComponent', () => {
     const mockProps = {
@@ -194,6 +200,10 @@ describe('ChannelsFormComponent', () => {
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentChat || false,
         )
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         ;(useAppSelector as jest.Mock).mockReturnValue(true)
         ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([
             { value: { id: 1, name: 'Test Channel 1' } },
@@ -319,8 +329,11 @@ describe('ChannelsFormComponent', () => {
         screen.getByText('chat settings form')
     })
 
-    it('disables channel toggles when hasAutomate is false', () => {
-        ;(useAppSelector as jest.Mock).mockReturnValue(false)
+    it('disables channel toggles when hasAccess is false', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentChat || false,
         )

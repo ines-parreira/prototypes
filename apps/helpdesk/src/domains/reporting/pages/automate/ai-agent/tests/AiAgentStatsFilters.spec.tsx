@@ -8,8 +8,8 @@ import AiAgentStatsFilters from 'domains/reporting/pages/automate/ai-agent/AiAge
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { setStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/statsSlice'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { getHasAutomate } from 'state/billing/selectors'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -25,8 +25,8 @@ jest.mock('domains/reporting/state/stats/selectors')
 const getStatsFiltersWithLogicalOperatorsMock =
     getStatsFiltersWithLogicalOperators as unknown as jest.Mock
 
-jest.mock('state/billing/selectors')
-const getHasAutomateMock = getHasAutomate as unknown as jest.Mock
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = useAiAgentAccess as jest.Mock
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = useAIAgentUserId as jest.Mock
@@ -51,7 +51,7 @@ describe('AiAgentStatsFilters', () => {
     const renderComponent = ({
         children = <div>child-component</div>,
         aiAgentUserId = '5',
-        hasAutomate = true,
+        hasAccess = true,
         statsFilters = {
             period: {
                 start_datetime: '2024-09-14T00:00:00+00:00',
@@ -61,14 +61,17 @@ describe('AiAgentStatsFilters', () => {
     }: {
         children?: React.ReactNode
         aiAgentUserId?: string | null
-        hasAutomate?: boolean
+        hasAccess?: boolean
         statsFilters?: StatsFiltersWithLogicalOperator
     } = {}) => {
         useAppDispatchMock.mockReturnValue(dispatch)
         useAIAgentUserIdMock.mockReturnValue(
             aiAgentUserId === null ? undefined : aiAgentUserId,
         )
-        getHasAutomateMock.mockReturnValue(hasAutomate)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess,
+            isLoading: false,
+        })
         getStatsFiltersWithLogicalOperatorsMock.mockReturnValue(statsFilters)
         return render(<AiAgentStatsFilters>{children}</AiAgentStatsFilters>)
     }
@@ -78,12 +81,12 @@ describe('AiAgentStatsFilters', () => {
         expect(screen.queryByText('child-component')).toBeInTheDocument()
     })
 
-    it('should render AutomatePaywallView if hasAutomate is false', () => {
-        renderComponent({ hasAutomate: false })
+    it('should render AutomatePaywallView if hasAccess is false', () => {
+        renderComponent({ hasAccess: false })
         expect(screen.queryByText('automate-paywall-view')).toBeInTheDocument()
     })
 
-    it('should render AiAgentStatsEmptyState if hasAutomate is true and aiAgentUserId is undefined ', () => {
+    it('should render AiAgentStatsEmptyState if hasAccess is true and aiAgentUserId is undefined ', () => {
         renderComponent({ aiAgentUserId: null })
 
         expect(

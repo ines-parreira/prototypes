@@ -98,9 +98,6 @@ export const StoreConfigForm = ({
     section,
 }: Props) => {
     const trialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
-    const isAiAgentOnboardingWizardEnabled = useFlag(
-        FeatureFlagKey.AiAgentOnboardingWizard,
-    )
     const isFollowUpAiAgentPreviewModeEnabled = useFlag(
         FeatureFlagKey.FollowUpAiAgentPreviewMode,
     )
@@ -439,8 +436,7 @@ export const StoreConfigForm = ({
         }
 
         const shouldUpdateSettingsAfterAiAgentEnabled =
-            isAiAgentOnboardingWizardEnabled &&
-            (isAiAgentWasEnabledForChat || isAiAgentWasEnabledForEmail)
+            isAiAgentWasEnabledForChat || isAiAgentWasEnabledForEmail
 
         void handleOnSave({
             publicUrls: externalKnowledgeSources.publicUrls,
@@ -475,7 +471,6 @@ export const StoreConfigForm = ({
         isAiAgentWasEnabledForChat,
         isAiAgentWasEnabledForEmail,
         handleOnCancelActivateAiAgentNotification,
-        isAiAgentOnboardingWizardEnabled,
         externalKnowledgeSources,
         shopName,
         aiAgentMode,

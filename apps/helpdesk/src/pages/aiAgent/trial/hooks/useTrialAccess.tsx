@@ -41,6 +41,7 @@ export type TrialAccess = {
     hasAnyTrialExpired: boolean
     /** Whether at least one store has an active trial that hasn't opted out */
     hasAnyTrialOptedIn: boolean
+    hasCurrentStoreTrialActive: boolean
     hasAnyTrialActive: boolean
 
     isAdminUser: boolean
@@ -163,6 +164,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             hasCurrentStoreTrialOptedOut: false,
             hasAnyTrialOptedOut: false,
             hasAnyTrialOptedIn: false,
+            hasCurrentStoreTrialActive: false,
             hasAnyTrialActive: false,
             isAdminUser: isAdmin(currentUser),
             isLoading: false,
@@ -195,6 +197,9 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const hasAnyTrialOptedIn =
         currentTrials?.some((trial) => hasTrialOptedIn(trial)) || false
 
+    const hasCurrentStoreTrialActive = currentStoreTrial
+        ? hasTrialActive(currentStoreTrial)
+        : false
     const hasAnyTrialActive =
         currentTrials?.some((trial) => hasTrialActive(trial)) || false
 
@@ -259,6 +264,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         hasCurrentStoreTrialOptedOut,
         hasAnyTrialOptedOut,
         hasAnyTrialOptedIn,
+        hasCurrentStoreTrialActive,
         hasAnyTrialActive,
 
         isAdminUser,
