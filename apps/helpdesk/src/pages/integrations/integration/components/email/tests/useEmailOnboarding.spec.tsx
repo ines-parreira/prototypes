@@ -393,8 +393,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<undefined>)
+                    data: null,
+                } as HttpResponse<null>)
 
                 expect(result.current.isRequested).toBe(false)
 
@@ -511,8 +511,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<undefined>)
+                    data: null,
+                } as HttpResponse<null>)
 
                 expect(result.current.isRequested).toEqual(false)
                 expect(result.current.isPending).toEqual(false)
@@ -536,8 +536,8 @@ describe('useEmailOnboarding()', () => {
                 } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<undefined>)
+                    data: null,
+                } as HttpResponse<null>)
 
                 const { result } = render({ integration })
 
@@ -571,8 +571,8 @@ describe('useEmailOnboarding()', () => {
                 } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<undefined>)
+                    data: null,
+                } as HttpResponse<null>)
 
                 const { result } = render({ integration })
 
@@ -611,8 +611,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 deleteIntegrationMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<undefined>)
+                    data: null,
+                } as HttpResponse<null>)
 
                 result.current.deleteIntegration()
 

@@ -6,6 +6,7 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
     HttpResponse,
     ListTicketMessageTranslations200,
+    TicketLanguage,
     TicketMessageTranslation,
 } from '@gorgias/helpdesk-types'
 
@@ -33,7 +34,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
             const { ticket_id, ticket_message_id, language } = event.data
 
             const queryKey = queryKeys.tickets.listTicketMessageTranslations({
-                language,
+                language: language as TicketLanguage,
                 ticket_id,
             })
 

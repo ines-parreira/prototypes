@@ -34,4 +34,6 @@ export const voiceQueue: VoiceQueue = {
     integrations: [],
     wrap_up_time: 30,
     is_wrap_up_time_enabled: false,
+    queued_calls_count: 0,
+    is_full: false,
 }

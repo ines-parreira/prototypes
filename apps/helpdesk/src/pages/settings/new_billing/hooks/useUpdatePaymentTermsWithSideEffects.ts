@@ -17,9 +17,8 @@ export const useUpdatePaymentTermsWithSideEffects = () => {
     return useUpdatePaymentTerms({
         mutation: {
             onSuccess: () => {
-                const getPaymentTermsQueryKey =
-                    queryKeys.billing.getPaymentTerms()
-                void queryClient.invalidateQueries(getPaymentTermsQueryKey)
+                const billingStateQueryKey = queryKeys.billing.getBillingState()
+                void queryClient.invalidateQueries(billingStateQueryKey)
                 void dispatch(
                     notify({
                         message:

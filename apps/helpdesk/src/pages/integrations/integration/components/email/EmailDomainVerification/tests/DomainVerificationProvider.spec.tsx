@@ -297,7 +297,7 @@ describe('DomainVerificationProvider', () => {
                 const dispatchMock = jest.fn()
                 useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(
-                    Promise.resolve({} as HttpResponse<void>),
+                    Promise.resolve({} as HttpResponse<null>),
                 )
 
                 const { result } = render()

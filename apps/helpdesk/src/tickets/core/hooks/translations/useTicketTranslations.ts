@@ -1,6 +1,9 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { useListTicketMessageTranslations } from '@gorgias/helpdesk-queries'
+import {
+    TicketLanguage,
+    useListTicketMessageTranslations,
+} from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 
@@ -18,7 +21,7 @@ export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
         {
             // The query enabled will prevent the query from being called with undefined ticket_id
             ticket_id: ticket_id as number,
-            language: primary as string,
+            language: primary as TicketLanguage,
         },
         {
             query: {

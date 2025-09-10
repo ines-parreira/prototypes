@@ -8,6 +8,7 @@ import { useListTicketTranslations } from '@gorgias/helpdesk-queries'
 import {
     HttpResponse,
     ListTicketTranslations200,
+    TicketLanguage,
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
@@ -52,7 +53,7 @@ export function useTicketsTranslatedProperties({
 
     const { data: translations, isInitialLoading } = useListTicketTranslations(
         {
-            language: primary as string,
+            language: primary as TicketLanguage,
             ticket_ids: stableTicketIds,
         },
         {

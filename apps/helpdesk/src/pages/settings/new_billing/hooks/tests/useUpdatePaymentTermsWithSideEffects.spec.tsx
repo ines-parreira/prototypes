@@ -36,6 +36,7 @@ describe('useUpdatePaymentTermsWithSideEffects', () => {
                 }) as unknown as QueryClient,
         )
     })
+
     it('should dispatch success notification on success', () => {
         renderHook(() => useUpdatePaymentTermsWithSideEffects())
 
