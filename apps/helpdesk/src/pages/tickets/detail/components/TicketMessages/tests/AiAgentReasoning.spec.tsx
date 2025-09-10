@@ -755,11 +755,11 @@ describe('AiAgentReasoning', () => {
             ).toBeInTheDocument()
         })
 
-        it('should show Give Feedback button when expanded', () => {
+        it('should show Review response button when expanded', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Give Feedback')
+            const feedbackButton = screen.getByText('Review response')
             expect(feedbackButton).toBeInTheDocument()
             expect(feedbackButton).toBeEnabled()
         })
@@ -776,12 +776,12 @@ describe('AiAgentReasoning', () => {
         })
     })
 
-    describe('Give Feedback functionality', () => {
-        it('should call `onChangeTab` when Give Feedback is clicked', () => {
+    describe('Review response functionality', () => {
+        it('should call `onChangeTab` when Review response is clicked', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Give Feedback')
+            const feedbackButton = screen.getByText('Review response')
             fireEvent.click(feedbackButton)
 
             expect(onChangeTab).toHaveBeenCalledWith(
@@ -1106,6 +1106,92 @@ describe('AiAgentReasoning', () => {
                 ),
             ).toBeInTheDocument()
         })
+
+        it('should render reasoning content with full details but no outcome', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Response content',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Task 1 content with \\n line breaks',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Task 2 content with \\n more lines',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText(/Response content/)).toBeInTheDocument()
+            expect(screen.getByText(/Full details:/)).toBeInTheDocument()
+            expect(
+                screen.getByText(/1\. Task 1 content with/),
+            ).toBeInTheDocument()
+            expect(screen.getByText(/line breaks/)).toBeInTheDocument()
+            expect(
+                screen.getByText(/2\. Task 2 content with/),
+            ).toBeInTheDocument()
+            expect(screen.getByText(/more lines/)).toBeInTheDocument()
+            // Should not have outcome
+            expect(screen.queryByText(/Outcome/)).not.toBeInTheDocument()
+        })
+
+        it('should render reasoning content with no full details but has outcome', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Response content',
+                        },
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'This is the outcome',
+                        },
+                    ],
+                    resources: [],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText(/Response content/)).toBeInTheDocument()
+            expect(screen.getByText(/Outcome:/)).toBeInTheDocument()
+            expect(screen.getByText(/This is the outcome/)).toBeInTheDocument()
+            expect(screen.queryByText(/Full details:/)).not.toBeInTheDocument()
+        })
     })
 
     describe('Error state', () => {
@@ -1183,7 +1269,7 @@ describe('AiAgentReasoning', () => {
             expect(mockRefetch).toHaveBeenCalled()
         })
 
-        it('should not show Give Feedback button in error state', () => {
+        it('should not show Review response button in error state', () => {
             const mockRefetch = jest.fn()
 
             mockUseGetMessageAiReasoning.mockReturnValue({
@@ -1233,7 +1319,9 @@ describe('AiAgentReasoning', () => {
                 )
             })
 
-            expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Review response'),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -1516,8 +1604,8 @@ describe('AiAgentReasoning', () => {
         ).not.toBeInTheDocument()
     })
 
-    describe('Give Feedback button states', () => {
-        it('should show active styling for Give Feedback button when AIAgent tab is active', () => {
+    describe('Review response button states', () => {
+        it('should show active styling for Review response button when AIAgent tab is active', () => {
             useAppSelectorMock.mockImplementation((selector) => {
                 if (
                     selector.name === 'getTicketState' ||
@@ -1545,7 +1633,7 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Give Feedback')
+            const feedbackButton = screen.getByText('Review response')
             expect(feedbackButton).toBeInTheDocument()
         })
     })
@@ -1600,7 +1688,7 @@ describe('AiAgentReasoning', () => {
             })
         })
 
-        it('should not show Give Feedback button for handover messages', () => {
+        it('should show Review response button for handover messages', () => {
             mockUseGetMessageAiReasoning.mockReturnValue({
                 data: undefined,
                 isLoading: true,
@@ -1660,7 +1748,7 @@ describe('AiAgentReasoning', () => {
                 )
             })
 
-            expect(screen.getByText('Give Feedback')).toBeInTheDocument()
+            expect(screen.getByText('Review response')).toBeInTheDocument()
         })
 
         it('should show static state for handover messages', () => {

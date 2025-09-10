@@ -64,7 +64,7 @@ export const optimisticallyUpdateFeedback =
                     }
                     const newFeedback = {
                         ...baseNewFeedback,
-                        targetType: 'TICKET',
+                        targetType: item.targetType ?? 'TICKET',
                         feedbackType: item.feedbackType,
                         feedbackValue: item.feedbackValue,
                     } as ArrayItem<FeedbackExecutionsItem['feedback']>

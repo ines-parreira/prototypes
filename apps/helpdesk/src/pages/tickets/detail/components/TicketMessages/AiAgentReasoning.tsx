@@ -193,15 +193,39 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                             ReasoningResponseType.TASK,
                     )
 
-                const responseReasoningContent = responseReasoning?.value
-                    ? `${responseReasoning?.value}\n\n&nbsp;\n\n`
-                    : ''
-                const fullDetailsReasoningContent = fullDetailsReasoning.length
-                    ? `Full details:\n\n${fullDetailsReasoning?.map((resource) => resource.value.replace(/\\n/g, '\n\n')).join('\n\n')}\n\n&nbsp;\n\n`
-                    : ''
-                const outcomeReasoningContent = outcomeReasoning?.value
-                    ? `**Outcome:**\n\n ${outcomeReasoning?.value}`
-                    : ''
+                const hasFullDetails = fullDetailsReasoning.length > 0
+                const hasOutcome = !!outcomeReasoning?.value
+
+                let responseReasoningContent = responseReasoning?.value ?? ''
+                if (
+                    responseReasoningContent &&
+                    (hasFullDetails || hasOutcome)
+                ) {
+                    responseReasoningContent = `${responseReasoningContent}\n\n&nbsp;\n\n`
+                }
+
+                let fullDetailsReasoningContent = ''
+                let outcomeReasoningContent = ''
+                if (hasFullDetails && hasOutcome) {
+                    fullDetailsReasoningContent = `<div class="fullDetailsContainer"><div class="fullDetailsHeader">Full details:</div>\n\n${fullDetailsReasoning
+                        .map(
+                            (resource, index) =>
+                                `<div class="taskItem">\n\n${index + 1}. ${resource.value.replace(/\\n/g, '\n\n')}\n\n</div>`,
+                        )
+                        .join(
+                            '\n\n',
+                        )}\n\n<div class="taskItem">\n\n${fullDetailsReasoning.length + 1}. **Outcome**\n\n${outcomeReasoning.value}\n\n</div></div>\n\n`
+                    outcomeReasoningContent = ''
+                } else if (hasFullDetails && !hasOutcome) {
+                    fullDetailsReasoningContent = `<div class="fullDetailsContainer"><div class="fullDetailsHeader">Full details:</div>\n\n${fullDetailsReasoning
+                        .map(
+                            (resource, index) =>
+                                `<div class="taskItem">\n\n${index + 1}. ${resource.value.replace(/\\n/g, '\n\n')}\n\n</div>`,
+                        )
+                        .join('\n\n')}</div>\n\n&nbsp;\n\n`
+                } else if (!hasFullDetails && hasOutcome) {
+                    outcomeReasoningContent = `**Outcome:**\n\n${outcomeReasoning.value}`
+                }
 
                 if (
                     !responseReasoningContent &&
@@ -226,7 +250,13 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     }
                 }
 
-                const content = `${responseReasoningContent}${fullDetailsReasoningContent}${outcomeReasoningContent}`
+                const content = [
+                    responseReasoningContent,
+                    fullDetailsReasoningContent,
+                    outcomeReasoningContent,
+                ]
+                    .filter(Boolean)
+                    .join('')
 
                 return {
                     reasoningContent: content,
@@ -377,12 +407,12 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     fillStyle="fill"
                     isDisabled={activeTab === TicketInfobarTab.AIFeedback}
                     onClick={handleGiveFeedback}
-                    className={classNames({
+                    className={classNames(css.reviewResponseButton, {
                         [css.activeButton]:
                             activeTab === TicketInfobarTab.AIFeedback,
                     })}
                 >
-                    Give Feedback
+                    Review response
                 </Button>
             </div>
         )

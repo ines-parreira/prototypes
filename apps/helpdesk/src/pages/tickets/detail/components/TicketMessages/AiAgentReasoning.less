@@ -22,6 +22,10 @@
         }
     }
 
+    .reviewResponseButton {
+        text-transform: none;
+    }
+
     .executionContainer {
         display: flex;
         flex-direction: column;
@@ -31,16 +35,15 @@
     .executionId {
         .caption-regular();
         color: var(--neutral-grey-5);
-        margin-bottom: var(--layout-spacing-xs);
     }
 
     .container {
         width: 100%;
         min-width: 380px;
-        padding: 12px 8px 12px 8px;
+        padding: 12px 16px;
 
         &.expanded {
-            padding: 12px 16px 16px 16px;
+            gap: var(--layout-spacing-s);
         }
         margin-top: var(--layout-spacing-s);
         border-radius: 8px;
@@ -59,11 +62,6 @@
 
         &.loading {
             gap: 0px;
-        }
-
-        &.expanded {
-            gap: var(--layout-spacing-s);
-            padding-bottom: var(--layout-spacing-s);
         }
 
         &.static {
@@ -93,41 +91,66 @@
             margin-bottom: 4px !important;
         }
 
-        ul,
+        :global(.fullDetailsContainer) {
+            display: flex;
+            flex-direction: column;
+        }
+
+        :global(.fullDetailsHeader) {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        :global(.taskItem) {
+            display: block;
+            margin-bottom: 8px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul {
+            margin: 0 !important;
+            padding: 0 !important;
+            // padding-bottom: 4px !important;
+            margin-block-start: 0 !important;
+            margin-block-end: 0 !important;
+        }
+
         ol {
             margin: 0 !important;
             padding: 0 !important;
-            padding-bottom: 4px !important;
-            margin-block-start: 0 !important;
-            margin-block-end: 0 !important;
-            /* Remove native markers; we'll draw our own bullet */
-
-            list-style: none !important;
+            padding-left: 13px !important;
+            li::marker {
+                font-weight: 600;
+            }
         }
 
-        li {
-            margin: 0 !important;
-            padding: 0 !important;
-            position: relative;
-            padding-left: 12px !important;
-            line-height: 18px;
+        ul {
+            list-style: none !important;
+            li {
+                margin: 0 !important;
+                padding: 0 !important;
+                position: relative;
+                padding-left: 12px !important;
+                line-height: 18px;
 
-            /* Top-align the custom bullet with the first text line */
-            &::before {
-                content: '•';
-                position: absolute;
-                left: 4px;
-                top: 4px; /* nudge bullet 4px down and right */
-                font-size: 8px !important;
-                font-weight: 500;
-                line-height: 1;
-                color: var(--neutral-grey-6);
+                &::before {
+                    content: '•';
+                    position: absolute;
+                    left: 4px;
+                    top: 5px;
+                    font-size: 8px !important;
+                    font-weight: 500;
+                    line-height: 1;
+                    color: var(--neutral-grey-6);
+                }
             }
         }
     }
 
     .title {
-        padding-inline: var(--layout-spacing-xs);
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
@@ -180,7 +203,6 @@
     }
 
     .body {
-        padding-inline: var(--layout-spacing-xs);
         .caption-regular();
         max-height: 0;
         opacity: 0;
@@ -219,7 +241,6 @@
     }
 
     .footer {
-        padding-inline: var(--layout-spacing-xs);
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xxs);
@@ -275,7 +296,6 @@
     }
 
     .markdownParagraph {
-        margin-bottom: 4px;
         min-height: 16px;
         display: block;
         line-height: 16px;
@@ -309,7 +329,7 @@
 
     .feedbackButtons {
         display: flex;
-        gap: var(--layout-spacing-xs);
+        gap: var(--layout-spacing-xxs);
     }
 
     .feedbackIcon {
@@ -321,7 +341,7 @@
         }
 
         &.positiveFeedback {
-            color: var(--feedback-success) !important;
+            color: var(--success-green) !important;
             transition: all 0.2s ease-in-out;
         }
 

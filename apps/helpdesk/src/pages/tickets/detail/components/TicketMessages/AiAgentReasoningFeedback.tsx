@@ -44,13 +44,13 @@ export const AiAgentReasoningFeedback = ({
 
     const reasoningFeedback = useMemo(() => {
         return data?.executions
-            ?.find((execution) => execution.executionId === executionId)
-            ?.feedback?.find(
+            ?.flatMap((execution) => execution.feedback)
+            ?.find(
                 (feedback) =>
                     feedback.targetType === 'REASONING' &&
                     feedback.targetId === messageId.toString(),
             )
-    }, [data, messageId, executionId])
+    }, [data, messageId])
 
     const { mutateAsync: upsertFeedback } = useUpsertFeedback({
         objectId: ticketId.toString(),

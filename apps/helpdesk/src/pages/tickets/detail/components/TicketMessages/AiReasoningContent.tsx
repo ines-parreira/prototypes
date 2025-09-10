@@ -58,7 +58,9 @@ export const AiAgentReasoningContent = ({
     if (resourceMatches.length === 0) {
         return (
             <div className={css.contentWithIcons}>
-                <ReactMarkdown>{reasoningContent}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                    {reasoningContent}
+                </ReactMarkdown>
             </div>
         )
     }

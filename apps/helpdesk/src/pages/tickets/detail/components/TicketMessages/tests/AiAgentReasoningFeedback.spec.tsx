@@ -249,9 +249,12 @@ describe('AiAgentReasoningFeedback', () => {
 
             const thumbUpButton = screen.getAllByRole('button')[0]
             expect(
-                thumbUpButton.querySelector('.material-icons-outlined'),
+                thumbUpButton.querySelector('.material-icons'),
             ).toBeInTheDocument()
-            expect(thumbUpButton.closest('button')).not.toHaveClass(
+            expect(
+                thumbUpButton.querySelector('.material-icons-outlined'),
+            ).not.toBeInTheDocument()
+            expect(thumbUpButton.closest('button')).toHaveClass(
                 'positiveFeedback',
             )
         })
