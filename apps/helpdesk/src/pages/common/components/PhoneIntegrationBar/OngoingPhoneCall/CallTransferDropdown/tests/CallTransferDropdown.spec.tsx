@@ -102,12 +102,41 @@ jest.mock(
                     >
                         Set External With Customer
                     </button>
-                    <div data-testid="current-phone-number">{phoneNumber}</div>
+                    {phoneNumber && (
+                        <div data-testid="current-phone-number">
+                            {phoneNumber}
+                        </div>
+                    )}
                     {customer && (
                         <div data-testid="current-customer-name">
                             {customer.customer?.name}
                         </div>
                     )}
+                </div>
+            )
+        },
+    }),
+)
+
+jest.mock(
+    'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent',
+    () => ({
+        __esModule: true,
+        default: ({ setSelectedQueueId, clearErrors }: any) => {
+            return (
+                <div data-testid="queue-transfer-content">
+                    <button
+                        onClick={() => setSelectedQueueId(1)}
+                        aria-label="Select Queue 1"
+                    >
+                        Queue 1
+                    </button>
+                    <button
+                        onClick={() => clearErrors()}
+                        aria-label="Clear queue errors"
+                    >
+                        Clear
+                    </button>
                 </div>
             )
         },
@@ -166,6 +195,9 @@ describe('CallTransferDropdown', () => {
 
         useFlagMock.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
+                return true
+            }
+            if (flag === FeatureFlagKey.TransferCallToQueue) {
                 return true
             }
         })
@@ -237,11 +269,14 @@ describe('CallTransferDropdown', () => {
         })
     })
 
-    it('renders toggle button with Agents and External options', () => {
+    it('renders toggle button with Agents, Queues and External options', () => {
         renderComponent()
 
         expect(
             screen.getByRole('radio', { name: /agents/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('radio', { name: /queues/i }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('radio', { name: /external/i }),
@@ -289,249 +324,499 @@ describe('CallTransferDropdown', () => {
         expect(transferButton).toBeAriaDisabled()
     })
 
-    it('transfers call to selected agent', async () => {
-        const user = userEvent.setup()
-        const waitForTransferRequest = mockTransferCall.waitForRequest(server)
-        renderComponent()
+    describe('transfer to agent', () => {
+        it('transfers call to selected agent', async () => {
+            const user = userEvent.setup()
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            renderComponent()
 
-        const selectAgent = screen.getByLabelText(/select agent 1/i)
-        await act(() => user.click(selectAgent))
+            const selectAgent = screen.getByLabelText(/select agent 1/i)
+            await act(() => user.click(selectAgent))
 
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        await act(() => user.click(transferButton))
-
-        await waitForTransferRequest(async (request) => {
-            const body = await request.json()
-            expect(body.receiver_type).toBe(VoiceCallTransferReceiverType.Agent)
-            expect(body.receiver_id).toBe(1)
-        })
-
-        await waitFor(() => {
-            expect(onTransferInitiated).toHaveBeenCalledWith({
-                type: TransferType.Agent,
-                id: 1,
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
             })
-            expect(setIsOpen).toHaveBeenCalledWith(false)
-        })
-    })
+            await act(() => user.click(transferButton))
 
-    it('clears alert banner when clear errors is called', async () => {
-        const user = userEvent.setup()
-        const failedTransferHandler = mockTransferCallHandler(async () =>
-            HttpResponse.json({ error: { msg: 'Transfer failed' } } as any, {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' },
-            }),
-        )
-        server.use(failedTransferHandler.handler)
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe(
+                    VoiceCallTransferReceiverType.Agent,
+                )
+                expect(body.receiver_id).toBe(1)
+            })
 
-        renderComponent()
-
-        const selectAgent = screen.getByLabelText(/select agent 1/i)
-        await act(() => user.click(selectAgent))
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        await act(() => user.click(transferButton))
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Transfer unsuccessful. Please try again.'),
-            ).toBeInTheDocument()
+            await waitFor(() => {
+                expect(onTransferInitiated).toHaveBeenCalledWith({
+                    type: TransferType.Agent,
+                    id: 1,
+                })
+                expect(setIsOpen).toHaveBeenCalledWith(false)
+            })
         })
 
-        const clearButton = screen.getByLabelText(/clear errors/i)
-        await act(() => user.click(clearButton))
-
-        expect(
-            screen.queryByText('Transfer unsuccessful. Please try again.'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('shows external transfer content when External tab is selected', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        expect(
-            screen.getByTestId('external-transfer-content'),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('agent-transfer-content'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('transfers call to external number', async () => {
-        const user = userEvent.setup()
-        const waitForTransferRequest = mockTransferCall.waitForRequest(server)
-        renderComponent()
-
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        const setExternal = screen.getByLabelText(/set external number/i)
-        await act(() => user.click(setExternal))
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        await act(() => user.click(transferButton))
-
-        await waitForTransferRequest(async (request) => {
-            const body = await request.json()
-            expect(body.receiver_type).toBe(
-                VoiceCallTransferReceiverType.External,
+        it('clears alert banner when clear errors is called', async () => {
+            const user = userEvent.setup()
+            const failedTransferHandler = mockTransferCallHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Transfer failed' } } as any,
+                    {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json' },
+                    },
+                ),
             )
-            expect(body.receiver_value).toBe('+15551234567')
+            server.use(failedTransferHandler.handler)
+
+            renderComponent()
+
+            const selectAgent = screen.getByLabelText(/select agent 1/i)
+            await act(() => user.click(selectAgent))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Transfer unsuccessful. Please try again.',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            const clearButton = screen.getByLabelText(/clear errors/i)
+            await act(() => user.click(clearButton))
+
+            expect(
+                screen.queryByText('Transfer unsuccessful. Please try again.'),
+            ).not.toBeInTheDocument()
         })
 
-        await waitFor(() => {
-            expect(onTransferInitiated).toHaveBeenCalledWith({
-                type: TransferType.External,
-                value: '+15551234567',
-                customer: null,
+        it('preserves agent selection when switching between tabs', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const selectAgent = screen.getByLabelText(/select agent 1/i)
+            await act(() => user.click(selectAgent))
+
+            let transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
             })
-            expect(setIsOpen).toHaveBeenCalledWith(false)
+            expect(transferButton).toBeAriaEnabled()
+
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
+
+            expect(
+                screen.getByTestId('external-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('agent-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaDisabled()
+
+            const agentsTab = screen.getByRole('radio', { name: /agents/i })
+            await act(() => user.click(agentsTab))
+
+            expect(
+                screen.getByTestId('agent-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('external-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaEnabled()
+
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            await act(() => user.click(transferButton))
+
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe(
+                    VoiceCallTransferReceiverType.Agent,
+                )
+                expect(body.receiver_id).toBe(1)
+            })
         })
     })
 
-    it('clears alert banner when phone number validation changes', async () => {
-        const user = userEvent.setup()
-        const failedTransferHandler = mockTransferCallHandler(async () =>
-            HttpResponse.json({ error: { msg: 'Transfer failed' } } as any, {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' },
-            }),
-        )
-        server.use(failedTransferHandler.handler)
+    describe('transfer to external number', () => {
+        it('shows external transfer content when External tab is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        renderComponent()
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
 
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        const setExternal = screen.getByLabelText(/set external number/i)
-        await act(() => user.click(setExternal))
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        await act(() => user.click(transferButton))
-
-        await waitFor(() => {
             expect(
-                screen.getByText('Transfer unsuccessful. Please try again.'),
+                screen.getByTestId('external-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('agent-transfer-content'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('transfers call to external number', async () => {
+            const user = userEvent.setup()
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            renderComponent()
+
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
+
+            const setExternal = screen.getByLabelText(/set external number/i)
+            await act(() => user.click(setExternal))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe(
+                    VoiceCallTransferReceiverType.External,
+                )
+                expect(body.receiver_value).toBe('+15551234567')
+            })
+
+            await waitFor(() => {
+                expect(onTransferInitiated).toHaveBeenCalledWith({
+                    type: TransferType.External,
+                    value: '+15551234567',
+                    customer: null,
+                })
+                expect(setIsOpen).toHaveBeenCalledWith(false)
+            })
+        })
+
+        it('clears alert banner when phone number validation changes', async () => {
+            const user = userEvent.setup()
+            const failedTransferHandler = mockTransferCallHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Transfer failed' } } as any,
+                    {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json' },
+                    },
+                ),
+            )
+            server.use(failedTransferHandler.handler)
+
+            renderComponent()
+
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
+
+            const setExternal = screen.getByLabelText(/set external number/i)
+            await act(() => user.click(setExternal))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Transfer unsuccessful. Please try again.',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            const markInvalid = screen.getByLabelText(/mark phone invalid/i)
+            await act(() => user.click(markInvalid))
+
+            expect(
+                screen.queryByText('Transfer unsuccessful. Please try again.'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('preserves external customer and phone number when switching between tabs', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
+
+            const setExternalWithCustomer = screen.getByLabelText(
+                /set external with customer/i,
+            )
+            await act(() => user.click(setExternalWithCustomer))
+
+            expect(
+                screen.getByTestId('current-phone-number'),
+            ).toHaveTextContent('+15559876543')
+            expect(
+                screen.getByTestId('current-customer-name'),
+            ).toHaveTextContent('Guybrush Threepwood')
+
+            let transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaEnabled()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            expect(
+                screen.getByTestId('queue-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('external-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaDisabled()
+
+            const externalTabAgain = screen.getByRole('radio', {
+                name: /external/i,
+            })
+            await act(() => user.click(externalTabAgain))
+
+            expect(
+                screen.getByTestId('external-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('queue-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            expect(
+                screen.getByTestId('current-phone-number'),
+            ).toHaveTextContent('+15559876543')
+            expect(
+                screen.getByTestId('current-customer-name'),
+            ).toHaveTextContent('Guybrush Threepwood')
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaEnabled()
+
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            await act(() => user.click(transferButton))
+
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe(
+                    VoiceCallTransferReceiverType.External,
+                )
+                expect(body.receiver_value).toBe('+15559876543')
+            })
+        })
+    })
+
+    describe('transfer to queue', () => {
+        it('shows queue transfer content when Queues tab is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            expect(
+                screen.getByTestId('queue-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('agent-transfer-content'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('external-transfer-content'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('only enables transfer button when a queue is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+
+            expect(transferButton).toBeAriaDisabled()
+
+            const selectQueue = screen.getByLabelText(/select queue 1/i)
+            await act(() => user.click(selectQueue))
+            expect(transferButton).toBeAriaEnabled()
+        })
+
+        it('transfers call to selected queue', async () => {
+            const user = userEvent.setup()
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            renderComponent()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            const selectQueue = screen.getByLabelText(/select queue 1/i)
+            await act(() => user.click(selectQueue))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe('queue')
+                expect(body.receiver_id).toBe(1)
+            })
+
+            await waitFor(() => {
+                expect(onTransferInitiated).toHaveBeenCalledWith({
+                    type: TransferType.Queue,
+                    id: 1,
+                })
+                expect(setIsOpen).toHaveBeenCalledWith(false)
+            })
+        })
+
+        it('clears alert banner when queue clear errors is called', async () => {
+            const user = userEvent.setup()
+            const failedTransferHandler = mockTransferCallHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Transfer failed' } } as any,
+                    {
+                        status: 400,
+                        headers: { 'Content-Type': 'application/json' },
+                    },
+                ),
+            )
+            server.use(failedTransferHandler.handler)
+
+            renderComponent()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            const selectQueue = screen.getByLabelText(/select queue 1/i)
+            await act(() => user.click(selectQueue))
+
+            const transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            await act(() => user.click(transferButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Transfer unsuccessful. Please try again.',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            const clearButton = screen.getByLabelText(/clear queue errors/i)
+            await act(() => user.click(clearButton))
+
+            expect(
+                screen.queryByText('Transfer unsuccessful. Please try again.'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('preserves queue selection when switching between tabs', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const queuesTab = screen.getByRole('radio', { name: /queues/i })
+            await act(() => user.click(queuesTab))
+
+            const selectQueue = screen.getByLabelText(/select queue 1/i)
+            await act(() => user.click(selectQueue))
+
+            let transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaEnabled()
+
+            const externalTab = screen.getByRole('radio', { name: /external/i })
+            await act(() => user.click(externalTab))
+
+            expect(
+                screen.getByTestId('external-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('queue-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaDisabled()
+
+            const queuesTabAgain = screen.getByRole('radio', {
+                name: /queues/i,
+            })
+            await act(() => user.click(queuesTabAgain))
+
+            expect(
+                screen.getByTestId('queue-transfer-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('external-transfer-content'),
+            ).not.toBeInTheDocument()
+
+            transferButton = screen.getByRole('button', {
+                name: /transfer call/i,
+            })
+            expect(transferButton).toBeAriaEnabled()
+
+            const waitForTransferRequest =
+                mockTransferCall.waitForRequest(server)
+            await act(() => user.click(transferButton))
+
+            await waitForTransferRequest(async (request) => {
+                const body = await request.json()
+                expect(body.receiver_type).toBe('queue')
+                expect(body.receiver_id).toBe(1)
+            })
+        })
+    })
+
+    describe('transfer to queue FF disabled', () => {
+        beforeEach(() => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
+                    return true
+                }
+                if (flag === FeatureFlagKey.TransferCallToQueue) {
+                    return false
+                }
+                return false
+            })
+        })
+
+        it('does not show Queues toggle button when TransferCallToQueue feature flag is disabled', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('radio', { name: /agents/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('radio', { name: /queues/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('radio', { name: /external/i }),
             ).toBeInTheDocument()
         })
-
-        const markInvalid = screen.getByLabelText(/mark phone invalid/i)
-        await act(() => user.click(markInvalid))
-
-        expect(
-            screen.queryByText('Transfer unsuccessful. Please try again.'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('preserves agent selection when switching between tabs', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        const selectAgent = screen.getByLabelText(/select agent 1/i)
-        await act(() => user.click(selectAgent))
-
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        expect(
-            screen.getByTestId('external-transfer-content'),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('agent-transfer-content'),
-        ).not.toBeInTheDocument()
-
-        const agentsTab = screen.getByRole('radio', { name: /agents/i })
-        await act(() => user.click(agentsTab))
-
-        expect(screen.getByTestId('agent-transfer-content')).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('external-transfer-content'),
-        ).not.toBeInTheDocument()
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        expect(transferButton).toBeAriaEnabled()
-    })
-
-    it('preserves external phone number when switching between tabs', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        const setExternal = screen.getByLabelText(/set external number/i)
-        await act(() => user.click(setExternal))
-
-        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
-            '+15551234567',
-        )
-
-        const agentsTab = screen.getByRole('radio', { name: /agents/i })
-        await act(() => user.click(agentsTab))
-
-        await act(() => user.click(externalTab))
-
-        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
-            '+15551234567',
-        )
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        expect(transferButton).toBeAriaEnabled()
-    })
-
-    it('preserves external customer when switching between tabs', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        const externalTab = screen.getByRole('radio', { name: /external/i })
-        await act(() => user.click(externalTab))
-
-        const setExternalWithCustomer = screen.getByLabelText(
-            /set external with customer/i,
-        )
-        await act(() => user.click(setExternalWithCustomer))
-
-        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
-            '+15559876543',
-        )
-        expect(screen.getByTestId('current-customer-name')).toHaveTextContent(
-            'Guybrush Threepwood',
-        )
-
-        const agentsTab = screen.getByRole('radio', { name: /agents/i })
-        await act(() => user.click(agentsTab))
-
-        await act(() => user.click(externalTab))
-
-        expect(screen.getByTestId('current-phone-number')).toHaveTextContent(
-            '+15559876543',
-        )
-        expect(screen.getByTestId('current-customer-name')).toHaveTextContent(
-            'Guybrush Threepwood',
-        )
-
-        const transferButton = screen.getByRole('button', {
-            name: /transfer call/i,
-        })
-        expect(transferButton).toBeAriaEnabled()
     })
 
     describe('transfer to external number FF off', () => {

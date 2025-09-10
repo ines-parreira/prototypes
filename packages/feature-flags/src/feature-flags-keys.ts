@@ -177,6 +177,7 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     TransferCallToExternalNumber = 'transfer-call-to-external-number',
+    TransferCallToQueue = 'transfer-call-to-queue',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',

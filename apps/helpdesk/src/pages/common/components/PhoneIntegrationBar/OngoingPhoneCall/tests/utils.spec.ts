@@ -173,5 +173,17 @@ describe('utils', () => {
                 receiver_value: '+15551234567',
             })
         })
+
+        it('should return correct data for queue transfer target', () => {
+            const result = getTransferReceiverData({
+                type: TransferType.Queue,
+                id: 789,
+            })
+
+            expect(result).toEqual({
+                receiver_type: 'queue',
+                receiver_id: 789,
+            })
+        })
     })
 })

@@ -20,6 +20,7 @@ import DropdownAlertBanner, {
 } from 'pages/common/components/dropdown/DropdownAlertBanner'
 import AgentCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
 import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
+import QueueCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent'
 import {
     TransferTarget,
     TransferType,
@@ -51,6 +52,7 @@ const CallTransferDropdown = ({
     const isTransferToExternalNumberEnabled = useFlag(
         FeatureFlagKey.TransferCallToExternalNumber,
     )
+    const isTransferToQueueEnabled = useFlag(FeatureFlagKey.TransferCallToQueue)
 
     const [selectedTransferType, setSelectedTransferType] =
         useState<TransferType>(TransferType.Agent)
@@ -58,6 +60,8 @@ const CallTransferDropdown = ({
         null,
     )
     const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null)
+
+    const [selectedQueueId, setSelectedQueueId] = useState<number | null>(null)
 
     const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false)
     const [alertBannerData, setAlertBannerData] =
@@ -71,6 +75,10 @@ const CallTransferDropdown = ({
     const handleSelectedAgentIdChange = (agentId: number) => {
         setSelectedAgentId(agentId)
         setSelectedTarget({ type: TransferType.Agent, id: agentId })
+    }
+    const handleSelectedQueueIdChange = (queueId: number) => {
+        setSelectedQueueId(queueId)
+        setSelectedTarget({ type: TransferType.Queue, id: queueId })
     }
     const handlePhoneNumberValidationChange = (isValid: boolean) => {
         setIsPhoneNumberValid(isValid)
@@ -100,12 +108,18 @@ const CallTransferDropdown = ({
     }
 
     const handleSelectedTransferTypeChange = (transferType: TransferType) => {
-        // not needed, just use selected id or selected phone number
         setSelectedTransferType(transferType)
         switch (transferType) {
             case TransferType.Agent:
                 if (selectedAgentId) {
                     handleSelectedAgentIdChange(selectedAgentId)
+                } else {
+                    setSelectedTarget(null)
+                }
+                break
+            case TransferType.Queue:
+                if (selectedQueueId) {
+                    handleSelectedQueueIdChange(selectedQueueId)
                 } else {
                     setSelectedTarget(null)
                 }
@@ -129,6 +143,8 @@ const CallTransferDropdown = ({
         switch (selectedTransferType) {
             case TransferType.Agent:
                 return selectedAgentId
+            case TransferType.Queue:
+                return selectedQueueId
             default:
                 return null
         }
@@ -182,6 +198,7 @@ const CallTransferDropdown = ({
 
     return (
         <Dropdown
+            key={selectedTransferType}
             isOpen={isOpen}
             onToggle={setIsOpen}
             target={target}
@@ -201,6 +218,11 @@ const CallTransferDropdown = ({
                         <ToggleButton.Option value={TransferType.Agent}>
                             Agents
                         </ToggleButton.Option>
+                        {isTransferToQueueEnabled && (
+                            <ToggleButton.Option value={TransferType.Queue}>
+                                Queues
+                            </ToggleButton.Option>
+                        )}
                         <ToggleButton.Option value={TransferType.External}>
                             External
                         </ToggleButton.Option>
@@ -212,6 +234,12 @@ const CallTransferDropdown = ({
                     setSelectedAgentId={handleSelectedAgentIdChange}
                     clearErrors={() => setAlertBannerData(null)}
                     showNewVersion={isTransferToExternalNumberEnabled}
+                />
+            )}
+            {selectedTransferType === TransferType.Queue && (
+                <QueueCallTransferDropdownContent
+                    setSelectedQueueId={handleSelectedQueueIdChange}
+                    clearErrors={() => setAlertBannerData(null)}
                 />
             )}
             {selectedTransferType === TransferType.External && (

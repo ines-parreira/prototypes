@@ -6,6 +6,7 @@ export enum TransferType {
 
 export type TransferTarget =
     | { type: TransferType.Agent; id: number }
+    | { type: TransferType.Queue; id: number }
     | {
           type: TransferType.External
           value: string

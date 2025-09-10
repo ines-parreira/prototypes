@@ -1,3 +1,6 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/typography.less';
+
 :local {
     .container {
         width: 272px;
@@ -25,6 +28,27 @@
     .externalDropdownBody {
         // this makes the external dropdown body aligned with the agent dropdown body on full height
         margin-bottom: 18px;
+    }
+
+    .queueItem {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-xs) 0;
+
+        .status {
+            .caption-regular();
+        }
+
+        .enabledStatus {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .dropdownSkeleton {
+        margin: var(--layout-spacing-xs);
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
     }
 
     .dropdownFooter {

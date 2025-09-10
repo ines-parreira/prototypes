@@ -70,6 +70,11 @@ export const getTransferReceiverData = (target: TransferTarget) => {
                 receiver_type: VoiceCallTransferReceiverType.Agent,
                 receiver_id: target.id,
             }
+        case TransferType.Queue:
+            return {
+                receiver_type: VoiceCallTransferReceiverType.Queue,
+                receiver_id: target.id,
+            }
         case TransferType.External:
             return {
                 receiver_type: VoiceCallTransferReceiverType.External,
