@@ -7,6 +7,7 @@ import { appQueryClient } from 'api/queryClient'
 import { User } from 'config/types/user'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
+import { reportQueryErrorToSentry } from 'domains/reporting/models/resources'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     buildAgentMetric,
@@ -39,6 +40,8 @@ const store = mockStore({
         stats: { [drillDownSlice.name]: initialState },
     },
 } as RootState)
+jest.mock('domains/reporting/models/resources')
+const reportErrorMock = assumeMock(reportQueryErrorToSentry)
 
 jest.mock('api/queryClient')
 const mockAppQueryClient = assumeMock(appQueryClient as any)
@@ -156,9 +159,13 @@ describe('drillDownSlice', () => {
             },
             'someTimeZone',
         )
+        const defaultContext = {
+            channel_connection_external_ids: [],
+        }
         const actionParams = {
             query: exampleQuery,
             jobType: JobType.ExportTicketDrilldown,
+            context: defaultContext,
         }
         createJobMock.mockResolvedValue({ id: 123 } as unknown as Job)
 
@@ -169,6 +176,8 @@ describe('drillDownSlice', () => {
                     metricName: OverviewMetric.OpenTickets,
                 },
             }
+
+            jest.clearAllMocks()
         })
 
         it('should fire request with export Job', async () => {
@@ -182,6 +191,9 @@ describe('drillDownSlice', () => {
                         metricName: undefined,
                     },
                     metric_name: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+                    context: {
+                        channel_connection_external_ids: [],
+                    },
                 },
             })
         })
@@ -230,6 +242,18 @@ describe('drillDownSlice', () => {
             })
 
             expect(invalidateQueryMock).toHaveBeenCalled()
+        })
+
+        it('should report error when request fails', async () => {
+            const error = new Error('Request failed')
+            createJobMock.mockRejectedValue(error)
+
+            await store.dispatch(createExportDrillDownJob(actionParams))
+
+            expect(reportErrorMock).toHaveBeenCalledWith(error, {
+                query: JSON.stringify(exampleQuery),
+                metricName: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+            })
         })
     })
 

@@ -4,6 +4,7 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import { appQueryClient } from 'api/queryClient'
+import { reportQueryErrorToSentry } from 'domains/reporting/models/resources'
 import {
     Sentiment,
     TicketTimeReference,
@@ -325,19 +326,25 @@ export const createExportDrillDownJob = createAsyncThunk<
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
         const { metricName, ...restQuery } = query
+        const drillDownMetricName = `${metricName}_drill_down_export`
         try {
             const response = await createJob({
                 type: jobType,
                 params: {
                     reporting_query: restQuery,
-                    metric_name: `${metricName}_drill_down_export`,
+                    metric_name: drillDownMetricName,
                     context: context,
                 },
             })
+
             void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
 
             return response
         } catch (error) {
+            reportQueryErrorToSentry(error, {
+                query: JSON.stringify(query),
+                metricName: drillDownMetricName,
+            })
             return rejectWithValue(error)
         } finally {
             void appQueryClient.invalidateQueries({

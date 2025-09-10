@@ -43,14 +43,26 @@ const isErrorStatusToReport = (status: number | undefined) => {
     return status >= 400 && status < 500 && status !== 401
 }
 
-const getReportQueryErrorHandler =
-    (context: Record<string, string>) => (error: unknown) => {
+export const reportQueryErrorToSentry = (
+    error: unknown,
+    context: Record<string, string>,
+) => {
+    try {
         if (
             isAxiosError(error) &&
             isErrorStatusToReport(error.response?.status)
         ) {
             reportError(error, { extra: { context } })
         }
+    } catch (error) {
+        console.error('reportQueryErrorToSentry:', error)
+    }
+}
+
+const getReportQueryErrorHandler =
+    (context: Record<string, string>) => (error: unknown) => {
+        reportQueryErrorToSentry(error, context)
+
         throw error
     }
 
