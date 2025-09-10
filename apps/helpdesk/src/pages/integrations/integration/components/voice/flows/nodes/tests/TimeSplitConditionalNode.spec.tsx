@@ -212,4 +212,22 @@ describe('TimeSplitConditionalNode', () => {
             expect(screen.getByLabelText('Timezone')).toBeInTheDocument()
         })
     })
+
+    it('should validate branch options are not pointing to end call', async () => {
+        const step = {
+            ...mockDefaultStep,
+            on_true_step_id: null!,
+            on_false_step_id: null!,
+        } as TimeSplitConditionalStep
+
+        const mockFlow = {
+            ...mockDefaultFlowData,
+            steps: { [step.id]: step },
+        }
+        renderComponent(step, mockFlow)
+
+        await waitFor(() => {
+            expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        })
+    })
 })

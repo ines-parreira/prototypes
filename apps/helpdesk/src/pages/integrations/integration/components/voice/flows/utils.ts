@@ -107,7 +107,7 @@ export function getNextNodes(
 export function createIvrOptionNode(
     parentId: string,
     optionIndex: number,
-    nextStepId: string,
+    nextStepId: string | null,
 ): VoiceFlowNodeBase<IvrOptionNode> {
     return {
         id: uuidv4(),
@@ -115,7 +115,7 @@ export function createIvrOptionNode(
         data: {
             parentId,
             optionIndex,
-            next_step_id: nextStepId,
+            next_step_id: nextStepId!,
         },
     }
 }

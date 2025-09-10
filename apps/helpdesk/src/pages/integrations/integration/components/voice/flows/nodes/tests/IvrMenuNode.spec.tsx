@@ -238,7 +238,9 @@ describe('IvrMenuNode', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Menu options are required'),
+                    screen.getByText(
+                        'Menu options are required and cannot point to end call',
+                    ),
                 ).toBeInTheDocument()
             })
         })

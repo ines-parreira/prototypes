@@ -57,6 +57,10 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const businessHoursSchedule = businessHours
         ? getBusinessHoursConfigLabel(businessHours, true)
         : ''
+    const errors =
+        step.on_true_step_id && step.on_false_step_id
+            ? []
+            : ['Branches are required and cannot point to end call']
 
     useEffect(() => {
         // If the rule type is set to custom hours, ensure the timezone is set automatically
@@ -80,7 +84,7 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
             title="Time rule"
             description={`${isCustomHours ? 'Custom hours' : 'Business hours'}: ${hours}`}
             icon={<StepCardIcon backgroundColor="purple" name="clock" />}
-            errors={[]}
+            errors={errors}
             drawerRef={ref}
             {...props}
         >

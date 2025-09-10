@@ -23,7 +23,7 @@ import VoiceMessageField from '../../VoiceMessageField'
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
 import { type IvrMenuNode, IvrOptionNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
-import { createIvrOptionNode } from '../utils'
+import { createIvrOptionNode, getFormTargetStepId } from '../utils'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -57,14 +57,19 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         )
 
         if (branchOptionsErrors) {
-            errors.push('Menu options are required')
+            errors.push(
+                'Menu options are required and cannot point to end call',
+            )
         }
 
         return errors
     }, [step])
 
-    const intermediaryNodeId =
-        getNode(getIntermediaryNodeId(id))?.id ?? END_CALL_NODE.id
+    const intermediaryNode = getNode(getIntermediaryNodeId(id))
+    const intermediaryNodeId = intermediaryNode?.id ?? END_CALL_NODE.id
+    const nextStepId = intermediaryNode
+        ? getFormTargetStepId(intermediaryNode, getNode)
+        : null
 
     const isNestedIvr = useMemo(() => {
         const nodes = getNodes()
@@ -79,7 +84,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
 
     const handleAddOption = (option: BranchOptions, insertAtIndex: number) => {
         const newNode: IvrOptionNode = {
-            ...createIvrOptionNode(id, insertAtIndex, option.next_step_id),
+            ...createIvrOptionNode(id, insertAtIndex, intermediaryNodeId),
             position: { x: 0, y: 0 },
         }
         addNodes(newNode)
@@ -121,7 +126,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                 <IvrMenuActionsFieldArray
                     name={`steps.${id}.branch_options`}
                     onAddOption={handleAddOption}
-                    branchNextId={intermediaryNodeId}
+                    branchNextId={nextStepId}
                 />
             </div>
         </VoiceStepNode>

@@ -9,7 +9,7 @@ type Props = {
     name: string
     onAddOption?: (option: BranchOptions, insertAtIndex: number) => void
     onRemoveOption?: (optionIndex: number) => void
-    branchNextId: string
+    branchNextId: string | null
 }
 
 export function IvrMenuActionsFieldArray({
@@ -31,7 +31,7 @@ export function IvrMenuActionsFieldArray({
             const newOption: BranchOptions = {
                 branch_name: '',
                 input_digit: nextAvailableDigit,
-                next_step_id: branchNextId,
+                next_step_id: branchNextId!,
             }
             insert(insertAtIndex, newOption)
             onAddOption?.(newOption, insertAtIndex)
