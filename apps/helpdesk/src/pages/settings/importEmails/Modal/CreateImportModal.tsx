@@ -94,10 +94,16 @@ const CreateImportModal = ({
         }
     }
 
+    const clearModalForm = () => {
+        onClose()
+        setTimeframe('')
+        setEmail('')
+    }
+
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={clearModalForm}
             size="small"
             className={css.importModalWithDropdowns}
         >
@@ -133,7 +139,6 @@ const CreateImportModal = ({
                         timeframe={timeframe}
                         setTimeframe={setTimeframe}
                         onCancel={() => {
-                            setEmail('')
                             setTimeframe('')
                             setImportCreationError(false)
                         }}
@@ -141,7 +146,7 @@ const CreateImportModal = ({
                 </form>
             </ModalBody>
             <ModalActionsFooter>
-                <Button intent="secondary" onClick={onClose}>
+                <Button intent="secondary" onClick={clearModalForm}>
                     Cancel
                 </Button>
                 <Button

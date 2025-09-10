@@ -294,26 +294,16 @@ describe('TimeFrameSelector', () => {
     })
 
     describe('Close event handlers', () => {
-        it('passes onHide, onCancel, and onClear handlers to DatePicker', () => {
+        it('passes onCancel and onClear handlers to DatePicker', () => {
             render(<TimeFrameSelector {...defaultProps} />)
 
             const propsData = JSON.parse(
                 screen.getByTestId('picker-props').textContent || '{}',
             )
 
-            expect(propsData.hasOnHide).toBe(true)
+            expect(propsData.hasOnHide).toBe(false)
             expect(propsData.hasOnCancel).toBe(true)
             expect(propsData.hasOnClear).toBe(true)
-        })
-
-        it('calls onSubmit and onCancel when onHide is triggered', () => {
-            render(<TimeFrameSelector {...defaultProps} />)
-
-            const hideButton = screen.getByTestId('trigger-onHide')
-            hideButton.click()
-
-            expect(mockOnSubmit).toHaveBeenCalledTimes(1)
-            expect(mockOnCancel).toHaveBeenCalledTimes(1)
         })
 
         it('calls onSubmit and onCancel when onCancel handler is triggered', () => {
@@ -342,29 +332,23 @@ describe('TimeFrameSelector', () => {
             expect(mockOnCancel).toHaveBeenCalledTimes(1)
         })
 
-        it('all close handlers use the same handleClear function', () => {
+        it('onCancel and onClear handlers use the same handleClear function', () => {
             mockOnSubmit.mockClear()
             mockOnCancel.mockClear()
 
             render(<TimeFrameSelector {...defaultProps} />)
 
-            const hideButton = screen.getByTestId('trigger-onHide')
             const cancelButton = screen.getByTestId('trigger-onCancel')
             const clearButton = screen.getByTestId('trigger-onClear')
 
-            hideButton.click()
+            cancelButton.click()
             const firstCallArgs = mockOnSubmit.mock.calls[0]
 
             mockOnSubmit.mockClear()
-            cancelButton.click()
+            clearButton.click()
             const secondCallArgs = mockOnSubmit.mock.calls[0]
 
-            mockOnSubmit.mockClear()
-            clearButton.click()
-            const thirdCallArgs = mockOnSubmit.mock.calls[0]
-
             expect(firstCallArgs).toEqual(secondCallArgs)
-            expect(secondCallArgs).toEqual(thirdCallArgs)
         })
     })
 })

@@ -57,7 +57,6 @@ export const TimeFrameSelector = ({
             isOpen={isOpen}
             onSubmit={onSubmit}
             onClear={handleClear}
-            onHide={handleClear}
             onCancel={handleClear}
             initialSettings={{
                 startDate: moment(sevenDaysAgo),
