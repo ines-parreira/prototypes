@@ -1,4 +1,4 @@
-import { products } from 'fixtures/productPrices'
+import { currentProductsUsage, products } from 'fixtures/productPrices'
 
 export const billingState = {
     paymentMethod: 'stripe',
@@ -50,4 +50,5 @@ export const billingState = {
         cvc: '123',
     },
     products,
+    currentProductsUsage,
 }
