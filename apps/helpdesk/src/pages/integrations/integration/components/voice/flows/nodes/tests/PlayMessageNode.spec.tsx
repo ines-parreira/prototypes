@@ -7,11 +7,12 @@ import {
     mockCallRoutingFlow,
     mockPlayMessageStep,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow, PlayMessageStep } from '@gorgias/helpdesk-types'
+import { PlayMessageStep } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
+import { VoiceFlowFormValues } from '../../types'
 import { PlayMessageNode } from '../PlayMessageNode'
 
 const TestWrapper = ({
@@ -19,9 +20,9 @@ const TestWrapper = ({
     defaultValues,
 }: {
     children: React.ReactNode
-    defaultValues: CallRoutingFlow
+    defaultValues: VoiceFlowFormValues
 }) => {
-    const methods = useForm<CallRoutingFlow>({
+    const methods = useForm<VoiceFlowFormValues>({
         defaultValues,
     })
 
@@ -34,7 +35,7 @@ const TestWrapper = ({
 
 describe('PlayMessageNode', () => {
     const renderComponent = (
-        mockFlow: CallRoutingFlow,
+        mockFlow: VoiceFlowFormValues,
         mockStep: PlayMessageStep,
     ) => {
         const props = {
@@ -134,5 +135,45 @@ describe('PlayMessageNode', () => {
         expect(screen.getByText('warning_amber')).toBeInTheDocument()
         // Check that the description shows 'Custom recording'
         expect(screen.getAllByText('Custom recording')).toHaveLength(2)
+    })
+
+    it('displays banner when recording inbound calls is enabled', () => {
+        const mockStep = mockPlayMessageStep({
+            message: {
+                voice_message_type: 'text_to_speech',
+                text_to_speech_content: 'Welcome message',
+            },
+        })
+        const mockFlow = mockCallRoutingFlow({
+            steps: { [mockStep.id]: mockStep },
+        })
+
+        renderComponent({ ...mockFlow, record_inbound_calls: true }, mockStep)
+
+        expect(
+            screen.getByText(
+                'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('does not display banner when recording inbound calls is disabled', () => {
+        const mockStep = mockPlayMessageStep({
+            message: {
+                voice_message_type: 'text_to_speech',
+                text_to_speech_content: 'Welcome message',
+            },
+        })
+        const mockFlow = mockCallRoutingFlow({
+            steps: { [mockStep.id]: mockStep },
+        })
+
+        renderComponent(mockFlow, mockStep)
+
+        expect(
+            screen.queryByText(
+                'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+            ),
+        ).not.toBeInTheDocument()
     })
 })

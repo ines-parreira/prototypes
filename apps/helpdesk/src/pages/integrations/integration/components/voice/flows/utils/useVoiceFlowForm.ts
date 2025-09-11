@@ -20,6 +20,8 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
     ): VoiceFlowFormValues => {
         if (!values) {
             return {
+                record_inbound_calls:
+                    integration.meta.preferences?.record_inbound_calls || false,
                 business_hours_id: integration.business_hours_id,
                 first_step_id: '',
                 steps: {},
@@ -67,7 +69,14 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
     const onSubmit = (data: VoiceFlowFormValues) => {
         updateAllPhoneSettings({
             integrationId: integration.id,
-            data: { meta: { flow: omit(data, ['business_hours_id']) } },
+            data: {
+                meta: {
+                    flow: omit(data, [
+                        'business_hours_id',
+                        'record_inbound_calls',
+                    ]),
+                },
+            },
         })
     }
 

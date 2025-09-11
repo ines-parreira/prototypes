@@ -1,12 +1,16 @@
+import { useEffect } from 'react'
+
 import omit from 'lodash/omit'
 
 import { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
+import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
+import { VoiceFlowNodeType } from './constants'
 import { VoiceFlowFormValues } from './types'
 import { useVoiceFlowForm } from './utils/useVoiceFlowForm'
 
@@ -24,6 +28,21 @@ function VoiceFlowForm({
     defaultValues,
 }: VoiceFlowFormProps) {
     const { getDefaultValues, onSubmit } = useVoiceFlowForm(integration)
+    const notify = useNotify()
+
+    useEffect(() => {
+        if (
+            integration.meta.preferences?.record_inbound_calls === true &&
+            !Object.values(defaultValues?.steps || {}).some(
+                (step) => step.step_type === VoiceFlowNodeType.PlayMessage,
+            )
+        ) {
+            notify.warning(
+                'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Form
@@ -38,7 +57,10 @@ function VoiceFlowForm({
             validator={(values: VoiceFlowFormValues) => {
                 return toFormErrors(
                     validateCallRoutingFlow(
-                        omit(values, ['business_hours_id']),
+                        omit(values, [
+                            'business_hours_id',
+                            'record_inbound_calls',
+                        ]),
                     ),
                 )
             }}

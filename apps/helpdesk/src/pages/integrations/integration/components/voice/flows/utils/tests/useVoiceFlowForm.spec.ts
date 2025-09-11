@@ -6,6 +6,7 @@ import {
     mockPhoneIntegration,
     mockUpdateAllPhoneSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
+import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
@@ -60,6 +61,26 @@ describe('useVoiceFlowForm', () => {
             expect(defaultValues).toEqual({
                 business_hours_id: mockIntegration.business_hours_id,
                 first_step_id: '',
+                record_inbound_calls:
+                    mockIntegration.meta.preferences?.record_inbound_calls,
+                steps: {},
+            })
+        })
+
+        it('getDefaultValues should return default record_inbound_calls', () => {
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useVoiceFlowForm({
+                    ...mockIntegration,
+                    meta: {},
+                } as PhoneIntegration),
+            )
+
+            const defaultValues = result.current.getDefaultValues()
+
+            expect(defaultValues).toEqual({
+                business_hours_id: mockIntegration.business_hours_id,
+                first_step_id: '',
+                record_inbound_calls: false,
                 steps: {},
             })
         })

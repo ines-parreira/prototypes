@@ -36,6 +36,8 @@ function VoiceIntegrationFlowPage() {
             integration={data.data}
             defaultValues={{
                 business_hours_id: integration.business_hours_id,
+                record_inbound_calls:
+                    integration.meta.preferences?.record_inbound_calls,
                 ...integration.meta.flow,
             }}
         >

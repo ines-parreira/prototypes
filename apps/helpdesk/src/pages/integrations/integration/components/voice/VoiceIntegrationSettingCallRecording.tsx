@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Label } from '@gorgias/axiom'
+import { Banner, Label } from '@gorgias/axiom'
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
@@ -12,50 +12,69 @@ import VoiceMessageField from './VoiceMessageField'
 
 import css from './VoiceIntegrationSettingCallRecording.less'
 
-function VoiceIntegrationSettingCallRecording() {
+function VoiceIntegrationSettingCallRecording({
+    integrationId,
+}: {
+    integrationId: number
+}) {
     const { watch } = useFormContext<UpdateAllPhoneIntegrationSettings>()
     const [isRecordingInboundCalls, isRecordingOutboundCalls] = watch([
         'meta.preferences.record_inbound_calls',
         'meta.preferences.record_outbound_calls',
     ])
 
-    const isCustomRecordingNotificationEnabled =
-        isRecordingInboundCalls || isRecordingOutboundCalls
-
     return (
         <>
-            <FormField
-                field={NewToggleField}
-                name="meta.preferences.record_outbound_calls"
-                label="Outbound calls"
-            />
-            <FormField
-                field={NewToggleField}
-                name="meta.preferences.record_inbound_calls"
-                label="Inbound calls"
-            />
+            <div className={css.section}>
+                <FormField
+                    field={NewToggleField}
+                    name="meta.preferences.record_inbound_calls"
+                    label="Inbound calls"
+                />
+                {isRecordingInboundCalls && (
+                    <Banner type="warning">
+                        We recommend you include the call recording notification
+                        in your welcome message, which you can configure in the{' '}
+                        <a
+                            href={`/app/settings/channels/phone/${integrationId}/flow`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Call Flow
+                        </a>{' '}
+                        tab.
+                    </Banner>
+                )}
+            </div>
+            <div className={css.container}>
+                <FormField
+                    field={NewToggleField}
+                    name="meta.preferences.record_outbound_calls"
+                    label="Outbound calls"
+                />
 
-            {isCustomRecordingNotificationEnabled && (
-                <div className={css.sectionData}>
-                    <Label>Call recording notification</Label>
-                    <div>
-                        <FormField
-                            field={VoiceMessageField}
-                            name="meta.recording_notification"
-                            allowNone
-                            maxRecordingDuration={
-                                RECORDING_NOTIFICATION_MAX_DURATION
-                            }
-                            horizontal={true}
-                            shouldUpload={true}
-                            customRecordingType={
-                                CustomRecordingType.CallRecordingNotification
-                            }
-                            radioButtonId="call_recording_notification"
-                        />
+                {isRecordingOutboundCalls && (
+                    <div className={css.sectionData}>
+                        <Label>Call recording notification</Label>
+                        <div>
+                            <FormField
+                                field={VoiceMessageField}
+                                name="meta.recording_notification"
+                                allowNone
+                                maxRecordingDuration={
+                                    RECORDING_NOTIFICATION_MAX_DURATION
+                                }
+                                horizontal={true}
+                                shouldUpload={true}
+                                customRecordingType={
+                                    CustomRecordingType.CallRecordingNotification
+                                }
+                                radioButtonId="call_recording_notification"
+                            />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </>
     )
 }

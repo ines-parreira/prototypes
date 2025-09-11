@@ -5,6 +5,7 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { useFormContext } from 'react-hook-form'
 
+import { mockEnqueueStep } from '@gorgias/helpdesk-mocks'
 import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 import {
@@ -51,6 +52,19 @@ const mockIntegration: PhoneIntegration = {
     id: 123,
     name: 'Test Phone Integration',
     type: 'phone',
+    meta: {
+        preferences: {
+            record_inbound_calls: false,
+        },
+    },
+} as PhoneIntegration
+const integrationWithRecording = {
+    ...mockIntegration,
+    meta: {
+        preferences: {
+            record_inbound_calls: true,
+        },
+    },
 } as PhoneIntegration
 
 const defaultFlowValues: CallRoutingFlow = {
@@ -75,6 +89,13 @@ assumeMock(useVoiceFlowForm).mockReturnValue({
     getDefaultValues: () => defaultFlowValues,
     onSubmit: mockOnSubmit,
 })
+
+const mockNotify = {
+    warning: jest.fn(),
+}
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => mockNotify,
+}))
 
 const wrapper = ({
     children,
@@ -179,5 +200,74 @@ describe('VoiceFlowForm', () => {
                 screen.getByText('First step id is required'),
             ).toBeInTheDocument()
         })
+    })
+
+    it('should call notifyWarning when record_inbound_calls is enabled and no PlayMessage step exists', () => {
+        const enqueueStep = mockEnqueueStep()
+        const flowWithoutPlayMessage: CallRoutingFlow = {
+            first_step_id: enqueueStep.id,
+            steps: {
+                [enqueueStep.id]: enqueueStep,
+            },
+        }
+
+        render(
+            <VoiceFlowForm
+                integration={integrationWithRecording}
+                defaultValues={flowWithoutPlayMessage}
+            >
+                <div>Flow Form Content</div>
+            </VoiceFlowForm>,
+        )
+
+        expect(mockNotify.warning).toHaveBeenCalledWith(
+            'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+        )
+    })
+
+    it('should not call notifyWarning when record_inbound_calls is disabled', () => {
+        const enqueueStep = mockEnqueueStep()
+        const flowWithoutPlayMessage: CallRoutingFlow = {
+            first_step_id: enqueueStep.id,
+            steps: {
+                [enqueueStep.id]: enqueueStep,
+            },
+        }
+
+        render(
+            <VoiceFlowForm
+                integration={
+                    mockIntegration /* record_inbound_calls is false here */
+                }
+                defaultValues={flowWithoutPlayMessage}
+            >
+                <div>Flow Form Content</div>
+            </VoiceFlowForm>,
+        )
+
+        expect(mockNotify.warning).not.toHaveBeenCalled()
+    })
+
+    it('should not call notifyWarning when PlayMessage step exists even with recording enabled', () => {
+        render(
+            <VoiceFlowForm
+                integration={integrationWithRecording}
+                defaultValues={defaultFlowValues}
+            >
+                <div>Flow Form Content</div>
+            </VoiceFlowForm>,
+        )
+
+        expect(mockNotify.warning).not.toHaveBeenCalled()
+    })
+
+    it('should call notifyWarning when no steps exist even with recording enabled', () => {
+        render(
+            <VoiceFlowForm integration={integrationWithRecording}>
+                <div>Flow Form Content</div>
+            </VoiceFlowForm>,
+        )
+
+        expect(mockNotify.warning).toHaveBeenCalled()
     })
 })

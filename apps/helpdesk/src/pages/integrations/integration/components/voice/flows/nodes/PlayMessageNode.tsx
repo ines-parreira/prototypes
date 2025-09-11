@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
+import { Banner } from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
@@ -17,6 +18,7 @@ import { VoiceStepNode } from './VoiceStepNode'
 export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
     const { id } = props.data
     const step = useWatch({ name: `steps.${id}` })
+    const recordInboundCalls = useWatch({ name: 'record_inbound_calls' })
 
     const { message } = step
     const description =
@@ -44,6 +46,15 @@ export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
             errors={errors}
             {...props}
         >
+            {recordInboundCalls && (
+                <Banner type="info">
+                    <span>
+                        Call recording is enabled for inbound calls. To ensure
+                        transparency, consider adding a recording notification
+                        to your welcome message.
+                    </span>
+                </Banner>
+            )}
             <div>
                 <FormField
                     name={`steps.${id}.message`}

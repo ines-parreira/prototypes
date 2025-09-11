@@ -63,7 +63,9 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                             Toggle call recording on / off
                         </SettingsCardHeader>
                         <SettingsCardContent>
-                            <VoiceIntegrationSettingCallRecording />
+                            <VoiceIntegrationSettingCallRecording
+                                integrationId={integration.id}
+                            />
                         </SettingsCardContent>
                     </SettingsCard>
                     <SettingsCard>

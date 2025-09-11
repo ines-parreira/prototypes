@@ -88,4 +88,5 @@ export type VoiceFlowNodeBase<T extends VoiceFlowNode = VoiceFlowNode> = Pick<
 
 export type VoiceFlowFormValues = CallRoutingFlow & {
     business_hours_id?: number | null
+    record_inbound_calls?: boolean
 }

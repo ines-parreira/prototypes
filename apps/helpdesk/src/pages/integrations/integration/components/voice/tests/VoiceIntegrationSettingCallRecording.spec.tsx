@@ -76,7 +76,7 @@ describe('VoiceIntegrationSettingCallRecording_DEPRECATED', () => {
 
 describe('VoiceIntegrationSettingCallRecording', () => {
     const renderComponent = () =>
-        render(<VoiceIntegrationSettingCallRecording />)
+        render(<VoiceIntegrationSettingCallRecording integrationId={1234} />)
 
     beforeEach(() => {
         FormFieldMock.mockImplementation(({ children, label }: any) => (
