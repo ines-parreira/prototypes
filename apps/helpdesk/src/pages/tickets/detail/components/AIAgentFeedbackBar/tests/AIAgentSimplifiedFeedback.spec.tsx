@@ -11,6 +11,7 @@ import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -49,15 +50,16 @@ const useGoToNextTicketMock = useGoToNextTicket as jest.Mock
 jest.mock('models/knowledgeService/mutations')
 const useUpsertFeedbackMock = useUpsertFeedback as jest.Mock
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
-    useStoreConfiguration: () => ({
+    useStoreConfiguration: jest.fn(() => ({
         storeConfiguration: {
             shopName: 'test nema',
             shopType: 'shopify',
             guidanceHelpCenterId: 123,
             helpCenterId: 456,
         },
-    }),
+    })),
 }))
+const useStoreConfigurationMock = useStoreConfiguration as jest.Mock
 
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
@@ -2981,6 +2983,99 @@ describe('AIAgentSimplifiedFeedback', () => {
             expect(
                 screen.getByText('How was this conversation?'),
             ).toBeInTheDocument()
+        })
+
+        it('should show unavailable message when ticket level feedback is shown but store configuration is missing', () => {
+            const moreThanTwoHoursAgo = new Date(
+                Date.now() - 3 * 60 * 60 * 1000,
+            ) // 3 hours ago
+
+            // Mock storeConfiguration to return null
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: null,
+            })
+
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return new Map([
+                        ['id', 123],
+                        ['tags', []],
+                    ] as any)
+                }
+                if (selector === getCurrentAccountState) {
+                    return new Map([
+                        ['id', 456],
+                        ['domain', 'test.myshopify.com'],
+                    ] as any)
+                }
+                if (selector === getAIAgentMessages) {
+                    return [
+                        {
+                            id: '1',
+                            created_datetime: moreThanTwoHoursAgo.toISOString(),
+                        },
+                    ]
+                }
+                if (selector === getDateAndTimeFormatter) {
+                    return () => 'MMMM DD, YYYY'
+                }
+                if (selector === getSectionIdByName) {
+                    return { 'AI Agent': 789 }
+                }
+                if (selector === getViewsState) {
+                    return {
+                        getIn: jest.fn((path) => {
+                            if (
+                                path[0] === 'active' &&
+                                path[1] === 'section_id'
+                            ) {
+                                return 789
+                            }
+                            return null
+                        }),
+                    }
+                }
+                if (
+                    typeof selector === 'function' &&
+                    selector.toString().includes('currentUser')
+                ) {
+                    return new Map([['id', 789]])
+                }
+                return null
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [],
+                },
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByText('How was this conversation?'),
+            ).toBeInTheDocument()
+
+            expect(
+                screen.getByText(
+                    'Additional data not available. You can still rate the conversation above.',
+                ),
+            ).toBeInTheDocument()
+
+            // Reset the mock to its default state
+            useStoreConfigurationMock.mockReturnValue({
+                storeConfiguration: {
+                    shopName: 'test nema',
+                    shopType: 'shopify',
+                    guidanceHelpCenterId: 123,
+                    helpCenterId: 456,
+                },
+            })
         })
     })
 })

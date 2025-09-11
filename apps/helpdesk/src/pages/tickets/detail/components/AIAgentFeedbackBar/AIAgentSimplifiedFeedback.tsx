@@ -370,7 +370,7 @@ const AIAgentSimplifiedFeedback = () => {
                             upsertFeedback={upsertFeedback}
                             feedback={feedback}
                         />
-                        {storeConfiguration && (
+                        {storeConfiguration ? (
                             <>
                                 <Separator className={css.separator} />
                                 <div className={css.sourcesContainer}>
@@ -453,6 +453,16 @@ const AIAgentSimplifiedFeedback = () => {
                                         onKnowledgeResourceCreateClick
                                     }
                                 />
+                            </>
+                        ) : (
+                            <>
+                                <Separator className={css.separator} />
+                                <div className={css.sourcesContainer}>
+                                    <div className={css.unavailableMessage}>
+                                        Additional data not available. You can
+                                        still rate the conversation above.
+                                    </div>
+                                </div>
                             </>
                         )}
                     </div>
