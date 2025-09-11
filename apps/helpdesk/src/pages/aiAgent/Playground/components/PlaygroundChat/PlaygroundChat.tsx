@@ -45,12 +45,14 @@ type Props = {
     storeData: StoreConfiguration
     accountData: AccountConfigurationWithHttpIntegration
     currentUserFirstName?: string
+    arePlaygroundActionsAllowed?: boolean
 }
 
 export const PlaygroundChat = ({
     storeData,
     accountData,
     currentUserFirstName,
+    arePlaygroundActionsAllowed,
 }: Props) => {
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
@@ -83,6 +85,7 @@ export const PlaygroundChat = ({
                 : undefined,
         channelAvailability,
         baseUrl,
+        arePlaygroundActionsAllowed,
     })
 
     const {
@@ -243,6 +246,8 @@ export const PlaygroundChat = ({
         <div className={css.container}>
             {!isStoreWfConfigurationsInitialLoading && hasActionsInTestMode && (
                 <>
+                    {/* Deprecated - This alert will be removed once the merchants using
+                        the old actions allowance are migrated */}
                     <Alert type={AlertType.Warning} icon className="mb-3">
                         Actions are enabled. Executing an Action will run live
                         and may update your store data.
@@ -317,6 +322,7 @@ export const PlaygroundChat = ({
                     onPromptMessage={onPromptMessage}
                     channelAvailability={channelAvailability}
                     onChannelAvailabilityChange={setChannelAvailability}
+                    arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                 />
             </div>
         </div>

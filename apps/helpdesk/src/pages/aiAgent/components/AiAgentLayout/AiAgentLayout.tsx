@@ -22,6 +22,7 @@ type Props = {
     isLoading?: boolean
     // Hide title and navbar (eg: to show a paywall)
     fullscreen?: boolean
+    titleChildren?: ReactNode
 }
 
 export const AiAgentLayout = ({
@@ -31,6 +32,7 @@ export const AiAgentLayout = ({
     title,
     isLoading,
     fullscreen,
+    titleChildren,
 }: Props) => {
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
@@ -61,9 +63,10 @@ export const AiAgentLayout = ({
                 <div className={css.customAiAgentTitleSubContainer}>
                     <h1 className="d-flex align-items-center">{title}</h1>
                 </div>
+                {titleChildren}
             </div>
         )
-    }, [title])
+    }, [title, titleChildren])
 
     return (
         <AiAgentView

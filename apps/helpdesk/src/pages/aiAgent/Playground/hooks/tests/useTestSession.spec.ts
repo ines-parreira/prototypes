@@ -50,6 +50,58 @@ describe('useTestSession hook', () => {
         expect(createTestSessionMock).toHaveBeenCalledTimes(1)
     })
 
+    it('should call createTestSession with baseUrl when provided', () => {
+        const createTestSessionMock = jest.fn()
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const baseUrl = 'https://test.example.com'
+        const { result } = renderHook(() => useTestSession(baseUrl))
+
+        result.current.createTestSession()
+
+        expect(createTestSessionMock).toHaveBeenCalledWith([baseUrl, undefined])
+    })
+
+    it('should call createTestSession with baseUrl and payload when provided', () => {
+        const createTestSessionMock = jest.fn()
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const baseUrl = 'https://test.example.com'
+        const payload = { areActionsAllowedToExecute: true }
+        const { result } = renderHook(() => useTestSession(baseUrl, payload))
+
+        result.current.createTestSession()
+
+        expect(createTestSessionMock).toHaveBeenCalledWith([baseUrl, payload])
+    })
+
+    it('should call createTestSession with undefined baseUrl and payload when only payload is provided', () => {
+        const createTestSessionMock = jest.fn()
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const payload = { areActionsAllowedToExecute: false }
+        const { result } = renderHook(() => useTestSession(undefined, payload))
+
+        result.current.createTestSession()
+
+        expect(createTestSessionMock).toHaveBeenCalledWith([undefined, payload])
+    })
+
     it('should return initial state correctly', () => {
         const { result } = renderHook(() => useTestSession())
 

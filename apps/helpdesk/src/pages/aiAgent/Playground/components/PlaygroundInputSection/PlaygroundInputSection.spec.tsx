@@ -1,5 +1,7 @@
+import React from 'react'
+
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -92,13 +94,16 @@ jest.mock('../PlaygroundCustomerSelection/PlaygroundCustomerSelection', () => ({
 
 jest.mock('pages/common/forms/input/TextInput', () => ({
     __esModule: true,
-    default: ({ value, onChange, isDisabled, ...props }: any) => (
-        <input
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            disabled={isDisabled}
-            {...props}
-        />
+    default: React.forwardRef(
+        ({ value, onChange, isDisabled, ...props }: any, ref: any) => (
+            <input
+                ref={ref}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                disabled={isDisabled}
+                {...props}
+            />
+        ),
     ),
 }))
 
@@ -227,7 +232,9 @@ describe('PlaygroundInputSection', () => {
 
             const sendButton = screen.getByRole('button', { name: 'Send' })
 
-            await userEvent.click(sendButton)
+            await act(async () => {
+                await userEvent.click(sendButton)
+            })
 
             expect(onSendMessage).toHaveBeenCalled()
         })
@@ -270,7 +277,9 @@ describe('PlaygroundInputSection', () => {
             const editor = screen.getByTestId('playground-editor')
             editor.focus()
 
-            await userEvent.keyboard('{Meta>}{Enter}{/Meta}')
+            await act(async () => {
+                await userEvent.keyboard('{Meta>}{Enter}{/Meta}')
+            })
 
             expect(onSendMessage).toHaveBeenCalled()
         })
@@ -290,7 +299,9 @@ describe('PlaygroundInputSection', () => {
             const editor = screen.getByTestId('playground-editor')
             editor.focus()
 
-            await userEvent.keyboard('{Control>}{Enter}{/Control}')
+            await act(async () => {
+                await userEvent.keyboard('{Control>}{Enter}{/Control}')
+            })
 
             expect(onSendMessage).toHaveBeenCalled()
         })
@@ -454,7 +465,9 @@ describe('PlaygroundInputSection', () => {
             const onChannelChange = jest.fn()
             renderComponent({ onChannelChange })
 
-            await userEvent.click(screen.getByText('Chat'))
+            await act(async () => {
+                await userEvent.click(screen.getByText('Chat'))
+            })
 
             expect(onChannelChange).toHaveBeenCalledWith('chat')
         })
@@ -464,6 +477,16 @@ describe('PlaygroundInputSection', () => {
 
             expect(screen.getByText('Online')).toBeInTheDocument()
             expect(screen.getByText('Offline')).toBeInTheDocument()
+        })
+
+        it('should show customer selection for email channel', () => {
+            renderComponent({ channel: 'email' })
+            expect(screen.getByText('Customer Selection')).toBeInTheDocument()
+        })
+
+        it('should show customer selection for chat channel', () => {
+            renderComponent({ channel: 'chat' })
+            expect(screen.getByText('Customer Selection')).toBeInTheDocument()
         })
 
         describe('when standalone feature flag is enabled', () => {
@@ -492,6 +515,162 @@ describe('PlaygroundInputSection', () => {
                 const tabs = screen.getAllByRole('tab')
                 expect(tabs).toHaveLength(1)
                 expect(tabs[0]).toBeDisabled()
+            })
+        })
+    })
+
+    describe('arePlaygroundActionsAllowed prop', () => {
+        const rerenderWithActionsAllowed = (
+            rerender: any,
+            arePlaygroundActionsAllowed: boolean | undefined,
+            additionalProps: any,
+        ) => {
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={queryClient}>
+                        <PlaygroundInputSection
+                            {...defaultProps}
+                            {...additionalProps}
+                            arePlaygroundActionsAllowed={
+                                arePlaygroundActionsAllowed
+                            }
+                        />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+        }
+
+        it('should reset the playground when arePlaygroundActionsAllowed value changes', async () => {
+            const onNewConversation = jest.fn()
+            const onSendMessage = jest.fn()
+
+            const { rerender } = renderComponent({
+                arePlaygroundActionsAllowed: true,
+                onNewConversation,
+                onSendMessage,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Test message',
+                },
+            })
+
+            const sendButton = screen.getByRole('button', { name: 'Send' })
+
+            await act(async () => {
+                await userEvent.click(sendButton)
+            })
+
+            expect(onSendMessage).toHaveBeenCalledTimes(1)
+            expect(
+                screen.getByRole('button', { name: 'Reset' }),
+            ).toHaveAttribute('aria-disabled', 'false')
+            expect(onNewConversation).not.toHaveBeenCalled()
+
+            onNewConversation.mockClear()
+            onSendMessage.mockClear()
+
+            rerenderWithActionsAllowed(rerender, false, {
+                onNewConversation,
+                onSendMessage,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Test message',
+                },
+            })
+
+            await waitFor(() => {
+                expect(onNewConversation).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        it('should not reset when arePlaygroundActionsAllowed value stays the same', async () => {
+            const onNewConversation = jest.fn()
+
+            const { rerender } = renderComponent({
+                arePlaygroundActionsAllowed: true,
+                onNewConversation,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'Send' }),
+                ).toBeInTheDocument()
+            })
+
+            onNewConversation.mockClear()
+
+            rerenderWithActionsAllowed(rerender, true, {
+                onNewConversation,
+            })
+
+            expect(onNewConversation).not.toHaveBeenCalled()
+        })
+
+        it('should reset when arePlaygroundActionsAllowed changes from undefined to a value', async () => {
+            const onNewConversation = jest.fn()
+
+            const { rerender } = renderComponent({
+                arePlaygroundActionsAllowed: undefined,
+                onNewConversation,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'Send' }),
+                ).toBeInTheDocument()
+            })
+
+            onNewConversation.mockClear()
+
+            rerenderWithActionsAllowed(rerender, true, {
+                onNewConversation,
+            })
+
+            await waitFor(() => {
+                expect(onNewConversation).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        it('should disable reset button after automatic reset when arePlaygroundActionsAllowed changes', async () => {
+            const onNewConversation = jest.fn()
+            const onSendMessage = jest.fn()
+
+            const { rerender } = renderComponent({
+                arePlaygroundActionsAllowed: true,
+                onNewConversation,
+                onSendMessage,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Test message',
+                },
+            })
+
+            const sendButton = screen.getByRole('button', { name: 'Send' })
+
+            await act(async () => {
+                await userEvent.click(sendButton)
+            })
+
+            const resetButton = screen.getByRole('button', { name: 'Reset' })
+            expect(resetButton).toHaveAttribute('aria-disabled', 'false')
+
+            rerenderWithActionsAllowed(rerender, false, {
+                onNewConversation,
+                onSendMessage,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Test message',
+                },
+            })
+
+            await waitFor(() => {
+                const resetButtonAfterReset = screen.getByRole('button', {
+                    name: 'Reset',
+                })
+                expect(resetButtonAfterReset).toHaveAttribute(
+                    'aria-disabled',
+                    'true',
+                )
             })
         })
     })

@@ -97,6 +97,7 @@ export enum FeatureFlagKey {
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
+    EnableActionsOnPlaygroundForMerchants = 'linear.enable-actions-on-playground-for-merchants.toggle-button',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',

@@ -14,12 +14,10 @@ export const PlaygroundInitialContent = () => {
                 Ask AI Agent a question your customers may ask
             </h2>
             <p className={css.subtitle}>
-                AI Agent will use your store&apos;s resources and order history
-                to respond
+                AI Agent will use your knowledge and order history to respond
             </p>
             <p className={css.footer}>
-                Test conversations won&apos;t send messages or take any real
-                actions.
+                Knowledge must be enabled in order to test
             </p>
         </div>
     )

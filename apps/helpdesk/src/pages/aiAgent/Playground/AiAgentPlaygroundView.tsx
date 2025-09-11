@@ -30,9 +30,13 @@ import css from './AiAgentPlaygroundView.less'
 
 type Props = {
     shopName: string
+    arePlaygroundActionsAllowed?: boolean
 }
 
-export const AiAgentPlaygroundView = ({ shopName }: Props) => {
+export const AiAgentPlaygroundView = ({
+    shopName,
+    arePlaygroundActionsAllowed,
+}: Props) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -167,6 +171,7 @@ export const AiAgentPlaygroundView = ({ shopName }: Props) => {
                             .accountConfiguration as AccountConfigurationWithHttpIntegration
                     }
                     currentUserFirstName={currentUserFirstName}
+                    arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                 />
             ) : null}
         </CheckPlaygroundPrerequisites>

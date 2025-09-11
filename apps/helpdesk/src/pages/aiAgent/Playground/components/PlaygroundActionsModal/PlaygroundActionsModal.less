@@ -1,0 +1,56 @@
+@import (reference) '~css/typography';
+
+:local {
+    .PlaygroundActionsModal {
+        .modalBody {
+            display: flex;
+            flex-direction: column;
+            gap: var(--layout-spacing-l);
+
+            ul {
+                padding-left: 20px;
+                gap: 14px;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 0;
+            }
+
+            .modalContent {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .modalBodyConfirmation {
+                display: flex;
+                align-items: flex-start;
+                gap: var(--layout-spacing-xs);
+                cursor: pointer;
+
+                .checkboxContainer {
+                    display: flex;
+                    width: 20px;
+                    align-items: flex-start;
+                    justify-content: flex-start;
+
+                    input[type='checkbox'] {
+                        cursor: pointer;
+                    }
+                }
+
+                .modalBodyConfirmationText {
+                    .body-regular();
+                }
+            }
+
+            .body-regular();
+        }
+
+        .modalFooter {
+            display: flex;
+            flex-direction: row;
+            padding: var(--layout-spacing-s);
+            justify-content: space-between;
+        }
+    }
+}

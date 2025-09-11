@@ -56,6 +56,21 @@ jest.mock('../components/PlaygroundChat/PlaygroundChat', () => ({
     PlaygroundChat: jest.fn(() => <div>PlaygroundChat</div>),
 }))
 
+jest.mock(
+    '../components/PlaygroundActionsToggle/PlaygroundActionsToggle',
+    () => {
+        return function MockPlaygroundActionsToggle({ value, onChange }: any) {
+            return (
+                <div data-testid="playground-actions-toggle">
+                    <button onClick={() => onChange(!value)}>
+                        Toggle Actions {value ? 'Off' : 'On'}
+                    </button>
+                </div>
+            )
+        }
+    },
+)
+
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 
@@ -305,9 +320,53 @@ describe('AiAgentPlayground', () => {
             isWaitingResponse: false,
         })
         renderComponent()
-        expect(screen.getByText('PlaygroundChat')).toBeInTheDocument
+        expect(screen.getByText('PlaygroundChat')).toBeInTheDocument()
         expect(
             screen.getByText(TEST, { selector: '.page-header *' }),
         ).toBeInTheDocument()
+    })
+
+    it('renders PlaygroundActionsToggle in the header', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: {
+                data: {
+                    storeConfiguration,
+                },
+            },
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
+        mockUseGetAccountConfiguration.mockReturnValue({
+            data: { data: { accountConfiguration } },
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAccountConfiguration>)
+        mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
+            isLoading: false,
+            helpCenter: { id: 1 },
+        } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [
+                {
+                    status: 'done',
+                    id: 60,
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isSourceItemsListLoading: false,
+        })
+        mockUsePlaygroundMessages.mockReturnValue({
+            messages: [],
+            isMessageSending: false,
+            onMessageSend: jest.fn(),
+            onNewConversation: jest.fn(),
+            isWaitingResponse: false,
+        })
+        renderComponent()
+
+        expect(
+            screen.getByTestId('playground-actions-toggle'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Toggle Actions On')).toBeInTheDocument()
     })
 })

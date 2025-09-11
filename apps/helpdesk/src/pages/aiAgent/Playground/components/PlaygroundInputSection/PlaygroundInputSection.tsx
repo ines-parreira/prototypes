@@ -83,6 +83,7 @@ type Props = {
     onPromptMessage: (action: PlaygroundPromptType) => void
     channelAvailability: PlaygroundChannelAvailability
     onChannelAvailabilityChange: (value: PlaygroundChannelAvailability) => void
+    arePlaygroundActionsAllowed?: boolean
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -99,6 +100,7 @@ export const PlaygroundInputSection = ({
     onPromptMessage,
     channelAvailability,
     onChannelAvailabilityChange,
+    arePlaygroundActionsAllowed,
 }: Props) => {
     const { shopName } = useParams<{
         shopName: string
@@ -206,6 +208,23 @@ export const PlaygroundInputSection = ({
         channelAvailability,
     ])
 
+    const onReset = useCallback(() => {
+        onNewConversation()
+        setHasMessageBeenSent(false)
+    }, [onNewConversation])
+
+    const arePlaygroundActionsAllowedRef = useRef(arePlaygroundActionsAllowed)
+
+    useEffect(() => {
+        if (
+            arePlaygroundActionsAllowedRef.current !==
+            arePlaygroundActionsAllowed
+        ) {
+            onReset()
+            arePlaygroundActionsAllowedRef.current = arePlaygroundActionsAllowed
+        }
+    }, [arePlaygroundActionsAllowed, onReset])
+
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
     // Handle keyboard shortcut for sending message (Cmd/Ctrl + Enter)
@@ -260,16 +279,14 @@ export const PlaygroundInputSection = ({
                             segments={CHAT_AVAILABILITY_SEGMENTS}
                         />
                     )}
-                    {channel === 'email' && (
-                        <PlaygroundCustomerSelection
-                            customer={formValues.customer}
-                            onCustomerChange={handleCustomerChange}
-                            onTicketChange={handleTicketChange}
-                            isDisabled={!isInitialMessage}
-                            senderType={senderSelectedOption}
-                            onSenderTypeChange={setSenderSelectedOption}
-                        />
-                    )}
+                    <PlaygroundCustomerSelection
+                        customer={formValues.customer}
+                        onCustomerChange={handleCustomerChange}
+                        onTicketChange={handleTicketChange}
+                        isDisabled={!isInitialMessage}
+                        senderType={senderSelectedOption}
+                        onSenderTypeChange={setSenderSelectedOption}
+                    />
                 </div>
             </div>
             {channel === 'email' && (
@@ -325,10 +342,7 @@ export const PlaygroundInputSection = ({
                 <Button
                     intent="secondary"
                     leadingIcon="refresh"
-                    onClick={() => {
-                        onNewConversation()
-                        setHasMessageBeenSent(false)
-                    }}
+                    onClick={onReset}
                     isDisabled={!hasMessageBeenSent}
                 >
                     Reset

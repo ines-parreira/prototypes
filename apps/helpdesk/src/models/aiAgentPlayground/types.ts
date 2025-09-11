@@ -11,6 +11,7 @@ export type CreatePlaygroundMessage = {
 export type CreatePlaygroundOptions = {
     shopName: string
     customToneOfVoice?: string
+    arePlaygroundActionsAllowed?: boolean
 }
 
 export type CreatePlaygroundBody = {

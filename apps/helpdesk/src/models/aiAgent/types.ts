@@ -426,3 +426,7 @@ export type TriggerAIJourneyResponse = {
 export type AiAgentUpgradePlanResponse = {
     aiAgentUpgradePlanId: string
 }
+
+export type AiAgentPlaygroundOptions = {
+    areActionsAllowedToExecute: boolean
+}

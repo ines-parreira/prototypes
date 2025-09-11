@@ -3,10 +3,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useNotify } from 'hooks/useNotify'
 import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
+import { AiAgentPlaygroundOptions } from 'models/aiAgent/types'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-export const useTestSession = (baseUrl?: string) => {
+export const useTestSession = (
+    baseUrl?: string,
+    payload?: AiAgentPlaygroundOptions,
+) => {
     const { notify } = useNotify()
     const [testSessionId, setTestSessionId] = useState<string | null>(null)
     const {
@@ -17,7 +21,7 @@ export const useTestSession = (baseUrl?: string) => {
     } = useCreateTestSessionMutation()
 
     const createTestSession = useCallback(async () => {
-        const data = await createTestSessionAsync([baseUrl])
+        const data = await createTestSessionAsync([baseUrl, payload])
         const testSessionId = data?.testModeSession.id
 
         if (testSessionId) {
@@ -26,7 +30,7 @@ export const useTestSession = (baseUrl?: string) => {
         }
 
         return null
-    }, [createTestSessionAsync, baseUrl])
+    }, [createTestSessionAsync, payload, baseUrl])
 
     useEffect(() => {
         const testSessionId = data?.testModeSession.id

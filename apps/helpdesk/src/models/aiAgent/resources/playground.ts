@@ -1,6 +1,10 @@
 import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 
-import { CreateTestSessionResponse, PlaygroundExecutions } from '../types'
+import {
+    AiAgentPlaygroundOptions,
+    CreateTestSessionResponse,
+    PlaygroundExecutions,
+} from '../types'
 import { apiClient as configurationApiClient } from './configuration'
 import {
     apiClient as aiAgentApiClient,
@@ -19,10 +23,14 @@ export const getPlaygroundExecutions = async (
     )
 }
 
-export const createTestSession = async (baseUrl?: string) => {
+export const createTestSession = async (
+    baseUrl?: string,
+    payload?: AiAgentPlaygroundOptions,
+) => {
     const client = baseUrl ? createApiClient(baseUrl) : aiAgentApiClient
     const response = await client.post<CreateTestSessionResponse>(
         '/api/test-mode-session',
+        payload,
     )
 
     return response.data
