@@ -1,30 +1,54 @@
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
+import { setupServer } from 'msw/node'
 
-import { getVoiceQueue, PhoneRingingBehaviour } from '@gorgias/helpdesk-client'
+import {
+    mockGetVoiceQueueHandler,
+    mockVoiceQueue,
+} from '@gorgias/helpdesk-mocks'
+import {
+    PhoneRingingBehaviour,
+    useGetVoiceQueue,
+} from '@gorgias/helpdesk-queries'
 
 import {
     getInboundDisplayStatus,
     VoiceCall,
     VoiceCallDisplayStatus,
+    VoiceCallSubject,
+    VoiceCallSubjectType,
 } from 'models/voiceCall/types'
+import { getAnsweringVoiceSubject } from 'models/voiceCall/utils'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 
 jest.mock(
+    'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel',
+    () =>
+        ({ subject }: { subject: VoiceCallSubject }) => {
+            if (subject.type === 'agent') {
+                return (
+                    <div data-interactable="true">
+                        VoiceCallSubjectLabel Agent {subject.id}
+                    </div>
+                )
+            }
+            if (subject.type === 'external') {
+                return (
+                    <div data-interactable="false">
+                        VoiceCallSubjectLabel External {subject.value}
+                    </div>
+                )
+            }
+        },
+)
+
+jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({
-            agentId,
-            interactable,
-        }: {
-            agentId: number
-            interactable?: boolean
-        }) => (
-            <div data-interactable={interactable}>
-                VoiceCallAgentLabel {agentId}
-            </div>
+        ({ agentId }: { agentId: number }) => (
+            <div>VoiceCallAgentLabel {agentId}</div>
         ),
 )
 
@@ -46,16 +70,41 @@ jest.mock('models/voiceCall/types', () => {
         getInboundDisplayStatus: jest.fn(),
     }
 })
-const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
 
-jest.mock('@gorgias/helpdesk-client')
-const getVoiceQueueMock = assumeMock(getVoiceQueue)
+jest.mock('models/voiceCall/utils', () => {
+    const originalModule = jest.requireActual('models/voiceCall/utils')
+    return {
+        ...originalModule,
+        getAnsweringVoiceSubject: jest.fn(),
+    }
+})
+
+const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
+const getAnsweringVoiceSubjectMock = assumeMock(getAnsweringVoiceSubject)
+
+jest.mock('@gorgias/helpdesk-queries')
+const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const renderComponent = (voiceCall: VoiceCall) => {
     return renderWithQueryClientProvider(
         <TicketVoiceCallInboundStatus voiceCall={voiceCall} />,
     )
 }
+
 describe('TicketVoiceCallInboundStatus', () => {
     it('should render "Routing"', () => {
         getInboundDisplayStatusMock.mockReturnValue(
@@ -69,22 +118,54 @@ describe('TicketVoiceCallInboundStatus', () => {
         VoiceCallDisplayStatus.InProgress,
         VoiceCallDisplayStatus.Answered,
     ])(
-        'should render "Answered by" and VoiceCallAgentLabel when display status is %s',
-        () => {
-            getInboundDisplayStatusMock.mockReturnValue(
-                VoiceCallDisplayStatus.InProgress,
-            )
-            const { getByText, getByTestId, container } = renderComponent({
+        'should render "Answered by" and agent label when display status is %s',
+        (displayStatus) => {
+            const voiceCall = {
                 last_answered_by_agent_id: 1,
-                phone_number_destination: '1234567890',
-            } as VoiceCall)
+            } as VoiceCall
+
+            getInboundDisplayStatusMock.mockReturnValue(displayStatus)
+            getAnsweringVoiceSubjectMock.mockReturnValue({
+                type: VoiceCallSubjectType.Agent,
+                id: 1,
+            })
+            const { getByText, getByTestId, container } =
+                renderComponent(voiceCall)
             expect(getByText('Answered by')).toBeInTheDocument()
-            expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
+            expect(
+                getByText('VoiceCallSubjectLabel Agent 1'),
+            ).toBeInTheDocument()
             expect(getByTestId('collapsible-details')).toBeInTheDocument()
             const agentLabel = container.querySelector(
                 '[data-interactable="true"]',
             )
             expect(agentLabel).toBeInTheDocument()
+            expect(getAnsweringVoiceSubjectMock).toHaveBeenCalledWith(voiceCall)
+        },
+    )
+
+    it.each([
+        VoiceCallDisplayStatus.InProgress,
+        VoiceCallDisplayStatus.Answered,
+    ])(
+        'should render "Answered by" and external number label when display status is %s',
+        (displayStatus) => {
+            const voiceCall = {
+                answered_by_external_number: '+1234567890',
+            } as VoiceCall
+
+            getInboundDisplayStatusMock.mockReturnValue(displayStatus)
+            getAnsweringVoiceSubjectMock.mockReturnValue({
+                type: VoiceCallSubjectType.External,
+                value: '+1234567890',
+            })
+            const { getByText, getByTestId } = renderComponent(voiceCall)
+            expect(getByText('Answered by')).toBeInTheDocument()
+            expect(
+                getByText('VoiceCallSubjectLabel External +1234567890'),
+            ).toBeInTheDocument()
+            expect(getByTestId('collapsible-details')).toBeInTheDocument()
+            expect(getAnsweringVoiceSubjectMock).toHaveBeenCalledWith(voiceCall)
         },
     )
 
@@ -98,11 +179,20 @@ describe('TicketVoiceCallInboundStatus', () => {
 
     describe('Calling', () => {
         it('should render "Calling agents" when display status is "Calling" and distribution mode is "Broadcast"', async () => {
-            getVoiceQueueMock.mockResolvedValue({
+            const mockGetVoiceQueue = mockGetVoiceQueueHandler()
+            mockGetVoiceQueue.data = mockVoiceQueue({
+                distribution_mode: PhoneRingingBehaviour.Broadcast,
+            })
+            server.use(mockGetVoiceQueue.handler)
+
+            useGetVoiceQueueMock.mockReturnValue({
                 data: {
-                    distribution_mode: PhoneRingingBehaviour.Broadcast,
+                    data: mockGetVoiceQueue.data,
                 },
+                isLoading: false,
+                isError: false,
             } as any)
+
             getInboundDisplayStatusMock.mockReturnValue(
                 VoiceCallDisplayStatus.Calling,
             )
@@ -111,32 +201,36 @@ describe('TicketVoiceCallInboundStatus', () => {
                 queue_id: 1,
             } as VoiceCall)
 
-            await waitFor(() => {
-                expect(getVoiceQueueMock).toHaveBeenCalledWith(
-                    1,
-                    undefined,
-                    expect.any(Object),
-                )
-            })
             await waitFor(() => {
                 expect(getByText('Calling agents')).toBeInTheDocument()
             })
         })
 
         it('should render "Calling <agent> when display status is "Calling" and distribution mode is "Round Robin"', async () => {
-            getVoiceQueueMock.mockResolvedValue({
+            const mockGetVoiceQueue = mockGetVoiceQueueHandler()
+            mockGetVoiceQueue.data = mockVoiceQueue({
+                distribution_mode: PhoneRingingBehaviour.RoundRobin,
+            })
+            server.use(mockGetVoiceQueue.handler)
+
+            useGetVoiceQueueMock.mockReturnValue({
                 data: {
-                    distribution_mode: PhoneRingingBehaviour.RoundRobin,
+                    data: mockGetVoiceQueue.data,
                 },
+                isLoading: false,
+                isError: false,
             } as any)
+
             getInboundDisplayStatusMock.mockReturnValue(
                 VoiceCallDisplayStatus.Calling,
             )
+
             const { getByText } = renderComponent({
                 queue_id: 1,
                 last_rang_agent_id: 3,
                 phone_number_destination: '1234567890',
             } as VoiceCall)
+
             await waitFor(() => {
                 expect(getByText('Calling')).toBeInTheDocument()
                 expect(getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()

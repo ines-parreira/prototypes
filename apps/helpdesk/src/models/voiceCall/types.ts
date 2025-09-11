@@ -56,6 +56,8 @@ export type VoiceCall = {
     status_in_queue?: string
     queue_id?: number
     termination_status?: VoiceCallTerminationStatus
+    answered_by_external_number?: string
+    answered_by_external_customer_id?: number
 }
 
 export enum VoiceCallRecordingType {

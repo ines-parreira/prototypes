@@ -1,11 +1,13 @@
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { voiceCall } from 'fixtures/voiceCalls'
 import * as momentUtils from 'utils/date'
 
-import { VoiceCall, VoiceCallEvent } from '../types'
+import { VoiceCall, VoiceCallEvent, VoiceCallSubjectType } from '../types'
 import {
     DEPRECATED_processEvents,
+    getAnsweringVoiceSubject,
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     getFormattedDurationTranscriptionStart,
@@ -434,6 +436,57 @@ describe('voice call utils', () => {
         it('should return formatted duration for transcription start', () => {
             expect(getFormattedDurationTranscriptionStart(10)).toBe('00:10')
             expect(getFormattedDurationTranscriptionStart(65)).toBe('01:05')
+        })
+    })
+
+    describe('getAnsweringVoiceSubject', () => {
+        it('should return agent subject if last answered by agent', () => {
+            const subject = getAnsweringVoiceSubject({
+                ...voiceCall,
+                last_answered_by_agent_id: 42,
+            })
+
+            expect(subject).toEqual({
+                type: VoiceCallSubjectType.Agent,
+                id: 42,
+            })
+        })
+
+        it('should return external number subject if last answered by external number', () => {
+            const subject = getAnsweringVoiceSubject({
+                ...voiceCall,
+                last_answered_by_agent_id: 42,
+                answered_by_external_number: '+1234567890',
+            })
+
+            expect(subject).toEqual({
+                type: VoiceCallSubjectType.External,
+                value: '+1234567890',
+                customer: null,
+            })
+        })
+
+        it('should return external number subject with customer information if last answered by external number and customer is known', () => {
+            const subject = getAnsweringVoiceSubject({
+                ...voiceCall,
+                answered_by_external_number: '+1234567890',
+                answered_by_external_customer_id: 123,
+            })
+
+            expect(subject).toEqual({
+                type: VoiceCallSubjectType.External,
+                value: '+1234567890',
+                customer: { id: 123 },
+            })
+        })
+
+        it('should return null if no subject is found', () => {
+            const subject = getAnsweringVoiceSubject({
+                ...voiceCall,
+                last_answered_by_agent_id: null,
+            })
+
+            expect(subject).toBeNull()
         })
     })
 })

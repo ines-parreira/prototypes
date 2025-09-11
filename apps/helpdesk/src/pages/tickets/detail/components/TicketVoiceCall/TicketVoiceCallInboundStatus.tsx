@@ -12,7 +12,9 @@ import {
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
+import { getAnsweringVoiceSubject } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
 
 import CollapsibleDetails from './CollapsibleDetails'
@@ -42,6 +44,8 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
             )
         case VoiceCallDisplayStatus.InProgress:
         case VoiceCallDisplayStatus.Answered:
+            const answeredBySubject = getAnsweringVoiceSubject(voiceCall)
+
             return (
                 <CollapsibleDetails
                     title={
@@ -52,16 +56,9 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                             )}
                         >
                             <div>Answered by </div>
-                            {voiceCall.last_answered_by_agent_id && (
-                                <VoiceCallAgentLabel
-                                    agentId={
-                                        voiceCall.last_answered_by_agent_id
-                                    }
-                                    phoneNumber={
-                                        voiceCall.phone_number_destination
-                                    }
-                                    semibold
-                                    interactable
+                            {answeredBySubject && (
+                                <VoiceCallSubjectLabel
+                                    subject={answeredBySubject}
                                 />
                             )}
                         </div>
