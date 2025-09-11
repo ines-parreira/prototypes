@@ -38,6 +38,7 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
         customerPhoneNumber,
         transferFromAgentId,
         ticketId,
+        isTransferring,
     } = useConnectionParameters(call)
 
     const now = useNow()
@@ -119,7 +120,7 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                 </PhoneBarInnerContent>
                 <PhoneInfobarWrapper primary>
                     <span>
-                        {transferFromAgentId
+                        {isTransferring
                             ? 'Incoming transfer...'
                             : 'Incoming call...'}
                     </span>

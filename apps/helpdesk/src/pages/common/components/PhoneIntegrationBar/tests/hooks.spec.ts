@@ -17,6 +17,7 @@ describe('useConnectionParameters()', () => {
             integrationId: 1,
             ticketId: 2,
             transferFromAgentId: null,
+            isTransferring: false,
         })
     })
 
@@ -30,6 +31,7 @@ describe('useConnectionParameters()', () => {
             integrationId: 1,
             ticketId: null,
             transferFromAgentId: null,
+            isTransferring: false,
         })
     })
 
@@ -39,5 +41,21 @@ describe('useConnectionParameters()', () => {
         const parameters = useConnectionParameters(call)
 
         expect(parameters.transferFromAgentId).toEqual(3)
+        expect(parameters.isTransferring).toEqual(false)
     })
+
+    it.each([
+        { customParameterValue: 'True', isTransferring: true },
+        { customParameterValue: 'False', isTransferring: false },
+        { customParameterValue: '', isTransferring: false },
+    ])(
+        'should detect transfer when transfer parameter is present',
+        ({ customParameterValue, isTransferring }) => {
+            const call = mockIncomingCall(1, 2) as Call
+            call.customParameters.set('transfer', customParameterValue)
+            const parameters = useConnectionParameters(call)
+
+            expect(parameters.isTransferring).toEqual(isTransferring)
+        },
+    )
 })

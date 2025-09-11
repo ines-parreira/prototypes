@@ -82,6 +82,7 @@ describe('<IncomingPhoneCall />', () => {
             customerName: 'Bob',
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: null,
+            isTransferring: false,
         })
 
         useMicrophonePermissionsMock.mockReturnValue({
@@ -186,6 +187,7 @@ describe('<IncomingPhoneCall />', () => {
             customerName: 'Bob',
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: 3,
+            isTransferring: true,
         })
 
         renderComponent({ call })
@@ -194,7 +196,7 @@ describe('<IncomingPhoneCall />', () => {
         expect(screen.getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
     })
 
-    it('should not display "incoming transfer" if transferFromAgentId is null', () => {
+    it('should not display "incoming transfer" if isTransferring is false', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
         jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
@@ -203,6 +205,7 @@ describe('<IncomingPhoneCall />', () => {
             customerName: 'Bob',
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: null,
+            isTransferring: false,
         })
 
         renderComponent({ call })

@@ -6,6 +6,7 @@ type ConnectionParameters = {
     customerName: string
     customerPhoneNumber: string
     transferFromAgentId?: number | null
+    isTransferring: boolean
 }
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
@@ -33,11 +34,15 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
         ? null
         : transferFromAgentIdToNumber
 
+    const isTransferring =
+        call.customParameters.get('transfer')?.toLowerCase() === 'true'
+
     return {
         integrationId,
         ticketId,
         customerName,
         customerPhoneNumber,
         transferFromAgentId,
+        isTransferring,
     }
 }
