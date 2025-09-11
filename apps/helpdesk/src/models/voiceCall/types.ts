@@ -259,10 +259,12 @@ export const getPrettyVoiceCallDisplayStatusName = (
 export enum VoiceCallSubjectType {
     Agent = 'agent',
     External = 'external',
+    Queue = 'queue',
 }
 
 export type VoiceCallSubject =
     | { type: VoiceCallSubjectType.Agent; id: number }
+    | { type: VoiceCallSubjectType.Queue; id: number }
     | {
           type: VoiceCallSubjectType.External
           value: string

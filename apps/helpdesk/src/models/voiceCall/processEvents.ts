@@ -103,6 +103,16 @@ const getTransferTarget = (event: VoiceCallEvent): VoiceCallSubject | null => {
             : null
     }
 
+    if (targetType === 'queue') {
+        const targetQueueId = event.meta.target_queue_id as number | undefined
+        return targetQueueId
+            ? {
+                  type: VoiceCallSubjectType.Queue,
+                  id: targetQueueId,
+              }
+            : null
+    }
+
     return null
 }
 
@@ -214,7 +224,11 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
                     target: getTransferTarget(event),
                     happensDuringTransfer: true,
                 })
-                isTransfer = true
+                if (event.meta.target_type !== 'queue') {
+                    // transfer to queue makes the source agent leave the call
+                    // so we don't consider the following events as part of a transfer
+                    isTransfer = true
+                }
                 break
             case PhoneIntegrationEvent.PhoneCallTransferFailed:
                 if (isTransfer) {

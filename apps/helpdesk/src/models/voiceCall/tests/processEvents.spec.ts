@@ -702,4 +702,98 @@ describe('processEvents', () => {
             },
         ] as ProcessedEvent[])
     })
+
+    it('should process events of a call with queue transfers', () => {
+        const events = [
+            {
+                type: PhoneIntegrationEvent.PhoneCallRinging,
+                created_datetime: '09:00 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                created_datetime: '09:01 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                created_datetime: '09:05 AM',
+                user_id: 100,
+                meta: {
+                    target_type: 'queue',
+                    source_agent_id: 100,
+                    target_queue_id: 500,
+                },
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallRinging,
+                created_datetime: '09:07 AM',
+                user_id: 101,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.DeclinedPhoneCall,
+                created_datetime: '09:08 AM',
+                user_id: 101,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallRinging,
+                created_datetime: '09:09 AM',
+                user_id: 102,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                created_datetime: '09:10 AM',
+                user_id: 102,
+                meta: {},
+            },
+        ] as unknown as VoiceCallEvent[]
+        const result = processEvents(events)
+        expect(result).toEqual([
+            {
+                datetime: '09:01 AM',
+                action: 'answered',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                happensDuringTransfer: false,
+            },
+            {
+                datetime: '09:05 AM',
+                action: 'initiated',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                target: {
+                    type: VoiceCallSubjectType.Queue,
+                    id: 500,
+                },
+                happensDuringTransfer: true,
+            },
+            {
+                datetime: '09:08 AM',
+                action: 'declined',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 101,
+                },
+                happensDuringTransfer: false,
+            },
+            {
+                datetime: '09:10 AM',
+                action: 'answered',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 102,
+                },
+                happensDuringTransfer: false,
+            },
+        ] as ProcessedEvent[])
+    })
 })

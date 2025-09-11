@@ -1,6 +1,7 @@
 import { VoiceCallSubject, VoiceCallSubjectType } from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallQueueLabel } from 'pages/common/components/VoiceCallQueueLabel/VoiceCallQueueLabel'
 
 type VoiceCallSubjectLabelProps = {
     subject: VoiceCallSubject
@@ -22,6 +23,9 @@ const VoiceCallSubjectLabel = ({ subject }: VoiceCallSubjectLabelProps) => {
                 showBothNameAndPhone
             />
         )
+    }
+    if (subject.type === VoiceCallSubjectType.Queue) {
+        return <VoiceCallQueueLabel queueId={subject.id} />
     }
 
     return <span className="body-semibold">Unknown</span>

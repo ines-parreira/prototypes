@@ -12,6 +12,15 @@ jest.mock('pages/phoneNumbers/utils', () => ({
     formatPhoneNumberInternational: jest.fn((phone: string) => phone),
 }))
 
+jest.mock(
+    'pages/common/components/VoiceCallQueueLabel/VoiceCallQueueLabel',
+    () => ({
+        VoiceCallQueueLabel: ({ queueId }: { queueId: number }) => (
+            <span>Queue {queueId}</span>
+        ),
+    }),
+)
+
 describe('VoiceCallSubjectLabel', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -93,6 +102,36 @@ describe('VoiceCallSubjectLabel', () => {
 
             expect(screen.getByText('+1 5551234567')).toBeInTheDocument()
             expect(useCustomerDetailsSpy).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Queue type', () => {
+        it('should render queue label for queue type subject', () => {
+            render(
+                <VoiceCallSubjectLabel
+                    subject={{
+                        type: VoiceCallSubjectType.Queue,
+                        id: 456,
+                    }}
+                />,
+            )
+
+            expect(screen.getByText('Queue 456')).toBeInTheDocument()
+            expect(useAgentDetailsSpy).not.toHaveBeenCalled()
+            expect(useCustomerDetailsSpy).not.toHaveBeenCalled()
+        })
+
+        it('should render queue label with different queue ID', () => {
+            render(
+                <VoiceCallSubjectLabel
+                    subject={{
+                        type: VoiceCallSubjectType.Queue,
+                        id: 999,
+                    }}
+                />,
+            )
+
+            expect(screen.getByText('Queue 999')).toBeInTheDocument()
         })
     })
 
