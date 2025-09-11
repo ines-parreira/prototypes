@@ -11,7 +11,6 @@ import {
     ALWAYS_ON_OPTION_LABEL,
     DAYS_OPTIONS,
     DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
-    DEFAULT_BUSINESS_HOURS_SCHEDULE,
     EVERYDAY_OPTION_LABEL,
     EVERYDAY_OPTION_VALUE,
 } from 'pages/settings/businessHours/constants'
@@ -74,15 +73,12 @@ export default function TimeScheduleRow({
         if (option === ALWAYS_ON_OPTION_LABEL) {
             setValue(`${namePrefix}.to_time`, '00:00')
             setValue(`${namePrefix}.from_time`, '00:00')
-        } else if (fromTime === '00:00' && toTime === '00:00') {
-            setValue(
-                `${namePrefix}.from_time`,
-                DEFAULT_BUSINESS_HOURS_SCHEDULE.from_time,
-            )
-            setValue(
-                `${namePrefix}.to_time`,
-                DEFAULT_BUSINESS_HOURS_SCHEDULE.to_time,
-            )
+        } else if (
+            option === EVERYDAY_OPTION_LABEL &&
+            fromTime === '00:00' &&
+            toTime === '00:00'
+        ) {
+            setValue(`${namePrefix}.to_time`, '23:59')
         }
 
         return (

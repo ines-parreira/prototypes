@@ -215,6 +215,31 @@ describe('TimeScheduleRow', () => {
         })
     })
 
+    it('should change to time to 23:59 when switching from "Always On" to "Everyday"', async () => {
+        const user = userEvent.setup()
+        render(
+            <Form onValidSubmit={jest.fn()} defaultValues={alwaysOnFormValues}>
+                <TimeScheduleRow {...props} />
+            </Form>,
+        )
+
+        expect(screen.queryByDisplayValue('23:59')).not.toBeInTheDocument()
+
+        await act(async () => {
+            const dropdown = screen.getByRole('combobox')
+            await user.click(dropdown)
+        })
+
+        await waitFor(async () => {
+            const everydayOption = screen.getByText('Everyday')
+            await user.click(everydayOption)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue('23:59')).toBeInTheDocument()
+        })
+    })
+
     it('should display "Everyday" when times are not 00:00', () => {
         const everydayFormValues = {
             business_hours_config: {
