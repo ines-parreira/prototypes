@@ -5,7 +5,7 @@ import { Switch } from './Switch'
 
 describe('<Switch />', () => {
     it('should accept default value', () => {
-        render(<Switch isChecked={true} />)
+        render(<Switch isChecked={true} onChange={jest.fn()} />)
 
         let checkbox = screen.getByRole('checkbox')
         expect(checkbox).toBeInTheDocument()
@@ -13,7 +13,7 @@ describe('<Switch />', () => {
 
         cleanup()
 
-        render(<Switch isChecked={false} />)
+        render(<Switch isChecked={false} onChange={jest.fn()} />)
         checkbox = screen.getByRole('checkbox')
         expect(checkbox).toBeInTheDocument()
         expect(checkbox).not.toBeChecked()

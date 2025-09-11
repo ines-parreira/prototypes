@@ -5,24 +5,21 @@ import { FieldPresentation, Switch } from 'AIJourney/components'
 import css from './EnableDiscount.less'
 
 type EnableDiscountFieldProps = {
-    isEnabled?: boolean
-    onChange?: () => void
+    isEnabled: boolean
+    onChange: () => void
 }
 
 export const EnableDiscountField = ({
-    isEnabled = false,
+    isEnabled,
     onChange,
-}: EnableDiscountFieldProps = {}) => {
+}: EnableDiscountFieldProps) => {
     const handleChange = useCallback(() => {
         onChange?.()
     }, [onChange])
 
     return (
         <div className={css.enableDiscountField}>
-            <FieldPresentation
-                name="Include a discount code"
-                description="A discount code will be included with the follow-up message"
-            />
+            <FieldPresentation name="Include a discount code" />
             <Switch isChecked={isEnabled} onChange={handleChange} />
         </div>
     )

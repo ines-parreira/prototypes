@@ -5,11 +5,11 @@ import classNames from 'classnames'
 import css from './Switch.less'
 
 type SwitchProps = {
-    isChecked?: boolean
-    onChange?: () => void
+    isChecked: boolean
+    onChange: () => void
 }
 
-export const Switch = ({ isChecked = false, onChange }: SwitchProps) => {
+export const Switch = ({ isChecked, onChange }: SwitchProps) => {
     const [isHovered, setIsHovered] = useState(false)
 
     const handleClick = useCallback(() => {

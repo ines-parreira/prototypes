@@ -11,7 +11,7 @@ describe('<MaximumDiscountField />', () => {
     })
     it('should render field information and info', () => {
         render(<MaximumDiscountField />)
-        expect(screen.getByText('Maximum amount')).toBeInTheDocument()
+        expect(screen.getByText('Discount code value')).toBeInTheDocument()
     })
 
     it('should call onChange with empty string when disabled and value is set', () => {

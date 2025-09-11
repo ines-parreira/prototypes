@@ -17,7 +17,7 @@ describe('<PhoneNumberField />', () => {
             />,
         )
         expect(
-            screen.getByText("Your Agent's phone number"),
+            screen.getByText('Select your agent’s phone number'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(

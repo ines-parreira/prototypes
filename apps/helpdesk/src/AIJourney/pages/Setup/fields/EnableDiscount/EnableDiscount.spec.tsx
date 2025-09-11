@@ -18,7 +18,9 @@ function EnableDiscountFieldWrapper({ onChange }: { onChange?: jest.Mock }) {
 
 describe('<EnableDiscountField />', () => {
     it('should accept default value', () => {
-        render(<EnableDiscountField isEnabled={true} />)
+        render(<EnableDiscountField isEnabled={true} onChange={jest.fn()} />)
+
+        expect(screen.getByText('Include a discount code')).toBeInTheDocument()
 
         let checkbox = screen.getByRole('checkbox')
         expect(checkbox).toBeInTheDocument()
@@ -26,7 +28,7 @@ describe('<EnableDiscountField />', () => {
 
         cleanup()
 
-        render(<EnableDiscountField isEnabled={false} />)
+        render(<EnableDiscountField isEnabled={false} onChange={jest.fn()} />)
         checkbox = screen.getByRole('checkbox')
         expect(checkbox).toBeInTheDocument()
         expect(checkbox).not.toBeChecked()
@@ -44,14 +46,5 @@ describe('<EnableDiscountField />', () => {
 
         await userEvent.click(checkbox)
         expect(checkbox).toBeChecked()
-    })
-    it('should render field information and info', () => {
-        render(<EnableDiscountField />)
-        expect(screen.getByText('Include a discount code')).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'A discount code will be included with the follow-up message',
-            ),
-        ).toBeInTheDocument()
     })
 })

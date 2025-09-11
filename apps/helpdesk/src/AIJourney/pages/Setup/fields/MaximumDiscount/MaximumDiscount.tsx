@@ -49,7 +49,7 @@ export const MaximumDiscountField = ({
 
     return (
         <div className={maximumDiscountFieldClass}>
-            <FieldPresentation name="Maximum amount" />
+            <FieldPresentation name="Discount code value" />
             <PercentageInput
                 value={value}
                 onChange={handleChange}

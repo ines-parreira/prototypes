@@ -26,7 +26,7 @@ export const PhoneNumberField = ({
     return (
         <div className={css.phoneNumberField}>
             <FieldPresentation
-                name="Your Agent's phone number"
+                name="Select your agent’s phone number"
                 description="Phone number used for the conversation with the customer"
             />
             <Dropdown options={options} value={value} onChange={handleChange} />
