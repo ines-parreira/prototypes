@@ -18,6 +18,7 @@ import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { BookDemoContainer } from 'pages/aiAgent/components/ShoppingAssistant/components'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { SALES } from 'pages/aiAgent/constants'
@@ -475,6 +476,10 @@ const PaywallWrapperComponent = ({
     }
 
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
+        const handleBookDemo = () => {
+            window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+        }
+
         return (
             <PaywallWrapper>
                 <AiAgentPaywallView
@@ -512,24 +517,9 @@ const PaywallWrapperComponent = ({
                         {canBookDemo &&
                             isAiAgentExpandingTrialExperienceForAll && (
                                 <div className={css.bookDemoButton}>
-                                    <Button
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        size="medium"
-                                        onClick={() => {
-                                            window.open(
-                                                EXTERNAL_URLS.BOOK_DEMO,
-                                                '_blank',
-                                            )
-                                        }}
-                                    >
-                                        Let’s Talk?
-                                        <span
-                                            className={css.bookDemoButtonText}
-                                        >
-                                            Book a demo
-                                        </span>
-                                    </Button>
+                                    <BookDemoContainer
+                                        onBookDemo={handleBookDemo}
+                                    />
                                 </div>
                             )}
                     </>

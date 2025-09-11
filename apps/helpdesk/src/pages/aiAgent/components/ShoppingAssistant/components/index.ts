@@ -1,6 +1,7 @@
 export { AdminDemo } from './AdminDemo'
 export { AdminTrial } from './AdminTrial'
 export { AdminTrialProgress } from './AdminTrialProgress'
+export { default as BookDemoContainer } from './BookDemoContainer'
 export { LeadNotify } from './LeadNotify'
 export { LeadTrialProgress } from './LeadTrialProgress'
 export { NotificationIcon, GMVIcon } from './SharedIcons'

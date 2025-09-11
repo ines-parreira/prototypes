@@ -8,6 +8,7 @@ import RequestTrialModal from 'pages/common/components/RequestTrialModal/Request
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 
+import { BookDemoContainer } from '../components'
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
 import { logInTrialEventFromPaywall } from '../utils/eventLogger'
 
@@ -194,25 +195,14 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         [onOpenSubscribeModal],
     )
 
-    const BookDemo = useMemo(
-        () => (
-            <Button
-                fillStyle="ghost"
-                intent="secondary"
-                size="medium"
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.Demo,
-                        TrialType.AiAgent,
-                    )
-                    openDemoPage()
-                }}
-            >
-                Let’s Talk?
-                <span className={css.bookDemoButtonText}>Book a demo</span>
-            </Button>
-        ),
-        [openDemoPage],
+    const handleBookDemo = useCallback(() => {
+        logInTrialEventFromPaywall(TrialEventType.Demo, TrialType.AiAgent)
+        openDemoPage()
+    }, [openDemoPage])
+
+    const BookDemoComponent = useMemo(
+        () => <BookDemoContainer onBookDemo={handleBookDemo} />,
+        [handleBookDemo],
     )
 
     const modals = useMemo(
@@ -266,7 +256,11 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                         </div>
                     </>
                 ),
-                afterCtas: <div className={css.bookDemoButton}>{BookDemo}</div>,
+                afterCtas: (
+                    <div className={css.bookDemoButton}>
+                        {BookDemoComponent}
+                    </div>
+                ),
             }
         }
 
@@ -281,7 +275,11 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                         </div>
                     </>
                 ),
-                afterCtas: <div className={css.bookDemoButton}>{BookDemo}</div>,
+                afterCtas: (
+                    <div className={css.bookDemoButton}>
+                        {BookDemoComponent}
+                    </div>
+                ),
             }
         }
 
@@ -323,7 +321,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         NotifyAdmin,
         LearnMore,
         SubscribeNowLink,
-        BookDemo,
+        BookDemoComponent,
     ])
 
     return { ctas, modals, afterCtas }

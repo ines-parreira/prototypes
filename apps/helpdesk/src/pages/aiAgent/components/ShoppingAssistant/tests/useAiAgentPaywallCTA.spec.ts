@@ -106,8 +106,8 @@ describe('useAiAgentCtas', () => {
         expect(subscribeButton.props.children).toBe('Subscribe now')
 
         const afterCtas = result.current.afterCtas as any
-        const bookDemoButton = afterCtas.props.children
-        expect(bookDemoButton.props.children[0]).toBe('Let’s Talk?')
+        const bookDemoContainer = afterCtas.props.children
+        expect(bookDemoContainer.type.name).toBe('BookDemoContainer')
     })
 
     it('returns NotifyAdmin, LearnMore, and BookDemo for Pro+ Lead', () => {
@@ -127,8 +127,8 @@ describe('useAiAgentCtas', () => {
         expect(learnMoreButton.props.children).toBe('Learn more')
 
         const afterCtas = result.current.afterCtas as any
-        const bookDemoButton = afterCtas.props.children
-        expect(bookDemoButton.props.children[0]).toBe('Let’s Talk?')
+        const bookDemoContainer = afterCtas.props.children
+        expect(bookDemoContainer.type.name).toBe('BookDemoContainer')
     })
 
     it('returns NotifyAdmin with "Admin notified" text when notify admin is disabled', () => {
