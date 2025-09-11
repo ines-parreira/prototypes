@@ -3,6 +3,7 @@ import { Component, ReactNode } from 'react'
 import { ArrayExpression, Expression, Identifier, Literal } from 'estree'
 import { fromJS, List, Map, Seq } from 'immutable'
 import _debounce from 'lodash/debounce'
+import _upperFirst from 'lodash/upperFirst'
 import moment from 'moment-timezone'
 import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
@@ -537,11 +538,13 @@ export class RightContainer extends Component<Props, State> {
                     (opt) => (opt as Literal)?.value,
                 )
                 const options = (
-                    field.getIn(['filter', 'enum'], fromJS([])) as List<{
-                        value: string
-                        label: string
-                    }>
-                ).toJS()
+                    field.getIn(['filter', 'enum'], fromJS([])) as List<string>
+                )
+                    .map((val) => ({
+                        value: val,
+                        label: _upperFirst(val),
+                    }))
+                    .toJS()
 
                 return (
                     <MultiSelectField

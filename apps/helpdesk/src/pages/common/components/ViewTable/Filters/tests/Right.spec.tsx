@@ -232,11 +232,7 @@ describe('<Right />', () => {
                         name: 'priority',
                         title: 'Priority',
                         filter: {
-                            enum: [
-                                { value: 'low', label: 'Low' },
-                                { value: 'medium', label: 'Medium' },
-                                { value: 'high', label: 'High' },
-                            ],
+                            enum: ['low', 'normal', 'high'],
                         },
                     })}
                 />
