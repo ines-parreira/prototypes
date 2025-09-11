@@ -51,7 +51,7 @@ export default function LogicalExpression({
                 leftsiblings={leftsiblings}
                 className="IdentifierDropdown"
             />
-            <div className="d-flex align-items-baseline mt-1 ml-3">
+            <div className="w-100 d-flex align-items-baseline mt-1 ml-3">
                 <AddSiblingCondition
                     actions={actions}
                     rule={rule}
