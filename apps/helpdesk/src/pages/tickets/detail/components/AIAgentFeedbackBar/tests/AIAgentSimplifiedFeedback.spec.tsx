@@ -2840,4 +2840,147 @@ describe('AIAgentSimplifiedFeedback', () => {
             screen.getByText('How was this conversation?'),
         ).toBeInTheDocument()
     })
+
+    describe('TIME_UNTIL_SHOWING_TICKET_LEVEL_FEEDBACK tests', () => {
+        it('should not show ticket level feedback when last AI message is less than 2 hours old', () => {
+            const lessThanTwoHoursAgo = new Date(
+                Date.now() - 1.5 * 60 * 60 * 1000,
+            ) // 1.5 hours ago
+
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return new Map([
+                        ['id', 123],
+                        ['tags', []],
+                    ] as any)
+                }
+                if (selector === getCurrentAccountState) {
+                    return new Map([
+                        ['id', 456],
+                        ['domain', 'test.myshopify.com'],
+                    ] as any)
+                }
+                if (selector === getAIAgentMessages) {
+                    return [
+                        {
+                            id: '1',
+                            created_datetime: lessThanTwoHoursAgo.toISOString(),
+                        },
+                    ]
+                }
+                if (selector === getDateAndTimeFormatter) {
+                    return () => 'MMMM DD, YYYY'
+                }
+                if (selector === getSectionIdByName) {
+                    return { 'AI Agent': 789 }
+                }
+                if (selector === getViewsState) {
+                    return {
+                        getIn: jest.fn((path) => {
+                            if (
+                                path[0] === 'active' &&
+                                path[1] === 'section_id'
+                            ) {
+                                return 789
+                            }
+                            return null
+                        }),
+                    }
+                }
+                if (
+                    typeof selector === 'function' &&
+                    selector.toString().includes('currentUser')
+                ) {
+                    return new Map([['id', 789]])
+                }
+                return null
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [], // No executions
+                },
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            // Should not show ticket level feedback, should show the processing message
+            expect(
+                screen.queryByText('How was this conversation?'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    "We're still processing the details of this conversation. You'll be able to review shortly.",
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should show ticket level feedback when last AI message is more than 2 hours old', () => {
+            const moreThanTwoHoursAgo = new Date(
+                Date.now() - 3 * 60 * 60 * 1000,
+            ) // 3 hours ago
+
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return new Map([
+                        ['id', 123],
+                        ['tags', []],
+                    ] as any)
+                }
+                if (selector === getCurrentAccountState) {
+                    return new Map([
+                        ['id', 456],
+                        ['domain', 'test.myshopify.com'],
+                    ] as any)
+                }
+                if (selector === getAIAgentMessages) {
+                    return [
+                        {
+                            id: '1',
+                            created_datetime: moreThanTwoHoursAgo.toISOString(),
+                        },
+                    ]
+                }
+                if (selector === getDateAndTimeFormatter) {
+                    return () => 'MMMM DD, YYYY'
+                }
+                if (selector === getSectionIdByName) {
+                    return { 'AI Agent': 789 }
+                }
+                if (selector === getViewsState) {
+                    return {
+                        getIn: jest.fn((path) => {
+                            if (
+                                path[0] === 'active' &&
+                                path[1] === 'section_id'
+                            ) {
+                                return 789
+                            }
+                            return null
+                        }),
+                    }
+                }
+                if (
+                    typeof selector === 'function' &&
+                    selector.toString().includes('currentUser')
+                ) {
+                    return new Map([['id', 789]])
+                }
+                return null
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: {
+                    executions: [], // No executions
+                },
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            // Should show ticket level feedback since it's more than 2 hours old
+            expect(
+                screen.getByText('How was this conversation?'),
+            ).toBeInTheDocument()
+        })
+    })
 })
