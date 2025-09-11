@@ -72,3 +72,8 @@ export const dismissTrialEndedModal = (
         getTrialEndedDismissedKey(storeName, trialType),
         'true',
     )
+
+export const toPercentage = (value: number, decimals = 1) => {
+    const percentage = value * 100
+    return `${parseFloat(percentage.toFixed(decimals))}%`
+}

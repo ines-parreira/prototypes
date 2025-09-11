@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -142,18 +143,19 @@ describe('ShoppingAssistantPromoCard', () => {
         })
 
         // Mock useTrialEnding to return values that make the modal show
-        mockUseTrialEnding.mockReturnValue({
-            remainingDays: 0,
-            remainingDaysFloat: 0,
-            isTrialExtended: false,
-            trialEndDatetime: '2024-01-01T00:00:00.000Z',
-            trialTerminationDatetime: new Date(
-                Date.now() - 2 * 24 * 60 * 60 * 1000,
-            ).toISOString(), // 2 days ago
-            optedOutDatetime: new Date(
-                Date.now() - 2 * 24 * 60 * 60 * 1000,
-            ).toISOString(), // 2 days ago
-        })
+        mockUseTrialEnding.mockReturnValue(
+            getUseTrialEndingFixture({
+                remainingDays: 0,
+                remainingDaysFloat: 0,
+                trialEndDatetime: '2024-01-01T00:00:00.000Z',
+                trialTerminationDatetime: new Date(
+                    Date.now() - 2 * 24 * 60 * 60 * 1000,
+                ).toISOString(), // 2 days ago
+                optedOutDatetime: new Date(
+                    Date.now() - 2 * 24 * 60 * 60 * 1000,
+                ).toISOString(), // 2 days ago
+            }),
+        )
 
         // Mock useTrialModalProps with minimal required properties
         mockUseTrialModalProps.mockReturnValue({

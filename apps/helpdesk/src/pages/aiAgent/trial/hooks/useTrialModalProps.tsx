@@ -10,9 +10,12 @@ import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import {
+    AI_AGENT_ADVANTAGES,
     AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,
+    SHOPPING_ASSISTANT_ADVANTAGES,
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
     SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
+    TYPICAL_RESULTS_TEXT,
 } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import {
     TrialEventType,
@@ -36,6 +39,7 @@ import {
     useTrialMetrics,
 } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { toPercentage } from 'pages/aiAgent/trial/utils/utils'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
@@ -48,6 +52,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { useNotifyAdmins } from './useNotifyAdmins'
+import { useTrialEndingModal } from './useTrialEndingModal/useTrialEndingModal'
 import { useTrialFinishSetupModal } from './useTrialFinishSetupModal'
 
 export const EXTERNAL_URLS = {
@@ -71,20 +76,6 @@ export const EXTERNAL_URLS = {
     BOOK_DEMO_PAYWALL:
         'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
 } as const
-
-export const SHOPPING_ASSISTANT_ADVANTAGES = [
-    '10% average order value',
-    '62% conversion rate',
-    '1.5% revenue',
-]
-
-export const AI_AGENT_ADVANTAGES = [
-    '60% support inquiries',
-    '35% faster ticket handling',
-    '62% conversion rate',
-]
-
-const TYPICAL_RESULTS_TEXT = 'Typical results achieved by merchants.'
 
 const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
     {
@@ -714,11 +705,6 @@ const useTrialAlertBanner = ({
     )
 }
 
-const toPercentage = (value: number, decimals = 1) => {
-    const percentage = value * 100
-    return `${parseFloat(percentage.toFixed(decimals))}%`
-}
-
 const useTrialEndedModal = (
     trialType: TrialType,
     trialMetrics: TrialMetrics,
@@ -847,166 +833,6 @@ const useTrialEndedModal = (
         hasSignificantGmvImpact,
         difference,
         currency,
-        cadence,
-        isAdminUser,
-    ])
-
-    return {
-        title,
-        description,
-        secondaryDescription,
-        advantages,
-    }
-}
-
-const useTrialEndingModal = (
-    trialType: TrialType,
-    trialMetrics: TrialMetrics,
-    trialAccess: TrialAccess,
-): TrialModalProps['trialEndingModal'] => {
-    const isAiAgentTrial = trialType === TrialType.AiAgent
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
-    const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
-    const automationRateValue = automationRate?.value ?? 0
-    const { isAdminUser } = trialAccess
-
-    const earlyAccessPlanPrice = (upgradePlanData?.amount ?? 0) / 100
-    const billingState = useBillingState()
-    const currentPlan = billingState?.data?.current_plans?.automate
-
-    const currentPlanAmount = (currentPlan?.amount ?? 0) / 100
-    const currency = currentPlan?.currency ?? 'USD'
-
-    const difference = earlyAccessPlanPrice - currentPlanAmount
-    const hasSignificantGmvImpact =
-        gmvInfluencedRate > SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD
-    const hasSignificantAutomationRateImpact =
-        automationRateValue > AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD
-    const hasPriceIncrease = difference > 0
-    const increaseAmount = formatAmount(difference, currency)
-    const cadence = upgradePlanData?.cadence ?? Cadence.Month
-
-    const allShopifyIntegrations = useAppSelector(
-        getShopifyIntegrationsSortedByName,
-    )
-    const isMultiStore = allShopifyIntegrations.length > 1
-
-    const title = isAiAgentTrial
-        ? 'AI Agent trial ends tomorrow'
-        : 'Shopping Assistant trial ends tomorrow'
-
-    const description = useMemo(() => {
-        if (isAiAgentTrial) {
-            if (hasSignificantAutomationRateImpact) {
-                return (
-                    <span>
-                        AI Agent handled{' '}
-                        <strong>
-                            {toPercentage(automationRateValue)} of customer
-                            inquiries
-                        </strong>{' '}
-                        and automatically{' '}
-                        <strong>
-                            drove a {toPercentage(gmvInfluencedRate)} lift in
-                            revenue
-                        </strong>{' '}
-                        in the last 13 days. To keep the momentum going, your
-                        plan will be upgraded automatically (unless you&apos;ve
-                        opted-out).
-                    </span>
-                )
-            }
-            return (
-                <span>
-                    AI Agent has been working behind the scenes to help your
-                    team{' '}
-                    <strong>
-                        deliver faster, more efficient support and sales
-                    </strong>
-                    . To keep the momentum going, your plan will be upgraded
-                    automatically tomorrow (unless you&apos;ve opted-out)
-                    {isMultiStore
-                        ? ` – giving you continued access to AI Agent across all your stores`
-                        : ''}
-                    .
-                </span>
-            )
-        }
-
-        if (hasSignificantGmvImpact) {
-            return (
-                <span>
-                    Shopping Assistant drove <strong>{gmvInfluenced}</strong>{' '}
-                    uplift in GMV. To keep the momentum going, you will be
-                    upgraded automatically tomorrow (unless you&apos;ve
-                    opted-out).
-                </span>
-            )
-        }
-        return `Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).`
-    }, [
-        isAiAgentTrial,
-        hasSignificantAutomationRateImpact,
-        automationRateValue,
-        gmvInfluenced,
-        gmvInfluencedRate,
-        hasSignificantGmvImpact,
-        isMultiStore,
-    ])
-
-    const advantages = useMemo(() => {
-        if (isAiAgentTrial) {
-            return hasSignificantAutomationRateImpact
-                ? [`${toPercentage(automationRateValue)} automation rate`]
-                : [...AI_AGENT_ADVANTAGES]
-        }
-
-        return hasSignificantGmvImpact
-            ? [`${gmvInfluenced} GMV uplift`]
-            : [...SHOPPING_ASSISTANT_ADVANTAGES]
-    }, [
-        isAiAgentTrial,
-        hasSignificantAutomationRateImpact,
-        automationRateValue,
-        hasSignificantGmvImpact,
-        gmvInfluenced,
-    ])
-
-    const secondaryDescription = useMemo(() => {
-        if (isAiAgentTrial) {
-            if (hasSignificantAutomationRateImpact) {
-                return isAdminUser
-                    ? `With the upgrade, your plan will increase by ${increaseAmount}/${cadence}.`
-                    : TYPICAL_RESULTS_TEXT
-            }
-            return isAdminUser
-                ? `${TYPICAL_RESULTS_TEXT} After upgrading, your plan will increase by ${increaseAmount}/${cadence}.`
-                : TYPICAL_RESULTS_TEXT
-        }
-
-        if (hasSignificantGmvImpact) {
-            const priceMessage = hasPriceIncrease
-                ? `your plan will increase by ${increaseAmount}/${cadence}`
-                : 'the price of your plan remains the same'
-            return isAdminUser
-                ? `With the upgrade, ${priceMessage}.`
-                : TYPICAL_RESULTS_TEXT
-        }
-
-        const priceMessage = hasPriceIncrease
-            ? `After upgrading, your plan will increase by ${increaseAmount}/${cadence}`
-            : 'The price of your plan remains the same after the upgrade'
-        return isAdminUser
-            ? `${TYPICAL_RESULTS_TEXT} ${priceMessage}.`
-            : TYPICAL_RESULTS_TEXT
-    }, [
-        isAiAgentTrial,
-        hasSignificantAutomationRateImpact,
-        hasSignificantGmvImpact,
-        hasPriceIncrease,
-        increaseAmount,
         cadence,
         isAdminUser,
     ])
@@ -1254,11 +1080,12 @@ export const useTrialModalProps = ({
     const trialAlertBanner = useTrialAlertBanner({
         onConfirmTrial: onConfirmTrial,
     })
-    const trialEndingModal = useTrialEndingModal(
+    const trialEndingModal = useTrialEndingModal({
         trialType,
         trialMetrics,
         trialAccess,
-    )
+        storeName,
+    })
     const trialEndedModal = useTrialEndedModal(
         trialType,
         trialMetrics,

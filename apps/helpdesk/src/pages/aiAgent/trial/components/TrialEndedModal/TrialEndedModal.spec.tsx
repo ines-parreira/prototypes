@@ -6,6 +6,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 
 import { useTrialEnding } from '../../hooks/useTrialEnding'
 import { useTrialModalProps } from '../../hooks/useTrialModalProps'
@@ -88,14 +89,12 @@ describe('TrialEndedModal', () => {
         },
     }
 
-    const defaultTrialEnding = {
+    const defaultTrialEnding = getUseTrialEndingFixture({
         remainingDays: 0,
         remainingDaysFloat: 0,
-        isTrialExtended: false,
-        trialEndDatetime: moment().add(7, 'days').toISOString(),
         trialTerminationDatetime: moment().subtract(1, 'day').toISOString(),
         optedOutDatetime: moment().subtract(2, 'days').toISOString(),
-    }
+    })
 
     const defaultUpgradePlan = {
         upgradePlan: jest.fn(),
@@ -131,12 +130,14 @@ describe('TrialEndedModal', () => {
         })
 
         it('should not show modal when trial terminated more than 3 days ago', () => {
-            mockUseTrialEnding.mockReturnValue({
-                ...defaultTrialEnding,
-                trialTerminationDatetime: moment()
-                    .subtract(5, 'days')
-                    .toISOString(),
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    ...defaultTrialEnding,
+                    trialTerminationDatetime: moment()
+                        .subtract(5, 'days')
+                        .toISOString(),
+                }),
+            )
 
             renderComponent()
 
@@ -146,10 +147,12 @@ describe('TrialEndedModal', () => {
         })
 
         it('should not show modal when not opted out', () => {
-            mockUseTrialEnding.mockReturnValue({
-                ...defaultTrialEnding,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    ...defaultTrialEnding,
+                    optedOutDatetime: null,
+                }),
+            )
 
             renderComponent()
 
@@ -169,10 +172,12 @@ describe('TrialEndedModal', () => {
         })
 
         it('should not show modal when trial has not terminated', () => {
-            mockUseTrialEnding.mockReturnValue({
-                ...defaultTrialEnding,
-                trialTerminationDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    ...defaultTrialEnding,
+                    trialTerminationDatetime: null,
+                }),
+            )
 
             renderComponent()
 
@@ -327,13 +332,15 @@ describe('TrialEndedModal', () => {
         it('should handle trial termination exactly 3 days ago', () => {
             // Exactly 3 days ago should still show the modal
             // The condition is: terminatedLessThan3DaysAgo which uses isBefore(now) && isAfter(now.subtract(3, 'days'))
-            mockUseTrialEnding.mockReturnValue({
-                ...defaultTrialEnding,
-                trialTerminationDatetime: moment()
-                    .subtract(2, 'days')
-                    .subtract(23, 'hours')
-                    .toISOString(),
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    ...defaultTrialEnding,
+                    trialTerminationDatetime: moment()
+                        .subtract(2, 'days')
+                        .subtract(23, 'hours')
+                        .toISOString(),
+                }),
+            )
 
             renderComponent()
 
@@ -344,10 +351,14 @@ describe('TrialEndedModal', () => {
         })
 
         it('should handle trial termination in the future', () => {
-            mockUseTrialEnding.mockReturnValue({
-                ...defaultTrialEnding,
-                trialTerminationDatetime: moment().add(1, 'day').toISOString(),
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    ...defaultTrialEnding,
+                    trialTerminationDatetime: moment()
+                        .add(1, 'day')
+                        .toISOString(),
+                }),
+            )
 
             renderComponent()
 

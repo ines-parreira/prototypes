@@ -15,6 +15,7 @@ import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarl
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
+import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -161,14 +162,13 @@ describe('useTrialPromoCard', () => {
         } as any)
         mockUseShoppingAssistantTrialFlow.mockReturnValue(mockTrialFlow)
         mockUseTrialAccess.mockReturnValue(baseTrialAccess)
-        mockUseTrialEnding.mockReturnValue({
-            remainingDays: 7,
-            remainingDaysFloat: 7.0,
-            isTrialExtended: false,
-            trialEndDatetime: '2024-01-15T00:00:00.000Z',
-            trialTerminationDatetime: null,
-            optedOutDatetime: null,
-        })
+        mockUseTrialEnding.mockReturnValue(
+            getUseTrialEndingFixture({
+                remainingDays: 7,
+                remainingDaysFloat: 7.0,
+                trialEndDatetime: '2024-01-15T00:00:00.000Z',
+            }),
+        )
         mockUseTrialMetrics.mockReturnValue({
             gmvInfluenced: '$1,250',
             gmvInfluencedRate: 0.3,
@@ -1146,14 +1146,13 @@ describe('useTrialPromoCard', () => {
 
         describe('Progress percentage calculations', () => {
             it('should show 100% progress when 14 days remaining', () => {
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 14,
-                    remainingDaysFloat: 14.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-28T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 14,
+                        remainingDaysFloat: 14.0,
+                        trialEndDatetime: '2024-01-28T00:00:00.000Z',
+                    }),
+                )
 
                 const { result } = renderHook(
                     () =>
@@ -1178,14 +1177,13 @@ describe('useTrialPromoCard', () => {
             })
 
             it('should show 50% progress when 7 days remaining', () => {
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 7,
-                    remainingDaysFloat: 7.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-21T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 7,
+                        remainingDaysFloat: 7.0,
+                        trialEndDatetime: '2024-01-21T00:00:00.000Z',
+                    }),
+                )
 
                 const { result } = renderHook(
                     () =>
@@ -1207,14 +1205,13 @@ describe('useTrialPromoCard', () => {
             })
 
             it('should show 7% progress when 1 day remaining', () => {
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 1,
-                    remainingDaysFloat: 1.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-15T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 1,
+                        remainingDaysFloat: 1.0,
+                        trialEndDatetime: '2024-01-15T00:00:00.000Z',
+                    }),
+                )
 
                 const { result } = renderHook(
                     () =>
@@ -1236,14 +1233,13 @@ describe('useTrialPromoCard', () => {
             })
 
             it('should show 0% progress when 0 days remaining', () => {
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 0,
-                    remainingDaysFloat: 0.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-14T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 0,
+                        remainingDaysFloat: 0.0,
+                        trialEndDatetime: '2024-01-14T00:00:00.000Z',
+                    }),
+                )
 
                 const { result } = renderHook(
                     () =>
@@ -1354,14 +1350,13 @@ describe('useTrialPromoCard', () => {
 
         describe('Edge cases and boundary conditions', () => {
             it('should handle progress percentage bounds correctly', () => {
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 15,
-                    remainingDaysFloat: 15.0, // More than trial duration
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-29T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 15,
+                        remainingDaysFloat: 15.0,
+                        trialEndDatetime: '2024-01-29T00:00:00.000Z',
+                    }),
+                )
 
                 const { result } = renderHook(
                     () =>
@@ -1389,14 +1384,13 @@ describe('useTrialPromoCard', () => {
                     isAdminUser: true,
                     hasCurrentStoreTrialStarted: true,
                 })
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 7,
-                    remainingDaysFloat: 7.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-21T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 7,
+                        remainingDaysFloat: 7.0,
+                        trialEndDatetime: '2024-01-21T00:00:00.000Z',
+                    }),
+                )
             })
 
             it('should show "Upgrade now" button when GMV is above threshold', () => {
@@ -1570,14 +1564,13 @@ describe('useTrialPromoCard', () => {
                     canSeeTrialCTA: false,
                     hasAnyTrialStarted: true,
                 })
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 5,
-                    remainingDaysFloat: 5.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: '2024-01-19T00:00:00.000Z',
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 5,
+                        remainingDaysFloat: 5.0,
+                        trialEndDatetime: '2024-01-19T00:00:00.000Z',
+                    }),
+                )
             })
 
             it('should show "Set Up Sales Strategy" button when GMV is below threshold', () => {

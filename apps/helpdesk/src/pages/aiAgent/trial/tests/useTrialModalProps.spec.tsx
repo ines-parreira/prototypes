@@ -20,6 +20,7 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
+import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -127,14 +128,11 @@ describe('useTrialModalProps', () => {
             isLoading: false,
         })
 
-        mockUseTrialEnding.mockReturnValue({
-            remainingDays: 14,
-            remainingDaysFloat: 14.0,
-            isTrialExtended: false,
-            trialEndDatetime: getTrialEndTime(14),
-            trialTerminationDatetime: null,
-            optedOutDatetime: null,
-        })
+        mockUseTrialEnding.mockReturnValue(
+            getUseTrialEndingFixture({
+                trialEndDatetime: getTrialEndTime(14),
+            }),
+        )
 
         mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
@@ -406,14 +404,13 @@ describe('useTrialModalProps', () => {
                 isLoading: false,
             })
 
-            mockUseTrialEnding.mockReturnValue({
-                remainingDays: 7,
-                remainingDaysFloat: 7.0,
-                isTrialExtended: false,
-                trialEndDatetime: getTrialEndTime(7),
-                trialTerminationDatetime: null,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    remainingDays: 7,
+                    remainingDaysFloat: 7.0,
+                    trialEndDatetime: getTrialEndTime(7),
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({}),
@@ -458,14 +455,13 @@ describe('useTrialModalProps', () => {
                 isLoading: false,
             })
 
-            mockUseTrialEnding.mockReturnValue({
-                remainingDays: 3,
-                remainingDaysFloat: 3.0,
-                isTrialExtended: false,
-                trialEndDatetime: getTrialEndTime(3),
-                trialTerminationDatetime: null,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    remainingDays: 3,
+                    remainingDaysFloat: 3.0,
+                    trialEndDatetime: getTrialEndTime(3),
+                }),
+            )
 
             rerender()
 
@@ -506,14 +502,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 0,
-                    remainingDaysFloat: 0.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(0),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 0,
+                        remainingDaysFloat: 0.0,
+                        trialEndDatetime: getTrialEndTime(0),
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -531,14 +526,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: -1,
-                    remainingDaysFloat: -1.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(-1),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: -1,
+                        remainingDaysFloat: -1.0,
+                        trialEndDatetime: getTrialEndTime(-1),
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -556,14 +550,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 1,
-                    remainingDaysFloat: 1.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(1),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 1,
+                        remainingDaysFloat: 1.0,
+                        trialEndDatetime: getTrialEndTime(1),
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -610,14 +603,13 @@ describe('useTrialModalProps', () => {
                         isLoading: false,
                     })
 
-                    mockUseTrialEnding.mockReturnValue({
-                        remainingDays,
-                        remainingDaysFloat: remainingDays,
-                        isTrialExtended: false,
-                        trialEndDatetime: getTrialEndTime(remainingDays),
-                        trialTerminationDatetime: null,
-                        optedOutDatetime: null,
-                    })
+                    mockUseTrialEnding.mockReturnValue(
+                        getUseTrialEndingFixture({
+                            remainingDays,
+                            remainingDaysFloat: remainingDays,
+                            trialEndDatetime: getTrialEndTime(remainingDays),
+                        }),
+                    )
 
                     const { result } = renderHookWithRouter(() =>
                         useTrialModalProps({}),
@@ -636,14 +628,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 365,
-                    remainingDaysFloat: 365.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(365),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 365,
+                        remainingDaysFloat: 365.0,
+                        trialEndDatetime: getTrialEndTime(365),
+                    }),
+                )
 
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -661,14 +652,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 5,
-                    remainingDaysFloat: 5.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(5),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 5,
+                        remainingDaysFloat: 5.0,
+                        trialEndDatetime: getTrialEndTime(5),
+                    }),
+                )
 
                 const { result, rerender } = renderHookWithRouter(() =>
                     useTrialModalProps({}),
@@ -686,14 +676,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 1,
-                    remainingDaysFloat: 1.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(1),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 1,
+                        remainingDaysFloat: 1.0,
+                        trialEndDatetime: getTrialEndTime(1),
+                    }),
+                )
                 rerender()
 
                 expect(result.current.trialStartedBanner.title).toBe(
@@ -707,14 +696,13 @@ describe('useTrialModalProps', () => {
                     isLoading: false,
                 })
 
-                mockUseTrialEnding.mockReturnValue({
-                    remainingDays: 0,
-                    remainingDaysFloat: 0.0,
-                    isTrialExtended: false,
-                    trialEndDatetime: getTrialEndTime(0),
-                    trialTerminationDatetime: null,
-                    optedOutDatetime: null,
-                })
+                mockUseTrialEnding.mockReturnValue(
+                    getUseTrialEndingFixture({
+                        remainingDays: 0,
+                        remainingDaysFloat: 0.0,
+                        trialEndDatetime: getTrialEndTime(0),
+                    }),
+                )
                 rerender()
 
                 expect(result.current.trialStartedBanner.title).toBe(
@@ -904,396 +892,6 @@ describe('useTrialModalProps', () => {
             expect(() => {
                 result.current.trialAlertBanner.primaryAction?.onClick()
             }).not.toThrow()
-        })
-    })
-
-    describe('useTrialEndingModal', () => {
-        describe('when trialType is ShoppingAssistant', () => {
-            it('should return correct trial ending modal props', () => {
-                mockUseBillingState.mockReturnValue({
-                    data: {
-                        ...trial,
-                        current_plans: {
-                            ...trial.current_plans,
-                            automate: {
-                                ...trial.current_plans.automate,
-                                // N.B. forcing increase in price to get cadence in the secondary description
-                                amount: 2000,
-                            },
-                        },
-                    },
-                } as any)
-                mockUseAiAgentUpgradePlan.mockReturnValue({
-                    data: earlyAccessMonthlyAutomationPlan,
-                } as any)
-                // Mock admin user for price information tests
-                mockUseTrialAccess.mockReturnValue(
-                    createMockTrialAccess({
-                        trialType: TrialType.ShoppingAssistant,
-                        isAdminUser: true,
-                    }),
-                )
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'Shopping Assistant trial ends tomorrow',
-                )
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-                expect(descriptionElement.textContent).toEqual(
-                    "Shopping Assistant drove $25 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                )
-                expect(
-                    result.current.trialEndingModal.secondaryDescription,
-                ).toEqual(
-                    `With the upgrade, your plan will increase by $10/${Cadence.Month}.`,
-                )
-                expect(result.current.trialEndingModal.advantages).toEqual([
-                    '$25 GMV uplift',
-                ])
-            })
-
-            it('should handle missing early access automate plan', () => {
-                mockUseBillingState.mockReturnValue({
-                    data: trial,
-                } as any)
-                mockUseAiAgentUpgradePlan.mockReturnValue({
-                    data: null,
-                } as any)
-                // Mock admin user for price information tests
-                mockUseTrialAccess.mockReturnValue(
-                    createMockTrialAccess({
-                        trialType: TrialType.ShoppingAssistant,
-                        isAdminUser: true,
-                    }),
-                )
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'Shopping Assistant trial ends tomorrow',
-                )
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-                expect(descriptionElement.textContent).toEqual(
-                    "Shopping Assistant drove $25 uplift in GMV. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                )
-                expect(
-                    result.current.trialEndingModal.secondaryDescription,
-                ).toEqual(
-                    'With the upgrade, the price of your plan remains the same.',
-                )
-                expect(result.current.trialEndingModal.advantages).toEqual([
-                    '$25 GMV uplift',
-                ])
-            })
-        })
-
-        describe('when trialType is AiAgent', () => {
-            beforeEach(() => {
-                mockUseTrialAccess.mockReturnValue(
-                    createMockTrialAccess({
-                        trialType: TrialType.AiAgent,
-                        isAdminUser: true, // Add admin user for price information tests
-                    }),
-                )
-                mockUseBillingState.mockReturnValue({
-                    data: {
-                        ...trial,
-                        current_plans: {
-                            ...trial.current_plans,
-                            automate: {
-                                ...trial.current_plans.automate,
-                                amount: 2000,
-                            },
-                        },
-                    },
-                } as any)
-                mockUseAiAgentUpgradePlan.mockReturnValue({
-                    data: earlyAccessMonthlyAutomationPlan,
-                } as any)
-            })
-
-            it('should return impact title and personalized description when automation rate is significant', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.65,
-                        prevValue: 0.5,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-                expect(descriptionElement.textContent).toContain(
-                    'AI Agent handled 65% of customer inquiries',
-                )
-                expect(descriptionElement.textContent).toContain(
-                    'drove a 3% lift in revenue',
-                )
-                expect(descriptionElement.textContent).toContain(
-                    "To keep the momentum going, your plan will be upgraded automatically (unless you've opted-out)",
-                )
-                expect(result.current.trialEndingModal.advantages).toEqual([
-                    '65% automation rate',
-                ])
-                expect(
-                    result.current.trialEndingModal.secondaryDescription,
-                ).toEqual(
-                    `With the upgrade, your plan will increase by $10/${Cadence.Month}.`,
-                )
-            })
-
-            it('should return beginning title and generic description when automation rate is not significant', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.002,
-                        prevValue: 0.001,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-                // Now returns JSX element instead of string
-                const description = result.current.trialEndingModal
-                    .description as any
-                expect(description?.type).toBe('span')
-                expect(description?.props?.children).toContain(
-                    'AI Agent has been working behind the scenes to help your team',
-                )
-                expect(result.current.trialEndingModal.advantages).toEqual([
-                    '60% support inquiries',
-                    '35% faster ticket handling',
-                    '62% conversion rate',
-                ])
-                expect(
-                    result.current.trialEndingModal.secondaryDescription,
-                ).toEqual(
-                    `Typical results achieved by merchants. After upgrading, your plan will increase by $10/${Cadence.Month}.`,
-                )
-            })
-
-            it('should handle undefined automation rate', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: undefined,
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-                // Now returns JSX element instead of string
-                const description = result.current.trialEndingModal
-                    .description as any
-                expect(description?.type).toBe('span')
-                expect(description?.props?.children).toContain(
-                    'AI Agent has been working behind the scenes to help your team',
-                )
-                expect(result.current.trialEndingModal.advantages).toEqual([
-                    '60% support inquiries',
-                    '35% faster ticket handling',
-                    '62% conversion rate',
-                ])
-            })
-
-            it('should handle automation rate exactly at threshold', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.005,
-                        prevValue: 0.003,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-                // Now returns JSX element instead of string
-                const description = result.current.trialEndingModal
-                    .description as any
-                expect(description?.type).toBe('span')
-                expect(description?.props?.children).toContain(
-                    'AI Agent has been working behind the scenes to help your team',
-                )
-            })
-
-            it('should handle automation rate just above threshold', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.006,
-                        prevValue: 0.003,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-                expect(descriptionElement.textContent).toContain(
-                    'AI Agent handled 0.6% of customer inquiries',
-                )
-                expect(descriptionElement.textContent).toContain(
-                    'drove a 3% lift in revenue',
-                )
-                expect(descriptionElement.textContent).toContain(
-                    "To keep the momentum going, your plan will be upgraded automatically (unless you've opted-out)",
-                )
-            })
-
-            it('should include multi-store message when there are multiple stores', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.002,
-                        prevValue: 0.001,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                // Mock multiple stores - specifically mock the selectors
-                // Reset and setup new mocks
-                mockUseAppSelector.mockReset()
-
-                // Create proper mock values
-                const accountState = fromJS({
-                    domain: 'test-domain.com',
-                    role: {
-                        name: 'admin',
-                    },
-                })
-                const shopifyIntegrations = [{ id: 1 }, { id: 2 }] // Two stores
-
-                // Mock useAppSelector with a more targeted approach
-                // We know useTrialEndingModal calls useAppSelector twice:
-                // 1. getCurrentAccountState
-                // 2. getShopifyIntegrationsSortedByName (appears as "memoized")
-
-                mockUseAppSelector.mockImplementation((selector) => {
-                    // The Shopify selector appears as "memoized" due to memoization wrapper
-                    if (selector && selector.name === 'memoized') {
-                        // This is the getShopifyIntegrationsSortedByName selector
-                        return shopifyIntegrations
-                    }
-
-                    // Default to account state for getCurrentAccountState
-                    return accountState
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-
-                // Check that description contains multi-store message
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-
-                // Check the full text content
-                expect(descriptionElement.textContent).toEqual(
-                    "AI Agent has been working behind the scenes to help your team deliver faster, more efficient support and sales. To keep the momentum going, your plan will be upgraded automatically tomorrow (unless you've opted-out) – giving you continued access to AI Agent across all your stores.",
-                )
-            })
-
-            it('should not include multi-store message when there is only one store', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$25',
-                    gmvInfluencedRate: 0.03,
-                    automationRate: {
-                        value: 0.002,
-                        prevValue: 0.001,
-                        isLoading: false,
-                    },
-                    isLoading: false,
-                })
-
-                // Mock single store
-                mockUseAppSelector.mockImplementation((selector) => {
-                    // The Shopify selector appears as "memoized" due to memoization wrapper
-                    if (selector && selector.name === 'memoized') {
-                        return [{}] // Single store
-                    }
-                    return fromJS({
-                        domain: 'test-domain.com',
-                        role: {
-                            name: 'admin',
-                        },
-                    })
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.title).toEqual(
-                    'AI Agent trial ends tomorrow',
-                )
-
-                // Check that description does not include multi-store message
-                const descriptionElement = render(
-                    <>{result.current.trialEndingModal.description}</>,
-                ).container
-
-                // Check the full text content without multi-store message
-                expect(descriptionElement.textContent).toEqual(
-                    "AI Agent has been working behind the scenes to help your team deliver faster, more efficient support and sales. To keep the momentum going, your plan will be upgraded automatically tomorrow (unless you've opted-out).",
-                )
-            })
         })
     })
 
@@ -1850,84 +1448,6 @@ describe('useTrialModalProps', () => {
             expect(result.current.trialActivatedModal.title).toBe(
                 initialResult.trialActivatedModal.title,
             )
-        })
-    })
-
-    describe('useTrialEndedModal description', () => {
-        const HIGH_GMV_RATE = 0.06
-        const GMV_INFLUENCED = '$250'
-
-        beforeEach(() => {
-            mockUseBillingState.mockReturnValue({
-                data: trial,
-            } as any)
-            mockUseAiAgentUpgradePlan.mockReturnValue({
-                data: earlyAccessMonthlyAutomationPlan,
-            } as any)
-        })
-
-        describe('when gmvInfluencedRate > 0.005', () => {
-            it('should return personalized message with GMV amount', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: GMV_INFLUENCED,
-                    gmvInfluencedRate: HIGH_GMV_RATE,
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                // Now returns JSX element
-                const description = result.current.trialEndingModal
-                    .description as any
-                expect(description?.type).toBe('span')
-                const children = description?.props?.children
-                expect(children?.[0]).toBe('Shopping Assistant drove ')
-                expect(children?.[1]?.type).toBe('strong')
-                expect(children?.[1]?.props?.children).toBe('$250')
-                expect(children?.[3]).toContain('uplift in GMV')
-            })
-
-            it('should handle different GMV amounts in personalized message', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: '$1,500',
-                    gmvInfluencedRate: 0.08,
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                // Now returns JSX element
-                const description = result.current.trialEndingModal
-                    .description as any
-                expect(description?.type).toBe('span')
-                const children = description?.props?.children
-                expect(children?.[0]).toBe('Shopping Assistant drove ')
-                expect(children?.[1]?.type).toBe('strong')
-                expect(children?.[1]?.props?.children).toBe('$1,500')
-                expect(children?.[3]).toContain('uplift in GMV')
-            })
-        })
-
-        describe('when gmvInfluencedRate <= 0.005', () => {
-            it('should return generic message for rates slightly below threshold', () => {
-                mockUseTrialMetrics.mockReturnValue({
-                    gmvInfluenced: GMV_INFLUENCED,
-                    gmvInfluencedRate: 0.003,
-                    isLoading: false,
-                })
-
-                const { result } = renderHookWithRouter(() =>
-                    useTrialModalProps({}),
-                )
-
-                expect(result.current.trialEndingModal.description).toBe(
-                    "Brands that unlock Shopping Assistant see ongoing performance improvements over time, leading to stronger results. To keep the momentum going, you will be upgraded automatically tomorrow (unless you've opted-out).",
-                )
-            })
         })
     })
 
@@ -2698,7 +2218,9 @@ describe('useTrialModalProps', () => {
                 const trialEndingModal = result.current.trialEndingModal
                 const description = trialEndingModal.description as any
                 expect(description?.type).toBe('span')
-                expect(description?.props?.children).toContain(
+                expect(
+                    description?.props?.children[0].props.children,
+                ).toContain(
                     'AI Agent has been working behind the scenes to help your team',
                 )
             })
@@ -3239,14 +2761,13 @@ describe('useTrialModalProps', () => {
             mockUseAiAgentUpgradePlan.mockReturnValue({
                 data: earlyAccessMonthlyAutomationPlan,
             } as any)
-            mockUseTrialEnding.mockReturnValue({
-                remainingDays: 7,
-                remainingDaysFloat: 7.0,
-                isTrialExtended: false,
-                trialEndDatetime: getTrialEndTime(7),
-                trialTerminationDatetime: null,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    remainingDays: 7,
+                    remainingDaysFloat: 7.0,
+                    trialEndDatetime: getTrialEndTime(7),
+                }),
+            )
         })
 
         it('should return correct modal props', () => {
@@ -3277,14 +2798,14 @@ describe('useTrialModalProps', () => {
         })
 
         it('should handle when trial is extended', () => {
-            mockUseTrialEnding.mockReturnValue({
-                remainingDays: 7,
-                remainingDaysFloat: 7.0,
-                isTrialExtended: true,
-                trialEndDatetime: getTrialEndTime(7),
-                trialTerminationDatetime: null,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    remainingDays: 7,
+                    remainingDaysFloat: 7.0,
+                    isTrialExtended: true,
+                    trialEndDatetime: getTrialEndTime(7),
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({ storeName: mockStoreName }),
@@ -3335,14 +2856,13 @@ describe('useTrialModalProps', () => {
                 onRequestTrialExtension: mockOnRequestTrialExtension,
             })
 
-            mockUseTrialEnding.mockReturnValue({
-                remainingDays: 7,
-                remainingDaysFloat: 7.0,
-                isTrialExtended: false,
-                trialEndDatetime: testTrialEndDatetime,
-                trialTerminationDatetime: null,
-                optedOutDatetime: null,
-            })
+            mockUseTrialEnding.mockReturnValue(
+                getUseTrialEndingFixture({
+                    remainingDays: 7,
+                    remainingDaysFloat: 7.0,
+                    trialEndDatetime: testTrialEndDatetime,
+                }),
+            )
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({ storeName: mockStoreName }),

@@ -16,7 +16,19 @@ const EMPTY_TRIAL_ENDING = {
     optedOutDatetime: null,
 }
 
-export const useTrialEnding = (storeName: string, trialType: TrialType) => {
+export type UseTrialEndingReturn = {
+    remainingDays: number
+    remainingDaysFloat: number
+    isTrialExtended: boolean
+    trialEndDatetime: string | null
+    trialTerminationDatetime: string | null
+    optedOutDatetime: string | null
+}
+
+export const useTrialEnding = (
+    storeName: string,
+    trialType: TrialType,
+): UseTrialEndingReturn => {
     const isAiAgent = trialType === TrialType.AiAgent
     const { storeActivations } = useStoreActivations({ storeName })
 
