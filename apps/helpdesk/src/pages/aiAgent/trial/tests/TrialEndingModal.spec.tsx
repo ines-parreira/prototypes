@@ -18,6 +18,7 @@ import {
     useTrialModalProps,
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
+import { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'
@@ -141,6 +142,19 @@ const mockStoreConfiguration = getStoreConfigurationFixture({
     },
 })
 
+const mockFeatures: TrialFinishSetupFeature[] = [
+    {
+        icon: 'check',
+        title: 'Test Feature 1',
+        description: 'Test description 1',
+    },
+    {
+        icon: 'star',
+        title: 'Test Feature 2',
+        description: 'Test description 2',
+    },
+]
+
 const createMockTrialModalProps = (): TrialModalProps => ({
     trialUpgradePlanModal: {
         title: 'Test Trial Upgrade Title',
@@ -232,6 +246,7 @@ const createMockTrialModalProps = (): TrialModalProps => ({
         },
         isOpen: false,
         onClose: jest.fn(),
+        features: mockFeatures,
     },
     newTrialUpgradePlanModal: {
         title: 'New Trial Upgrade Plan',

@@ -2,8 +2,22 @@ import { render, screen } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 
 import { TrialSharedModals, TrialSharedModalsProps } from '../TrialSharedModals'
+
+const mockFeatures: TrialFinishSetupFeature[] = [
+    {
+        icon: 'check',
+        title: 'Test Feature 1',
+        description: 'Test description 1',
+    },
+    {
+        icon: 'star',
+        title: 'Test Feature 2',
+        description: 'Test description 2',
+    },
+]
 
 const mockTrialManageModal = {
     title: 'Manage Trial',
@@ -68,6 +82,7 @@ const mockTrialFinishSetupModal = {
     },
     isOpen: false,
     onClose: jest.fn(),
+    features: mockFeatures,
 }
 
 const defaultProps: TrialSharedModalsProps = {

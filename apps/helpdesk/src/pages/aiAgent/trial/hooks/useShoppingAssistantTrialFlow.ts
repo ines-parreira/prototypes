@@ -243,8 +243,7 @@ export const useShoppingAssistantTrialFlow = ({
             onSuccess: async () => {
                 trialModal.closeModal(trialUpgradeModalName)
                 onUpgradeModalClose?.()
-
-                await startOnboardingAfterTrial()
+                openTrialFinishSetupModal()
             },
         })
     }
@@ -318,18 +317,18 @@ export const useShoppingAssistantTrialFlow = ({
 
     const closeTrialFinishSetupModal = useCallback(() => {
         if (isAiAgentTrial) {
-            history.push(routes.perShopOverview)
+            void startOnboardingAfterTrial()
         } else {
             history.push(routes.customerEngagement)
         }
         trialFinishSetupModal.closeModal(trialFinishSetupModalName)
     }, [
         isAiAgentTrial,
-        routes.perShopOverview,
         routes.customerEngagement,
         history,
         trialFinishSetupModal,
         trialFinishSetupModalName,
+        startOnboardingAfterTrial,
     ])
 
     const openTrialFinishSetupModal = () => {

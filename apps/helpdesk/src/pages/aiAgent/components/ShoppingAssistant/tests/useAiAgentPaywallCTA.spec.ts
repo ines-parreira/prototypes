@@ -20,12 +20,15 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
     onOpenTrialUpgradeModal: jest.fn(),
     onOpenTrialRequestModal: jest.fn(),
     onCloseTrialRequestModal: jest.fn(),
+    onCloseTrialFinishSetupModal: jest.fn(),
     isNotifyAdminDisabled: false,
     trialModals: {
         isTrialModalOpen: false,
         newTrialUpgradePlanModal: {},
         isTrialRequestModalOpen: false,
         trialRequestModal: {},
+        isTrialFinishSetupModalOpen: false,
+        trialFinishSetupModal: {},
     },
     showAutoAwesomeIcon: false,
     isOnUpdateOnboardingWizard: false,
@@ -292,6 +295,36 @@ describe('useAiAgentCtas', () => {
 
         // Check that modals are still rendered
         const modals = result.current.modals as any
-        expect(modals.props.children.length).toBe(2)
+        expect(modals.props.children.length).toBe(3)
+    })
+
+    it('renders TrialFinishSetupModal with correct props', () => {
+        const onCloseTrialFinishSetupModal = jest.fn()
+        const trialFinishSetupModal = { someModalProp: 'test' }
+        const props = createDefaultProps({
+            onCloseTrialFinishSetupModal,
+            trialModals: {
+                isTrialModalOpen: false,
+                newTrialUpgradePlanModal: {},
+                isTrialRequestModalOpen: false,
+                trialRequestModal: {},
+                isTrialFinishSetupModalOpen: true,
+                trialFinishSetupModal,
+            },
+        })
+
+        const { result } = renderHook(() => useAiAgentCtas(props))
+
+        const modals = result.current.modals as any
+        const trialFinishSetupModalComponent = modals.props.children[2]
+
+        expect(trialFinishSetupModalComponent.type.name).toBe(
+            'TrialFinishSetupModal',
+        )
+        expect(trialFinishSetupModalComponent.props.isOpen).toBe(true)
+        expect(trialFinishSetupModalComponent.props.onClose).toBe(
+            onCloseTrialFinishSetupModal,
+        )
+        expect(trialFinishSetupModalComponent.props.someModalProp).toBe('test')
     })
 })

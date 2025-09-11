@@ -386,7 +386,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             )
         })
 
-        it('should navigate to overview when closeTrialFinishSetupModal is called with AiAgent trial type', () => {
+        it('should start onboarding when closeTrialFinishSetupModal is called with AiAgent trial type', () => {
             const { result } = renderHookWithDefaults({
                 trialType: TrialType.AiAgent,
             })
@@ -395,10 +395,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 result.current.closeTrialFinishSetupModal()
             })
 
-            expect(mockHistoryPush).toHaveBeenCalledWith('/ai-agent/overview')
-            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
-                'AiAgentTrialFinishSetupModal',
-            )
+            expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
         })
 
         it('should open upgrade plan modal and log trial event when openUpgradePlanModal is called with isTrial=true', () => {
@@ -911,8 +908,10 @@ describe('useShoppingAssistantTrialFlow', () => {
                 // Check callbacks were called
                 expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
 
-                // Check onboarding was started
-                expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
+                // Check trial finish modal is opened
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialFinishSetupModal',
+                )
             })
         })
 
@@ -985,8 +984,10 @@ describe('useShoppingAssistantTrialFlow', () => {
                 )
                 expect(mockOnUpgradeModalClose).toHaveBeenCalledTimes(1)
 
-                // 5. Verify onboarding was started
-                expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
+                // 5. Verify trial finish modal is opened
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialFinishSetupModal',
+                )
             })
 
             it('should handle complete Shopping Assistant trial flow using startTrial', async () => {

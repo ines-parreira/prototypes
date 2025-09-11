@@ -3,10 +3,34 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import TrialFinishSetupModal from '../TrialFinishSetupModal'
+import TrialFinishSetupModal, {
+    TrialFinishSetupFeature,
+} from '../TrialFinishSetupModal'
 
 jest.mock('assets/img/icons/check.svg', () => 'check.svg')
 jest.mock('assets/img/icons/bolt.svg', () => 'bolt.svg')
+
+const mockFeatures: TrialFinishSetupFeature[] = [
+    {
+        icon: 'check',
+        title: 'Shopping Assistant features are now live!',
+        description:
+            'All features are unlocked, so you can start seeing impact today.',
+    },
+    {
+        icon: '',
+        title: 'Turn on customer engagement tools',
+        description:
+            'Proactively engage with visitors and instantly drive meaningful conversations.',
+        benefit: 'Brands that enable this see 15% more sales',
+    },
+    {
+        icon: '',
+        title: 'Set up discount strategy',
+        description: 'Offer smart discounts to maximize conversions.',
+        benefit: 'Reduce cart abandonment with timely offers',
+    },
+]
 
 const defaultProps = {
     title: 'Ready. Set. Grow. Your 14-days trial starts now.',
@@ -24,6 +48,7 @@ const defaultProps = {
         onClick: jest.fn(),
     },
     isLoading: false,
+    features: mockFeatures,
 }
 
 describe('<TrialFinishSetupModal />', () => {

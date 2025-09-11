@@ -177,7 +177,8 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
 
         const requiresOnboardingWizard =
             onboardingState === OnboardingState.OnboardingWizard &&
-            trialAccess.isInAiAgentTrial
+            trialAccess.isInAiAgentTrial &&
+            !trialFlow.isTrialFinishSetupModalOpen // to prevent immediate redirect that blocks this modal to be displayed
 
         if (requiresOnboardingWizard) {
             onOnboardingWizardClick()
@@ -187,6 +188,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         onboardingState,
         props.shopName,
         trialAccess.isInAiAgentTrial,
+        trialFlow.isTrialFinishSetupModalOpen,
         onOnboardingWizardClick,
     ])
 
@@ -323,12 +325,15 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,
         onOpenTrialRequestModal: trialFlow.openTrialRequestModal,
         onCloseTrialRequestModal: trialFlow.closeTrialRequestModal,
+        onCloseTrialFinishSetupModal: trialFlow.closeTrialFinishSetupModal,
         isNotifyAdminDisabled,
         trialModals: {
             isTrialModalOpen: trialFlow.isTrialModalOpen,
             newTrialUpgradePlanModal: trialModalProps.newTrialUpgradePlanModal,
             isTrialRequestModalOpen: trialFlow.isTrialRequestModalOpen,
             trialRequestModal: trialModalProps.trialRequestModal,
+            isTrialFinishSetupModalOpen: trialFlow.isTrialFinishSetupModalOpen,
+            trialFinishSetupModal: trialModalProps.trialFinishSetupModal,
         },
 
         showAutoAwesomeIcon: !isAiAgentExpandingTrialExperienceForAllEnabled,

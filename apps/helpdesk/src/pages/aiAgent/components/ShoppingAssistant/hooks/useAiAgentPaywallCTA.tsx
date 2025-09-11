@@ -5,6 +5,7 @@ import { Button } from '@gorgias/axiom'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
@@ -26,12 +27,15 @@ export type AiAgentCtasParams = {
     onOpenTrialUpgradeModal: () => void
     onOpenTrialRequestModal: () => void
     onCloseTrialRequestModal: () => void
+    onCloseTrialFinishSetupModal: () => void
     isNotifyAdminDisabled: boolean
     trialModals: {
         isTrialModalOpen: boolean
         newTrialUpgradePlanModal: any
         isTrialRequestModalOpen: boolean
         trialRequestModal: any
+        isTrialFinishSetupModalOpen: boolean
+        trialFinishSetupModal: any
     }
 
     showAutoAwesomeIcon?: boolean
@@ -58,6 +62,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         onOpenTrialUpgradeModal,
         onOpenTrialRequestModal,
         onCloseTrialRequestModal,
+        onCloseTrialFinishSetupModal,
         isNotifyAdminDisabled,
         trialModals,
         showAutoAwesomeIcon,
@@ -222,9 +227,14 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                     isOpen={trialModals.isTrialRequestModalOpen}
                     onClose={onCloseTrialRequestModal}
                 />
+                <TrialFinishSetupModal
+                    {...trialModals.trialFinishSetupModal}
+                    isOpen={trialModals.isTrialFinishSetupModalOpen}
+                    onClose={onCloseTrialFinishSetupModal}
+                />
             </>
         ),
-        [trialModals, onCloseTrialRequestModal],
+        [trialModals, onCloseTrialRequestModal, onCloseTrialFinishSetupModal],
     )
 
     const { ctas, afterCtas } = useMemo(() => {

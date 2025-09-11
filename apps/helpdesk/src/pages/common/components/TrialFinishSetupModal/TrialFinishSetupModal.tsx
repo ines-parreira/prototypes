@@ -1,4 +1,4 @@
-import React from 'react'
+import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
@@ -8,30 +8,16 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
 import css from './TrialFinishSetupModal.less'
 
-const STATIC_FEATURES = [
-    {
-        icon: 'check',
-        title: 'Shopping Assistant features are now live!',
-        description:
-            'All features are unlocked, so you can start seeing impact today.',
-    },
-    {
-        icon: '',
-        title: 'Turn on customer engagement tools',
-        description:
-            'Proactively engage with visitors and instantly drive meaningful conversations.',
-        benefit: 'Brands that enable this see 15% more sales',
-    },
-    {
-        icon: '',
-        title: 'Set up discount strategy',
-        description: 'Offer smart discounts to maximize conversions.',
-        benefit: 'Reduce cart abandonment with timely offers',
-    },
-]
+export type TrialFinishSetupFeature = {
+    icon: string
+    title: string
+    description: string
+    isCompleted?: boolean
+    benefit?: string
+}
 
 export type TrialFinishSetupModalProps = {
-    title: string
+    title: React.ReactNode
     subtitle: string
     content: string
     isOpen: boolean
@@ -45,6 +31,7 @@ export type TrialFinishSetupModalProps = {
         onClick: () => void
     }
     isLoading?: boolean
+    features: TrialFinishSetupFeature[]
 }
 
 const ActionButtons = ({
@@ -90,14 +77,20 @@ const FeatureCard = ({
     description,
     benefit,
     isLast,
+    isCompleted,
 }: {
     icon: string
     title: string
     description: string
     benefit?: string
     isLast: boolean
+    isCompleted: boolean
 }) => (
-    <div className={css.featureCard}>
+    <div
+        className={classNames(css.featureCard, {
+            [css.featureCompleted]: isCompleted,
+        })}
+    >
         <div className={css.iconContainer}>
             <div className={css.icon}>
                 <i className="material-icons" aria-hidden="true">
@@ -130,6 +123,7 @@ const TrialFinishSetupModal = ({
     primaryAction,
     secondaryAction,
     isLoading = false,
+    features,
 }: TrialFinishSetupModalProps) => {
     return (
         <Modal
@@ -149,11 +143,12 @@ const TrialFinishSetupModal = ({
                 </div>
 
                 <div className={css.featureContainer}>
-                    {STATIC_FEATURES.map((item, index) => (
+                    {features.map((item, index) => (
                         <FeatureCard
                             key={index}
                             {...item}
-                            isLast={index === STATIC_FEATURES.length - 1}
+                            isLast={index === features.length - 1}
+                            isCompleted={!!item.isCompleted}
                         />
                     ))}
                 </div>

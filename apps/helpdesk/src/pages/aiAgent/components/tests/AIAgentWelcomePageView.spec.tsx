@@ -18,6 +18,7 @@ import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -130,6 +131,13 @@ const mockExtractShopNameFromUrl =
     require('../ShoppingAssistant/utils/extractShopNameFromUrl')
         .extractShopNameFromUrl as jest.MockedFunction<any>
 
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({
+    useShoppingAssistantTrialFlow: jest.fn(),
+}))
+const mockUseShoppingAssistantTrialFlow =
+    require('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
+        .useShoppingAssistantTrialFlow as jest.MockedFunction<any>
+
 const defaultState = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
@@ -211,6 +219,10 @@ describe('<AIAgentWelcomePageView />', () => {
         )
 
         mockExtractShopNameFromUrl.mockReturnValue(SHOP_NAME)
+
+        mockUseShoppingAssistantTrialFlow.mockReturnValue(
+            getUseShoppingAssistantTrialFlowFixture(),
+        )
     })
 
     const assertButtonAndLearnMore = () => {
@@ -463,6 +475,26 @@ describe('<AIAgentWelcomePageView />', () => {
                 isInAiAgentTrial: true,
             })
             mockExtractShopNameFromUrl.mockReturnValue('different-store')
+
+            renderWithProvider({}, history)
+
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
+
+        it('should NOT redirect when trial finish setup modal is open', () => {
+            const history = createMemoryHistory()
+            const historyPushSpy = jest.spyOn(history, 'push')
+
+            mockUseAiAgentOnboardingState.mockReturnValue('onboardingWizard')
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isInAiAgentTrial: true,
+            })
+            mockUseShoppingAssistantTrialFlow.mockReturnValue(
+                getUseShoppingAssistantTrialFlowFixture({
+                    isTrialFinishSetupModalOpen: true,
+                }),
+            )
 
             renderWithProvider({}, history)
 

@@ -48,6 +48,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { useNotifyAdmins } from './useNotifyAdmins'
+import { useTrialFinishSetupModal } from './useTrialFinishSetupModal'
 
 export const EXTERNAL_URLS = {
     BOOK_DEMO:
@@ -172,6 +173,7 @@ export type TrialModalProps = {
         | 'primaryAction'
         | 'isOpen'
         | 'onClose'
+        | 'features'
     >
     newTrialUpgradePlanModal: Pick<
         TrialTryModalProps,
@@ -537,38 +539,6 @@ const useNewTrialUpgradePlanModal = (
     return trialType === TrialType.AiAgent
         ? aiAgentProps
         : shoppingAssistantProps
-}
-
-const useTrialFinishSetupModal = (
-    trialType: TrialType,
-    storeName?: string,
-): TrialModalProps['trialFinishSetupModal'] => {
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-    const { storeActivations } = useStoreActivations({ storeName })
-
-    const { isTrialFinishSetupModalOpen, closeTrialFinishSetupModal } =
-        useShoppingAssistantTrialFlow({
-            accountDomain,
-            storeActivations,
-            trialType,
-        })
-
-    return useMemo(
-        () => ({
-            title: 'Ready. Set. Grow. Your 14-days trial starts now.',
-            subtitle: "Let's unlock its full potential.",
-            content:
-                'Just two simple steps to increase conversions and make the most of your trial.',
-            primaryAction: {
-                label: 'Finish setup',
-                onClick: closeTrialFinishSetupModal,
-            },
-            isOpen: isTrialFinishSetupModalOpen,
-            onClose: closeTrialFinishSetupModal,
-        }),
-        [closeTrialFinishSetupModal, isTrialFinishSetupModalOpen],
-    )
 }
 
 const useTrialActivatedModal = () => ({
@@ -1270,7 +1240,10 @@ export const useTrialModalProps = ({
         trialType,
         storeName,
     )
-    const trialFinishSetupModal = useTrialFinishSetupModal(trialType, storeName)
+    const trialFinishSetupModal = useTrialFinishSetupModal({
+        trialType,
+        storeName,
+    })
     const trialActivatedModal = useTrialActivatedModal()
     const trialStartedBanner = useTrialStartedBanner(
         trialMetrics,
