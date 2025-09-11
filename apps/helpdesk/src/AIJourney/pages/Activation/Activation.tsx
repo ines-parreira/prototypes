@@ -15,7 +15,6 @@ import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useTestSms } from 'AIJourney/queries'
-import { isValidPhoneNumber } from 'AIJourney/utils'
 import { Product } from 'constants/integrations/types/shopify'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -162,13 +161,8 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         }
     }
 
-    const isNumberValid = isValidPhoneNumber(testSmsNumber)
-
     const shouldDisableButton =
-        !selectedProduct ||
-        !isNumberValid ||
-        isLoadingHandleUpdate ||
-        isSuccessHandleUpdate
+        !selectedProduct || isLoadingHandleUpdate || isSuccessHandleUpdate
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
 
@@ -203,6 +197,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                     variant="link"
                     redirectLink={`/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'conversation-setup'}`}
                     label="Back"
+                    iconLeft="keyboard_arrow_left"
                 />
                 <Button
                     label="Activate"

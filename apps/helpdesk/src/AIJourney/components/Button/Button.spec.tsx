@@ -110,6 +110,19 @@ describe('<Button />', () => {
             await userEvent.click(link)
         })
 
+        it('should render iconLeft prop when passed', async () => {
+            render(
+                <Button
+                    label="Click me"
+                    variant="link"
+                    redirectLink="/href"
+                    iconLeft="sd_storage"
+                />,
+            )
+
+            expect(screen.getByText('sd_storage')).toBeInTheDocument()
+        })
+
         it('should ignore isDisabled prop', async () => {
             render(
                 <Button

@@ -5,19 +5,23 @@ import css from './Button.less'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'link'
 
-export const Button = ({
-    variant = 'primary',
-    redirectLink = '',
-    label,
-    onClick,
-    isDisabled = false,
-}: {
-    variant?: ButtonVariant
-    redirectLink?: string
+type ButtonProps = {
     label: string
-    onClick?: () => void
     isDisabled?: boolean
-}) => {
+    iconLeft?: string
+    onClick?: () => void
+    redirectLink?: string
+    variant?: ButtonVariant
+}
+
+export const Button = ({
+    label,
+    isDisabled = false,
+    iconLeft,
+    onClick,
+    redirectLink = '',
+    variant = 'primary',
+}: ButtonProps) => {
     const fakeBorderClass = classNames(css.fakeBorder, {
         [css['fakeBorder--disabled']]: isDisabled,
     })
@@ -25,6 +29,9 @@ export const Button = ({
     if (variant === 'link') {
         return (
             <Link className={css.linkButton} to={redirectLink}>
+                {iconLeft && (
+                    <i className="material-icons-outlined">{iconLeft}</i>
+                )}
                 {label}
             </Link>
         )
