@@ -146,7 +146,7 @@ const SimplifiedAIAgentBanner = ({
                             activeTab === TicketInfobarTab.AIFeedback,
                     })}
                 >
-                    Give Feedback
+                    Review conversation
                 </Button>
             </div>
         </div>

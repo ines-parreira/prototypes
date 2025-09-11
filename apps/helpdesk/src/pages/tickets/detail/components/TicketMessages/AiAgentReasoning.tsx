@@ -407,12 +407,12 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     fillStyle="fill"
                     isDisabled={activeTab === TicketInfobarTab.AIFeedback}
                     onClick={handleGiveFeedback}
-                    className={classNames(css.reviewResponseButton, {
+                    className={classNames({
                         [css.activeButton]:
                             activeTab === TicketInfobarTab.AIFeedback,
                     })}
                 >
-                    Review response
+                    Review conversation
                 </Button>
             </div>
         )

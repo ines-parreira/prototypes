@@ -328,7 +328,7 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call onChangeTab when click on "Give feedback"', () => {
+    it('should call onChangeTab when click on "Review conversation"', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {

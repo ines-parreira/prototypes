@@ -755,11 +755,11 @@ describe('AiAgentReasoning', () => {
             ).toBeInTheDocument()
         })
 
-        it('should show Review response button when expanded', () => {
+        it('should show Review conversation button when expanded', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review response')
+            const feedbackButton = screen.getByText('Review conversation')
             expect(feedbackButton).toBeInTheDocument()
             expect(feedbackButton).toBeEnabled()
         })
@@ -776,12 +776,12 @@ describe('AiAgentReasoning', () => {
         })
     })
 
-    describe('Review response functionality', () => {
-        it('should call `onChangeTab` when Review response is clicked', () => {
+    describe('Review conversation functionality', () => {
+        it('should call `onChangeTab` when Review conversation is clicked', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review response')
+            const feedbackButton = screen.getByText('Review conversation')
             fireEvent.click(feedbackButton)
 
             expect(onChangeTab).toHaveBeenCalledWith(
@@ -1269,7 +1269,7 @@ describe('AiAgentReasoning', () => {
             expect(mockRefetch).toHaveBeenCalled()
         })
 
-        it('should not show Review response button in error state', () => {
+        it('should not show Review conversation button in error state', () => {
             const mockRefetch = jest.fn()
 
             mockUseGetMessageAiReasoning.mockReturnValue({
@@ -1320,7 +1320,7 @@ describe('AiAgentReasoning', () => {
             })
 
             expect(
-                screen.queryByText('Review response'),
+                screen.queryByText('Review conversation'),
             ).not.toBeInTheDocument()
         })
     })
@@ -1604,8 +1604,8 @@ describe('AiAgentReasoning', () => {
         ).not.toBeInTheDocument()
     })
 
-    describe('Review response button states', () => {
-        it('should show active styling for Review response button when AIAgent tab is active', () => {
+    describe('Review conversation button states', () => {
+        it('should show active styling for Review conversation button when AIAgent tab is active', () => {
             useAppSelectorMock.mockImplementation((selector) => {
                 if (
                     selector.name === 'getTicketState' ||
@@ -1633,7 +1633,7 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review response')
+            const feedbackButton = screen.getByText('Review conversation')
             expect(feedbackButton).toBeInTheDocument()
         })
     })
@@ -1688,7 +1688,7 @@ describe('AiAgentReasoning', () => {
             })
         })
 
-        it('should show Review response button for handover messages', () => {
+        it('should show Review conversation button for handover messages', () => {
             mockUseGetMessageAiReasoning.mockReturnValue({
                 data: undefined,
                 isLoading: true,
@@ -1748,7 +1748,7 @@ describe('AiAgentReasoning', () => {
                 )
             })
 
-            expect(screen.getByText('Review response')).toBeInTheDocument()
+            expect(screen.getByText('Review conversation')).toBeInTheDocument()
         })
 
         it('should show static state for handover messages', () => {
