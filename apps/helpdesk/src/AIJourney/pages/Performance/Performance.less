@@ -49,6 +49,7 @@
     .dashboardsContainer {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
         gap: var(--layout-spacing-l);
         width: 100%;
 
@@ -59,7 +60,13 @@
         }
 
         @media (max-width: 1024px) {
+            grid-template-columns: 1fr;
             gap: var(--layout-spacing-xs);
+        }
+
+        @media (max-width: 1440px) {
+            grid-template-columns: 1fr;
+            gap: var(--layout-spacing-s);
         }
     }
 }

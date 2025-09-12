@@ -152,6 +152,7 @@ export const Performance = () => {
         shopName: namespacedShopName,
         filters,
     })
+    const isLoadingMetrics = metrics?.some((metric) => metric.isLoading)
 
     const { metrics: journeyMetrics } = useAbandonedCartKpis({
         integrationId: integrationId.toString(),
@@ -208,8 +209,8 @@ export const Performance = () => {
             conversionRateSign === -1 ? '-' : '+'
 
         return {
-            revenueVariationContent: `${gmvInfluencedFormattedValue}${gmvInfluencedFormattedTrend && parseFloat(gmvInfluencedFormattedTrend) !== 0 ? ` ${gmvInfluencedVariationDescription}${gmvInfluencedFormattedTrend}` : ''}`,
-            conversionVariationContent: `${conversionRateFormattedValue}${conversionRateFormattedTrend && parseFloat(conversionRateFormattedTrend) !== 0 ? ` ${conversionRateVariationDescription}${conversionRateFormattedTrend}` : ''}`,
+            revenueVariationContent: `${gmvInfluencedFormattedValue}${gmvInfluencedFormattedTrend && parseFloat(gmvInfluencedFormattedTrend) !== 0 ? ` (${gmvInfluencedVariationDescription}${gmvInfluencedFormattedTrend})` : ''}`,
+            conversionVariationContent: `${conversionRateFormattedValue}${conversionRateFormattedTrend && parseFloat(conversionRateFormattedTrend) !== 0 ? ` (${conversionRateVariationDescription}${conversionRateFormattedTrend})` : ''}`,
         }
     }, [metrics])
 
@@ -224,7 +225,11 @@ export const Performance = () => {
                     !!maxFollowUpMessages,
                 )}
                 metrics={metrics}
-                isLoading={isLoadingJourneyParams || isLoadingJourneys}
+                isLoading={
+                    isLoadingJourneyParams ||
+                    isLoadingJourneys ||
+                    isLoadingMetrics
+                }
             />
             <div className={css.header}>
                 <div>
@@ -242,21 +247,20 @@ export const Performance = () => {
                 </div>
             </div>
             <div className={css.dashboardsContainer}>
-                {abandonedCartJourney &&
-                    filteredUserJourneys.map(() => (
-                        <AnalyticsCard
-                            period={{
-                                start: filters.period.start_datetime,
-                                end: filters.period.end_datetime,
-                            }}
-                            analyticsData={journeyMetrics}
-                            journeyData={journeyData}
-                            integrationId={integrationId}
-                            abandonedCartJourney={abandonedCartJourney}
-                            totalConversations={formattedTotalConversationsSent}
-                            key={abandonedCartJourney?.id}
-                        />
-                    ))}
+                {filteredUserJourneys.map(() => (
+                    <AnalyticsCard
+                        period={{
+                            start: filters.period.start_datetime,
+                            end: filters.period.end_datetime,
+                        }}
+                        analyticsData={journeyMetrics}
+                        journeyData={journeyData}
+                        integrationId={integrationId}
+                        abandonedCartJourney={abandonedCartJourney}
+                        totalConversations={formattedTotalConversationsSent}
+                        key={abandonedCartJourney?.id}
+                    />
+                ))}
                 {filteredUpcomingJourneys.map((journey, index) => (
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}

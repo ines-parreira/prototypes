@@ -199,7 +199,11 @@ describe('<AnalyticsCard />', () => {
                         <AnalyticsCard
                             period={period}
                             analyticsData={data}
-                            abandonedCartJourney={mockAbandonedCartJourney}
+                            abandonedCartJourney={{
+                                ...mockAbandonedCartJourney,
+                                message_instructions:
+                                    'Custom message instructions for pause test',
+                            }}
                             journeyData={mockJourneyData as JourneyDetailApiDTO}
                             integrationId={12345}
                         />
@@ -225,7 +229,8 @@ describe('<AnalyticsCard />', () => {
         await waitFor(() => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 journeyState: JourneyStatusEnum.Paused,
-                journeyMessageInstructions: undefined,
+                journeyMessageInstructions:
+                    'Custom message instructions for pause test',
             })
         })
     })
@@ -247,6 +252,8 @@ describe('<AnalyticsCard />', () => {
                             abandonedCartJourney={{
                                 ...mockAbandonedCartJourney,
                                 state: JourneyStatusEnum.Paused,
+                                message_instructions:
+                                    'Custom message instructions for activate test',
                             }}
                             journeyData={mockJourneyData as JourneyDetailApiDTO}
                             integrationId={12345}
@@ -273,8 +280,134 @@ describe('<AnalyticsCard />', () => {
         await waitFor(() => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 journeyState: JourneyStatusEnum.Active,
-                journeyMessageInstructions: undefined,
+                journeyMessageInstructions:
+                    'Custom message instructions for activate test',
             })
         })
+    })
+
+    it('renders loading state when isLoading is true for all metrics', () => {
+        const loadingData = data.map((metric) => ({
+            ...metric,
+            isLoading: true,
+        }))
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        period={period}
+                        analyticsData={loadingData}
+                        abandonedCartJourney={mockAbandonedCartJourney}
+                        journeyData={
+                            {
+                                ...mockJourneyData,
+                                configuration: {
+                                    ...mockJourneyData.configuration,
+                                    offer_discount: false,
+                                    max_discount_percent: 0,
+                                },
+                            } as JourneyDetailApiDTO
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        // Assert that sent messages are not displayed
+        expect(screen.queryByText('total recipient')).not.toBeInTheDocument()
+        expect(screen.queryByText('total recipients')).not.toBeInTheDocument()
+
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
+    })
+
+    it('renders no data state when analyticsData is empty', () => {
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        period={period}
+                        analyticsData={[]}
+                        abandonedCartJourney={mockAbandonedCartJourney}
+                        journeyData={
+                            {
+                                ...mockJourneyData,
+                                configuration: {
+                                    ...mockJourneyData.configuration,
+                                    offer_discount: false,
+                                    max_discount_percent: 0,
+                                },
+                            } as JourneyDetailApiDTO
+                        }
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        // Assert that sent messages are not displayed
+        expect(screen.queryByText('total recipient')).not.toBeInTheDocument()
+        expect(screen.queryByText('total recipients')).not.toBeInTheDocument()
+
+        expect(screen.getByText('No data available')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Your Abandoned Cart has not collected any data yet.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('renders draft status when abandonedCartJourney is undefined', () => {
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        period={period}
+                        analyticsData={data}
+                        abandonedCartJourney={undefined}
+                        journeyData={mockJourneyData as JourneyDetailApiDTO}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
+        expect(screen.getByText('DRAFT')).toBeInTheDocument()
+    })
+
+    it('should update journey state when abandonedCartJourney state changes', () => {
+        const { rerender } = render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        period={period}
+                        analyticsData={data}
+                        abandonedCartJourney={{
+                            ...mockAbandonedCartJourney,
+                            state: JourneyStatusEnum.Draft,
+                        }}
+                        journeyData={mockJourneyData as JourneyDetailApiDTO}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('DRAFT')).toBeInTheDocument()
+
+        rerender(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsCard
+                        period={period}
+                        analyticsData={data}
+                        abandonedCartJourney={{
+                            ...mockAbandonedCartJourney,
+                            state: JourneyStatusEnum.Active,
+                        }}
+                        journeyData={mockJourneyData as JourneyDetailApiDTO}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('ACTIVE')).toBeInTheDocument()
     })
 })

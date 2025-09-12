@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react'
 import { EmptyState } from './EmptyState'
 
 describe('EmptyState', () => {
-    it('should render the default "No data available yet" text', () => {
+    it('should render the default "No data available" text', () => {
         render(<EmptyState />)
 
-        expect(screen.getByText('No data available yet')).toBeInTheDocument()
+        expect(screen.getByText('No data available')).toBeInTheDocument()
     })
 
     it('should render the default info text', () => {

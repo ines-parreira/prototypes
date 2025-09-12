@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
+import { LoadingSpinner } from '@gorgias/axiom'
 import {
     JourneyApiDTO,
     JourneyDetailApiDTO,
@@ -32,7 +33,7 @@ type AnalyticsCardProps = {
     journeyData?: JourneyDetailApiDTO
     integrationId?: number
     currentIntegration?: Integration
-    abandonedCartJourney: Omit<JourneyApiDTO, 'created_datetime'>
+    abandonedCartJourney?: Omit<JourneyApiDTO, 'created_datetime'>
     totalConversations?: string
     period: {
         start: string
@@ -51,13 +52,20 @@ export const AnalyticsCard = ({
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
     const [journeyState, setJourneyState] = useState<JourneyStatusEnum>(
-        abandonedCartJourney.state,
+        abandonedCartJourney?.state || JourneyStatusEnum.Draft,
     )
 
-    const isEmpty = !analyticsData?.length
+    const isLoadingMetrics = analyticsData.some((data) => data.isLoading)
+    const isEmpty = !analyticsData.some(
+        (data) => data.value !== 0 && data.prevValue !== 0,
+    )
+    const shouldRenderTotalConversationsCard =
+        !isLoadingMetrics && !isEmpty && totalConversations !== '0'
+    const shouldRenderFooter = !isLoadingMetrics && !isEmpty
 
     useEffect(() => {
-        setJourneyState(abandonedCartJourney.state)
+        if (abandonedCartJourney?.state)
+            setJourneyState(abandonedCartJourney?.state)
     }, [abandonedCartJourney])
 
     const statusIcon = {
@@ -98,7 +106,7 @@ export const AnalyticsCard = ({
                         ? JourneyStatusEnum.Paused
                         : JourneyStatusEnum.Active,
                 journeyMessageInstructions:
-                    abandonedCartJourney.message_instructions,
+                    abandonedCartJourney?.message_instructions,
             })
             setJourneyState(newData.state)
         } catch (error) {
@@ -113,12 +121,26 @@ export const AnalyticsCard = ({
         journeyState,
         dispatch,
         handleUpdate,
-        abandonedCartJourney.message_instructions,
+        abandonedCartJourney?.message_instructions,
     ])
 
     const totalRevenue = analyticsData.find(
         (data) => data.label === 'Total Revenue',
     )
+
+    const cardContent = () => {
+        if (isLoadingMetrics) {
+            return <LoadingSpinner style={{ height: '25px', width: '25px' }} />
+        }
+        if (isEmpty) {
+            return <EmptyState />
+        }
+        return (
+            <>
+                <AnalyticsData data={analyticsData} period={period} />
+            </>
+        )
+    }
 
     return (
         <div className={css.analyticsCard}>
@@ -135,19 +157,15 @@ export const AnalyticsCard = ({
                         handleChangeStatus={handleUpdateJourneyState}
                     />
                 </div>
-                {isEmpty ? (
-                    <EmptyState />
-                ) : (
-                    <>
-                        <AnalyticsData data={analyticsData} period={period} />
-                    </>
+                {cardContent()}
+                {shouldRenderTotalConversationsCard && (
+                    <TotalConversationsCard
+                        totalConversations={totalConversations}
+                        ticketViewId={ticketViewId}
+                    />
                 )}
-                <TotalConversationsCard
-                    totalConversations={totalConversations}
-                    ticketViewId={ticketViewId}
-                />
             </div>
-            {!isEmpty && (
+            {shouldRenderFooter && (
                 <Footer
                     isDiscountEnabled={isDiscountEnabled}
                     maxDiscount={maxDiscount}

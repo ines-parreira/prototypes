@@ -21,7 +21,9 @@ export const DigestCard = ({
     metrics,
     isLoading,
 }: DigestCardProps) => {
-    const isEmpty = !content || !metrics?.length || isLoading
+    const isEmpty = !metrics?.some(
+        (metric) => metric.value !== 0 && metric.prevValue !== 0,
+    )
 
     if (isLoading) {
         return (

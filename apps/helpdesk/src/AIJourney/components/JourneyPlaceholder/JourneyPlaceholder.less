@@ -1,11 +1,14 @@
 :local {
     .journeyPlaceholder {
         position: relative;
+        display: flex;
+        flex-direction: column;
         border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-s);
         padding: var(--layout-spacing-s);
         padding-top: 0px;
         width: 100%;
+        min-height: 355px;
     }
 
     .status {
@@ -35,6 +38,7 @@
         align-items: center;
         justify-content: center;
         filter: blur(5px);
+        height: 100%;
     }
 
     .coverInfo {

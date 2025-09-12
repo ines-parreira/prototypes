@@ -1,12 +1,16 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis'
+import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { IntegrationsProvider, useIntegrations } from 'AIJourney/providers'
+import { abandonedCartKpisMock } from 'AIJourney/utils/test-fixtures/abandonedCartKpisMock'
+import { journeyKpisMock } from 'AIJourney/utils/test-fixtures/journeyKpisMock'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
@@ -25,6 +29,11 @@ const useParamsMock = jest.mocked(useParams)
 jest.mock('AIJourney/providers', () => ({
     ...jest.requireActual('AIJourney/providers'),
     useIntegrations: jest.fn(),
+}))
+
+jest.mock('hooks/useAllIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 
 const useIntegrationsMock = jest.mocked(useIntegrations)
@@ -58,6 +67,11 @@ jest.mock(
 const useAIJourneyTotalConversationsMock = assumeMock(
     useAIJourneyTotalConversations,
 )
+jest.mock('AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis')
+const useAIJourneyKpisMock = assumeMock(useAIJourneyKpis)
+
+jest.mock('AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis')
+const useAbandonedCartKpisMock = assumeMock(useAbandonedCartKpis)
 
 describe('<Performance />', () => {
     beforeEach(() => {
@@ -69,6 +83,15 @@ describe('<Performance />', () => {
             metricFormat: 'decimal-precision-1',
             isLoading: false,
         }))
+
+        useAIJourneyKpisMock.mockImplementation(() => ({
+            metrics: journeyKpisMock,
+        }))
+
+        useAbandonedCartKpisMock.mockImplementation(() => ({
+            metrics: abandonedCartKpisMock,
+        }))
+
         mockUseJourneys.mockImplementation(() => ({
             data: [
                 { id: 'journey-123', type: 'cart_abandoned', state: 'active' },
@@ -118,6 +141,37 @@ describe('<Performance />', () => {
             userTimezone: 'someTimezone',
             cleanStatsFilters,
             granularity: ReportingGranularity.Day,
+        })
+
+        jest.mocked(
+            require('hooks/useAllIntegrations').default,
+        ).mockReturnValue({
+            integrations: [
+                {
+                    id: 1,
+                    type: 'shopify',
+                    name: 'teststore1',
+                    meta: { shop_name: 'teststore1' },
+                },
+                {
+                    id: 2,
+                    type: 'shopify',
+                    name: 'teststore2',
+                    meta: { shop_name: 'teststore2' },
+                },
+                {
+                    id: 3,
+                    type: 'shopify',
+                    name: 'teststore3',
+                    meta: { shop_name: 'teststore3' },
+                },
+                {
+                    id: 4,
+                    type: 'shopify',
+                    name: 'teststore4',
+                    meta: { shop_name: 'teststore4' },
+                },
+            ],
         })
     })
 
@@ -179,7 +233,9 @@ describe('<Performance />', () => {
             ).toBeGreaterThan(0)
         })
 
-        await userEvent.click(screen.getByText('Active'))
+        await act(async () => {
+            await userEvent.click(screen.getByText('Active'))
+        })
         await waitFor(() => {
             expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
             expect(
@@ -193,7 +249,9 @@ describe('<Performance />', () => {
             ).not.toBeInTheDocument()
         })
 
-        await userEvent.click(screen.getByText('Coming soon'))
+        await act(async () => {
+            await userEvent.click(screen.getByText('Coming soon'))
+        })
         await waitFor(() => {
             expect(screen.queryByText('Abandoned Cart')).not.toBeInTheDocument()
             expect(
