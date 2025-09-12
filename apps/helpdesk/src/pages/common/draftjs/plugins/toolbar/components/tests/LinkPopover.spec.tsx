@@ -10,11 +10,6 @@ import Modal from 'pages/common/components/modal/Modal'
 
 import LinkPopover from '../LinkPopover'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
-    useId: jest.fn().mockImplementation(() => 1),
-}))
-
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 

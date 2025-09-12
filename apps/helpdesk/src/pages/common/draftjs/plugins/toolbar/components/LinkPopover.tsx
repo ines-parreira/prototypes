@@ -6,7 +6,6 @@ import React, {
     useState,
 } from 'react'
 
-import { useId } from '@repo/hooks'
 import { Popover } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -29,8 +28,6 @@ export default function LinkPopover({
     onDelete,
     onEdit,
 }: Props) {
-    const id = useId()
-
     const [isOpen, setIsOpen] = useState(false)
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
     const isEditingLink = useAppSelector(
@@ -83,11 +80,11 @@ export default function LinkPopover({
         [onDelete],
     )
 
-    const linkId = `link-${id}`
+    const linkRef = useRef<HTMLAnchorElement>(null)
 
     return (
         <a
-            id={linkId}
+            ref={linkRef}
             href={url}
             target="_blank"
             rel="noopener noreferrer"
@@ -97,46 +94,50 @@ export default function LinkPopover({
             {children}
             <ModalContext.Consumer>
                 {(context) => (
-                    <Popover
-                        isOpen={isOpen}
-                        target={linkId}
-                        placement="bottom-start"
-                        className={css.wrapper}
-                        innerClassName={css.inner}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        trigger="legacy"
-                        container={context.ref}
-                    >
-                        <a
-                            className={css.url}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {url}
-                        </a>
-                        {onEdit && (
-                            <IconButton
-                                size="small"
-                                intent="secondary"
-                                onClick={handleClickEdit}
-                                className={css.edit}
+                    <>
+                        {linkRef.current && (
+                            <Popover
+                                isOpen={isOpen}
+                                target={linkRef}
+                                placement="bottom-start"
+                                className={css.wrapper}
+                                innerClassName={css.inner}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                                trigger="legacy"
+                                container={context.ref}
                             >
-                                edit
-                            </IconButton>
+                                <a
+                                    className={css.url}
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {url}
+                                </a>
+                                {onEdit && (
+                                    <IconButton
+                                        size="small"
+                                        intent="secondary"
+                                        onClick={handleClickEdit}
+                                        className={css.edit}
+                                    >
+                                        edit
+                                    </IconButton>
+                                )}
+                                {onDelete && (
+                                    <IconButton
+                                        size="small"
+                                        intent="secondary"
+                                        className={css.delete}
+                                        onClick={handleClickDelete}
+                                    >
+                                        clear
+                                    </IconButton>
+                                )}
+                            </Popover>
                         )}
-                        {onDelete && (
-                            <IconButton
-                                size="small"
-                                intent="secondary"
-                                className={css.delete}
-                                onClick={handleClickDelete}
-                            >
-                                clear
-                            </IconButton>
-                        )}
-                    </Popover>
+                    </>
                 )}
             </ModalContext.Consumer>
         </a>
