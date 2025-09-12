@@ -23,6 +23,9 @@ export default function ActionsRow({ execution, onClick, isSelected }: Props) {
         window.open(`/app/ticket/${execution.state.user_journey_id}`, '_blank')
     }
 
+    const journeyId = execution.state.user_journey_id
+    const isJourneyInTestMode = journeyId === '123'
+
     return (
         <TableBodyRow
             className={classnames(css.container, {
@@ -36,11 +39,19 @@ export default function ActionsRow({ execution, onClick, isSelected }: Props) {
             <BodyCell className={css.statusCell}>
                 <ActionStatus status={execution.status} />
             </BodyCell>
-            <BodyCell>
-                {execution.state?.user_journey_id && (
-                    <Button fillStyle="ghost" onClick={handleTicketClick}>
-                        {execution.state.user_journey_id}
-                    </Button>
+            <BodyCell className={isJourneyInTestMode ? css.testModeCell : ''}>
+                {isJourneyInTestMode ? (
+                    <span>Action performed in test mode</span>
+                ) : (
+                    journeyId && (
+                        <Button
+                            fillStyle="ghost"
+                            onClick={handleTicketClick}
+                            className={css.ActionEventRowJourneyButton}
+                        >
+                            {journeyId}
+                        </Button>
+                    )
                 )}
             </BodyCell>
 
