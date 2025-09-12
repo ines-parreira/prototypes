@@ -21,7 +21,8 @@ export const useAiAgentHelpCenter = ({
             onSuccess: (data) => {
                 const helpCenter = data?.data.data[0]
 
-                if (!helpCenter) {
+                // FAQ help centers are optional, don't report error when missing
+                if (!helpCenter && helpCenterType !== 'faq') {
                     reportError(
                         new Error(
                             `${helpCenterType} Help Center not found for shop: ${shopName}`,
