@@ -145,7 +145,7 @@ describe('usePaywallConfig', () => {
 
         const expectedConfig: PaywallFeature = {
             headerTitle: 'AI Agent',
-            paywallLogo: 'https://mockedurl.com/img/ai-agent/ai-agent-logo.png',
+            paywallLogo: 'https://mockedurl.com/img/ai-agent/ai-agent-logo.svg',
             paywallLogoAlt: 'AI Agent',
             paywallTitle:
                 'Introducing AI Agent for email, your team’s newest member for seamless customer support',
@@ -180,7 +180,7 @@ describe('usePaywallConfig', () => {
         )
 
         expect(result.current.paywallLogo).toBe(
-            'https://mockedurl.com/img/ai-agent/ai-agent-logo-white.png',
+            'https://mockedurl.com/img/ai-agent/ai-agent-logo-white.svg',
         )
     })
 

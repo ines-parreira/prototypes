@@ -130,8 +130,8 @@ export const usePaywallConfig = (
                 headerTitle: 'AI Agent',
                 paywallLogo:
                     theme.resolvedName === 'dark'
-                        ? assetsUrl('/img/ai-agent/ai-agent-logo-white.png')
-                        : assetsUrl('/img/ai-agent/ai-agent-logo.png'),
+                        ? assetsUrl('/img/ai-agent/ai-agent-logo-white.svg')
+                        : assetsUrl('/img/ai-agent/ai-agent-logo.svg'),
                 paywallLogoAlt: 'AI Agent',
                 paywallTitle:
                     'Introducing AI Agent for email, your team’s newest member for seamless customer support',

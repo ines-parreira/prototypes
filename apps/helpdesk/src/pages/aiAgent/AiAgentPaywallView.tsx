@@ -6,8 +6,8 @@ import cn from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
-import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.png'
-import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.png'
+import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.svg'
+import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'
