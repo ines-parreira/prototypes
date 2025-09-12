@@ -19,6 +19,7 @@ export enum AiSalesAgentConversationsDimension {
     Outcome = 'AiSalesAgentConversations.outcome',
     Source = 'AiSalesAgentConversations.source',
     JourneyId = 'AiSalesAgentConversations.journeyId',
+    JourneyCompleteReason = 'AiSalesAgentConversations.journeyCompleteReason',
     Replied = 'AiSalesAgentConversations.replied',
     Clicked = 'AiSalesAgentConversations.clicked',
 }

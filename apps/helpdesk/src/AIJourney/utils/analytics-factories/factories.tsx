@@ -1,3 +1,4 @@
+import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     AiSalesAgentConversationsCube,
@@ -271,6 +272,57 @@ export const aiJourneyRepliedMessagesQueryFactory = (
                 member: AiSalesAgentConversationsDimension.Replied,
                 operator: ReportingFilterOperator.Equals,
                 values: ['1'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                operator: ReportingFilterOperator.NotEquals,
+                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyOptedOutQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter = journeyId
+        ? [
+              {
+                  member: AiSalesAgentConversationsDimension.JourneyId,
+                  operator: ReportingFilterOperator.Equals,
+                  values: [journeyId],
+              },
+          ]
+        : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_OPTED_OUT_CONVERSATIONS,
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                operator: ReportingFilterOperator.Equals,
+                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
             },
             ...statsFiltersToReportingFilters(
                 aiSalesAgentConversationsDefaultFiltersMembers,

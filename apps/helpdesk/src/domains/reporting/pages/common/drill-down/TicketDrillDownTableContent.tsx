@@ -164,6 +164,9 @@ export const TicketDrillDownTableContent = ({
     const isAiJourneyResponseRateMetric =
         metricData.metricName === AIJourneyMetric.ResponseRate
 
+    const isAiJourneyOptOutRateMetric =
+        metricData.metricName === AIJourneyMetric.OptOutRate
+
     const isAiJourneyClickThroughRateMetric =
         metricData.metricName === AIJourneyMetric.ClickThroughRate
 
@@ -252,6 +255,7 @@ export const TicketDrillDownTableContent = ({
                     </>
                 )}
                 {(isAiJourneyResponseRateMetric ||
+                    isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric) && (
                     <HeaderCellProperty
                         title="Customer"
@@ -313,6 +317,7 @@ export const TicketDrillDownTableContent = ({
                 {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
+                    isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric) && (
                     <HeaderCellProperty
                         title="Assignee"
@@ -422,6 +427,7 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
+                    isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric
                 ) && (
                     <HeaderCellProperty
@@ -499,6 +505,7 @@ export const TicketDrillDownTableContent = ({
                                 </>
                             )}
                             {(isAiJourneyResponseRateMetric ||
+                                isAiJourneyOptOutRateMetric ||
                                 isAiJourneyClickThroughRateMetric) && (
                                 <BodyCell width={columnWidths.order}>
                                     {item?.rowData?.[
@@ -582,6 +589,7 @@ export const TicketDrillDownTableContent = ({
                             )}
                             {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                                 isAiJourneyResponseRateMetric ||
+                                isAiJourneyOptOutRateMetric ||
                                 isAiJourneyClickThroughRateMetric) && (
                                 <BodyCell width={columnWidths.assignee}>
                                     {item.assignee && (
@@ -675,6 +683,7 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentDiscountOfferedMetric ||
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
                                 isAiJourneyResponseRateMetric ||
+                                isAiJourneyOptOutRateMetric ||
                                 isAiJourneyClickThroughRateMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>

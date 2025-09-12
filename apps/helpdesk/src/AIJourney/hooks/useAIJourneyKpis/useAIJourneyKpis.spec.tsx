@@ -6,6 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
+import { useAIJourneyOptOutRate } from '../useAIJourneyOptOutRate/useAIJourneyOptOutRate'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
 import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
 import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
@@ -19,6 +20,7 @@ jest.mock('../useAIJourneyTotalOrders/useAIJourneyTotalOrders')
 jest.mock('../useClickThroughRate/useClickThroughRate')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../useAIJourneyResponseRate/useAIJourneyResponseRate')
+jest.mock('../useAIJourneyOptOutRate/useAIJourneyOptOutRate')
 
 describe('useAIJourneyKpis', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
@@ -28,6 +30,7 @@ describe('useAIJourneyKpis', () => {
         useAIJourneyConversionRate as jest.Mock
     const mockUseClickThroughRate = useClickThroughRate as jest.Mock
     const mockUseAIJourneyResponseRate = useAIJourneyResponseRate as jest.Mock
+    const mockUseAIJourneyOptOutRate = useAIJourneyOptOutRate as jest.Mock
     const filters = {
         period: {
             start_datetime: '2025-08-07T00:00:00.000Z',
@@ -58,8 +61,12 @@ describe('useAIJourneyKpis', () => {
         })
         mockUseClickThroughRate.mockReturnValue({ label: 'CTR', value: '10%' })
         mockUseAIJourneyResponseRate.mockReturnValue({
-            label: 'Click Through Rate',
+            label: 'Response Rate',
             value: 10,
+        })
+        mockUseAIJourneyOptOutRate.mockReturnValue({
+            label: 'Opt Out Rate',
+            value: 5,
         })
     })
 
@@ -72,7 +79,7 @@ describe('useAIJourneyKpis', () => {
             }),
         )
 
-        expect(result.current.metrics).toHaveLength(5)
+        expect(result.current.metrics).toHaveLength(6)
         expect(result.current.metrics[0]).toEqual({
             label: 'GMV',
             value: '1000',
@@ -90,8 +97,12 @@ describe('useAIJourneyKpis', () => {
             value: '10%',
         })
         expect(result.current.metrics[4]).toEqual({
-            label: 'Click Through Rate',
+            label: 'Response Rate',
             value: 10,
+        })
+        expect(result.current.metrics[5]).toEqual({
+            label: 'Opt Out Rate',
+            value: 5,
         })
     })
 
@@ -135,6 +146,12 @@ describe('useAIJourneyKpis', () => {
             'America/New_York',
             filters,
             ReportingGranularity.Week,
+            'shopName',
+        )
+        expect(mockUseAIJourneyOptOutRate).toHaveBeenCalledWith(
+            '123',
+            'America/New_York',
+            filters,
             'shopName',
         )
     })
@@ -186,6 +203,12 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            'shopName',
+        )
+        expect(mockUseAIJourneyOptOutRate).toHaveBeenCalledWith(
+            '123',
+            'Europe/London',
+            expect.any(Object),
             'shopName',
         )
     })

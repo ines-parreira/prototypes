@@ -4,6 +4,7 @@ import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 export enum AIJourneyMetric {
     TotalOrders = 'aiJourneyTotalOrders',
     ResponseRate = 'aiJourneyResponseRate',
+    OptOutRate = 'aiJourneyOptOutRate',
     ClickThroughRate = 'aiJourneyClickThroughRate',
 }
 
@@ -38,6 +39,12 @@ export const AIJourneyMetricsConfig: Record<
     },
     [AIJourneyMetric.ClickThroughRate]: {
         title: 'Click Through Rate',
+        metricFormat: 'percent-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.OptOutRate]: {
+        title: 'Opt Out Rate',
         metricFormat: 'percent-precision-1',
         showMetric: false,
         domain: Domain.AIJourney,

@@ -8,3 +8,7 @@ export const STEPS_NAMES = {
     TEST: 'Test',
     ACTIVATE: 'Activate',
 }
+
+export const JOURNEY_COMPLETE_REASON = {
+    OPTED_OUT: 'Eligibility::Opted Out',
+}

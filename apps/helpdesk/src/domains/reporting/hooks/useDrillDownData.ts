@@ -86,6 +86,10 @@ export const extraEnrichmentFieldsPerMetric: Record<
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,
     ],
+    [AIJourneyMetric.OptOutRate]: [
+        ...defaultEnrichmentFields,
+        EnrichmentFields.CustomerName,
+    ],
     [AIJourneyMetric.ClickThroughRate]: [
         ...defaultEnrichmentFields,
         EnrichmentFields.CustomerName,

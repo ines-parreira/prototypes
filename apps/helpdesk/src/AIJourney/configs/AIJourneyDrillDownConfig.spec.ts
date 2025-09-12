@@ -25,6 +25,15 @@ describe('AIJourneyDrillDownConfig', () => {
             ])
         })
 
+        it('should return default fields plus customer name for OptOutRate metric', () => {
+            const result = getEnrichmentFields(AIJourneyMetric.OptOutRate)
+
+            expect(result).toEqual([
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+            ])
+        })
+
         it('should return default fields plus customer name for ClickThroughRate metric', () => {
             const result = getEnrichmentFields(AIJourneyMetric.ClickThroughRate)
 

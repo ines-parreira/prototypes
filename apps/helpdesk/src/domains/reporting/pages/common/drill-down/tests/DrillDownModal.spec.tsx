@@ -113,6 +113,7 @@ describe('<DrillDownModal />', () => {
         ],
         [AIJourneyMetric.TotalOrders, TicketDrillDownTableContent],
         [AIJourneyMetric.ResponseRate, TicketDrillDownTableContent],
+        [AIJourneyMetric.OptOutRate, TicketDrillDownTableContent],
     ])(
         'should render correct drill down table content for metric %s',
         (metric, ExpectedTableContentComponent) => {

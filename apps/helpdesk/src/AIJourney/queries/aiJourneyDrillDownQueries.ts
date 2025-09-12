@@ -1,4 +1,5 @@
 import {
+    aiJourneyOptedOutQueryFactory,
     aiJourneyRepliedMessagesQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyUniqClicksQueryFactory,
@@ -55,6 +56,31 @@ export const aiJourneyResponseRateDrillDownQueryFactory = (
     journeyId?: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...aiJourneyRepliedMessagesQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyId,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyOptOutRateDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyOptedOutQueryFactory(
         integrationId,
         filters,
         timezone,

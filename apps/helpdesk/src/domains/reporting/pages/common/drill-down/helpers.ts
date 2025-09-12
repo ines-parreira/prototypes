@@ -1,5 +1,6 @@
 import {
     aiJourneyClickThroughRateDrillDownQueryFactory,
+    aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
@@ -459,6 +460,20 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 aiJourneyResponseRateDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyId,
+                )
+        }
+        case AIJourneyMetric.OptOutRate: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyOptOutRateDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     metricData.integrationId,

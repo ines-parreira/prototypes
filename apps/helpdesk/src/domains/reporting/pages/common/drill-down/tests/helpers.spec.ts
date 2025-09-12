@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import {
     aiJourneyClickThroughRateDrillDownQueryFactory,
+    aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
@@ -215,6 +216,9 @@ const aiJourneyOrdersDrillDownQueryFactoryMock = assumeMock(
 )
 const aiJourneyResponseRateDrillDownQueryFactoryMock = assumeMock(
     aiJourneyResponseRateDrillDownQueryFactory,
+)
+const aiJourneyOptOutRateDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyOptOutRateDrillDownQueryFactory,
 )
 const aiJourneyClickThroughRateDrillDownQueryFactoryMock = assumeMock(
     aiJourneyClickThroughRateDrillDownQueryFactory,
@@ -531,6 +535,11 @@ describe('getDrillDownQuery', () => {
         {
             title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
             metricName: AIJourneyMetric.ResponseRate,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
+            metricName: AIJourneyMetric.OptOutRate,
             integrationId: '123',
         },
         {
@@ -1348,6 +1357,36 @@ describe('getDrillDownQuery', () => {
 
         expect(
             aiJourneyResponseRateDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            '456',
+            undefined,
+            'test-journey-id',
+        )
+    })
+
+    it('should be populated with AIJourneyMetric.OptOutRate', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
+            metricName: AIJourneyMetric.OptOutRate,
+            integrationId: '456',
+            journeyId: 'test-journey-id',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyOptOutRateDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
