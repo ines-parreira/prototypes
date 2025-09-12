@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { Badge, Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -399,6 +399,13 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     )}
                     <span className={css.text}>
                         {isExpanded ? 'Hide reasoning' : 'Show reasoning'}
+                        <Badge
+                            type={'magenta'}
+                            className={css.betaBadge}
+                            style={{ marginLeft: '10px' }}
+                        >
+                            BETA
+                        </Badge>
                     </span>
                 </div>
                 <Button
