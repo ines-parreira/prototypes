@@ -149,9 +149,132 @@ export function findLowestCommonAncestor<TNode extends Node>(
     return lcaIndex > 0 ? validPaths[0][lcaIndex - 1] : null
 }
 
-export function insertConvergenceNodes<
+function addSubIntermediaryNodes<
     TNode extends Node,
     TIntermediaryNode extends Node,
+>(
+    modifiedNodes: TNode[],
+    firstNodeId: string,
+    getNextNodes: (node: TNode, nodes: TNode[]) => string[],
+    convergence: ConvergencePoint,
+    intermediaryNode: TIntermediaryNode,
+    createIntermediaryNode: (
+        convergence: ConvergencePoint,
+        id?: string | null,
+    ) => TIntermediaryNode,
+    insertIntermediaryNode: (
+        intermediaryNode: TIntermediaryNode,
+        convergence: ConvergencePoint,
+        nodes: TNode[],
+    ) => TNode[],
+): TNode[] {
+    // retrieve updated paths from root to each incoming node, sorted by length desc
+    let incomingNodesPathsFromRoot = convergence.convergingNodes
+        .map((incomingNode) => {
+            const path =
+                findPathFromRoot(
+                    modifiedNodes,
+                    firstNodeId,
+                    incomingNode,
+                    getNextNodes,
+                ) ?? []
+            return {
+                nodeId: incomingNode,
+                path: path.slice(0, -1),
+            }
+        })
+        .sort((a, b) => b.path.length - a.path.length)
+
+    // we try to see for each node in the path which other nodes are intersecting with it
+    // we create intermediary nodes for those intersections
+    const lcaForConvergence = findLowestCommonAncestor(
+        modifiedNodes,
+        convergence.convergingNodes,
+        firstNodeId,
+        getNextNodes,
+    )
+
+    for (let i = 0; i < incomingNodesPathsFromRoot.length; i++) {
+        let { nodeId, path } = incomingNodesPathsFromRoot[i]
+
+        for (let k = path.length; k > 1; k--) {
+            const currentNode = path[k - 1]
+            const intersectingHere = [nodeId]
+
+            for (let j = i + 1; j < incomingNodesPathsFromRoot.length; j++) {
+                const { nodeId: otherNodeId } = incomingNodesPathsFromRoot[j]
+                if (nodeId === otherNodeId) {
+                    continue
+                }
+
+                const LCA = findLowestCommonAncestor(
+                    modifiedNodes,
+                    [nodeId, otherNodeId],
+                    firstNodeId,
+                    getNextNodes,
+                )
+                if (LCA === currentNode && LCA !== lcaForConvergence) {
+                    intersectingHere.push(otherNodeId)
+                }
+            }
+
+            if (intersectingHere.length > 1) {
+                const subIntermediaryNode = createIntermediaryNode(
+                    {
+                        targetNodeId: intermediaryNode.id,
+                        convergingNodes: intersectingHere,
+                    },
+                    getIntermediaryNodeId(currentNode),
+                )
+                modifiedNodes = insertIntermediaryNode(
+                    subIntermediaryNode,
+                    {
+                        targetNodeId: intermediaryNode.id,
+                        convergingNodes: intersectingHere,
+                    },
+                    modifiedNodes,
+                )
+
+                // search for sub intermediary nodes if there are more than 2 intersecting nodes
+                if (intersectingHere.length > 2) {
+                    const subConvergencePoint: ConvergencePoint = {
+                        targetNodeId: intermediaryNode.id,
+                        convergingNodes: intersectingHere,
+                    }
+                    modifiedNodes = addSubIntermediaryNodes(
+                        modifiedNodes,
+                        lcaForConvergence || firstNodeId,
+                        getNextNodes,
+                        subConvergencePoint,
+                        subIntermediaryNode,
+                        createIntermediaryNode,
+                        insertIntermediaryNode,
+                    )
+                }
+
+                // update the paths of all incoming nodes to reflect the new intermediary node
+                for (let k = i; k < incomingNodesPathsFromRoot.length; k++) {
+                    if (
+                        intersectingHere.includes(
+                            incomingNodesPathsFromRoot[k].nodeId,
+                        )
+                    ) {
+                        incomingNodesPathsFromRoot[k].nodeId =
+                            subIntermediaryNode.id
+                    }
+                }
+
+                nodeId = subIntermediaryNode.id
+            }
+        }
+    }
+
+    return modifiedNodes
+}
+
+export function insertConvergenceNodes<
+    TNode extends Node,
+    TIntermediaryNode extends TNode,
 >(
     nodes: TNode[],
     getNextNodes: (node: TNode, nodes: TNode[]) => string[],
@@ -196,97 +319,15 @@ export function insertConvergenceNodes<
             modifiedNodes,
         )
 
-        // retrieve updated paths from root to each incoming node, sorted by length desc
-        let incomingNodesPathsFromRoot = convergence.convergingNodes
-            .map((incomingNode) => {
-                const path =
-                    findPathFromRoot(
-                        modifiedNodes,
-                        firstNodeId,
-                        incomingNode,
-                        getNextNodes,
-                    ) ?? []
-                return {
-                    nodeId: incomingNode,
-                    path: path.slice(0, -1),
-                }
-            })
-            .sort((a, b) => b.path.length - a.path.length)
-
-        // we try to see for each node in the path which other nodes are intersecting with it
-        // we create intermediary nodes for those intersections
-        const lcaForConvergence = findLowestCommonAncestor(
+        modifiedNodes = addSubIntermediaryNodes(
             modifiedNodes,
-            convergence.convergingNodes,
             firstNodeId,
             getNextNodes,
+            convergence,
+            intermediaryNode,
+            createIntermediaryNode,
+            insertIntermediaryNode,
         )
-        for (let i = 0; i < incomingNodesPathsFromRoot.length; i++) {
-            let { nodeId, path } = incomingNodesPathsFromRoot[i]
-            for (let k = path.length; k > 1; k--) {
-                const currentNode = path[k - 1]
-                const intersectingHere = [nodeId]
-
-                for (
-                    let j = i + 1;
-                    j < incomingNodesPathsFromRoot.length;
-                    j++
-                ) {
-                    const { nodeId: otherNodeId } =
-                        incomingNodesPathsFromRoot[j]
-                    if (nodeId === otherNodeId) {
-                        continue
-                    }
-
-                    const LCA = findLowestCommonAncestor(
-                        modifiedNodes,
-                        [nodeId, otherNodeId],
-                        firstNodeId,
-                        getNextNodes,
-                    )
-                    if (LCA === currentNode && LCA !== lcaForConvergence) {
-                        intersectingHere.push(otherNodeId)
-                    }
-                }
-
-                // create intermediary node if there are at least 2 intersecting nodes
-                if (intersectingHere.length > 1) {
-                    const subIntermediaryNode = createIntermediaryNode(
-                        {
-                            targetNodeId: intermediaryNode.id,
-                            convergingNodes: intersectingHere,
-                        },
-                        getIntermediaryNodeId(currentNode),
-                    )
-                    modifiedNodes = insertIntermediaryNode(
-                        subIntermediaryNode,
-                        {
-                            targetNodeId: intermediaryNode.id,
-                            convergingNodes: intersectingHere,
-                        },
-                        modifiedNodes,
-                    )
-
-                    // update the paths of all incoming nodes to reflect the new intermediary node
-                    for (
-                        let k = i;
-                        k < incomingNodesPathsFromRoot.length;
-                        k++
-                    ) {
-                        if (
-                            intersectingHere.includes(
-                                incomingNodesPathsFromRoot[k].nodeId,
-                            )
-                        ) {
-                            incomingNodesPathsFromRoot[k].nodeId =
-                                subIntermediaryNode.id
-                        }
-                    }
-
-                    nodeId = subIntermediaryNode.id
-                }
-            }
-        }
 
         // recompute convergence points until all of them are handled (replaced by intermediary nodes)
         convergencePoints = findConvergencePointsInFlow(modifiedNodes)

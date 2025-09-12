@@ -3,6 +3,7 @@ import { Edge } from '@xyflow/react'
 import {
     mockIvrMenuStep,
     mockPlayMessageStep,
+    mockSendToSMSStep,
     mockSendToVoicemailStep,
     mockTimeSplitConditionalStep,
 } from '@gorgias/helpdesk-mocks'
@@ -444,6 +445,151 @@ describe('utils', () => {
                 )
             })
         })
+
+        it('should transform a complex voice flow with multi-IVR and time split nodes to react flow nodes', () => {
+            /**
+             * flow example: play message -> time rule
+             * outside business hours -> voicemail
+             * inside business hours -> IVR menu 1 with 3 options: opt1, opt2 and opt3
+             *   opt1 -> play message 2 -> send to sms -> END call
+             *   opt2 -> time rule 2
+             *      -> inside -> time rule 3
+             *          -> inside -> send to sms -> END CALL
+             *          -> outside -> send to sms -> END CALL
+             *      -> outside -> send to sms -> END CALL
+             *   opt3 inside -> IVR menu 2
+             *      -> option 1 -> IVR menu 3
+             *           -> option 1 -> send to sms -> END CALL
+             *           -> option 2 -> send to sms -> END CALL
+             *      -> option 2 -> send to sms -> END CALL
+             *      -> option 3 -> send to sms -> END CALL
+             *
+             *  We check for intermediary nodes created for:
+             *      * time_rule_1
+             *      * time_rule_2
+             *      * time_rule_3
+             *      * ivr_menu_1
+             *      * ivr_menu_2
+             *      * ivr_menu_3
+             */
+            const playMessageNodeStart = mockPlayMessageStep({
+                id: 'play_message_start',
+                next_step_id: 'time_rule_1',
+            })
+            const timeRuleNode1 = mockTimeSplitConditionalStep({
+                id: 'time_rule_1',
+                on_true_step_id: 'ivr_menu_1',
+                on_false_step_id: 'voicemail',
+            })
+            const voicemail = mockSendToVoicemailStep({ id: 'voicemail' })
+            const ivrMenuNode1 = mockIvrMenuStep({
+                id: 'ivr_menu_1',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'play_message_2',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'time_rule_2',
+                    },
+                    {
+                        input_digit: '3',
+                        next_step_id: 'ivr_menu_2',
+                    },
+                ],
+            })
+            const playMessageNode2 = mockPlayMessageStep({
+                id: 'play_message_2',
+                next_step_id: 'send_to_sms',
+            })
+            const timeRuleNode2 = mockTimeSplitConditionalStep({
+                id: 'time_rule_2',
+                on_true_step_id: 'time_rule_3',
+                on_false_step_id: 'send_to_sms',
+            })
+            const timeRuleNode3 = mockTimeSplitConditionalStep({
+                id: 'time_rule_3',
+                on_true_step_id: 'send_to_sms',
+                on_false_step_id: 'send_to_sms',
+            })
+            const ivrMenuNode2 = mockIvrMenuStep({
+                id: 'ivr_menu_2',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'ivr_menu_3',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'send_to_sms',
+                    },
+                ],
+            })
+            const ivrMenuNode3 = mockIvrMenuStep({
+                id: 'ivr_menu_3',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'send_to_sms',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'send_to_sms',
+                    },
+                    {
+                        input_digit: '3',
+                        next_step_id: 'send_to_sms',
+                    },
+                ],
+            })
+            const sendToSmsNode = mockSendToSMSStep({
+                id: 'send_to_sms',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: 'play_message_start',
+                steps: {
+                    play_message_start: playMessageNodeStart,
+                    time_rule_1: timeRuleNode1,
+                    voicemail: voicemail,
+                    ivr_menu_1: ivrMenuNode1,
+                    play_message_2: playMessageNode2,
+                    time_rule_2: timeRuleNode2,
+                    time_rule_3: timeRuleNode3,
+                    send_to_sms: sendToSmsNode,
+                    ivr_menu_2: ivrMenuNode2,
+                    ivr_menu_3: ivrMenuNode3,
+                },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+
+            // check intermediary nodes links
+            const intermediaryNodes = nodes.filter(
+                (node) => node.type === VoiceFlowNodeType.Intermediary,
+            )
+            expect(intermediaryNodes).toHaveLength(6)
+            // const intermediaryNode1 = intermediaryNodes[0] as IntermediaryNode
+            // const intermediaryNode2 = intermediaryNodes[1] as IntermediaryNode
+            //
+            // // check options from ivr menu point to intermediary node 2
+            // ;['play_message_3', 'voicemail'].forEach((id) => {
+            //     const convergingNode = nodes.find((node) => node.id === id)
+            //     expect(convergingNode).toBeDefined()
+            //     expect((convergingNode as any).data.next_step_id).toBe(
+            //         intermediaryNode2.id,
+            //     )
+            // })
+            // // check play message 2 and intermediary node 2 to intermediary node 1
+            // ;['play_message_2', intermediaryNode2.id].forEach((id) => {
+            //     const convergingNode = nodes.find((node) => node.id === id)
+            //     expect(convergingNode).toBeDefined()
+            //     expect((convergingNode as any).data.next_step_id).toBe(
+            //         intermediaryNode1.id,
+            //     )
+            // })
+        })
     })
 
     describe('findConvergencePointsInVoiceFlow', () => {
@@ -622,27 +768,23 @@ describe('utils', () => {
             expect(result).toEqual({ weight: 50, height: 12 })
         })
 
-        it('should return short edge props for Intermediary source', () => {
+        it('should return short edge props for IvrOption source', () => {
             const edge: Edge = {
                 id: 'edge1',
-                source: 'intermediary-node',
+                source: 'ivr-option-node',
                 target: 'target-node',
             }
             const nodes: VoiceFlowNode[] = [
                 {
-                    id: 'intermediary-node',
-                    type: VoiceFlowNodeType.Intermediary,
-                    data: {
-                        next_step_id: 'target-node',
-                        convergingNodes: ['node1', 'node2'],
-                    },
+                    id: 'ivr-option-node',
+                    type: VoiceFlowNodeType.IvrOption,
                     position: { x: 0, y: 0 },
-                } as IntermediaryNode,
+                } as IvrOptionNode,
             ]
 
             const result = getEdgeProps(edge, nodes)
 
-            expect(result).toEqual({ weight: 50, height: 12 })
+            expect(result).toEqual({ weight: 45, height: 24 })
         })
 
         it('should return default edge props for PlayMessage source', () => {

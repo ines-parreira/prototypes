@@ -337,8 +337,10 @@ export function getEdgeProps(
         // short edges, that bring the elements closer together
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.TimeSplitConditional:
-        case VoiceFlowNodeType.Intermediary:
             return { weight: 50, height: 12 }
+        case VoiceFlowNodeType.IvrOption:
+        case VoiceFlowNodeType.TimeSplitOption:
+            return { weight: 45, height: 24 }
         default:
             return { weight: 1, height: 24 }
     }
