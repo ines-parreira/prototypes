@@ -12,6 +12,8 @@ import {
 import { Drawer } from 'pages/common/components/Drawer'
 import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 
+import { useDeleteNode } from '../utils/useDeleteNode'
+
 import css from './VoiceStepNode.less'
 
 type VoiceStepNodeProps = NodeProps & {
@@ -36,6 +38,7 @@ export function VoiceStepNode({
     const handleDrawerClose = () => {
         setSelected(false)
     }
+    const { deleteNode } = useDeleteNode()
 
     return (
         <>
@@ -61,7 +64,9 @@ export function VoiceStepNode({
                                         delete
                                     </i>
                                 }
-                                onClick={() => {}}
+                                onClick={() => {
+                                    deleteNode(rest.id)
+                                }}
                             />
                         </StepCardActionMenu>
                     </StepCard>

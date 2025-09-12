@@ -7,7 +7,10 @@ import {
     mockCallRoutingFlow,
     mockForwardToExternalNumberStep,
 } from '@gorgias/helpdesk-mocks'
-import { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
+import {
+    CallRoutingFlow,
+    ForwardToExternalNumberStep,
+} from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
@@ -17,16 +20,20 @@ import { ForwardToNode } from '../ForwardToNode'
 
 const renderComponent = (
     mockStepData: Partial<ForwardToExternalNumberStep> = {},
+    flow?: CallRoutingFlow,
 ) => {
     const mockStep = mockForwardToExternalNumberStep({
         external_number: '',
         ...mockStepData,
     })
 
-    const mockFlow = mockCallRoutingFlow({
-        first_step_id: mockStep.id,
-        steps: { [mockStep.id]: mockStep },
-    })
+    const mockFlow =
+        flow ||
+        mockCallRoutingFlow({
+            first_step_id: mockStep.id,
+            steps: { [mockStep.id]: mockStep },
+        })
+
     const props = {
         data: mockStep,
     } as ComponentProps<typeof ForwardToNode>
@@ -108,5 +115,16 @@ describe('ForwardToNode', () => {
                 expect(screen.queryByText('warning_amber')).toBeNull()
             })
         })
+    })
+
+    it('should not render node when form value does not exist', () => {
+        const step = mockForwardToExternalNumberStep()
+        const flow = {
+            steps: {},
+        }
+
+        renderComponent(step, flow as any)
+
+        expect(screen.queryByText('Forward to')).not.toBeInTheDocument()
     })
 })

@@ -27,11 +27,10 @@ import css from './VoiceStepNode.less'
 
 export function EnqueueNode(props: NodeProps<EnqueueNode>) {
     const { id } = props.data
-    const step: EnqueueStep = useWatch({ name: `steps.${id}` })
-    const { queue_id, callback_requests } = step
+    const step: EnqueueStep | null = useWatch({ name: `steps.${id}` })
 
     const { data: queueData } = useGetVoiceQueue(
-        queue_id ?? 0,
+        step?.queue_id ?? 0,
         {
             with_integrations: true,
         },
@@ -47,10 +46,10 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
     const errors = useMemo(() => {
         const errors: string[] = []
 
-        if (!step.queue_id) {
+        if (!step?.queue_id) {
             errors.push('Queue is required')
         }
-        if (step.callback_requests?.enabled) {
+        if (step?.callback_requests?.enabled) {
             try {
                 if (
                     !validateVoiceCallbackRequests(step.callback_requests)
@@ -65,6 +64,10 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
 
         return errors
     }, [step])
+
+    if (!step) {
+        return null
+    }
 
     return (
         <VoiceStepNode
@@ -86,7 +89,9 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                         name={`steps.${id}.queue_id`}
                         withLabel={false}
                     />
-                    {queue_id && <VoiceQueueSummary queue_id={queue_id} />}
+                    {step?.queue_id && (
+                        <VoiceQueueSummary queue_id={step.queue_id} />
+                    )}
                 </VoiceNodeFormSection>
 
                 <VoiceNodeFormSection
@@ -125,7 +130,7 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                         field={CheckBoxField}
                         label={'Allow callers to request callbacks'}
                     />
-                    {callback_requests?.enabled && (
+                    {step?.callback_requests?.enabled && (
                         <StaticVerticalStepper>
                             <StaticVerticalStep stepDescription="First, inform callers about callbacks:">
                                 <FormField

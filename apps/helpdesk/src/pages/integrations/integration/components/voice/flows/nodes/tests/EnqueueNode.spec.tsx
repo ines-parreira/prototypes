@@ -9,7 +9,7 @@ import {
     mockGetVoiceQueueHandler,
     mockListVoiceQueuesHandler,
 } from '@gorgias/helpdesk-mocks'
-import { EnqueueStep } from '@gorgias/helpdesk-types'
+import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
@@ -43,11 +43,13 @@ describe('EnqueueNode', () => {
         server.resetHandlers()
     })
 
-    const renderComponent = (mockStep: EnqueueStep) => {
-        const mockFlow = mockCallRoutingFlow({
-            first_step_id: mockStep.id,
-            steps: { [mockStep.id]: mockStep },
-        })
+    const renderComponent = (mockStep: EnqueueStep, flow?: CallRoutingFlow) => {
+        const mockFlow =
+            flow ||
+            mockCallRoutingFlow({
+                first_step_id: mockStep.id,
+                steps: { [mockStep.id]: mockStep },
+            })
 
         const props = {
             data: mockStep,
@@ -177,5 +179,16 @@ describe('EnqueueNode', () => {
                 'When checked, Callers keep their place in line and get called back when an agent is available.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should not render node when form value does not exist', () => {
+        const step = mockEnqueueStep()
+        const flow = {
+            steps: {},
+        }
+
+        renderComponent(step, flow as any)
+
+        expect(screen.queryByText('Route to')).not.toBeInTheDocument()
     })
 })

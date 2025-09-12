@@ -1,10 +1,17 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { act } from 'react-dom/test-utils'
 
 import { FlowProvider } from 'core/ui/flows'
 
 import { VoiceStepNode } from '../VoiceStepNode'
+
+const mockUseDeleteNode = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
+    () => ({
+        useDeleteNode: () => ({ deleteNode: mockUseDeleteNode }),
+    }),
+)
 
 const mockIcon = <span>Test Icon</span>
 const mockChildren = <div>Test Content</div>
@@ -24,6 +31,7 @@ describe('VoiceStepNode', () => {
         icon: mockIcon,
         errors: [],
         children: mockChildren,
+        id: 'test-id',
     }
 
     it('renders with basic props', () => {
@@ -55,8 +63,8 @@ describe('VoiceStepNode', () => {
         expect(stepCardWrapper).toBeInTheDocument()
 
         // Click on the card wrapper
-        act(() => {
-            user.click(stepCardWrapper!)
+        await act(async () => {
+            await user.click(stepCardWrapper!)
         })
 
         await waitFor(() => {
@@ -65,16 +73,25 @@ describe('VoiceStepNode', () => {
     })
 
     it('renders delete action menu item', async () => {
+        const user = userEvent.setup()
         renderComponent(defaultProps)
 
         const menuButton = screen.getByTitle('Action menu')
 
-        act(() => {
-            userEvent.click(menuButton)
+        await act(async () => {
+            await user.click(menuButton)
         })
 
         await waitFor(() => {
             expect(screen.getByText('Delete')).toBeInTheDocument()
+        })
+
+        await act(async () => {
+            await user.click(screen.getByText('Delete'))
+        })
+
+        await waitFor(() => {
+            expect(mockUseDeleteNode).toHaveBeenCalledWith(defaultProps.id)
         })
     })
 })

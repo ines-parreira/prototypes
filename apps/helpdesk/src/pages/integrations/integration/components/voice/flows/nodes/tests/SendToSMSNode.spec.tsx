@@ -235,4 +235,14 @@ describe('SendToSMSNode', () => {
             ).toHaveLength(2)
         })
     })
+
+    it('should not render anything when form value does not exist', () => {
+        const step = mockSendToSMSStep()
+        const flow = {
+            steps: {},
+        }
+
+        const { container } = renderComponent(step, flow as any)
+        expect(container.querySelector('div')).toBeNull()
+    })
 })

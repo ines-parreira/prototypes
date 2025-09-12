@@ -176,4 +176,15 @@ describe('PlayMessageNode', () => {
             ),
         ).not.toBeInTheDocument()
     })
+
+    it('does not render anything when form value does not exist', () => {
+        const mockStep = mockPlayMessageStep()
+        const mockFlow = {
+            steps: {},
+        }
+
+        const { container } = renderComponent(mockFlow as any, mockStep)
+
+        expect(container.querySelector('div')).toBeNull()
+    })
 })

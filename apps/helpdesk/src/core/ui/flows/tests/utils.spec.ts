@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash'
 import { VoiceFlowNodeType } from 'pages/integrations/integration/components/voice/flows/constants'
 
 import {
+    bfsNodesBetween,
     buildIncomingEdgesMap,
     createFlowGraph,
     findConvergencePoints,
@@ -841,5 +842,68 @@ describe('getIntermediaryNodeId', () => {
     it('should return the correct intermediary node id', () => {
         const result = getIntermediaryNodeId('start')
         expect(result).toBe('intermediary_for_start')
+    })
+})
+
+describe('bfsNodesBetween', () => {
+    it('should return the correct subflow (nodes between two nodes)', () => {
+        const nodes = [
+            {
+                id: 'start',
+                type: 'start',
+                data: { next: 'step-1' },
+                position: { x: 0, y: 0 },
+            },
+            {
+                id: 'step-1',
+                type: 'process',
+                data: { next: ['opt-1', 'opt-2'] },
+                position: { x: 0, y: 100 },
+            },
+            {
+                id: 'opt-1',
+                type: 'process',
+                data: { next: 'opt-1-something' },
+                position: { x: 0, y: 200 },
+            },
+            {
+                id: 'opt-2',
+                type: 'process',
+                data: { next: 'opt-2-something' },
+                position: { x: 0, y: 200 },
+            },
+            {
+                id: 'opt-1-something',
+                type: 'process',
+                data: { next: 'merge' },
+                position: { x: 0, y: 300 },
+            },
+            {
+                id: 'opt-2-something',
+                type: 'process',
+                data: { next: 'merge' },
+                position: { x: 0, y: 300 },
+            },
+            {
+                id: 'merge',
+                type: 'merge',
+                data: { next: 'end' },
+                position: { x: 0, y: 400 },
+            },
+            {
+                id: 'end',
+                type: 'end',
+                data: {},
+                position: { x: 0, y: 400 },
+            },
+        ]
+        const result = bfsNodesBetween(nodes, 'step-1', 'merge', getNextNodes)
+        expect(result).toEqual([
+            'step-1',
+            'opt-1',
+            'opt-2',
+            'opt-1-something',
+            'opt-2-something',
+        ])
     })
 })

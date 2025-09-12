@@ -161,4 +161,15 @@ describe('SendToVoicemailNode', () => {
             ),
         ).toBeInTheDocument()
     })
+
+    it('should not render anything when form value does not exist', () => {
+        const mockStep = mockSendToVoicemailStep()
+        const flow = {
+            steps: {},
+        }
+
+        const { container } = renderComponent(flow as any, mockStep)
+
+        expect(container.querySelector('div')).toBeNull()
+    })
 })

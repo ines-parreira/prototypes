@@ -48,17 +48,19 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const { getBusinessHoursConfigLabel } = useBusinessHours()
 
     const { id } = data
-    const step: TimeSplitConditionalStep = useWatch({ name: `steps.${id}` })
-    const { rule_type, custom_hours } = step
-    const isCustomHours = rule_type === TimeSplitConditionalRuleType.CustomHours
+    const step: TimeSplitConditionalStep | null = useWatch({
+        name: `steps.${id}`,
+    })
+    const isCustomHours =
+        step?.rule_type === TimeSplitConditionalRuleType.CustomHours
 
-    const schedule = isCustomHours ? custom_hours : businessHours
+    const schedule = isCustomHours ? step?.custom_hours : businessHours
     const hours = schedule ? getBusinessHoursConfigLabel(schedule, true) : ''
     const businessHoursSchedule = businessHours
         ? getBusinessHoursConfigLabel(businessHours, true)
         : ''
     const errors =
-        step.on_true_step_id && step.on_false_step_id
+        step?.on_true_step_id && step?.on_false_step_id
             ? []
             : ['Branches are required and cannot point to end call']
 
@@ -74,10 +76,14 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
 
     useEffect(() => {
         // Update the node data when the rule type changes to reflect in the children nodes
-        if (rule_type !== data.rule_type) {
-            updateNodeData(id, { rule_type })
+        if (step?.rule_type !== data.rule_type) {
+            updateNodeData(id, { rule_type: step?.rule_type })
         }
-    }, [rule_type, id, updateNodeData, data.rule_type])
+    }, [step?.rule_type, id, updateNodeData, data.rule_type])
+
+    if (!step) {
+        return null
+    }
 
     return (
         <VoiceStepNode

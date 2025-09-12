@@ -24,8 +24,7 @@ import css from './VoiceStepNode.less'
 
 export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
     const { id } = props.data
-    const step: SendToSMSStep = useWatch({ name: `steps.${id}` })
-    const { confirmation_message, sms_integration_id, sms_content } = step
+    const step: SendToSMSStep | null = useWatch({ name: `steps.${id}` })
 
     // we don't have the API exposed to get the phone numbers, so we use the selector
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
@@ -33,7 +32,7 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
     const { data: smsIntegrationsData } = useListIntegrations({ type: 'sms' })
     const smsIntegrations = smsIntegrationsData?.data?.data || []
     const chosenSmsIntegration = smsIntegrations.find(
-        (integration) => integration.id === sms_integration_id,
+        (integration) => integration.id === step?.sms_integration_id,
     )
 
     // Custom validation of the step
@@ -42,15 +41,19 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
         if (!chosenSmsIntegration) {
             errors.push('SMS integration is required')
         }
-        if (!sms_content) {
+        if (!step?.sms_content) {
             errors.push('Outbound SMS message is required')
         }
-        if (!validateVoiceMessage(confirmation_message).isValid) {
+        if (!validateVoiceMessage(step?.confirmation_message).isValid) {
             errors.push('SMS confirmation message is required')
         }
 
         return errors
-    }, [confirmation_message, sms_content, chosenSmsIntegration])
+    }, [step?.confirmation_message, step?.sms_content, chosenSmsIntegration])
+
+    if (!step) {
+        return null
+    }
 
     return (
         <VoiceStepNode

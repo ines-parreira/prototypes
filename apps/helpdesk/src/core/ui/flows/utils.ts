@@ -335,3 +335,40 @@ export function insertConvergenceNodes<
 
     return modifiedNodes
 }
+
+export function bfsNodesBetween<TNode extends Node>(
+    nodes: TNode[],
+    startNodeId: string,
+    endNodeId: string,
+    getNextNodes: (node: TNode, nodes: TNode[]) => string[],
+): string[] {
+    let res: string[] = []
+    let queue: string[] = [startNodeId]
+
+    let visited: Record<string, boolean> = {
+        [startNodeId]: true,
+    }
+
+    while (queue.length > 0) {
+        let curr = queue.shift()
+        const currNode = nodes.find((node) => node.id === curr)
+
+        if (!curr || !currNode) continue
+
+        res.push(curr)
+
+        const nextNodes = getNextNodes(currNode, nodes)
+
+        if (nextNodes.includes(endNodeId)) {
+            continue
+        }
+
+        for (let x of nextNodes) {
+            if (!visited[x]) {
+                visited[x] = true
+                queue.push(x)
+            }
+        }
+    }
+    return res
+}

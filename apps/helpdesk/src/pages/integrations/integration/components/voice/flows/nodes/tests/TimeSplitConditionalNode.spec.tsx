@@ -152,6 +152,19 @@ describe('TimeSplitConditionalNode', () => {
                 expect(screen.getByLabelText('Business hours')).toBeChecked()
             })
         })
+
+        it(`should not render anything when form value doesn't exist`, async () => {
+            const mockFlow = {
+                ...mockDefaultFlowData,
+                steps: {},
+            }
+            const { container } = renderComponent(
+                { id: 'abc' } as any,
+                mockFlow,
+            )
+
+            expect(container.querySelector('div')).toBeNull()
+        })
     })
 
     describe('Custom Hours', () => {

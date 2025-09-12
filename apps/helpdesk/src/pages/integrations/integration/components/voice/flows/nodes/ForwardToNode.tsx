@@ -4,6 +4,7 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 import { useWatch } from 'react-hook-form'
 
 import { Banner } from '@gorgias/axiom'
+import { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
 import { NodeProps, NodeWrapper } from 'core/ui/flows'
@@ -17,7 +18,10 @@ type ForwardToNodeProps = NodeProps<ForwardToExternalNode>
 
 export function ForwardToNode(props: ForwardToNodeProps) {
     const { id } = props.data
-    const external_number = useWatch({ name: `steps.${id}.external_number` })
+    const step: ForwardToExternalNumberStep | null = useWatch({
+        name: `steps.${id}`,
+    })
+    const external_number = step?.external_number
 
     const errors = useMemo(() => {
         const errors: string[] = []
@@ -29,6 +33,10 @@ export function ForwardToNode(props: ForwardToNodeProps) {
 
         return errors
     }, [external_number])
+
+    if (!step) {
+        return null
+    }
 
     return (
         <NodeWrapper {...props}>

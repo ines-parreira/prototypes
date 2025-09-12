@@ -1,6 +1,7 @@
 import { Edge } from '@xyflow/react'
 
 import {
+    mockForwardToExternalNumberStep,
     mockIvrMenuStep,
     mockPlayMessageStep,
     mockSendToSMSStep,
@@ -9,6 +10,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import {
     CallRoutingFlow,
+    CallRoutingFlowSteps,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
@@ -45,6 +47,8 @@ import {
     getEdgeProps,
     getFormTargetStepId,
     getNextNodes,
+    getNextSteps,
+    getParentSteps,
     getSourceNodes,
     isBranchingNode,
     isBranchingOption,
@@ -52,6 +56,7 @@ import {
     linkFormStep,
     pointsToEndNode,
     transformToReactFlowNodes,
+    updateFormFlowOnNodeDelete,
     updateIvrMenuNodeData,
     updateTimeSplitNodeData,
 } from '../utils'
@@ -1702,6 +1707,360 @@ describe('utils', () => {
             expect(updated.branch_options[0].next_step_id).toBe('new-id')
             expect(updated.branch_options[1].next_step_id).toBe('new-id')
             expect(updated.branch_options[2].next_step_id).toBe('other-id')
+        })
+    })
+
+    describe('getNextSteps', () => {
+        it('should return the correct next steps for all step types', () => {
+            const steps: CallRoutingFlowSteps = {
+                'step-1': mockPlayMessageStep({
+                    id: 'step-1',
+                    next_step_id: 'step-2',
+                }),
+                'step-2': mockIvrMenuStep({
+                    id: 'step-2',
+                    branch_options: [
+                        { input_digit: '1', next_step_id: 'step-3' },
+                        { input_digit: '2', next_step_id: 'step-4' },
+                        { input_digit: '3', next_step_id: 'step-6' },
+                    ],
+                }),
+                'step-3': mockTimeSplitConditionalStep({
+                    id: 'step-3',
+                    on_true_step_id: 'step-5',
+                    on_false_step_id: 'step-6',
+                }),
+                'step-4': mockSendToVoicemailStep({
+                    id: 'step-4',
+                    next_step_id: null,
+                }),
+                'step-5': mockForwardToExternalNumberStep({
+                    id: 'step-5',
+                    next_step_id: 'step-6',
+                }),
+                'step-6': mockSendToSMSStep({
+                    id: 'step-6',
+                    next_step_id: null,
+                }),
+                'step-7': {
+                    id: 'step-7',
+                } as any,
+            }
+
+            expect(getNextSteps(steps, 'step-1')).toEqual(['step-2'])
+            expect(getNextSteps(steps, 'step-2')).toEqual([
+                'step-3',
+                'step-4',
+                'step-6',
+            ])
+            expect(getNextSteps(steps, 'step-3')).toEqual(['step-5', 'step-6'])
+            expect(getNextSteps(steps, 'step-4')).toEqual([null])
+            expect(getNextSteps(steps, 'step-5')).toEqual(['step-6'])
+            expect(getNextSteps(steps, 'step-6')).toEqual([null])
+            expect(getNextSteps(steps, 'step-7')).toEqual([])
+        })
+    })
+
+    describe('getParentSteps', () => {
+        it('should return the correct parent steps for all step types', () => {
+            const steps: CallRoutingFlowSteps = {
+                'step-1': mockPlayMessageStep({
+                    id: 'step-1',
+                    next_step_id: 'step-2',
+                }),
+                'step-2': mockIvrMenuStep({
+                    id: 'step-2',
+                    branch_options: [
+                        { input_digit: '1', next_step_id: 'step-3' },
+                        { input_digit: '2', next_step_id: 'step-4' },
+                        { input_digit: '3', next_step_id: 'step-6' },
+                    ],
+                }),
+                'step-3': mockTimeSplitConditionalStep({
+                    id: 'step-3',
+                    on_true_step_id: 'step-5',
+                    on_false_step_id: 'step-6',
+                }),
+                'step-4': mockSendToVoicemailStep({
+                    id: 'step-4',
+                    next_step_id: null,
+                }),
+                'step-5': mockForwardToExternalNumberStep({
+                    id: 'step-5',
+                    next_step_id: 'step-6',
+                }),
+                'step-6': mockSendToSMSStep({
+                    id: 'step-6',
+                    next_step_id: null,
+                }),
+            }
+
+            expect(getParentSteps(steps, 'step-1')).toEqual([])
+            expect(getParentSteps(steps, 'step-2')).toEqual(['step-1'])
+            expect(getParentSteps(steps, 'step-3')).toEqual(['step-2'])
+            expect(getParentSteps(steps, 'step-4')).toEqual(['step-2'])
+            expect(getParentSteps(steps, 'step-5')).toEqual(['step-3'])
+            expect(getParentSteps(steps, 'step-6')).toEqual([
+                'step-2',
+                'step-3',
+                'step-5',
+            ])
+        })
+    })
+
+    describe('updateFormFlowOnNodeDelete', () => {
+        it('should update the flow correctly when the only node is deleted', () => {
+            const flow: CallRoutingFlow = {
+                first_step_id: 'first-step',
+                steps: {
+                    'first-step': {
+                        id: 'first-step',
+                        name: 'Play message',
+                        step_type: 'play_message',
+                        message: {
+                            voice_message_type: 'text_to_speech',
+                            text_to_speech_content: '',
+                        },
+                        next_step_id: null,
+                    },
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(flow, 'first-step', [])
+
+            expect(updated.first_step_id).toBe(null)
+            expect(updated.steps).toEqual({})
+        })
+
+        it('should update the flow correctly when the second step is deleted', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockPlayMessageStep({
+                id: 'second-step',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(flow, secondStep.id, [])
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: {
+                    ...firstStep,
+                    next_step_id: null,
+                },
+            })
+        })
+
+        it('should update the flow correctly when a branching node is deleted', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockIvrMenuStep({
+                id: 'second-step',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'branch-option-1',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'branch-option-2',
+                    },
+                ],
+            })
+            const branchOption1 = mockSendToSMSStep({
+                id: 'branch-option-1',
+                next_step_id: null,
+            })
+            const branchOption2 = mockSendToVoicemailStep({
+                id: 'branch-option-2',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [branchOption1.id]: branchOption1,
+                    [branchOption2.id]: branchOption2,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(
+                flow,
+                secondStep.id,
+                [branchOption1.id, branchOption2.id],
+                null,
+            )
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: {
+                    ...firstStep,
+                    next_step_id: null,
+                },
+            })
+        })
+
+        it('should update the flow correctly when the parent node is an ivr node', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockIvrMenuStep({
+                id: 'second-step',
+                branch_options: [
+                    { input_digit: '1', next_step_id: 'branch-option-1' },
+                    { input_digit: '2', next_step_id: 'branch-option-2' },
+                ],
+            })
+            const branchOption1 = mockPlayMessageStep({
+                id: 'branch-option-1',
+                next_step_id: 'branch-option-1-extra',
+            })
+            const branchOption1Extra = mockSendToSMSStep({
+                id: 'branch-option-1-extra',
+                next_step_id: null,
+            })
+            const branchOption2 = mockSendToVoicemailStep({
+                id: 'branch-option-2',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [branchOption1.id]: branchOption1,
+                    [branchOption1Extra.id]: branchOption1Extra,
+                    [branchOption2.id]: branchOption2,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(
+                flow,
+                branchOption1.id,
+                [],
+            )
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: firstStep,
+                [secondStep.id]: {
+                    ...secondStep,
+                    branch_options: [
+                        {
+                            ...secondStep.branch_options[0],
+                            next_step_id: branchOption1Extra.id,
+                        },
+                        secondStep.branch_options[1],
+                    ],
+                },
+                [branchOption1Extra.id]: branchOption1Extra,
+                [branchOption2.id]: branchOption2,
+            })
+        })
+
+        it('should update the flow correctly when the parent node is a time split node - first branch', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockTimeSplitConditionalStep({
+                id: 'second-step',
+                on_true_step_id: 'branch-option-1',
+                on_false_step_id: 'branch-option-2',
+            })
+            const branchOption1 = mockSendToSMSStep({
+                id: 'branch-option-1',
+                next_step_id: null,
+            })
+            const branchOption2 = mockSendToVoicemailStep({
+                id: 'branch-option-2',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [branchOption1.id]: branchOption1,
+                    [branchOption2.id]: branchOption2,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(
+                flow,
+                branchOption1.id,
+                [],
+            )
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: firstStep,
+                [secondStep.id]: {
+                    ...secondStep,
+                    on_true_step_id: null,
+                    on_false_step_id: branchOption2.id,
+                },
+                [branchOption2.id]: branchOption2,
+            })
+        })
+
+        it('should update the flow correctly when the parent node is a time split node - second branch', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockTimeSplitConditionalStep({
+                id: 'second-step',
+                on_true_step_id: 'branch-option-1',
+                on_false_step_id: 'branch-option-2',
+            })
+            const branchOption1 = mockSendToSMSStep({
+                id: 'branch-option-1',
+                next_step_id: null,
+            })
+            const branchOption2 = mockSendToVoicemailStep({
+                id: 'branch-option-2',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [branchOption1.id]: branchOption1,
+                    [branchOption2.id]: branchOption2,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(
+                flow,
+                branchOption2.id,
+                [],
+            )
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: firstStep,
+                [secondStep.id]: {
+                    ...secondStep,
+                    on_true_step_id: branchOption1.id,
+                    on_false_step_id: null,
+                },
+                [branchOption1.id]: branchOption1,
+            })
         })
     })
 })

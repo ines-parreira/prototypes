@@ -104,6 +104,36 @@ export function getNextNodes(
     }
 }
 
+export function getNextSteps(
+    steps: CallRoutingFlowSteps,
+    stepId: string,
+): (string | null | undefined)[] {
+    const step = steps[stepId]
+
+    switch (step.step_type) {
+        case VoiceFlowNodeType.IvrMenu:
+            return step.branch_options.map((option) => option.next_step_id)
+        case VoiceFlowNodeType.TimeSplitConditional:
+            return [step.on_true_step_id, step.on_false_step_id]
+        default:
+            if ('next_step_id' in step) {
+                return [step.next_step_id]
+            }
+            return []
+    }
+}
+
+export function getParentSteps(
+    steps: CallRoutingFlowSteps,
+    stepId: string,
+): string[] {
+    const parentSteps = Object.keys(steps).filter((id) => {
+        return getNextSteps(steps, id).includes(stepId)
+    })
+
+    return parentSteps
+}
+
 export function createIvrOptionNode(
     parentId: string,
     optionIndex: number,
@@ -244,7 +274,7 @@ export function transformToReactFlowNodes(
 
     const incomingCallNode = {
         ...INCOMING_CALL_NODE,
-        data: { next_step_id: flow.first_step_id },
+        data: { next_step_id: flow.first_step_id || END_CALL_NODE.id },
     }
 
     const allNodes: VoiceFlowNodeBase[] = [
@@ -589,4 +619,69 @@ export const pointsToEndNode = (
         )
     }
     return false
+}
+
+export function updateFormFlowOnNodeDelete(
+    prevFlow: CallRoutingFlow,
+    nodeId: string,
+    branchingSubflowNodes: string[],
+    branchConnectorStepId?: string | null,
+): CallRoutingFlow {
+    const flow = cloneDeep(prevFlow)
+    const parentSteps = getParentSteps(flow.steps, nodeId)
+    const isBranchingNode = branchConnectorStepId !== undefined
+
+    const nextStepId = isBranchingNode
+        ? branchConnectorStepId!
+        : getNextSteps(flow.steps, nodeId)[0]!
+
+    /**
+     * 1. if it's first step, we need to set the first step to the next step
+     * 2. if parent is not branching step, we need to set the parent next_step_id to the next step
+     * 3. if parent is branching step, we need to set the branch option next_step_id to the next step
+     * 4. if current node is branching step, we need to remove all subflow nodes
+     */
+
+    if (isBranchingNode) {
+        branchingSubflowNodes.forEach((nodeId) => {
+            delete flow.steps[nodeId]
+        })
+    }
+
+    if (nodeId === flow.first_step_id) {
+        flow.first_step_id = nextStepId
+    }
+
+    parentSteps.forEach((parentStepId) => {
+        const parentStep = flow.steps[parentStepId]
+
+        switch (parentStep.step_type) {
+            case VoiceFlowNodeType.IvrMenu:
+                const optionIndex = parentStep.branch_options.findIndex(
+                    (option) => option.next_step_id === nodeId,
+                )
+                parentStep.branch_options[optionIndex] = {
+                    ...parentStep.branch_options[optionIndex],
+                    next_step_id: nextStepId,
+                }
+                break
+            case VoiceFlowNodeType.TimeSplitConditional:
+                if (parentStep.on_true_step_id === nodeId) {
+                    parentStep.on_true_step_id = nextStepId
+                }
+                if (parentStep.on_false_step_id === nodeId) {
+                    parentStep.on_false_step_id = nextStepId
+                }
+                break
+            default:
+                if ('next_step_id' in parentStep) {
+                    parentStep.next_step_id = nextStepId
+                }
+                break
+        }
+    })
+
+    delete flow.steps[nodeId]
+
+    return flow
 }

@@ -309,4 +309,15 @@ describe('IvrMenuNode', () => {
             screen.getByText(/This menu is a nested IVR/),
         ).toBeInTheDocument()
     })
+
+    it('should not render node when form value does not exist', () => {
+        const step = mockIvrMenuStep()
+        const flow = {
+            steps: {},
+        }
+
+        renderComponent(step, flow as any)
+
+        expect(screen.queryByText('IVR Menu')).not.toBeInTheDocument()
+    })
 })

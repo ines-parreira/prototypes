@@ -4,7 +4,7 @@ import { useWatch } from 'react-hook-form'
 
 import { Banner } from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
-import { CustomRecordingType } from '@gorgias/helpdesk-types'
+import { CustomRecordingType, PlayMessageStep } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
@@ -17,24 +17,28 @@ import { VoiceStepNode } from './VoiceStepNode'
 
 export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
     const { id } = props.data
-    const step = useWatch({ name: `steps.${id}` })
     const recordInboundCalls = useWatch({ name: 'record_inbound_calls' })
+    const step: PlayMessageStep | null = useWatch({ name: `steps.${id}` })
 
-    const { message } = step
     const description =
-        message.voice_message_type === 'text_to_speech'
-            ? message.text_to_speech_content || 'Message'
+        step?.message?.voice_message_type === 'text_to_speech'
+            ? step?.message?.text_to_speech_content || 'Message'
             : 'Custom recording'
 
     // Custom validation of the step
     const errors = useMemo(() => {
-        const validation = validateVoiceMessage(message)
+        const validation = validateVoiceMessage(step?.message)
         return !validation.isValid
-            ? message.voice_message_type === VoiceMessageType.TextToSpeech
+            ? step?.message?.voice_message_type ===
+              VoiceMessageType.TextToSpeech
                 ? ['Text-to-speech message is required']
                 : ['Recording is required']
             : []
-    }, [message])
+    }, [step?.message])
+
+    if (!step) {
+        return null
+    }
 
     return (
         <VoiceStepNode

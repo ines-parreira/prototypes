@@ -36,9 +36,13 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { updateNodeData, getNodes, addNodes, getNode } = useVoiceFlow()
 
     const { id } = data
-    const step: IvrMenuStep = useWatch({ name: `steps.${id}` })
+    const step: IvrMenuStep | null = useWatch({
+        name: `steps.${id}`,
+    })
 
     useEffect(() => {
+        if (!step) return
+
         if (step.branch_options.length !== data.branch_options.length) {
             // Update node data when the value changes to reflect in children nodes
             updateNodeData(id, step)
@@ -48,11 +52,11 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
     const errors = useMemo(() => {
         const errors: string[] = []
 
-        if (!validateVoiceMessage(step.message).isValid) {
+        if (!validateVoiceMessage(step?.message).isValid) {
             errors.push('Greeting message is required')
         }
 
-        const branchOptionsErrors = step.branch_options?.find(
+        const branchOptionsErrors = step?.branch_options?.find(
             (option) => !validateBranchOptions(option).isValid,
         )
 
@@ -88,6 +92,10 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
             position: { x: 0, y: 0 },
         }
         addNodes(newNode)
+    }
+
+    if (!step) {
+        return null
     }
 
     return (
