@@ -72,6 +72,22 @@ describe('PlaygroundActionsToggle', () => {
         expect(warningIcon).toHaveAttribute('src', 'test-file-stub')
     })
 
+    it('should display tooltip on warning icon hover when actions are enabled', async () => {
+        render(<PlaygroundActionsToggle {...defaultProps} value={true} />)
+
+        const warningIcon = screen.getByAltText('warning')
+
+        await act(async () => {
+            await userEvent.hover(warningIcon)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/changes will affect live data/i),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should open modal when toggling from disabled to enabled', async () => {
         render(<PlaygroundActionsToggle {...defaultProps} />)
 
