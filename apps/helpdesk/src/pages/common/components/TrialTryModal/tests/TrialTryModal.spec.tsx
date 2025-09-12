@@ -13,6 +13,7 @@ import TrialTryModal, { TrialFeature } from '../TrialTryModal'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('models/aiAgent/queries')
+jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 
 const mockCurrentPlan = {
     name: 'Basic',
@@ -83,6 +84,9 @@ const defaultProps = {
 
 const mockUseAppSelector = jest.requireMock('hooks/useAppSelector').default
 const mockUseGetTrials = jest.requireMock('models/aiAgent/queries').useGetTrials
+const mockUseAiAgentUpgradePlan = jest.requireMock(
+    'hooks/aiAgent/useAiAgentUpgradePlan',
+).useAiAgentUpgradePlan
 
 const mockCurrentAccount = {
     get: jest.fn().mockImplementation((key: string) => {
@@ -143,6 +147,10 @@ describe('<TrialTryModal />', () => {
             data: [],
             isLoading: false,
         })
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
     })
 
     it('renders the modal when isOpen is true', () => {
@@ -158,7 +166,12 @@ describe('<TrialTryModal />', () => {
         expect(screen.queryByText(defaultProps.title)).not.toBeInTheDocument()
     })
 
-    it('displays current and new plan pricing information', () => {
+    it('displays current and new plan pricing information when upgrade plan is available', () => {
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders()
 
         expect(screen.getByText('Current plan')).toBeInTheDocument()
@@ -184,7 +197,12 @@ describe('<TrialTryModal />', () => {
         expect(screen.getByText('Day 14')).toBeInTheDocument()
     })
 
-    it('renders terms checkbox when showTermsCheckbox is true', () => {
+    it('renders terms checkbox when showTermsCheckbox is true and upgrade plan is available', () => {
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders()
 
         expect(
@@ -201,8 +219,13 @@ describe('<TrialTryModal />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('calls onClose when close button is clicked', async () => {
+    it('calls onClose when close button is clicked and upgrade plan is available', async () => {
         const user = userEvent.setup()
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders()
 
         const closeButton = screen.getByRole('button', {
@@ -215,6 +238,10 @@ describe('<TrialTryModal />', () => {
 
     it('handles terms checkbox interaction when no existing trial', async () => {
         const user = userEvent.setup()
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
         renderWithProviders()
 
         const checkbox = screen.getByRole('checkbox')
@@ -223,9 +250,13 @@ describe('<TrialTryModal />', () => {
         await user.click(checkbox)
         expect(checkbox).toBeChecked()
     })
-
-    it('calls primaryAction.onClick when terms are accepted and primary button is clicked', async () => {
+    it('calls primaryAction.onClick when terms are accepted and primary button is clicked and upgrade plan is available', async () => {
         const user = userEvent.setup()
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders()
 
         const checkbox = screen.getByRole('checkbox')
@@ -239,8 +270,13 @@ describe('<TrialTryModal />', () => {
         expect(defaultProps.primaryAction.onClick).toHaveBeenCalledTimes(1)
     })
 
-    it('does not call primaryAction.onClick when terms are not accepted', async () => {
+    it('does not call primaryAction.onClick when terms are not accepted and upgrade plan is available', async () => {
         const user = userEvent.setup()
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders()
 
         const primaryButton = screen.getByRole('button', {
@@ -251,7 +287,12 @@ describe('<TrialTryModal />', () => {
         expect(defaultProps.primaryAction.onClick).not.toHaveBeenCalled()
     })
 
-    it('displays "Today" and "0" when currentPlan is null', () => {
+    it('displays "Today" and "0" when currentPlan is null and upgrade plan is available', () => {
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
         renderWithProviders({ currentPlan: null })
 
         expect(screen.getAllByText('Today')).toHaveLength(2)
@@ -264,9 +305,13 @@ describe('<TrialTryModal />', () => {
         ).toBeInTheDocument()
     })
 
-    it('pre-checks and disables terms checkbox when there is an active opted-in trial', () => {
+    it('pre-checks and disables terms checkbox when there is an active opted-in trial and upgrade plan is available', () => {
         mockUseGetTrials.mockReturnValue({
             data: [createMockTrial(true, false)],
+            isLoading: false,
+        })
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
             isLoading: false,
         })
 
@@ -277,22 +322,13 @@ describe('<TrialTryModal />', () => {
         expect(checkbox).toBeDisabled()
     })
 
-    it('does not pre-check terms checkbox when trial has expired', () => {
+    it('does not pre-check terms checkbox when trial has expired and upgrade plan is available', () => {
         mockUseGetTrials.mockReturnValue({
             data: [createMockTrial(true, true)],
             isLoading: false,
         })
-
-        renderWithProviders()
-
-        const checkbox = screen.getByRole('checkbox')
-        expect(checkbox).not.toBeChecked()
-        expect(checkbox).not.toBeDisabled()
-    })
-
-    it('does not pre-check terms checkbox when trial is not opted-in', () => {
-        mockUseGetTrials.mockReturnValue({
-            data: [createMockTrial(false, false)],
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
             isLoading: false,
         })
 
@@ -303,10 +339,31 @@ describe('<TrialTryModal />', () => {
         expect(checkbox).not.toBeDisabled()
     })
 
-    it('calls primaryAction.onClick directly when terms are pre-checked due to existing trial', async () => {
+    it('does not pre-check terms checkbox when trial is not opted-in and upgrade plan is available', () => {
+        mockUseGetTrials.mockReturnValue({
+            data: [createMockTrial(false, false)],
+            isLoading: false,
+        })
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
+            isLoading: false,
+        })
+
+        renderWithProviders()
+
+        const checkbox = screen.getByRole('checkbox')
+        expect(checkbox).not.toBeChecked()
+        expect(checkbox).not.toBeDisabled()
+    })
+
+    it('calls primaryAction.onClick directly when terms are pre-checked due to existing trial and upgrade plan is available', async () => {
         const user = userEvent.setup()
         mockUseGetTrials.mockReturnValue({
             data: [createMockTrial(true, false)],
+            isLoading: false,
+        })
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
             isLoading: false,
         })
 
@@ -331,13 +388,133 @@ describe('<TrialTryModal />', () => {
         expect(screen.queryByText(defaultProps.title)).not.toBeInTheDocument()
     })
 
-    it('handles multiple trials with mixed states correctly', () => {
+    describe('Upgrade Plan Conditional Rendering', () => {
+        it('renders contact message and disabled primary button when no upgrade plan data', () => {
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: null,
+                isLoading: false,
+            })
+
+            renderWithProviders()
+
+            // Should show contact message
+            expect(
+                screen.getByText(
+                    'Please get in touch with our team to start your free trial.',
+                ),
+            ).toBeInTheDocument()
+
+            // Should not show pricing section
+            expect(screen.queryByText('Current plan')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('After trial ends'),
+            ).not.toBeInTheDocument()
+
+            // Should not show terms checkbox
+            expect(
+                screen.queryByText(/I agree to the updated pricing/),
+            ).not.toBeInTheDocument()
+
+            // Primary button should be disabled
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('renders contact message and disabled primary button when upgrade plan is loading', () => {
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: null,
+                isLoading: true,
+            })
+
+            renderWithProviders()
+
+            // Should show contact message
+            expect(
+                screen.getByText(
+                    'Please get in touch with our team to start your free trial.',
+                ),
+            ).toBeInTheDocument()
+
+            // Primary button should be disabled
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('renders normal pricing section and enabled buttons when upgrade plan data exists', () => {
+            const mockUpgradePlan = {
+                id: 'pro-plan',
+                name: 'Pro Plan',
+                price: '$100',
+                billingPeriod: 'month',
+            }
+
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: mockUpgradePlan,
+                isLoading: false,
+            })
+
+            renderWithProviders()
+
+            // Should show pricing section
+            expect(screen.getByText('Current plan')).toBeInTheDocument()
+            expect(screen.getByText('After trial ends')).toBeInTheDocument()
+
+            // Should show terms checkbox
+            expect(
+                screen.getByText(/I agree to the updated pricing/),
+            ).toBeInTheDocument()
+
+            // Primary button should be enabled (not disabled by upgrade plan logic)
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            expect(primaryButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('does not call primary action when buttons are disabled due to no upgrade plan', async () => {
+            const user = userEvent.setup()
+            const mockOnClick = jest.fn()
+
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: null,
+                isLoading: false,
+            })
+
+            renderWithProviders({
+                primaryAction: {
+                    ...defaultProps.primaryAction,
+                    onClick: mockOnClick,
+                },
+            })
+
+            const primaryButton = screen.getByRole('button', {
+                name: defaultProps.primaryAction.label,
+            })
+
+            await user.click(primaryButton)
+
+            expect(mockOnClick).not.toHaveBeenCalled()
+        })
+    })
+
+    it('handles multiple trials with mixed states correctly when upgrade plan is available', () => {
         mockUseGetTrials.mockReturnValue({
             data: [
                 createMockTrial(false, false), // Not opted in
                 createMockTrial(true, true), // Opted in but expired
                 createMockTrial(true, false), // Active opted-in trial
             ],
+            isLoading: false,
+        })
+        mockUseAiAgentUpgradePlan.mockReturnValue({
+            data: { id: 'pro-plan', name: 'Pro Plan' },
             isLoading: false,
         })
 
@@ -349,6 +526,13 @@ describe('<TrialTryModal />', () => {
     })
 
     describe('Primary Action Validation', () => {
+        beforeEach(() => {
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: { id: 'pro-plan', name: 'Pro Plan' },
+                isLoading: false,
+            })
+        })
+
         it('disables primary button when primaryAction.isDisabled is true', () => {
             renderWithProviders({
                 primaryAction: {

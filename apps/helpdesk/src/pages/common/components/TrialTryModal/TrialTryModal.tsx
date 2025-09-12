@@ -1,9 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
 import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
+import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -233,6 +234,9 @@ const TrialTryModal = ({
     const { data: trials, isLoading: isTrialsLoading } =
         useGetTrials(accountDomain)
 
+    const { data: upgradePlanData, isLoading: upgradePlanDataLoading } =
+        useAiAgentUpgradePlan(accountDomain)
+
     const hasAnyOptedInTrial = !!trials?.some(
         (trial) => hasTrialOptedIn(trial) && !hasTrialExpired(trial),
     )
@@ -245,7 +249,7 @@ const TrialTryModal = ({
     const isTermsDisabled = hasAnyOptedInTrial
 
     const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
-    const handlePrimaryAction = () => {
+    const handlePrimaryAction = useCallback(() => {
         if (primaryAction?.isDisabled) {
             return
         }
@@ -254,7 +258,7 @@ const TrialTryModal = ({
             return
         }
         primaryAction?.onClick(isTermsChecked)
-    }
+    }, [primaryAction, showTermsCheckbox, isTermsChecked])
 
     const hasCheckboxError = !isTermsChecked && hasAttemptedSubmit
 
@@ -264,6 +268,81 @@ const TrialTryModal = ({
             setHasAttemptedSubmit(false)
         }
     }, [isOpen])
+
+    const hasUpgradePlan = upgradePlanData && !upgradePlanDataLoading
+
+    const planSection = useMemo(() => {
+        if (hasUpgradePlan) {
+            return (
+                <>
+                    <PlanPricingSection
+                        currentPlan={currentPlan}
+                        newPlan={newPlan}
+                    />
+
+                    {showTermsCheckbox && (
+                        <TermsCheckbox
+                            isChecked={isTermsChecked}
+                            isDisabled={isTermsDisabled}
+                            hasError={hasCheckboxError}
+                            onChange={setTermsManuallyChecked}
+                        />
+                    )}
+                </>
+            )
+        }
+
+        return (
+            <div className={css.contactUsContainer}>
+                <p>
+                    <strong>
+                        Please get in touch with our team to start your free
+                        trial.
+                    </strong>
+                </p>
+            </div>
+        )
+    }, [
+        hasUpgradePlan,
+        currentPlan,
+        newPlan,
+        showTermsCheckbox,
+        isTermsChecked,
+        isTermsDisabled,
+        hasCheckboxError,
+    ])
+
+    const actionButtons = useMemo(() => {
+        const actions = hasUpgradePlan
+            ? {
+                  primaryAction,
+                  secondaryAction,
+              }
+            : {
+                  primaryAction: primaryAction
+                      ? {
+                            ...primaryAction,
+                            isDisabled: true,
+                        }
+                      : undefined,
+                  secondaryAction,
+              }
+
+        return (
+            <ActionButtons
+                isLoading={isLoading}
+                onPrimaryClick={handlePrimaryAction}
+                primaryAction={actions.primaryAction}
+                secondaryAction={actions.secondaryAction}
+            />
+        )
+    }, [
+        hasUpgradePlan,
+        primaryAction,
+        secondaryAction,
+        isLoading,
+        handlePrimaryAction,
+    ])
 
     if (isTrialsLoading) return null
 
@@ -281,26 +360,9 @@ const TrialTryModal = ({
                         <span className={css.subtitle}>{subtitle}</span>
                     </div>
 
-                    <PlanPricingSection
-                        currentPlan={currentPlan}
-                        newPlan={newPlan}
-                    />
+                    {planSection}
 
-                    {showTermsCheckbox && (
-                        <TermsCheckbox
-                            isChecked={isTermsChecked}
-                            isDisabled={isTermsDisabled}
-                            hasError={hasCheckboxError}
-                            onChange={setTermsManuallyChecked}
-                        />
-                    )}
-
-                    <ActionButtons
-                        isLoading={isLoading}
-                        onPrimaryClick={handlePrimaryAction}
-                        primaryAction={primaryAction}
-                        secondaryAction={secondaryAction}
-                    />
+                    {actionButtons}
                 </div>
 
                 <div className={css.featureContainer}>

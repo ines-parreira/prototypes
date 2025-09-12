@@ -18,6 +18,8 @@
     }
 
     .planDetailsContainer {
+        display: flex;
+        flex-direction: column;
         padding: var(--layout-spacing-m);
         padding-bottom: 0;
     }
@@ -111,6 +113,12 @@
         background-color: var(--neutral-grey-6) !important;
         color: var(--neutral-grey-0) !important;
         border-color: var(--neutral-grey-6) !important;
+        &[aria-disabled='true'] {
+            background-color: var(--neutral-grey-1) !important;
+            color: var(--neutral-grey-3) !important;
+            border: 2px solid var(--neutral-grey-3) !important;
+            border-radius: var(--border-radius-l) !important;
+        }
     }
 
     .termsContainer {
@@ -227,5 +235,9 @@
         align-self: center;
         border-radius: 15px;
         border: 1px solid var(--neutral-grey-3);
+    }
+
+    .contactUsContainer {
+        margin-bottom: auto;
     }
 }
