@@ -11,9 +11,9 @@ export function IntermediaryNode(props: NodeProps<IntermediaryNode>) {
 
     // More than 1 non-final node is converging to this intermediary node
     const sourceNodes = getSourceNodes(getNode(props.id)!, getNodes())
-    const isFinal =
-        sourceNodes.filter((node) => !FINAL_NODES_TYPES.includes(node.type))
-            .length < 2
+    const isFinal = sourceNodes.some((node) =>
+        FINAL_NODES_TYPES.includes(node.type),
+    )
 
     return (
         <NodeWrapper {...props}>

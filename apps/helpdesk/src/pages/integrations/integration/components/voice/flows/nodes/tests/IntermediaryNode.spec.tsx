@@ -84,7 +84,7 @@ describe('IntermediaryNode', () => {
         })
     })
 
-    it('should render AddStepButton when some converging nodes are final and some are not', () => {
+    it('should not render AddStepButton when some converging nodes are final and some are not', () => {
         mockGetSourceNodes.mockReturnValue([
             { id: 'node-1', type: VoiceFlowNodeType.SendToSMS },
             { id: 'node-2', type: VoiceFlowNodeType.PlayMessage },
@@ -95,20 +95,18 @@ describe('IntermediaryNode', () => {
 
         renderComponent()
 
-        expect(screen.getByLabelText('Add')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Add')).not.toBeInTheDocument()
     })
 
     it('should handle empty converging nodes array', () => {
         mockGetSourceNodes.mockReturnValue([])
-        const { container } = renderComponent({
+        renderComponent({
             data: {
                 next_step_id: 'next-node',
             },
         })
 
-        // Empty array with .every() returns true, so it renders the empty div
-        const emptyDiv = container.querySelector('div[style*="height: 1px"]')
-        expect(emptyDiv).toBeInTheDocument()
-        expect(screen.queryByLabelText('Add')).not.toBeInTheDocument()
+        // Empty array with .some() returns false, so it renders the add button
+        expect(screen.queryByLabelText('Add')).toBeInTheDocument()
     })
 })
