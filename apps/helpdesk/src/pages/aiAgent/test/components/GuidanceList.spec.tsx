@@ -346,4 +346,70 @@ describe('<GuidanceList />', () => {
             fireEvent.click(screen.getByText('Reset Search'))
         })
     })
+
+    describe('sorting with undefined values', () => {
+        it('should show articles with undefined title at the end when sorting by title', () => {
+            const guidanceArticles = [
+                getGuidanceArticleFixture(1, { title: 'Beta guidance' }),
+                { ...getGuidanceArticleFixture(2), title: undefined as any },
+                getGuidanceArticleFixture(3, { title: 'Alpha guidance' }),
+                { ...getGuidanceArticleFixture(4), title: undefined as any },
+            ]
+
+            renderWithRedux(
+                <GuidanceList
+                    guidanceArticles={guidanceArticles}
+                    currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
+                    {...mockHandlers}
+                />,
+            )
+
+            // Click on Guidance name header to sort by title
+            fireEvent.click(screen.getByText('Guidance name'))
+
+            const rows = screen.getAllByRole('row')
+            // First row is header, so data rows start at index 1
+            expect(
+                within(rows[1]).getByText('Alpha guidance'),
+            ).toBeInTheDocument()
+            expect(
+                within(rows[2]).getByText('Beta guidance'),
+            ).toBeInTheDocument()
+            // Articles with undefined titles should be at the end
+            expect(rows).toHaveLength(5) // 1 header + 4 data rows
+        })
+
+        it('should handle mixed valid and undefined/null titles without throwing errors', () => {
+            const guidanceArticles = [
+                getGuidanceArticleFixture(1, { title: 'Charlie' }),
+                { ...getGuidanceArticleFixture(2), title: undefined as any },
+                getGuidanceArticleFixture(3, { title: 'Alice' }),
+                { ...getGuidanceArticleFixture(4), title: null as any },
+                getGuidanceArticleFixture(5, { title: 'Bob' }),
+            ]
+
+            renderWithRedux(
+                <GuidanceList
+                    guidanceArticles={guidanceArticles}
+                    currentStoreIntegrationId={1}
+                    shopName="test-shop"
+                    shopType="shopify"
+                    {...mockHandlers}
+                />,
+            )
+
+            // Click to sort ascending
+            fireEvent.click(screen.getByText('Guidance name'))
+
+            const rows = screen.getAllByRole('row')
+            // Verify proper sorting order: Alice, Bob, Charlie, then undefined/null
+            expect(within(rows[1]).getByText('Alice')).toBeInTheDocument()
+            expect(within(rows[2]).getByText('Bob')).toBeInTheDocument()
+            expect(within(rows[3]).getByText('Charlie')).toBeInTheDocument()
+            // Rows 4 and 5 should be the undefined/null titled articles
+            expect(rows).toHaveLength(6) // 1 header + 5 data rows
+        })
+    })
 })

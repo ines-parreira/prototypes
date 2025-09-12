@@ -92,6 +92,11 @@ export const GuidanceList = ({
         () =>
             guidanceArticles.sort((a, b) => {
                 if (sortState.column === 'title') {
+                    // Handle undefined titles - they go to the end
+                    if (!a.title && !b.title) return 0
+                    if (!a.title) return 1
+                    if (!b.title) return -1
+
                     return sortState.direction === OrderDirection.Asc
                         ? a.title.localeCompare(b.title)
                         : b.title.localeCompare(a.title)
