@@ -36,6 +36,9 @@ export const initialState: GorgiasInitialState = {
         ],
     },
     currentAccount: account,
+    currentCompany: {
+        fixed_gmv_band: 'tier_3',
+    },
     currentUser: user,
     integrations: {
         authentication: {

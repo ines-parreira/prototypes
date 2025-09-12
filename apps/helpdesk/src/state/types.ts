@@ -32,6 +32,7 @@ import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 
 import { BillingContact } from './billing/types'
 import { AccountSetting } from './currentAccount/types'
+import { CurrentCompanyState } from './currentCompany/types'
 import { AuditLogEventsAction } from './entities/auditLogEvents/types'
 import { MacrosAction } from './entities/macros/types'
 import { EntitiesState } from './entities/reducers'
@@ -50,6 +51,7 @@ export type StoreState = {
     billing: Map<any, any>
     chats: Map<any, any>
     currentAccount: Map<any, any>
+    currentCompany: CurrentCompanyState
     currentUser: Map<any, any>
     customers: Map<any, any>
     entities: EntitiesState

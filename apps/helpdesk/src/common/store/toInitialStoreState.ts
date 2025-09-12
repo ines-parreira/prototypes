@@ -66,11 +66,17 @@ export default function toInitialStoreState(initialState: GorgiasInitialState) {
         ;(nextState.views as GorgiasInitialState['views']).recent = recentViews
     }
 
+    const currentCompanyData = nextState.currentCompany
+
     ;(Object.keys(nextState) as (keyof GorgiasInitialState)[]).forEach(
         (key) => {
             nextState[key] = fromJS(nextState[key])
         },
     )
+
+    if (currentCompanyData) {
+        nextState.currentCompany = currentCompanyData
+    }
 
     const tags = initialState.tags?.items.reduce(
         (acc: { [key: string]: Tag }, tag) => {

@@ -8,6 +8,7 @@ import authsReducer from './auths/reducers'
 import billingReducer from './billing/reducers'
 import chatsReducer from './chats/reducers'
 import currentAccountReducer from './currentAccount/reducers'
+import currentCompanyReducer from './currentCompany/reducers'
 import currentUserReducer from './currentUser/reducers'
 import customersReducer from './customers/reducers'
 import entities from './entities/reducers'
@@ -35,6 +36,7 @@ const rootReducer = combineReducers<StoreState>({
     billing: billingReducer,
     chats: chatsReducer,
     currentAccount: currentAccountReducer,
+    currentCompany: currentCompanyReducer,
     currentUser: currentUserReducer,
     customers: customersReducer,
     entities,

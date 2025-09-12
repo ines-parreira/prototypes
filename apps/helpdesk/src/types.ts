@@ -49,6 +49,9 @@ export type GorgiasInitialState = {
         tickets: GorgiasInitialStateRecentChatTicket[]
     }
     currentAccount: Account
+    currentCompany: {
+        fixed_gmv_band: string
+    }
     currentUser: User
     integrations: {
         authentication: Partial<{
@@ -93,6 +96,9 @@ export type InitialRootState = {
     billing: Map<any, any>
     chats: Map<any, any>
     currentAccount: Map<any, any>
+    currentCompany: {
+        fixed_gmv_band: string
+    }
     currentUSer: Map<any, any>
     entities: {
         sections: { [key: string]: Section }

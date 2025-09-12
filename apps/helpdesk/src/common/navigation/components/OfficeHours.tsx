@@ -6,6 +6,7 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import { getCompanyFixedGmvBandTier } from 'state/currentCompany/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './UserMenu.less'
@@ -19,10 +20,18 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
     const product = useAppSelector(getCurrentHelpdeskPlan)
     const isTrialing = useAppSelector(getIsTrialing)
     const currentUser = useAppSelector(getCurrentUser)
+    const gmvBandTier = useAppSelector(getCompanyFixedGmvBandTier)
 
+    // Eligible tiers: tier_2 (SMB 2), tier_3 (Commercial 1), tier_4 (Commercial 2)
+    const eligibleTiers = ['tier_2', 'tier_3', 'tier_4']
+    const isEligibleByGmvBand =
+        gmvBandTier && eligibleTiers.includes(gmvBandTier)
+
+    // Fallback to Pro plan check if GMV band tier is not available
     const isPro = product?.name.toLowerCase() === 'pro'
+    const shouldShowCta = gmvBandTier ? isEligibleByGmvBand : isPro
 
-    if (!isPro || isTrialing || !hasOfficeHours) {
+    if (!shouldShowCta || isTrialing || !hasOfficeHours) {
         return null
     }
 
