@@ -33,7 +33,11 @@ export const StatsNavLink = ({
                 <NavbarLink {...COMMON_NAV_LINK_PROPS} to={to}>
                     {title}
                     {isNew && (
-                        <Badge type={'blue'} className={cssNavbar.badge}>
+                        <Badge
+                            type={'blue'}
+                            className={cssNavbar.badge}
+                            upperCase={false}
+                        >
                             {NEW_NAV_LABEL}
                         </Badge>
                     )}

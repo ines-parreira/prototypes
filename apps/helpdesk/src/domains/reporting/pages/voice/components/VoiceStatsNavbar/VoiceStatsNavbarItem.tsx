@@ -3,7 +3,10 @@ import classNames from 'classnames'
 import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
-import { COMMON_NAV_LINK_PROPS } from 'domains/reporting/pages/common/components/StatsNav/StatsNav.utils'
+import {
+    COMMON_NAV_LINK_PROPS,
+    NEW_NAV_LABEL,
+} from 'domains/reporting/pages/common/components/StatsNav/StatsNav.utils'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -34,8 +37,12 @@ function VoiceStatsNavbarItem({ to, title, isNew }: Props) {
                     {title}
                     {hasVoiceFeature ? (
                         isNew ? (
-                            <Badge type={'blue'} className={cssNavbar.badge}>
-                                NEW
+                            <Badge
+                                type={'blue'}
+                                className={cssNavbar.badge}
+                                upperCase={false}
+                            >
+                                {NEW_NAV_LABEL}
                             </Badge>
                         ) : null
                     ) : (

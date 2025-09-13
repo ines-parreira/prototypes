@@ -121,7 +121,9 @@ export const AiAgentNavbarSectionBlock = ({
                 return (
                     <div className={css.item}>
                         <span>{item.title}</span>
-                        <Badge type={'blue'}>NEW</Badge>
+                        <Badge type={'blue'} upperCase={false}>
+                            New
+                        </Badge>
                     </div>
                 )
             default:

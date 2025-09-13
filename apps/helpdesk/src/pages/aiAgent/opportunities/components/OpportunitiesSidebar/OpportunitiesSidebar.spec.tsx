@@ -62,7 +62,7 @@ describe('OpportunitiesSidebar', () => {
         expect(title).toBeInTheDocument()
         expect(title).toHaveClass('title')
 
-        const badge = screen.getByText('NEW')
+        const badge = screen.getByText('New')
         expect(badge).toBeInTheDocument()
         expect(badge).toHaveClass('ui-badge-badge-7025')
     })

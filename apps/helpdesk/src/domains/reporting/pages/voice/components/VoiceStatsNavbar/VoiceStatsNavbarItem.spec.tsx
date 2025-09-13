@@ -46,7 +46,7 @@ describe('<VoiceStatsNavbarItem />', () => {
             <VoiceStatsNavbarItem {...defaultProps} isNew />,
         )
         expect(getByText(defaultProps.title)).toBeInTheDocument()
-        expect(getByText('NEW')).toBeInTheDocument()
+        expect(getByText('New')).toBeInTheDocument()
     })
 
     it('should render without badge', () => {
@@ -54,7 +54,7 @@ describe('<VoiceStatsNavbarItem />', () => {
         const { queryByText } = renderWithRouter(
             <VoiceStatsNavbarItem {...defaultProps} />,
         )
-        expect(queryByText('NEW')).not.toBeInTheDocument()
+        expect(queryByText('New')).not.toBeInTheDocument()
         expect(queryByText('arrow_circle_up')).not.toBeInTheDocument()
     })
 })

@@ -546,7 +546,7 @@ describe('ActionDrivenNavigationItems', () => {
             )
 
             expect(screen.getByText(OPPORTUNITIES)).toBeInTheDocument()
-            expect(screen.getByText('NEW')).toBeInTheDocument()
+            expect(screen.getByText('New')).toBeInTheDocument()
             expect(screen.getByText('5')).toBeInTheDocument()
         })
 
@@ -573,7 +573,7 @@ describe('ActionDrivenNavigationItems', () => {
             )
 
             expect(screen.getByText(OPPORTUNITIES)).toBeInTheDocument()
-            expect(screen.getByText('NEW')).toBeInTheDocument()
+            expect(screen.getByText('New')).toBeInTheDocument()
             expect(screen.getByText('5')).toBeInTheDocument()
         })
 

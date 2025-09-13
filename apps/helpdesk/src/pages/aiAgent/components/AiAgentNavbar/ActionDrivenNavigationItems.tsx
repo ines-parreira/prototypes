@@ -132,8 +132,11 @@ export const ActionDrivenNavigationItems = ({
                                                     }
                                                 >
                                                     <span>{subItem.title}</span>
-                                                    <Badge type={'blue'}>
-                                                        NEW
+                                                    <Badge
+                                                        type={'blue'}
+                                                        upperCase={false}
+                                                    >
+                                                        New
                                                     </Badge>
                                                 </div>
                                                 <div
@@ -167,7 +170,9 @@ export const ActionDrivenNavigationItems = ({
                             <div className={css.navItemWithBadge}>
                                 <div className={css.navItemWithBadgeContent}>
                                     <span>{item.title}</span>
-                                    <Badge type={'blue'}>NEW</Badge>
+                                    <Badge type={'blue'} upperCase={false}>
+                                        New
+                                    </Badge>
                                 </div>
                                 <div className={css.navItemCount}>
                                     {isLoadingOpportunities
