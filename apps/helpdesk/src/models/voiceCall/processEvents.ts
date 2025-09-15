@@ -1,4 +1,5 @@
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 
 import { VoiceCallEvent, VoiceCallSubject, VoiceCallSubjectType } from './types'
 
@@ -7,7 +8,7 @@ export type ProcessedEvent = {
     action: string
     actor?: VoiceCallSubject | null
     target?: VoiceCallSubject | null
-    happensDuringTransfer?: boolean
+    showTransferPrefix?: boolean
 }
 
 const getAgentSubjectFromUserId = (
@@ -85,9 +86,9 @@ const getTransferTarget = (event: VoiceCallEvent): VoiceCallSubject | null => {
     }
 
     if (targetType === 'external') {
-        const phoneNumber = event.meta.target_external_number as
-            | string
-            | undefined
+        const phoneNumber =
+            (event.meta.target_external_number as string | undefined) ||
+            (event.meta.target as string | undefined)
         const customerId = event.meta.target_customer_id as number | undefined
 
         return phoneNumber
@@ -165,9 +166,14 @@ const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
     return !answeredOrDeclinedEvent
 }
 
+const shouldShowTransferPrefix = (transferContext: TransferType | null) => {
+    // we don't show the transfer prefix for queue transfers
+    return transferContext !== null && transferContext !== TransferType.Queue
+}
+
 export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
     const result: ProcessedEvent[] = []
-    let isTransfer = false
+    let transferContext: TransferType | null = null
     for (const [index, event] of events.entries()) {
         switch (event.type) {
             case PhoneIntegrationEvent.PhoneCallAnswered:
@@ -175,36 +181,41 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
                     datetime: event.created_datetime,
                     action: 'answered',
                     actor: getActorSubject(event),
-                    happensDuringTransfer: isTransfer,
+                    showTransferPrefix:
+                        shouldShowTransferPrefix(transferContext),
                 })
-                isTransfer = false
+                if (transferContext !== TransferType.Queue) {
+                    transferContext = null
+                }
                 break
             case PhoneIntegrationEvent.DeclinedPhoneCall:
                 result.push({
                     datetime: event.created_datetime,
                     action: 'declined',
                     actor: getActorSubject(event),
-                    happensDuringTransfer: isTransfer,
+                    showTransferPrefix:
+                        shouldShowTransferPrefix(transferContext),
                 })
-                isTransfer = false
+                if (transferContext !== TransferType.Queue) {
+                    transferContext = null
+                }
                 break
             case PhoneIntegrationEvent.PhoneCallRinging:
                 const nextEvents = events.slice(index + 1)
-                // we're skipping these events if the call is currently ringing due to a transfer
-                const currentlyOngoingTransfer =
-                    isTransfer && nextEvents.length === 0
+                // we're skipping these events if the ringing event is the last one
+                const isOngoingRinging = nextEvents.length === 0
 
-                if (
-                    !currentlyOngoingTransfer &&
-                    isMissedEvent(event, nextEvents)
-                ) {
+                if (!isOngoingRinging && isMissedEvent(event, nextEvents)) {
                     result.push({
                         datetime: event.created_datetime,
                         action: 'missed',
                         actor: getActorSubject(event),
-                        happensDuringTransfer: isTransfer,
+                        showTransferPrefix:
+                            shouldShowTransferPrefix(transferContext),
                     })
-                    isTransfer = false
+                    if (transferContext !== TransferType.Queue) {
+                        transferContext = null
+                    }
                 }
                 break
             case PhoneIntegrationEvent.OutgoingPhoneCallConnected:
@@ -222,29 +233,25 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
                     action: 'initiated',
                     actor: getAgentSubjectFromUserId(event.user_id),
                     target: getTransferTarget(event),
-                    happensDuringTransfer: true,
+                    showTransferPrefix: true,
                 })
-                if (event.meta.target_type !== 'queue') {
-                    // transfer to queue makes the source agent leave the call
-                    // so we don't consider the following events as part of a transfer
-                    isTransfer = true
-                }
+                transferContext = event.meta.target_type as TransferType
                 break
             case PhoneIntegrationEvent.PhoneCallTransferFailed:
-                if (isTransfer) {
+                if (transferContext !== null) {
                     // we only want to show the transfer failed event
                     // if there's no other events after transfer initiated
                     result.push({
                         datetime: event.created_datetime,
                         action: 'failed',
                         target: getTransferTarget(event),
-                        happensDuringTransfer: true,
+                        showTransferPrefix: true,
                     })
-                    isTransfer = false
+                    transferContext = null
                 }
                 break
             case PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber:
-                if (!isTransfer) {
+                if (transferContext === null) {
                     result.push({
                         datetime: event.created_datetime,
                         action: 'forwarded',

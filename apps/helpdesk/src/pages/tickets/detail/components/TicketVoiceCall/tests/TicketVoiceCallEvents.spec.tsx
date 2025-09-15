@@ -219,7 +219,7 @@ describe('TicketVoiceCallEvents', () => {
                     type: VoiceCallSubjectType.External,
                     value: '+1 5551234567',
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
         ] as ProcessedEvent[]
         useListVoiceCallEventsSpy.mockReturnValue({

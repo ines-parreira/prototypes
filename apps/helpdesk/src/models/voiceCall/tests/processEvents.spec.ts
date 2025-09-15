@@ -60,7 +60,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 100,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:04 AM',
@@ -69,7 +69,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 101,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:07 AM',
@@ -78,7 +78,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 102,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
         ] as ProcessedEvent[])
     })
@@ -128,7 +128,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 101,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:04 AM',
@@ -137,7 +137,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 100,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:07 AM',
@@ -146,7 +146,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 102,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
         ] as ProcessedEvent[])
     })
@@ -297,7 +297,7 @@ describe('processEvents', () => {
                         id: 200,
                     },
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:04 AM',
@@ -316,7 +316,7 @@ describe('processEvents', () => {
                     value: '+393456789012',
                     customer: undefined,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:06 AM',
@@ -339,7 +339,7 @@ describe('processEvents', () => {
                         id: 202,
                     },
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
         ] as ProcessedEvent[])
     })
@@ -521,7 +521,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 100,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:06 AM',
@@ -534,7 +534,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 101,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:07 AM',
@@ -543,7 +543,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 101,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:08 AM',
@@ -556,7 +556,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 102,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:10 AM',
@@ -565,7 +565,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 102,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:11 AM',
@@ -578,7 +578,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 103,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:12 AM',
@@ -587,7 +587,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 103,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:14 AM',
@@ -600,7 +600,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 104,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:16 AM',
@@ -609,7 +609,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 104,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:17 AM',
@@ -625,7 +625,7 @@ describe('processEvents', () => {
                         id: 200,
                     },
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:20 AM',
@@ -637,12 +637,12 @@ describe('processEvents', () => {
                         id: 200,
                     },
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
         ] as ProcessedEvent[])
     })
 
-    it('should process events of an inbound call with ongoing transfer', () => {
+    it('should process events of an inbound call with ongoing ringing', () => {
         const events = [
             // call was answered
             {
@@ -652,22 +652,10 @@ describe('processEvents', () => {
                 meta: {},
             },
             {
-                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                type: PhoneIntegrationEvent.DeclinedPhoneCall,
                 created_datetime: '09:05 AM',
                 user_id: 100,
                 meta: {},
-            },
-
-            // transfer in progress
-            {
-                type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
-                created_datetime: '09:08 AM',
-                user_id: 100,
-                meta: {
-                    target_type: 'agent',
-                    source_agent_id: 100,
-                    target_agent_id: 102,
-                },
             },
             {
                 type: PhoneIntegrationEvent.PhoneCallRinging,
@@ -680,25 +668,12 @@ describe('processEvents', () => {
         expect(result).toEqual([
             {
                 datetime: '09:05 AM',
-                action: 'answered',
+                action: 'declined',
                 actor: {
                     type: VoiceCallSubjectType.Agent,
                     id: 100,
                 },
-                happensDuringTransfer: false,
-            },
-            {
-                datetime: '09:08 AM',
-                action: 'initiated',
-                actor: {
-                    type: VoiceCallSubjectType.Agent,
-                    id: 100,
-                },
-                target: {
-                    type: VoiceCallSubjectType.Agent,
-                    id: 102,
-                },
-                happensDuringTransfer: true,
+                showTransferPrefix: false,
             },
         ] as ProcessedEvent[])
     })
@@ -761,7 +736,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 100,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:05 AM',
@@ -774,7 +749,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Queue,
                     id: 500,
                 },
-                happensDuringTransfer: true,
+                showTransferPrefix: true,
             },
             {
                 datetime: '09:08 AM',
@@ -783,7 +758,7 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 101,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
             },
             {
                 datetime: '09:10 AM',
@@ -792,7 +767,149 @@ describe('processEvents', () => {
                     type: VoiceCallSubjectType.Agent,
                     id: 102,
                 },
-                happensDuringTransfer: false,
+                showTransferPrefix: false,
+            },
+        ] as ProcessedEvent[])
+    })
+
+    it('should process events of a call with failed transfer to external number', () => {
+        const events = [
+            {
+                type: PhoneIntegrationEvent.PhoneCallRinging,
+                created_datetime: '09:00 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                created_datetime: '09:01 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                created_datetime: '09:05 AM',
+                user_id: 100,
+                meta: {
+                    source_agent_id: 100,
+                    target_type: 'external',
+                    target_external_number: '+393924567890',
+                },
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                created_datetime: '09:08 AM',
+                user_id: 101,
+                meta: {
+                    source_agent_id: 100,
+                    target_type: 'external',
+                    target: '+393924567890',
+                },
+            },
+        ] as unknown as VoiceCallEvent[]
+        const result = processEvents(events)
+        expect(result).toEqual([
+            {
+                datetime: '09:01 AM',
+                action: 'answered',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                showTransferPrefix: false,
+            },
+            {
+                datetime: '09:05 AM',
+                action: 'initiated',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                target: {
+                    type: VoiceCallSubjectType.External,
+                    value: '+393924567890',
+                },
+                showTransferPrefix: true,
+            },
+            {
+                datetime: '09:08 AM',
+                action: 'failed',
+                target: {
+                    type: VoiceCallSubjectType.External,
+                    value: '+393924567890',
+                },
+                showTransferPrefix: true,
+            },
+        ] as ProcessedEvent[])
+    })
+
+    it('should process events of a call with failed transfer to queue', () => {
+        const events = [
+            {
+                type: PhoneIntegrationEvent.PhoneCallRinging,
+                created_datetime: '09:00 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                created_datetime: '09:01 AM',
+                user_id: 100,
+                meta: {},
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                created_datetime: '09:05 AM',
+                user_id: 100,
+                meta: {
+                    source_agent_id: 100,
+                    target_type: 'queue',
+                    target_queue_id: 500,
+                },
+            },
+            {
+                type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                created_datetime: '09:08 AM',
+                user_id: 101,
+                meta: {
+                    source_agent_id: 100,
+                    target_type: 'queue',
+                    target_queue_id: 500,
+                },
+            },
+        ] as unknown as VoiceCallEvent[]
+        const result = processEvents(events)
+        expect(result).toEqual([
+            {
+                datetime: '09:01 AM',
+                action: 'answered',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                showTransferPrefix: false,
+            },
+            {
+                datetime: '09:05 AM',
+                action: 'initiated',
+                actor: {
+                    type: VoiceCallSubjectType.Agent,
+                    id: 100,
+                },
+                target: {
+                    type: VoiceCallSubjectType.Queue,
+                    id: 500,
+                },
+                showTransferPrefix: true,
+            },
+            {
+                datetime: '09:08 AM',
+                action: 'failed',
+                target: {
+                    type: VoiceCallSubjectType.Queue,
+                    id: 500,
+                },
+                showTransferPrefix: true,
             },
         ] as ProcessedEvent[])
     })

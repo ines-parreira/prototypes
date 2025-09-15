@@ -96,7 +96,7 @@ const NewTicketVoiceCallEvents = ({
     }
 
     const getActionPrettyName = (event: ProcessedEvent) => {
-        if (event.happensDuringTransfer) {
+        if (event.showTransferPrefix) {
             return `Transfer ${event.action}`
         }
         return _capitalize(event.action)
