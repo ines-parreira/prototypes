@@ -1,4 +1,4 @@
-import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { voiceCall } from 'fixtures/voiceCalls'
@@ -11,6 +11,7 @@ import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     getFormattedDurationTranscriptionStart,
+    isCallTransfer,
     isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
 } from '../utils'
@@ -487,6 +488,78 @@ describe('voice call utils', () => {
             })
 
             expect(subject).toBeNull()
+        })
+    })
+
+    describe('isCallTransfer', () => {
+        describe('inbound calls', () => {
+            it.each([
+                {
+                    direction: VoiceCallDirection.Inbound,
+                    last_answered_by_agent_id: 1,
+                },
+                {
+                    direction: VoiceCallDirection.Inbound,
+                    answered_by_external_number: '+1234567890',
+                },
+                {
+                    direction: VoiceCallDirection.Inbound,
+                    last_answered_by_agent_id: 1,
+                    answered_by_external_number: '+1234567890',
+                },
+            ])(
+                'should detect that an inbound call is a transfer',
+                (voiceCall) => {
+                    expect(isCallTransfer(voiceCall as VoiceCall)).toBe(true)
+                },
+            )
+
+            it('should detect that an inbound call is not a transfer', () => {
+                expect(
+                    isCallTransfer({
+                        direction: VoiceCallDirection.Inbound,
+                        last_answered_by_agent_id: null,
+                    } as VoiceCall),
+                ).toBe(false)
+            })
+        })
+
+        describe('outbound calls', () => {
+            it.each([
+                {
+                    direction: VoiceCallDirection.Outbound,
+                    last_answered_by_agent_id: 1,
+                },
+                {
+                    direction: VoiceCallDirection.Outbound,
+                    answered_by_external_number: '+1234567890',
+                },
+                {
+                    direction: VoiceCallDirection.Outbound,
+                    last_answered_by_agent_id: 1,
+                    answered_by_external_number: '+1234567890',
+                },
+                {
+                    direction: VoiceCallDirection.Outbound,
+                    last_answered_by_agent_id: null,
+                    status: VoiceCallStatus.Queued,
+                },
+            ])(
+                'should detect that an outbound call is a transfer',
+                (voiceCall) => {
+                    expect(isCallTransfer(voiceCall as VoiceCall)).toBe(true)
+                },
+            )
+
+            it('should detect that an outbound call is not a transfer', () => {
+                expect(
+                    isCallTransfer({
+                        direction: VoiceCallDirection.Outbound,
+                        last_answered_by_agent_id: null,
+                        status: VoiceCallStatus.InProgress,
+                    } as VoiceCall),
+                ).toBe(false)
+            })
         })
     })
 })

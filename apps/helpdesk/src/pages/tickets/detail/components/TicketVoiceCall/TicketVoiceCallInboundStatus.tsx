@@ -12,7 +12,10 @@ import {
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import { getAnsweringVoiceSubject } from 'models/voiceCall/utils'
+import {
+    getAnsweringVoiceSubject,
+    isCallTransfer,
+} from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
@@ -32,6 +35,7 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
         voiceCall.last_answered_by_agent_id,
         voiceCall.status_in_queue,
     )
+    const isTransfer = isCallTransfer(voiceCall)
 
     switch (displayStatus) {
         case VoiceCallDisplayStatus.Routing:
@@ -47,8 +51,9 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
             const answeredBySubject = getAnsweringVoiceSubject(voiceCall)
 
             return (
-                <CollapsibleDetails
-                    title={
+                <WithCallEvents
+                    voiceCall={voiceCall}
+                    statusElement={
                         <div
                             className={classNames(
                                 css.statusWrapper,
@@ -63,20 +68,16 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                             )}
                         </div>
                     }
-                >
-                    <TicketVoiceCallEvents
-                        callId={voiceCall.id}
-                        terminationStatus={voiceCall.termination_status}
-                    />
-                </CollapsibleDetails>
+                />
             )
         case VoiceCallDisplayStatus.Missed:
         case VoiceCallDisplayStatus.Abandoned:
         case VoiceCallDisplayStatus.Cancelled:
         case VoiceCallDisplayStatus.CallbackRequested:
             return (
-                <CollapsibleDetails
-                    title={
+                <WithCallEvents
+                    voiceCall={voiceCall}
+                    statusElement={
                         <div
                             className={classNames(
                                 displayStatus ===
@@ -119,14 +120,18 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                             )}
                         </div>
                     }
-                >
-                    <TicketVoiceCallEvents
-                        callId={voiceCall.id}
-                        terminationStatus={voiceCall.termination_status}
-                    />
-                </CollapsibleDetails>
+                />
             )
         case VoiceCallDisplayStatus.Queued:
+            if (isTransfer) {
+                return (
+                    <WithCallEvents
+                        voiceCall={voiceCall}
+                        statusElement={<span>Transferring to queue...</span>}
+                    />
+                )
+            }
+
             return (
                 <>
                     {getPrettyVoiceCallDisplayStatusName(
@@ -135,13 +140,32 @@ export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
                 </>
             )
         case VoiceCallDisplayStatus.Calling:
+            if (isTransfer) {
+                return (
+                    <WithCallEvents
+                        voiceCall={voiceCall}
+                        statusElement={
+                            <CallingStatus voiceCall={voiceCall} isTransfer />
+                        }
+                    />
+                )
+            }
+
             return <CallingStatus voiceCall={voiceCall} />
         default:
             return null
     }
 }
 
-const CallingStatus = ({ voiceCall }: { voiceCall: VoiceCall }) => {
+type CallingStatusProps = {
+    voiceCall: VoiceCall
+    isTransfer?: boolean
+}
+
+const CallingStatus = ({
+    voiceCall,
+    isTransfer = false,
+}: CallingStatusProps) => {
     const {
         data: queueData,
         isLoading: isQueueLoading,
@@ -152,10 +176,12 @@ const CallingStatus = ({ voiceCall }: { voiceCall: VoiceCall }) => {
         },
     })
 
+    const verb = isTransfer ? 'Transferring to' : 'Calling'
+
     if (isQueueLoading || isQueueError) {
         return (
             <div className={classNames(css.statusWrapper, css.inbound)}>
-                Calling <Skeleton width={70} />
+                {verb} <Skeleton width={70} />
             </div>
         )
     }
@@ -163,12 +189,12 @@ const CallingStatus = ({ voiceCall }: { voiceCall: VoiceCall }) => {
     if (
         queueData?.data?.distribution_mode === PhoneRingingBehaviour.Broadcast
     ) {
-        return <div>Calling agents</div>
+        return <div>{verb} agents</div>
     }
 
     return (
         <div className={classNames(css.statusWrapper, css.inbound)}>
-            <div>Calling </div>
+            <div>{verb} </div>
             {voiceCall.last_rang_agent_id && (
                 <VoiceCallAgentLabel
                     agentId={voiceCall.last_rang_agent_id}
@@ -176,5 +202,21 @@ const CallingStatus = ({ voiceCall }: { voiceCall: VoiceCall }) => {
                 />
             )}
         </div>
+    )
+}
+
+type WithCallEventsProps = {
+    voiceCall: VoiceCall
+    statusElement: JSX.Element
+}
+
+const WithCallEvents = ({ voiceCall, statusElement }: WithCallEventsProps) => {
+    return (
+        <CollapsibleDetails title={statusElement}>
+            <TicketVoiceCallEvents
+                callId={voiceCall.id}
+                terminationStatus={voiceCall.termination_status}
+            />
+        </CollapsibleDetails>
     )
 }

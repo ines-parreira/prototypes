@@ -193,10 +193,6 @@ describe('getOutboundDisplayStatus', () => {
             displayStatus: VoiceCallDisplayStatus.Ringing,
         },
         {
-            status: VoiceCallStatus.Queued,
-            displayStatus: VoiceCallDisplayStatus.Ringing,
-        },
-        {
             status: VoiceCallStatus.Initiated,
             displayStatus: VoiceCallDisplayStatus.Ringing,
         },
@@ -206,6 +202,10 @@ describe('getOutboundDisplayStatus', () => {
         },
         {
             status: VoiceCallStatus.Connected,
+            displayStatus: VoiceCallDisplayStatus.InProgress,
+        },
+        {
+            status: VoiceCallStatus.Queued,
             displayStatus: VoiceCallDisplayStatus.InProgress,
         },
         {

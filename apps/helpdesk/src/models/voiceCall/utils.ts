@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { getMoment, stringToDatetime } from 'utils/date'
@@ -224,4 +224,26 @@ export const getAnsweringVoiceSubject = (
         }
     }
     return null
+}
+
+export const isCallTransfer = (voiceCall: VoiceCall) => {
+    // we don't have a specific flag for transfers, so we're inferring it based on the answering subject
+    // in short, if the call was answered at some point by an agent or external number, it was transferred
+    if (voiceCall.direction === VoiceCallDirection.Inbound) {
+        return (
+            !!voiceCall.last_answered_by_agent_id ||
+            !!voiceCall.answered_by_external_number
+        )
+    }
+
+    if (voiceCall.direction === VoiceCallDirection.Outbound) {
+        // for outbound calls, to also handle the transfer to queue, we need to check if the status is queued
+        // the queued status only happens when a call in inside a queue for agents to pick it up
+        // which usually happens during inbound calls, instead for outbound calls it means we're transferring to queue
+        return (
+            !!voiceCall.last_answered_by_agent_id ||
+            !!voiceCall.answered_by_external_number ||
+            voiceCall.status === VoiceCallStatus.Queued
+        )
+    }
 }

@@ -207,11 +207,11 @@ export const getOutboundDisplayStatus = (
     switch (status) {
         case VoiceCallStatus.Ringing:
         case VoiceCallStatus.InProgress:
-        case VoiceCallStatus.Queued:
         case VoiceCallStatus.Initiated:
             return VoiceCallDisplayStatus.Ringing
         case VoiceCallStatus.Answered: // should not be possible
         case VoiceCallStatus.Connected:
+        case VoiceCallStatus.Queued: // for outbound calls, this means we're transferring to queue
             return VoiceCallDisplayStatus.InProgress
         case VoiceCallStatus.Failed:
             return VoiceCallDisplayStatus.Failed

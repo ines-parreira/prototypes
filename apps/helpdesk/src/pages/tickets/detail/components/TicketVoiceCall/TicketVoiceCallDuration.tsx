@@ -3,12 +3,13 @@ import { useState } from 'react'
 import { useInterval } from '@repo/hooks'
 
 import { Badge } from '@gorgias/axiom'
-import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { VoiceCall } from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
+    isCallTransfer,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
 
@@ -34,12 +35,15 @@ export default function TicketVoiceCallDuration({
         )
     }, 1000)
 
+    const isTransfer = isCallTransfer(voiceCall)
     const isMissedInboundCall =
-        voiceCall.direction === 'inbound' &&
-        missedInboundCallStatuses.includes(voiceCall.status) &&
-        !voiceCall.last_answered_by_agent_id
+        voiceCall.direction === VoiceCallDirection.Inbound &&
+        missedInboundCallStatuses.includes(voiceCall.status)
 
-    if (isMissedInboundCall || noDurationStatuses.includes(voiceCall.status)) {
+    if (
+        !isTransfer &&
+        (isMissedInboundCall || noDurationStatuses.includes(voiceCall.status))
+    ) {
         return null
     }
 

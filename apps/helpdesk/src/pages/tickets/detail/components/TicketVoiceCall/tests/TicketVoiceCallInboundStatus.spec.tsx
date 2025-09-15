@@ -18,7 +18,10 @@ import {
     VoiceCallSubject,
     VoiceCallSubjectType,
 } from 'models/voiceCall/types'
-import { getAnsweringVoiceSubject } from 'models/voiceCall/utils'
+import {
+    getAnsweringVoiceSubject,
+    isCallTransfer,
+} from 'models/voiceCall/utils'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
@@ -76,11 +79,13 @@ jest.mock('models/voiceCall/utils', () => {
     return {
         ...originalModule,
         getAnsweringVoiceSubject: jest.fn(),
+        isCallTransfer: jest.fn(),
     }
 })
 
 const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
 const getAnsweringVoiceSubjectMock = assumeMock(getAnsweringVoiceSubject)
+const isCallTransferMock = assumeMock(isCallTransfer)
 
 jest.mock('@gorgias/helpdesk-queries')
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
@@ -91,8 +96,13 @@ beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
+beforeEach(() => {
+    isCallTransferMock.mockReturnValue(false)
+})
+
 afterEach(() => {
     server.resetHandlers()
+    jest.clearAllMocks()
 })
 
 afterAll(() => {
@@ -169,12 +179,22 @@ describe('TicketVoiceCallInboundStatus', () => {
         },
     )
 
-    it('should render "Queued" when display status is "Queued"', () => {
+    it('should render "Queued" when display status is "Queued" and not a transfer', () => {
         getInboundDisplayStatusMock.mockReturnValue(
             VoiceCallDisplayStatus.Queued,
         )
         const { getByText } = renderComponent({} as VoiceCall)
         expect(getByText('Queued')).toBeInTheDocument()
+    })
+
+    it('should render "Transferring to queue..." when display status is "Queued" and is a transfer', () => {
+        getInboundDisplayStatusMock.mockReturnValue(
+            VoiceCallDisplayStatus.Queued,
+        )
+        isCallTransferMock.mockReturnValue(true)
+        const { getByText, getByTestId } = renderComponent({} as VoiceCall)
+        expect(getByText('Transferring to queue...')).toBeInTheDocument()
+        expect(getByTestId('collapsible-details')).toBeInTheDocument()
     })
 
     describe('Calling', () => {
@@ -234,6 +254,104 @@ describe('TicketVoiceCallInboundStatus', () => {
             await waitFor(() => {
                 expect(getByText('Calling')).toBeInTheDocument()
                 expect(getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
+            })
+        })
+
+        describe('transfer scenarios', () => {
+            beforeEach(() => {
+                isCallTransferMock.mockReturnValue(true)
+            })
+
+            it('should render "Transferring to agents" when display status is "Calling", is a transfer, and distribution mode is "Broadcast"', async () => {
+                const mockGetVoiceQueue = mockGetVoiceQueueHandler()
+                mockGetVoiceQueue.data = mockVoiceQueue({
+                    distribution_mode: PhoneRingingBehaviour.Broadcast,
+                })
+                server.use(mockGetVoiceQueue.handler)
+
+                useGetVoiceQueueMock.mockReturnValue({
+                    data: {
+                        data: mockGetVoiceQueue.data,
+                    },
+                    isLoading: false,
+                    isError: false,
+                } as any)
+
+                getInboundDisplayStatusMock.mockReturnValue(
+                    VoiceCallDisplayStatus.Calling,
+                )
+
+                const { getByText, getByTestId } = renderComponent({
+                    queue_id: 1,
+                } as VoiceCall)
+
+                await waitFor(() => {
+                    expect(
+                        getByText('Transferring to agents'),
+                    ).toBeInTheDocument()
+                    expect(
+                        getByTestId('collapsible-details'),
+                    ).toBeInTheDocument()
+                })
+            })
+
+            it('should render "Transferring to <agent>" when display status is "Calling", is a transfer, and distribution mode is "Round Robin"', async () => {
+                const mockGetVoiceQueue = mockGetVoiceQueueHandler()
+                mockGetVoiceQueue.data = mockVoiceQueue({
+                    distribution_mode: PhoneRingingBehaviour.RoundRobin,
+                })
+                server.use(mockGetVoiceQueue.handler)
+
+                useGetVoiceQueueMock.mockReturnValue({
+                    data: {
+                        data: mockGetVoiceQueue.data,
+                    },
+                    isLoading: false,
+                    isError: false,
+                } as any)
+
+                getInboundDisplayStatusMock.mockReturnValue(
+                    VoiceCallDisplayStatus.Calling,
+                )
+
+                const { getByText, getByTestId } = renderComponent({
+                    queue_id: 1,
+                    last_rang_agent_id: 3,
+                    phone_number_destination: '1234567890',
+                } as VoiceCall)
+
+                await waitFor(() => {
+                    expect(getByText('Transferring to')).toBeInTheDocument()
+                    expect(
+                        getByText('VoiceCallAgentLabel 3'),
+                    ).toBeInTheDocument()
+                    expect(
+                        getByTestId('collapsible-details'),
+                    ).toBeInTheDocument()
+                })
+            })
+
+            it('should render "Transferring to" with loading skeleton when queue is loading', async () => {
+                useGetVoiceQueueMock.mockReturnValue({
+                    data: null,
+                    isLoading: true,
+                    isError: false,
+                } as any)
+
+                getInboundDisplayStatusMock.mockReturnValue(
+                    VoiceCallDisplayStatus.Calling,
+                )
+
+                const { getByText, getByTestId } = renderComponent({
+                    queue_id: 1,
+                } as VoiceCall)
+
+                await waitFor(() => {
+                    expect(getByText('Transferring to')).toBeInTheDocument()
+                    expect(
+                        getByTestId('collapsible-details'),
+                    ).toBeInTheDocument()
+                })
             })
         })
     })
