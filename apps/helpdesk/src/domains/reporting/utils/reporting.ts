@@ -24,6 +24,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMember } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
+import { TicketsFirstAgentResponseTimeDimension } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import {
     addOptionalFilter,
     hasFilter,
@@ -84,6 +85,11 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
 export const TicketMessagesEnrichedFirstResponseTimesMembers = {
     ...TicketStatsFiltersMembers,
     agents: TicketMessagesMember.FirstHelpdeskMessageUserId,
+}
+
+export const TicketsFirstAgentResponseTimeMembers = {
+    ...TicketStatsFiltersMembers,
+    agents: TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
 }
 
 export const TicketMessagesEnrichedResponseTimesMembers: StatsFiltersMembers = {

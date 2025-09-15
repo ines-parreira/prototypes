@@ -246,6 +246,14 @@ export const METRIC_NAMES = {
         'support-performance-human-response-time-after-ai-handoff-per-agent',
     SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_CHANNEL:
         'support-performance-human-response-time-after-ai-handoff-per-channel',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME:
+        'support-performance-median-first-agent-response-time',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_AGENT:
+        'support-performance-median-first-agent-response-time-per-agent',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_CHANNEL:
+        'support-performance-median-first-agent-response-time-per-channel',
+    SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_TICKET_DRILL_DOWN:
+        'support-performance-median-first-agent-response-time-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME:
         'support-performance-median-first-response-time',
     SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT:

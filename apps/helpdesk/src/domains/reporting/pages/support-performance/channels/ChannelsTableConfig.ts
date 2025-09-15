@@ -161,6 +161,7 @@ export const ChannelColumnConfig: Record<
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime].hint,
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
+        // dummy factory, we pick query factory at runtime based on feature flag in `drill-down/helpers.ts`
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
         showMetric: true,
         domain: Domain.Ticket,

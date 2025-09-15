@@ -2,12 +2,23 @@ import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
+import {
+    fetchMetricPerDimension,
+    useMetricPerDimension,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimePerAgentQueryFactory,
+    medianFirstResponseTimeMetricPerAgentQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -15,14 +26,44 @@ import { messagesSentMetricPerAgentQueryFactory } from 'domains/reporting/models
 import { oneTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
+import { OrderDirection } from 'models/api/types'
 
-export const useMedianFirstResponseTimeMetricPerAgent =
-    createMetricPerDimensionHook(
-        medianFirstResponseTimeMetricPerAgentQueryFactory,
+export const useMedianFirstResponseTimeMetricPerAgent = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    dimensionId?: string,
+) => {
+    const shouldIncludeBots = useShouldIncludeBots()
+
+    const queryFactory = shouldIncludeBots
+        ? medianFirstResponseTimeMetricPerAgentQueryFactory
+        : medianFirstAgentResponseTimePerAgentQueryFactory
+
+    return useMetricPerDimension(
+        queryFactory(filters, timezone, sorting),
+        dimensionId,
     )
+}
 
-export const fetchMedianFirstResponseTimeMetricPerAgent =
-    createFetchPerDimension(medianFirstResponseTimeMetricPerAgentQueryFactory)
+export const fetchMedianFirstResponseTimeMetricPerAgent = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    dimensionId?: string,
+) => {
+    const shouldIncludeBots = await fetchShouldIncludeBots()
+
+    const queryFactory = shouldIncludeBots
+        ? medianFirstResponseTimeMetricPerAgentQueryFactory
+        : medianFirstAgentResponseTimePerAgentQueryFactory
+
+    return fetchMetricPerDimension(
+        queryFactory(statsFilters, timezone, sorting),
+        dimensionId,
+    )
+}
 
 export const useHumanResponseTimeAfterAiHandoffPerAgent =
     createMetricPerDimensionHook(

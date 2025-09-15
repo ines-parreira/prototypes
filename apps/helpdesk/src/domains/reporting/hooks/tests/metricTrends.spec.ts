@@ -32,11 +32,18 @@ import {
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { medianFirstResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimeQueryFactory,
+    medianFirstResponseTimeQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
 import { messagesSentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -52,6 +59,10 @@ import {
     getPreviousPeriod,
 } from 'domains/reporting/utils/reporting'
 
+jest.mock('domains/reporting/hooks/useShouldIncludeBots')
+const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
+const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
+
 jest.mock('domains/reporting/hooks/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
@@ -65,11 +76,65 @@ describe('metric trends', () => {
             start_datetime: periodStart,
         },
     }
+
+    const prevStatsFilters: StatsFilters = {
+        ...statsFilters,
+        period: getPreviousPeriod(statsFilters.period),
+    }
+
     const timezone = 'someTimeZone'
 
-    useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any,
-    )
+    beforeEach(() => {
+        useMetricTrendMock.mockImplementation(
+            ((queryCreator: ReportingQuery) => queryCreator) as any,
+        )
+
+        fetchShouldIncludeBotsMock.mockResolvedValue(true)
+        useShouldIncludeBotsMock.mockReturnValue(true)
+    })
+
+    describe('shouldIncludeBots', () => {
+        describe('useMedianFirstResponseTimeTrend', () => {
+            it('calls medianFirstAgentResponseTimeQueryFactory when false', () => {
+                useShouldIncludeBotsMock.mockReturnValue(false)
+
+                renderHook(() =>
+                    useMedianFirstResponseTimeTrend(statsFilters, timezone),
+                )
+
+                expect(useMetricTrendMock).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimeQueryFactory(
+                        statsFilters,
+                        timezone,
+                    ),
+                    medianFirstAgentResponseTimeQueryFactory(
+                        prevStatsFilters,
+                        timezone,
+                    ),
+                )
+            })
+        })
+
+        describe('fetchMedianFirstResponseTimeTrend', () => {
+            it('calls medianFirstAgentResponseTimeQueryFactory when false', async () => {
+                fetchShouldIncludeBotsMock.mockResolvedValue(false)
+
+                await fetchMedianFirstResponseTimeTrend(statsFilters, timezone)
+
+                expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimeQueryFactory(
+                        statsFilters,
+                        timezone,
+                    ),
+                    medianFirstAgentResponseTimeQueryFactory(
+                        prevStatsFilters,
+                        timezone,
+                    ),
+                )
+            })
+        })
+    })
+
     describe.each([
         ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
         [
@@ -140,13 +205,7 @@ describe('metric trends', () => {
 
             expect(useMetricTrendMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone),
-                queryFactory(
-                    {
-                        ...statsFilters,
-                        period: getPreviousPeriod(statsFilters.period),
-                    },
-                    timezone,
-                ),
+                queryFactory(prevStatsFilters, timezone),
             )
         })
     })
@@ -228,13 +287,7 @@ describe('metric trends', () => {
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone),
-                queryFactory(
-                    {
-                        ...statsFilters,
-                        period: getPreviousPeriod(statsFilters.period),
-                    },
-                    timezone,
-                ),
+                queryFactory(prevStatsFilters, timezone),
             )
         })
     })

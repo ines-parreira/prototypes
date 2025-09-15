@@ -148,6 +148,7 @@ export enum FeatureFlagKey {
     ReportingExtendFieldAndTag = 'reporting-extend-field-and-tag-reporting',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingHrtAi = 'linear.project_reporting-hrt-ai.hrt-ai',
+    ReportingHrtWithoutBots = 'linear.task_CRMREP-4416.frt-without-bots',
     ReportingImprovementFilterSearch = 'linear.task_CRMREP-4361.feature-improvement-filter-search',
     ReportingTicketFieldsPivotTable = 'reporting-ticket-fields-pivot-table',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',

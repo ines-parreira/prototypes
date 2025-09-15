@@ -29,11 +29,18 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimePerAgentQueryFactory,
+    medianFirstResponseTimeMetricPerAgentQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesReceivedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -46,6 +53,10 @@ import {
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
+
+jest.mock('domains/reporting/hooks/useShouldIncludeBots')
+const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
+const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -76,12 +87,100 @@ describe('metricsPerAgent', () => {
     const agentId = '2'
 
     describe('metricsPerAgent', () => {
+        describe('shouldIncludeBots', () => {
+            beforeEach(() => {
+                fetchShouldIncludeBotsMock.mockResolvedValue(true)
+                useShouldIncludeBotsMock.mockReturnValue(true)
+            })
+
+            describe('useMedianFirstResponseTimeMetricPerAgent', () => {
+                it('calls medianFirstResponseTimeMetricPerAgentQueryFactory when true', () => {
+                    renderHook(() =>
+                        useMedianFirstResponseTimeMetricPerAgent(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                            agentId,
+                        ),
+                    )
+
+                    expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                        medianFirstResponseTimeMetricPerAgentQueryFactory(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                        ),
+                        agentId,
+                    )
+                })
+
+                it('calls medianFirstAgentResponseTimePerAgentQueryFactory when false', () => {
+                    fetchShouldIncludeBotsMock.mockResolvedValue(false)
+                    useShouldIncludeBotsMock.mockReturnValue(false)
+
+                    renderHook(() =>
+                        useMedianFirstResponseTimeMetricPerAgent(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                            agentId,
+                        ),
+                    )
+
+                    expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                        medianFirstAgentResponseTimePerAgentQueryFactory(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                        ),
+                        agentId,
+                    )
+                })
+            })
+
+            describe('fetchMedianFirstResponseTimeMetricPerAgent', () => {
+                it('calls medianFirstResponseTimeMetricPerAgentQueryFactory when true', async () => {
+                    await fetchMedianFirstResponseTimeMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    )
+
+                    expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                        medianFirstResponseTimeMetricPerAgentQueryFactory(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                        ),
+                        agentId,
+                    )
+                })
+
+                it('calls medianFirstAgentResponseTimePerAgentQueryFactory when false', async () => {
+                    fetchShouldIncludeBotsMock.mockResolvedValue(false)
+                    useShouldIncludeBotsMock.mockReturnValue(false)
+
+                    await fetchMedianFirstResponseTimeMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    )
+
+                    expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                        medianFirstAgentResponseTimePerAgentQueryFactory(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                        ),
+                        agentId,
+                    )
+                })
+            })
+        })
+
         it.each([
-            [
-                'useMedianFirstResponseTimeMetricPerAgent',
-                useMedianFirstResponseTimeMetricPerAgent,
-                medianFirstResponseTimeMetricPerAgentQueryFactory,
-            ],
             [
                 'useTicketsRepliedMetricPerAgent',
                 useTicketsRepliedMetricPerAgent,
@@ -143,11 +242,6 @@ describe('metricsPerAgent', () => {
         )
 
         it.each([
-            [
-                'fetchMedianFirstResponseTimeMetricPerAgent',
-                fetchMedianFirstResponseTimeMetricPerAgent,
-                medianFirstResponseTimeMetricPerAgentQueryFactory,
-            ],
             [
                 'fetchTicketsRepliedMetricPerAgent',
                 fetchTicketsRepliedMetricPerAgent,

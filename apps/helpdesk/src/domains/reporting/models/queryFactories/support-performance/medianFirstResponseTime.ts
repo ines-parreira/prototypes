@@ -9,6 +9,10 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import {
+    TicketsFirstAgentResponseTimeDimension,
+    TicketsFirstAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -22,6 +26,7 @@ import {
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketMessagesEnrichedFirstResponseTimesMembers,
+    TicketsFirstAgentResponseTimeMembers,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -54,6 +59,40 @@ export const medianFirstResponseTimeQueryFactory = (
     metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
 })
 
+export const medianFirstAgentResponseTimeQueryFactory = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => ({
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME,
+    measures: [
+        TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
+    ],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        {
+            member: TicketsFirstAgentResponseTimeDimension.FirstAgentMessageDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: getFilterDateRange(statsFilters.period),
+        },
+        ...statsFiltersToReportingFilters(
+            TicketsFirstAgentResponseTimeMembers,
+            statsFilters,
+        ),
+    ],
+    order: sorting
+        ? [
+              [
+                  TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
+                  sorting,
+              ],
+          ]
+        : undefined,
+})
+
 export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -65,6 +104,19 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
 })
 
+export const medianFirstAgentResponseTimePerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => ({
+    ...medianFirstAgentResponseTimeQueryFactory(filters, timezone, sorting),
+    dimensions: [
+        TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+    ],
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_AGENT,
+})
+
 export const medianFirstResponseTimeMetricPerChannelQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -73,6 +125,17 @@ export const medianFirstResponseTimeMetricPerChannelQueryFactory = (
     ...medianFirstResponseTimeQueryFactory(filters, timezone, sorting),
     metricName:
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
+    dimensions: [CHANNEL_DIMENSION],
+})
+
+export const medianFirstAgentResponseTimePerChannelQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => ({
+    ...medianFirstAgentResponseTimeQueryFactory(filters, timezone, sorting),
+    metricName:
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_CHANNEL,
     dimensions: [CHANNEL_DIMENSION],
 })
 
@@ -100,6 +163,42 @@ export const firstResponseTimeMetricPerTicketDrillDownQueryFactory = (
         ...(sorting
             ? {
                   order: [[TicketMessagesDimension.FirstResponseTime, sorting]],
+              }
+            : {}),
+    }
+}
+
+export const medianFirstAgentResponseTimePerTicketDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<TicketCubeWithJoins> => {
+    const baseQuery = medianFirstAgentResponseTimeQueryFactory(
+        filters,
+        timezone,
+    )
+
+    return {
+        ...baseQuery,
+        metricName:
+            METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_TICKET_DRILL_DOWN,
+        measures: [],
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketsFirstAgentResponseTimeDimension.FirstAgentResponseTime,
+            TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+            ...baseQuery.dimensions,
+        ],
+        filters: [...baseQuery.filters, TicketDrillDownFilter],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [
+                      [
+                          TicketsFirstAgentResponseTimeDimension.FirstAgentResponseTime,
+                          sorting,
+                      ],
+                  ],
               }
             : {}),
     }

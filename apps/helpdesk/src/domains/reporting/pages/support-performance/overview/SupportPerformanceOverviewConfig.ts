@@ -169,6 +169,7 @@ export const OverviewMetricConfig: Record<
         fetchTrend: fetchMedianFirstResponseTimeTrend,
         showMetric: true,
         domain: Domain.Ticket,
+        // dummy factory, we pick query factory at runtime based on feature flag in `drill-down/helpers.ts`
         drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.HumanResponseTimeAfterAiHandoff]: {

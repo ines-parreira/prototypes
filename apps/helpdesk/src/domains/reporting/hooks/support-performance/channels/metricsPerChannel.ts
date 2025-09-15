@@ -2,12 +2,23 @@ import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchMetricPerDimension,
+    MetricWithDecile,
+    useMetricPerDimension,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimePerChannelQueryFactory,
+    medianFirstResponseTimeMetricPerChannelQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -24,15 +35,44 @@ export type MetricPerChannelQueryHook = (
     timezone: string,
     sorting?: OrderDirection,
     channel?: string,
+    shouldIncludeBots?: boolean,
 ) => MetricWithDecile
 
-export const useMedianFirstResponseTimeMetricPerChannel =
-    createMetricPerDimensionHook(
-        medianFirstResponseTimeMetricPerChannelQueryFactory,
-    )
+export const useMedianFirstResponseTimeMetricPerChannel = (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    dimensionId?: string,
+) => {
+    const shouldIncludeBots = useShouldIncludeBots()
 
-export const fetchMedianFirstResponseTimeMetricPerChannel =
-    createFetchPerDimension(medianFirstResponseTimeMetricPerChannelQueryFactory)
+    const queryFactory = shouldIncludeBots
+        ? medianFirstResponseTimeMetricPerChannelQueryFactory
+        : medianFirstAgentResponseTimePerChannelQueryFactory
+
+    return useMetricPerDimension(
+        queryFactory(statsFilters, timezone, sorting),
+        dimensionId,
+    )
+}
+
+export const fetchMedianFirstResponseTimeMetricPerChannel = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+    dimensionId?: string,
+) => {
+    const shouldIncludeBots = await fetchShouldIncludeBots()
+
+    const queryFactory = shouldIncludeBots
+        ? medianFirstResponseTimeMetricPerChannelQueryFactory
+        : medianFirstAgentResponseTimePerChannelQueryFactory
+
+    return fetchMetricPerDimension(
+        queryFactory(statsFilters, timezone, sorting),
+        dimensionId,
+    )
+}
 
 export const useMedianResponseTimeMetricPerChannel =
     createMetricPerDimensionHook(medianResponseTimeMetricPerChannelQueryFactory)

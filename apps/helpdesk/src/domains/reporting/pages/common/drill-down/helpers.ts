@@ -11,6 +11,10 @@ import {
 } from 'AIJourney/types/AIJourneyTypes'
 import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
+    firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+    medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -169,9 +173,13 @@ export const getDrillDownQuery = (
                 )
         }
 
+        case OverviewMetric.MedianFirstResponseTime: {
+            return metricData.shouldIncludeBots
+                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
+                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
+        }
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
-        case OverviewMetric.MedianFirstResponseTime:
         case OverviewMetric.HumanResponseTimeAfterAiHandoff:
         case OverviewMetric.MedianResolutionTime:
         case OverviewMetric.MessagesPerTicket:
@@ -185,8 +193,18 @@ export const getDrillDownQuery = (
         case OverviewMetric.ZeroTouchTickets:
         case OverviewMetric.TicketHandleTime:
             return OverviewMetricConfig[metricData.metricName].drillDownQuery
+
+        case AgentsTableColumn.MedianFirstResponseTime: {
+            const drillDownQuery = metricData.shouldIncludeBots
+                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
+                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
+
+            return queryBuilderWithAgentFilter(
+                metricData.perAgentId,
+                drillDownQuery,
+            )
+        }
         case AgentsTableColumn.CustomerSatisfaction:
-        case AgentsTableColumn.MedianFirstResponseTime:
         case AgentsTableColumn.MedianResponseTime:
         case AgentsTableColumn.MedianResolutionTime:
         case AgentsTableColumn.MessagesSent:
@@ -244,11 +262,22 @@ export const getDrillDownQuery = (
         case SlaMetric.AchievementRate:
         case SlaMetric.BreachedTicketsRate:
             return SlaMetricConfig[metricData.metricName].drillDownQuery
+
+        case ChannelsTableColumns.FirstResponseTime: {
+            const drillDownQuery = metricData.shouldIncludeBots
+                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
+                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
+
+            return queryBuilderWithChannelFilter(
+                metricData.perChannel,
+                drillDownQuery,
+            )
+        }
+
         case ChannelsTableColumns.TicketHandleTime:
         case ChannelsTableColumns.ClosedTickets:
         case ChannelsTableColumns.TicketsCreated:
         case ChannelsTableColumns.CreatedTicketsPercentage:
-        case ChannelsTableColumns.FirstResponseTime:
         case ChannelsTableColumns.HumanResponseTimeAfterAiHandoff:
         case ChannelsTableColumns.MedianResponseTime:
         case ChannelsTableColumns.MedianResolutionTime:

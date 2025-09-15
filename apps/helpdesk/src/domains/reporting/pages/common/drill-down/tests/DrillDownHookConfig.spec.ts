@@ -42,6 +42,7 @@ describe('getDrillDownHook', () => {
         {
             metricName: AgentsTableColumn.MedianFirstResponseTime,
             perAgentId: 123,
+            shouldIncludeBots: true,
         },
         { metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123 },
         { metricName: AgentsTableColumn.MessagesSent, perAgentId: 123 },
@@ -62,6 +63,7 @@ describe('getDrillDownHook', () => {
         {
             metricName: ChannelsTableColumns.FirstResponseTime,
             perChannel: 'email',
+            shouldIncludeBots: true,
         },
         {
             metricName: ChannelsTableColumns.MedianResponseTime,
@@ -106,7 +108,10 @@ describe('getDrillDownHook', () => {
         { metricName: OverviewMetric.MessagesPerTicket },
         { metricName: OverviewMetric.MedianResolutionTime },
         { metricName: OverviewMetric.MedianResponseTime },
-        { metricName: OverviewMetric.MedianFirstResponseTime },
+        {
+            metricName: OverviewMetric.MedianFirstResponseTime,
+            shouldIncludeBots: true,
+        },
         { metricName: OverviewMetric.CustomerSatisfaction },
         { metricName: OverviewMetric.OneTouchTickets },
         { metricName: OverviewMetric.TicketHandleTime },

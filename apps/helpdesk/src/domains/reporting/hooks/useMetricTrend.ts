@@ -113,8 +113,9 @@ export default function useMetricTrend<TCube extends Cubes>(
         number | null,
         TCube
     >([currentPeriodQuery], {
-        select: getSelectMeasure(currentPeriodQuery.measures[0]),
+        select: (data) => selectMeasure(currentPeriodQuery.measures[0], data),
     })
+
     const prevPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,
         number | null,
@@ -122,6 +123,7 @@ export default function useMetricTrend<TCube extends Cubes>(
     >([prevPeriodQuery], {
         select: (data) => selectMeasure(prevPeriodQuery.measures[0], data),
     })
+
     return {
         isFetching:
             currentPeriodMetric.isFetching || prevPeriodMetric.isFetching,

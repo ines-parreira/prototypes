@@ -22,6 +22,10 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import {
+    firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+    medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -110,6 +114,15 @@ import {
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
+
+jest.mock(
+    'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime',
+)
+const firstResponseTimeMetricPerTicketDrillDownQueryFactoryMock = assumeMock(
+    firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+)
+const medianFirstAgentResponseTimePerTicketDrillDownQueryFactoryMock =
+    assumeMock(medianFirstAgentResponseTimePerTicketDrillDownQueryFactory)
 
 jest.mock(
     'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts',
@@ -239,6 +252,7 @@ describe('getDrillDownQuery', () => {
         {
             metricName: AgentsTableColumn.MedianFirstResponseTime,
             perAgentId: 123,
+            shouldIncludeBots: true,
         },
         {
             metricName: AgentsTableColumn.MedianResponseTime,
@@ -323,6 +337,7 @@ describe('getDrillDownQuery', () => {
         {
             metricName: ChannelsTableColumns.FirstResponseTime,
             perChannel: 'email',
+            shouldIncludeBots: true,
         },
         {
             metricName: ChannelsTableColumns.MedianResponseTime,
@@ -381,7 +396,10 @@ describe('getDrillDownQuery', () => {
         { metricName: OverviewMetric.MessagesPerTicket },
         { metricName: OverviewMetric.MedianResolutionTime },
         { metricName: OverviewMetric.MedianResponseTime },
-        { metricName: OverviewMetric.MedianFirstResponseTime },
+        {
+            metricName: OverviewMetric.MedianFirstResponseTime,
+            shouldIncludeBots: true,
+        },
         { metricName: OverviewMetric.CustomerSatisfaction },
         { metricName: OverviewMetric.OneTouchTickets },
         { metricName: OverviewMetric.ZeroTouchTickets },
@@ -1424,6 +1442,52 @@ describe('getDrillDownQuery', () => {
             '789',
             undefined,
             'click-through-journey-id',
+        )
+    })
+
+    describe('shouldIncludeBots', () => {
+        const metricNames = [
+            AgentsTableColumn.MedianFirstResponseTime,
+            ChannelsTableColumns.FirstResponseTime,
+            OverviewMetric.MedianFirstResponseTime,
+        ]
+
+        const timezone = 'utc'
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+
+        it.each(metricNames)(
+            'calls firstResponseTimeMetricPerTicketDrillDownQueryFactoryMock when true',
+            (metricName) => {
+                getDrillDownQuery({
+                    metricName,
+                    shouldIncludeBots: true,
+                } as any)(statsFilters, timezone)
+
+                expect(
+                    firstResponseTimeMetricPerTicketDrillDownQueryFactoryMock,
+                ).toHaveBeenCalled()
+            },
+        )
+
+        it.each(metricNames)(
+            'calls medianFirstAgentResponseTimePerTicketDrillDownQueryFactoryMock when true',
+            (metricName) => {
+                getDrillDownQuery({
+                    metricName,
+                    shouldIncludeBots: false,
+                } as any)(statsFilters, timezone)
+
+                expect(
+                    medianFirstAgentResponseTimePerTicketDrillDownQueryFactoryMock,
+                ).toHaveBeenCalled()
+            },
         )
     })
 })

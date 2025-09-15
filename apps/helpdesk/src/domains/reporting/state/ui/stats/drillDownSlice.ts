@@ -47,24 +47,30 @@ type CommonMetrics = {
     title?: string
 }
 
-type PerformanceOverviewMetrics = {
-    metricName:
-        | OverviewMetric.OpenTickets
-        | OverviewMetric.TicketsClosed
-        | OverviewMetric.TicketsCreated
-        | OverviewMetric.TicketsReplied
-        | OverviewMetric.MessagesSent
-        | OverviewMetric.MessagesReceived
-        | OverviewMetric.MessagesPerTicket
-        | OverviewMetric.MedianResolutionTime
-        | OverviewMetric.MedianResponseTime
-        | OverviewMetric.HumanResponseTimeAfterAiHandoff
-        | OverviewMetric.MedianFirstResponseTime
-        | OverviewMetric.CustomerSatisfaction
-        | OverviewMetric.OneTouchTickets
-        | OverviewMetric.ZeroTouchTickets
-        | OverviewMetric.TicketHandleTime
-} & CommonMetrics
+type PerformanceOverviewMetrics = (
+    | {
+          metricName:
+              | OverviewMetric.OpenTickets
+              | OverviewMetric.TicketsClosed
+              | OverviewMetric.TicketsCreated
+              | OverviewMetric.TicketsReplied
+              | OverviewMetric.MessagesSent
+              | OverviewMetric.MessagesReceived
+              | OverviewMetric.MessagesPerTicket
+              | OverviewMetric.MedianResolutionTime
+              | OverviewMetric.MedianResponseTime
+              | OverviewMetric.HumanResponseTimeAfterAiHandoff
+              | OverviewMetric.CustomerSatisfaction
+              | OverviewMetric.OneTouchTickets
+              | OverviewMetric.ZeroTouchTickets
+              | OverviewMetric.TicketHandleTime
+      }
+    | {
+          metricName: OverviewMetric.MedianFirstResponseTime
+          shouldIncludeBots: boolean
+      }
+) &
+    CommonMetrics
 
 export type AgentMetricColumn =
     | AgentsTableColumn.CustomerSatisfaction
@@ -82,10 +88,21 @@ export type AgentMetricColumn =
     | AgentsTableColumn.ClosedTicketsPerHour
     | AgentsTableColumn.TicketHandleTime
 
-export type AgentsMetrics = {
-    metricName: AgentMetricColumn
-    perAgentId: number
-} & CommonMetrics
+export type AgentsMetrics = (
+    | {
+          metricName: Exclude<
+              AgentMetricColumn,
+              AgentsTableColumn.MedianFirstResponseTime
+          >
+          perAgentId: number
+      }
+    | {
+          metricName: AgentsTableColumn.MedianFirstResponseTime
+          perAgentId: number
+          shouldIncludeBots: boolean
+      }
+) &
+    CommonMetrics
 
 export type ProductMetricColumn =
     | ProductInsightsTableColumns.NegativeSentiment
@@ -178,10 +195,21 @@ export type ChannelMetricColumn =
     | ChannelsTableColumns.MessagesReceived
     | ChannelsTableColumns.CustomerSatisfaction
 
-export type ChannelsMetrics = {
-    metricName: ChannelMetricColumn
-    perChannel: string
-} & CommonMetrics
+export type ChannelsMetrics = (
+    | {
+          metricName: Exclude<
+              ChannelMetricColumn,
+              ChannelsTableColumns.FirstResponseTime
+          >
+          perChannel: string
+      }
+    | {
+          metricName: ChannelsTableColumns.FirstResponseTime
+          perChannel: string
+          shouldIncludeBots: boolean
+      }
+) &
+    CommonMetrics
 
 export type TicketFieldsMetrics = {
     metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount

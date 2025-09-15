@@ -7,6 +7,7 @@ import { User } from 'config/types/user'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
+import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentNameCellContent } from 'domains/reporting/pages/support-performance/agents/AgentNameCellContent'
@@ -91,6 +92,8 @@ export const AgentsTable = ({
     withAggregateRows = true,
     isHeatmapMode = false,
 }: AgentsTableProps) => {
+    const shouldIncludeBots = useShouldIncludeBots()
+
     const dispatch = useAppDispatch()
     const { columnsOrder, rowsOrder } = useAgentsTableConfigSetting()
     const { currentPage, perPage, agents, allAgents } = paginatedAgents
@@ -162,6 +165,7 @@ export const AgentsTable = ({
                                                     getDrillDownMetricData(
                                                         column,
                                                         agent,
+                                                        shouldIncludeBots,
                                                     ),
                                                 isHeatmapMode: isHeatmapMode,
                                                 isSortingMetricLoading:

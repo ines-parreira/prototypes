@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     isMetricTrendWithCurrency,
     MetricTrendHook,
 } from 'domains/reporting/hooks/useMetricTrend'
+import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
@@ -60,6 +61,8 @@ export const TrendCard = ({
         isMetricTrendWithCurrency(trend) ? trend?.data?.currency : undefined,
     )
 
+    const shouldIncludeBots = useShouldIncludeBots()
+
     return (
         <MetricCard
             hint={hint}
@@ -93,6 +96,7 @@ export const TrendCard = ({
                             {
                                 title,
                                 metricName: drillDownMetric,
+                                shouldIncludeBots,
                             } as DrillDownMetric
                         }
                     >

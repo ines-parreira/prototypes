@@ -28,10 +28,17 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimePerChannelQueryFactory,
+    medianFirstResponseTimeMetricPerChannelQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesSentMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
@@ -44,6 +51,10 @@ import {
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
+
+jest.mock('domains/reporting/hooks/useShouldIncludeBots')
+const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
+const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -72,6 +83,61 @@ describe('metricsPerChannel', () => {
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
     const channel = 'someChannel'
+
+    beforeEach(() => {
+        fetchShouldIncludeBotsMock.mockResolvedValue(true)
+        useShouldIncludeBotsMock.mockReturnValue(true)
+    })
+
+    describe('shouldIncludeBots', () => {
+        describe('useMedianFirstResponseTimeMetricPerChannel', () => {
+            it('calls medianFirstAgentResponseTimePerChannelQueryFactory when false', () => {
+                useShouldIncludeBotsMock.mockReturnValue(false)
+
+                renderHook(
+                    () =>
+                        useMedianFirstResponseTimeMetricPerChannel(
+                            statsFilters,
+                            timezone,
+                            sorting,
+                            channel,
+                        ),
+                    {},
+                )
+
+                expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimePerChannelQueryFactory(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                    ),
+                    channel,
+                )
+            })
+        })
+
+        describe('fetchMedianFirstResponseTimeMetricPerChannel', () => {
+            it('calls medianFirstAgentResponseTimePerChannelQueryFactory when false', async () => {
+                fetchShouldIncludeBotsMock.mockResolvedValue(false)
+
+                await fetchMedianFirstResponseTimeMetricPerChannel(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    channel,
+                )
+
+                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimePerChannelQueryFactory(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                    ),
+                    channel,
+                )
+            })
+        })
+    })
 
     describe('hooks', () => {
         it.each([

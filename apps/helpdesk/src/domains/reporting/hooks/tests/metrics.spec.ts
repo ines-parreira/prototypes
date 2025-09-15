@@ -34,12 +34,19 @@ import {
     useZeroTouchTicketsMetric,
 } from 'domains/reporting/hooks/metrics'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
+import {
+    fetchShouldIncludeBots,
+    useShouldIncludeBots,
+} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { medianFirstResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import {
+    medianFirstAgentResponseTimeQueryFactory,
+    medianFirstResponseTimeQueryFactory,
+} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -54,6 +61,10 @@ import {
     formatReportingQueryDate,
     withFilter,
 } from 'domains/reporting/utils/reporting'
+
+jest.mock('domains/reporting/hooks/useShouldIncludeBots')
+const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
+const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetric')
 const useMetricMock = assumeMock(useMetric)
@@ -76,8 +87,12 @@ describe('metrics', () => {
         isFetching: false,
     }
 
-    useMetricMock.mockReturnValue(defaultMetricValue)
-    fetchMetricMock.mockResolvedValue(defaultMetricValue)
+    beforeEach(() => {
+        useMetricMock.mockReturnValue(defaultMetricValue)
+        fetchMetricMock.mockResolvedValue(defaultMetricValue)
+        fetchShouldIncludeBotsMock.mockResolvedValue(true)
+        useShouldIncludeBotsMock.mockReturnValue(true)
+    })
 
     describe.each([
         [
@@ -158,6 +173,34 @@ describe('metrics', () => {
             ),
         )
         expect(result.current).toBe(defaultMetricValue)
+    })
+
+    it('calls medianFirstResponseTimeQueryFactory when shouldIncludeBots is false', () => {
+        useShouldIncludeBotsMock.mockReturnValue(false)
+
+        renderHook(() =>
+            useMedianFirstResponseTimeMetric(statsFilters, timezone),
+        )
+
+        expect(useMetricMock).toHaveBeenCalledWith(
+            medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
+        )
+    })
+
+    it('calls medianFirstResponseTimeQueryFactory when shouldIncludeBots is false', async () => {
+        fetchShouldIncludeBotsMock.mockResolvedValue(false)
+
+        await fetchMedianFirstResponseTimeMetric(statsFilters, timezone)
+
+        expect(fetchMetricMock).toHaveBeenCalledWith(
+            withFilter(
+                medianFirstAgentResponseTimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
+                ignoreNotAssignedTicketsFilter,
+            ),
+        )
     })
 
     describe.each([
