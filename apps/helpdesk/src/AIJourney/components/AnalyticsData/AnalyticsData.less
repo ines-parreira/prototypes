@@ -21,11 +21,17 @@
         height: fit-content;
     }
 
-    .metricInformation {
+    .metricContainer {
         display: flex;
         flex-direction: row;
-        gap: var(--layout-spacing-xs);
-        align-items: end;
+        gap: var(--layout-spacing-s);
+    }
+
+    .metricInformation {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+        align-items: flex-start;
         justify-content: space-between;
         min-height: 26px;
 

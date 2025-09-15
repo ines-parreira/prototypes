@@ -35,28 +35,30 @@ export const AnalyticsData = ({ data, period }: AnalyticsDataProps) => {
                                 style={{ height: '25px', width: '25px' }}
                             />
                         ) : (
-                            <>
+                            <div className={css.metricContainer}>
                                 <div className={css.metricInformation}>
                                     <div className={css.metricValue}>
                                         <b>{formattedValue}</b>
                                     </div>
+                                    <div className={css.trendBadge}>
+                                        <TrendBadge
+                                            value={metric.value}
+                                            prevValue={metric.prevValue}
+                                            metricFormat={metric.metricFormat}
+                                            currency={metric.currency}
+                                            interpretAs="more-is-better"
+                                        />
+                                    </div>
+                                </div>
+                                {metric.series && (
                                     <AnalyticsBarChart
                                         period={period}
-                                        data={metric.series ?? []}
+                                        data={metric.series}
                                         currency={metric.currency}
                                         metricFormat={metric.metricFormat}
                                     />
-                                </div>
-                                <div className={css.trendBadge}>
-                                    <TrendBadge
-                                        value={metric.value}
-                                        prevValue={metric.prevValue}
-                                        metricFormat={metric.metricFormat}
-                                        currency={metric.currency}
-                                        interpretAs="more-is-better"
-                                    />
-                                </div>
-                            </>
+                                )}
+                            </div>
                         )}
                     </div>
                 )

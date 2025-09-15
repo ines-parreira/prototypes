@@ -11,10 +11,6 @@ import { mockStore } from 'utils/testing'
 
 import { AnalyticsData } from './AnalyticsData'
 
-jest.mock('../AnalyticsBarChart/AnalyticsBarChart', () => ({
-    AnalyticsBarChart: () => <div data-testid="analytics-bar-chart" />,
-}))
-
 jest.mock('domains/reporting/state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
@@ -103,15 +99,37 @@ describe('<AnalyticsData />', () => {
         expect(screen.getByText('789%')).toBeInTheDocument()
     })
 
-    it.skip('renders a bar chart for each metric', () => {
-        render(
+    it('should not render bar chart when time series is not available', () => {
+        const { container } = render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsData data={data} period={period} />
                 </Provider>
             </QueryClientProvider>,
         )
-        expect(screen.getAllByTestId('analytics-bar-chart').length).toBe(4)
+        expect(
+            container.querySelector('.barsContainer'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render bar chart when time series is available', () => {
+        const dataWithSeries = data.map((metric) => ({
+            ...metric,
+            series: [
+                { dateTime: '2023-10-01', value: 1 },
+                { dateTime: '2023-10-02', value: 2 },
+                { dateTime: '2023-10-03', value: 3 },
+            ],
+        })) as MetricProps[]
+
+        const { container } = render(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <AnalyticsData data={dataWithSeries} period={period} />
+                </Provider>
+            </QueryClientProvider>,
+        )
+        expect(container.querySelector('.barsContainer')).toBeInTheDocument()
     })
 
     it('displays loading spinner when metric is loading', () => {
