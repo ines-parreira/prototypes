@@ -31,7 +31,7 @@ const digestContent = (
     hasMaxFollowUpMessages?: boolean,
 ) => (
     <>
-        Over the last 30 days, your Abandoned Cart Journey recovered{' '}
+        Over the last 28 days, your Abandoned Cart Journey recovered{' '}
         <b>{revenueVariation}</b>, converting at{' '}
         <b>{conversionVariationContent}</b>, with{' '}
         <b>
@@ -41,10 +41,9 @@ const digestContent = (
         .{' '}
         {(!hasDiscount || !hasMaxFollowUpMessages) && (
             <>
-                To drive more revenue, consider enabling the{' '}
-                {!hasDiscount && <>Discount Code skill</>}{' '}
-                {!hasDiscount && !hasMaxFollowUpMessages && <>or</>}{' '}
-                {!hasMaxFollowUpMessages && <>Follow-up messages</>}.
+                {`To drive more revenue, consider enabling the ${!hasDiscount ? 'Discount Code skill' : ''}${
+                    !hasDiscount && !hasMaxFollowUpMessages ? ' or ' : ''
+                }${!hasMaxFollowUpMessages ? 'Follow-up messages' : ''}.`}
             </>
         )}
     </>

@@ -175,7 +175,21 @@ describe('<Performance />', () => {
         })
     })
 
-    it('should render AI Journey performance page', () => {
+    it("should render AI Journey performance page with complete Digest message when discount is disabled and doesn't have follow-ups", () => {
+        mockUseJourneyData.mockImplementation(() => ({
+            data: {
+                configuration: {
+                    max_follow_up_messages: null,
+                    offer_discount: false,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            isError: false,
+            isLoading: false,
+        }))
+
         renderWithRouter(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
@@ -187,6 +201,113 @@ describe('<Performance />', () => {
         )
 
         expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'To drive more revenue, consider enabling the Discount Code skill or Follow-up messages.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should render AI Journey performance page with discount suggestion when discount is disabled and has follow-ups', () => {
+        mockUseJourneyData.mockImplementation(() => ({
+            data: {
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: false,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <Performance />
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'To drive more revenue, consider enabling the Discount Code skill.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it("should render AI Journey performance page with follow-up suggestion when doesn't have follow-ups and discount is enabled", () => {
+        mockUseJourneyData.mockImplementation(() => ({
+            data: {
+                configuration: {
+                    max_follow_up_messages: null,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <Performance />
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'To drive more revenue, consider enabling the Follow-up messages.',
+                { exact: false },
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should render AI Journey performance page with no suggestions when has follow-ups and discount is enabled', () => {
+        mockUseJourneyData.mockImplementation(() => ({
+            data: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <Performance />
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(
+            screen.queryByText('To drive more revenue, consider enabling the', {
+                exact: false,
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('missing integration should not break the page', () => {
