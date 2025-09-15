@@ -270,7 +270,9 @@ describe('<Activation />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+        expect(
+            screen.getByText('Select an abandoned product'),
+        ).toBeInTheDocument()
         expect(
             await screen.findByText(
                 'Customer Jane Smith has left their cart with the following product',
@@ -295,7 +297,9 @@ describe('<Activation />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Customer scenario')).toBeInTheDocument()
+        expect(
+            screen.getByText('Select an abandoned product'),
+        ).toBeInTheDocument()
         expect(
             await screen.findByText(
                 'Customer John Doe has left their cart with the following product',

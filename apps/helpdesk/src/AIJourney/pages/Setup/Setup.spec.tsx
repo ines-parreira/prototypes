@@ -530,7 +530,7 @@ describe('<Setup />', () => {
 
             expect(
                 screen.queryByPlaceholderText(
-                    /Enter instructions for how the AI should communicate/i,
+                    '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
                 ),
             ).not.toBeInTheDocument()
         })
@@ -585,7 +585,7 @@ describe('<Setup />', () => {
             )
 
             const messageInstructionsTextarea = screen.getByPlaceholderText(
-                /Enter instructions for how the AI should communicate/i,
+                '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
             )
             expect(messageInstructionsTextarea).toBeInTheDocument()
             expect(messageInstructionsTextarea).toHaveValue(
@@ -661,7 +661,7 @@ describe('<Setup />', () => {
             expect(discountSwitch).not.toBeChecked()
 
             const messageInstructionsTextarea = screen.getByPlaceholderText(
-                /Enter instructions for how the AI should communicate/i,
+                '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
             )
             expect(messageInstructionsTextarea).toHaveValue('')
 

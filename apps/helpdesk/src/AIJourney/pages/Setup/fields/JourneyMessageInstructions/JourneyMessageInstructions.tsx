@@ -38,21 +38,22 @@ export const JourneyMessageInstructionsField = ({
     return (
         <div className={css.journeyMessageInstructionsField}>
             <FieldPresentation
-                name={name ?? 'AI message instructions'}
+                name={name ?? 'Message guidance'}
                 description={
                     description ??
-                    "Provide instructions for the AI agent's messaging tone and style (optional)"
+                    'Write guidelines for how the AI should text your shoppers'
                 }
                 optional={optional}
             />
             <div className={css.textareaContainer}>
                 <TextArea
                     autoRowHeight={true}
-                    placeholder="Enter instructions for how the AI should communicate with customers..."
+                    placeholder={`- Start with \"Hey!\"  \n- Don\'t include product descriptions\n- Be friendly`}
                     maxLength={maxLength}
                     value={value}
                     onChange={handleChange}
                     style={{ minHeight: '150px' }}
+                    innerClassName={css.textArea}
                 />
                 <div
                     className={classNames(css.characterCount, {

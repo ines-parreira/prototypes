@@ -184,7 +184,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             <ProductSelectField
                 options={productList}
                 onChange={handleProductSelectChange}
-                name="Customer scenario"
+                name="Select an abandoned product"
                 description={`Customer ${customerName} has left their cart with the following product`}
             />
             <TestSMSField

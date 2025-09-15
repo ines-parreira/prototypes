@@ -7,22 +7,18 @@ describe('<JourneyMessageInstructionsField />', () => {
     it('should render field information', () => {
         render(<JourneyMessageInstructionsField />)
 
-        expect(screen.getByText('AI message instructions')).toBeInTheDocument()
+        expect(screen.getByText('Message guidance')).toBeInTheDocument()
         expect(
             screen.getByText(
-                "Provide instructions for the AI agent's messaging tone and style (optional)",
+                'Write guidelines for how the AI should text your shoppers',
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(/Guide the AI agent's communication style/),
         ).toBeInTheDocument()
-    })
-
-    it('should render with default empty value', () => {
-        render(<JourneyMessageInstructionsField />)
 
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
         expect(textarea).toHaveValue('')
         expect(
@@ -30,12 +26,24 @@ describe('<JourneyMessageInstructionsField />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should render with custom name and desciprtion when provided', () => {
+        render(
+            <JourneyMessageInstructionsField
+                name="name"
+                description="description"
+            />,
+        )
+
+        expect(screen.getByText('name')).toBeInTheDocument()
+        expect(screen.getByText('description')).toBeInTheDocument()
+    })
+
     it('should accept and display initial value', () => {
         const initialValue = 'Be friendly and professional'
         render(<JourneyMessageInstructionsField value={initialValue} />)
 
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
         expect(textarea).toHaveValue(initialValue)
 
@@ -51,7 +59,7 @@ describe('<JourneyMessageInstructionsField />', () => {
 
         const user = userEvent.setup()
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         await act(async () => {
@@ -90,7 +98,7 @@ describe('<JourneyMessageInstructionsField />', () => {
 
         const user = userEvent.setup()
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         await act(async () => {
@@ -134,7 +142,7 @@ describe('<JourneyMessageInstructionsField />', () => {
         )
 
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         // TextArea component should have maxLength attribute
@@ -149,7 +157,7 @@ describe('<JourneyMessageInstructionsField />', () => {
 
         const user = userEvent.setup()
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         const pasteText = 'This is pasted text'
@@ -172,7 +180,7 @@ describe('<JourneyMessageInstructionsField />', () => {
 
         const user = userEvent.setup()
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         await act(async () => {
@@ -186,7 +194,7 @@ describe('<JourneyMessageInstructionsField />', () => {
         render(<JourneyMessageInstructionsField />)
 
         const container = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         ).parentElement?.parentElement?.parentElement
 
         expect(container).toHaveClass('journeyMessageInstructionsField')
@@ -198,7 +206,7 @@ describe('<JourneyMessageInstructionsField />', () => {
 
         const user = userEvent.setup()
         const textarea = screen.getByPlaceholderText(
-            'Enter instructions for how the AI should communicate with customers...',
+            '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
         )
 
         // This should not throw an error

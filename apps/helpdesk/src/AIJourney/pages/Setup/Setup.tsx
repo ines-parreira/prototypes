@@ -286,6 +286,8 @@ export const Setup = () => {
                     value={journeyMessageInstructions}
                     onChange={setJourneyMessageInstructions}
                     maxLength={4000}
+                    optional
+                    hideInfoContent
                 />
             )}
 
