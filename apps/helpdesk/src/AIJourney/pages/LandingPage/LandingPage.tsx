@@ -73,8 +73,10 @@ export const LandingPage = () => {
         >
             {!isPageLoading && (
                 <>
-                    <PerformanceBadge />
-                    <AnimatedText />
+                    <div className={css.header}>
+                        <PerformanceBadge />
+                        <AnimatedText />
+                    </div>
                     <div className={css.additionalInfo}>
                         <AdditionalInfo />
                         <div className={css.continueButton}>
