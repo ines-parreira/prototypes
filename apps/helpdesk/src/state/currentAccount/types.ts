@@ -10,6 +10,7 @@ import {
     TableRowSet,
     TableSetting,
 } from 'domains/reporting/state/ui/stats/types'
+import { SubscriptionStatus } from 'models/billing/types'
 import { BannerNotificationFromBackend } from 'state/notifications/types'
 
 export type CurrentAccountState = Map<any, any>
@@ -241,7 +242,7 @@ export type Account = {
     id: number
     current_subscription: {
         start_datetime: string
-        status: 'active' | 'past_due' | 'trialing'
+        status: SubscriptionStatus
         trial_end_datetime: string | null
         trial_start_datetime: string | null
         products: Record<string, string>

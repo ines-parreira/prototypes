@@ -55,7 +55,7 @@ type BillingProcessViewProps = {
     isTrialing: boolean
     isCurrentSubscriptionCanceled: boolean
     periodEnd: string
-    currentUsage: CurrentProductsUsages
+    currentUsage?: CurrentProductsUsages
     setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
 }
 

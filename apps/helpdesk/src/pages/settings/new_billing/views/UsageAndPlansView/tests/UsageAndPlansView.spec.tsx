@@ -521,7 +521,7 @@ describe('UsageAndPlansView', () => {
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
-                currentUsage={null}
+                currentUsage={undefined}
             />,
             storeWithCanceledSubscription,
         )

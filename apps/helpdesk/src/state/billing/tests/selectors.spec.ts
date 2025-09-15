@@ -12,11 +12,13 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     SMS_PRODUCT_ID,
+    smsAvailablePlans,
     smsPlan1,
     VOICE_PRODUCT_ID,
+    voiceAvailablePlans,
     voicePlan1,
 } from 'fixtures/productPrices'
-import { Cadence, ProductType } from 'models/billing/types'
+import { Cadence, Plan, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
 
@@ -87,12 +89,22 @@ describe('billing selectors', () => {
         )
     })
 
-    it('currentUsage', () => {
+    it('getCurrentUsage', () => {
         expect(selectors.getCurrentUsage({} as RootState)).toEqualImmutable(
             fromJS({}),
         )
         expect(selectors.getCurrentUsage(state)).toEqualImmutable(
             state.billing.get('currentUsage'),
+        )
+    })
+
+    it('getCurrentProductUsage', () => {
+        expect(selectors.getCurrentProductsUsage({} as RootState)).toEqual(
+            undefined,
+        )
+
+        expect(selectors.getCurrentProductsUsage(state)).toEqual(
+            state.billing.get('currentProductsUsage').toJS(),
         )
     })
 
@@ -135,6 +147,18 @@ describe('billing selectors', () => {
                 expect(plan.product).toEqual(ProductType.Helpdesk)
             })
         })
+
+        it('doesnt fail if there are no helpdesk plans available', () => {
+            const plans = selectors.getAvailableHelpdeskPlans({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [],
+                }),
+            })
+
+            expect(plans).toEqual([])
+        })
     })
 
     describe('getAvailableAutomatePlans', () => {
@@ -144,6 +168,18 @@ describe('billing selectors', () => {
             plans.forEach((plan) => {
                 expect(plan.product).toEqual(ProductType.Automation)
             })
+        })
+
+        it('doesnt fail if there are no AI Agent plans available', () => {
+            const plans = selectors.getAvailableAutomatePlans({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [],
+                }),
+            })
+
+            expect(plans).toEqual([])
         })
     })
 
@@ -155,6 +191,18 @@ describe('billing selectors', () => {
                 expect(plan.product).toEqual(ProductType.Voice)
             })
         })
+
+        it('doesnt fail if there are no Voice plans available', () => {
+            const plans = selectors.getAvailableVoicePlans({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [],
+                }),
+            })
+
+            expect(plans).toEqual([])
+        })
     })
 
     describe('getAvailableSmsPlans', () => {
@@ -165,15 +213,39 @@ describe('billing selectors', () => {
                 expect(plan.product).toEqual(ProductType.SMS)
             })
         })
+
+        it('doesnt fail if there are no SMS plans available', () => {
+            const plans = selectors.getAvailableSmsPlans({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [],
+                }),
+            })
+
+            expect(plans).toEqual([])
+        })
     })
 
     describe('getAvailableConvertPlans', () => {
-        it('should return the SMS plans', () => {
+        it('should return the Convert plans', () => {
             const plans = selectors.getAvailableConvertPlans(state)
 
             plans.forEach((plan) => {
                 expect(plan.product).toEqual(ProductType.Convert)
             })
+        })
+
+        it('doesnt fail if there are no Convert plans available', () => {
+            const plans = selectors.getAvailableConvertPlans({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [],
+                }),
+            })
+
+            expect(plans).toEqual([])
         })
     })
 
@@ -228,6 +300,24 @@ describe('billing selectors', () => {
                     ),
                 }),
             ).toEqual(smsPlan1)
+        })
+    })
+
+    describe('getCurrentConvertProduct', () => {
+        it('should return the current Convert product', () => {
+            expect(
+                selectors.getCurrentConvertPlan({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            CONVERT_PRODUCT_ID,
+                        ],
+                        convertPlan1.price_id,
+                    ),
+                }),
+            ).toEqual(convertPlan1)
         })
     })
 
@@ -425,9 +515,53 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getPrices', () => {
+    describe('getAvailablePlans', () => {
         it('should return the prices', () => {
             expect(selectors.getAvailablePlans(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getAvailablePlansMap', () => {
+        it('should return the prices', () => {
+            const expected = billingFixtures.billingState.products
+                .flatMap((product) => product.prices)
+                .reduce<{ [key: string]: Plan }>((acc, plan) => {
+                    acc[plan.price_id] = plan
+                    return acc
+                }, {})
+
+            expect(selectors.getAvailablePlansMap(state)).toEqual(expected)
+        })
+    })
+
+    describe('getAvailablePlansMapByPlanId', () => {
+        it('should return the prices', () => {
+            const expected = billingFixtures.billingState.products
+                .flatMap((product) => product.prices)
+                .reduce<{ [key: string]: Plan }>((acc, plan) => {
+                    acc[plan.plan_id] = plan
+                    return acc
+                }, {})
+
+            expect(selectors.getAvailablePlansMapByPlanId(state)).toEqual(
+                expected,
+            )
+        })
+    })
+
+    describe('getAvailableAutomatePlansMap', () => {
+        it('should return the prices', () => {
+            const expected = billingFixtures.billingState.products
+                .filter((product) => product.type === ProductType.Automation)
+                .flatMap((product) => product.prices)
+                .reduce<{ [key: string]: Plan }>((acc, plan) => {
+                    acc[plan.price_id] = plan
+                    return acc
+                }, {})
+
+            expect(selectors.getAvailableAutomatePlansMap(state)).toEqual(
+                expected,
+            )
         })
     })
 
@@ -492,5 +626,53 @@ describe('billing selectors', () => {
 
             expect(isVettedForPhone).toBeFalsy()
         })
+    })
+
+    describe('getVoiceOrSmsPlanChanged', () => {
+        type Configs = [
+            string, // name
+            boolean, // sms plan changed
+            boolean, // voice plan changed
+        ]
+        const configs: Configs[] = [
+            ['no change', false, false],
+            ['sms changed', true, false],
+            ['voice changed', false, true],
+            ['both changed', true, true],
+        ]
+        it.each(configs)(
+            'should report if sms or voice plan has changed: [sms change: %s, voice change: %s]',
+            (
+                _name: string,
+                smsPlanChanged: boolean,
+                voicePlanChanged: boolean,
+            ) => {
+                const currentAccount = state.currentAccount.toJS()
+                const originalSMSPlan =
+                    currentAccount.current_subscription.products[SMS_PRODUCT_ID]
+                const originalVoicePlan =
+                    currentAccount.current_subscription.products[
+                        VOICE_PRODUCT_ID
+                    ]
+
+                const selectedSmsPlan = smsPlanChanged
+                    ? smsAvailablePlans.find(
+                          (plan) => plan.plan_id !== originalSMSPlan,
+                      )
+                    : originalSMSPlan
+                const selectedVoicePlan = voicePlanChanged
+                    ? voiceAvailablePlans.find(
+                          (plan) => plan.plan_id !== originalVoicePlan,
+                      )
+                    : originalVoicePlan
+
+                const f = selectors.getVoiceOrSmsPlanChanged({
+                    selectedSmsPlan,
+                    selectedVoicePlan,
+                })
+                const hasChanged = f(state)
+                expect(hasChanged).toBe(smsPlanChanged || voicePlanChanged)
+            },
+        )
     })
 })

@@ -73,3 +73,35 @@ Immutable.Map {
   },
 }
 `;
+
+exports[`billing reducers fetch current products usage 1`] = `
+Immutable.Map {
+  "currentProductsUsage": Immutable.Map {
+    "helpdesk": Immutable.Map {
+      "data": Immutable.Map {
+        "extra_tickets_cost_in_cents": 0,
+        "num_tickets": 2,
+        "num_extra_tickets": 0,
+      },
+      "meta": Immutable.Map {
+        "subscription_start_datetime": "2017-08-22T00:46:32+00:00",
+        "subscription_end_datetime": "2017-09-05T00:46:32+00:00",
+      },
+    },
+    "automation": Immutable.Map {
+      "data": Immutable.Map {
+        "extra_tickets_cost_in_cents": 0,
+        "num_tickets": 2,
+        "num_extra_tickets": 0,
+      },
+      "meta": Immutable.Map {
+        "subscription_start_datetime": "2017-08-22T00:46:32+00:00",
+        "subscription_end_datetime": "2017-09-05T00:46:32+00:00",
+      },
+    },
+    "voice": null,
+    "sms": null,
+    "convert": null,
+  },
+}
+`;

@@ -4,6 +4,7 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { SubscriptionStatus } from 'models/billing/types'
 import {
     Account,
     AccountFeature,
@@ -16,7 +17,7 @@ export const account: Account = {
     current_subscription: {
         trial_start_datetime: '2017-08-23T01:38:53+00:00',
         trial_end_datetime: '2017-09-06T01:38:53+00:00',
-        status: 'trialing',
+        status: SubscriptionStatus.TRIALING,
         start_datetime: '2017-08-23T01:38:53+00:00',
         products: {
             [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,

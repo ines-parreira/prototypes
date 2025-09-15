@@ -91,7 +91,7 @@ export const useBillingPlans = ({
     const periodEnd = useMemo(
         () =>
             moment(
-                currentUsage.helpdesk?.meta.subscription_end_datetime,
+                currentUsage?.helpdesk?.meta.subscription_end_datetime,
             ).format(DATE_FORMAT),
         [currentUsage],
     )
@@ -496,7 +496,7 @@ export const useBillingPlans = ({
         if (selectedPlans[ProductType.Helpdesk]?.plan?.product) {
             const plan = selectedPlans[ProductType.Helpdesk]?.plan
             if (plan) {
-                plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                plansToBeUpdated[plan.product] = plan.price_id
             }
         }
 
@@ -505,7 +505,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Voice]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
 
@@ -513,7 +513,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.SMS]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }
@@ -540,7 +540,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Automation]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }
@@ -575,7 +575,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Convert]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }

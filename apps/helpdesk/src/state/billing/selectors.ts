@@ -406,7 +406,10 @@ export const getCurrentUsage = createSelector(
 
 export const getCurrentProductsUsage = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => billing.get('currentProductsUsage') as CurrentProductsUsages,
+    (billing) =>
+        billing.get('currentProductsUsage')?.toJS() as
+            | CurrentProductsUsages
+            | undefined,
 )
 
 export const getCheapestSMSPrice = createSelector(

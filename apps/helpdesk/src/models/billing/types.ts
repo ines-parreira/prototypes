@@ -172,6 +172,7 @@ export type UpcomingInvoiceSummary = {
 export enum SubscriptionStatus {
     ACTIVE = 'active',
     CANCELED = 'canceled',
+    PAST_DUE = 'past_due',
     TRIALING = 'trialing',
 }
 

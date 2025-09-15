@@ -28,7 +28,7 @@ export default function reducer(
         case constants.UPDATE_CREDIT_CARD_SUCCESS:
             return state.set('creditCard', fromJS(action.resp))
         case constants.FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS:
-            return state.set('currentProductsUsage', action.resp)
+            return state.set('currentProductsUsage', fromJS(action.resp))
         default:
             return state
     }

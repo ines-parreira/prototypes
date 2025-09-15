@@ -54,7 +54,7 @@ import css from './UsageAndPlansView.less'
 type UsageAndPlansViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     periodEnd: string
-    currentUsage: CurrentProductsUsages | null
+    currentUsage?: CurrentProductsUsages
     convertBanner?: BillingBanner
     voiceBanner?: BillingBanner
     smsBanner?: BillingBanner

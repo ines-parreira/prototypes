@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import moment from 'moment'
 
@@ -34,7 +34,7 @@ export type CancelAAOModalProps = {
     handleCancelAAO: () => void
     handleOnClose: () => void
     periodEnd: string
-    currentUsage: CurrentProductsUsages
+    currentUsage?: CurrentProductsUsages
 }
 
 export type Reason = {
@@ -64,7 +64,7 @@ const CancelAAOModal = ({
     const [reasons, setReasons] = useState(CANCEL_AUTOMATION_REASONS)
 
     const [message, setMessage] = useState('')
-    const AAOUsage = currentUsage.automation
+    const AAOUsage = currentUsage?.automation
     const automatedInteractions = AAOUsage?.data.num_tickets ?? 0
     const subscriptionStartDate = moment(
         AAOUsage?.meta.subscription_start_datetime,

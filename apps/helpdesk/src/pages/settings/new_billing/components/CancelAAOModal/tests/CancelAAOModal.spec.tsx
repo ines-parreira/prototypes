@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -62,6 +60,16 @@ describe('CancelAAOModal', () => {
     it('should render correctly', () => {
         const { getByText } = screen
         setup()
+        expect(
+            getByText('Are you sure you want to unsubscribe from AI Agent?'),
+        ).toBeInTheDocument()
+    })
+
+    it('should handle an undefined currentUsage', () => {
+        const { getByText } = screen
+        setup({
+            currentUsage: undefined,
+        })
         expect(
             getByText('Are you sure you want to unsubscribe from AI Agent?'),
         ).toBeInTheDocument()

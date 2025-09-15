@@ -1,5 +1,6 @@
 import { fromJS, Map } from 'immutable'
 
+import { currentProductsUsage } from 'fixtures/productPrices'
 import { StoreAction } from 'state/types'
 
 import * as types from '../constants'
@@ -51,6 +52,15 @@ describe('billing reducers', () => {
             reducer(initialState, {
                 type: types.UPDATE_CREDIT_CARD_SUCCESS,
                 resp: card,
+            }),
+        ).toMatchSnapshot()
+    })
+
+    it('fetch current products usage', () => {
+        expect(
+            reducer(initialState, {
+                type: types.FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS,
+                resp: currentProductsUsage,
             }),
         ).toMatchSnapshot()
     })
