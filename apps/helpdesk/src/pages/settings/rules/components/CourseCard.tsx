@@ -14,13 +14,13 @@ const CourseCard = () => {
         <div className={classnames(css.card, 'ml-3')}>
             <img src={academy} alt="Academy" width="97" />
             <div className="mb-2">
-                Take our Gorgias
+                Learn more about Rules
                 <br />
-                Academy course on rules
+                through Gorgias Academy
             </div>
             <a
                 className={css.link}
-                href="https://academy.gorgias.com/training/2787d4b6-9ddf-11ec-8074-020df940d6b7/overview"
+                href="https://academy.gorgias.com/"
                 rel="noopener noreferrer"
                 target="_blank"
                 onClick={() => {
