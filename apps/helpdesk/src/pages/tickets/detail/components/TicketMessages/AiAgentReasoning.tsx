@@ -408,19 +408,6 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                         </Badge>
                     </span>
                 </div>
-                <Button
-                    intent="secondary"
-                    size="small"
-                    fillStyle="fill"
-                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
-                    onClick={handleGiveFeedback}
-                    className={classNames({
-                        [css.activeButton]:
-                            activeTab === TicketInfobarTab.AIFeedback,
-                    })}
-                >
-                    Review conversation
-                </Button>
             </div>
         )
     }
@@ -517,26 +504,41 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     }
 
     return (
-        <div
-            className={classNames(css.container, {
-                [css.loading]: isLoading,
-                [css.error]: isError,
-                [css.expanded]: isExpanded,
-                [css.static]: isStatic,
-            })}
-        >
-            {!isStatic && (
-                <div
-                    className={classNames(css.title, {
-                        [css.clickable]: isLoaded,
-                    })}
-                    onClick={isLoaded ? handleToggleExpansion : undefined}
-                >
-                    {renderTitle()}
-                </div>
-            )}
-            {renderBody()}
-            {renderFooter()}
-        </div>
+        <>
+            <div
+                className={classNames(css.container, {
+                    [css.loading]: isLoading,
+                    [css.error]: isError,
+                    [css.expanded]: isExpanded,
+                    [css.static]: isStatic,
+                })}
+            >
+                {!isStatic && (
+                    <div
+                        className={classNames(css.title, {
+                            [css.clickable]: isLoaded,
+                        })}
+                        onClick={isLoaded ? handleToggleExpansion : undefined}
+                    >
+                        {renderTitle()}
+                    </div>
+                )}
+                {renderBody()}
+                {renderFooter()}
+            </div>
+            <Button
+                intent="secondary"
+                size="small"
+                fillStyle="fill"
+                isDisabled={activeTab === TicketInfobarTab.AIFeedback}
+                onClick={handleGiveFeedback}
+                className={classNames(css.reviewButton, {
+                    [css.activeButton]:
+                        activeTab === TicketInfobarTab.AIFeedback,
+                })}
+            >
+                Give Feedback
+            </Button>
+        </>
     )
 }

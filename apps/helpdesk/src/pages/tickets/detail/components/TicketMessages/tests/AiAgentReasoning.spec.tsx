@@ -755,11 +755,11 @@ describe('AiAgentReasoning', () => {
             ).toBeInTheDocument()
         })
 
-        it('should show Review conversation button when expanded', () => {
+        it('should show Give Feedback button when expanded', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review conversation')
+            const feedbackButton = screen.getByText('Give Feedback')
             expect(feedbackButton).toBeInTheDocument()
             expect(feedbackButton).toBeEnabled()
         })
@@ -776,17 +776,33 @@ describe('AiAgentReasoning', () => {
         })
     })
 
-    describe('Review conversation functionality', () => {
-        it('should call `onChangeTab` when Review conversation is clicked', () => {
+    describe('Give Feedback functionality', () => {
+        it('should call `onChangeTab` when Give Feedback button is clicked outside the container', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review conversation')
-            fireEvent.click(feedbackButton)
+            const feedbackButton = screen
+                .getByText('Give Feedback')
+                .closest('button')
+            expect(feedbackButton).not.toBeNull()
+            expect(feedbackButton!.closest('.container')).toBe(null)
+            expect(feedbackButton).toHaveClass('reviewButton')
+
+            fireEvent.click(feedbackButton!)
 
             expect(onChangeTab).toHaveBeenCalledWith(
                 TicketInfobarTab.AIFeedback,
             )
+        })
+
+        it('should have reviewButton class for spacing', () => {
+            renderComponent()
+            expandComponent()
+
+            const feedbackButton = screen
+                .getByText('Give Feedback')
+                .closest('button')
+            expect(feedbackButton).toHaveClass('reviewButton')
         })
     })
 
@@ -1268,61 +1284,6 @@ describe('AiAgentReasoning', () => {
 
             expect(mockRefetch).toHaveBeenCalled()
         })
-
-        it('should not show Review conversation button in error state', () => {
-            const mockRefetch = jest.fn()
-
-            mockUseGetMessageAiReasoning.mockReturnValue({
-                data: undefined,
-                isLoading: true,
-                refetch: mockRefetch,
-            } as any)
-
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
-                isLoading: true,
-            })
-
-            const { rerender } = renderComponent()
-
-            const showReasoningButton = screen.getByText('Show reasoning')
-            fireEvent.click(showReasoningButton)
-
-            mockUseGetMessageAiReasoning.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                refetch: mockRefetch,
-            } as any)
-
-            mockUseGetResourcesReasoningMetadata.mockReturnValue({
-                data: [],
-                isLoading: false,
-            })
-
-            act(() => {
-                rerender(
-                    <QueryClientProvider
-                        client={
-                            new QueryClient({
-                                defaultOptions: { queries: { retry: false } },
-                            })
-                        }
-                    >
-                        <Provider store={mockStore({})}>
-                            <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning
-                                    message={createMockMessage()}
-                                />
-                            </KnowledgeSourceSideBarProvider>
-                        </Provider>
-                    </QueryClientProvider>,
-                )
-            })
-
-            expect(
-                screen.queryByText('Review conversation'),
-            ).not.toBeInTheDocument()
-        })
     })
 
     describe('Deleted resources handling', () => {
@@ -1604,8 +1565,8 @@ describe('AiAgentReasoning', () => {
         ).not.toBeInTheDocument()
     })
 
-    describe('Review conversation button states', () => {
-        it('should show active styling for Review conversation button when AIAgent tab is active', () => {
+    describe('Give Feedback button states', () => {
+        it('should show active styling for Give Feedback button when AIAgent tab is active', () => {
             useAppSelectorMock.mockImplementation((selector) => {
                 if (
                     selector.name === 'getTicketState' ||
@@ -1633,7 +1594,7 @@ describe('AiAgentReasoning', () => {
             renderComponent()
             expandComponent()
 
-            const feedbackButton = screen.getByText('Review conversation')
+            const feedbackButton = screen.getByText('Give Feedback')
             expect(feedbackButton).toBeInTheDocument()
         })
     })
@@ -1688,7 +1649,7 @@ describe('AiAgentReasoning', () => {
             })
         })
 
-        it('should show Review conversation button for handover messages', () => {
+        it('should show Give Feedback button for handover messages', () => {
             mockUseGetMessageAiReasoning.mockReturnValue({
                 data: undefined,
                 isLoading: true,
@@ -1748,7 +1709,7 @@ describe('AiAgentReasoning', () => {
                 )
             })
 
-            expect(screen.getByText('Review conversation')).toBeInTheDocument()
+            expect(screen.getByText('Give Feedback')).toBeInTheDocument()
         })
 
         it('should show static state for handover messages', () => {

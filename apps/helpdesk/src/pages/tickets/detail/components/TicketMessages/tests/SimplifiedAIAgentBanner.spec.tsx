@@ -14,6 +14,7 @@ import {
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import { TicketMessage } from 'models/ticket/types'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { RootState, StoreDispatch } from 'state/types'
 
 import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
@@ -31,6 +32,9 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('hooks/useAppDispatch')
 jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
+jest.mock('services/activityTracker/utils', () => ({
+    isSessionImpersonated: jest.fn(() => false),
+}))
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const useSubmitAIAgentTicketMessagesFeedbackMock = assumeMock(
@@ -328,7 +332,7 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call onChangeTab when click on "Review conversation"', () => {
+    it('should call onChangeTab when click on "Give Feedback" button outside the banner', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -359,7 +363,9 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
             </Provider>,
         )
 
-        const feedbackButton = screen.getByRole('button')
+        const feedbackButton = screen.getByText('Give Feedback')
+        expect(feedbackButton).toBeInTheDocument()
+        expect(feedbackButton).not.toHaveClass('activeButton')
 
         fireEvent.click(feedbackButton)
 
@@ -396,5 +402,82 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         const feedbackButton = screen.getByRole('button')
 
         expect(feedbackButton).toHaveClass('activeButton')
+    })
+
+    it('should display execution ID when user is impersonated and execution ID exists', () => {
+        const executionId = 'test-execution-id-123'
+        const isSessionImpersonatedMock = isSessionImpersonated as jest.Mock
+        isSessionImpersonatedMock.mockReturnValue(true)
+
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: '1',
+                            summary: 'summary',
+                            executionId: executionId,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        render(
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{ ...mockMessage, public: false }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText(`Execution ID: ${executionId}`),
+        ).toBeInTheDocument()
+
+        // Reset the mock
+        isSessionImpersonatedMock.mockReturnValue(false)
+    })
+
+    it('should not display execution ID when user is not impersonated', () => {
+        const executionId = 'test-execution-id-123'
+        const isSessionImpersonatedMock = isSessionImpersonated as jest.Mock
+        isSessionImpersonatedMock.mockReturnValue(false)
+
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: '1',
+                            summary: 'summary',
+                            executionId: executionId,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        render(
+            <Provider store={store}>
+                <SimplifiedAIAgentBanner
+                    message={{ ...mockMessage, public: false }}
+                    messages={[mockMessage]}
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByText(`Execution ID: ${executionId}`),
+        ).not.toBeInTheDocument()
     })
 })

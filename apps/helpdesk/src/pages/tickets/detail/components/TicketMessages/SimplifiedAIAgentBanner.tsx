@@ -106,50 +106,52 @@ const SimplifiedAIAgentBanner = ({
     }
 
     return (
-        <div
-            className={classNames(css.container, {
-                [css.hasError]: messageSummaryHasError,
-            })}
-        >
-            <div className={css.content}>
-                {!isTrialMessage && (
-                    <div>
-                        {failedWorkflowData ? (
-                            <FailedWorkflowMessage
-                                workflowData={failedWorkflowData}
-                                originalMessage={messageToDisplay}
-                            />
-                        ) : (
-                            <>
-                                <div className={css.boldMessage}>
-                                    {messageToDisplay}
-                                </div>
-                                {isImpersonated &&
-                                    lastMessageWithFeedback?.feedback
-                                        .executionId && (
-                                        <div className={css.executionId}>
-                                            {`Execution ID: ${lastMessageWithFeedback.feedback.executionId}`}
-                                        </div>
-                                    )}
-                            </>
-                        )}
-                    </div>
-                )}
-                <Button
-                    intent="secondary"
-                    size="small"
-                    fillStyle="fill"
-                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
-                    onClick={handleClick}
-                    className={classNames({
-                        [css.activeButton]:
-                            activeTab === TicketInfobarTab.AIFeedback,
-                    })}
-                >
-                    Review conversation
-                </Button>
+        <>
+            <div
+                className={classNames(css.container, {
+                    [css.hasError]: messageSummaryHasError,
+                })}
+            >
+                <div className={css.content}>
+                    {!isTrialMessage && (
+                        <div>
+                            {failedWorkflowData ? (
+                                <FailedWorkflowMessage
+                                    workflowData={failedWorkflowData}
+                                    originalMessage={messageToDisplay}
+                                />
+                            ) : (
+                                <>
+                                    <div className={css.boldMessage}>
+                                        {messageToDisplay}
+                                    </div>
+                                    {isImpersonated &&
+                                        lastMessageWithFeedback?.feedback
+                                            .executionId && (
+                                            <div className={css.executionId}>
+                                                {`Execution ID: ${lastMessageWithFeedback.feedback.executionId}`}
+                                            </div>
+                                        )}
+                                </>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+            <Button
+                intent="secondary"
+                size="small"
+                fillStyle="fill"
+                isDisabled={activeTab === TicketInfobarTab.AIFeedback}
+                onClick={handleClick}
+                className={classNames(css.reviewButton, {
+                    [css.activeButton]:
+                        activeTab === TicketInfobarTab.AIFeedback,
+                })}
+            >
+                Give Feedback
+            </Button>
+        </>
     )
 }
 
