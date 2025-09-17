@@ -66,7 +66,7 @@ export const useShoppingAssistantTrialBanner = () => {
                 CTA: {
                     type: 'internal',
                     text: 'Get Started',
-                    to: routes.overview,
+                    to: routes.sales,
                     onClick: () => {
                         logEvent(SegmentEvent.TrialSystemWideBannerCTAClicked, {
                             ...eventData,

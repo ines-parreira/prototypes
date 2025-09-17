@@ -226,7 +226,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 CTA: {
                     type: 'internal',
                     text: 'Get Started',
-                    to: '/app/ai-agent/overview',
+                    to: '/app/ai-agent/shopify/test-store/sales',
                     onClick: expect.any(Function),
                 },
             })

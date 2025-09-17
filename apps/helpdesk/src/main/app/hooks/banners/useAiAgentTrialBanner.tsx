@@ -38,6 +38,7 @@ export const useAiAgentTrialBanner = () => {
     const pathname = useLocation().pathname
     const isTicketsPage =
         pathname.includes('tickets') || pathname.includes('views')
+    const isAiAgentPage = pathname.includes('ai-agent')
 
     const shouldDisplay = useMemo(
         () =>
@@ -45,9 +46,16 @@ export const useAiAgentTrialBanner = () => {
                 hasShopify &&
                     noAiAgentSubscription &&
                     !isTicketsPage &&
+                    !isAiAgentPage &&
                     canSeeSystemBanner,
             ),
-        [hasShopify, noAiAgentSubscription, isTicketsPage, canSeeSystemBanner],
+        [
+            hasShopify,
+            noAiAgentSubscription,
+            isTicketsPage,
+            isAiAgentPage,
+            canSeeSystemBanner,
+        ],
     )
 
     const firstShopName = shopifyIntegrations?.[0]?.meta?.shop_name ?? ''
@@ -78,10 +86,10 @@ export const useAiAgentTrialBanner = () => {
                 instanceId: BannerCategories.AI_AGENT_TRIAL,
                 type: AlertBannerTypes.Info,
                 message:
-                    'Discover AI Agent to power every step of your shopper’s journey with conversations that convert and drive repeat purchases',
+                    'Reduce your workload. Sell more. Let AI Agent handle up to 60% of tickets with personalized assistance.',
                 CTA: {
                     type: 'internal',
-                    text: 'Start 14-day FREE trial',
+                    text: 'Try it for free today',
                     to: routes.overview,
                     onClick: () => {
                         logEvent(SegmentEvent.TrialSystemWideBannerCTAClicked, {
