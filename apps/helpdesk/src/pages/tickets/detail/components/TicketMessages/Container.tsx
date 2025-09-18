@@ -15,6 +15,7 @@ import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
+import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
@@ -275,7 +276,11 @@ export class Container extends Component<Props> {
                                     shouldTicketHaveReasoning &&
                                     (isImpersonated ||
                                         !onlyShowReasoningWhileImpersonating) ? (
-                                        <AiAgentReasoning message={message} />
+                                        <KnowledgeSourceSideBarProvider>
+                                            <AiAgentReasoning
+                                                message={message}
+                                            />
+                                        </KnowledgeSourceSideBarProvider>
                                     ) : (
                                         <SimplifiedAIAgentBanner
                                             message={message}
