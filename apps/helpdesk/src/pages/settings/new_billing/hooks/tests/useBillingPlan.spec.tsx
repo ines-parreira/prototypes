@@ -31,12 +31,12 @@ import {
 import client from 'models/api/resources'
 import {
     Cadence,
-    cadenceNames,
     HelpdeskPlan,
     Plan,
     ProductType,
     SubscriptionStatus,
 } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
@@ -298,7 +298,7 @@ describe('useBillingPlans', () => {
                 await act(async () => result.current.updateSubscription())
 
                 expect(notifyMock).toHaveBeenCalledWith({
-                    message: `Your billing frequency has been updated to ${cadenceNames[cadence]}`,
+                    message: `Your billing frequency has been updated to ${getCadenceName(cadence)}`,
                     status: NotificationStatus.Success,
                     style: NotificationStyle.Alert,
                     showDismissButton: true,

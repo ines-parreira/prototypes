@@ -21,12 +21,8 @@ import {
     VOICE_PRODUCT_ID,
     voiceAvailablePlans,
 } from 'fixtures/productPrices'
-import {
-    Cadence,
-    cadenceNames,
-    Product,
-    ProductType,
-} from 'models/billing/types'
+import { Cadence, Product, ProductType } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import * as getCorrespondingPlanAtCadence from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -113,10 +109,13 @@ describe('BillingFrequencyView', () => {
     })
     it('clicking on yearly/monthly radio button should modify the total price from yearly to monthly and vice versa', () => {
         const { getByLabelText } = renderBillingFrequencyView()
-        const monthlyRadioButton = getByLabelText(cadenceNames[Cadence.Month], {
-            selector: 'input',
-        })
-        const yearlyRadioButton = getByLabelText(cadenceNames[Cadence.Year], {
+        const monthlyRadioButton = getByLabelText(
+            getCadenceName(Cadence.Month),
+            {
+                selector: 'input',
+            },
+        )
+        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
             selector: 'input',
         })
         const totalPrice = getByLabelText('Total price', {
@@ -140,10 +139,13 @@ describe('BillingFrequencyView', () => {
             throw new Error('Plan not found at this cadence')
         })
         const { getByLabelText } = renderBillingFrequencyView()
-        const monthlyRadioButton = getByLabelText(cadenceNames[Cadence.Month], {
-            selector: 'input',
-        })
-        const yearlyRadioButton = getByLabelText(cadenceNames[Cadence.Year], {
+        const monthlyRadioButton = getByLabelText(
+            getCadenceName(Cadence.Month),
+            {
+                selector: 'input',
+            },
+        )
+        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
             selector: 'input',
         })
         fireEvent.click(yearlyRadioButton)

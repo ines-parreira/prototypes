@@ -1,4 +1,5 @@
-import { Cadence, cadenceNames } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
 import css from './BillingFrequency.less'
@@ -16,7 +17,7 @@ const BillingFrequency = ({
 }: BillingFrequencyProps) => {
     const hasDisabledCadences = disabledCadences.size > 0
     const disabledCadenceNames = Array.from(disabledCadences)
-        .map((cadence) => cadenceNames[cadence])
+        .map((cadence) => getCadenceName(cadence))
         .join(' and ')
     return (
         <div className={css.container}>
@@ -27,7 +28,7 @@ const BillingFrequency = ({
                         isSelected={selectedCadence === cadence}
                         value={cadence}
                         onClick={() => onCadenceSelect(cadence)}
-                        label={cadenceNames[cadence]}
+                        label={getCadenceName(cadence)}
                         isDisabled={disabledCadences.has(cadence)}
                     />
                 ))}

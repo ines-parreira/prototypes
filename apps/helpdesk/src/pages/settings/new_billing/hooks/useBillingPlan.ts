@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
-import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
-import { isEnterprise } from 'models/billing/utils'
+import { Cadence, ProductType } from 'models/billing/types'
+import { getCadenceName, isEnterprise } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus, {
     convertStatusKeys,
@@ -469,7 +469,7 @@ export const useBillingPlans = ({
                 selectedPlans[ProductType.Helpdesk].plan?.cadence ??
                 Cadence.Month
             notifications.push({
-                message: `Your billing frequency has been updated to ${cadenceNames[newCadence]}`,
+                message: `Your billing frequency has been updated to ${getCadenceName(newCadence)}`,
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
                 showDismissButton: true,

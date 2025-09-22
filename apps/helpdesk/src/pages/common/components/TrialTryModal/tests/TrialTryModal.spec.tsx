@@ -5,7 +5,8 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { Trial } from 'models/aiAgent/types'
-import { Cadence, cadenceNames } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
@@ -19,14 +20,14 @@ const mockCurrentPlan = {
     name: 'Basic',
     price: '$50',
     billingPeriod: Cadence.Month,
-    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $50 per seat`,
+    priceTooltipText: `Billed ${getCadenceName(Cadence.Month)} at $50 per seat`,
 } as unknown as PlanDetails
 
 const mockNewPlan = {
     name: 'Pro',
     price: '$100',
     billingPeriod: Cadence.Month,
-    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
+    priceTooltipText: `Billed ${getCadenceName(Cadence.Month)} at $100 per seat`,
 } as unknown as PlanDetails
 
 const mockFeatures: TrialFeature[] = [

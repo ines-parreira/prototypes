@@ -1,4 +1,5 @@
-import { Cadence, cadenceNames, Plan } from 'models/billing/types'
+import { Cadence, Plan } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 
 export type Props<T extends Plan> = {
     availablePlans: T[]
@@ -17,8 +18,8 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
     }
 
     const targetPlanId = currentPlan?.plan_id.replace(
-        cadenceNames[currentPlan.cadence].toLowerCase(),
-        cadenceNames[cadence].toLowerCase(),
+        getCadenceName(currentPlan.cadence).toLowerCase(),
+        getCadenceName(cadence).toLowerCase(),
     )
 
     const plan = availablePlans.find(

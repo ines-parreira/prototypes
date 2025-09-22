@@ -26,7 +26,8 @@ import {
     voicePlan1,
 } from 'fixtures/productPrices'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AlertType } from 'pages/common/components/Alert/Alert'
@@ -531,7 +532,7 @@ describe('UsageAndPlansView', () => {
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByText(`Billed ${cadenceNames[Cadence.Month]}`, {
+            screen.queryByText(`Billed ${getCadenceName(Cadence.Month)}`, {
                 exact: false,
             }),
         ).toBeInTheDocument()

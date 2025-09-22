@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Cadence, cadenceNames } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
 import TrialTryModal, { TrialFeature } from './TrialTryModal'
@@ -33,7 +34,7 @@ const currentPlan = {
     price: '$50',
     currency: 'USD',
     billingPeriod: Cadence.Month,
-    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $50 per seat`,
+    priceTooltipText: `Billed ${getCadenceName(Cadence.Month)} at $50 per seat`,
 } as unknown as PlanDetails
 
 const newPlan = {
@@ -41,7 +42,7 @@ const newPlan = {
     price: '$100',
     currency: 'USD',
     billingPeriod: Cadence.Month,
-    priceTooltipText: `Billed ${cadenceNames[Cadence.Month]} at $100 per seat`,
+    priceTooltipText: `Billed ${getCadenceName(Cadence.Month)} at $100 per seat`,
 } as unknown as PlanDetails
 
 const mockFeatures: TrialFeature[] = [

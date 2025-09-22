@@ -1,6 +1,7 @@
 import { fireEvent, render } from '@testing-library/react'
 
-import { Cadence, cadenceNames } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
+import { getCadenceName } from 'models/billing/utils'
 
 import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
 
@@ -20,16 +21,19 @@ describe('BillingFrequency', () => {
 
     it('should render correctly', () => {
         const { getByText } = setup()
-        expect(getByText(cadenceNames[Cadence.Month])).toBeInTheDocument()
-        expect(getByText(cadenceNames[Cadence.Year])).toBeInTheDocument()
+        expect(getByText(getCadenceName(Cadence.Month))).toBeInTheDocument()
+        expect(getByText(getCadenceName(Cadence.Year))).toBeInTheDocument()
     })
 
     it('should call setSelectedCadence and setSelectedPlans with the correct values when a radio button is clicked', () => {
         const { getByLabelText } = setup()
-        const monthlyRadioButton = getByLabelText(cadenceNames[Cadence.Month], {
-            selector: 'input',
-        })
-        const yearlyRadioButton = getByLabelText(cadenceNames[Cadence.Year], {
+        const monthlyRadioButton = getByLabelText(
+            getCadenceName(Cadence.Month),
+            {
+                selector: 'input',
+            },
+        )
+        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
             selector: 'input',
         })
 
@@ -44,10 +48,13 @@ describe('BillingFrequency', () => {
         const { getByLabelText, container } = setup({
             disabledCadences: new Set([Cadence.Month]),
         })
-        const monthlyRadioButton = getByLabelText(cadenceNames[Cadence.Month], {
-            selector: 'input',
-        })
-        const yearlyRadioButton = getByLabelText(cadenceNames[Cadence.Year], {
+        const monthlyRadioButton = getByLabelText(
+            getCadenceName(Cadence.Month),
+            {
+                selector: 'input',
+            },
+        )
+        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
             selector: 'input',
         })
 
@@ -58,7 +65,7 @@ describe('BillingFrequency', () => {
         expect(
             container.getElementsByClassName('disabledMessage')[0].textContent,
         ).toContain(
-            `${cadenceNames[Cadence.Month]} billing is not available for your current plan configuration.`,
+            `${getCadenceName(Cadence.Month)} billing is not available for your current plan configuration.`,
         )
     })
 
@@ -66,10 +73,13 @@ describe('BillingFrequency', () => {
         const { getByLabelText, container } = setup({
             disabledCadences: new Set([Cadence.Year]),
         })
-        const monthlyRadioButton = getByLabelText(cadenceNames[Cadence.Month], {
-            selector: 'input',
-        })
-        const yearlyRadioButton = getByLabelText(cadenceNames[Cadence.Year], {
+        const monthlyRadioButton = getByLabelText(
+            getCadenceName(Cadence.Month),
+            {
+                selector: 'input',
+            },
+        )
+        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
             selector: 'input',
         })
 
@@ -80,7 +90,7 @@ describe('BillingFrequency', () => {
         expect(
             container.getElementsByClassName('disabledMessage')[0].textContent,
         ).toContain(
-            `${cadenceNames[Cadence.Year]} billing is not available for your current plan configuration.`,
+            `${getCadenceName(Cadence.Year)} billing is not available for your current plan configuration.`,
         )
     })
 })

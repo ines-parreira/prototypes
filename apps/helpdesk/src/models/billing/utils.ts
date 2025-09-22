@@ -210,3 +210,71 @@ export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
 export function getOverageUnitPriceFormatted(plan: Plan | undefined | null) {
     return formatAmount(plan?.extra_ticket_cost ?? 0)
 }
+
+/**
+ * @description
+ * Returns the name of a cadence in Title Case, e.g. Cadence.Month = Monthly
+ *
+ * @param cadence Cadence
+ * @returns string
+ */
+export function getCadenceName(cadence: Cadence): string {
+    switch (cadence) {
+        case Cadence.Month:
+            return 'Monthly'
+        case Cadence.Year:
+            return 'Yearly'
+        default:
+            const __: never = cadence
+            throw new Error('Invalid cadence value')
+    }
+}
+
+/**
+ * @description
+ * Returns the number of months in a cadence, e.g. Cadence.Year = 12
+ *
+ * @param cadence Cadence
+ * @returns number
+ */
+export function getCadenceMonths(cadence: Cadence): number {
+    switch (cadence) {
+        case Cadence.Month:
+            return 1
+        case Cadence.Year:
+            return 12
+        default:
+            const __: never = cadence
+            throw new Error('Invalid cadence value')
+    }
+}
+
+/**
+ * @description
+ * Returns if the other cadence is an upgrade compared to cadence
+ *
+ * @param cadence Cadence
+ * @param other Cadence
+ * @returns boolean
+ */
+export function isOtherCadenceUpgrade(
+    cadence: Cadence,
+    other: Cadence,
+): boolean {
+    return getCadenceMonths(cadence) < getCadenceMonths(other)
+}
+
+/**
+ * @description
+ * Returns if the other cadence is a downgrade compared to cadence
+ *
+ * @param cadence Cadence
+ * @param other Cadence
+ * @returns boolean
+ */
+export function isOtherCadenceDowngrade(
+    cadence: Cadence,
+    other: Cadence,
+): boolean {
+    return getCadenceMonths(cadence) > getCadenceMonths(other)
+}

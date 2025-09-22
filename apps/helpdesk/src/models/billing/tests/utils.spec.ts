@@ -10,6 +10,8 @@ import {
 
 import { Cadence } from '../types'
 import {
+    getCadenceMonths,
+    getCadenceName,
     getCheapestPrice,
     getFormattedAmount,
     getOverageUnitPriceFormatted,
@@ -18,6 +20,8 @@ import {
     getProductLabel,
     isAutomate,
     isHelpdesk,
+    isOtherCadenceDowngrade,
+    isOtherCadenceUpgrade,
     isStarterTier,
 } from '../utils'
 
@@ -115,4 +119,96 @@ describe('getPlanUnitsPerCadence', () => {
             `300 tickets/${Cadence.Month}`,
         )
     })
+})
+
+describe('getCadenceName', () => {
+    it.each(Object.values(Cadence))(
+        'it should return a valid name for %s',
+        (cadence: Cadence) => {
+            expect(getCadenceName(cadence))
+        },
+    )
+
+    it('should throw an error if given an invalid cadence', () => {
+        expect(() => getCadenceName('not a cadence' as Cadence)).toThrow(
+            'Invalid cadence value',
+        )
+    })
+})
+
+describe('getCadenceMonths', () => {
+    it.each(Object.values(Cadence))(
+        'it should return a valid number for %s',
+        (cadence: Cadence) => {
+            expect(getCadenceMonths(cadence))
+        },
+    )
+
+    it('should throw an error if given an invalid cadence', () => {
+        expect(() => getCadenceMonths('not a cadence' as Cadence)).toThrow(
+            'Invalid cadence value',
+        )
+    })
+})
+
+describe('isOtherCadenceUpgrade', () => {
+    const cadenceValues = Object.values(Cadence)
+    const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
+        cadenceValues.map((b) => [a, b]),
+    )
+
+    it.each(cadenceCartesianProduct)(
+        'it should return if %s could be upgraded to %s',
+        (cadence: Cadence, other: Cadence) => {
+            const isUpgrade = isOtherCadenceUpgrade(cadence, other)
+            expect(isUpgrade).toEqual(
+                getCadenceMonths(cadence) < getCadenceMonths(other),
+            )
+        },
+    )
+
+    const cadencePlusInvalidOptions = [
+        ...cadenceValues.map((a) => [a, 'not a cadence' as Cadence]),
+        ...cadenceValues.map((b) => ['not a cadence' as Cadence, b]),
+    ]
+
+    it.each(cadencePlusInvalidOptions)(
+        'should throw an error if given an invalid cadence (cadence: %s, other: %s)',
+        (cadence: Cadence, other: Cadence) => {
+            expect(() => isOtherCadenceUpgrade(cadence, other)).toThrow(
+                'Invalid cadence value',
+            )
+        },
+    )
+})
+
+describe('isOtherCadenceDowngrade', () => {
+    const cadenceValues = Object.values(Cadence)
+    const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
+        cadenceValues.map((b) => [a, b]),
+    )
+
+    it.each(cadenceCartesianProduct)(
+        'it should return if %s could be downgraded to %s',
+        (cadence: Cadence, other: Cadence) => {
+            const isDowngrade = isOtherCadenceDowngrade(cadence, other)
+            expect(isDowngrade).toEqual(
+                getCadenceMonths(cadence) > getCadenceMonths(other),
+            )
+        },
+    )
+
+    const cadencePlusInvalidOptions = [
+        ...cadenceValues.map((a) => [a, 'not a cadence' as Cadence]),
+        ...cadenceValues.map((b) => ['not a cadence' as Cadence, b]),
+    ]
+
+    it.each(cadencePlusInvalidOptions)(
+        'should throw an error if given an invalid cadence (cadence: %s, other: %s)',
+        (cadence: Cadence, other: Cadence) => {
+            expect(() => isOtherCadenceDowngrade(cadence, other)).toThrow(
+                'Invalid cadence value',
+            )
+        },
+    )
 })

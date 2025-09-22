@@ -11,8 +11,8 @@ import { AlertBannerTypes } from 'AlertBanners'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, cadenceNames, ProductType } from 'models/billing/types'
-import { isLegacyAutomate } from 'models/billing/utils'
+import { Cadence, ProductType } from 'models/billing/types'
+import { getCadenceName, isLegacyAutomate } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
@@ -245,9 +245,9 @@ const UsageAndPlansView = ({
                         Billed{' '}
                         {isCurrentPlanMonthly ||
                         isCurrentSubscriptionCanceled ? (
-                            <>{cadenceNames[Cadence.Month]}</>
+                            <>{getCadenceName(Cadence.Month)}</>
                         ) : (
-                            <>{cadenceNames[Cadence.Year]}</>
+                            <>{getCadenceName(Cadence.Year)}</>
                         )}
                     </span>
                     {isCurrentSubscriptionCanceled ? null : isSubscribedToHelpdeskStarter ? (
@@ -284,8 +284,8 @@ const UsageAndPlansView = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                To switch from {cadenceNames[Cadence.Month]} to{' '}
-                                {cadenceNames[Cadence.Year]},{' '}
+                                To switch from {getCadenceName(Cadence.Month)}{' '}
+                                to {getCadenceName(Cadence.Year)},{' '}
                                 <span
                                     className={css.link}
                                     onClick={() =>
