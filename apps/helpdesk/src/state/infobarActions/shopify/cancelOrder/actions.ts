@@ -90,11 +90,14 @@ export const onInit =
 
             // Fetch maximum refundable amount, and use it as default value
             dispatch(setLoading(true, 'Calculating refund...'))
+            const refundPayload = (
+                payload.get('refund') as Map<any, any>
+            ).delete('transactions')
 
             const suggestedRefund = await api.calculateRefund(
                 integrationId,
                 orderId,
-                payload,
+                refundPayload,
             )
             const shippingMaximumRefundable = suggestedRefund.getIn([
                 'shipping',

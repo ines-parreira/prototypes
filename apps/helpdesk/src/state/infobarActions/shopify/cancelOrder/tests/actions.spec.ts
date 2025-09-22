@@ -92,6 +92,29 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
 
             it('should init the state', async () => {
                 await store.dispatch(actions.onInit(integrationId, order))
+                expect(mockServer.history.post.length).toBe(2)
+                expect(mockServer.history.post[0].data).toBe(
+                    JSON.stringify({
+                        currency: 'USD',
+                        restock: false,
+                        notify: false,
+                        refund_line_items: [
+                            {
+                                line_item_id: 4193100136471,
+                                fulfillment_status: null,
+                                restock_type: 'cancel',
+                                quantity: 1,
+                            },
+                            {
+                                line_item_id: 4193100169239,
+                                fulfillment_status: null,
+                                restock_type: 'cancel',
+                                quantity: 4,
+                            },
+                        ],
+                        shipping: { amount: '0.00' },
+                    }),
+                )
                 expect(getActions()).toMatchSnapshot()
             })
         })
