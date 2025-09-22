@@ -160,7 +160,11 @@ describe('AiAgentOverview', () => {
         } as any)
 
         mockUseAiAgentUpgradePlan.mockReturnValue({
-            data: { amount: 53000, currency: 'USD' }, // $530 in cents
+            data: {
+                amount: 53000,
+                currency: 'USD',
+                num_quota_tickets: 2000,
+            },
         } as any)
 
         // Mock billing utils

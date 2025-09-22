@@ -246,7 +246,7 @@ describe('useTrialModalProps', () => {
                     features: [
                         {
                             isError: false,
-                            label: '190 automated interactions',
+                            label: '30 automated interactions',
                         },
                         {
                             isError: false,
@@ -1583,7 +1583,7 @@ describe('useTrialModalProps', () => {
                     billingPeriod: Cadence.Month,
                     features: expect.arrayContaining([
                         expect.objectContaining({
-                            label: '190 automated interactions',
+                            label: '30 automated interactions',
                             isError: false,
                         }),
                         expect.objectContaining({

@@ -203,6 +203,7 @@ const usePlanDetails = (): PlanDetails => {
     const accountDomain = currentAccount.get('domain')
 
     const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+
     const upgradePlanAmount = upgradePlanData
         ? formatAmount(upgradePlanData.amount / 100, upgradePlanData.currency)
         : '$0'
@@ -221,8 +222,8 @@ const usePlanDetails = (): PlanDetails => {
             100,
         currency,
     )
-    const numQuotaTickets = currentPlan?.num_quota_tickets ?? 1
 
+    const numQuotaTickets = upgradePlanData?.num_quota_tickets ?? 1
     return {
         currentPlanAmount,
         currentPlanCadence,
@@ -453,7 +454,7 @@ const useNewTrialUpgradePlanModal = (
             isMultiStore,
         )
 
-        let tooltip = `You’ll be moved from Helpdesk to Helpdesk + AI Agent plan. Once you upgrade, each support or sales resolution will cost $1, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`
+        let tooltip = `You’ll be moved from Helpdesk to Helpdesk + AI Agent plan, which includes ${planDetails.numQuotaTickets} automated interactions. Once you upgrade, each support or sales resolution will cost $1, plus a ${planDetails.helpdeskPlanTicketCost} helpdesk fee.`
         if (isMultiStore) {
             tooltip += ' Upgrade will apply to all stores.'
         }
