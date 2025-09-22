@@ -20,6 +20,7 @@ import {
     convertPlan1,
     firstTierMonthlyAutomationPlan,
     HELPDESK_PRODUCT_ID,
+    helpdeskProduct,
     proMonthlyHelpdeskPlan,
     SMS_PRODUCT_ID,
     smsPlan0,
@@ -31,6 +32,7 @@ import client from 'models/api/resources'
 import {
     Cadence,
     cadenceNames,
+    HelpdeskPlan,
     Plan,
     ProductType,
     SubscriptionStatus,
@@ -185,7 +187,7 @@ describe('useBillingPlans', () => {
             ],
         ]
 
-        it('should notify users when billing frequency changes', async () => {
+        it('should handle an undefined selection', async () => {
             const dispatchBillingError = jest.fn()
             const queryClient = mockQueryClient()
 
@@ -222,7 +224,7 @@ describe('useBillingPlans', () => {
                 result.current.setSelectedPlans((prev) => ({
                     ...prev,
                     [ProductType.Helpdesk]: {
-                        plan: basicYearlyHelpdeskPlan,
+                        plan: undefined,
                         isSelected: true,
                     },
                 })),
@@ -230,14 +232,80 @@ describe('useBillingPlans', () => {
 
             await act(async () => result.current.updateSubscription())
 
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: `Your billing frequency has been updated to ${cadenceNames[Cadence.Year]}`,
-                status: NotificationStatus.Success,
-                style: NotificationStyle.Alert,
-                showDismissButton: true,
-                dismissAfter: 5000,
-            })
+            // N.B. because the plan is undefined we don't do anything
+            expect(notifyMock).toHaveBeenCalledTimes(0)
         })
+
+        it.each(Object.values(Cadence))(
+            'should notify users when billing frequency changes to %s',
+            async (cadence: Cadence) => {
+                const dispatchBillingError = jest.fn()
+                const queryClient = mockQueryClient()
+
+                const oldPlan = helpdeskProduct.prices.find(
+                    (plan: HelpdeskPlan) => plan.cadence !== cadence,
+                )
+                const newPlan = helpdeskProduct.prices.find(
+                    (plan: HelpdeskPlan) => plan.cadence === cadence,
+                )
+
+                if (oldPlan === undefined || newPlan === undefined) {
+                    expect(oldPlan).toBeDefined()
+                    expect(newPlan).toBeDefined()
+                    return
+                }
+
+                const alteredStore = mockedStore({
+                    ...store,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                ...account.current_subscription.products,
+                                [HELPDESK_PRODUCT_ID]: oldPlan.price_id,
+                            },
+                        },
+                    }),
+                })
+
+                const { result } = renderHook(
+                    () =>
+                        useBillingPlans({
+                            dispatchBillingError,
+                        }),
+                    {
+                        wrapper: ({ children }) => (
+                            <QueryClientProvider client={queryClient}>
+                                <Provider store={alteredStore}>
+                                    {children}
+                                </Provider>
+                            </QueryClientProvider>
+                        ),
+                    },
+                )
+
+                await act(async () =>
+                    result.current.setSelectedPlans((prev) => ({
+                        ...prev,
+                        [ProductType.Helpdesk]: {
+                            plan: newPlan,
+                            isSelected: true,
+                        },
+                    })),
+                )
+
+                await act(async () => result.current.updateSubscription())
+
+                expect(notifyMock).toHaveBeenCalledWith({
+                    message: `Your billing frequency has been updated to ${cadenceNames[cadence]}`,
+                    status: NotificationStatus.Success,
+                    style: NotificationStyle.Alert,
+                    showDismissButton: true,
+                    dismissAfter: 5000,
+                })
+            },
+        )
 
         it('should notify users when they remove AI Agent', async () => {
             const dispatchBillingError = jest.fn()

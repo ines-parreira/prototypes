@@ -332,11 +332,6 @@ export const useBillingPlans = ({
         [selectedPlans],
     )
 
-    const isPlanCadenceChanged = useMemo(
-        () => cadence !== selectedPlans[ProductType.Helpdesk].plan?.cadence,
-        [cadence, selectedPlans],
-    )
-
     const handleAutoUpgradeChange = useCallback(async () => {
         if (!autoUpgradeChanged) return
 
@@ -449,6 +444,9 @@ export const useBillingPlans = ({
         const plansToBeUpdated: ProductData = {}
         const notifications: Notification[] = []
 
+        const isPlanCadenceChanged =
+            cadence !== selectedPlans[ProductType.Helpdesk].plan?.cadence
+
         const isNewHelpdeskPlan =
             selectedPlans[ProductType.Helpdesk].plan?.price_id !==
             currentHelpdeskPlan?.price_id
@@ -467,8 +465,11 @@ export const useBillingPlans = ({
 
         // Set notification when cadence has changed
         if (isPlanCadenceChanged) {
+            const newCadence =
+                selectedPlans[ProductType.Helpdesk].plan?.cadence ??
+                Cadence.Month
             notifications.push({
-                message: `Your billing frequency has been updated to ${cadenceNames[Cadence.Year]}`,
+                message: `Your billing frequency has been updated to ${cadenceNames[newCadence]}`,
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
                 showDismissButton: true,
@@ -617,7 +618,6 @@ export const useBillingPlans = ({
         currentHelpdeskPlan,
         currentAutomatePlan,
         currentConvertPlan,
-        isPlanCadenceChanged,
         periodEnd,
         isFreeTrial,
         isVettedForPhone,
