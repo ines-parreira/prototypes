@@ -34,6 +34,7 @@ const mockStore = configureStore(middlewares)
 describe('DismissOpportunityModal', () => {
     const mockOnClose = jest.fn()
     const mockOnConfirm = jest.fn()
+    const mockOnOpportunityDismissed = jest.fn()
     const mockUpsertFeedback = jest.fn()
 
     const mockOpportunity: Opportunity = {
@@ -418,6 +419,54 @@ describe('DismissOpportunityModal', () => {
                 })
                 expect(mockOnConfirm).toHaveBeenCalledTimes(1)
                 expect(mockOnClose).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        it('should call onOpportunityDismissed with correct parameters when dismiss is successful', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                onOpportunityDismissed: mockOnOpportunityDismissed,
+            })
+
+            // Select a reason
+            const dropdown = screen.getByRole('combobox')
+            await act(async () => {
+                await user.click(dropdown)
+            })
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(4)
+            })
+
+            const firstOption = screen.getAllByRole('option')[0]
+            await act(async () => {
+                await user.click(firstOption)
+            })
+
+            await waitFor(() => {
+                const dismissButton = screen.getByRole('button', {
+                    name: 'Dismiss',
+                })
+                expect(dismissButton).not.toHaveAttribute(
+                    'aria-disabled',
+                    'true',
+                )
+            })
+
+            // Click dismiss button
+            const dismissButton = screen.getByRole('button', {
+                name: 'Dismiss',
+            })
+            await act(async () => {
+                await user.click(dismissButton)
+            })
+
+            await waitFor(() => {
+                expect(mockOnOpportunityDismissed).toHaveBeenCalledTimes(1)
+                expect(mockOnOpportunityDismissed).toHaveBeenCalledWith({
+                    opportunityId: 'test-opportunity-id',
+                    opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
+                })
             })
         })
 

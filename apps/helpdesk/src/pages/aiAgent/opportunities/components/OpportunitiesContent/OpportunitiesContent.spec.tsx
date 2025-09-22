@@ -99,6 +99,7 @@ describe('OpportunitiesContent', () => {
     const mockMarkArticleAsReviewed = jest.fn()
     const mockOnArchive = jest.fn()
     const mockOnPublish = jest.fn()
+    const mockOnOpportunityAccepted = jest.fn()
     const mockUpsertFeedback = jest.fn()
 
     const defaultProps = {
@@ -140,6 +141,7 @@ describe('OpportunitiesContent', () => {
         mockMarkArticleAsReviewed.mockClear()
         mockOnArchive.mockClear()
         mockOnPublish.mockClear()
+        mockOnOpportunityAccepted.mockClear()
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             createGuidanceArticle: mockCreateGuidanceArticle,
             isGuidanceArticleUpdating: false,
@@ -383,6 +385,46 @@ describe('OpportunitiesContent', () => {
                     reason: 'Created as guidance',
                 },
             ])
+        })
+    })
+
+    it('should call onOpportunityAccepted with correct parameters when guidance is created successfully', async () => {
+        const selectedOpportunity: Opportunity = {
+            id: '1',
+            title: 'Test opportunity',
+            content: 'Test content',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            key: 'ai_1',
+        }
+
+        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
+            onOpportunityAccepted: mockOnOpportunityAccepted,
+        })
+
+        const approveButton = screen.getByRole('button', { name: /Approve/i })
+
+        await act(async () => {
+            await userEvent.click(approveButton)
+        })
+
+        await waitFor(() => {
+            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
+        })
+
+        await waitFor(() => {
+            expect(mockReviewArticleMutate).toHaveBeenCalled()
+        })
+
+        await waitFor(() => {
+            expect(mockOnOpportunityAccepted).toHaveBeenCalledTimes(1)
+            expect(mockOnOpportunityAccepted).toHaveBeenCalledWith({
+                opportunityId: '1',
+                opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
+            })
         })
     })
 

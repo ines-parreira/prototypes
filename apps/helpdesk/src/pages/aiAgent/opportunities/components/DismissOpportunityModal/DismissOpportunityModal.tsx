@@ -37,6 +37,10 @@ interface DismissOpportunityModalProps {
     opportunity: Opportunity | null
     onClose: () => void
     onConfirm: () => void
+    onOpportunityDismissed?: (context: {
+        opportunityId: string
+        opportunityType: string
+    }) => void
 }
 
 const DISMISS_REASON_OPTIONS: Option[] = [
@@ -63,6 +67,7 @@ export const DismissOpportunityModal = ({
     opportunity,
     onClose,
     onConfirm,
+    onOpportunityDismissed,
 }: DismissOpportunityModalProps) => {
     const dispatch = useAppDispatch()
     const userId = useAppSelector(getCurrentUserId)
@@ -199,6 +204,11 @@ export const DismissOpportunityModal = ({
 
             resetForm()
 
+            onOpportunityDismissed?.({
+                opportunityId: opportunity.id,
+                opportunityType: opportunity.type,
+            })
+
             onConfirm()
             onClose()
         } catch (error) {
@@ -219,6 +229,7 @@ export const DismissOpportunityModal = ({
         selectedReasons,
         feedbackData,
         upsertFeedback,
+        onOpportunityDismissed,
         onConfirm,
         onClose,
         dispatch,

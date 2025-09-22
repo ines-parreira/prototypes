@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -7,8 +7,11 @@ import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
+import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import {
     mapAiArticlesToOpportunities,
     Opportunity,
@@ -32,6 +35,8 @@ export const OpportunitiesLayout = () => {
     })
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
 
     const {
         articles: aiArticles,
@@ -45,6 +50,16 @@ export const OpportunitiesLayout = () => {
 
     const [selectedOpportunity, setSelectedOpportunity] =
         useState<Opportunity | null>(null)
+
+    const {
+        onOpportunityPageVisited,
+        onOpportunityViewed,
+        onOpportunityAccepted,
+        onOpportunityDismissed,
+    } = useOpportunitiesTracking({
+        accountId,
+        userId,
+    })
 
     const opportunities: Opportunity[] = useMemo(() => {
         if (!storeConfiguration?.helpCenterId) return []
@@ -79,6 +94,10 @@ export const OpportunitiesLayout = () => {
 
     const isLoading = isStoreConfigLoading || isLoadingAiArticles
 
+    useEffect(() => {
+        onOpportunityPageVisited()
+    }, [onOpportunityPageVisited])
+
     return (
         <div className={css.wrapper} data-ai-opportunities>
             <div className={css.layout}>
@@ -87,6 +106,7 @@ export const OpportunitiesLayout = () => {
                     isLoading={isLoading}
                     onSelectOpportunity={setSelectedOpportunity}
                     selectedOpportunity={selectedOpportunity}
+                    onOpportunityViewed={onOpportunityViewed}
                 />
                 <OpportunitiesContent
                     key={selectedOpportunity?.key}
@@ -99,6 +119,8 @@ export const OpportunitiesLayout = () => {
                     markArticleAsReviewed={markArticleAsReviewed}
                     opportunities={opportunities}
                     selectCertainOpportunity={selectCertainOpportunity}
+                    onOpportunityAccepted={onOpportunityAccepted}
+                    onOpportunityDismissed={onOpportunityDismissed}
                 />
             </div>
         </div>

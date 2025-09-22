@@ -46,6 +46,14 @@ interface OpportunitiesContentProps {
     ) => void
     opportunities?: Opportunity[]
     selectCertainOpportunity?: (index: number) => void
+    onOpportunityAccepted?: (context: {
+        opportunityId: string
+        opportunityType: string
+    }) => void
+    onOpportunityDismissed?: (context: {
+        opportunityId: string
+        opportunityType: string
+    }) => void
 }
 
 export const OpportunitiesContent = ({
@@ -58,6 +66,8 @@ export const OpportunitiesContent = ({
     markArticleAsReviewed,
     opportunities,
     selectCertainOpportunity,
+    onOpportunityAccepted,
+    onOpportunityDismissed,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -170,6 +180,11 @@ export const OpportunitiesContent = ({
                     reason: 'Created as guidance',
                 },
             ])
+
+            onOpportunityAccepted?.({
+                opportunityId: selectedOpportunity.id,
+                opportunityType: selectedOpportunity.type,
+            })
         } catch {
             dispatch(
                 notify({
@@ -188,6 +203,7 @@ export const OpportunitiesContent = ({
         currentFormData,
         locale,
         dispatch,
+        onOpportunityAccepted,
     ])
 
     if (showEmptyState) {
@@ -316,6 +332,7 @@ export const OpportunitiesContent = ({
                 opportunity={selectedOpportunity}
                 onClose={handleCancelDismiss}
                 onConfirm={handleConfirmDismiss}
+                onOpportunityDismissed={onOpportunityDismissed}
             />
         </div>
     )
