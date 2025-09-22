@@ -200,25 +200,13 @@ export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
 
 /**
  * @description
- * Returns the amount after discount and the discount amount formatted for the automate early access plan
- * see getPlanPriceFormatted for more details about the format
+ *    Returns a string such as
+ *    "$360" or "$360.10" when the number has decimals or
+ *    "$36,000" when the number is with thousands
  *
- * @param plan AutomateEarlyAccessPlan
+ * @param plan Plan
  * @returns string
  */
-export function getAutomateEarlyAccessPricesFormatted(
-    plan: Plan | undefined | null,
-) {
-    const amountPrice = (plan?.amount ?? 0) / 100
-    const currency = plan?.currency ?? 'usd'
-    const cadence = plan?.cadence ?? Cadence.Month
-
-    return {
-        amount: formatAmount(amountPrice, currency),
-        cadence,
-    }
-}
-
 export function getOverageUnitPriceFormatted(plan: Plan | undefined | null) {
     return formatAmount(plan?.extra_ticket_cost ?? 0)
 }

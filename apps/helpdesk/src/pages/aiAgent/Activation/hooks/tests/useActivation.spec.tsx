@@ -17,7 +17,6 @@ import { logEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -196,12 +195,6 @@ jest.spyOn(axios, 'get').mockImplementation(async (url) => {
     if (url === '/billing/state') {
         const val = await mockBillingStateApi()
         return val
-    } else if (url === '/api/billing/early-access-automate-plan') {
-        return Promise.resolve({
-            data: {
-                plan: earlyAccessMonthlyAutomationPlan,
-            },
-        })
     } else if (
         url.match(/^\/config\/accounts\/[^\/]+\/stores\/[^\/]+\/configuration/)
     ) {

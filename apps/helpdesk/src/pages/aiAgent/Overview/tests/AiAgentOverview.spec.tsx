@@ -164,12 +164,11 @@ describe('AiAgentOverview', () => {
         } as any)
 
         // Mock billing utils
-        const mockGetAutomateEarlyAccessPricesFormatted = jest.requireMock(
+        const mockGetPlanPriceFormatted = jest.requireMock(
             'models/billing/utils',
-        ).getAutomateEarlyAccessPricesFormatted
-        mockGetAutomateEarlyAccessPricesFormatted?.mockReturnValue({
-            amount: '$530',
-        })
+        ).getPlanPriceFormatted
+
+        mockGetPlanPriceFormatted?.mockReturnValue('$530')
     })
     it('should render', () => {
         const { queryByText } = renderComponent()

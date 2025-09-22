@@ -6,7 +6,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { logEvent } from 'common/segment/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
-import { useEarlyAccessAutomatePlan } from 'models/billing/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
@@ -61,8 +60,6 @@ describe('TrialManageWorkflow', () => {
     const mockUseLocation = useLocation as jest.Mock
     const mockUseSalesTrialRevampMilestone =
         useSalesTrialRevampMilestone as jest.Mock
-    const mockUseEarlyAccessAutomatePlan =
-        useEarlyAccessAutomatePlan as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -141,8 +138,6 @@ describe('TrialManageWorkflow', () => {
         ;(useSalesTrialRevampMilestone as jest.Mock).mockReturnValue(
             'milestone-1',
         )
-        // Default to no early access plan
-        mockUseEarlyAccessAutomatePlan.mockReturnValue({ data: null })
 
         // Mock components to render test content
         ;(TrialAlertBanner as jest.Mock).mockImplementation((props: any) => (

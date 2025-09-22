@@ -3,7 +3,6 @@ import {
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     convertPlan0,
-    earlyAccessMonthlyAutomationPlan,
     smsProduct,
     starterHelpdeskPlan,
     voicePlan0,
@@ -11,7 +10,6 @@ import {
 
 import { Cadence } from '../types'
 import {
-    getAutomateEarlyAccessPricesFormatted,
     getCheapestPrice,
     getFormattedAmount,
     getOverageUnitPriceFormatted,
@@ -117,27 +115,4 @@ describe('getPlanUnitsPerCadence', () => {
             `300 tickets/${Cadence.Month}`,
         )
     })
-})
-
-describe('getAutomateEarlyAccessPricesFormatted', () => {
-    it('returns right amounts', () => {
-        const { amount, cadence } = getAutomateEarlyAccessPricesFormatted(
-            earlyAccessMonthlyAutomationPlan,
-        )
-
-        expect(amount).toEqual('$30')
-
-        expect(cadence).toEqual(earlyAccessMonthlyAutomationPlan.cadence)
-    })
-
-    it.each([undefined, null])(
-        'handles invalid plans: %q',
-        (plan: undefined | null) => {
-            const { amount, cadence } =
-                getAutomateEarlyAccessPricesFormatted(plan)
-
-            expect(amount).toEqual('$0')
-            expect(cadence).toEqual(Cadence.Month)
-        },
-    )
 })

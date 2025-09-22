@@ -6,7 +6,6 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
-    getEarlyAccessAutomatePlan,
     reactivateTrial,
     updateBillingContact,
 } from './resources'
@@ -31,25 +30,6 @@ export const useBillingState = (
         ...overrides,
         staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
         refetchOnWindowFocus: true,
-    })
-}
-
-export const getEarlyAccessAutomatePlanQuery = {
-    queryKey: ['earlyAccessAutomatePlan'],
-    queryFn: getEarlyAccessAutomatePlan,
-}
-
-export type UseEarlyAccessAutomatePlan = Awaited<
-    ReturnType<typeof getEarlyAccessAutomatePlan>
->
-
-export const useEarlyAccessAutomatePlan = (
-    overrides?: UseQueryOptions<UseEarlyAccessAutomatePlan>,
-) => {
-    return useQuery({
-        ...getEarlyAccessAutomatePlanQuery,
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        ...overrides,
     })
 }
 

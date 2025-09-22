@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { Badge, CheckBoxField, Skeleton } from '@gorgias/axiom'
 
 import { AutomatePlan, HelpdeskPlan, Plan } from 'models/billing/types'
-import { getAutomateEarlyAccessPricesFormatted } from 'models/billing/utils'
+import { getPlanPriceFormatted } from 'models/billing/utils'
 import {
     Card,
     CardCaption,
@@ -45,7 +45,7 @@ export const EarlyAccessModal = ({
     userIsAdmin,
     isUpgrading,
 }: Props) => {
-    const { amount } = getAutomateEarlyAccessPricesFormatted(earlyAccessPlan)
+    const price = getPlanPriceFormatted(earlyAccessPlan)
     const currency = currentPlan?.currency ?? 'USD'
 
     const helpdeskPlanTicketCost = formatAmount(
@@ -229,7 +229,7 @@ export const EarlyAccessModal = ({
                                         <Skeleton width={140} height={22} />
                                     ) : (
                                         <span>
-                                            {amount}/{earlyAccessPlan?.cadence}
+                                            {price}/{earlyAccessPlan?.cadence}
                                         </span>
                                     )}
                                 </span>
