@@ -54,30 +54,10 @@
     "engines": {
         "node": "22"
     },
-    "packageManager": "pnpm@10.8.0",
-    "overrides": {
-        "@emotion/styled-base": "10.0.31",
-        "@formatjs/ecma402-abstract": "1.11.4",
-        "@tanstack/react-query": "4.36.1",
-        "@types/escodegen": "^0.0.10",
-        "@types/react": "^17.0.2",
-        "isomorphic-fetch": "^3.0.0",
-        "jquery": "3.5.1",
-        "json-schema": "0.4.0"
-    },
+    "packageManager": "pnpm@10.17.0",
     "peerDependenciesMeta": {
         "react-native": {
             "optional": true
         }
-    },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "@sentry/cli",
-            "@swc/core",
-            "core-js",
-            "core-js-pure",
-            "esbuild",
-            "postinstall-postinstall"
-        ]
     }
 }
