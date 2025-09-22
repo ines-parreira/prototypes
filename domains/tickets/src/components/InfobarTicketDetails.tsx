@@ -13,7 +13,7 @@ export function InfobarTicketDetails({ ticketSummaryIcon }: Props) {
         <div className={css.container}>
             <header className={css.header}>
                 <div className={css.title}>
-                    <Icon name="comm-chat-conversation" size={20} />
+                    <Icon name="comm-chat-conversation" size="md" />
                     <h2>Ticket details</h2>
                 </div>
                 {ticketSummaryIcon}

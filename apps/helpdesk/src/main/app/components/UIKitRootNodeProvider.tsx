@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-import { RootNodeProvider } from '@gorgias/axiom'
+import { AxiomProvider } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 
@@ -10,5 +10,5 @@ type Props = {
 
 export default function UIKitRootNodeProvider({ children }: Props) {
     const appNode = useAppNode()
-    return <RootNodeProvider value={appNode}>{children}</RootNodeProvider>
+    return <AxiomProvider rootNode={appNode}>{children}</AxiomProvider>
 }

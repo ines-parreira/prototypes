@@ -24,5 +24,5 @@ export const TrendIcon = ({ value }: { value: number }) => {
 
     if (!iconName) return null
 
-    return <Icon name={iconName} size={12} />
+    return <Icon name={iconName} size="xs" />
 }

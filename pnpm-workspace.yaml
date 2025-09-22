@@ -57,7 +57,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '^0.48.3'
+    '@gorgias/axiom': '0.54.1'
   rest-api-sdk:
     '@gorgias/convert-client': '^0.3.8'
     '@gorgias/convert-mocks': '^0.2.25'

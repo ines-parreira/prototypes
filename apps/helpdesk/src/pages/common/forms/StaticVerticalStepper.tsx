@@ -14,7 +14,7 @@ export function StaticVerticalStep({
     return (
         <div className={css.stepWrapper}>
             <div className={css.stepIndicator}>
-                <Icon name="shape-circle" size={16} />
+                <Icon name="shape-circle" size="sm" />
                 <span className={css.stepDescription}>{stepDescription}</span>
             </div>
             <div className={css.stepContent}>{children}</div>

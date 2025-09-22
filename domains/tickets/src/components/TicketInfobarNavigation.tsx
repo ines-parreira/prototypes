@@ -68,7 +68,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                             : undefined
                     }
                     fillStyle="ghost"
-                    icon={<Icon name={item.icon} size={20} />}
+                    icon={<Icon name={item.icon} size="md" />}
                     intent="secondary"
                     onClick={item.onClick}
                 />

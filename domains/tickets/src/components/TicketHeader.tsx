@@ -22,7 +22,7 @@ export function TicketHeader({ ticketId }: Props) {
                     {getCustomerName(ticket.customer)}
                 </span>
                 <span className={css.separator}>
-                    <Icon name="arrow-chevron-right" size={16} />
+                    <Icon name="arrow-chevron-right" size="sm" />
                 </span>
                 <span className={css.subject}>{ticket.subject}</span>
             </div>
