@@ -5,7 +5,9 @@ export default createConfig({
         coverage: {
             exclude: [
                 // Exclude feature flag keys enum from coverage as it's just constant definitions
-                '**/feature-flags-keys.ts',
+                '**/featureFlagKey.ts',
+                'vitest.config.ts',
+                'src/index.ts',
             ],
         },
     },

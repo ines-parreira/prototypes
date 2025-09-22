@@ -17,7 +17,9 @@
     },
     "peerDependencies": {
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "launchdarkly-js-client-sdk": "catalog:feature-flags",
+        "launchdarkly-react-client-sdk": "catalog:feature-flags"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
@@ -29,6 +31,8 @@
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
+        "launchdarkly-js-client-sdk": "catalog:feature-flags",
+        "launchdarkly-react-client-sdk": "catalog:feature-flags",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",

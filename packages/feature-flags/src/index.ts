@@ -1,1 +1,2 @@
-export * from './feature-flags-keys'
+export * from './featureFlagKey'
+export * from './withFeatureFlags'
