@@ -217,8 +217,7 @@ describe('AIAgentFeedbackRatingSection', () => {
         const badInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 id: 2,
-                feedbackValue:
-                    AiAgentBadInteractionReason.DIDNT_PROCESS_ATTACHMENT_CORRECTLY,
+                feedbackValue: AiAgentBadInteractionReason.IGNORED_KNOWLEDGE,
                 objectType: 'TICKET',
                 objectId: '123',
                 targetType: 'TICKET',
@@ -228,10 +227,10 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            },
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
             {
                 id: 3,
-                feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
+                feedbackValue: AiAgentBadInteractionReason.OVERPROMISE,
                 objectType: 'TICKET',
                 objectId: '123',
                 targetType: 'TICKET',
@@ -241,7 +240,7 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            },
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
         ]
 
         render(

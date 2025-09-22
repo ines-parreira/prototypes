@@ -7,10 +7,13 @@ export const badInteractionOptions: Record<
     [AiAgentBadInteractionReason.WRONG_KNOWLEDGE]: 'Wrong knowledge used',
     [AiAgentBadInteractionReason.IGNORED_KNOWLEDGE]:
         "Didn't follow knowledge content",
+    [AiAgentBadInteractionReason.MISSING_KNOWLEDGE]: 'Missing knowledge',
     [AiAgentBadInteractionReason.ACTION_NOT_PERFORMED]: 'Action not performed',
+    [AiAgentBadInteractionReason.ACTION_INCORRECTLY_PERFORMED]:
+        'Action incorrectly performed',
     [AiAgentBadInteractionReason.TONE_OF_VOICE_NOT_ALIGNED]:
         'Tone of voice not aligned',
-    [AiAgentBadInteractionReason.HALLUCINATION]: 'Hallucination',
+    [AiAgentBadInteractionReason.OVERPROMISE]: 'Overpromise',
     [AiAgentBadInteractionReason.REPETITIVE_MESSAGES]: 'Repetitive messages',
     [AiAgentBadInteractionReason.SHOULD_NOT_HAND_OVER]: 'Should not hand over',
     [AiAgentBadInteractionReason.SHOULD_HAND_OVER_SOONER]:
@@ -26,10 +29,12 @@ export const badInteractionOptions: Record<
     [AiAgentBadInteractionReason.DISCOUNT_ISSUE]: 'Discount issue',
     [AiAgentBadInteractionReason.IRRELEVANT_PRODUCT_RECCOMENDATION]:
         'Irrelevant product recommendation',
+    [AiAgentBadInteractionReason.SOMEWHAT_RELEVANT_PRODUCT_RECOMMENDATION]:
+        'Somewhat relevant recommendation',
+    [AiAgentBadInteractionReason.NO_PRODUCT_RECOMMENDATION]:
+        'No product recommendation',
     [AiAgentBadInteractionReason.SHOULD_NOT_TRY_TO_SELL]:
         'Should not try to sell',
-    [AiAgentBadInteractionReason.DIDNT_PROCESS_ATTACHMENT_CORRECTLY]:
-        "Didn't process attachment correctly",
     [AiAgentBadInteractionReason.OTHER]:
         'Other (explain in additional feedback)',
 }

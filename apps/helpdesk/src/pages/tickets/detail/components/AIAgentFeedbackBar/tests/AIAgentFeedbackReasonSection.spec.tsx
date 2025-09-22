@@ -70,7 +70,7 @@ jest.mock('custom-fields/components/MultiLevelSelect', () => {
                     <option value="Tone of voice not aligned">
                         Tone of voice not aligned
                     </option>
-                    <option value="Hallucination">Hallucination</option>
+                    <option value="Overpromise">Overpromise</option>
                     <option value="Repetitive messages">
                         Repetitive messages
                     </option>
@@ -123,7 +123,7 @@ describe('AIAgentFeedbackReasonSection', () => {
             },
             {
                 id: 2,
-                feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
+                feedbackValue: AiAgentBadInteractionReason.OVERPROMISE,
                 objectType: 'TICKET',
                 objectId: '123',
                 targetType: 'TICKET',
@@ -143,7 +143,7 @@ describe('AIAgentFeedbackReasonSection', () => {
             />,
         )
 
-        const expectedText = 'Wrong knowledge used, Hallucination'
+        const expectedText = 'Wrong knowledge used, Overpromise'
         expect(screen.getByText(expectedText)).toBeInTheDocument()
     })
 
@@ -203,7 +203,7 @@ describe('AIAgentFeedbackReasonSection', () => {
         await act(async () => {
             await user.selectOptions(select, [
                 'Wrong knowledge used',
-                'Hallucination',
+                'Overpromise',
             ])
         })
 
@@ -214,7 +214,7 @@ describe('AIAgentFeedbackReasonSection', () => {
             },
             {
                 resourceType: 'TICKET_BAD_INTERACTION_REASON',
-                feedbackValue: 'HALLUCINATION',
+                feedbackValue: 'OVERPROMISE',
             },
         ])
     })
@@ -287,13 +287,13 @@ describe('AIAgentFeedbackReasonSection', () => {
         const select = screen.getByTestId('select')
 
         await act(async () => {
-            await user.selectOptions(select, ['Hallucination'])
+            await user.selectOptions(select, ['Overpromise'])
         })
 
         expect(defaultProps.handleFeedbackChange).toHaveBeenCalledWith([
             {
                 resourceType: 'TICKET_BAD_INTERACTION_REASON',
-                feedbackValue: 'HALLUCINATION',
+                feedbackValue: 'OVERPROMISE',
             },
         ])
     })
@@ -372,7 +372,7 @@ describe('AIAgentFeedbackReasonSection', () => {
 
         const newBadInteractionReasons = [...badInteractionReasons]
         newBadInteractionReasons[0].feedbackValue =
-            AiAgentBadInteractionReason.HALLUCINATION
+            AiAgentBadInteractionReason.OVERPROMISE
 
         act(() => {
             rerender(
@@ -473,7 +473,7 @@ describe('AIAgentFeedbackReasonSection', () => {
         const newBadInteractionReasons: FeedbackExecutionsItem['feedback'] = [
             {
                 ...badInteractionReasons[0],
-                feedbackValue: AiAgentBadInteractionReason.HALLUCINATION,
+                feedbackValue: AiAgentBadInteractionReason.OVERPROMISE,
                 feedbackType: 'TICKET_FREEFORM',
             } as FeedbackExecutionsItemFeedbackItemOneOfSix,
         ]
