@@ -267,7 +267,7 @@ describe('utils', () => {
                     ids: [],
                     recordIds: undefined,
                 },
-                actionIds: [],
+                actionIds: undefined,
             })
         })
 
@@ -548,7 +548,7 @@ describe('utils', () => {
                     ids: [300],
                     recordIds: undefined,
                 },
-                actionIds: [],
+                actionIds: undefined,
             })
         })
 
@@ -820,6 +820,137 @@ describe('utils', () => {
             expect(result.current.snippetHelpCenterMetadata.recordIds).toEqual([
                 3,
             ])
+        })
+
+        it('should handle ACTION resources with returnRecordIds=true', () => {
+            const storeConfiguration = createMockStoreConfiguration()
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [
+                        {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '123',
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify({
+                                resourceId: 'action-1',
+                                resourceType: 'ACTION',
+                            }),
+                            submittedBy: 1,
+                            createdDatetime: new Date().toISOString(),
+                            updatedDatetime: new Date().toISOString(),
+                        },
+                    ],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: 'action-2',
+                            resourceType: 'ACTION',
+                            resourceSetId: '',
+                            resourceTitle: 'Action Resource',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useExtractDistinctHelpCenterFromResources(
+                        executions,
+                        storeConfiguration,
+                        true,
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.actionIds).toEqual(['action-1', 'action-2'])
+        })
+
+        it('should handle ACTION resources in both feedback and resources sections', () => {
+            // Test specifically for covering action initialization branches
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [
+                        {
+                            id: 1,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '123',
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify({
+                                resourceId: 'feedback-action-1',
+                                resourceType: 'ACTION',
+                            }),
+                            submittedBy: 1,
+                            createdDatetime: new Date().toISOString(),
+                            updatedDatetime: new Date().toISOString(),
+                        },
+                        {
+                            id: 2,
+                            objectType: 'TICKET',
+                            objectId: '123',
+                            executionId: 'exec-1',
+                            targetType: 'TICKET',
+                            targetId: '123',
+                            feedbackType: 'SUGGESTED_RESOURCE',
+                            feedbackValue: JSON.stringify({
+                                resourceId: 'feedback-action-2',
+                                resourceType: 'ACTION',
+                            }),
+                            submittedBy: 1,
+                            createdDatetime: new Date().toISOString(),
+                            updatedDatetime: new Date().toISOString(),
+                        },
+                    ],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: 'resource-action-1',
+                            resourceType: 'ACTION',
+                            resourceSetId: '',
+                            resourceTitle: 'Resource Action 1',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: 'resource-action-2',
+                            resourceType: 'ACTION',
+                            resourceSetId: '',
+                            resourceTitle: 'Resource Action 2',
+                            resourceLocale: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useExtractDistinctHelpCenterFromResources(
+                        executions,
+                        undefined, // No store configuration
+                        true,
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.actionIds).toContain('feedback-action-1')
+            expect(result.current.actionIds).toContain('feedback-action-2')
+            expect(result.current.actionIds).toContain('resource-action-1')
+            expect(result.current.actionIds).toContain('resource-action-2')
+            expect(result.current.actionIds).toHaveLength(4)
         })
     })
 

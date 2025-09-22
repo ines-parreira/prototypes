@@ -54,7 +54,7 @@ export const useExtractDistinctHelpCenterFromResources = (
             faqHelpCenterMetadata: { ids: number[]; recordIds?: number[] }
             guidanceHelpCenterMetadata: { ids: number[]; recordIds?: number[] }
             snippetHelpCenterMetadata: { ids: number[]; recordIds?: number[] }
-            actionIds: string[]
+            actionIds?: string[]
         } = {
             faqHelpCenterMetadata: storeConfiguration?.helpCenterId
                 ? {
@@ -74,7 +74,7 @@ export const useExtractDistinctHelpCenterFromResources = (
                       recordIds: returnRecordIds ? [] : undefined,
                   }
                 : { ids: [], recordIds: returnRecordIds ? [] : undefined },
-            actionIds: [],
+            actionIds: returnRecordIds ? [] : undefined,
         }
 
         for (const execution of executions ?? []) {
@@ -168,12 +168,17 @@ export const useExtractDistinctHelpCenterFromResources = (
                                 break
 
                             case AiAgentKnowledgeResourceTypeEnum.ACTION:
-                                if (
-                                    !output.actionIds.includes(
-                                        resource.resourceId,
-                                    )
-                                ) {
-                                    output.actionIds.push(resource.resourceId)
+                                if (returnRecordIds) {
+                                    if (
+                                        output.actionIds &&
+                                        !output.actionIds.includes(
+                                            resource.resourceId,
+                                        )
+                                    ) {
+                                        output.actionIds.push(
+                                            resource.resourceId,
+                                        )
+                                    }
                                 }
                                 break
                         }
@@ -256,7 +261,9 @@ export const useExtractDistinctHelpCenterFromResources = (
                         }
                         break
                     case AiAgentKnowledgeResourceTypeEnum.ACTION:
-                        output.actionIds.push(resource.resourceId)
+                        if (returnRecordIds && output.actionIds) {
+                            output.actionIds.push(resource.resourceId)
+                        }
                         break
                     default:
                         break
