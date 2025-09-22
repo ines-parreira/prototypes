@@ -26,12 +26,14 @@ export const useShoppingAssistantTrialBanner = () => {
     const isTicketsPage =
         pathname.includes('tickets') || pathname.includes('views')
 
+    const isShoppingAssistantPage = pathname.includes('sales')
+
     // Check if the banner should be hidden
     const { canSeeSystemBanner, trialType } = useTrialAccess()
 
     const displayBanner = useMemo(
-        () => !isTicketsPage && canSeeSystemBanner,
-        [isTicketsPage, canSeeSystemBanner],
+        () => !isTicketsPage && !isShoppingAssistantPage && canSeeSystemBanner,
+        [isTicketsPage, isShoppingAssistantPage, canSeeSystemBanner],
     )
 
     const eventData = useMemo(
