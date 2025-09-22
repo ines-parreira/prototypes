@@ -11,6 +11,7 @@ export type MultipleMetricsData<TCube extends Cubes> = Record<
     {
         value: number | null
         prevValue: number | null
+        rawData?: Record<string, any>
     }
 >
 
@@ -52,6 +53,7 @@ export const useMultipleMetricsTrends = <TCube extends Cubes>(
             prevValue: previousMetrics.data?.[measure]
                 ? parseFloat(previousMetrics.data[measure])
                 : null,
+            rawData: currentMetrics.data,
         }
         return acc
     }, {} as MultipleMetricsData<TCube>)
@@ -91,6 +93,7 @@ export const fetchMultipleMetricsTrends = async <TCube extends Cubes>(
                     prevValue: previousMetrics?.[measure]
                         ? parseFloat(previousMetrics[measure])
                         : null,
+                    rawData: currentMetrics,
                 }
                 return acc
             }, {} as MultipleMetricsData<TCube>)
@@ -108,6 +111,7 @@ export const fetchMultipleMetricsTrends = async <TCube extends Cubes>(
                 acc[measure] = {
                     value: null,
                     prevValue: null,
+                    rawData: undefined,
                 }
                 return acc
             }, {} as MultipleMetricsData<TCube>),

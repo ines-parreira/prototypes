@@ -122,11 +122,19 @@ describe('MultipleMetricTrend', () => {
                 [AutomationDatasetMeasure.AutomatedInteractions]: {
                     prevValue: null,
                     value: 10,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                    },
                 },
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
                     {
                         prevValue: null,
                         value: 11,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        },
                     },
             })
         })
@@ -154,11 +162,19 @@ describe('MultipleMetricTrend', () => {
                 [AutomationDatasetMeasure.AutomatedInteractions]: {
                     prevValue: 20,
                     value: 10,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                    },
                 },
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
                     {
                         prevValue: 21,
                         value: 11,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        },
                     },
             })
         })
@@ -170,6 +186,10 @@ describe('MultipleMetricTrend', () => {
                         {
                             [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                             [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            rawData: {
+                                [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                                [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            },
                         },
                     ],
                 },
@@ -213,6 +233,10 @@ describe('MultipleMetricTrend', () => {
             expect(defaultSelect?.(data)).toEqual({
                 [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                rawData: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                    [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                },
             })
 
             expect(usePostReportingMock).toHaveBeenCalledWith(
@@ -224,6 +248,10 @@ describe('MultipleMetricTrend', () => {
             expect(previousSelect?.(data)).toEqual({
                 [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                rawData: {
+                    [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                    [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                },
             })
         })
     })
@@ -271,11 +299,13 @@ describe('MultipleMetricTrend', () => {
                 [AutomationDatasetMeasure.AutomatedInteractions]: {
                     prevValue: null,
                     value: null,
+                    rawData: undefined,
                 },
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
                     {
                         prevValue: null,
                         value: null,
+                        rawData: undefined,
                     },
             })
         })
@@ -288,6 +318,10 @@ describe('MultipleMetricTrend', () => {
                         {
                             [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                             [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            rawData: {
+                                [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                                [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            },
                         },
                     ],
                 },
@@ -308,11 +342,27 @@ describe('MultipleMetricTrend', () => {
                 [AutomationDatasetMeasure.AutomatedInteractions]: {
                     prevValue: null,
                     value: 10,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        },
+                    },
                 },
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
                     {
                         prevValue: null,
                         value: 11,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            rawData: {
+                                [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                                [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                            },
+                        },
                     },
             })
         })
@@ -350,11 +400,19 @@ describe('MultipleMetricTrend', () => {
                 [AutomationDatasetMeasure.AutomatedInteractions]: {
                     prevValue: 20,
                     value: 10,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                    },
                 },
                 [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]:
                     {
                         prevValue: 21,
                         value: 11,
+                        rawData: {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                        },
                     },
             })
         })
@@ -372,6 +430,10 @@ describe('MultipleMetricTrend', () => {
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                     [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 10,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
+                    },
                 },
             } as any)
             fetchPostReportingMock.mockResolvedValueOnce({

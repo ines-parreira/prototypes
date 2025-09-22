@@ -9,7 +9,10 @@ import {
     useMultipleMetricsTrends,
 } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import { Cubes } from 'domains/reporting/models/cubes'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAverageOrderValueTrend,
@@ -45,13 +48,17 @@ describe('averageOrderValueTrend', () => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    [AiSalesAgentOrdersMeasure.GmvUsd]: {
+                    [AiSalesAgentOrdersMeasure.Gmv]: {
                         value: 10,
                         prevValue: 2,
+                        rawData: {
+                            [AiSalesAgentOrdersDimension.Currency]: 'EUR',
+                        },
                     },
                     [AiSalesAgentOrdersMeasure.Count]: {
                         value: 2,
                         prevValue: 1,
+                        rawData: {},
                     },
                 },
             } as unknown as ReturnType<typeof useMultipleMetricsTrends>)
@@ -76,6 +83,7 @@ describe('averageOrderValueTrend', () => {
                     data: {
                         prevValue: 2,
                         value: 5,
+                        currency: 'EUR',
                     },
                     isError: false,
                     isFetching: false,
@@ -88,13 +96,17 @@ describe('averageOrderValueTrend', () => {
         beforeEach(() => {
             fetchMultipleMetricsTrendsMock.mockResolvedValue({
                 data: {
-                    [AiSalesAgentOrdersMeasure.GmvUsd]: {
+                    [AiSalesAgentOrdersMeasure.Gmv]: {
                         value: 10,
                         prevValue: 2,
+                        rawData: {
+                            [AiSalesAgentOrdersDimension.Currency]: 'EUR',
+                        },
                     },
                     [AiSalesAgentOrdersMeasure.Count]: {
                         value: 2,
                         prevValue: 1,
+                        rawData: {},
                     },
                 } as unknown as MultipleMetricsData<Cubes>,
                 isFetching: false,
@@ -112,6 +124,7 @@ describe('averageOrderValueTrend', () => {
                 data: {
                     prevValue: 2,
                     value: 5,
+                    currency: 'EUR',
                 },
                 isFetching: false,
                 isError: false,

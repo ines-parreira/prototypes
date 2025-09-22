@@ -60,10 +60,10 @@ export const averageOrderValueQueryFactory = (
 ): ReportingQuery<AiSalesAgentOrdersCube> => {
     return {
         measures: [
-            AiSalesAgentOrdersMeasure.GmvUsd,
+            AiSalesAgentOrdersMeasure.Gmv,
             AiSalesAgentOrdersMeasure.Count,
         ],
-        dimensions: [],
+        dimensions: [AiSalesAgentOrdersDimension.Currency],
         filters: [
             {
                 member: AiSalesAgentOrdersDimension.IsInfluenced,
