@@ -2,10 +2,9 @@ import { useMemo } from 'react'
 
 import { useGridSize } from '@repo/hooks'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
-import { isEmpty } from 'lodash'
 import { Redirect, useParams } from 'react-router-dom'
 
+import { useAreFlagsLoading } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
@@ -95,7 +94,7 @@ function CampaignStatsOrPaywallPage() {
 
     const isConvertSubscriber = useIsConvertSubscriber()
     const shopifyStoreIntegrations = useShopifyIntegrations()
-    const flags = useFlags()
+    const isLoading = useAreFlagsLoading()
 
     const redirectUrl = useMemo(() => {
         if (chatIntegrationId) {
@@ -104,8 +103,7 @@ function CampaignStatsOrPaywallPage() {
         return '/app/stats/convert/campaigns/subscribe'
     }, [chatIntegrationId])
 
-    // Wait for flags to be loaded before rendering the page
-    if (isEmpty(flags)) {
+    if (isLoading) {
         return null
     }
 

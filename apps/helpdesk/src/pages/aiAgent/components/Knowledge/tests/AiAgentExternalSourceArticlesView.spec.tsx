@@ -1,4 +1,4 @@
-import React from 'react'
+import { ReactElement } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -36,6 +36,8 @@ jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',
 )
 jest.mock('pages/history')
+
+jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
 
 const mockUseLocation = assumeMock(useLocation)
 const mockUseParams = assumeMock(useParams)
@@ -99,7 +101,7 @@ const renderComponent = (props = {}) => {
     return renderWithStoreAndQueryClientAndRouter(
         (
             <AiAgentExternalSourceArticlesView {...defaultProps} {...props} />
-        ) as React.ReactElement,
+        ) as ReactElement,
         defaultState,
     )
 }

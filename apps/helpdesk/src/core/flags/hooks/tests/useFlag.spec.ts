@@ -5,26 +5,24 @@ import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { getLDClient } from 'utils/launchDarkly'
 
+import useAreFlagsLoading from '../useAreFlagsLoading'
 import useFlag from '../useFlag'
 
 jest.mock('utils/launchDarkly', () => ({
     getLDClient: jest.fn(),
 }))
 
+jest.mock('../useAreFlagsLoading')
+const useAreFlagsLoadingMock = jest.mocked(useAreFlagsLoading)
+
 const getLDClientMock = getLDClient as jest.Mock
 
 const testFlag = 'test-flag' as FeatureFlagKey
 
 describe('useFlag', () => {
-    let initialisePromise: Promise<unknown>
-    let initialiseResolve: (value?: unknown) => void
-
     beforeEach(() => {
-        initialisePromise = new Promise((resolve) => {
-            initialiseResolve = resolve
-        })
         ldClientMock.variation.mockReturnValue(false)
-        ldClientMock.waitForInitialization.mockReturnValue(initialisePromise)
+        useAreFlagsLoadingMock.mockReturnValue(true) // Start with flags loading
         getLDClientMock.mockReturnValue(ldClientMock)
     })
 
@@ -34,17 +32,17 @@ describe('useFlag', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should set the value once client initialisation completes', async () => {
+    it('should set the value once flags are ready', async () => {
         ldClientMock.variation.mockReturnValue(false)
 
-        const { result } = renderHook(() => useFlag(testFlag))
+        const { result, rerender } = renderHook(() => useFlag(testFlag))
         expect(result.current).toBe(false)
 
         ldClientMock.variation.mockReturnValue(true)
+        useAreFlagsLoadingMock.mockReturnValue(false)
 
         await act(async () => {
-            initialiseResolve()
-            await initialisePromise
+            rerender()
         })
 
         expect(result.current).toBe(true)

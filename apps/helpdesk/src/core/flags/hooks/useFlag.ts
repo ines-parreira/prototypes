@@ -4,6 +4,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { getLDClient } from 'utils/launchDarkly'
 
+import useAreFlagsLoading from './useAreFlagsLoading'
+
 /**
  * @param flag - The feature flag to check from the FeatureFlagKey enum
  * @param defaultValue - The default value to return if the feature flag is not set, defaults to false
@@ -14,20 +16,16 @@ export default function useFlag<T = boolean>(
     defaultValue: T = false as T,
 ): T {
     const client = getLDClient()
+    const areFlagsLoading = useAreFlagsLoading()
     const [value, setValue] = useState<T>(
         () => client.variation(flag, defaultValue) as T,
     )
 
     useEffect(() => {
-        void (async () => {
-            try {
-                await client.waitForInitialization(3)
-                setValue(client.variation(flag, defaultValue))
-            } catch (error) {
-                console.error('Error fetching feature flag', error)
-            }
-        })()
-    }, [client, defaultValue, flag])
+        if (!areFlagsLoading) {
+            setValue(client.variation(flag, defaultValue))
+        }
+    }, [areFlagsLoading, client, defaultValue, flag])
 
     useEffect(() => {
         const event = `change:${flag}`

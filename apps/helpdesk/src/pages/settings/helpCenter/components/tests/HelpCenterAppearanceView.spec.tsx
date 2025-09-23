@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC, ReactNode } from 'react'
 
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -28,6 +28,8 @@ import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenter
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
+
+jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
 
 jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
@@ -119,9 +121,7 @@ const route = {
     route: '/app/settings/help-center/1/appearance',
 }
 
-const DefaultProviders: React.FC<{ children?: React.ReactNode }> = ({
-    children,
-}) => (
+const DefaultProviders: FC<{ children?: ReactNode }> = ({ children }) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}

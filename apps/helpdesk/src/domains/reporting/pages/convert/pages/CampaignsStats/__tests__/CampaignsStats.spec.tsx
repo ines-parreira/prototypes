@@ -1,13 +1,11 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import routerDom, { Route, useParams } from 'react-router-dom'
 
+import useAreFlagsLoading from 'core/flags/hooks/useAreFlagsLoading'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
@@ -64,14 +62,14 @@ const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 jest.mock('domains/reporting/pages/convert/hooks/useGetCampaignsForStore')
 const useGetCampaignsForStoreMock = assumeMock(useGetCampaignsForStore)
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
-
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
     useParams: jest.fn(),
 }))
+
+jest.mock('core/flags/hooks/useAreFlagsLoading')
+const useAreFlagsLoadingMock = jest.mocked(useAreFlagsLoading)
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',
@@ -122,11 +120,7 @@ describe('CampaignsStats', () => {
             campaigns: [campaign as CampaignPreview],
             channelConnectionExternalIds: [],
         })
-
-        useFlagsMock.mockReturnValue({
-            'any-flag': true,
-        })
-
+        useAreFlagsLoadingMock.mockReturnValue(false)
         useParamsMock.mockReturnValue({})
     })
 
@@ -175,8 +169,7 @@ describe('CampaignsStats', () => {
     })
 
     it('should not render and wait for flags', () => {
-        useFlagsMock.mockReturnValue({})
-
+        useAreFlagsLoadingMock.mockReturnValue(true)
         const { queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
