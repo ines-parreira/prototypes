@@ -3,6 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 
 import { createIntegration } from '@gorgias/helpdesk-client'
 import {
@@ -18,11 +19,14 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useFlag } from '../../../../../../../core/flags'
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
-import { DEFAULT_IVR_INTEGRATION_FLOW, VOICEMAIL_FLOW_STEP } from '../constants'
+import { VOICEMAIL_FLOW_STEP } from '../constants'
 import {
     useOnboardingForm,
     validateOnboardingForm,
 } from '../useVoiceOnboardingForm'
+
+jest.mock('uuid')
+const mockUuid = assumeMock(uuidv4)
 
 jest.mock('@gorgias/helpdesk-client')
 const createIntegrationMock = assumeMock(createIntegration)
@@ -112,6 +116,7 @@ describe('useOnboardingForm', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(true)
+        jest.clearAllMocks()
     })
 
     const renderUseOnboardingForm = () =>
@@ -126,6 +131,7 @@ describe('useOnboardingForm', () => {
         })
 
     it('should call createIntegration with correct data', async () => {
+        mockUuid.mockReturnValue('voicemail')
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },
         } as any)
@@ -164,6 +170,12 @@ describe('useOnboardingForm', () => {
     })
 
     it('should call createIntegration with correct data for IVR', async () => {
+        mockUuid
+            .mockReturnValueOnce('business_hours')
+            .mockReturnValueOnce('ivr_menu')
+            .mockReturnValueOnce('instructions_1')
+            .mockReturnValueOnce('instructions_2')
+            .mockReturnValueOnce('voicemail')
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },
         } as any)
@@ -190,8 +202,64 @@ describe('useOnboardingForm', () => {
                 ...data,
                 meta: {
                     ...data.meta,
-                    ivr: DEFAULT_IVR_SETTINGS,
-                    flow: DEFAULT_IVR_INTEGRATION_FLOW,
+                    function: PhoneFunction.Standard,
+                    flow: {
+                        first_step_id: 'business_hours',
+                        steps: {
+                            business_hours: {
+                                id: 'business_hours',
+                                name: 'Business Hours',
+                                step_type: 'time_split_conditional',
+                                on_true_step_id: 'ivr_menu',
+                                on_false_step_id: 'voicemail',
+                            },
+                            ivr_menu: {
+                                id: 'ivr_menu',
+                                name: 'IVR Menu',
+                                step_type: 'ivr_menu',
+                                message: {
+                                    voice_message_type: 'text_to_speech',
+                                    text_to_speech_content:
+                                        'Hello, thanks for calling. This IVR number was not fully configured. Press 1 for set up instructions. Press 2 for more.',
+                                },
+                                branch_options: [
+                                    {
+                                        input_digit: '1',
+                                        branch_name: 'IVR 1 instructions',
+                                        next_step_id: 'instructions_1',
+                                    },
+                                    {
+                                        input_digit: '2',
+                                        branch_name: 'IVR 2 instructions',
+                                        next_step_id: 'instructions_2',
+                                    },
+                                ],
+                            },
+                            instructions_1: {
+                                id: 'instructions_1',
+                                name: 'IVR instructions (1)',
+                                step_type: 'play_message',
+                                message: {
+                                    voice_message_type: 'text_to_speech',
+                                    text_to_speech_content:
+                                        'You can update IVR menu options on the Call flow page.',
+                                },
+                                next_step_id: null,
+                            },
+                            instructions_2: {
+                                id: 'instructions_2',
+                                name: 'IVR instructions (2)',
+                                step_type: 'play_message',
+                                message: {
+                                    voice_message_type: 'text_to_speech',
+                                    text_to_speech_content:
+                                        'By default, the call will go to voicemail outside business hours.',
+                                },
+                                next_step_id: null,
+                            },
+                            voicemail: VOICEMAIL_FLOW_STEP,
+                        },
+                    },
                 },
             },
             undefined,
