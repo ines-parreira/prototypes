@@ -19,7 +19,7 @@ import { BILLING_PAYMENT_FREQUENCY_PATH } from '../../constants'
 
 import css from './PaymentInformationView.less'
 
-type PaymentInformationViewProps = {
+export type PaymentInformationViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     currentHelpdeskPlan?: HelpdeskPlan
     currentAutomatePlan?: AutomatePlan
@@ -120,7 +120,8 @@ const PaymentInformationView = ({
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>
-                    All plans are billed <strong>{cadence}ly</strong>
+                    All plans are billed{' '}
+                    <strong>{getCadenceName(cadence).toLowerCase()}</strong>
                 </Description>
                 {changeCadence}
             </Section>
