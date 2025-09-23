@@ -40,4 +40,22 @@ describe('getValueLabel', () => {
             expect(getValueLabel(input)).toEqual(output)
         },
     )
+
+    it.each([
+        [['hello::world::foo', 'bar::baz'], 'hello > world > foo,bar > baz'],
+        [['hello', 'world'], 'hello,world'],
+        [['hello::world', 'bar'], 'hello > world,bar'],
+        [[true, false], 'Yes,No'],
+        [[1, 2, 3], '1,2,3'],
+        [['hello', '', 'world'], 'hello,world'],
+        [[], ''],
+    ])(
+        'should handle array inputs correctly',
+        (
+            input: Parameters<typeof getValueLabel>[0],
+            output: ReturnType<typeof getValueLabel>,
+        ) => {
+            expect(getValueLabel(input)).toEqual(output)
+        },
+    )
 })

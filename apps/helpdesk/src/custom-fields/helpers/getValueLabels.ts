@@ -4,7 +4,9 @@ import { CustomFieldValue } from 'custom-fields/types'
 
 import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../components/MultiLevelSelect/constants'
 
-export function getValueLabel(value?: CustomFieldValue | CustomFieldValue[]) {
+export function getValueLabel(
+    value?: CustomFieldValue | CustomFieldValue[],
+): string {
     if (!Array.isArray(value) && isCustomFieldValueEmpty(value)) return ''
     if (typeof value === 'boolean') {
         return value ? 'Yes' : 'No'
@@ -16,12 +18,8 @@ export function getValueLabel(value?: CustomFieldValue | CustomFieldValue[]) {
     }
     if (Array.isArray(value)) {
         return value
-            .map((item) =>
-                item
-                    .toString()
-                    .split(DROPDOWN_NESTING_DELIMITER)
-                    .join(DROPDOWN_NESTING_FANCY_DELIMITER),
-            )
+            .filter((item) => !isCustomFieldValueEmpty(item))
+            .map((item) => getValueLabel(item))
             .join(',')
     }
 
