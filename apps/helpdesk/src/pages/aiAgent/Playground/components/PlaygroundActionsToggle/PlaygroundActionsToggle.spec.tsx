@@ -1,15 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useFlag } from 'core/flags'
-
 import PlaygroundActionsToggle from './PlaygroundActionsToggle'
-
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('../PlaygroundActionsModal/PlaygroundActionsModal', () => {
     return function MockPlaygroundActionsModal({
@@ -35,8 +27,6 @@ describe('PlaygroundActionsToggle', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        // Enable the feature flag by default for most tests
-        mockUseFlag.mockReturnValue(true)
     })
 
     it('should render toggle with disabled state message when value is false', () => {
@@ -232,40 +222,5 @@ describe('PlaygroundActionsToggle', () => {
 
         const warningIcon = document.querySelector('.warningIcon')
         expect(warningIcon).toBeInTheDocument()
-    })
-
-    describe('when feature flag is disabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(false)
-        })
-
-        it('should render nothing when feature flag is disabled', () => {
-            const { container } = render(
-                <PlaygroundActionsToggle {...defaultProps} />,
-            )
-
-            expect(container.firstChild).toBeNull()
-        })
-
-        it('should not render toggle when feature flag is disabled', () => {
-            render(<PlaygroundActionsToggle {...defaultProps} />)
-
-            expect(screen.queryByRole('switch')).not.toBeInTheDocument()
-        })
-
-        it('should not render any text when feature flag is disabled', () => {
-            render(<PlaygroundActionsToggle {...defaultProps} />)
-
-            expect(
-                screen.queryByText(
-                    'Actions disabled - no changes will be made to live data',
-                ),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText(
-                    'Actions enabled - changes will affect live data',
-                ),
-            ).not.toBeInTheDocument()
-        })
     })
 })

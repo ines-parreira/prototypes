@@ -1,11 +1,8 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
 import { ToggleField, Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import { useFlag } from 'core/flags'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
@@ -51,9 +48,6 @@ const DisabledState = () => (
 const PlaygroundActionsToggle: React.FC<PlaygroundActionsToggleProps> = (
     props,
 ) => {
-    const isFFEnabled = useFlag(
-        FeatureFlagKey.EnableActionsOnPlaygroundForMerchants,
-    )
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const tooltipContent = getTooltipContent(props.value)
 
@@ -62,7 +56,7 @@ const PlaygroundActionsToggle: React.FC<PlaygroundActionsToggleProps> = (
         setIsModalOpen(false)
     }
 
-    return isFFEnabled ? (
+    return (
         <div className={css.playgroundActionsToggle}>
             <PlaygroundActionsModal
                 isOpen={isModalOpen}
@@ -80,8 +74,6 @@ const PlaygroundActionsToggle: React.FC<PlaygroundActionsToggleProps> = (
                 {tooltipContent}
             </IconTooltip>
         </div>
-    ) : (
-        <></>
     )
 }
 
