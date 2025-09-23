@@ -29,6 +29,7 @@ import { billingState } from 'fixtures/billing'
 import { shopifyProductResult } from 'fixtures/shopify'
 import { user } from 'fixtures/users'
 import useAllIntegrations from 'hooks/useAllIntegrations'
+import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import Routes from 'routes/Routes'
@@ -43,6 +44,10 @@ const logPageMock = assumeMock(logPageChange)
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
+}))
+
+jest.mock('hooks/useIsAccountDeactivated', () => ({
+    useIsAccountDeactivated: jest.fn(),
 }))
 
 jest.mock(
@@ -211,6 +216,7 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
+const mockUseIsAccountDeactivated = useIsAccountDeactivated as jest.Mock
 jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
@@ -260,6 +266,7 @@ describe('<Routes/>', () => {
     }
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseIsAccountDeactivated.mockReturnValue(false)
         mockHistory.replace('/app')
         StatsRoutesMock.mockImplementation(() => <div />)
         ProtectedRouteMock.mockImplementation(({ children }) => children)
@@ -791,6 +798,26 @@ describe('<Routes/>', () => {
             expect(mockHistory.location.pathname).toBe(
                 '/app/stats/ai-sales-agent/overview',
             )
+        })
+
+        it('should redirect deactivated accounts to /app/views', () => {
+            mockUseIsAccountDeactivated.mockReturnValue(true)
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push('/app/ai-agent/shopify/test-shop/overview'),
+            )
+
+            expect(mockHistory.location.pathname).toBe('/app/views')
         })
     })
 

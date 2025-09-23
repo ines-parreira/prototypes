@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { History } from 'history'
@@ -84,6 +84,7 @@ import ActionsPlatformStepsView from 'pages/automate/actionsPlatform/ActionsPlat
 import ActionsPlatformUseCaseTemplatesView from 'pages/automate/actionsPlatform/ActionsPlatformUseCaseTemplatesView'
 import Loader from 'pages/common/components/Loader/Loader'
 import NoMatch from 'pages/common/components/NoMatch'
+import { DeactivatedAccountGuard } from 'pages/common/utils/DeactivatedAccountGuard'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
 import ABGroupIndexPage from 'pages/convert/abVariants/pages/ABGroupPage'
@@ -858,54 +859,58 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
         history.replace(newPath)
         return null
     }
-
     return (
-        <HelpCenterApiClientProvider>
-            <Switch>
-                {/* Redirect `/onboarding` to `/onboarding/${WizardStepEnum.SKILLSET}` */}
-                <Route
-                    exact
-                    path={`${path}/onboarding`}
-                    render={({ history }) =>
-                        handleRedirect(
-                            history,
-                            `${path}/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
-                        )
-                    }
-                />
+        <DeactivatedAccountGuard>
+            <HelpCenterApiClientProvider>
+                <Switch>
+                    {/* Redirect `/onboarding` to `/onboarding/${WizardStepEnum.SKILLSET}` */}
+                    <Route
+                        exact
+                        path={`${path}/onboarding`}
+                        render={({ history }) =>
+                            handleRedirect(
+                                history,
+                                `${path}/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
+                            )
+                        }
+                    />
 
-                {/* Redirect `/shopType/shopName/onboarding` to `/shopType/shopName/onboarding/${WizardStepEnum.SKILLSET}` */}
-                <Route
-                    exact
-                    path={`${path}/:shopType/:shopName/onboarding`}
-                    render={({ history, match }) =>
-                        handleRedirect(
-                            history,
-                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.CHANNELS}`,
-                        )
-                    }
-                />
+                    {/* Redirect `/shopType/shopName/onboarding` to `/shopType/shopName/onboarding/${WizardStepEnum.SKILLSET}` */}
+                    <Route
+                        exact
+                        path={`${path}/:shopType/:shopName/onboarding`}
+                        render={({ history, match }) =>
+                            handleRedirect(
+                                history,
+                                `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.CHANNELS}`,
+                            )
+                        }
+                    />
 
-                {/* Generic function to wrap AiAgentOnboarding with user role validation */}
-                <Route
-                    path={[
-                        `${path}/onboarding/:step`,
-                        `${path}/:shopType/:shopName/onboarding/:step`,
-                    ]}
-                    exact
-                    component={withUserRoleRequired(
-                        AiAgentOnboarding,
-                        AGENT_ROLE,
-                    )}
-                />
+                    {/* Generic function to wrap AiAgentOnboarding with user role validation */}
+                    <Route
+                        path={[
+                            `${path}/onboarding/:step`,
+                            `${path}/:shopType/:shopName/onboarding/:step`,
+                        ]}
+                        exact
+                        component={withUserRoleRequired(
+                            AiAgentOnboarding,
+                            AGENT_ROLE,
+                        )}
+                    />
 
-                <Route
-                    render={() => (
-                        <App content={AiAgentContent} navbar={AiAgentNavbar} />
-                    )}
-                />
-            </Switch>
-        </HelpCenterApiClientProvider>
+                    <Route
+                        render={() => (
+                            <App
+                                content={AiAgentContent}
+                                navbar={AiAgentNavbar}
+                            />
+                        )}
+                    />
+                </Switch>
+            </HelpCenterApiClientProvider>
+        </DeactivatedAccountGuard>
     )
 }
 
@@ -914,7 +919,6 @@ function AiAgentContent() {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
-
     return (
         <Switch>
             <Route path={`${path}/actions-platform/use-cases`} exact>
