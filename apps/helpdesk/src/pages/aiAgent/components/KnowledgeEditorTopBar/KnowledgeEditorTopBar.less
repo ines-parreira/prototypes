@@ -1,0 +1,24 @@
+:local {
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+
+        height: 52px;
+        padding: 10px 16px;
+
+        border-bottom: 1px solid var(--border-neutral-default);
+
+        > * {
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .title {
+        flex-grow: 1;
+    }
+}

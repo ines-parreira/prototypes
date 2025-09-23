@@ -1,0 +1,138 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .icon {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border: none;
+        background: none;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+    .button {
+        border: none;
+        background: none;
+        display: flex;
+        height: 32px;
+        padding: 0 var(--spacing-sm);
+        justify-content: center;
+        align-items: center;
+        gap: var(--layout-spacing-xxxs);
+        border-radius: var(--layout-spacing-xs);
+        cursor: pointer;
+
+        color: var(--content-neutral-default);
+
+        .body-semibold();
+    }
+
+    .separator {
+        width: 1px;
+        align-self: stretch;
+
+        border-radius: var(--layout-spacing-xs);
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .filledButton {
+        border-radius: var(--layout-spacing-xs);
+        border: 0.5px solid var(--border-neutral-tertiary);
+        background: var(--surface-button-secondary);
+
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+
+        & > img {
+            color: var(--content-neutral-default);
+        }
+
+        &:hover {
+            background: linear-gradient(
+                0deg,
+                var(--hover-default) 0%,
+                var(--hover-default) 100%
+            );
+        }
+
+        &:active {
+            box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
+        }
+    }
+
+    .ghostButton {
+        &:hover:not(:disabled) {
+            border-radius: var(--layout-spacing-xs);
+            background:
+                linear-gradient(
+                    0deg,
+                    var(--hover-default) 0%,
+                    var(--hover-default) 100%
+                ),
+                var(--surface-button-secondary);
+        }
+
+        &:active:not(:disabled) {
+            border-radius: var(--layout-spacing-xs);
+            background:
+                linear-gradient(
+                    0deg,
+                    var(--hover-default) 0%,
+                    var(--hover-default) 100%
+                ),
+                var(--surface-button-secondary);
+
+            box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
+        }
+    }
+
+    .primaryButton {
+        border-radius: var(--layout-spacing-xs);
+        background: var(--surface-inverted-default);
+
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+
+        color: var(--content-inverted-default);
+
+        &:disabled {
+            opacity: 0.5;
+        }
+
+        &:hover:not(:disabled) {
+            background:
+                linear-gradient(
+                    0deg,
+                    var(--inverted-hover) 0%,
+                    var(--inverted-hover) 100% 100%
+                ),
+                var(--surface-inverted-default);
+        }
+
+        &:active:not(:disabled) {
+            background:
+                linear-gradient(
+                    0deg,
+                    var(--inverted-hover) 0%,
+                    var(--inverted-hover) 100%
+                ),
+                var(--surface-inverted-default);
+
+            box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
+        }
+    }
+
+    .disabled:disabled {
+        cursor: default;
+    }
+}
