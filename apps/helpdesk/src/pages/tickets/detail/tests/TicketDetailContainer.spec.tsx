@@ -125,6 +125,12 @@ const spiedMergeFieldsStateWithMacroValues = assumeMock(
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 
+jest.mock('hooks/useIsMobileResolution/useIsMobileResolution', () =>
+    jest.fn(() => false),
+)
+const mockUseIsMobileResolution =
+    require('hooks/useIsMobileResolution/useIsMobileResolution') as jest.Mock
+
 const mockGoToPreviousTicket = jest.fn()
 jest.mock(
     'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket',
@@ -154,6 +160,37 @@ jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()
+
+// Mock knowledge source sidebar components
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider',
+    () => ({
+        KnowledgeSourceSideBarProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => <div data-testid="knowledge-source-provider">{children}</div>,
+    }),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper',
+    () => () => (
+        <div data-testid="knowledge-source-sidebar">
+            Knowledge Source Sidebar
+        </div>
+    ),
+)
+
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
+    () => ({
+        useKnowledgeSourceSideBar: jest.fn(() => ({ mode: null })),
+    }),
+)
+const mockUseKnowledgeSourceSideBar =
+    require('pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
+        .useKnowledgeSourceSideBar as jest.Mock
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -1677,5 +1714,144 @@ describe('TicketDetailContainer component', () => {
 
         unmount()
         expect(mockLeaveTicket).toHaveBeenCalled()
+    })
+
+    describe('Mobile view functionality', () => {
+        beforeEach(() => {
+            // Reset mocks
+            mockUseKnowledgeSourceSideBar.mockReturnValue({ mode: null })
+        })
+
+        it('should render desktop view when not mobile resolution', () => {
+            mockUseIsMobileResolution.mockReturnValue(false)
+
+            const { queryByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(
+                queryByTestId('knowledge-source-provider'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render mobile view with knowledge source provider when mobile resolution', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+
+            const { getByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(getByTestId('knowledge-source-provider')).toBeInTheDocument()
+        })
+
+        it('should show knowledge source sidebar when mode is set on mobile', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+            mockUseKnowledgeSourceSideBar.mockReturnValue({
+                mode: 'sidebar' as any,
+            })
+
+            const { getByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(getByTestId('knowledge-source-sidebar')).toBeInTheDocument()
+        })
+
+        it('should not show knowledge source sidebar when mode is not set on mobile', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+            mockUseKnowledgeSourceSideBar.mockReturnValue({ mode: null })
+
+            const { queryByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(
+                queryByTestId('knowledge-source-sidebar'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Additional coverage tests', () => {
+        it('should handle mobile resolution changes', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+
+            const { rerender, getByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(getByTestId('knowledge-source-provider')).toBeInTheDocument()
+
+            // Change to desktop
+            mockUseIsMobileResolution.mockReturnValue(false)
+
+            rerender(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            // Provider should not be present on desktop
+            expect(() => getByTestId('knowledge-source-provider')).toThrow()
+        })
     })
 })

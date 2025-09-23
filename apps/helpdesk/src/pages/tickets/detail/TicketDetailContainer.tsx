@@ -17,6 +17,7 @@ import {
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { useSearch } from 'hooks/useSearch'
@@ -26,6 +27,9 @@ import { PickedTicket, pickedTicketFields } from 'models/search/types'
 import { Ticket } from 'models/ticket/types'
 import { useListVoiceCalls } from 'models/voiceCall/queries'
 import Loader from 'pages/common/components/Loader/Loader'
+import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
+import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
@@ -658,11 +662,13 @@ export const TicketDetailContainer = ({
         handleTicketMessageTranslationEvents,
     ])
 
+    const isMobileResolution = useIsMobileResolution()
+
     if (isLoading || isLoadingPhoneTicketData) {
         return <Loader className={css.loader} message="Loading ticket..." />
     }
 
-    return (
+    const ticketView = (
         <TicketView
             hideTicket={hideTicket}
             isTicketHidden={isTicketHidden}
@@ -672,6 +678,17 @@ export const TicketDetailContainer = ({
             onToggleUnread={onToggleUnread}
         />
     )
+
+    // Only wrap with provider on mobile, desktop already has it in TicketDetailWithInfobar
+    if (isMobileResolution) {
+        return (
+            <KnowledgeSourceSideBarProvider>
+                <MobileViewWithSidebar ticketView={ticketView} />
+            </KnowledgeSourceSideBarProvider>
+        )
+    }
+
+    return ticketView
 }
 
 const connector = connect(
@@ -702,5 +719,21 @@ const connector = connect(
         updateCursor,
     },
 )
+
+// Helper component to access the sidebar context
+function MobileViewWithSidebar({
+    ticketView,
+}: {
+    ticketView: React.ReactNode
+}) {
+    const { mode } = useKnowledgeSourceSideBar()
+
+    return (
+        <>
+            {ticketView}
+            {mode && <KnowledgeSourceSidebarWrapper />}
+        </>
+    )
+}
 
 export default connector(TicketDetailContainer)
