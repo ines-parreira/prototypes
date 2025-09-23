@@ -6,6 +6,9 @@
     "exports": {
         ".": "./src/index.ts"
     },
+    "dependencies": {
+        "@gorgias/design-tokens": "0.10.5"
+    },
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",

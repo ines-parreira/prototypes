@@ -1565,6 +1565,9 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/design-tokens':
+        specifier: 0.10.5
+        version: 0.10.5
     devDependencies:
       '@repo/config':
         specifier: workspace:*

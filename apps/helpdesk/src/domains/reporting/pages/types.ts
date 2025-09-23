@@ -26,7 +26,11 @@ export type TwoDimensionalDataItem = {
     isDashed?: boolean
     isDisabled?: boolean
 }
-
+/**
+ * @deprecated Use TooltipData from @repo/reporting instead
+ * @date 2025-09-15
+ * @type reporting-ui-kit
+ */
 export type TooltipData = {
     title: string
     link?: string
