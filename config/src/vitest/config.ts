@@ -17,7 +17,7 @@ export function createConfig(overrides?: Config): Config {
                     : ['default'],
                 outputFile: process.env['CI'] ? './junit.xml' : undefined,
                 coverage: {
-                    exclude: ['vitest.config.ts'],
+                    exclude: ['vitest.config.ts', '.prettierrc.mjs'],
                 },
             },
         },
