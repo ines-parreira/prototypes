@@ -6,10 +6,7 @@ import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import { Tooltip } from '@gorgias/axiom'
 
 import { useRegenerateTicketMessageTranslations } from 'tickets/core/hooks/translations/useRegenerateTicketMessageTranslations'
-import {
-    DisplayedContent,
-    FetchingState,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import css from './TranslationsDropdown.less'
@@ -106,19 +103,17 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
                                 <span className={css.label}>See original</span>
                             </TranslationsItem>
                         )}
-                        {fetchingState === FetchingState.Failed && (
-                            <TranslationsItem
-                                disabled={hasRegeneratedOnce}
-                                onClick={handleRegenerateTranslation}
-                            >
-                                <span className={css.icon}>
-                                    <i className="material-icons">loop</i>
-                                </span>
-                                <span className={css.label}>
-                                    Re-generate translation
-                                </span>
-                            </TranslationsItem>
-                        )}
+                        <TranslationsItem
+                            disabled={hasRegeneratedOnce}
+                            onClick={handleRegenerateTranslation}
+                        >
+                            <span className={css.icon}>
+                                <i className="material-icons">loop</i>
+                            </span>
+                            <span className={css.label}>
+                                Re-generate translation
+                            </span>
+                        </TranslationsItem>
                     </ul>
                 </DropdownMenu>
             </Dropdown>

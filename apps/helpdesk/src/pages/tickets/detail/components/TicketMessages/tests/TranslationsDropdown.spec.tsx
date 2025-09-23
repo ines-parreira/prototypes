@@ -104,7 +104,7 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should show "See translation" option only', async () => {
+        it('should show "See translation" and "Re-generate translation" options when displaying original content', async () => {
             const user = userEvent.setup()
             renderWithContext()
 
@@ -118,8 +118,13 @@ describe('TranslationsDropdown', () => {
             expect(screen.getByText('See translation')).toBeInTheDocument()
             expect(screen.queryByText('See original')).not.toBeInTheDocument()
             expect(
-                screen.queryByText('Re-generate translation'),
-            ).not.toBeInTheDocument()
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).not.toBeDisabled()
         })
 
         it('should call setTicketMessageTranslationDisplay with translated when "See translation" is clicked', async () => {
@@ -160,7 +165,7 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should show "See original" option only', async () => {
+        it('should show "See original" and "Re-generate translation" options', async () => {
             const user = userEvent.setup()
             renderWithContext()
 
@@ -176,8 +181,13 @@ describe('TranslationsDropdown', () => {
                 screen.queryByText('See translation'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText('Re-generate translation'),
-            ).not.toBeInTheDocument()
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).not.toBeDisabled()
         })
 
         it('should display undo icon for "See original" option', async () => {
@@ -233,7 +243,7 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should show both "See translation" and "Re-generate translation" options', async () => {
+        it('should show both "See translation" and enabled "Re-generate translation" options when the translation has failed', async () => {
             const user = userEvent.setup()
             renderWithContext()
 
@@ -249,6 +259,11 @@ describe('TranslationsDropdown', () => {
                 screen.getByText('Re-generate translation'),
             ).toBeInTheDocument()
             expect(screen.queryByText('See original')).not.toBeInTheDocument()
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).not.toBeDisabled()
         })
 
         it('should display loop icon for "Re-generate translation" option', async () => {
@@ -277,11 +292,9 @@ describe('TranslationsDropdown', () => {
                 await user.click(toggleButton)
             })
 
-            // Two translate icons (one in toggle, one in "See translation")
             const translateIcons = screen.getAllByText('translate')
             expect(translateIcons).toHaveLength(2)
 
-            // One loop icon for "Re-generate translation"
             const loopIcon = screen.getByText('loop')
             expect(loopIcon).toBeInTheDocument()
         })
@@ -298,7 +311,7 @@ describe('TranslationsDropdown', () => {
             })
 
             const listItems = screen.getAllByRole('listitem')
-            expect(listItems).toHaveLength(2) // "See translation" and "Re-generate translation"
+            expect(listItems).toHaveLength(2)
         })
     })
 
@@ -313,7 +326,7 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should only show "See translation" option', async () => {
+        it('should show "See translation" and "Re-generate translation" options when the translation is in progress', async () => {
             const user = userEvent.setup()
             renderWithContext()
 
@@ -327,8 +340,13 @@ describe('TranslationsDropdown', () => {
             expect(screen.getByText('See translation')).toBeInTheDocument()
             expect(screen.queryByText('See original')).not.toBeInTheDocument()
             expect(
-                screen.queryByText('Re-generate translation'),
-            ).not.toBeInTheDocument()
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).not.toBeDisabled()
         })
     })
 
@@ -342,7 +360,7 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should show both "See original" and "Re-generate translation" options', async () => {
+        it('should show both "See original" and "Re-generate translation" options when the translated content has failed', async () => {
             const user = userEvent.setup()
             renderWithContext()
 
@@ -416,6 +434,86 @@ describe('TranslationsDropdown', () => {
         })
     })
 
+    describe('hasRegeneratedOnce behavior across states', () => {
+        it('should show disabled re-generate button when displaying original with hasRegeneratedOnce true', async () => {
+            const user = userEvent.setup()
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: true,
+                },
+            )
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See translation')).toBeInTheDocument()
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+
+        it('should show disabled re-generate button when displaying translated with hasRegeneratedOnce true', async () => {
+            const user = userEvent.setup()
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Translated,
+                    fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: true,
+                },
+            )
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See original')).toBeInTheDocument()
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+
+        it('should show disabled re-generate button during loading with hasRegeneratedOnce true', async () => {
+            const user = userEvent.setup()
+            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Loading,
+                    hasRegeneratedOnce: true,
+                },
+            )
+            renderWithContext()
+
+            const toggleButton = screen.getByRole('button', {
+                name: /translate message/i,
+            })
+            await act(async () => {
+                await user.click(toggleButton)
+            })
+
+            expect(screen.getByText('See translation')).toBeInTheDocument()
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).toBeInTheDocument()
+            expect(regenerateButton).toBeDisabled()
+        })
+    })
+
     describe('edge cases', () => {
         it('should handle undefined fetchingState gracefully', async () => {
             const user = userEvent.setup()
@@ -437,8 +535,13 @@ describe('TranslationsDropdown', () => {
 
             expect(screen.getByText('See translation')).toBeInTheDocument()
             expect(
-                screen.queryByText('Re-generate translation'),
-            ).not.toBeInTheDocument()
+                screen.getByText('Re-generate translation'),
+            ).toBeInTheDocument()
+
+            const regenerateButton = screen.getByRole('button', {
+                name: /re-generate translation/i,
+            })
+            expect(regenerateButton).not.toBeDisabled()
         })
 
         it('should close dropdown after clicking re-generate translation button', async () => {
@@ -463,7 +566,6 @@ describe('TranslationsDropdown', () => {
                 await user.click(regenerateButton)
             })
 
-            // Check that dropdown is closed after regenerate
             const dropdownMenu = container.querySelector('.menuWrapper')
             expect(dropdownMenu).not.toHaveClass('show')
         })
@@ -615,7 +717,6 @@ describe('TranslationsDropdown', () => {
                 await user.click(regenerateButton)
             })
 
-            // Verify the function was not called since button is disabled
             expect(
                 mockRegenerateTicketMessageTranslations,
             ).not.toHaveBeenCalled()
