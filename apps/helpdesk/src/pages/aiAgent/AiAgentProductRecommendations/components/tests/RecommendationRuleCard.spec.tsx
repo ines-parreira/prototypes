@@ -85,6 +85,7 @@ const renderComponent = (
                 }}
                 itemLabelSingular={itemLabelSingular}
                 itemLabelPlural={itemLabelPlural}
+                totalItems={items.length}
                 items={items}
                 onDelete={mockOnDelete}
                 onSeeAllClick={mockOnSeeAllClick}
@@ -536,6 +537,7 @@ describe('RecommendationRuleCard', () => {
         const { getByRole } = render(
             <Provider store={store}>
                 <RecommendationRuleCard
+                    totalItems={5}
                     title="Promote products"
                     description="Choose products to prioritize in recommendations."
                     isLoading={false}

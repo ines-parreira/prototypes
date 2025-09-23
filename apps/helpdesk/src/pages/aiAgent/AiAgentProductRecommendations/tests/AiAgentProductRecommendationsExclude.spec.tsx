@@ -10,13 +10,13 @@ import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
-import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentProductRecommendationsExclude } from '../AiAgentProductRecommendationsExclude'
+import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
 import { allProducts, allTags, allVendors } from './data'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
@@ -37,9 +37,8 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     )),
 }))
 
-jest.mock('models/integration/queries')
-const mockUseGetProductsByIdsFromIntegration =
-    useGetProductsByIdsFromIntegration as jest.Mock
+jest.mock('../hooks/usePaginatedProductsByIds')
+const mockUsePaginatedProductsByIds = usePaginatedProductsByIds as jest.Mock
 
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
@@ -148,16 +147,36 @@ const renderComponent = (
         integrationId,
     })
 
-    mockUseGetProductsByIdsFromIntegration.mockImplementation(
-        (integrationId, productIds, isEnabled) => {
+    mockUsePaginatedProductsByIds.mockImplementation(
+        ({ productIds, pageSize, enabled, fetchAll }) => {
+            const filteredProducts = enabled
+                ? allProducts.filter((product) =>
+                      productIds.includes(product.id.toString()),
+                  )
+                : []
+
+            // For initial display (first call), return only first 5 products
+            // For "See All" drawer with fetchAll, return paginated products
+            const productsToReturn =
+                pageSize && filteredProducts.length > pageSize && !fetchAll
+                    ? filteredProducts.slice(0, pageSize)
+                    : fetchAll
+                      ? filteredProducts.slice(0, pageSize || 25)
+                      : filteredProducts
+
             return {
-                data: isEnabled
-                    ? allProducts.filter((product) =>
-                          productIds.includes(product.id),
-                      )
-                    : [],
+                products: productsToReturn,
                 isLoading: false,
-                isFetching: false,
+                isError: false,
+                currentPage: 1,
+                totalPages: Math.ceil(
+                    filteredProducts.length / (pageSize || 25),
+                ),
+                fetchPage: jest.fn(),
+                hasNextPage: filteredProducts.length > (pageSize || 25),
+                hasPrevPage: false,
+                searchTerm: '',
+                setSearchTerm: jest.fn(),
             }
         },
     )

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 
+import { usePaginatedItems } from '../hooks/usePaginatedItems'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
-import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const VendorRecommendationRuleCard = ({
     type,
@@ -54,6 +54,9 @@ export const VendorRecommendationRuleCard = ({
         title: vendor,
     }))
 
+    const { paginatedItems, pagination, setSearch, resetPagination } =
+        usePaginatedItems(selectedVendors)
+
     const { next_cursor: nextCursor, prev_cursor: prevCursor } =
         data?.metadata || {}
 
@@ -90,6 +93,7 @@ export const VendorRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="vendor"
                 itemLabelPlural="vendors"
+                totalItems={vendors.length}
                 items={selectedVendors}
                 ruleType="vendor"
                 onDelete={(deletedVendor: string) =>
@@ -126,15 +130,23 @@ export const VendorRecommendationRuleCard = ({
                 }}
             />
 
-            <SelectedItemsDrawer
+            <ItemSelectionDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="vendors"
                 ruleType="vendor"
-                items={selectedVendors}
+                items={paginatedItems}
+                selectedItemIds={vendors}
                 isOpen={isSeeAllDrawerOpen}
+                isLoading={false}
                 hasImages={false}
-                onClose={() => setIsSeeAllDrawerOpen(false)}
+                type={type}
+                pagination={pagination}
+                onClose={() => {
+                    setIsSeeAllDrawerOpen(false)
+                    resetPagination()
+                }}
                 onSubmit={onUpsert}
+                onSearch={setSearch}
             />
         </div>
     )

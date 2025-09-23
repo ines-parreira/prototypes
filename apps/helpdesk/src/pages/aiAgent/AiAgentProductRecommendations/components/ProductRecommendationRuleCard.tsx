@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { Product } from 'constants/integrations/types/shopify'
-import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
+import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
-import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const ProductRecommendationRuleCard = ({
     type,
@@ -39,18 +38,22 @@ export const ProductRecommendationRuleCard = ({
     }, [isDrawerOpen])
 
     const {
-        data: selectedProducts = [],
-        isLoading: isLoadingSelectedProducts,
-        isFetching: isFetchingSelectedProducts,
-    } = useGetProductsByIdsFromIntegration(
+        products: productRules,
+        isLoading: isLoadingProductRules,
+        isFetching: isFetchingProductRules,
+        currentPage: drawerCurrentPage,
+        hasNextPage: drawerHasNextPage,
+        hasPrevPage: drawerHasPrevPage,
+        setSearchTerm: drawerSetSearchTerm,
+        fetchPage: drawerFetchPage,
+    } = usePaginatedProductsByIds({
         integrationId,
-        // Empty array will return all products, so use dummy value instead
-        productIds.length > 0 ? productIds.map(Number) : [0],
-        !isLoadingRules,
-    )
+        productIds,
+        enabled: !isLoadingRules,
+        fetchAll: true,
+    })
 
-    const isFetching = isFetchingRules || isFetchingSelectedProducts
-    const isLoading = isLoadingRules || isLoadingSelectedProducts
+    const isFetching = isFetchingRules || isFetchingProductRules
 
     const {
         itemsData: allProducts,
@@ -96,7 +99,7 @@ export const ProductRecommendationRuleCard = ({
             <RecommendationRuleCard
                 title={typeMap[type].title}
                 description={typeMap[type].description}
-                isLoading={isLoading || selectedProducts === undefined}
+                isLoading={isLoadingRules}
                 disableActions={isFetching || isUpserting}
                 hasImages={true}
                 badge={typeMap[type].badge}
@@ -107,14 +110,13 @@ export const ProductRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="product"
                 itemLabelPlural="products"
-                items={mapProducts(selectedProducts)}
+                totalItems={productIds.length}
+                items={mapProducts(productRules.slice(0, 5))}
                 onDelete={(deletedProductId: string) =>
                     onUpsert(
-                        selectedProducts
-                            .map((product) => product.id.toString())
-                            .filter(
-                                (productId) => productId !== deletedProductId,
-                            ),
+                        productIds.filter(
+                            (productId) => productId !== deletedProductId,
+                        ),
                     )
                 }
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
@@ -142,16 +144,25 @@ export const ProductRecommendationRuleCard = ({
                 onSearch={setSearchTerm}
             />
 
-            <SelectedItemsDrawer
+            <ItemSelectionDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="products"
                 ruleType="product"
-                items={mapProducts(selectedProducts)}
+                items={mapProducts(productRules)}
+                selectedItemIds={productIds}
                 isOpen={isSeeAllDrawerOpen}
+                isLoading={isLoadingProductRules}
                 hasImages={true}
                 type={type}
+                pagination={{
+                    hasNextPage: drawerHasNextPage,
+                    hasPrevPage: drawerHasPrevPage,
+                    onNextClick: () => drawerFetchPage(drawerCurrentPage + 1),
+                    onPrevClick: () => drawerFetchPage(drawerCurrentPage - 1),
+                }}
                 onClose={() => setIsSeeAllDrawerOpen(false)}
                 onSubmit={onUpsert}
+                onSearch={drawerSetSearchTerm}
             />
         </div>
     )

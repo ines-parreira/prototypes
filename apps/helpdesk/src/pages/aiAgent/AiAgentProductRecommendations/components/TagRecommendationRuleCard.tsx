@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
 
+import { usePaginatedItems } from '../hooks/usePaginatedItems'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
-import { SelectedItemsDrawer } from './SelectedItemsDrawer'
 
 export const TagRecommendationRuleCard = ({
     type,
@@ -56,6 +56,9 @@ export const TagRecommendationRuleCard = ({
         title: tag,
     }))
 
+    const { paginatedItems, pagination, setSearch, resetPagination } =
+        usePaginatedItems(selectedTags)
+
     const { next_cursor: nextCursor, prev_cursor: prevCursor } =
         data?.metadata || {}
 
@@ -92,6 +95,7 @@ export const TagRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="tag"
                 itemLabelPlural="tags"
+                totalItems={tags.length}
                 items={selectedTags}
                 onDelete={(deletedTag: string) =>
                     onUpsert(tags.filter((tag) => tag !== deletedTag))
@@ -126,15 +130,23 @@ export const TagRecommendationRuleCard = ({
                 }}
             />
 
-            <SelectedItemsDrawer
+            <ItemSelectionDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="tags"
                 ruleType="tag"
-                items={selectedTags}
+                items={paginatedItems}
+                selectedItemIds={tags}
                 isOpen={isSeeAllDrawerOpen}
+                isLoading={false}
                 hasImages={false}
-                onClose={() => setIsSeeAllDrawerOpen(false)}
+                type={type}
+                pagination={pagination}
+                onClose={() => {
+                    setIsSeeAllDrawerOpen(false)
+                    resetPagination()
+                }}
                 onSubmit={onUpsert}
+                onSearch={setSearch}
             />
         </div>
     )

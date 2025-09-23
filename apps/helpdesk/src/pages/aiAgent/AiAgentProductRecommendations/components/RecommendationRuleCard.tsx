@@ -31,6 +31,7 @@ export const RecommendationRuleCard = ({
     addButton,
     itemLabelSingular,
     itemLabelPlural,
+    totalItems,
     items,
     onDelete,
     onSeeAllClick,
@@ -52,6 +53,7 @@ export const RecommendationRuleCard = ({
     }
     itemLabelSingular: string
     itemLabelPlural: string
+    totalItems: number
     items: Array<{
         id: string
         title: string
@@ -113,8 +115,8 @@ export const RecommendationRuleCard = ({
 
                     {!isLoading && (
                         <div className={css.text}>
-                            {items.length}{' '}
-                            {items.length !== 1
+                            {totalItems}{' '}
+                            {totalItems !== 1
                                 ? itemLabelPlural
                                 : itemLabelSingular}
                         </div>
@@ -189,7 +191,7 @@ export const RecommendationRuleCard = ({
                     </div>
                 ))}
 
-            {!isLoading && items.length > 4 && (
+            {!isLoading && totalItems > 4 && (
                 <div className={css.seeAll}>
                     <Button
                         intent="secondary"
