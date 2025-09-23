@@ -70,6 +70,39 @@ exports[`billing selectors getAutomationPrices should return the AI Agent prices
     "public": true,
   },
   {
+    "amount": 3001,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 0.2,
+    "features": {
+      "automation_cancellations_flow": {
+        "enabled": true,
+      },
+      "automation_managed_rules": {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": {
+        "enabled": true,
+      },
+      "automation_return_flow": {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": {
+        "enabled": true,
+      },
+      "automation_track_order_flow": {
+        "enabled": true,
+      },
+    },
+    "name": "Legacy Free Automation",
+    "num_quota_tickets": null,
+    "plan_id": "free-automation",
+    "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
+    "product": "automation",
+    "public": false,
+  },
+  {
     "amount": 18000,
     "cadence": "month",
     "currency": "usd",
@@ -287,7 +320,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "tier": 1,
   },
   "helpdesk": {
-    "amount": 6000,
+    "amount": 1000,
     "cadence": "month",
     "currency": "usd",
     "custom": false,
@@ -347,11 +380,11 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
         "enabled": false,
       },
       "overview_live_statistics": {
-        "enabled": true,
+        "enabled": false,
       },
       "phone_number": {
-        "enabled": true,
-        "limit": 1,
+        "enabled": false,
+        "limit": 0,
       },
       "revenue_statistics": {
         "enabled": false,
@@ -381,13 +414,13 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     },
     "integrations": 150,
     "is_legacy": false,
-    "name": "Basic",
-    "num_quota_tickets": 300,
-    "plan_id": "basic-monthly-usd-4",
-    "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "name": "Starter",
+    "num_quota_tickets": 50,
+    "plan_id": "starter-monthly-usd-4",
+    "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
     "product": "helpdesk",
-    "public": true,
-    "tier": "Basic",
+    "public": false,
+    "tier": "Starter",
   },
   "sms": {
     "amount": 90,
@@ -510,6 +543,109 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
 
 exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1`] = `
 [
+  {
+    "amount": 1000,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 0.4,
+    "features": {
+      "api_1st_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": {
+        "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
+      "automation_cancellations_flow": {
+        "enabled": false,
+      },
+      "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": {
+        "enabled": false,
+      },
+      "automation_return_flow": {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": {
+        "enabled": false,
+      },
+      "automation_track_order_flow": {
+        "enabled": false,
+      },
+      "facebook_comment": {
+        "enabled": true,
+      },
+      "help_center": {
+        "enabled": true,
+      },
+      "instagram_comment": {
+        "enabled": true,
+      },
+      "instagram_dm": {
+        "enabled": true,
+      },
+      "magento_integration": {
+        "enabled": false,
+      },
+      "overview_live_statistics": {
+        "enabled": false,
+      },
+      "phone_number": {
+        "enabled": false,
+        "limit": 0,
+      },
+      "revenue_statistics": {
+        "enabled": false,
+      },
+      "satisfaction_surveys": {
+        "enabled": true,
+      },
+      "teams": {
+        "enabled": true,
+      },
+      "twitter_integration": {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": {
+        "enabled": true,
+      },
+      "users_live_statistics": {
+        "enabled": false,
+      },
+      "view_sharing": {
+        "enabled": true,
+      },
+      "yotpo_integration": {
+        "enabled": true,
+      },
+    },
+    "integrations": 150,
+    "is_legacy": false,
+    "name": "Starter",
+    "num_quota_tickets": 50,
+    "plan_id": "starter-monthly-usd-4",
+    "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
+    "product": "helpdesk",
+    "public": false,
+    "tier": "Starter",
+  },
   {
     "amount": 6000,
     "cadence": "month",
@@ -1213,6 +1349,109 @@ exports[`billing selectors getAvailablePlans should return the prices 1`] = `
     "public": true,
   },
   {
+    "amount": 1000,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 0.4,
+    "features": {
+      "api_1st_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": {
+        "enabled": true,
+      },
+      "automation_addon_overview": {
+        "enabled": false,
+      },
+      "automation_cancellations_flow": {
+        "enabled": false,
+      },
+      "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": {
+        "enabled": false,
+      },
+      "automation_return_flow": {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": {
+        "enabled": false,
+      },
+      "automation_track_order_flow": {
+        "enabled": false,
+      },
+      "facebook_comment": {
+        "enabled": true,
+      },
+      "help_center": {
+        "enabled": true,
+      },
+      "instagram_comment": {
+        "enabled": true,
+      },
+      "instagram_dm": {
+        "enabled": true,
+      },
+      "magento_integration": {
+        "enabled": false,
+      },
+      "overview_live_statistics": {
+        "enabled": false,
+      },
+      "phone_number": {
+        "enabled": false,
+        "limit": 0,
+      },
+      "revenue_statistics": {
+        "enabled": false,
+      },
+      "satisfaction_surveys": {
+        "enabled": true,
+      },
+      "teams": {
+        "enabled": true,
+      },
+      "twitter_integration": {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": {
+        "enabled": true,
+      },
+      "users_live_statistics": {
+        "enabled": false,
+      },
+      "view_sharing": {
+        "enabled": true,
+      },
+      "yotpo_integration": {
+        "enabled": true,
+      },
+    },
+    "integrations": 150,
+    "is_legacy": false,
+    "name": "Starter",
+    "num_quota_tickets": 50,
+    "plan_id": "starter-monthly-usd-4",
+    "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
+    "product": "helpdesk",
+    "public": false,
+    "tier": "Starter",
+  },
+  {
     "amount": 1750,
     "cadence": "month",
     "currency": "usd",
@@ -1318,6 +1557,39 @@ exports[`billing selectors getAvailablePlans should return the prices 1`] = `
     "product": "convert",
     "public": true,
     "tier": 1,
+  },
+  {
+    "amount": 3001,
+    "cadence": "month",
+    "currency": "usd",
+    "custom": false,
+    "extra_ticket_cost": 0.2,
+    "features": {
+      "automation_cancellations_flow": {
+        "enabled": true,
+      },
+      "automation_managed_rules": {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": {
+        "enabled": true,
+      },
+      "automation_return_flow": {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": {
+        "enabled": true,
+      },
+      "automation_track_order_flow": {
+        "enabled": true,
+      },
+    },
+    "name": "Legacy Free Automation",
+    "num_quota_tickets": null,
+    "plan_id": "free-automation",
+    "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
+    "product": "automation",
+    "public": false,
   },
   {
     "amount": 5768,
@@ -2194,6 +2466,109 @@ exports[`billing selectors getProducts should return products 1`] = `
     "id": "prod_LsH6kV35G6zKWo",
     "prices": [
       {
+        "amount": 1000,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.4,
+        "features": {
+          "api_1st_party_rate_limit": {
+            "enabled": true,
+            "rate_limit": {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": {
+            "enabled": true,
+            "rate_limit": {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": {
+            "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
+          "automation_cancellations_flow": {
+            "enabled": false,
+          },
+          "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": {
+            "enabled": false,
+          },
+          "automation_return_flow": {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": {
+            "enabled": false,
+          },
+          "automation_track_order_flow": {
+            "enabled": false,
+          },
+          "facebook_comment": {
+            "enabled": true,
+          },
+          "help_center": {
+            "enabled": true,
+          },
+          "instagram_comment": {
+            "enabled": true,
+          },
+          "instagram_dm": {
+            "enabled": true,
+          },
+          "magento_integration": {
+            "enabled": false,
+          },
+          "overview_live_statistics": {
+            "enabled": false,
+          },
+          "phone_number": {
+            "enabled": false,
+            "limit": 0,
+          },
+          "revenue_statistics": {
+            "enabled": false,
+          },
+          "satisfaction_surveys": {
+            "enabled": true,
+          },
+          "teams": {
+            "enabled": true,
+          },
+          "twitter_integration": {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": {
+            "enabled": true,
+          },
+          "users_live_statistics": {
+            "enabled": false,
+          },
+          "view_sharing": {
+            "enabled": true,
+          },
+          "yotpo_integration": {
+            "enabled": true,
+          },
+        },
+        "integrations": 150,
+        "is_legacy": false,
+        "name": "Starter",
+        "num_quota_tickets": 50,
+        "plan_id": "starter-monthly-usd-4",
+        "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
+        "product": "helpdesk",
+        "public": false,
+        "tier": "Starter",
+      },
+      {
         "amount": 6000,
         "cadence": "month",
         "currency": "usd",
@@ -2817,6 +3192,39 @@ exports[`billing selectors getProducts should return products 1`] = `
   {
     "id": "prod_LsHD5xmSqoFBBs",
     "prices": [
+      {
+        "amount": 3001,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.2,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Legacy Free Automation",
+        "num_quota_tickets": null,
+        "plan_id": "free-automation",
+        "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
+        "product": "automation",
+        "public": false,
+      },
       {
         "amount": 3000,
         "cadence": "month",

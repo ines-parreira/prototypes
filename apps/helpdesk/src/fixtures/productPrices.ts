@@ -353,6 +353,16 @@ export const basicMonthlyAutomationPlan: AutomatePlan = {
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
 }
 
+export const legacyAutomatePlan: AutomatePlan = {
+    ...basicMonthlyAutomationPlan,
+    public: false,
+    amount: basicMonthlyAutomationPlan.amount + 1, // slightly more costly to not rearrange lots of tests just to be undone when removed
+    num_quota_tickets: null as unknown as number, // Force the typing to allow null to create this legacy plan
+    plan_id: 'free-automation',
+    name: 'Legacy Free Automation',
+    price_id: 'price_1LYUoGH2GG3UYmlxHnILo5nF',
+}
+
 export const firstTierMonthlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -798,6 +808,7 @@ export const helpdeskProduct: Product<ProductType.Helpdesk> = {
     id: HELPDESK_PRODUCT_ID,
     type: ProductType.Helpdesk,
     prices: [
+        starterHelpdeskPlan,
         basicMonthlyHelpdeskPlan,
         basicYearlyHelpdeskPlan,
         proMonthlyHelpdeskPlan,
@@ -811,6 +822,7 @@ export const automationProduct: Product<ProductType.Automation> = {
     id: AUTOMATION_PRODUCT_ID,
     type: ProductType.Automation,
     prices: [
+        legacyAutomatePlan,
         basicMonthlyAutomationPlan,
         basicYearlyAutomationPlan,
         proMonthlyAutomationPlan,

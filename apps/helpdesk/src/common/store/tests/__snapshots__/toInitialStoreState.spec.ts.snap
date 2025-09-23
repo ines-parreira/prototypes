@@ -53,6 +53,109 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
+            "tier": "Starter",
+            "num_quota_tickets": 50,
+            "public": false,
+            "name": "Starter",
+            "product": "helpdesk",
+            "currency": "usd",
+            "plan_id": "starter-monthly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.4,
+            "cadence": "month",
+            "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
+            "amount": 1000,
+            "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": false,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
             "tier": "Basic",
             "num_quota_tickets": 300,
             "public": true,
@@ -676,6 +779,39 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "id": "prod_LsHD5xmSqoFBBs",
         "type": "automation",
         "prices": Immutable.List [
+          Immutable.Map {
+            "num_quota_tickets": null,
+            "public": false,
+            "name": "Legacy Free Automation",
+            "product": "automation",
+            "currency": "usd",
+            "plan_id": "free-automation",
+            "custom": false,
+            "extra_ticket_cost": 0.2,
+            "cadence": "month",
+            "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
+            "amount": 3001,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+          },
           Immutable.Map {
             "num_quota_tickets": 30,
             "public": true,

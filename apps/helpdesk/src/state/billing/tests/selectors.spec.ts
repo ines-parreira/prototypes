@@ -14,6 +14,7 @@ import {
     SMS_PRODUCT_ID,
     smsAvailablePlans,
     smsPlan1,
+    starterHelpdeskPlan,
     VOICE_PRODUCT_ID,
     voiceAvailablePlans,
     voicePlan1,
@@ -586,9 +587,7 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.automation).toEqual(
                 basicMonthlyAutomationPlan,
             )
-            expect(cheapestProductPrices.helpdesk).toEqual(
-                basicMonthlyHelpdeskPlan,
-            )
+            expect(cheapestProductPrices.helpdesk).toEqual(starterHelpdeskPlan)
             expect(cheapestProductPrices.convert).toEqual(convertPlan1)
 
             expect(cheapestProductPrices).toMatchSnapshot()

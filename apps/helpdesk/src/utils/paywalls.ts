@@ -41,7 +41,7 @@ export const getCheapestPriceNameForFeature = (
 ) => {
     return plans
         .filter((plan) => plan.cadence === Cadence.Month)
-        .find(
+        .filter(
             (plan) =>
                 (
                     plan.features as Record<
@@ -49,5 +49,7 @@ export const getCheapestPriceNameForFeature = (
                         AccountFeatureMetadata
                     >
                 )[featureName]?.enabled,
-        )?.name
+        )
+        .sort((a, b) => a.amount - b.amount)
+        .find(() => true)?.name
 }
