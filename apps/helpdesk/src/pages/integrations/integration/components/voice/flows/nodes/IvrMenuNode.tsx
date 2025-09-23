@@ -21,9 +21,10 @@ import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
-import { type IvrMenuNode, IvrOptionNode } from '../types'
+import { type IvrMenuNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
-import { createIvrOptionNode, getFormTargetStepId } from '../utils'
+import { addIvrOption, getFormTargetStepId } from '../utils'
+import { useDeleteNode } from '../utils/useDeleteNode'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -33,12 +34,18 @@ type IvrMenuNodeProps = NodeProps<IvrMenuNode>
 export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
-    const { updateNodeData, getNodes, addNodes, getNode } = useVoiceFlow()
+    const { updateNodeData, getNodes, getNode, setNodes } = useVoiceFlow()
+    const { deleteIvrBranch } = useDeleteNode()
 
     const { id } = data
     const step: IvrMenuStep | null = useWatch({
         name: `steps.${id}`,
     })
+
+    const description =
+        step?.message?.voice_message_type === 'text_to_speech'
+            ? step?.message?.text_to_speech_content || 'Message'
+            : 'Custom recording'
 
     useEffect(() => {
         if (!step) return
@@ -86,14 +93,6 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         return isParentNodeIvrOption
     }, [id, getNodes])
 
-    const handleAddOption = (option: BranchOptions, insertAtIndex: number) => {
-        const newNode: IvrOptionNode = {
-            ...createIvrOptionNode(id, insertAtIndex, intermediaryNodeId),
-            position: { x: 0, y: 0 },
-        }
-        addNodes(newNode)
-    }
-
     if (!step) {
         return null
     }
@@ -101,7 +100,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
     return (
         <VoiceStepNode
             title="IVR Menu"
-            description="Greeting message"
+            description={description}
             icon={<StepCardIcon backgroundColor="teal" name="comm-ivr" />}
             errors={errors}
             drawerRef={ref}
@@ -110,8 +109,8 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
             <div className={css.tightDrawerForm}>
                 {isNestedIvr && (
                     <Banner>
-                        This menu is a nested IVR. Don’t forget to tell callers
-                        how to go back.
+                        This menu is a nested IVR. Don&apos;t forget to tell
+                        callers to press 9 to go back.
                     </Banner>
                 )}
                 <div className={css.formSection}>
@@ -133,8 +132,21 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                 <Label>Menu options</Label>
                 <IvrMenuActionsFieldArray
                     name={`steps.${id}.branch_options`}
-                    onAddOption={handleAddOption}
+                    onAddOption={(
+                        option: BranchOptions,
+                        insertAtIndex: number,
+                    ) => {
+                        addIvrOption(
+                            id,
+                            intermediaryNodeId,
+                            insertAtIndex,
+                            setNodes,
+                        )
+                    }}
                     branchNextId={nextStepId}
+                    onRemoveOption={(optionIndex) =>
+                        deleteIvrBranch(optionIndex, id, intermediaryNodeId)
+                    }
                 />
             </div>
         </VoiceStepNode>

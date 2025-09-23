@@ -28,12 +28,24 @@ const nodes: Node<Record<string, unknown>>[] = [
             parentId: '1',
         },
     },
+    {
+        id: '3',
+        type: VoiceFlowNodeType.IvrOption,
+        position: { x: 100, y: 100 },
+        data: {
+            optionIndex: 1,
+            parentId: '1',
+        },
+    },
 ]
 
 const formDefaultValues = {
     steps: {
         '1': {
-            branch_options: [{ input_digit: '5', next_step_id: '3' }],
+            branch_options: [
+                { input_digit: '5', next_step_id: '3' },
+                { input_digit: '2', next_step_id: '4', branch_name: 'Sales' },
+            ],
         },
     },
 }
@@ -59,5 +71,6 @@ describe('IvrOptionNode', () => {
         renderComponent()
 
         expect(screen.getByText('5')).toBeInTheDocument()
+        expect(screen.getByText('2 - Sales')).toBeInTheDocument()
     })
 })

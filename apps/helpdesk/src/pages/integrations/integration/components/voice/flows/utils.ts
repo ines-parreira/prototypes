@@ -685,3 +685,47 @@ export function updateFormFlowOnNodeDelete(
 
     return flow
 }
+
+export function addIvrOption(
+    parentNodeId: string,
+    intermediaryNodeId: string,
+    insertAtIndex: number,
+    setNodes: (
+        payload:
+            | VoiceFlowNode[]
+            | ((nodes: VoiceFlowNode[]) => VoiceFlowNode[]),
+    ) => void,
+): void {
+    const newNode: IvrOptionNode = {
+        ...createIvrOptionNode(parentNodeId, insertAtIndex, intermediaryNodeId),
+        position: { x: 0, y: 0 },
+    }
+
+    // Update nodes of other options to match the correct index & add the new node
+    setNodes((nodes) => {
+        let insertNodeIndex = nodes.length
+        const updatedNodes = nodes.map((node) => {
+            if (
+                node.type === VoiceFlowNodeType.IvrOption &&
+                node.data.parentId === parentNodeId &&
+                node.data.optionIndex >= insertAtIndex
+            ) {
+                if (node.data.optionIndex === insertAtIndex) {
+                    insertNodeIndex = nodes.indexOf(node)
+                }
+                return {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        optionIndex: node.data.optionIndex + 1,
+                    },
+                }
+            }
+            return node
+        })
+
+        // insert the new node in between options to keep the order of the options organized in flow
+        updatedNodes.splice(insertNodeIndex, 0, newNode)
+        return updatedNodes
+    })
+}

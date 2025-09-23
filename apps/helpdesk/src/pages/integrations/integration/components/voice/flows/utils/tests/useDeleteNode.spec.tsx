@@ -10,6 +10,7 @@ import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { useFormContext } from 'core/forms'
 
+import { VoiceFlowNodeType } from '../../constants'
 import { useVoiceFlow } from '../../useVoiceFlow'
 import { transformToReactFlowNodes } from '../../utils'
 import { useDeleteNode } from '../useDeleteNode'
@@ -45,136 +46,428 @@ const renderHookWithMocks = (flow: CallRoutingFlow) => {
 }
 
 describe('useDeleteNode', () => {
-    it('should delete first step correctly', async () => {
-        const flow = {
-            first_step_id: 'first-step',
-            steps: {
-                'first-step': mockPlayMessageStep({
-                    id: 'first-step',
-                    next_step_id: null,
-                }),
-            },
-        }
+    describe('deleteNode', () => {
+        it('should delete first step correctly', async () => {
+            const flow = {
+                first_step_id: 'first-step',
+                steps: {
+                    'first-step': mockPlayMessageStep({
+                        id: 'first-step',
+                        next_step_id: null,
+                    }),
+                },
+            }
 
-        const { result } = renderHookWithMocks(flow)
+            const { result } = renderHookWithMocks(flow)
 
-        await act(async () => {
-            result.current.deleteNode('first-step')
+            await act(async () => {
+                result.current.deleteNode('first-step')
+            })
+
+            await waitFor(() => {
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {},
+                )
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'first_step_id',
+                    null,
+                )
+                expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
+                    expect.objectContaining({
+                        id: 'incoming_call',
+                        data: {
+                            next_step_id: 'end_call',
+                        },
+                    }),
+                    expect.objectContaining({
+                        id: 'end_call',
+                    }),
+                ])
+            })
         })
 
-        await waitFor(() => {
-            expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                'steps',
-                {},
-            )
-            expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                'first_step_id',
-                null,
-            )
-            expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    id: 'incoming_call',
-                    data: {
-                        next_step_id: 'end_call',
+        it('should delete a branching step correctly', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockIvrMenuStep({
+                id: 'second-step',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'branch-option-1',
                     },
-                }),
-                expect.objectContaining({
-                    id: 'end_call',
-                }),
-            ])
+                    {
+                        input_digit: '2',
+                        next_step_id: 'branch-option-2',
+                    },
+                ],
+            })
+            const branchOption1 = mockSendToSMSStep({
+                id: 'branch-option-1',
+                next_step_id: 'before-end-call',
+            })
+            const branchOption2 = mockPlayMessageStep({
+                id: 'branch-option-2',
+                next_step_id: 'before-end-call',
+            })
+            const beforeEndCall = mockPlayMessageStep({
+                id: 'before-end-call',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [branchOption1.id]: branchOption1,
+                    [branchOption2.id]: branchOption2,
+                    [beforeEndCall.id]: beforeEndCall,
+                },
+            }
+
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                result.current.deleteNode('second-step')
+            })
+
+            await waitFor(() => {
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {
+                        [firstStep.id]: {
+                            ...firstStep,
+                            next_step_id: beforeEndCall.id,
+                        },
+                        [beforeEndCall.id]: {
+                            ...beforeEndCall,
+                            next_step_id: null,
+                        },
+                    },
+                )
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'first_step_id',
+                    firstStep.id,
+                )
+                expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
+                    expect.objectContaining({
+                        id: 'incoming_call',
+                        data: {
+                            next_step_id: firstStep.id,
+                        },
+                    }),
+                    expect.objectContaining({
+                        id: firstStep.id,
+                        data: {
+                            ...firstStep,
+                            next_step_id: beforeEndCall.id,
+                        },
+                    }),
+                    expect.objectContaining({
+                        id: beforeEndCall.id,
+                        data: {
+                            ...beforeEndCall,
+                            next_step_id: 'end_call',
+                        },
+                    }),
+                    expect.objectContaining({
+                        id: 'end_call',
+                    }),
+                ])
+            })
         })
     })
 
-    it('should delete a branching step correctly', async () => {
-        const firstStep = mockPlayMessageStep({
-            id: 'first-step',
-            next_step_id: 'second-step',
-        })
-        const secondStep = mockIvrMenuStep({
-            id: 'second-step',
-            branch_options: [
-                {
-                    input_digit: '1',
-                    next_step_id: 'branch-option-1',
-                },
-                {
-                    input_digit: '2',
-                    next_step_id: 'branch-option-2',
-                },
-            ],
-        })
-        const branchOption1 = mockSendToSMSStep({
-            id: 'branch-option-1',
-            next_step_id: 'before-end-call',
-        })
-        const branchOption2 = mockPlayMessageStep({
-            id: 'branch-option-2',
-            next_step_id: 'before-end-call',
-        })
-        const beforeEndCall = mockPlayMessageStep({
-            id: 'before-end-call',
-            next_step_id: null,
-        })
-        const flow: CallRoutingFlow = {
-            first_step_id: firstStep.id,
-            steps: {
-                [firstStep.id]: firstStep,
-                [secondStep.id]: secondStep,
-                [branchOption1.id]: branchOption1,
-                [branchOption2.id]: branchOption2,
-                [beforeEndCall.id]: beforeEndCall,
-            },
-        }
+    describe('deleteIvrBranch', () => {
+        it('should delete a branch and its nodes correctly', async () => {
+            const ivrMenuStep = mockIvrMenuStep({
+                id: 'ivr-menu',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'branch-1-step-1',
+                    },
+                    {
+                        input_digit: '2',
+                        next_step_id: 'branch-2-step-1',
+                    },
+                    {
+                        input_digit: '3',
+                        next_step_id: 'branch-3-step-1',
+                    },
+                ],
+            })
+            const branch1Step1 = mockPlayMessageStep({
+                id: 'branch-1-step-1',
+                next_step_id: 'branch-1-step-2',
+            })
+            const branch1Step2 = mockSendToSMSStep({
+                id: 'branch-1-step-2',
+                next_step_id: 'end-node',
+            })
+            const branch2Step1 = mockPlayMessageStep({
+                id: 'branch-2-step-1',
+                next_step_id: 'end-node',
+            })
+            const branch3Step1 = mockSendToSMSStep({
+                id: 'branch-3-step-1',
+                next_step_id: 'end-node',
+            })
+            const endNode = mockPlayMessageStep({
+                id: 'end-node',
+                next_step_id: null,
+            })
 
-        const { result } = renderHookWithMocks(flow)
+            const flow: CallRoutingFlow = {
+                first_step_id: ivrMenuStep.id,
+                steps: {
+                    [ivrMenuStep.id]: ivrMenuStep,
+                    [branch1Step1.id]: branch1Step1,
+                    [branch1Step2.id]: branch1Step2,
+                    [branch2Step1.id]: branch2Step1,
+                    [branch3Step1.id]: branch3Step1,
+                    [endNode.id]: endNode,
+                },
+            }
 
-        await act(async () => {
-            result.current.deleteNode('second-step')
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                result.current.deleteIvrBranch(1, ivrMenuStep.id, endNode.id)
+            })
+
+            await waitFor(() => {
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.branch-2-step-1')
+
+                const setNodesCallback = (
+                    useVoiceFlowReturnValue.setNodes as jest.Mock
+                ).mock.calls[0][0]
+                const updatedNodes = setNodesCallback(
+                    useVoiceFlowReturnValue.getNodes(),
+                )
+
+                const remainingNodeIds = updatedNodes.map((n: any) => n.id)
+                expect(remainingNodeIds).not.toContain('branch-2-step-1')
+
+                const updatedIvrOptions = updatedNodes.filter(
+                    (n: any) =>
+                        n.type === VoiceFlowNodeType.IvrOption &&
+                        n.data.parentId === ivrMenuStep.id,
+                )
+
+                const option0 = updatedIvrOptions.find(
+                    (n: any) => n.data.optionIndex === 0,
+                )
+                const option1 = updatedIvrOptions.find(
+                    (n: any) => n.data.optionIndex === 1,
+                )
+
+                expect(option0).toBeDefined()
+                expect(option1).toBeDefined()
+                expect(
+                    updatedIvrOptions.find(
+                        (n: any) => n.data.optionIndex === 2,
+                    ),
+                ).toBeUndefined()
+            })
         })
 
-        await waitFor(() => {
-            expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                'steps',
-                {
-                    [firstStep.id]: {
-                        ...firstStep,
-                        next_step_id: beforeEndCall.id,
+        it('should delete a branch with multiple steps in the subflow', async () => {
+            const ivrMenuStep = mockIvrMenuStep({
+                id: 'ivr-menu',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'branch-1-step-1',
                     },
-                    [beforeEndCall.id]: {
-                        ...beforeEndCall,
-                        next_step_id: null,
+                    {
+                        input_digit: '2',
+                        next_step_id: 'branch-2-step-1',
                     },
+                ],
+            })
+            const branch1Step1 = mockPlayMessageStep({
+                id: 'branch-1-step-1',
+                next_step_id: 'branch-1-step-2',
+            })
+            const branch1Step2 = mockPlayMessageStep({
+                id: 'branch-1-step-2',
+                next_step_id: 'branch-1-step-3',
+            })
+            const branch1Step3 = mockSendToSMSStep({
+                id: 'branch-1-step-3',
+                next_step_id: 'end-node',
+            })
+            const branch2Step1 = mockPlayMessageStep({
+                id: 'branch-2-step-1',
+                next_step_id: 'end-node',
+            })
+            const endNode = mockPlayMessageStep({
+                id: 'end-node',
+                next_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: ivrMenuStep.id,
+                steps: {
+                    [ivrMenuStep.id]: ivrMenuStep,
+                    [branch1Step1.id]: branch1Step1,
+                    [branch1Step2.id]: branch1Step2,
+                    [branch1Step3.id]: branch1Step3,
+                    [branch2Step1.id]: branch2Step1,
+                    [endNode.id]: endNode,
                 },
-            )
-            expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                'first_step_id',
-                firstStep.id,
-            )
-            expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    id: 'incoming_call',
-                    data: {
-                        next_step_id: firstStep.id,
+            }
+
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                result.current.deleteIvrBranch(0, ivrMenuStep.id, endNode.id)
+            })
+
+            await waitFor(() => {
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.branch-1-step-1')
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.branch-1-step-2')
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.branch-1-step-3')
+
+                const setNodesCallback = (
+                    useVoiceFlowReturnValue.setNodes as jest.Mock
+                ).mock.calls[0][0]
+                const updatedNodes = setNodesCallback(
+                    useVoiceFlowReturnValue.getNodes(),
+                )
+
+                const remainingNodeIds = updatedNodes.map((n: any) => n.id)
+                expect(remainingNodeIds).not.toContain('branch-1-step-1')
+                expect(remainingNodeIds).not.toContain('branch-1-step-2')
+                expect(remainingNodeIds).not.toContain('branch-1-step-3')
+
+                const remainingIvrOption = updatedNodes.find(
+                    (n: any) =>
+                        n.type === VoiceFlowNodeType.IvrOption &&
+                        n.data.parentId === ivrMenuStep.id,
+                )
+                expect(remainingIvrOption.data.optionIndex).toBe(0)
+            })
+        })
+
+        it('should correctly decrement option indices after deleted branch', async () => {
+            const ivrMenuStep = mockIvrMenuStep({
+                id: 'ivr-menu',
+                branch_options: [
+                    {
+                        input_digit: '1',
+                        next_step_id: 'branch-1-step',
                     },
-                }),
-                expect.objectContaining({
-                    id: firstStep.id,
-                    data: {
-                        ...firstStep,
-                        next_step_id: beforeEndCall.id,
+                    {
+                        input_digit: '2',
+                        next_step_id: 'branch-2-step',
                     },
-                }),
-                expect.objectContaining({
-                    id: beforeEndCall.id,
-                    data: {
-                        ...beforeEndCall,
-                        next_step_id: 'end_call',
+                    {
+                        input_digit: '3',
+                        next_step_id: 'branch-3-step',
                     },
-                }),
-                expect.objectContaining({
-                    id: 'end_call',
-                }),
-            ])
+                    {
+                        input_digit: '4',
+                        next_step_id: 'branch-4-step',
+                    },
+                ],
+            })
+            const branch1Step = mockPlayMessageStep({
+                id: 'branch-1-step',
+                next_step_id: 'end-node',
+            })
+            const branch2Step = mockPlayMessageStep({
+                id: 'branch-2-step',
+                next_step_id: 'end-node',
+            })
+            const branch3Step = mockPlayMessageStep({
+                id: 'branch-3-step',
+                next_step_id: 'end-node',
+            })
+            const branch4Step = mockPlayMessageStep({
+                id: 'branch-4-step',
+                next_step_id: 'end-node',
+            })
+            const endNode = mockPlayMessageStep({
+                id: 'end-node',
+                next_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: ivrMenuStep.id,
+                steps: {
+                    [ivrMenuStep.id]: ivrMenuStep,
+                    [branch1Step.id]: branch1Step,
+                    [branch2Step.id]: branch2Step,
+                    [branch3Step.id]: branch3Step,
+                    [branch4Step.id]: branch4Step,
+                    [endNode.id]: endNode,
+                },
+            }
+
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                result.current.deleteIvrBranch(1, ivrMenuStep.id, endNode.id)
+            })
+
+            await waitFor(() => {
+                const setNodesCallback = (
+                    useVoiceFlowReturnValue.setNodes as jest.Mock
+                ).mock.calls[0][0]
+                const updatedNodes = setNodesCallback(
+                    useVoiceFlowReturnValue.getNodes(),
+                )
+
+                const updatedIvrOptions = updatedNodes
+                    .filter(
+                        (n: any) =>
+                            n.type === VoiceFlowNodeType.IvrOption &&
+                            n.data.parentId === ivrMenuStep.id,
+                    )
+                    .sort(
+                        (a: any, b: any) =>
+                            a.data.optionIndex - b.data.optionIndex,
+                    )
+
+                expect(updatedIvrOptions).toHaveLength(3)
+                expect(updatedIvrOptions[0].data.optionIndex).toBe(0)
+                expect(updatedIvrOptions[1].data.optionIndex).toBe(1)
+                expect(updatedIvrOptions[2].data.optionIndex).toBe(2)
+            })
+        })
+
+        it('should handle deletion when option node is not found', async () => {
+            const flow: CallRoutingFlow = {
+                first_step_id: 'ivr-menu',
+                steps: {
+                    'ivr-menu': mockIvrMenuStep({
+                        id: 'ivr-menu',
+                        branch_options: [],
+                    }),
+                },
+            }
+
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                result.current.deleteIvrBranch(0, 'ivr-menu', 'end-node')
+            })
+
+            expect(useVoiceFlowReturnValue.setNodes).not.toHaveBeenCalled()
+            expect(useFormContextReturnValue.unregister).not.toHaveBeenCalled()
         })
     })
 })

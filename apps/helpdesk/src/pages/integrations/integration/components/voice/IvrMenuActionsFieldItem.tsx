@@ -25,6 +25,7 @@ export function IvrMenuActionFieldItem({
         <Box gap="var(--layout-spacing-xs)" width="100%">
             <Button intent="secondary">{value?.input_digit}</Button>
             <FormField
+                key={fieldName}
                 className={css.branchName}
                 name={`${name}.${index}.branch_name`}
                 placeholder="Branch name"

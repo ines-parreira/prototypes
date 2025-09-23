@@ -38,6 +38,10 @@ const ivrMenuStep = mockIvrMenuStep({
             input_digit: '2',
             branch_name: 'branch_name_2',
         }),
+        mockBranchOptions({
+            input_digit: '4',
+            branch_name: 'branch_name_4',
+        }),
     ],
 })
 
@@ -50,10 +54,40 @@ const defaultValues = {
 
 const nodes: VoiceFlowNode[] = [
     {
-        id: '1',
+        id: ivrMenuStep.id,
         type: VoiceFlowNodeType.IvrMenu,
         data: ivrMenuStep,
         position: { x: 0, y: 0 },
+    },
+    {
+        id: '2',
+        type: VoiceFlowNodeType.IvrOption,
+        data: {
+            parentId: ivrMenuStep.id,
+            optionIndex: 0,
+            next_step_id: 'intermediary-node-id-1',
+        },
+        position: { x: 100, y: 100 },
+    },
+    {
+        id: '3',
+        type: VoiceFlowNodeType.IvrOption,
+        data: {
+            parentId: ivrMenuStep.id,
+            optionIndex: 1,
+            next_step_id: 'intermediary-node-id-2',
+        },
+        position: { x: 100, y: 200 },
+    },
+    {
+        id: '4',
+        type: VoiceFlowNodeType.IvrOption,
+        data: {
+            parentId: ivrMenuStep.id,
+            optionIndex: 2,
+            next_step_id: 'intermediary-node-id-3',
+        },
+        position: { x: 100, y: 300 },
     },
 ]
 
@@ -102,6 +136,64 @@ describe('IvrMenuNode', () => {
         expect(
             screen.queryByText(/This menu is a nested IVR/),
         ).not.toBeInTheDocument()
+    })
+
+    it('should handle custom recording type in description', () => {
+        const ivrMenuWithCustomRecording = mockIvrMenuStep({
+            id: '1',
+            message: {
+                voice_message_type: 'custom_recording',
+                custom_recording_url: 'https://example.com/recording.mp3',
+                text_to_speech_content: '',
+            } as any,
+            branch_options: [
+                mockBranchOptions({
+                    input_digit: '1',
+                    branch_name: 'Option 1',
+                }),
+                mockBranchOptions({
+                    input_digit: '2',
+                    branch_name: 'Option 2',
+                }),
+            ],
+        })
+
+        renderComponent(flowProps, {
+            first_step_id: '1',
+            steps: {
+                [ivrMenuWithCustomRecording.id]: ivrMenuWithCustomRecording,
+            },
+        })
+
+        expect(screen.getAllByText('Custom recording')).toHaveLength(2)
+    })
+
+    it('should show correct description when text_to_speech_content is empty', () => {
+        const ivrMenuWithEmptyMessage = mockIvrMenuStep({
+            id: '1',
+            message: mockVoiceMessageTextToSpeech({
+                text_to_speech_content: '',
+            }),
+            branch_options: [
+                mockBranchOptions({
+                    input_digit: '1',
+                    branch_name: 'Option 1',
+                }),
+                mockBranchOptions({
+                    input_digit: '2',
+                    branch_name: 'Option 2',
+                }),
+            ],
+        })
+
+        renderComponent(flowProps, {
+            first_step_id: '1',
+            steps: {
+                [ivrMenuWithEmptyMessage.id]: ivrMenuWithEmptyMessage,
+            },
+        })
+
+        expect(screen.getByText('Message')).toBeInTheDocument()
     })
 
     it('should add new node to flow when add option button is clicked', async () => {

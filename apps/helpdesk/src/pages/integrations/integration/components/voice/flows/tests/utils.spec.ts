@@ -1,4 +1,5 @@
 import { Edge } from '@xyflow/react'
+import * as uuid from 'uuid'
 
 import {
     mockForwardToExternalNumberStep,
@@ -39,6 +40,7 @@ import {
     VoiceFlowNodeData,
 } from '../types'
 import {
+    addIvrOption,
     canAddNewStepOnEdge,
     createIvrOptionNode,
     createTimeSplitOptionNode,
@@ -60,6 +62,15 @@ import {
     updateIvrMenuNodeData,
     updateTimeSplitNodeData,
 } from '../utils'
+
+// Mock uuid module but use original implementation by default
+jest.mock('uuid', () => {
+    const originalUuid = jest.requireActual('uuid')
+    return {
+        ...originalUuid,
+        v4: jest.fn(() => originalUuid.v4()),
+    }
+})
 
 describe('utils', () => {
     describe('canAddNewStepOnEdge', () => {
@@ -2061,6 +2072,307 @@ describe('utils', () => {
                 },
                 [branchOption1.id]: branchOption1,
             })
+        })
+    })
+
+    describe('addIvrOption', () => {
+        let mockSetNodes: jest.Mock
+        let mockNodes: VoiceFlowNode[]
+
+        beforeEach(() => {
+            mockSetNodes = jest.fn()
+            mockNodes = []
+            jest.clearAllMocks()
+
+            // Mock uuid.v4 only for these tests
+            ;(uuid.v4 as jest.Mock).mockReturnValue('new-option-id')
+        })
+
+        afterEach(() => {
+            // Clear the mock
+            ;(uuid.v4 as jest.Mock).mockClear()
+        })
+
+        const createMockIvrOptionNode = (
+            id: string,
+            parentId: string,
+            optionIndex: number,
+            nextStepId: string,
+        ): IvrOptionNode => ({
+            id,
+            type: VoiceFlowNodeType.IvrOption,
+            data: {
+                parentId,
+                optionIndex,
+                next_step_id: nextStepId,
+            },
+            position: { x: 100, y: 100 },
+        })
+
+        it('should add a new IVR option node at the correct index', () => {
+            const parentNodeId = 'parent-1'
+            const intermediaryNodeId = 'intermediary-1'
+            const insertAtIndex = 1
+
+            mockNodes = [
+                createMockIvrOptionNode(
+                    'option-1',
+                    parentNodeId,
+                    0,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'option-2',
+                    parentNodeId,
+                    1,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'option-3',
+                    parentNodeId,
+                    2,
+                    intermediaryNodeId,
+                ),
+            ]
+
+            mockSetNodes.mockImplementation((callback) => {
+                return callback(mockNodes)
+            })
+
+            addIvrOption(
+                parentNodeId,
+                intermediaryNodeId,
+                insertAtIndex,
+                mockSetNodes,
+            )
+
+            expect(mockSetNodes).toHaveBeenCalledWith(expect.any(Function))
+
+            const callback = mockSetNodes.mock.calls[0][0]
+            const result = callback(mockNodes)
+
+            // Check that existing nodes with index >= insertAtIndex have their indices incremented
+            const updatedOption2 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-2',
+            )
+            const updatedOption3 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-3',
+            )
+
+            expect(updatedOption2.data.optionIndex).toBe(2) // Was 1, now 2
+            expect(updatedOption3.data.optionIndex).toBe(3) // Was 2, now 3
+
+            // Check that the new node was inserted with generated ID
+            const newNodeInResult = result.find(
+                (n: VoiceFlowNode) => n.id === 'new-option-id',
+            )
+            expect(newNodeInResult).toBeDefined()
+            expect(newNodeInResult.data.optionIndex).toBe(insertAtIndex)
+            expect(newNodeInResult.data.parentId).toBe(parentNodeId)
+            expect(newNodeInResult.data.next_step_id).toBe(intermediaryNodeId)
+        })
+
+        it('should only affect IVR option nodes with matching parentId', () => {
+            const parentNodeId = 'parent-1'
+            const otherParentId = 'parent-2'
+            const intermediaryNodeId = 'intermediary-1'
+            const insertAtIndex = 1
+
+            mockNodes = [
+                createMockIvrOptionNode(
+                    'option-1',
+                    parentNodeId,
+                    0,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'option-2',
+                    parentNodeId,
+                    1,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'other-option',
+                    otherParentId,
+                    1,
+                    intermediaryNodeId,
+                ), // Different parent
+                {
+                    id: 'non-ivr-node',
+                    type: VoiceFlowNodeType.PlayMessage,
+                    data: {},
+                    position: { x: 0, y: 0 },
+                } as VoiceFlowNode,
+            ]
+
+            mockSetNodes.mockImplementation((callback) => {
+                return callback(mockNodes)
+            })
+
+            addIvrOption(
+                parentNodeId,
+                intermediaryNodeId,
+                insertAtIndex,
+                mockSetNodes,
+            )
+
+            const callback = mockSetNodes.mock.calls[0][0]
+            const result = callback(mockNodes)
+
+            // Node with different parent should not be affected
+            const otherOption = result.find(
+                (n: VoiceFlowNode) => n.id === 'other-option',
+            )
+            expect(otherOption.data.optionIndex).toBe(1) // Should remain unchanged
+
+            // Non-IVR node should not be affected
+            const nonIvrNode = result.find(
+                (n: VoiceFlowNode) => n.id === 'non-ivr-node',
+            )
+            expect(nonIvrNode).toBeDefined()
+            expect(nonIvrNode.type).toBe(VoiceFlowNodeType.PlayMessage)
+        })
+
+        it('should handle inserting at index 0 correctly', () => {
+            const parentNodeId = 'parent-1'
+            const intermediaryNodeId = 'intermediary-1'
+            const insertAtIndex = 0
+
+            mockNodes = [
+                createMockIvrOptionNode(
+                    'option-0',
+                    parentNodeId,
+                    0,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'option-1',
+                    parentNodeId,
+                    1,
+                    intermediaryNodeId,
+                ),
+            ]
+
+            mockSetNodes.mockImplementation((callback) => {
+                return callback(mockNodes)
+            })
+
+            addIvrOption(
+                parentNodeId,
+                intermediaryNodeId,
+                insertAtIndex,
+                mockSetNodes,
+            )
+
+            const callback = mockSetNodes.mock.calls[0][0]
+            const result = callback(mockNodes)
+
+            // All existing options should have their indices incremented
+            const updatedOption0 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-0',
+            )
+            const updatedOption1 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-1',
+            )
+
+            expect(updatedOption0.data.optionIndex).toBe(1)
+            expect(updatedOption1.data.optionIndex).toBe(2)
+
+            // New node should be inserted at the beginning
+            const newNode = result.find(
+                (n: VoiceFlowNode) => n.id === 'new-option-id',
+            )
+            expect(newNode.data.optionIndex).toBe(0)
+            expect(result.indexOf(newNode)).toBe(0)
+        })
+
+        it('should handle inserting at the end when no existing nodes match the index', () => {
+            const parentNodeId = 'parent-1'
+            const intermediaryNodeId = 'intermediary-1'
+            const insertAtIndex = 5 // Higher than any existing index
+
+            mockNodes = [
+                createMockIvrOptionNode(
+                    'option-0',
+                    parentNodeId,
+                    0,
+                    intermediaryNodeId,
+                ),
+                createMockIvrOptionNode(
+                    'option-1',
+                    parentNodeId,
+                    1,
+                    intermediaryNodeId,
+                ),
+                {
+                    id: 'other-node',
+                    type: VoiceFlowNodeType.PlayMessage,
+                    data: {},
+                    position: { x: 0, y: 0 },
+                } as VoiceFlowNode,
+            ]
+
+            mockSetNodes.mockImplementation((callback) => {
+                return callback(mockNodes)
+            })
+
+            addIvrOption(
+                parentNodeId,
+                intermediaryNodeId,
+                insertAtIndex,
+                mockSetNodes,
+            )
+
+            const callback = mockSetNodes.mock.calls[0][0]
+            const result = callback(mockNodes)
+
+            // No existing nodes should have their indices changed
+            const option0 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-0',
+            )
+            const option1 = result.find(
+                (n: VoiceFlowNode) => n.id === 'option-1',
+            )
+
+            expect(option0.data.optionIndex).toBe(0)
+            expect(option1.data.optionIndex).toBe(1)
+
+            // New node should be added at the end
+            const newNode = result.find(
+                (n: VoiceFlowNode) => n.id === 'new-option-id',
+            )
+            expect(newNode).toBeDefined()
+            expect(result[result.length - 1]).toBe(newNode)
+        })
+
+        it('should handle empty nodes array', () => {
+            const parentNodeId = 'parent-1'
+            const intermediaryNodeId = 'intermediary-1'
+            const insertAtIndex = 0
+
+            mockNodes = []
+
+            mockSetNodes.mockImplementation((callback) => {
+                return callback(mockNodes)
+            })
+
+            addIvrOption(
+                parentNodeId,
+                intermediaryNodeId,
+                insertAtIndex,
+                mockSetNodes,
+            )
+
+            expect(mockSetNodes).toHaveBeenCalledWith(expect.any(Function))
+
+            const callback = mockSetNodes.mock.calls[0][0]
+            const result = callback(mockNodes)
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('new-option-id')
+            expect(result[0].data.optionIndex).toBe(insertAtIndex)
+            expect(result[0].data.parentId).toBe(parentNodeId)
+            expect(result[0].data.next_step_id).toBe(intermediaryNodeId)
         })
     })
 })

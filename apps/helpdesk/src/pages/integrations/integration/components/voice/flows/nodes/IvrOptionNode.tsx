@@ -13,10 +13,14 @@ export function IvrOptionNode(props: IvrOptionNodeProps) {
     const inputDigit = watch(
         `steps.${data.parentId}.branch_options.${data.optionIndex}.input_digit`,
     )
+    const branchName = watch(
+        `steps.${data.parentId}.branch_options.${data.optionIndex}.branch_name`,
+    )
+    const label = branchName ? `${inputDigit} - ${branchName}` : inputDigit
 
     return (
         <NodeWrapper {...props}>
-            <ActionLabel label={inputDigit} />
+            <ActionLabel label={label} />
         </NodeWrapper>
     )
 }
