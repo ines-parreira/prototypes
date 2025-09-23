@@ -1454,6 +1454,188 @@ describe('useLiveVoiceUpdates', () => {
         })
     })
 
+    describe('handles transfer-accepted event', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        it('should remove the source agent status when a transfer is accepted', () => {
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'in-progress',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+            const mockEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
+                data: {
+                    voice_call_id: 123,
+                    user_id: 1,
+                    transfer_type: 'agent',
+                    account_id: 1,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should remove voice call from live list for external transfers', () => {
+            const voiceCallsQueryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+            const agentsQueryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockVoiceCallsData = {
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            status: 'in-progress',
+                            external_id: 'abc',
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(voiceCallsQueryKey, mockVoiceCallsData)
+
+            const mockAgentsData = {
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [
+                                {
+                                    call_sid: 'abc',
+                                    status: 'in-progress',
+                                    created_datetime: mockedDate.toISOString(),
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(agentsQueryKey, mockAgentsData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+            // First, simulate an answered event to populate the voiceCallIdToSidRef
+            const answeredEvent = {
+                id: '40b7c7ee-f5f0-452e-b1cf-f6ca4291002c',
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.answered/1.0.0',
+                data: {
+                    voice_call_id: 123,
+                    account_id: 1,
+                    user_id: 1,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(answeredEvent)
+
+            // Now test the transfer-accepted event
+            const mockEvent = {
+                id: '3150f294-5fb9-467a-8f8f-f3c4a049f2ae',
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
+                data: {
+                    voice_call_id: 123,
+                    user_id: 1,
+                    transfer_type: 'external',
+                    account_id: 1,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(voiceCallsQueryKey)).toEqual({
+                data: {
+                    data: [],
+                },
+            })
+
+            expect(appQueryClient.getQueryData(agentsQueryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            ...agentStatus,
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should not update if call_sid does not match', () => {
+            // the call is not in the list
+            useListLiveCallQueueVoiceCallsMock.mockReturnValue({
+                data: [],
+                isLoading: false,
+            } as any)
+
+            const queryKey =
+                queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+            const mockOldData = {
+                data: {
+                    data: [agentStatus],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+            const mockEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
+                data: {
+                    voice_call_id: 999,
+                    user_id: 1,
+                    transfer_type: 'agent',
+                    account_id: 1,
+                },
+            } as DomainEvent
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [agentStatus],
+                },
+            })
+        })
+    })
+
     describe('handles wrap-up events', () => {
         const params = {
             agent_ids: [1],

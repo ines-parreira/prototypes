@@ -243,6 +243,30 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
+                case '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0': {
+                    const voiceCallSid =
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
+                    // user_id is the id of the agent who started the transfer
+                    if (voiceCallSid && event.data.user_id) {
+                        removeAgentStatusInLiveAgentsQueryCache(
+                            event.data.user_id,
+                            voiceCallSid,
+                            params,
+                        )
+                    }
+                    if (event.data.transfer_type === 'external') {
+                        // for transfer to external number, the call is not tied anymore to an agent
+                        // so we remove it from live calls
+                        updateVoiceCallInLiveCallsQueryCache(
+                            {
+                                id: event.data.voice_call_id,
+                                status: VoiceCallStatus.Completed,
+                            },
+                            params,
+                        )
+                    }
+                    break
+                }
                 case '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0':
                 case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0': {
                     updateVoiceCallInLiveCallsQueryCacheWithDebounce(
