@@ -18,6 +18,10 @@ import {
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
@@ -33,6 +37,7 @@ jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('../hooks/useSalesTrialRevampMilestone')
 jest.mock('models/aiAgent/queries')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -54,6 +59,7 @@ const mockUseAtLeastOneStoreHasActiveTrial = assumeMock(
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseStoreConfigurations = assumeMock(useStoreConfigurations)
 const mockUseGetTrials = assumeMock(useGetTrials)
+const mockUseAiAgentOnboardingState = assumeMock(useAiAgentOnboardingState)
 
 const mockIsAdmin = jest.requireMock('utils').isAdmin
 const mockIsTeamLead = jest.requireMock('utils').isTeamLead
@@ -144,11 +150,9 @@ describe('useTrialAccess', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        // Default mock implementations - AiAgentExpandingTrialExperienceForAll disabled by default
         mockUseFlag.mockImplementation(
             (key) =>
                 key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
-                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
                 false,
         )
 
@@ -198,6 +202,9 @@ describe('useTrialAccess', () => {
         } as any)
         mockIsAdmin.mockReturnValue(true)
         mockIsTeamLead.mockReturnValue(false)
+        mockUseAiAgentOnboardingState.mockReturnValue(
+            OnboardingState.OnboardingWizard,
+        )
     })
 
     describe('when all conditions are met for trial access', () => {
@@ -343,19 +350,6 @@ describe('useTrialAccess', () => {
                 canSeeSystemBanner: true, // System banner for everyone
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
                 isAdminUser: true,
-            })
-        })
-
-        it('should allow Pro+ admin to book demo when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { result } = renderUseTrialAccess()
-
-            expect(result.current).toEqual({
-                ...defaultExpectedValues,
-                canBookDemo: true, // Pro+ without feature flag can book demo
-                isAdminUser: true,
-                canSeeSystemBanner: true,
             })
         })
 
@@ -679,24 +673,10 @@ describe('useTrialAccess', () => {
             })
         })
 
-        it('should return ShoppingAssistant when AiAgentExpandingTrialExperienceForAll flag is disabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
-                    false,
-            )
-
-            const { result } = renderUseTrialAccess()
-
-            expect(result.current.trialType).toBe(TrialType.ShoppingAssistant)
-        })
-
         it('should return AiAgent when no automate plan exists (USD-4)', () => {
             mockUseFlag.mockImplementation(
                 (key) =>
                     key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
-                    key ===
-                        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
                     false,
             )
 
@@ -747,6 +727,38 @@ describe('useTrialAccess', () => {
             const { result } = renderUseTrialAccess()
 
             expect(result.current.trialType).toBe(TrialType.ShoppingAssistant)
+        })
+    })
+
+    describe('isOnboarded property', () => {
+        it('should return isOnboarded: true when onboarding state is Onboarded', () => {
+            mockUseAiAgentOnboardingState.mockReturnValue(
+                OnboardingState.Onboarded,
+            )
+
+            const { result } = renderUseTrialAccess('Test Store')
+
+            expect(result.current.isOnboarded).toBe(true)
+        })
+
+        it('should return isOnboarded: false when onboarding state is OnboardingWizard', () => {
+            mockUseAiAgentOnboardingState.mockReturnValue(
+                OnboardingState.OnboardingWizard,
+            )
+
+            const { result } = renderUseTrialAccess('Test Store')
+
+            expect(result.current.isOnboarded).toBe(false)
+        })
+
+        it('should return isOnboarded: undefined when onboarding state is Loading', () => {
+            mockUseAiAgentOnboardingState.mockReturnValue(
+                OnboardingState.Loading,
+            )
+
+            const { result } = renderUseTrialAccess('Test Store')
+
+            expect(result.current.isOnboarded).toBe(undefined)
         })
     })
 })

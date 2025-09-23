@@ -8,6 +8,10 @@ import { useGetTrials } from 'models/aiAgent/queries'
 import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
+import {
     hasTrialActive,
     hasTrialExpired,
     hasTrialOptedIn,
@@ -49,6 +53,7 @@ export type TrialAccess = {
     trialType: TrialType
     currentAutomatePlan: AutomatePlan | undefined
     isInAiAgentTrial: boolean
+    isOnboarded: boolean | undefined
 }
 
 /**
@@ -73,6 +78,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
+    const onboardingState = useAiAgentOnboardingState(currentStoreName ?? '')
 
     const {
         data: trials,
@@ -87,16 +93,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         FeatureFlagKey.AiShoppingAssistantTrialMerchants,
     )
 
-    // Feature flag that controls new trial experience for shopping assistant
-    const isShoppingAssistantTrialImprovement = useFlag(
-        FeatureFlagKey.ShoppingAssistantTrialImprovement,
-    )
-
-    // Feature flag that controls new trial experience for AI Agent
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
-    )
-
     const isOnStarterOrBasicPlan =
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.STARTER ||
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.BASIC
@@ -105,19 +101,14 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const isOnProPlusPlan = !isOnStarterOrBasicPlan
 
     const trialType = useMemo((): TrialType => {
-        // Case 1: Feature flag disabled - return shopping assistant
-        if (!isAiAgentExpandingTrialExperienceForAllEnabled) {
-            return TrialType.ShoppingAssistant
-        }
-
-        // Case 2: USD-4 (no automate plan) - return ai agent
+        // Case 1: USD-4 (no automate plan) - return ai agent
         if (!currentAutomatePlan) {
             return TrialType.AiAgent
         }
 
-        // Case 3: All other cases - return shopping assistant
+        // Case 2: All other cases - return shopping assistant
         return TrialType.ShoppingAssistant
-    }, [currentAutomatePlan, isAiAgentExpandingTrialExperienceForAllEnabled])
+    }, [currentAutomatePlan])
 
     const salesTrials = trials?.filter(
         (trial) => trial.type === TrialType.ShoppingAssistant,
@@ -162,6 +153,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             trialType: TrialType.ShoppingAssistant,
             currentAutomatePlan,
             isInAiAgentTrial: false,
+            isOnboarded: false,
         }
     }
     const isAdminUser = isAdmin(currentUser)
@@ -207,8 +199,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             !hasCurrentStoreTrialExpired &&
             (isOnStarterOrBasicPlan ||
                 isAiShoppingAssistantTrialMerchantsEnabled ||
-                (isAiAgentExpandingTrialExperienceForAllEnabled &&
-                    isOnProPlusPlan)),
+                isOnProPlusPlan),
     )
 
     // Team leads can notify admin if trial CTA conditions are met (except admin check)
@@ -216,7 +207,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         isTeamLeadUser &&
             !isAdminUser &&
             (isOnStarterOrBasicPlan ||
-                (isShoppingAssistantTrialImprovement && isOnProPlusPlan) ||
+                isOnProPlusPlan ||
                 isAiShoppingAssistantTrialMerchantsEnabled),
     )
 
@@ -238,6 +229,11 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         trialType === TrialType.AiAgent &&
         hasCurrentStoreTrialStarted &&
         !hasCurrentStoreTrialExpired
+
+    const isOnboarded =
+        onboardingState === OnboardingState.Loading
+            ? undefined
+            : onboardingState === OnboardingState.Onboarded
 
     return {
         canNotifyAdmin,
@@ -261,5 +257,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         trialType,
         currentAutomatePlan,
         isInAiAgentTrial,
+        isOnboarded,
     }
 }

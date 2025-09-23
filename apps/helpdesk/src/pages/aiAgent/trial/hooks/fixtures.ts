@@ -20,5 +20,6 @@ export const createMockTrialAccess = (overrides = {}) => ({
     currentAutomatePlan: undefined,
     isError: false,
     isInAiAgentTrial: false,
+    isOnboarded: false,
     ...overrides,
 })
