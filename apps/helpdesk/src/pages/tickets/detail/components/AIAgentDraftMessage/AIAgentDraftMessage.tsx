@@ -10,6 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import { TicketMessage } from 'models/ticket/types'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {
     applyMacro,
@@ -32,6 +33,7 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
     const { data, isLoading } = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
     const [hideMessage, setHideMessage] = useState(false)
+    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const feedback = data?.data
 
@@ -141,6 +143,9 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
             text={draftMessage.content || ''}
             macroActions={draftMessage.ticketActions || []}
             isTrialMessage={isTrial}
+            executionId={
+                isImpersonated ? feedbackMessage?.executionId : undefined
+            }
         />
     )
 }

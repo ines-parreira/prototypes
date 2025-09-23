@@ -11,6 +11,7 @@ type Props = {
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
     isAIAgent?: boolean
+    executionId?: string
 }
 
 export default function SuggestionHeader({
@@ -20,6 +21,7 @@ export default function SuggestionHeader({
     actionsContent,
     infoContent,
     isAIAgent,
+    executionId,
 }: Props) {
     return (
         <header
@@ -37,6 +39,11 @@ export default function SuggestionHeader({
                     <span>Only visible to you</span>
                 </div>
                 {infoContent}
+                {isAIAgent && executionId && (
+                    <div className={css.executionId}>
+                        {`Execution ID: ${executionId}`}
+                    </div>
+                )}
             </div>
             <div className={css.actionsContainer}>{actionsContent}</div>
             {onChevronToggle && (

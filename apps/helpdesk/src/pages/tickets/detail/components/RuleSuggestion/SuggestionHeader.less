@@ -1,4 +1,4 @@
-@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~css/typography';
 
 :local .container {
     display: flex;
@@ -56,5 +56,11 @@
         cursor: pointer;
         margin-left: 24px;
         font-size: 18px;
+    }
+
+    .executionId {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: var(--layout-spacing-xxs);
     }
 }

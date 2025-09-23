@@ -28,6 +28,7 @@ type Props = {
     message?: TicketMessage
     hideExpandButton?: boolean
     isTrialMessage?: boolean
+    executionId?: string
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
@@ -43,6 +44,7 @@ export default function InTicketSuggestion({
     message,
     hideExpandButton = false,
     isTrialMessage,
+    executionId,
 }: Props) {
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
@@ -85,6 +87,7 @@ export default function InTicketSuggestion({
                 state={suggestionState}
                 actionsContent={actionsContent}
                 isAIAgent={isAIAgentDraftMessage}
+                executionId={executionId}
             />
 
             <SuggestionBody

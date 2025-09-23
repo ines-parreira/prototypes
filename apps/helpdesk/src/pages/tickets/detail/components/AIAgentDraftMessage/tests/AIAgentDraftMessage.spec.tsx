@@ -11,6 +11,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { RootState } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
@@ -43,6 +44,10 @@ jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useMeasure: jest.fn(),
+}))
+
+jest.mock('services/activityTracker/utils', () => ({
+    isSessionImpersonated: jest.fn(() => false),
 }))
 
 const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
@@ -222,5 +227,40 @@ describe('AIAgentDraftMessage', () => {
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
         expect(screen.queryByText('Expand')).not.toBeInTheDocument()
+    })
+
+    it('should NOT display execution ID when user is not impersonated', () => {
+        render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByText(
+                'Execution ID: 923665aa-5081-49b3-9cca-2ad6e1823175',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should display execution ID when user is impersonated and execution ID exists', () => {
+        const isSessionImpersonatedMock = isSessionImpersonated as jest.Mock
+        isSessionImpersonatedMock.mockReturnValue(true)
+
+        render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText(
+                'Execution ID: 923665aa-5081-49b3-9cca-2ad6e1823175',
+            ),
+        ).toBeInTheDocument()
     })
 })
