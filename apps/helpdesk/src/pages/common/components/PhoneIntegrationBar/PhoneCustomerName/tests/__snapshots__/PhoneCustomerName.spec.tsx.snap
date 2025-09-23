@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneCustomerName/> should render 1`] = `
+exports[`<PhoneCustomerName/> should render with name and phone number 1`] = `
 <span
   class="container"
 >
@@ -15,7 +15,7 @@ exports[`<PhoneCustomerName/> should render 1`] = `
 </span>
 `;
 
-exports[`<PhoneCustomerName/> should render 2`] = `
+exports[`<PhoneCustomerName/> should render with name and phone number 2`] = `
 <span
   class="container"
 >

@@ -14,12 +14,14 @@ jest.mock(
     () =>
         ({
             customerId,
+            phoneNumber,
             interactable,
         }: {
             customerId: string
+            phoneNumber: string
             interactable?: boolean
         }) => (
-            <div data-interactable={interactable}>
+            <div data-interactable={interactable} data-phone={phoneNumber}>
                 TicketVoiceCallCustomerLabel {customerId}
             </div>
         ),
@@ -80,12 +82,14 @@ describe('TicketVoiceCallOutboundStatus', () => {
             const { getByText, container } = renderComponent({
                 customer_id: '123',
                 phone_number_source: '+1234567890',
+                phone_number_destination: '+0987654321',
             })
             expect(getByText(expectedText)).toBeInTheDocument()
             const agentLabel = container.querySelector(
                 '[data-interactable="true"]',
             )
             expect(agentLabel).toBeInTheDocument()
+            expect(agentLabel?.getAttribute('data-phone')).toBe('+0987654321')
         },
     )
 
@@ -106,6 +110,7 @@ describe('TicketVoiceCallOutboundStatus', () => {
         const voiceCall = {
             customer_id: '123',
             phone_number_source: '+1234567890',
+            phone_number_destination: '+0987654321',
         }
 
         const { getByText, getByTestId } = renderComponent(voiceCall)
@@ -121,6 +126,7 @@ describe('TicketVoiceCallOutboundStatus', () => {
         const voiceCall = {
             customer_id: '123',
             phone_number_source: '+1234567890',
+            phone_number_destination: '+0987654321',
         }
 
         const { container } = renderComponent(voiceCall)
@@ -128,5 +134,6 @@ describe('TicketVoiceCallOutboundStatus', () => {
             '[data-interactable="true"]',
         )
         expect(customerLabel).toBeInTheDocument()
+        expect(customerLabel?.getAttribute('data-phone')).toBe('+0987654321')
     })
 })

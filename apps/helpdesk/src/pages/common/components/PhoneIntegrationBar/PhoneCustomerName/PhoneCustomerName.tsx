@@ -14,6 +14,14 @@ export default function PhoneCustomerName({
     const parsedPhoneNumber = parsePhoneNumber(phoneNumber)
     const formattedPhoneNumber = parsedPhoneNumber?.formatInternational()
 
+    if (!name) {
+        return (
+            <span className={css.container}>
+                {formattedPhoneNumber || phoneNumber}
+            </span>
+        )
+    }
+
     return (
         <span className={css.container}>
             <span className={css.name}>{name}</span> (
