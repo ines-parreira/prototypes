@@ -163,19 +163,19 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         [onKeyDown, isDisabled, onClick, shouldCloseOnSelect, onToggle],
     )
 
-    const label = useMemo(
-        () =>
-            children
-                ? _isString(children)
-                    ? getHighlightedLabel(children)
-                    : _isFunction(children)
-                      ? (children(
-                            getHighlightedLabel(option.label),
-                        ) as ReactNode)
-                      : children
-                : getHighlightedLabel(option.label),
-        [children, option, getHighlightedLabel],
-    )
+    const label: ReactNode | string = useMemo(() => {
+        if (children) {
+            if (_isString(children)) {
+                return getHighlightedLabel(children)
+            }
+            if (_isFunction(children)) {
+                const highlighted = getHighlightedLabel(option.label)
+                return children(highlighted)
+            }
+            return children
+        }
+        return getHighlightedLabel(option.label)
+    }, [children, option, getHighlightedLabel])
 
     return alwaysVisible || isContainingQuery ? (
         <Tag
@@ -198,7 +198,9 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                     tabIndex={-1}
                 />
             )}
+
             {label}
+
             {!isMultiple && isSelected && !isDisabled && (
                 <span className={classnames(css.icon, 'material-icons')}>
                     done

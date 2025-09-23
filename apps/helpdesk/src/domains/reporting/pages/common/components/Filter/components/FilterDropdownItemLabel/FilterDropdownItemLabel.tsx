@@ -16,6 +16,7 @@ import css from 'domains/reporting/pages/common/components/Filter/components/Fil
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'
 import { highlightString } from 'domains/reporting/pages/utils'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 type Props = {
     label: string
@@ -65,7 +66,7 @@ const FilterDropdownItemLabel = ({ label, icon }: Props) => {
                 ref={ref}
                 className={classnames(css.label, showTooltip && css.rtlOption)}
                 dangerouslySetInnerHTML={{
-                    __html: highlightedLabel,
+                    __html: sanitizeHtmlDefault(highlightedLabel),
                 }}
                 data-testid="filter-dropdown-item-label"
             />
@@ -79,7 +80,7 @@ const FilterDropdownItemLabel = ({ label, icon }: Props) => {
                     <div
                         className={css.tooltipContent}
                         dangerouslySetInnerHTML={{
-                            __html: highlightedLabel,
+                            __html: sanitizeHtmlDefault(highlightedLabel),
                         }}
                     />
                 </Tooltip>
