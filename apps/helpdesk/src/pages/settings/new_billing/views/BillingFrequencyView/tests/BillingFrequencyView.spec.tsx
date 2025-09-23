@@ -136,7 +136,9 @@ describe('BillingFrequencyView', () => {
             'getCorrespondingPlanAtCadence',
         )
         getCorrespondingPlanAtCadenceSpy.mockImplementation(() => {
-            throw new Error('Plan not found at this cadence')
+            throw new Error(
+                'Plan not found at this cadence: basic-monthly-usd-4',
+            )
         })
         const { getByLabelText } = renderBillingFrequencyView()
         const monthlyRadioButton = getByLabelText(

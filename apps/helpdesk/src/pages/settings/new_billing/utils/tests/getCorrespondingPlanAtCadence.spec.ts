@@ -41,7 +41,11 @@ describe('getCorrespondingPlanAtInterval', () => {
                 cadence: Cadence.Year,
             })
         } catch (e) {
-            expect(e).toEqual(new Error('Plan not found at this cadence'))
+            expect(e).toEqual(
+                new Error(
+                    'Plan not found at this cadence: basic-monthly-usd-4',
+                ),
+            )
         }
     })
 

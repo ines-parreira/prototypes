@@ -27,12 +27,13 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
             plan.plan_id === targetPlanId ||
             (plan.cadence === cadence &&
                 plan.product === currentPlan.product &&
-                plan.name === currentPlan.name &&
                 plan.generation === currentPlan.generation),
     )
 
     if (!plan) {
-        throw new Error('Plan not found at this cadence')
+        throw new Error(
+            `Plan not found at this cadence: ${currentPlan.plan_id}`,
+        )
     }
 
     return plan
