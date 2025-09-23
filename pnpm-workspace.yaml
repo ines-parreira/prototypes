@@ -2,9 +2,6 @@ packages:
   - 'config'
   - 'apps/**'
   - 'packages/**'
-  - 'domains/**'
-  - 'core/**'
-  - 'utils/**'
 
 overrides:
   '@tanstack/react-query': '4.36.1'
