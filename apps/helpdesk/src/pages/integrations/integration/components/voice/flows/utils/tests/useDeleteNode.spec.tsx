@@ -68,6 +68,7 @@ describe('useDeleteNode', () => {
                 expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
                     'steps',
                     {},
+                    { shouldDirty: true },
                 )
                 expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
                     'first_step_id',
@@ -147,6 +148,7 @@ describe('useDeleteNode', () => {
                             next_step_id: null,
                         },
                     },
+                    { shouldDirty: true },
                 )
                 expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
                     'first_step_id',

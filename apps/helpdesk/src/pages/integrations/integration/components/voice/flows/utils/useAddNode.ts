@@ -26,7 +26,7 @@ export const useAddNode = (source: string, target: string) => {
         newStepData: VoiceFlowNodeData,
         sourceNode: VoiceFlowNode,
     ) => {
-        setValue(`steps.${newStepData.id}`, newStepData)
+        setValue(`steps.${newStepData.id}`, newStepData, { shouldDirty: true })
 
         // make sure if we're on an intermediary node, we point to the closest node in the form
         const closestSourceNodes = getSourceNodes(sourceNode, getNodes())

@@ -367,7 +367,11 @@ describe('useAddNode', () => {
                 'first_step_id',
                 'new-step',
             )
-            expect(mockSetValue).toHaveBeenCalledWith('steps.new-step', newStep)
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'steps.new-step',
+                newStep,
+                { shouldDirty: true },
+            )
         })
 
         it('should link new step to existing steps', () => {
@@ -385,7 +389,11 @@ describe('useAddNode', () => {
                 result.current.addNewStepInForm(newStep, mockSourceNode)
             })
 
-            expect(mockSetValue).toHaveBeenCalledWith('steps.new-step', newStep)
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'steps.new-step',
+                newStep,
+                { shouldDirty: true },
+            )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'steps.source-node',
                 expect.objectContaining({
@@ -430,7 +438,11 @@ describe('useAddNode', () => {
 
             result.current.addNewStepInForm(newStep, intermediaryNode)
 
-            expect(mockSetValue).toHaveBeenCalledWith('steps.new-step', newStep)
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'steps.new-step',
+                newStep,
+                { shouldDirty: true },
+            )
             expect(mockSetValue).toHaveBeenCalledWith(
                 'first_step_id',
                 'new-step',

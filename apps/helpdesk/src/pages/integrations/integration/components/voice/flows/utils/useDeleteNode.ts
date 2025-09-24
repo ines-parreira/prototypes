@@ -59,7 +59,7 @@ export function useDeleteNode() {
         }
 
         const nodes = transformToReactFlowNodes(newFlow)
-        setValue('steps', newFlow.steps)
+        setValue('steps', newFlow.steps, { shouldDirty: true })
         setValue('first_step_id', newFlow.first_step_id)
         setNodes(nodes)
     }
@@ -90,6 +90,7 @@ export function useDeleteNode() {
             delete currentFlow.steps[nodeId]
             unregister(`steps.${nodeId}`)
         })
+        setValue('steps', currentFlow.steps, { shouldDirty: true })
 
         setNodes((nodes) =>
             nodes
