@@ -37,6 +37,11 @@ type Props = {
     size?: 'sm' | 'md'
 }
 
+/**
+ * @deprecated This component has been replaced by TrendBadge from @repo/reporting
+ * @date 2025-09-23
+ * @type reporting-ui-kit
+ */
 export default function TrendBadge({
     className,
     value,

@@ -1616,10 +1616,22 @@ importers:
       '@gorgias/design-tokens':
         specifier: 0.10.5
         version: 0.10.5
+      classnames:
+        specifier: 2.2.6
+        version: 2.2.6
+      moment:
+        specifier: 2.29.4
+        version: 2.29.4
+      moment-timezone:
+        specifier: 0.5.39
+        version: 0.5.39
     devDependencies:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
@@ -1638,6 +1650,9 @@ importers:
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      '@types/classnames':
+        specifier: 2.2.10
+        version: 2.2.10
       '@types/react':
         specifier: catalog:react
         version: 18.2.67

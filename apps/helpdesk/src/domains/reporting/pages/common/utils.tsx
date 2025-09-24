@@ -21,9 +21,24 @@ import { RootState } from 'state/types'
 import { ViewFilter } from 'state/views/types'
 import { formatDatetime } from 'utils'
 
+/**
+ * @deprecated replaced by DEFAULT_LOCALE in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 export const DEFAULT_LOCALE = 'en-US'
-export const NOT_AVAILABLE_TEXT = 'N/A'
+/**
+ * @deprecated replaced by NOT_AVAILABLE_PLACEHOLDER in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 export const NOT_AVAILABLE_PLACEHOLDER = '-'
+/**
+ * @deprecated replaced by NOT_AVAILABLE_TEXT in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
+export const NOT_AVAILABLE_TEXT = 'N/A'
 
 export enum StartDayOfWeek {
     Sunday = 'sunday',
@@ -66,7 +81,11 @@ export const formatPercent = (value: unknown) => {
     return _isNumber(value) ? `${value}%` : ''
 }
 
-// format a value and display it as a currency
+/**
+ * @deprecated replaced by formatCurrency in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 export const formatCurrency = (
     value: number,
     currency: string,
@@ -86,7 +105,9 @@ export const formatCurrency = (
 }
 
 /**
- * Display a duration in days, hours, minutes and seconds
+ * @deprecated replaced by formatDuration in @repo/reporting imports
+ * @date 2025-09-05
+ * @type reporting-ui-kit
  */
 export const formatDuration = (value: number, precision = 9) => {
     if (!value || (value > -1 && value < 1)) {
@@ -204,6 +225,11 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
     }, [periodFilterLeft, tagsState, statsFilters])
 }
 
+/**
+ * @deprecated replaced by MetricValueFormat in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 export type MetricValueFormat =
     | 'decimal'
     | 'decimal-precision-1'
@@ -219,6 +245,11 @@ export type MetricValueFormat =
     | 'currency-precision-1'
     | 'ratio'
 
+/**
+ * @deprecated replaced by metricToDecimal in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 const metricToDecimal = (
     value: number,
     formatOptions?: Intl.NumberFormatOptions,
@@ -229,11 +260,21 @@ const metricToDecimal = (
     })
 }
 
+/**
+ * @deprecated replaced by metricToInteger in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 const metricToInteger = (value: number) =>
     value.toLocaleString(DEFAULT_LOCALE, {
         maximumFractionDigits: 0,
     })
 
+/**
+ * @deprecated replaced by formatMetricValue in @repo/reporting imports
+ * @date 2025-08-29
+ * @type reporting-ui-kit
+ */
 export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
@@ -316,6 +357,11 @@ export type MetricTrendFormat =
     | 'currency-precision-1'
     | 'ratio'
 
+/**
+ * @deprecated replaced by formatTrendAsPercent in @repo/reporting imports
+ * @date 2025-09-05
+ * @type reporting-ui-kit
+ */
 const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
     const value = absDiff / prevValue || 0
     return Number.isFinite(value)
@@ -326,6 +372,11 @@ const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
         : null
 }
 
+/**
+ * @deprecated replaced by formatMetricTrend in @repo/reporting imports
+ * @date 2025-09-05
+ * @type reporting-ui-kit
+ */
 export const formatMetricTrend = (
     value: number,
     prevValue: number,

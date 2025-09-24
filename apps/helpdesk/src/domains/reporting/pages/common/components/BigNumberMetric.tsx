@@ -13,6 +13,12 @@ type Props = {
     trendBadge?: ReactNode
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * If you need to add a loading state, use Skeleton from '@gorgias/axiom' instead
+ * @date 2025-09-15
+ * @type reporting-ui-kit
+ */
 export default function BigNumberMetric({
     children,
     className,
