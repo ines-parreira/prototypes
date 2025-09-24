@@ -12,6 +12,7 @@ import {
 import { Drawer } from 'pages/common/components/Drawer'
 import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 
+import { useVoiceFlow } from '../useVoiceFlow'
 import { useDeleteNode } from '../utils/useDeleteNode'
 
 import css from './VoiceStepNode.less'
@@ -35,10 +36,14 @@ export function VoiceStepNode({
     ...rest
 }: VoiceStepNodeProps) {
     const [selected, setSelected] = useState(rest.selected || false)
+    const { updateNode } = useVoiceFlow()
+    const { deleteNode } = useDeleteNode()
+
     const handleDrawerClose = () => {
         setSelected(false)
+        // Update the React Flow node's selected state to avoid re-render issues
+        updateNode(rest.id, { selected: false })
     }
-    const { deleteNode } = useDeleteNode()
 
     return (
         <>

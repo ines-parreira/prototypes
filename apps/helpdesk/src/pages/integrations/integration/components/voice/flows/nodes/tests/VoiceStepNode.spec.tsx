@@ -13,6 +13,14 @@ jest.mock(
     }),
 )
 
+const mockUpdateNode = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/useVoiceFlow',
+    () => ({
+        useVoiceFlow: () => ({ updateNode: mockUpdateNode }),
+    }),
+)
+
 const mockIcon = <span>Test Icon</span>
 const mockChildren = <div>Test Content</div>
 
@@ -32,7 +40,12 @@ describe('VoiceStepNode', () => {
         errors: [],
         children: mockChildren,
         id: 'test-id',
+        data: {},
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('renders with basic props', () => {
         renderComponent(defaultProps)
@@ -92,6 +105,115 @@ describe('VoiceStepNode', () => {
 
         await waitFor(() => {
             expect(mockUseDeleteNode).toHaveBeenCalledWith(defaultProps.id)
+        })
+    })
+
+    describe('drawer functionality', () => {
+        it('opens drawer when card is clicked and sets selected state', async () => {
+            const user = userEvent.setup()
+            renderComponent(defaultProps)
+
+            const stepCardWrapper = screen.getByLabelText('Step node')
+
+            // Card should not be selected initially
+            expect(stepCardWrapper?.firstElementChild).not.toHaveClass(
+                'selected',
+            )
+
+            // Click on the card to open the drawer
+            await act(async () => {
+                await user.click(stepCardWrapper)
+            })
+
+            // Card should now be selected
+            await waitFor(() => {
+                expect(stepCardWrapper?.firstElementChild).toHaveClass(
+                    'selected',
+                )
+            })
+        })
+
+        it('closes drawer and updates node when close button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent(defaultProps)
+
+            const stepCardWrapper = screen.getByLabelText('Step node')
+
+            // Click on the card to open the drawer
+            await act(async () => {
+                await user.click(stepCardWrapper)
+            })
+
+            // Wait for card to be selected
+            await waitFor(() => {
+                expect(stepCardWrapper?.firstElementChild).toHaveClass(
+                    'selected',
+                )
+            })
+
+            // Find and click the close button (using id instead of data-testid)
+            const closeButton = document.getElementById('close-button')
+            expect(closeButton).toBeInTheDocument()
+            await act(async () => {
+                await user.click(closeButton!)
+            })
+
+            // Verify card is no longer selected
+            await waitFor(() => {
+                expect(stepCardWrapper?.firstElementChild).not.toHaveClass(
+                    'selected',
+                )
+            })
+
+            // Verify updateNode was called with selected: false
+            expect(mockUpdateNode).toHaveBeenCalledWith('test-id', {
+                selected: false,
+            })
+        })
+
+        it('closes drawer and updates node when backdrop is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent(defaultProps)
+
+            const stepCardWrapper = screen.getByLabelText('Step node')
+
+            // Click on the card to open the drawer
+            await act(async () => {
+                await user.click(stepCardWrapper)
+            })
+
+            // Wait for card to be selected
+            await waitFor(() => {
+                expect(stepCardWrapper?.firstElementChild).toHaveClass(
+                    'selected',
+                )
+            })
+
+            // Click on the backdrop
+            const backdrop = screen.getByRole('presentation')
+            await act(async () => {
+                await user.click(backdrop)
+            })
+
+            // Verify card is no longer selected
+            await waitFor(() => {
+                expect(stepCardWrapper?.firstElementChild).not.toHaveClass(
+                    'selected',
+                )
+            })
+
+            // Verify updateNode was called with selected: false
+            expect(mockUpdateNode).toHaveBeenCalledWith('test-id', {
+                selected: false,
+            })
+        })
+
+        it('renders with selected prop set to true', () => {
+            renderComponent({ ...defaultProps, selected: true })
+
+            // Card should be selected
+            const stepCardWrapper = screen.getByLabelText('Step node')
+            expect(stepCardWrapper?.firstElementChild).toHaveClass('selected')
         })
     })
 })
