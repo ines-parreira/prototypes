@@ -62,6 +62,7 @@ describe('VoiceQueueSettingsLinkedIntegrations', () => {
         phoneNumbers: mockPhoneNumbersState,
         getPhoneNumberById: (id: number): NewPhoneNumber =>
             mockPhoneNumbersState[id],
+        getCountryFromPhoneNumberId: jest.fn(),
     }
 
     beforeEach(() => {

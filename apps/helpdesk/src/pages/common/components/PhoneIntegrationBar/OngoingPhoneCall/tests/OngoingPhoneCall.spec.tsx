@@ -40,16 +40,23 @@ jest.mock('../CallTransferDropdown/CallTransferDropdown', () => {
             isOpen,
             setIsOpen,
             onTransferInitiated,
+            integrationPhoneNumberId,
         }: {
             isOpen: boolean
             setIsOpen: (flag: boolean) => void
             onTransferInitiated: (transferringTo: TransferTarget | null) => void
+            integrationPhoneNumberId?: number
         }) => (
             <div
                 data-testid="transfer-dropdown"
                 className={isOpen ? 'is-open' : 'is-hidden'}
                 onClick={() => setIsOpen(!isOpen)}
             >
+                {integrationPhoneNumberId && (
+                    <div data-testid="integration-phone-number-id">
+                        {integrationPhoneNumberId}
+                    </div>
+                )}
                 <div
                     data-testid="confirm-agent-transfer-button"
                     onClick={() =>
@@ -489,5 +496,38 @@ describe('<OngoingPhoneCall/>', () => {
                 screen.getByLabelText('Transfer phone call'),
             ).toBeAriaEnabled()
         })
+    })
+
+    it('passes integrationPhoneNumberId from integration meta to CallTransferDropdown', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        const call = mockIncomingCall(integrationId) as Call
+
+        const integrationWithPhoneNumber = {
+            ...integration,
+            meta: {
+                ...integration.meta,
+                phone_number_id: 456,
+            },
+        }
+
+        const testStore = mockStore({
+            integrations: fromJS({
+                integrations: [integrationWithPhoneNumber],
+            }),
+        })
+
+        render(
+            <Provider store={testStore}>
+                <OngoingPhoneCall call={call} />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByLabelText('Transfer phone call'))
+
+        expect(
+            screen.getByTestId('integration-phone-number-id'),
+        ).toHaveTextContent('456')
     })
 })

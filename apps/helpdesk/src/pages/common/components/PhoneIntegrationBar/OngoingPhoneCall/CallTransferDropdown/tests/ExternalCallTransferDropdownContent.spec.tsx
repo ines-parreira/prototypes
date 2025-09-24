@@ -8,6 +8,22 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
 
 jest.mock(
+    'pages/integrations/integration/components/phone/usePhoneNumbers',
+    () => ({
+        __esModule: true,
+        default: () => ({
+            getCountryFromPhoneNumberId: (id: number) => {
+                const phoneNumbers: Record<number, string> = {
+                    1: 'US',
+                    2: 'IT',
+                }
+                return phoneNumbers[id]
+            },
+        }),
+    }),
+)
+
+jest.mock(
     'pages/integrations/integration/components/phone/PhoneDeviceDialerInput',
     () => ({
         __esModule: true,
@@ -16,11 +32,13 @@ jest.mock(
             onValueChange,
             onConfirm,
             onValidationChange,
+            country,
         }: {
             value?: { phoneNumber: string; customer?: any }
             onValueChange: (phoneNumber: string, customer?: any) => void
             onConfirm: () => void
             onValidationChange?: (isValid: boolean) => void
+            country?: string
         }) => (
             <div>
                 <input
@@ -53,6 +71,7 @@ jest.mock(
                 <button onClick={onConfirm} aria-label="Confirm transfer">
                     Confirm Transfer
                 </button>
+                {country && <div data-testid="initial-country">{country}</div>}
                 {value?.customer && (
                     <div data-testid="displayed-customer">
                         {value.customer.customer?.name}
@@ -72,7 +91,12 @@ describe('ExternalCallTransferDropdownContent', () => {
         {
             phoneNumber,
             customer,
-        }: { phoneNumber: string; customer?: UserSearchResult } = {
+            integrationPhoneNumberId,
+        }: {
+            phoneNumber: string
+            customer?: UserSearchResult
+            integrationPhoneNumberId?: number
+        } = {
             phoneNumber: '',
         },
     ) =>
@@ -92,6 +116,7 @@ describe('ExternalCallTransferDropdownContent', () => {
                     onPhoneNumberValidationChange={
                         onPhoneNumberValidationChange
                     }
+                    integrationPhoneNumberId={integrationPhoneNumberId}
                 />
             </Dropdown>,
         )
@@ -184,6 +209,30 @@ describe('ExternalCallTransferDropdownContent', () => {
         expect(phoneInput).toHaveValue('+15559876543')
         expect(screen.getByTestId('displayed-customer')).toHaveTextContent(
             'LeChuck',
+        )
+    })
+
+    describe('set country from integration phone number', () => {
+        it('does not set initial country when integrationPhoneNumberId is not provided', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByTestId('initial-country'),
+            ).not.toBeInTheDocument()
+        })
+
+        it.each([
+            { integrationPhoneNumberId: 1, expectedCountry: 'US' },
+            { integrationPhoneNumberId: 2, expectedCountry: 'IT' },
+        ])(
+            'sets initial country to $expectedCountry using integration phone number country',
+            ({ integrationPhoneNumberId, expectedCountry }) => {
+                renderComponent({ phoneNumber: '', integrationPhoneNumberId })
+
+                expect(screen.getByTestId('initial-country')).toHaveTextContent(
+                    expectedCountry,
+                )
+            },
         )
     })
 })

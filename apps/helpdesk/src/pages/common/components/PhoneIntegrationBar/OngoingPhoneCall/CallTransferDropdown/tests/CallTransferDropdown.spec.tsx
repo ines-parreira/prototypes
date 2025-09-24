@@ -55,9 +55,15 @@ jest.mock(
             customer,
             setSelectedExternalPhoneNumber,
             onPhoneNumberValidationChange,
+            integrationPhoneNumberId,
         }: any) => {
             return (
                 <div data-testid="external-transfer-content">
+                    {integrationPhoneNumberId && (
+                        <div data-testid="integration-phone-number-id">
+                            {integrationPhoneNumberId}
+                        </div>
+                    )}
                     <button
                         onClick={() => {
                             setSelectedExternalPhoneNumber('+15551234567', null)
@@ -454,7 +460,7 @@ describe('CallTransferDropdown', () => {
     describe('transfer to external number', () => {
         it('shows external transfer content when External tab is selected', async () => {
             const user = userEvent.setup()
-            renderComponent()
+            renderComponent({ ...baseProps, integrationPhoneNumberId: 123 })
 
             const externalTab = screen.getByRole('radio', { name: /external/i })
             await act(() => user.click(externalTab))
@@ -465,6 +471,9 @@ describe('CallTransferDropdown', () => {
             expect(
                 screen.queryByTestId('agent-transfer-content'),
             ).not.toBeInTheDocument()
+            expect(
+                screen.getByTestId('integration-phone-number-id'),
+            ).toHaveTextContent('123')
         })
 
         it('transfers call to external number', async () => {

@@ -198,6 +198,11 @@ export function OngoingPhoneCall({
                         setTransferringTo(transferTarget)
                     }}
                     call={call}
+                    integrationPhoneNumberId={
+                        integration.getIn(['meta', 'phone_number_id']) as
+                            | number
+                            | undefined
+                    }
                 />
                 <IconButtonTooltip
                     intent="secondary"

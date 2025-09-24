@@ -39,6 +39,7 @@ type Props = Pick<
     onTransferInitiated: (transferringTo: TransferTarget | null) => void
     setIsOpen: (isOpen: boolean) => void
     call: Call
+    integrationPhoneNumberId?: number
 }
 
 const CallTransferDropdown = ({
@@ -48,6 +49,7 @@ const CallTransferDropdown = ({
     placement = 'top',
     onTransferInitiated,
     call,
+    integrationPhoneNumberId,
 }: Props) => {
     const isTransferToExternalNumberEnabled = useFlag(
         FeatureFlagKey.TransferCallToExternalNumber,
@@ -253,6 +255,7 @@ const CallTransferDropdown = ({
                     onPhoneNumberValidationChange={
                         handlePhoneNumberValidationChange
                     }
+                    integrationPhoneNumberId={integrationPhoneNumberId}
                 />
             )}
             <div className={css.dropdownFooter}>
