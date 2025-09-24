@@ -5,7 +5,7 @@
     "main": "src/main/init/index.tsx",
     "private": true,
     "scripts": {
-        "typecheck": "tsc -p ./tsconfig.json --noEmit true",
+        "typecheck": "tsc -p ./tsconfig.ci.json --noEmit true",
         "typecheck:watch": "tsc -p ./tsconfig.json --noEmit true --watch",
         "oxlint": "oxlint --quiet",
         "stylelint:less": "stylelint \"src/**/*.less\"",

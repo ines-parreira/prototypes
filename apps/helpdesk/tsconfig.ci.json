@@ -1,0 +1,25 @@
+{
+    "extends": "@repo/config/tsconfig.react.json",
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+        "baseUrl": "./src",
+        "typeRoots": ["./src/types", "./node_modules/@types"],
+        "paths": {
+            "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
+        },
+        "types": [
+            "facebook-js-sdk",
+            "stripe-v2",
+            "webpack-env",
+            "@testing-library/jest-dom"
+        ]
+    },
+    "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx", ".storybook"],
+    "exclude": [
+        "node_modules",
+        "build",
+        "storybook-static",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
+    ]
+}
