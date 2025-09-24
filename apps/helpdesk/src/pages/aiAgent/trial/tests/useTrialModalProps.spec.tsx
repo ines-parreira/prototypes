@@ -9,6 +9,7 @@ import moment from 'moment'
 import { Route, Router } from 'react-router-dom'
 
 import * as segment from 'common/segment'
+import { useFlag } from 'core/flags'
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -50,6 +51,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/trial/hooks/useNotifyAdmins')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 jest.mock('pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding')
+jest.mock('core/flags')
 
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
@@ -68,6 +70,7 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
 const mockUseNotifyAdmins = assumeMock(useNotifyAdmins)
 const mockUseAiAgentTrialOnboarding = assumeMock(useAiAgentTrialOnboarding)
+const mockUseFlag = assumeMock(useFlag)
 const mockLogEvent = jest
     .spyOn(segment, 'logEvent')
     .mockImplementation(jest.fn())
@@ -165,6 +168,9 @@ describe('useTrialModalProps', () => {
         mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
         mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-1')
+
+        // Mock useFlag to return false by default
+        mockUseFlag.mockReturnValue(false)
 
         mockUseAppSelector.mockImplementation((selector) => {
             // The Shopify selector appears as "memoized" due to memoization wrapper
@@ -2542,6 +2548,7 @@ describe('useTrialModalProps', () => {
                 beforeEach(() => {
                     // Mock empty store activations
                     setupMockStoreActivations()
+                    mockUseFlag.mockReturnValue(true)
                 })
                 it('should disable primary action when store activation is not found and ai agent is onboarded', () => {
                     mockUseTrialAccess.mockReturnValue(
@@ -3245,6 +3252,10 @@ describe('useTrialModalProps', () => {
         })
 
         describe('when isOnboarded is false', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
             it('should return modified modal props for non-onboarded users', () => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
@@ -3379,6 +3390,72 @@ describe('useTrialModalProps', () => {
                 // For non-onboarded users, validation should always be valid
                 expect(modal.primaryAction?.isDisabled).toBe(false)
                 expect(modal.primaryAction?.errorMessage).toBeUndefined()
+            })
+
+            describe('with feature flag enabled', () => {
+                beforeEach(() => {
+                    mockUseFlag.mockReturnValue(true)
+                })
+
+                it('should return modified modal props for non-onboarded users when feature flag is enabled', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            trialType: TrialType.ShoppingAssistant,
+                            isAdminUser: true,
+                            isOnboarded: false,
+                        }),
+                    )
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: mockStoreName }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.title).toBe(
+                        'Try AI Agent with Shopping Assistant skills',
+                    )
+                    expect(modal.subtitle).toBe(
+                        'Unlock powerful automation. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance using your own brand voice.',
+                    )
+                    expect(modal.primaryAction?.label).toBe(
+                        'Start Trial now (AI Agent + Shopping Assistant)',
+                    )
+                    expect(modal.secondaryAction?.label).toBe(
+                        'start AI Agent Only',
+                    )
+                })
+            })
+
+            describe('with feature flag disabled', () => {
+                beforeEach(() => {
+                    mockUseFlag.mockReturnValue(false)
+                })
+
+                it('should return default modal props for non-onboarded users when feature flag is disabled', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            trialType: TrialType.ShoppingAssistant,
+                            isAdminUser: true,
+                            isOnboarded: false,
+                        }),
+                    )
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: mockStoreName }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.title).toBe(
+                        'Unlock new AI Agent skills at no extra cost',
+                    )
+                    expect(modal.subtitle).toBe(
+                        "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
+                    )
+                    expect(modal.primaryAction?.label).toBe('Start trial now')
+                    expect(modal.secondaryAction?.label).toBe('No, thanks')
+                })
             })
         })
 

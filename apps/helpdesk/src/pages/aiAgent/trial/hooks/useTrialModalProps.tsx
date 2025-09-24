@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import { SegmentEvent } from 'common/segment'
 import { logEvent } from 'common/segment/segment'
+import { useFlag } from 'core/flags'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
@@ -403,6 +405,10 @@ const useNewTrialUpgradePlanModal = (
     isOnboarded: boolean | undefined,
     storeName?: string,
 ): TrialModalProps['newTrialUpgradePlanModal'] => {
+    const isExpandingTrialExperienceMilestone2Enabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
+        false,
+    )
     const { startOnboardingWizard } = useAiAgentTrialOnboarding({
         shopName: storeName || '',
     })
@@ -434,7 +440,10 @@ const useNewTrialUpgradePlanModal = (
 
     const validateTrialStartRequirements = useCallback(
         (onClose?: () => void) => {
-            if (isOnboarded === false) {
+            if (
+                isOnboarded === false &&
+                isExpandingTrialExperienceMilestone2Enabled
+            ) {
                 return { isValid: true }
             }
 
@@ -477,7 +486,12 @@ const useNewTrialUpgradePlanModal = (
 
             return { isValid: true }
         },
-        [storeName, storeActivations, isOnboarded],
+        [
+            storeName,
+            storeActivations,
+            isOnboarded,
+            isExpandingTrialExperienceMilestone2Enabled,
+        ],
     )
 
     const aiAgentProps = useMemo(() => {
@@ -558,7 +572,10 @@ const useNewTrialUpgradePlanModal = (
             onClose: closeTrialUpgradeModal,
             features: SHOPPING_ASSISTANT_TRIAL_FEATURES,
         }
-        if (isOnboarded === false) {
+        if (
+            isOnboarded === false &&
+            isExpandingTrialExperienceMilestone2Enabled
+        ) {
             props = {
                 ...props,
                 title: 'Try AI Agent with Shopping Assistant skills',
@@ -592,6 +609,7 @@ const useNewTrialUpgradePlanModal = (
         isMultiStore,
         validateTrialStartRequirements,
         isOnboarded,
+        isExpandingTrialExperienceMilestone2Enabled,
         startOnboardingWizard,
         setShoppingAssistantTrialOptin,
         openTrialFinishSetupModal,
