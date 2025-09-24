@@ -2338,7 +2338,6 @@ exports[`actions new message prepareTicketMessage should prepare next new messag
   "forceFocus": false,
   "forceUpdate": false,
   "inserted_discounts": [],
-  "isTranslationPending": false,
 }
 `;
 

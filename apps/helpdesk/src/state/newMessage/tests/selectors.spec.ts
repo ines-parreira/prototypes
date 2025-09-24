@@ -327,20 +327,5 @@ describe('new message selectors', () => {
                 )
             })
         })
-
-        describe('getIsTranslationPending()', () => {
-            it('should return false when translation is not pending', () => {
-                expect(selectors.getIsTranslationPending(state)).toBe(false)
-            })
-
-            it('should return true when translation is pending', () => {
-                state.newMessage = state.newMessage.setIn(
-                    ['state', 'isTranslationPending'],
-                    true,
-                )
-
-                expect(selectors.getIsTranslationPending(state)).toBe(true)
-            })
-        })
     })
 })

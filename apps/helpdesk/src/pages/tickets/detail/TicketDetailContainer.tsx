@@ -30,6 +30,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
+import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
@@ -49,11 +50,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {
-    canSend,
-    getIsTranslationPending,
-    getNewMessageSource,
-} from 'state/newMessage/selectors'
+import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import {
@@ -103,7 +100,6 @@ export const TicketDetailContainer = ({
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
-    isTranslationPending,
     newMessage,
     newMessageSource,
     prepareTicketMessage,
@@ -146,6 +142,8 @@ export const TicketDetailContainer = ({
     const { temporaryId } = useDraftMessages(ticketIdParam === 'new')
 
     useDraftTicketActivityTracking(temporaryId)
+
+    const { isTranslationPending } = useOutboundTranslationContext()
 
     const { handleTicketMessageTranslationEvents } =
         useLiveTicketTranslationsUpdates({
@@ -699,7 +697,6 @@ const connector = connect(
         ticket: state.ticket,
         newMessage: state.newMessage,
         canSendMessage: canSend(state),
-        isTranslationPending: getIsTranslationPending(state),
         newMessageSource: getNewMessageSource(state),
     }),
     {

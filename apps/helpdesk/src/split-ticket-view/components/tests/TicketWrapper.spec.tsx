@@ -47,6 +47,14 @@ jest.mock(
     }),
 )
 
+jest.mock('providers/OutboundTranslationProvider', () => ({
+    OutboundTranslationProvider: ({
+        children,
+    }: {
+        children: React.ReactNode
+    }) => <div data-testid="outbound-translation-provider">{children}</div>,
+}))
+
 const useParamsMock = useParams as jest.Mock
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 const historyMock = history as jest.Mocked<typeof history>
@@ -58,10 +66,11 @@ describe('TicketWrapper', () => {
         useSplitTicketViewMock.mockReturnValue({ nextTicketId: null })
     })
 
-    it('should render TicketDetailContainer wrapped in TicketMessageTranslationDisplayProvider', () => {
+    it('should render TicketDetailContainer wrapped in TicketMessageTranslationDisplayProvider and OutboundTranslationProvider', () => {
         const { getByTestId } = render(<TicketWrapper />)
 
         expect(getByTestId('translation-provider')).toBeInTheDocument()
+        expect(getByTestId('outbound-translation-provider')).toBeInTheDocument()
         expect(getByTestId('ticket-detail-container')).toBeInTheDocument()
     })
 

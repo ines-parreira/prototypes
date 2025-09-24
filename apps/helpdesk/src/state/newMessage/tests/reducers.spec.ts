@@ -170,17 +170,6 @@ describe('new message reducer', () => {
             )
         })
 
-        it('handles SET_TRANSLATION_PENDING action', () => {
-            const action = {
-                type: types.SET_TRANSLATION_PENDING,
-                payload: true,
-            }
-
-            const newState = reducer(initialState, action)
-
-            expect(newState.getIn(['state', 'isTranslationPending'])).toBe(true)
-        })
-
         it('clears translation state when message is submitted', () => {
             const originalContent = ContentState.createFromText('Original text')
             const translatedContent =
@@ -189,7 +178,6 @@ describe('new message reducer', () => {
             const stateWithTranslation = initialState
                 .setIn(['state', 'contentState'], translatedContent)
                 .setIn(['state', 'originalContentState'], originalContent)
-                .setIn(['state', 'isTranslationPending'], true)
 
             const action = {
                 type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
@@ -202,9 +190,6 @@ describe('new message reducer', () => {
             expect(
                 newState.getIn(['state', 'originalContentState']),
             ).toBeUndefined()
-            expect(newState.getIn(['state', 'isTranslationPending'])).toBe(
-                false,
-            )
         })
     })
 
@@ -1028,7 +1013,6 @@ describe('new message reducer', () => {
                 dirty: true,
                 cacheAdded: true,
                 inserted_discounts: [],
-                isTranslationPending: false,
             }
         }
 

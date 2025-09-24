@@ -4,11 +4,11 @@ import { fireEvent, render } from '@testing-library/react'
 import { EditorState } from 'draft-js'
 
 import { useLanguageDropdown } from '../hooks/useLanguageDropdown'
-import { useTranslation } from '../hooks/useTranslation'
+import { useOutboundTranslation } from '../hooks/useOutboundTranslation'
 import Translate from '../Translate'
 
-jest.mock('../hooks/useTranslation')
-const mockUseTranslation = useTranslation as jest.Mock
+jest.mock('../hooks/useOutboundTranslation')
+const mockUseOutboundTranslation = useOutboundTranslation as jest.Mock
 
 jest.mock('../hooks/useLanguageDropdown')
 const mockUseLanguageDropdown = useLanguageDropdown as jest.Mock
@@ -37,7 +37,7 @@ describe('Translate', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseTranslation.mockReturnValue({
+        mockUseOutboundTranslation.mockReturnValue({
             isTranslating: false,
             hasTranslation: false,
             requestTranslation: mockRequestTranslation,
@@ -67,8 +67,10 @@ describe('Translate', () => {
     })
 
     it('shows loader when translating', () => {
-        const { useTranslation } = require('../hooks/useTranslation')
-        useTranslation.mockReturnValue({
+        const {
+            useOutboundTranslation,
+        } = require('../hooks/useOutboundTranslation')
+        useOutboundTranslation.mockReturnValue({
             isTranslating: true,
             hasTranslation: false,
             requestTranslation: mockRequestTranslation,
@@ -100,7 +102,7 @@ describe('Translate', () => {
     })
 
     it('toggles original when clicked with active translation', () => {
-        mockUseTranslation.mockReturnValue({
+        mockUseOutboundTranslation.mockReturnValue({
             isTranslating: false,
             hasTranslation: true,
             requestTranslation: mockRequestTranslation,

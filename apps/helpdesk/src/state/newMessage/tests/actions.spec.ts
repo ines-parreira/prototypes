@@ -2294,13 +2294,6 @@ describe('actions', () => {
 
             expect(action.type).toBe(types.CLEAR_TRANSLATION_STATE)
         })
-
-        it('creates SET_TRANSLATION_PENDING action with payload', () => {
-            const action = actions.setTranslationPending(true)
-
-            expect(action.type).toBe(types.SET_TRANSLATION_PENDING)
-            expect(action.payload).toBe(true)
-        })
     })
 
     describe('setActiveCustomerAsReceiver', () => {
