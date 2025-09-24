@@ -80,7 +80,6 @@ const UsageAndPlansView = ({
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
 
-    const isCurrentPlanMonthly = cadence === Cadence.Month
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
 
@@ -231,13 +230,7 @@ const UsageAndPlansView = ({
                 </div>
                 <div className={css.generalInfoItem}>
                     <span>
-                        Billed{' '}
-                        {isCurrentPlanMonthly ||
-                        isCurrentSubscriptionCanceled ? (
-                            <>{getCadenceName(Cadence.Month)}</>
-                        ) : (
-                            <>{getCadenceName(Cadence.Year)}</>
-                        )}
+                        Billed <>{getCadenceName(cadence ?? Cadence.Month)}</>
                     </span>
                     <NavigateToChangeBillingFrequency
                         buttonText="Update"
