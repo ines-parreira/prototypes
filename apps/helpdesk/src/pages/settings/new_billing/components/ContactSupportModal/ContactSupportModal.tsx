@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
@@ -12,19 +12,21 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { TicketPurpose } from 'state/billing/types'
 import { isTrialing } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { BILLING_BASE_PATH } from '../../constants'
 import { sendSupportTicket } from '../../utils/sendSupportTicket'
+import { prepareMessage } from './helpers/prepareMessage'
 
 import css from './ContactSupportModal.less'
 
 export type ContactSupportModalProps = {
     isOpen: boolean
     handleOnClose: () => void
-    prepareMessage?: (message: string) => string
+    ticketPurpose?: TicketPurpose
     defaultMessage?: string
     subject: string
     domain: string
@@ -36,7 +38,7 @@ export type ContactSupportModalProps = {
 const ContactSupportModal = ({
     isOpen,
     handleOnClose,
-    prepareMessage = (message) => message,
+    ticketPurpose = TicketPurpose.CONTACT_US,
     defaultMessage = '',
     subject,
     zapierHook,
@@ -49,16 +51,23 @@ const ContactSupportModal = ({
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isFreeTrial = useAppSelector(isTrialing)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isTrialingSubscription = useAppSelector(isTrialing)
     const history = useHistory()
 
     useEffect(() => {
         setMessage(defaultMessage)
     }, [defaultMessage])
 
-    const handleSendTicket = async () => {
+    const handleSendTicket = useCallback(async () => {
         setIsSubmitting(true)
 
-        const messageToSend = prepareMessage(message)
+        const helpdeskPlanName = currentHelpdeskPlan?.name ?? ''
+        const messageToSend = prepareMessage(
+            message,
+            ticketPurpose,
+            helpdeskPlanName,
+            isTrialingSubscription,
+        )
         try {
             await sendSupportTicket({
                 zapierHook,
@@ -68,7 +77,7 @@ const ContactSupportModal = ({
                 to,
                 account: domain,
                 freeTrial: isFreeTrial,
-                helpdeskPlan: currentHelpdeskPlan?.name ?? '',
+                helpdeskPlan: helpdeskPlanName,
             })
 
             void dispatch(
@@ -93,7 +102,21 @@ const ContactSupportModal = ({
             setIsSubmitting(false)
             history.push(BILLING_BASE_PATH)
         }
-    }
+    }, [
+        message,
+        ticketPurpose,
+        currentHelpdeskPlan,
+        isTrialingSubscription,
+        zapierHook,
+        subject,
+        from,
+        to,
+        domain,
+        isFreeTrial,
+        dispatch,
+        handleOnClose,
+        history,
+    ])
 
     return (
         <Modal isOpen={isOpen} onClose={handleOnClose}>

@@ -1,17 +1,15 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {
-    basicMonthlyHelpdeskPlan,
-    HELPDESK_PRODUCT_ID,
-    products,
-} from 'fixtures/productPrices'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import { TicketPurpose } from 'state/billing/types'
 import * as actions from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -28,16 +26,8 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const store = mockedStore({
-    billing: fromJS({
-        currentAccount: fromJS({
-            current_subscription: {
-                products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                },
-            },
-        }),
-        products,
-    }),
+    billing: fromJS(billingState),
+    currentAccount: fromJS(account),
 })
 
 const mockedServer = new MockAdapter(client)
@@ -63,6 +53,7 @@ describe('ContactSupportModal', () => {
             isOpen: true,
             domain: 'acme',
             handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
             subject: 'Support Request',
             zapierHook: 'https://example.com',
             to: 'support@example.com',
@@ -100,6 +91,7 @@ describe('ContactSupportModal', () => {
             isOpen: true,
             domain: 'acme',
             handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
             subject: 'Support Request',
             zapierHook,
             to: 'support@example.com',
@@ -117,22 +109,65 @@ describe('ContactSupportModal', () => {
         )
         const sendButton = screen.getByText('Send')
 
-        fireEvent.change(messageInput, {
-            target: { value: 'This is my support ticket' },
-        })
-        fireEvent.click(sendButton)
+        await act(() =>
+            userEvent.type(messageInput, 'This is my support ticket'),
+        )
+        await act(() => userEvent.click(sendButton))
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: `Your request has been submitted. We'll get back to you by email at ${props.from} within 24 business hours`,
-                status: 'success',
-                dismissAfter: 5000,
-                showDismissButton: true,
-            })
+        expect(notify).toHaveBeenCalledWith({
+            message: `Your request has been submitted. We'll get back to you by email at ${props.from} within 24 business hours`,
+            status: 'success',
+            dismissAfter: 5000,
+            showDismissButton: true,
         })
 
         // Assert that the handleOnClose function is called
         expect(mockHandleClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should send a support ticket and close the modal on Send button click, handling undefined helpdesk plans', async () => {
+        mockedServer.onGet().reply(200)
+
+        const props = {
+            isOpen: true,
+            domain: 'acme',
+            handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
+            subject: 'Support Request',
+            zapierHook: 'https://example.com',
+            to: 'support@example.com',
+            from: 'user@example.com',
+        }
+
+        const modifiedStore = mockedStore({
+            billing: fromJS(billingState),
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        ...account.current_subscription.products,
+                        [HELPDESK_PRODUCT_ID]: undefined,
+                    },
+                },
+            }),
+        })
+
+        render(
+            <Provider store={modifiedStore}>
+                <ContactSupportModal {...props} />
+            </Provider>,
+        )
+
+        const messageInput = screen.getByPlaceholderText(
+            'Write your message here',
+        )
+        const sendButton = screen.getByText('Send')
+
+        await act(() =>
+            userEvent.type(messageInput, 'This is my support ticket'),
+        )
+        await act(() => userEvent.click(sendButton))
     })
 
     it('should display an error notification if there is an error sending the support ticket', async () => {
@@ -142,6 +177,7 @@ describe('ContactSupportModal', () => {
         const props = {
             isOpen: true,
             handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
             domain: 'acme',
             subject: 'Support Request',
             zapierHook: 'https://example.com',
@@ -163,17 +199,15 @@ describe('ContactSupportModal', () => {
         )
         const sendButton = screen.getByText('Send')
 
-        fireEvent.change(messageInput, {
-            target: { value: 'This is my support ticket' },
-        })
-        fireEvent.click(sendButton)
+        await act(() =>
+            userEvent.type(messageInput, 'This is my support ticket'),
+        )
+        await act(() => userEvent.click(sendButton))
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                status: 'error',
-                message:
-                    'There was an error sending your message. Please try again later.',
-            })
+        expect(notify).toHaveBeenCalledWith({
+            status: 'error',
+            message:
+                'There was an error sending your message. Please try again later.',
         })
 
         expect(mockHandleClose).toHaveBeenCalledTimes(1)

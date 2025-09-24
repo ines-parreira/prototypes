@@ -62,6 +62,7 @@ export enum FeatureFlagKey {
     BannerCarousel = 'banner-carousel',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
+    BillingMaintenanceMode = 'billing-maintenance-mode',
     BillingPreventSubscriptionAnyPlan = 'linear.CRMGROW-1414.prevent-user-subscribing-to-any-plan',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
     BotUserEdition = 'bot-user-edition',

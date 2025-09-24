@@ -98,11 +98,6 @@ export type AutomatePlan = BasePlan & {
     features: AutomatePlanFeatures
 }
 
-export type AutomateEarlyAccessPlan = AutomatePlan & {
-    amount_after_discount: number
-    discount: number
-}
-
 export type SMSOrVoicePlan = BasePlan & {
     num_quota_tickets: number
 }

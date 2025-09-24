@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useSessionStorage } from '@repo/hooks'
 import moment from 'moment'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { DateAndTimeFormatting } from 'constants/datetime'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { Cadence } from 'models/billing/types'
-import { getCadenceName, isEnterprise } from 'models/billing/utils'
+import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -27,7 +28,6 @@ import {
 } from 'state/billing/actions'
 import {
     getCurrentConvertPlan,
-    getCurrentHelpdeskPlan,
     getCurrentProductsUsage,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
@@ -74,12 +74,26 @@ const BillingStartView = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+
+    const subscriptionStartDatetime = currentSubscription
+        ? moment(currentSubscription.get('start_datetime'))
+        : null
+    const now = moment()
+    const isCurrentSubscriptionNew = subscriptionStartDatetime
+        ? now.diff(subscriptionStartDatetime, 'hours') < 24
+        : false
+    const voiceBannerInstanceId = subscriptionStartDatetime
+        ? `voice-subscription-activated-${subscriptionStartDatetime.toISOString()}`
+        : null
+    const smsBannerInstanceId = subscriptionStartDatetime
+        ? `sms-subscription-activated-${subscriptionStartDatetime.toISOString()}`
+        : null
+
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
         SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
     )
@@ -130,45 +144,6 @@ const BillingStartView = () => {
 
     const dispatchBillingError = useDispatchBillingError(contactBilling)
 
-    const prepareMessage = useCallback(
-        (message: string) => {
-            switch (ticketPurpose) {
-                case TicketPurpose.ENTERPRISE:
-                    return [
-                        `Billing request: Enterprise subscription`,
-                        `Merchant Helpdesk plan: ${
-                            currentHelpdeskPlan?.name ?? ''
-                        }`,
-                        `Free trial: ${
-                            isTrialingSubscription ? 'true' : 'false'
-                        }`,
-                        `Request:`,
-                        message,
-                    ].join('\n')
-                case TicketPurpose.ERROR:
-                    return [
-                        `Billing request: Billing error`,
-                        `Request:`,
-                        message,
-                    ].join('\n')
-                case TicketPurpose.MONTHLY_TO_YEARLY:
-                    return [
-                        `Billing request: Subscription change from ${getCadenceName(Cadence.Month)} to ${getCadenceName(Cadence.Year)} with Voice/SMS`,
-                        `Request:`,
-                        message,
-                    ].join('\n')
-                case TicketPurpose.CONTACT_US:
-                default:
-                    return [
-                        `Billing request: General request from Billing page`,
-                        `Request:`,
-                        message,
-                    ].join('\n')
-            }
-        },
-        [currentHelpdeskPlan?.name, isTrialingSubscription, ticketPurpose],
-    )
-
     useEffect(() => {
         const fetchUsage = async () => {
             await dispatch(fetchCurrentProductsUsage())
@@ -197,17 +172,8 @@ const BillingStartView = () => {
             })
         }
 
-        if (currentUsage?.voice) {
-            const subscriptionStartDate = moment(
-                currentUsage.voice.meta.subscription_start_datetime,
-            )
-            const now = moment()
-            const isSubscriptionNew =
-                now.diff(subscriptionStartDate, 'hours') < 24
-
-            const voiceBannerInstanceId = `voice-subscription-activated-${subscriptionStartDate.toISOString()}`
-
-            if (isSubscriptionNew) {
+        if (voiceBannerInstanceId && smsBannerInstanceId) {
+            if (isCurrentSubscriptionNew) {
                 setVoiceBanner({
                     description: 'Get started with your Voice plan',
                     type: AlertType.Info,
@@ -224,27 +190,14 @@ const BillingStartView = () => {
                         text: 'Set Up Voice',
                     },
                 })
-            } else {
-                removeBanner(BannerCategories.BILLING, voiceBannerInstanceId)
-            }
-        }
-        if (currentUsage?.sms) {
-            const subscriptionStartDate = moment(
-                currentUsage.sms.meta.subscription_start_datetime,
-            )
-            const now = moment()
-            const isSubscriptionNew =
-                now.diff(subscriptionStartDate, 'hours') < 24
 
-            if (isSubscriptionNew) {
                 setSMSBanner({
                     description: 'Get started with your SMS plan',
                     type: AlertType.Info,
                 })
-                const smsSubscriptionBannerInstanceId = `sms-subscription-activated-${subscriptionStartDate.toISOString()}`
 
                 addBanner({
-                    instanceId: smsSubscriptionBannerInstanceId,
+                    instanceId: smsBannerInstanceId,
                     category: BannerCategories.BILLING,
                     type: AlertBannerTypes.Info,
                     message: 'Your SMS subscription has been activated!',
@@ -254,6 +207,8 @@ const BillingStartView = () => {
                         text: 'Set Up SMS',
                     },
                 })
+            } else {
+                removeBanner(BannerCategories.BILLING, voiceBannerInstanceId)
             }
         }
     }, [
@@ -263,6 +218,9 @@ const BillingStartView = () => {
         isCurrentHelpdeskLegacy,
         periodEnd,
         removeBanner,
+        voiceBannerInstanceId,
+        smsBannerInstanceId,
+        isCurrentSubscriptionNew,
     ])
 
     /* istanbul ignore next */
@@ -367,12 +325,29 @@ const BillingStartView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentConvertPlan, convertStatus])
 
+    if (useFlag(FeatureFlagKey.BillingMaintenanceMode)) {
+        return (
+            <div className={css.mainContainer}>
+                <h1>Ongoing maintenance</h1>
+                Operation should be over in a few hours. If you have any urgent
+                request, please contact{' '}
+                <a
+                    href="mailto:billing@gorgias.com"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    Billing Support
+                </a>
+            </div>
+        )
+    }
+
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
             {
                 <SecondaryNavbar>
-                    {/* Only show the 'Gorgias Internal' tab when user is impersonated and feature flag is ON*/}
+                    {/* Only show the 'Gorgias Internal' tab when user is impersonated */}
                     {window.USER_IMPERSONATED ? (
                         <NavLink to={BILLING_INTERNAL_PATH}>
                             Gorgias Internal
@@ -485,13 +460,13 @@ const BillingStartView = () => {
                 handleOnClose={() => {
                     setIsModalOpen(false)
                 }}
+                ticketPurpose={ticketPurpose}
                 subject={subject}
                 from={from}
                 domain={domain}
                 defaultMessage={defaultMessage}
                 to={BILLING_SUPPORT_EMAIL}
                 zapierHook={ZAPIER_BILLING_HOOK}
-                prepareMessage={prepareMessage}
             />
         </div>
     )
