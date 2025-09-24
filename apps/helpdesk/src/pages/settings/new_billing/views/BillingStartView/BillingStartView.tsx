@@ -26,7 +26,6 @@ import {
     fetchPaymentMethod,
 } from 'state/billing/actions'
 import {
-    getCurrentAutomatePlan,
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
     getCurrentProductsUsage,
@@ -76,7 +75,6 @@ const BillingStartView = () => {
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
@@ -430,11 +428,6 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_PAYMENT_PATH}>
                             <PaymentInformationView
                                 contactBilling={contactBilling}
-                                currentHelpdeskPlan={currentHelpdeskPlan}
-                                currentAutomatePlan={currentAutomatePlan}
-                                isCurrentSubscriptionCanceled={
-                                    isCurrentSubscriptionCanceled
-                                }
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>

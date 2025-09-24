@@ -437,11 +437,11 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        // and the merchant can update its plan cadence from monthly to yearly
-        expect(screen.getByText('Update').closest('a')).toHaveAttribute(
-            'to',
-            '/app/settings/billing/payment/frequency',
-        )
+        // the merchant cannot update frequency as without a voice plan they are
+        // considered not vetted for phone
+        const button = screen.getByText('Update')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveClass('disabledText')
     })
 
     it('should render with active subscription containing Helpdesk starter product', () => {

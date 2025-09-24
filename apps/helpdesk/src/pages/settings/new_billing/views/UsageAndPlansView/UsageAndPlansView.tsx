@@ -3,16 +3,14 @@ import { useEffect, useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import moment from 'moment'
-import { Link, useHistory } from 'react-router-dom'
-
-import { Tooltip } from '@gorgias/axiom'
+import { useHistory } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
-import { getCadenceName, isLegacyAutomate } from 'models/billing/utils'
+import { getCadenceName } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
@@ -38,11 +36,11 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
 
+import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
 import ProductCard from '../../components/ProductCard'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
-    BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
@@ -83,15 +81,10 @@ const UsageAndPlansView = ({
     const convertStatus = useGetConvertStatus()
 
     const isCurrentPlanMonthly = cadence === Cadence.Month
-    const isCurrentPlanYearly = cadence === Cadence.Year
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
-    const isSubscribedToVoiceOrSMS = !!currentVoicePlan || !!currentSmsPlan
 
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const isAAOLegacy = !!currentAutomatePlan
-        ? isLegacyAutomate(currentAutomatePlan)
-        : false
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime'),
     )
@@ -130,10 +123,6 @@ const UsageAndPlansView = ({
     const disabledTooltip = isTrialingSubscription
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
-
-    const isVettedForPhone = Boolean(
-        currentSmsPlan?.plan_id || currentVoicePlan?.plan_id,
-    )
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -250,84 +239,11 @@ const UsageAndPlansView = ({
                             <>{getCadenceName(Cadence.Year)}</>
                         )}
                     </span>
-                    {isCurrentSubscriptionCanceled ? null : isSubscribedToHelpdeskStarter ? (
-                        <div>
-                            <span
-                                className={css.disabledText}
-                                id="update-billing-frequency"
-                            >
-                                Update
-                            </span>
-                            <Tooltip
-                                target="update-billing-frequency"
-                                placement="top"
-                                className={css.tooltip}
-                                autohide={false}
-                            >
-                                To change billing frequency, upgrade your
-                                Helpdesk plan to Basic or higher
-                            </Tooltip>
-                        </div>
-                    ) : isSubscribedToVoiceOrSMS &&
-                      isCurrentPlanMonthly &&
-                      !isVettedForPhone ? (
-                        <div>
-                            <span
-                                className={css.disabledText}
-                                id="update-billing-frequency"
-                            >
-                                Update
-                            </span>
-                            <Tooltip
-                                target="update-billing-frequency"
-                                placement="top"
-                                className={css.tooltip}
-                                autohide={false}
-                            >
-                                To switch from {getCadenceName(Cadence.Month)}{' '}
-                                to {getCadenceName(Cadence.Year)},{' '}
-                                <span
-                                    className={css.link}
-                                    onClick={() =>
-                                        contactBilling(
-                                            TicketPurpose.MONTHLY_TO_YEARLY,
-                                        )
-                                    }
-                                >
-                                    get in touch
-                                </span>{' '}
-                                with our team.
-                            </Tooltip>
-                        </div>
-                    ) : isAAOLegacy ? (
-                        <div>
-                            <span
-                                className={css.disabledText}
-                                id="update-billing-frequency"
-                            >
-                                Update
-                            </span>
-                            <Tooltip
-                                target="update-billing-frequency"
-                                placement="top"
-                                className={css.tooltip}
-                                autohide={false}
-                            >
-                                To change billing frequency, update AI Agent to
-                                a non-legacy plan
-                            </Tooltip>
-                        </div>
-                    ) : !!scheduledToCancelAt || isCurrentPlanYearly ? (
-                        // downgrading from yearly to monthly is not possible
-                        <span
-                            className={css.disabledText}
-                            id="update-billing-frequency"
-                        >
-                            Update
-                        </span>
-                    ) : (
-                        <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
-                    )}
+                    <NavigateToChangeBillingFrequency
+                        buttonText="Update"
+                        tooltipPlacement="top"
+                        contactBilling={contactBilling}
+                    />
                 </div>
             </div>
             {isCurrentSubscriptionCanceled ? null : (
