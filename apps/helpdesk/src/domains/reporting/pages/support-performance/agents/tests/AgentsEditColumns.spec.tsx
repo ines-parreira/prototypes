@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import {
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
@@ -38,8 +39,15 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
+
 describe('<AgentsEditColumns>', () => {
     const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
+
+    beforeEach(() => {
+        useIsHrtAiEnabledMock.mockReturnValue(true)
+    })
 
     it('should render dropdown toggle button', () => {
         render(

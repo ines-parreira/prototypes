@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import {
     agentPerformanceRows,
     agentPerformanceTableActiveView,
@@ -34,7 +35,14 @@ const submitAgentTableConfigViewMock = assumeMock(submitAgentTableConfigView)
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
+
 describe('useAgentsTableConfigSetting', () => {
+    beforeEach(() => {
+        useIsHrtAiEnabledMock.mockReturnValue(true)
+    })
+
     it('should return default order if no Setting available', () => {
         useFlagMock.mockReturnValue(true)
         const state = {
@@ -53,6 +61,45 @@ describe('useAgentsTableConfigSetting', () => {
             currentView: {
                 ...agentPerformanceTableActiveView,
                 metrics: [...agentPerformanceTableActiveView.metrics],
+                rows: [
+                    ...agentPerformanceRows,
+                    {
+                        id: AgentsTableRow.Total,
+                        visibility: false,
+                    },
+                ],
+            },
+            submitActiveView: expect.any(Function),
+        })
+    })
+
+    it('should exclude hrt-ai if flag is disabled', () => {
+        useFlagMock.mockReturnValue(true)
+        useIsHrtAiEnabledMock.mockReturnValue(false)
+
+        const state = {
+            currentAccount: fromJS(account),
+        } as RootState
+
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
+                <Provider store={mockStore(state)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current).toEqual({
+            columnsOrder: [...TableColumnsOrder].filter(
+                (col) =>
+                    col !== AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
+            ),
+            rowsOrder: TableRowsOrder,
+            currentView: {
+                ...agentPerformanceTableActiveView,
+                metrics: [...agentPerformanceTableActiveView.metrics].filter(
+                    (metric) =>
+                        metric.id !==
+                        AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
+                ),
                 rows: [
                     ...agentPerformanceRows,
                     {

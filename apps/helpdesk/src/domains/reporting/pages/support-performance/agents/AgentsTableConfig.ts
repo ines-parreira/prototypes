@@ -125,6 +125,10 @@ export const TableColumnsOrder: AgentsTableColumn[] = [
     AgentsTableColumn.MessagesReceived,
 ]
 
+export const tableColumnsOrderWithoutHrtAi = TableColumnsOrder.filter(
+    (col) => col !== AgentsTableColumn.HumanResponseTimeAfterAiHandoff,
+)
+
 export const TableRowsOrder: AgentsTableRow[] = [AgentsTableRow.Average]
 
 export const TableRowsOrderWithTotal: AgentsTableRow[] = [

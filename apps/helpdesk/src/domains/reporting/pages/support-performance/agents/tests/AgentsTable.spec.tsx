@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
@@ -33,6 +34,9 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithStore } from 'utils/testing'
+
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -120,6 +124,10 @@ describe('<AgentsTable>', () => {
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
     AgentsAverageSummaryRowMock.mockImplementation(cellMock)
+
+    beforeEach(() => {
+        useIsHrtAiEnabledMock.mockReturnValue(true)
+    })
 
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
