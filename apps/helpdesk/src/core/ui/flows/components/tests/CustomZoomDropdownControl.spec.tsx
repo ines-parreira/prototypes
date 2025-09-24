@@ -67,6 +67,8 @@ describe('CustomZoomDropdownControl', () => {
         })
 
         await waitFor(() => {
+            expect(screen.getByText('150%')).toBeInTheDocument()
+            expect(screen.getByText('125%')).toBeInTheDocument()
             expect(screen.getByText('100%')).toBeInTheDocument()
             expect(screen.getByText('75%')).toBeInTheDocument()
             expect(screen.getByText('25%')).toBeInTheDocument()

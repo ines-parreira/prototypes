@@ -30,12 +30,13 @@ export function Flow<TNode extends Node, TEdge extends Edge>({
             nodes={nodes}
             edges={edges}
             minZoom={0.1}
-            maxZoom={1}
+            maxZoom={1.5}
             nodesDraggable={false}
             nodesConnectable={false}
             zoomOnDoubleClick={false}
             zoomOnScroll={false}
             panOnScroll={true}
+            onInit={(instance) => instance.fitView()}
             {...props}
         >
             {children}

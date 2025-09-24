@@ -11,7 +11,7 @@ export function CustomZoomInControl(): React.JSX.Element {
     return (
         <IconButton
             onClick={() => zoomIn()}
-            isDisabled={zoom >= 1}
+            isDisabled={zoom >= 1.5}
             fillStyle={'ghost'}
             icon={'zoom_in'}
             intent={'secondary'}

@@ -60,7 +60,7 @@ describe('CustomZoomInControl', () => {
 
     it('should be disabled when zoom is at maximum', () => {
         mockUseViewport.mockReturnValue({
-            zoom: 1,
+            zoom: 1.5,
             x: 0,
             y: 0,
         })

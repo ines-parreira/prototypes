@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
@@ -54,21 +54,20 @@ type VoiceFlowProps = {
 }
 
 export function VoiceFlow({ flow }: VoiceFlowProps) {
-    const [nodes, setNodes, onNodesChange] = useNodesState<VoiceFlowNode>([])
-    const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
     const computeEdges = useCallback(
         (nodes: VoiceFlowNode[]) => createFlowGraph(nodes, getNextNodes).edges,
         [],
     )
 
-    useAutoLayout<VoiceFlowNode>(getEdgeProps, computeEdges)
+    const newNodes = useMemo(() => transformToReactFlowNodes(flow), [flow])
+    const newEdges = useMemo(
+        () => computeEdges(newNodes),
+        [newNodes, computeEdges],
+    )
+    const [nodes, , onNodesChange] = useNodesState<VoiceFlowNode>(newNodes)
+    const [edges, , onEdgesChange] = useEdgesState<Edge>(newEdges)
 
-    useEffect(() => {
-        const newNodes = transformToReactFlowNodes(flow)
-        const newEdges = computeEdges(newNodes)
-        setNodes(newNodes)
-        setEdges(newEdges)
-    }, [flow, setNodes, setEdges])
+    useAutoLayout<VoiceFlowNode>(getEdgeProps, computeEdges)
 
     return (
         <Flow<VoiceFlowNode, Edge>
