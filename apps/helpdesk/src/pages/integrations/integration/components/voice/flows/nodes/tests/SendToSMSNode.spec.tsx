@@ -161,7 +161,7 @@ describe('SendToSMSNode', () => {
             // error message
             expect(screen.getByText('warning_amber')).toBeInTheDocument()
             // dropdown should show placeholder
-            expect(screen.getByText('Search')).toBeInTheDocument()
+            expect(screen.getByText('Select')).toBeInTheDocument()
         })
     })
 

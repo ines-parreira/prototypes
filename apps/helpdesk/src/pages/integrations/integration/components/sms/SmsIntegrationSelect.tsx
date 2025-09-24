@@ -29,10 +29,8 @@ export default function SmsIntegrationSelect({
     return (
         <SelectInputBox
             onToggle={setIsOpen}
-            label={
-                options.find((option) => option.value === value)?.label ??
-                'Search'
-            }
+            label={options.find((option) => option.value === value)?.label}
+            placeholder={'Select'}
             ref={selectRef}
             floating={floatingSelectRef}
         >

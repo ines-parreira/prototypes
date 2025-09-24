@@ -445,9 +445,11 @@ export const generateNodeData = (
                 step_type: VoiceFlowNodeType.SendToSMS,
                 confirmation_message: {
                     voice_message_type: 'text_to_speech',
-                    text_to_speech_content: '',
+                    text_to_speech_content:
+                        "Thank you for contacting us! We're moving to text messaging now, you’ll receive our message shortly.",
                 },
-                sms_content: '',
+                sms_content:
+                    "Hello! We're following up on your call. How can we assist you today?",
                 sms_integration_id: null!,
                 next_step_id: null,
             }
