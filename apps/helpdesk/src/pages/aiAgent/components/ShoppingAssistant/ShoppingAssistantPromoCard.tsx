@@ -18,7 +18,7 @@ import {
     LeadTrialProgress,
 } from './components'
 import { useTrialPromoCard } from './hooks/useTrialPromoCard'
-import { PromoCardVariant } from './types/ShoppingAssistant'
+import { PromoCardVariant, TrialType } from './types/ShoppingAssistant'
 import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
 
 interface ShoppingAssistantPromoCardProps {
@@ -55,7 +55,14 @@ export const ShoppingAssistantPromoCard: React.FC<
         trialAccess,
     } = useTrialPromoCard(shopName, allShopifyIntegrations, routeShopName)
 
-    if (isShoppingAssitantDeactivationEnforced || isLoading || !promoContent) {
+    const { isOnboarded } = trialAccess
+    if (
+        isShoppingAssitantDeactivationEnforced ||
+        isLoading ||
+        !promoContent ||
+        (isOnboarded === undefined &&
+            trialAccess.trialType === TrialType.ShoppingAssistant)
+    ) {
         return null
     }
 

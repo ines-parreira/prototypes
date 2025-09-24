@@ -17,7 +17,11 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useTrialPromoCard } from '../hooks/useTrialPromoCard'
 import { ShoppingAssistantPromoCard } from '../ShoppingAssistantPromoCard'
-import { PromoCardContent, PromoCardVariant } from '../types/ShoppingAssistant'
+import {
+    PromoCardContent,
+    PromoCardVariant,
+    TrialType,
+} from '../types/ShoppingAssistant'
 
 jest.mock('../hooks/useTrialPromoCard')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
@@ -265,6 +269,20 @@ describe('ShoppingAssistantPromoCard', () => {
             })
 
             mockTrialPromoCard({
+                promoCardContent: basePromoContent,
+            })
+
+            const { container } = renderComponent()
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should return null when isOnboarded is undefined and trialType is ShoppingAssistant', () => {
+            mockTrialPromoCard({
+                trialAccess: createMockTrialAccess({
+                    isOnboarded: undefined,
+                    trialType: TrialType.ShoppingAssistant,
+                }),
                 promoCardContent: basePromoContent,
             })
 

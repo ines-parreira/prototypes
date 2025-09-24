@@ -121,7 +121,7 @@ describe('useShoppingAssistantTrialFlow', () => {
         mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseAiAgentTrialOnboarding.mockReturnValue({
-            startOnboardingAfterTrial: mockStartOnboardingAfterTrial,
+            startOnboardingWizard: mockStartOnboardingAfterTrial,
         })
 
         // Create a new QueryClient for each test

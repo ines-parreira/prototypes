@@ -93,7 +93,7 @@ describe('useAiAgentTrialOnboarding', () => {
             )
 
             await act(async () => {
-                await result.current.startOnboardingAfterTrial()
+                await result.current.startOnboardingWizard()
             })
 
             expect(mockHandleOnSendOrCancelNotification).toHaveBeenCalledWith({
@@ -139,7 +139,7 @@ describe('useAiAgentTrialOnboarding', () => {
             )
 
             await act(async () => {
-                await result.current.startOnboardingAfterTrial()
+                await result.current.startOnboardingWizard()
             })
 
             expect(
@@ -180,7 +180,7 @@ describe('useAiAgentTrialOnboarding', () => {
             )
 
             await act(async () => {
-                await result.current.startOnboardingAfterTrial()
+                await result.current.startOnboardingWizard()
             })
 
             expect(mockHandleOnSendOrCancelNotification).not.toHaveBeenCalled()
@@ -211,7 +211,7 @@ describe('useAiAgentTrialOnboarding', () => {
             )
 
             await act(async () => {
-                await result.current.startOnboardingAfterTrial()
+                await result.current.startOnboardingWizard()
             })
 
             expect(mockOnboardingWizardStep).toHaveBeenCalledWith(
@@ -241,7 +241,7 @@ describe('useAiAgentTrialOnboarding', () => {
             )
 
             await act(async () => {
-                await result.current.startOnboardingAfterTrial()
+                await result.current.startOnboardingWizard()
             })
 
             expect(mockAsyncSave).toHaveBeenCalledWith({

@@ -184,7 +184,7 @@ export const useShoppingAssistantTrialFlow = ({
             },
         })
 
-    const { startOnboardingAfterTrial } = useAiAgentTrialOnboarding({
+    const { startOnboardingWizard } = useAiAgentTrialOnboarding({
         shopName,
     })
 
@@ -317,7 +317,7 @@ export const useShoppingAssistantTrialFlow = ({
 
     const closeTrialFinishSetupModal = useCallback(() => {
         if (isAiAgentTrial) {
-            void startOnboardingAfterTrial()
+            void startOnboardingWizard()
         } else {
             history.push(routes.customerEngagement)
         }
@@ -328,7 +328,7 @@ export const useShoppingAssistantTrialFlow = ({
         history,
         trialFinishSetupModal,
         trialFinishSetupModalName,
-        startOnboardingAfterTrial,
+        startOnboardingWizard,
     ])
 
     const openTrialFinishSetupModal = () => {

@@ -22,6 +22,7 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useAiAgentTrialOnboarding } from 'pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import {
@@ -48,6 +49,7 @@ jest.mock('hooks/useAppSelector')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/trial/hooks/useNotifyAdmins')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
+jest.mock('pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding')
 
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
@@ -65,6 +67,7 @@ const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
 const mockUseNotifyAdmins = assumeMock(useNotifyAdmins)
+const mockUseAiAgentTrialOnboarding = assumeMock(useAiAgentTrialOnboarding)
 const mockLogEvent = jest
     .spyOn(segment, 'logEvent')
     .mockImplementation(jest.fn())
@@ -72,6 +75,31 @@ const mockLogEvent = jest
 // Helper function to generate trial end time based on remaining days
 const getTrialEndTime = (remainingDays: number): string => {
     return moment().add(remainingDays, 'days').toISOString()
+}
+
+// Helper function to setup mockUseStoreActivations with default values
+const setupMockStoreActivations = (
+    overrides: Partial<ReturnType<typeof useStoreActivations>> = {},
+) => {
+    const defaultValues = {
+        storeActivations: {},
+        progressPercentage: 0,
+        isFetchLoading: false,
+        isSaveLoading: false,
+        changeSales: jest.fn(),
+        changeSupport: jest.fn(),
+        changeSupportChat: jest.fn(),
+        changeSupportEmail: jest.fn(),
+        saveStoreConfigurations: jest.fn(),
+        migrateToNewPricing: jest.fn(),
+        endTrial: jest.fn(),
+        activation: jest.fn(),
+    }
+
+    mockUseStoreActivations.mockReturnValue({
+        ...defaultValues,
+        ...overrides,
+    })
 }
 
 const defaultMockUseShoppingAssistantTrialFlow =
@@ -152,7 +180,7 @@ describe('useTrialModalProps', () => {
             })
         })
 
-        mockUseStoreActivations.mockReturnValue({
+        setupMockStoreActivations({
             storeActivations: {
                 store1: {
                     name: 'store1',
@@ -196,16 +224,6 @@ describe('useTrialModalProps', () => {
                 },
             },
             progressPercentage: 50,
-            isFetchLoading: false,
-            isSaveLoading: false,
-            changeSales: jest.fn(),
-            changeSupport: jest.fn(),
-            changeSupportChat: jest.fn(),
-            changeSupportEmail: jest.fn(),
-            saveStoreConfigurations: jest.fn(),
-            migrateToNewPricing: jest.fn(),
-            endTrial: jest.fn(),
-            activation: jest.fn(),
         })
 
         // Remove useStoreConfigurations mock as it's no longer used
@@ -219,6 +237,10 @@ describe('useTrialModalProps', () => {
             accountAdmins: [],
             isLoading: false,
             isDisabled: false,
+        })
+
+        mockUseAiAgentTrialOnboarding.mockReturnValue({
+            startOnboardingWizard: jest.fn(),
         })
     })
 
@@ -2240,15 +2262,17 @@ describe('useTrialModalProps', () => {
         })
 
         describe('when trialType is ShoppingAssistant', () => {
-            it('should return correct modal props', () => {
+            beforeEach(() => {
                 mockUseTrialAccess.mockReturnValue(
                     createMockTrialAccess({
                         canSeeTrialCTA: true,
                         isAdminUser: true,
                         trialType: TrialType.ShoppingAssistant,
+                        isOnboarded: true,
                     }),
                 )
-
+            })
+            it('should return correct modal props', () => {
                 const { result } = renderHookWithRouter(() =>
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
@@ -2515,30 +2539,19 @@ describe('useTrialModalProps', () => {
             const store = storeActivationFixture()
 
             describe('for ShoppingAssistant trial type', () => {
-                it('should disable primary action when store activation is not found', () => {
+                beforeEach(() => {
+                    // Mock empty store activations
+                    setupMockStoreActivations()
+                })
+                it('should disable primary action when store activation is not found and ai agent is onboarded', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             canSeeTrialCTA: true,
                             isAdminUser: true,
                             trialType: TrialType.ShoppingAssistant,
+                            isOnboarded: true,
                         }),
                     )
-
-                    // Mock empty store activations
-                    mockUseStoreActivations.mockReturnValue({
-                        storeActivations: {},
-                        progressPercentage: 0,
-                        isFetchLoading: false,
-                        isSaveLoading: false,
-                        changeSales: jest.fn(),
-                        changeSupport: jest.fn(),
-                        changeSupportChat: jest.fn(),
-                        changeSupportEmail: jest.fn(),
-                        saveStoreConfigurations: jest.fn(),
-                        migrateToNewPricing: jest.fn(),
-                        endTrial: jest.fn(),
-                        activation: jest.fn(),
-                    })
 
                     const { result } = renderHookWithRouter(() =>
                         useTrialModalProps({ storeName: 'nonexistent-store' }),
@@ -2560,12 +2573,37 @@ describe('useTrialModalProps', () => {
                     )
                 })
 
-                it('should disable primary action when AI agent is not enabled for store', () => {
+                it('should not disable primary action when store activation is not found and ai agent is not onboarded', () => {
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             canSeeTrialCTA: true,
                             isAdminUser: true,
                             trialType: TrialType.ShoppingAssistant,
+                            isOnboarded: false,
+                        }),
+                    )
+
+                    const { result } = renderHookWithRouter(() =>
+                        useTrialModalProps({ storeName: 'nonexistent-store' }),
+                    )
+
+                    const modal = result.current.newTrialUpgradePlanModal
+
+                    expect(modal.primaryAction?.isDisabled).toBe(false)
+
+                    // Check that errorMessage is a JSX element and render it to test content
+                    const errorMessage = modal.primaryAction
+                        ?.errorMessage as any
+                    expect(errorMessage).toBeUndefined()
+                })
+
+                it('should disable primary action when AI agent is onboarded but not deployed on chat or email for store', () => {
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            canSeeTrialCTA: true,
+                            isAdminUser: true,
+                            trialType: TrialType.ShoppingAssistant,
+                            isOnboarded: true,
                         }),
                     )
 
@@ -2583,19 +2621,8 @@ describe('useTrialModalProps', () => {
                         },
                     }
 
-                    mockUseStoreActivations.mockReturnValue({
+                    setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
-                        progressPercentage: 0,
-                        isFetchLoading: false,
-                        isSaveLoading: false,
-                        changeSales: jest.fn(),
-                        changeSupport: jest.fn(),
-                        changeSupportChat: jest.fn(),
-                        changeSupportEmail: jest.fn(),
-                        saveStoreConfigurations: jest.fn(),
-                        migrateToNewPricing: jest.fn(),
-                        endTrial: jest.fn(),
-                        activation: jest.fn(),
                     })
 
                     const { result } = renderHookWithRouter(() =>
@@ -2635,6 +2662,7 @@ describe('useTrialModalProps', () => {
                             canSeeTrialCTA: true,
                             isAdminUser: true,
                             trialType: TrialType.ShoppingAssistant,
+                            isOnboarded: true,
                         }),
                     )
 
@@ -2652,19 +2680,8 @@ describe('useTrialModalProps', () => {
                         },
                     }
 
-                    mockUseStoreActivations.mockReturnValue({
+                    setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
-                        progressPercentage: 0,
-                        isFetchLoading: false,
-                        isSaveLoading: false,
-                        changeSales: jest.fn(),
-                        changeSupport: jest.fn(),
-                        changeSupportChat: jest.fn(),
-                        changeSupportEmail: jest.fn(),
-                        saveStoreConfigurations: jest.fn(),
-                        migrateToNewPricing: jest.fn(),
-                        endTrial: jest.fn(),
-                        activation: jest.fn(),
                     })
 
                     // Mock the close function
@@ -2723,19 +2740,8 @@ describe('useTrialModalProps', () => {
                         },
                     }
 
-                    mockUseStoreActivations.mockReturnValue({
+                    setupMockStoreActivations({
                         storeActivations: mockStoreActivations,
-                        progressPercentage: 0,
-                        isFetchLoading: false,
-                        isSaveLoading: false,
-                        changeSales: jest.fn(),
-                        changeSupport: jest.fn(),
-                        changeSupportChat: jest.fn(),
-                        changeSupportEmail: jest.fn(),
-                        saveStoreConfigurations: jest.fn(),
-                        migrateToNewPricing: jest.fn(),
-                        endTrial: jest.fn(),
-                        activation: jest.fn(),
                     })
 
                     const { result } = renderHookWithRouter(() =>
@@ -3136,6 +3142,270 @@ describe('useTrialModalProps', () => {
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe('Typical results achieved by merchants.')
                 })
+            })
+        })
+    })
+
+    describe('useNewTrialUpgradePlanModal shoppingAssistantProps', () => {
+        const mockStoreName = 'test-store'
+
+        beforeEach(() => {
+            mockUseBillingState.mockReturnValue({
+                data: trial,
+            } as any)
+            mockUseAiAgentUpgradePlan.mockReturnValue({
+                data: earlyAccessMonthlyAutomationPlan,
+            } as any)
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    trialType: TrialType.ShoppingAssistant,
+                    isAdminUser: true,
+                }),
+            )
+        })
+
+        describe('when isOnboarded is true', () => {
+            it('should return default modal props for onboarded users', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                        isOnboarded: true,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.title).toBe(
+                    'Unlock new AI Agent skills at no extra cost',
+                )
+                expect(modal.subtitle).toBe(
+                    "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
+                )
+                expect(modal.primaryAction?.label).toBe('Start trial now')
+                expect(modal.secondaryAction?.label).toBe('No, thanks')
+                expect(modal.primaryAction?.onClick).toEqual(
+                    expect.any(Function),
+                )
+                expect(modal.secondaryAction?.onClick).toEqual(
+                    expect.any(Function),
+                )
+            })
+
+            it('should call startTrial when primary action is clicked for onboarded users', () => {
+                const mockStartTrial = jest.fn()
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isOnboarded: true,
+                    }),
+                )
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    startTrial: mockStartTrial,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+
+                expect(mockStartTrial).toHaveBeenCalledTimes(1)
+                expect(mockStartTrial).toHaveBeenCalledWith(undefined)
+            })
+
+            it('should call onDismissTrialUpgradeModal when secondary action is clicked for onboarded users', () => {
+                const mockOnDismissTrialUpgradeModal = jest.fn()
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isOnboarded: true,
+                    }),
+                )
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    onDismissTrialUpgradeModal: mockOnDismissTrialUpgradeModal,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick()
+
+                expect(mockOnDismissTrialUpgradeModal).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('when isOnboarded is false', () => {
+            it('should return modified modal props for non-onboarded users', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                        isOnboarded: false,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.title).toBe(
+                    'Try AI Agent with Shopping Assistant skills',
+                )
+                expect(modal.subtitle).toBe(
+                    'Unlock powerful automation. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance using your own brand voice.',
+                )
+                expect(modal.primaryAction?.label).toBe(
+                    'Start Trial now (AI Agent + Shopping Assistant)',
+                )
+                expect(modal.secondaryAction?.label).toBe('start AI Agent Only')
+                expect(modal.primaryAction?.onClick).toEqual(
+                    expect.any(Function),
+                )
+                expect(modal.secondaryAction?.onClick).toEqual(
+                    expect.any(Function),
+                )
+            })
+
+            it('should include SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED features for non-onboarded users', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                        isOnboarded: false,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.features).toEqual([
+                    {
+                        icon: 'check',
+                        title: 'Today',
+                        description:
+                            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
+                    },
+                    {
+                        icon: 'notifications_none',
+                        title: 'Day 7',
+                        description:
+                            'We’ll remind you when you’re halfway through your trial.',
+                    },
+                    {
+                        icon: 'star_outline',
+                        title: 'Day 14',
+                        description:
+                            'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with sales skills, unless you cancel during your trial.',
+                    },
+                ])
+            })
+
+            it('should call setShoppingAssistantTrialOptin and openTrialFinishSetupModal when primary action is clicked for non-onboarded users', () => {
+                const mockOpenTrialFinishSetupModal = jest.fn()
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isOnboarded: false,
+                    }),
+                )
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    openTrialFinishSetupModal: mockOpenTrialFinishSetupModal,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+
+                expect(mockOpenTrialFinishSetupModal).toHaveBeenCalledTimes(1)
+            })
+
+            it('should call setShoppingAssistantTrialOptin and startOnboardingWizzard when secondary action is clicked for non-onboarded users', () => {
+                const mockStartOnboardingWizzard = jest.fn()
+
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isOnboarded: false,
+                    }),
+                )
+
+                mockUseAiAgentTrialOnboarding.mockReturnValue({
+                    startOnboardingWizard: mockStartOnboardingWizzard,
+                })
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick()
+
+                expect(mockStartOnboardingWizzard).toHaveBeenCalledTimes(1)
+            })
+
+            it('should handle validation state correctly for non-onboarded users', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                        isOnboarded: false,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                // For non-onboarded users, validation should always be valid
+                expect(modal.primaryAction?.isDisabled).toBe(false)
+                expect(modal.primaryAction?.errorMessage).toBeUndefined()
+            })
+        })
+
+        describe('when isOnboarded is undefined', () => {
+            it('should return default modal props for undefined onboarded state', () => {
+                mockUseTrialAccess.mockReturnValue(
+                    createMockTrialAccess({
+                        trialType: TrialType.ShoppingAssistant,
+                        isAdminUser: true,
+                        isOnboarded: undefined,
+                    }),
+                )
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({ storeName: mockStoreName }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.title).toBe(
+                    'Unlock new AI Agent skills at no extra cost',
+                )
+                expect(modal.subtitle).toBe(
+                    "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
+                )
+                expect(modal.primaryAction?.label).toBe('Start trial now')
+                expect(modal.secondaryAction?.label).toBe('No, thanks')
             })
         })
     })

@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import { SegmentEvent } from 'common/segment'
@@ -51,6 +52,7 @@ import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
+import { useAiAgentTrialOnboarding } from './useAiAgentTrialOnboarding'
 import { useNotifyAdmins } from './useNotifyAdmins'
 import { useTrialEndingModal } from './useTrialEndingModal/useTrialEndingModal'
 import { useTrialFinishSetupModal } from './useTrialFinishSetupModal'
@@ -115,6 +117,26 @@ const SHOPPING_ASSISTANT_TRIAL_FEATURES: TrialFeature[] = [
         title: 'Day 14',
         description:
             'Your new AI Agent plan with shopping assistant features kicks in automatically to keep growing revenue.',
+    },
+]
+
+const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description: 'We’ll remind you when you’re halfway through your trial.',
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description:
+            'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with sales skills, unless you cancel during your trial.',
     },
 ]
 
@@ -378,12 +400,20 @@ const useTrialUpgradePlanModal =
 
 const useNewTrialUpgradePlanModal = (
     trialType: TrialType,
+    isOnboarded: boolean | undefined,
     storeName?: string,
 ): TrialModalProps['newTrialUpgradePlanModal'] => {
+    const { startOnboardingWizard } = useAiAgentTrialOnboarding({
+        shopName: storeName || '',
+    })
     const planDetails = usePlanDetails()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const { storeActivations } = useStoreActivations({ storeName })
+    const [, setShoppingAssistantTrialOptin] = useLocalStorage<boolean>(
+        `${storeName}-shopping-assistant-trial-optin`,
+        false,
+    )
 
     const allShopifyIntegrations = useAppSelector(
         getShopifyIntegrationsSortedByName,
@@ -391,16 +421,23 @@ const useNewTrialUpgradePlanModal = (
 
     const isMultiStore = allShopifyIntegrations.length > 1
 
-    const { startTrial, onDismissTrialUpgradeModal, closeTrialUpgradeModal } =
-        useShoppingAssistantTrialFlow({
-            accountDomain,
-            storeActivations,
-            trialType,
-        })
+    const {
+        startTrial,
+        onDismissTrialUpgradeModal,
+        closeTrialUpgradeModal,
+        openTrialFinishSetupModal,
+    } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+        trialType,
+    })
 
-    // Validation logic for both AI Agent and Shopping Assistant trials
-    const getValidationState = useCallback(
+    const validateTrialStartRequirements = useCallback(
         (onClose?: () => void) => {
+            if (isOnboarded === false) {
+                return { isValid: true }
+            }
+
             const storeActivation = storeActivations[storeName ?? '']
 
             if (!storeActivation) {
@@ -440,7 +477,7 @@ const useNewTrialUpgradePlanModal = (
 
             return { isValid: true }
         },
-        [storeName, storeActivations],
+        [storeName, storeActivations, isOnboarded],
     )
 
     const aiAgentProps = useMemo(() => {
@@ -490,9 +527,11 @@ const useNewTrialUpgradePlanModal = (
     ])
 
     const shoppingAssistantProps = useMemo(() => {
-        const validationState = getValidationState(closeTrialUpgradeModal)
+        const validationState = validateTrialStartRequirements(
+            closeTrialUpgradeModal,
+        )
 
-        return {
+        let props = {
             ...createPlanModalData(
                 'Unlock new AI Agent skills at no extra cost',
                 planDetails,
@@ -519,13 +558,43 @@ const useNewTrialUpgradePlanModal = (
             onClose: closeTrialUpgradeModal,
             features: SHOPPING_ASSISTANT_TRIAL_FEATURES,
         }
+        if (isOnboarded === false) {
+            props = {
+                ...props,
+                title: 'Try AI Agent with Shopping Assistant skills',
+                subtitle:
+                    'Unlock powerful automation. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance using your own brand voice.',
+                primaryAction: {
+                    ...props.primaryAction,
+                    label: 'Start Trial now (AI Agent + Shopping Assistant)',
+                    onClick: () => {
+                        setShoppingAssistantTrialOptin(true)
+                        openTrialFinishSetupModal()
+                    },
+                },
+                secondaryAction: {
+                    label: 'start AI Agent Only',
+                    onClick: () => {
+                        setShoppingAssistantTrialOptin(false)
+                        startOnboardingWizard()
+                        closeTrialUpgradeModal()
+                    },
+                },
+                features: SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED,
+            }
+        }
+        return props
     }, [
         planDetails,
         startTrial,
         onDismissTrialUpgradeModal,
         closeTrialUpgradeModal,
         isMultiStore,
-        getValidationState,
+        validateTrialStartRequirements,
+        isOnboarded,
+        startOnboardingWizard,
+        setShoppingAssistantTrialOptin,
+        openTrialFinishSetupModal,
     ])
 
     return trialType === TrialType.AiAgent
@@ -1059,12 +1128,13 @@ export const useTrialModalProps = ({
     pageName?: 'Strategy' | 'Engagement'
 }): TrialModalProps => {
     const trialAccess = useTrialAccess(storeName)
-    const trialType = trialAccess.trialType
+    const { trialType, isOnboarded } = trialAccess
     const trialMetrics = useTrialMetrics(trialType, storeName)
     const upgradePlanModal = useUpgradePlanModal(trialType, storeName)
     const trialUpgradePlanModal = useTrialUpgradePlanModal()
     const newTrialUpgradePlanModal = useNewTrialUpgradePlanModal(
         trialType,
+        isOnboarded,
         storeName,
     )
     const trialFinishSetupModal = useTrialFinishSetupModal({

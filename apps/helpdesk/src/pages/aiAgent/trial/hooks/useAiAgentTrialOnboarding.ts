@@ -24,7 +24,7 @@ export const useAiAgentTrialOnboarding = ({
 
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
-    const startOnboardingAfterTrial = useCallback(async () => {
+    const startOnboardingWizard = useCallback(async () => {
         if (isAdmin) {
             const isFinishedSetupNotificationAlreadyReceived =
                 !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
@@ -66,5 +66,5 @@ export const useAiAgentTrialOnboarding = ({
         history,
     ])
 
-    return { startOnboardingAfterTrial }
+    return { startOnboardingWizard }
 }
