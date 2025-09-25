@@ -196,12 +196,7 @@ describe('ActionDrivenNavigation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockImplementation((key) => {
-            if (key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll) {
-                return true
-            }
-            return false
-        })
+
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockedTrialAccessHook.mockReturnValue({
             hasAnyTrialOptedOut: false,
@@ -401,6 +396,6 @@ describe('ActionDrivenNavigation', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Get Started')).toBeInTheDocument()
+        expect(screen.getByText('Get started')).toBeInTheDocument()
     })
 })

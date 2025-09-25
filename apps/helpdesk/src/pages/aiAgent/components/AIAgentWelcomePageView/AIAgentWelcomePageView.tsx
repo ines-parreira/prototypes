@@ -33,6 +33,7 @@ import {
     useTrialModalProps,
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 export type DynamicItem = {
@@ -83,8 +84,8 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     const history = useHistory()
     const sameVisitRef = useRef(false)
 
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    const isAiAgentExpandingTrialExperienceMilestone2Enabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
     )
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -289,13 +290,14 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isLoadingOnboardingNotificationState,
     ])
 
-    const paywallFeature = isAiAgentExpandingTrialExperienceForAllEnabled
-        ? AIAgentPaywallFeatures.TrialSetup
-        : AIAgentPaywallFeatures.SalesSetup
-
-    const isBackwardCompatOrAutomatePlan =
-        !isAiAgentExpandingTrialExperienceForAllEnabled ||
-        !!trialAccess.currentAutomatePlan
+    const hasAutomate = !!trialAccess.currentAutomatePlan
+    const isAfterTrialOrHasNewAutomatePlan =
+        (trialAccess.hasCurrentStoreTrialExpired && !trialAccess.isOnboarded) ||
+        hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)
+    const canStartOnboarding =
+        isAiAgentExpandingTrialExperienceMilestone2Enabled
+            ? isAfterTrialOrHasNewAutomatePlan
+            : hasAutomate
 
     const isDuringOrAfterTrial =
         trialAccess.hasCurrentStoreTrialStarted ||
@@ -312,7 +314,8 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
 
     const { ctas, modals, afterCtas } = useAiAgentCtas({
-        isBackwardCompatOrAutomatePlan,
+        canStartOnboarding,
+        hasAutomate,
         isDuringOrAfterTrial,
         canBookDemo,
         canNotifyAdmin,
@@ -335,13 +338,13 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             isTrialFinishSetupModalOpen: trialFlow.isTrialFinishSetupModalOpen,
             trialFinishSetupModal: trialModalProps.trialFinishSetupModal,
         },
-
-        showAutoAwesomeIcon: !isAiAgentExpandingTrialExperienceForAllEnabled,
         isOnUpdateOnboardingWizard,
     })
 
     return (
-        <AiAgentPaywallView aiAgentPaywallFeature={paywallFeature}>
+        <AiAgentPaywallView
+            aiAgentPaywallFeature={AIAgentPaywallFeatures.TrialSetup}
+        >
             {ctas}
             {afterCtas}
             {modals}

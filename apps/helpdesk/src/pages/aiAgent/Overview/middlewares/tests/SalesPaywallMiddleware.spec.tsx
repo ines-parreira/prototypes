@@ -11,6 +11,7 @@ import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -26,6 +27,7 @@ import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
@@ -59,6 +61,15 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
         </div>
     )),
 }))
+
+jest.mock(
+    'pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView',
+    () => ({
+        AIAgentWelcomePageView: jest.fn(() => (
+            <div>Paywall View Mock - Feature: TrialSetup</div>
+        )),
+    }),
+)
 
 jest.mock('pages/aiAgent/hooks/useTrialEligibility')
 const useTrialEligibilityMock = assumeMock(useTrialEligibility)
@@ -138,9 +149,13 @@ const renderMiddleware = () => {
 }
 
 jest.mock('hooks/useAppSelector')
+jest.mock('pages/automate/common/hooks/useStoreIntegrations')
+
 const useAppSelectorMock = useAppSelector as jest.MockedFunction<
     typeof useAppSelector
 >
+
+const useStoreIntegrationsMock = useStoreIntegrations as jest.Mock
 
 const mockUseSalesTrialRevampMilestone =
     useSalesTrialRevampMilestone as jest.Mock
@@ -262,8 +277,16 @@ describe('SalesPaywallMiddleware', () => {
         setupUseAppSelectorMock()
         // Default useEarlyAccessAutomatePlan mock to null (no plan)
         mockAiAgentUpgradePlan.mockReturnValue({ data: null })
+        // Mock store integrations to have at least one integration
+        useStoreIntegrationsMock.mockReturnValue([
+            {
+                id: 1,
+                name: 'test-shop',
+                type: IntegrationType.Shopify,
+            } as StoreIntegration,
+        ])
     })
-    it('should render automate paywall when it doesnt has automate', () => {
+    it('should render AI Agent paywall when it doesnt has AI Agent', () => {
         setupUseAppSelectorMock({ hasAutomate: false })
 
         renderMiddleware()
@@ -275,7 +298,7 @@ describe('SalesPaywallMiddleware', () => {
         const paywallView = screen.getByText(/Paywall View Mock/)
         expect(paywallView).toBeInTheDocument()
         expect(paywallView).toHaveTextContent(
-            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Automate}`,
+            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.TrialSetup}`,
         )
         // Check if candu div is NOT rendered inside paywall
         expect(

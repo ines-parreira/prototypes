@@ -15,7 +15,8 @@ import { logInTrialEventFromPaywall } from '../utils/eventLogger'
 import css from './useAiAgentPaywallCTA.less'
 
 export type AiAgentCtasParams = {
-    isBackwardCompatOrAutomatePlan: boolean
+    canStartOnboarding: boolean
+    hasAutomate: boolean
     isDuringOrAfterTrial: boolean
     canBookDemo: boolean
     canNotifyAdmin: boolean
@@ -38,8 +39,6 @@ export type AiAgentCtasParams = {
         isTrialFinishSetupModalOpen: boolean
         trialFinishSetupModal: any
     }
-
-    showAutoAwesomeIcon?: boolean
     isOnUpdateOnboardingWizard?: boolean
 }
 
@@ -51,7 +50,8 @@ export type AiAgentCtas = {
 
 export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     const {
-        isBackwardCompatOrAutomatePlan,
+        canStartOnboarding,
+        hasAutomate,
         isDuringOrAfterTrial,
         canBookDemo,
         canNotifyAdmin,
@@ -66,7 +66,6 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         onCloseTrialFinishSetupModal,
         isNotifyAdminDisabled,
         trialModals,
-        showAutoAwesomeIcon,
         isOnUpdateOnboardingWizard,
     } = props
 
@@ -81,10 +80,8 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                     intent="primary"
                     size="medium"
                     onClick={onOpenWizard}
-                    trailingIcon={
-                        showAutoAwesomeIcon ? 'auto_awesome' : undefined
-                    }
-                    className={showAutoAwesomeIcon ? '' : css.upgradeButton}
+                    trailingIcon={undefined}
+                    className={css.upgradeButton}
                 >
                     {isOnUpdateOnboardingWizard
                         ? 'Continue Setup'
@@ -93,7 +90,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 <div data-candu-id="ai-agent-welcome-page" />
             </>
         ),
-        [onOpenWizard, showAutoAwesomeIcon, isOnUpdateOnboardingWizard],
+        [onOpenWizard, isOnUpdateOnboardingWizard],
     )
 
     const SubscribeNowPrimary = useMemo(
@@ -116,23 +113,25 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         [onOpenSubscribeModal],
     )
 
-    const TryForFree = useMemo(
+    const TryTrial = useMemo(
         () => (
             <Button
                 size="medium"
                 onClick={() => {
                     logInTrialEventFromPaywall(
                         TrialEventType.StartTrial,
-                        TrialType.AiAgent,
+                        hasAutomate
+                            ? TrialType.ShoppingAssistant
+                            : TrialType.AiAgent,
                     )
                     onOpenTrialUpgradeModal()
                 }}
                 className={css.upgradeButton}
             >
-                Try for free
+                {hasAutomate ? 'Try for 14 days' : 'Try for free'}
             </Button>
         ),
-        [onOpenTrialUpgradeModal],
+        [onOpenTrialUpgradeModal, hasAutomate],
     )
 
     const NotifyAdmin = useMemo(
@@ -142,7 +141,9 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 onClick={() => {
                     logInTrialEventFromPaywall(
                         TrialEventType.NotifyAdmin,
-                        TrialType.AiAgent,
+                        hasAutomate
+                            ? TrialType.ShoppingAssistant
+                            : TrialType.AiAgent,
                     )
                     onOpenTrialRequestModal()
                 }}
@@ -153,7 +154,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 {isNotifyAdminDisabled ? 'Admin notified' : 'Notify admin'}
             </Button>
         ),
-        [onOpenTrialRequestModal, isNotifyAdminDisabled],
+        [onOpenTrialRequestModal, isNotifyAdminDisabled, hasAutomate],
     )
 
     const LearnMore = useMemo(
@@ -184,7 +185,9 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 onClick={() => {
                     logInTrialEventFromPaywall(
                         TrialEventType.UpgradePlan,
-                        TrialType.AiAgent,
+                        hasAutomate
+                            ? TrialType.ShoppingAssistant
+                            : TrialType.AiAgent,
                     )
                     onOpenSubscribeModal()
                 }}
@@ -192,7 +195,23 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 Subscribe now
             </LinkButton>
         ),
-        [onOpenSubscribeModal],
+        [onOpenSubscribeModal, hasAutomate],
+    )
+
+    const StartAIAgentOnly = useMemo(
+        () => (
+            <Button
+                intent="secondary"
+                size="medium"
+                fillStyle="ghost"
+                onClick={() => {
+                    onOpenWizard()
+                }}
+            >
+                Start AI Agent only
+            </Button>
+        ),
+        [onOpenWizard],
     )
 
     const handleBookDemo = useCallback(() => {
@@ -228,8 +247,8 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     )
 
     const { ctas, afterCtas } = useMemo(() => {
-        // 1) Back-compat OR already on Automate plan
-        if (isBackwardCompatOrAutomatePlan) {
+        // 1) onboarded, on Automate plan or trial expired
+        if (canStartOnboarding) {
             return { ctas: SetupAIAgentButton }
         }
 
@@ -246,12 +265,12 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         }
 
         // 3) Pro+ Admin: Try for free + Subscribe link + Book demo
-        if (canBookDemo && isAdmin) {
+        if (!hasAutomate && canBookDemo && isAdmin) {
             return {
                 ctas: (
                     <>
                         <div className={css.welcomePageButtons}>
-                            {TryForFree}
+                            {TryTrial}
                             {SubscribeNowLink}
                         </div>
                     </>
@@ -265,7 +284,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         }
 
         // 4) Pro+ Lead: Notify admin + Learn more + Book demo
-        if (canBookDemo && canNotifyAdmin) {
+        if (!hasAutomate && canBookDemo && canNotifyAdmin) {
             return {
                 ctas: (
                     <>
@@ -284,11 +303,11 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         }
 
         // 5) Basic/Starter Admin: Try for free + Learn more
-        if (canSeeTrial && isAdmin) {
+        if (!hasAutomate && canSeeTrial && isAdmin) {
             return {
                 ctas: (
                     <>
-                        {TryForFree}
+                        {TryTrial}
                         {LearnMore}
                     </>
                 ),
@@ -296,7 +315,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         }
 
         // 6) Basic/Starter Lead: Notify admin + Learn more
-        if (canNotifyAdmin) {
+        if (!hasAutomate && canNotifyAdmin) {
             return {
                 ctas: (
                     <>
@@ -307,9 +326,34 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
             }
         }
 
+        // 7) Has Automate plan, no onboarding and Admin: Try for 14 days + Learn more
+        if (canSeeTrial && isAdmin) {
+            return {
+                ctas: (
+                    <>
+                        {TryTrial}
+                        {SubscribeNowLink}
+                    </>
+                ),
+            }
+        }
+
+        // 8) Has Automate plan, no onboarding and Lead: Notify admin + Start AI Agent Only
+        if (canNotifyAdmin) {
+            return {
+                ctas: (
+                    <>
+                        {NotifyAdmin}
+                        {StartAIAgentOnly}
+                    </>
+                ),
+            }
+        }
+
         return { ctas: null }
     }, [
-        isBackwardCompatOrAutomatePlan,
+        canStartOnboarding,
+        hasAutomate,
         isDuringOrAfterTrial,
         canBookDemo,
         canNotifyAdmin,
@@ -317,11 +361,12 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         isAdmin,
         SetupAIAgentButton,
         SubscribeNowPrimary,
-        TryForFree,
+        TryTrial,
         NotifyAdmin,
         LearnMore,
         SubscribeNowLink,
         BookDemoComponent,
+        StartAIAgentOnly,
     ])
 
     return { ctas, modals, afterCtas }

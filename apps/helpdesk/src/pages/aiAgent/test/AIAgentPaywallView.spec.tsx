@@ -63,7 +63,7 @@ const defaultState = {
     billing: fromJS({ products }),
 }
 const defaultProps = {
-    aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesSetup,
+    aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
     children: <button>Set Up AI Agent</button>,
 }
 
@@ -120,7 +120,7 @@ describe('<AiAgentPaywallView />', () => {
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallVisited,
             {
-                location: AIAgentPaywallFeatures.SalesSetup,
+                location: AIAgentPaywallFeatures.TrialSetup,
             },
         )
     })
@@ -236,7 +236,7 @@ describe('<AiAgentPaywallView />', () => {
     describe('AI Agent logo display', () => {
         it('displays logo in light theme', () => {
             renderComponent({
-                aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesSetup,
+                aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
             })
 
             const logo = screen.getByAltText('AI Agent Logo')
@@ -252,7 +252,7 @@ describe('<AiAgentPaywallView />', () => {
             })
 
             renderComponent({
-                aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesSetup,
+                aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
             })
 
             const logo = screen.getByAltText('AI Agent Logo')

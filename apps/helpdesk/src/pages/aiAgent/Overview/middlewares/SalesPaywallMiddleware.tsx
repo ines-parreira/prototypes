@@ -34,6 +34,7 @@ import {
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
@@ -96,7 +97,7 @@ export const SalesPaywallMiddleware =
         const currentUser = useAppSelector(getCurrentUser)
         const userRole = useAppSelector(getRoleName)
         const history = useHistory()
-        const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+        const hasNewAutomatePlan = hasAutomatePlanAboveGen6(currentAutomatePlan)
 
         const accountDomain = currentAccount.get('domain')
 

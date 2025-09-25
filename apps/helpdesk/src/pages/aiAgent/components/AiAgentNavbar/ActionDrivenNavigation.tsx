@@ -20,6 +20,7 @@ import { getHasAutomate } from 'state/billing/selectors'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
 import { useActionDrivenNavbarSections } from './useActionDrivenNavbarSections'
+import { getCollapsedSectionName } from './utils'
 
 import css from './AiAgentNavbar.less'
 
@@ -58,10 +59,6 @@ export const ActionDrivenNavigation = () => {
         !!getStoreActivationStatus &&
         getStoreActivationStatus(selectedStore)
 
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
-    )
-
     const hasTrial =
         hasCurrentStoreTrialStarted ||
         hasCurrentStoreTrialExpired ||
@@ -71,6 +68,11 @@ export const ActionDrivenNavigation = () => {
         !!selectedStore &&
         (!shouldDisplayAIAgentItems ||
             (onboardingState === OnboardingState.OnboardingWizard && !isActive))
+
+    const collapsedSectionName = getCollapsedSectionName(
+        hasTrial,
+        currentAutomatePlan,
+    )
 
     const shouldRenderAIAgentItems =
         !!selectedStore &&
@@ -127,11 +129,7 @@ export const ActionDrivenNavigation = () => {
                     exact
                     displayType="indent"
                 >
-                    {!isAiAgentExpandingTrialExperienceForAllEnabled ||
-                    hasTrial ||
-                    currentAutomatePlan
-                        ? 'Get Started'
-                        : 'Try for free'}
+                    {collapsedSectionName}
                 </Navigation.SectionItem>
             )}
 

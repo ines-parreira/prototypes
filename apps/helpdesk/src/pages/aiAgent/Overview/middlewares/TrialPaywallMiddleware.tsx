@@ -1,11 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentWelcomePageView } from 'pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView'
-import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -21,24 +16,11 @@ type TrialPaywallMiddlewareProps = {
 export function TrialPaywallMiddleware({
     shopName,
 }: TrialPaywallMiddlewareProps) {
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
-    )
-
     const storeIntegrations = useStoreIntegrations([IntegrationType.Shopify])
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
     const hasIntegrations = storeIntegrations && storeIntegrations.length > 0
-
-    if (!isAiAgentExpandingTrialExperienceForAllEnabled) {
-        return (
-            <AiAgentPaywallView
-                aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
-            />
-        )
-    }
-
     if (!hasIntegrations) {
         return <StoreIntegrationView title={'AI Agent'} />
     }

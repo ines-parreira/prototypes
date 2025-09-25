@@ -5,6 +5,9 @@ import { getHasAutomate } from 'state/billing/selectors'
 
 import ArticleRecommendationView from './ArticleRecommendationView'
 
+/**
+ * @deprecated This page is not used anymore, it should be removed soon
+ */
 const ArticleRecommendationViewContainer = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
 

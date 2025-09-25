@@ -10,6 +10,9 @@ import { getHasAutomate } from 'state/billing/selectors'
 import AutomateLandingPage from './AutomateLandingPage'
 import StoreIntegrationView from './StoreIntegrationView'
 
+/**
+ * @deprecated This page does not seem to be used anymore.
+ */
 const AutomateLandingPageContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)
     const storeIntegrations = useStoreIntegrations()

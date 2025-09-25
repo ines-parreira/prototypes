@@ -24,6 +24,7 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import { useSelfServiceChatChannelsMultiStore } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
@@ -169,7 +170,7 @@ export const useStoreActivations = ({
     }
 } => {
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+    const hasNewAutomatePlan = hasAutomatePlanAboveGen6(currentAutomatePlan)
     const pageName = window.location.pathname
 
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)

@@ -95,42 +95,6 @@ describe('usePaywallConfig', () => {
         expect(result.current).toEqual(expectedConfig)
     })
 
-    it('should return the correct config for AIAgentPaywallFeatures.SalesSetup', () => {
-        const { result } = renderHook(() =>
-            usePaywallConfig(AIAgentPaywallFeatures.SalesSetup),
-        )
-
-        const expectedConfig: PaywallFeature = {
-            title: '',
-            subtitle:
-                'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
-            descriptions: [
-                'Leads customers to fast resolutions in seconds, not hours.',
-                'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
-                'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-            ],
-            toggleElements: [
-                {
-                    title: 'Support',
-                    contentSrc: assetsUrl(
-                        '/video/ai-agent_paywall_support.mp4',
-                    ),
-                    type: 'video',
-                },
-                {
-                    title: 'Sales',
-                    contentSrc: SalesStrategy,
-                    type: 'image',
-                },
-            ],
-            contentSubtitle: 'AI Agent Skills',
-            hideLearnMore: false,
-            showRoiCalculator: false,
-        }
-
-        expect(result.current).toEqual(expectedConfig)
-    })
-
     it('should return the correct config for AIAgentPaywallFeatures.TrialSetup', () => {
         const { result } = renderHook(() =>
             usePaywallConfig(AIAgentPaywallFeatures.TrialSetup),
@@ -139,7 +103,7 @@ describe('usePaywallConfig', () => {
         const expectedConfig: PaywallFeature = {
             title: '',
             subtitle:
-                'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
+                'Introducing AI Agent with Shopping Assistant: Your new team member that drives sales and automates support in 1:1 conversations.',
             descriptions: [
                 'Leads customers to fast resolutions in seconds, not hours.',
                 'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
@@ -165,41 +129,5 @@ describe('usePaywallConfig', () => {
         }
 
         expect(result.current).toEqual(expectedConfig)
-    })
-
-    it('should return the correct config for AIAgentPaywallFeatures.AutomateChat', () => {
-        const { result } = renderHook(() =>
-            usePaywallConfig('' as AIAgentPaywallFeatures),
-        )
-
-        const expectedConfig: PaywallFeature = {
-            title: '',
-            subtitle:
-                'Introducing AI Agent: Your new team member that drives sales and automates support in 1:1 conversations.',
-            descriptions: [
-                'Leads customers to fast resolutions in seconds, not hours.',
-                'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
-                'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
-            ],
-            toggleElements: [
-                {
-                    title: 'Support',
-                    contentSrc: assetsUrl(
-                        '/video/ai-agent_paywall_support.mp4',
-                    ),
-                    type: 'video',
-                },
-                {
-                    title: 'Sales',
-                    contentSrc: SalesStrategy,
-                    type: 'image',
-                },
-            ],
-            contentSubtitle: 'AI Agent Skills',
-            hideLearnMore: false,
-            showRoiCalculator: true,
-        }
-
-        expect(result.current).toMatchObject(expectedConfig)
     })
 })

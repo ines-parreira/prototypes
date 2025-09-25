@@ -28,7 +28,7 @@ export const AiAgentRedirect = () => {
             }
             return (
                 <AiAgentPaywallView
-                    aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
+                    aiAgentPaywallFeature={AIAgentPaywallFeatures.TrialSetup}
                 />
             )
         }

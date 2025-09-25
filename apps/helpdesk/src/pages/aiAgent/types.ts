@@ -124,9 +124,8 @@ export type HandoverCustomizationChatOfflineSettingsFormValues = {
 }
 
 export enum AIAgentPaywallFeatures {
-    Automate = 'Automate',
+    Automate = 'Automate', // We should deprecate this and replace Automate paywalls with AiAgent paywalls (TrialSetup)
     SalesWaitlist = 'SalesWaitlist',
-    SalesSetup = 'SalesSetup',
     TrialSetup = 'TrialSetup',
     Upgrade = 'Upgrade',
 }

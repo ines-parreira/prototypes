@@ -1,6 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -10,6 +7,7 @@ import {
     getAiSalesAgentTrialState,
     TrialState,
 } from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import {
     getCurrentAccountState,
@@ -26,7 +24,6 @@ import {
  */
 export const useCanUseAiSalesAgent = (shopName?: string) => {
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
 
     const {
         hasAnyTrialActive,
@@ -36,12 +33,11 @@ export const useCanUseAiSalesAgent = (shopName?: string) => {
     const isTrialing = useAppSelector(getIsTrialing)
 
     const bypassPlanCheck =
-        useFlag(FeatureFlagKey.AiSalesAgentBypassPlanCheck, false) ||
         isTrialing ||
         (hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired) ||
         (!shopName && hasAnyTrialActive)
 
-    return bypassPlanCheck || hasNewAutomatePlan
+    return bypassPlanCheck || hasAutomatePlanAboveGen6(currentAutomatePlan)
 }
 
 export const canStoreUseAiSalesAgent = (

@@ -6,9 +6,18 @@ import {
     AiAgentCtasParams,
     useAiAgentCtas,
 } from '../hooks/useAiAgentPaywallCTA'
+import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
+import { logInTrialEventFromPaywall } from '../utils/eventLogger'
+
+jest.mock('../utils/eventLogger', () => ({
+    logInTrialEventFromPaywall: jest.fn(),
+}))
+
+const mockLogInTrialEventFromPaywall = logInTrialEventFromPaywall as jest.Mock
 
 const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
-    isBackwardCompatOrAutomatePlan: false,
+    canStartOnboarding: false,
+    hasAutomate: false,
     isDuringOrAfterTrial: false,
     canBookDemo: false,
     canNotifyAdmin: false,
@@ -30,7 +39,6 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
         isTrialFinishSetupModalOpen: false,
         trialFinishSetupModal: {},
     },
-    showAutoAwesomeIcon: false,
     isOnUpdateOnboardingWizard: false,
     ...overrides,
 })
@@ -42,7 +50,7 @@ describe('useAiAgentCtas', () => {
 
     it('returns SetupAIAgentButton for backward compatibility or automate plan', () => {
         const props = createDefaultProps({
-            isBackwardCompatOrAutomatePlan: true,
+            canStartOnboarding: true,
         })
 
         const { result } = renderHook(() => useAiAgentCtas(props))
@@ -60,7 +68,7 @@ describe('useAiAgentCtas', () => {
 
     it('returns SetupAIAgentButton with "Continue Setup" text when in update onboarding wizard', () => {
         const props = createDefaultProps({
-            isBackwardCompatOrAutomatePlan: true,
+            canStartOnboarding: true,
             isOnUpdateOnboardingWizard: true,
         })
 
@@ -184,7 +192,7 @@ describe('useAiAgentCtas', () => {
     it('calls onOpenWizard when SetupAIAgentButton is clicked', () => {
         const onOpenWizard = jest.fn()
         const props = createDefaultProps({
-            isBackwardCompatOrAutomatePlan: true,
+            canStartOnboarding: true,
             onOpenWizard,
         })
 
@@ -326,5 +334,77 @@ describe('useAiAgentCtas', () => {
             onCloseTrialFinishSetupModal,
         )
         expect(trialFinishSetupModalComponent.props.someModalProp).toBe('test')
+    })
+
+    it('returns TryTrial and SubscribeNow for Has Automate plan Admin (Case 7)', () => {
+        const onOpenTrialUpgradeModal = jest.fn()
+        const props = createDefaultProps({
+            hasAutomate: true,
+            canSeeTrial: true,
+            isAdmin: true,
+            onOpenTrialUpgradeModal,
+        })
+
+        const { result } = renderHook(() => useAiAgentCtas(props))
+
+        const ctas = result.current.ctas as any
+        const tryTrialButton = ctas.props.children[0]
+        const subscribeNowButton = ctas.props.children[1]
+
+        expect(tryTrialButton.props.children).toBe('Try for 14 days')
+        expect(subscribeNowButton.props.children).toBe('Subscribe now')
+        expect(result.current.afterCtas).toBeUndefined()
+
+        // click try trial button to test events on primary CTA
+        tryTrialButton.props.onClick()
+
+        expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
+        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+            TrialEventType.StartTrial,
+            TrialType.ShoppingAssistant,
+        )
+
+        // click subscribe now button to test events on secondary CTA
+        subscribeNowButton.props.onClick()
+
+        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+            TrialEventType.UpgradePlan,
+            TrialType.ShoppingAssistant,
+        )
+    })
+
+    it('returns NotifyAdmin and StartAIAgentOnly for Has Automate plan Lead (Case 8)', () => {
+        const onOpenWizard = jest.fn()
+        const onOpenTrialRequestModal = jest.fn()
+        const props = createDefaultProps({
+            hasAutomate: true,
+            canNotifyAdmin: true,
+            onOpenTrialRequestModal,
+            onOpenWizard,
+        })
+
+        const { result } = renderHook(() => useAiAgentCtas(props))
+
+        const ctas = result.current.ctas as any
+        const notifyAdminButton = ctas.props.children[0]
+        const startAiAgentButton = ctas.props.children[1]
+
+        expect(notifyAdminButton.props.children).toBe('Notify admin')
+        expect(startAiAgentButton.props.children).toBe('Start AI Agent only')
+        expect(result.current.afterCtas).toBeUndefined()
+
+        // click notify admin button to test events on primary CTA
+        notifyAdminButton.props.onClick()
+
+        expect(onOpenTrialRequestModal).toHaveBeenCalled()
+        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+            TrialEventType.NotifyAdmin,
+            TrialType.ShoppingAssistant,
+        )
+
+        // click start AI Agent button to test events on secondary CTA
+        startAiAgentButton.props.onClick()
+
+        expect(onOpenWizard).toHaveBeenCalled()
     })
 })

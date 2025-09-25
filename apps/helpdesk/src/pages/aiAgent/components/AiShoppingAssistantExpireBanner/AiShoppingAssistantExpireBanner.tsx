@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from 'pages/aiAgent/Activation/utils'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
@@ -54,7 +55,7 @@ const AiShoppingAssistantExpireBanner: React.FC<
     )
 
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const hasNewAutomatePlan = (currentAutomatePlan?.generation ?? 0) >= 6
+    const hasNewAutomatePlan = hasAutomatePlanAboveGen6(currentAutomatePlan)
 
     const { earlyAccessModal, showEarlyAccessModal } = useActivation()
 

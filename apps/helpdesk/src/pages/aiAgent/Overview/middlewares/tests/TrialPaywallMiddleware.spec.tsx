@@ -1,8 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -11,7 +9,6 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import { TrialPaywallMiddleware } from '../TrialPaywallMiddleware'
 
-jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
@@ -28,20 +25,12 @@ jest.mock(
     }),
 )
 
-const useFlagMock = assumeMock(useFlag)
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
 
 describe('TrialPaywallMiddleware', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-
-        // Default flag mock - enable AiAgentExpandingTrialExperienceForAll by default
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return true
-            return false
-        })
 
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getCurrentAccountState) {
@@ -56,33 +45,7 @@ describe('TrialPaywallMiddleware', () => {
         })
     })
 
-    it('should render paywall when feature flag is disabled', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return false
-            return false
-        })
-
-        useStoreIntegrationsMock.mockReturnValue([
-            {
-                id: 1,
-                name: 'Test Shop',
-                type: IntegrationType.Shopify,
-            } as StoreIntegration,
-        ])
-
-        renderWithStoreAndQueryClientAndRouter(<TrialPaywallMiddleware />)
-
-        expect(screen.getByTestId('paywall-view')).toBeInTheDocument()
-    })
-
     it('should render missing integrations page when there are no integrations', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
-                return true
-            return false
-        })
-
         useStoreIntegrationsMock.mockReturnValue([])
 
         renderWithStoreAndQueryClientAndRouter(<TrialPaywallMiddleware />)

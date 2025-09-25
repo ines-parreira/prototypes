@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -65,24 +64,6 @@ describe('useCanUseAiSalesAgent', () => {
             return null
         })
         useFlagMock.mockReturnValue(false)
-
-        const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
-
-        expect(result.current).toBe(true)
-    })
-
-    it('should return true when AiSalesAgentBypassPlanCheck flag is true', () => {
-        // Mock selectors
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getCurrentAutomatePlan) {
-                return { generation: 5 }
-            }
-            if (selector === getIsTrialing) {
-                return false
-            }
-            return null
-        })
-        useFlagMock.mockReturnValue(true)
 
         const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
@@ -159,27 +140,6 @@ describe('useCanUseAiSalesAgent', () => {
         const { result } = renderHook(() => useCanUseAiSalesAgent('test-shop'))
 
         expect(result.current).toBe(false)
-    })
-
-    it('should check if flag is called with the correct parameters', () => {
-        // Mock selectors
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector === getCurrentAutomatePlan) {
-                return { generation: 5 }
-            }
-            if (selector === getIsTrialing) {
-                return false
-            }
-            return null
-        })
-        useFlagMock.mockReturnValue(false)
-
-        renderHook(() => useCanUseAiSalesAgent('test-shop'))
-
-        expect(useFlagMock).toHaveBeenCalledWith(
-            FeatureFlagKey.AiSalesAgentBypassPlanCheck,
-            false,
-        )
     })
 
     it('should return true when only is in AI or Shopping Assistant trial', () => {
