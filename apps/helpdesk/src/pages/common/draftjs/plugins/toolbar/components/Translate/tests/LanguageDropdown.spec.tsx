@@ -63,4 +63,61 @@ describe('LanguageDropdown', () => {
 
         expect(mockOnSearchChange).toHaveBeenCalledTimes(3)
     })
+
+    it('renders detected language section when detectedLanguage is provided', () => {
+        const propsWithDetected = {
+            ...defaultProps,
+            detectedLanguage: { code: 'es', name: 'Spanish' },
+        }
+
+        render(<LanguageDropdown {...propsWithDetected} />)
+
+        expect(screen.getByText('Detected language')).toBeInTheDocument()
+        expect(screen.getByText('Spanish')).toBeInTheDocument()
+        expect(screen.getByText('All languages (A->Z)')).toBeInTheDocument()
+    })
+
+    it('does not render detected language section when detectedLanguage is not provided', () => {
+        render(<LanguageDropdown {...defaultProps} />)
+
+        expect(screen.queryByText('Detected language')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('All languages (A->Z)'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('calls onLanguageSelect when detected language is clicked', async () => {
+        const propsWithDetected = {
+            ...defaultProps,
+            detectedLanguage: { code: 'es', name: 'Spanish' },
+        }
+
+        render(<LanguageDropdown {...propsWithDetected} />)
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('Spanish'))
+        })
+
+        expect(mockOnLanguageSelect).toHaveBeenCalledWith('es')
+        expect(mockOnClose).toHaveBeenCalled()
+    })
+
+    it('renders both detected language and filtered languages', () => {
+        const propsWithDetected = {
+            ...defaultProps,
+            detectedLanguage: { code: 'es', name: 'Spanish' },
+            filteredLanguages: [
+                { code: 'en', name: 'English' },
+                { code: 'fr', name: 'French' },
+            ],
+        }
+
+        render(<LanguageDropdown {...propsWithDetected} />)
+
+        expect(screen.getByText('Detected language')).toBeInTheDocument()
+        expect(screen.getByText('Spanish')).toBeInTheDocument()
+
+        expect(screen.getByText('English')).toBeInTheDocument()
+        expect(screen.getByText('French')).toBeInTheDocument()
+    })
 })

@@ -1,3 +1,5 @@
+@import '~css/typography';
+
 :local {
     .loaderContainer {
         display: inline-flex;
@@ -12,5 +14,22 @@
 
     .translateDropdown {
         width: 272px !important;
+    }
+
+    .detectedLanguageContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .detectedLanguageSeparator {
+        margin: 0 var(--layout-spacing-xs);
+        width: calc(100% - calc(2 * var(--layout-spacing-xs))) !important;
+    }
+
+    .translateDropdownText {
+        padding: 0 var(--layout-spacing-xs);
+        color: var(--main-primary);
+        .caption-allcaps();
     }
 }

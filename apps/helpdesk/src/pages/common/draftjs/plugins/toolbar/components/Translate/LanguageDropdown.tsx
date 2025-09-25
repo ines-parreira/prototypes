@@ -1,5 +1,7 @@
 import { RefObject, useRef } from 'react'
 
+import { Separator } from '@gorgias/axiom'
+
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -11,6 +13,7 @@ import css from './Translate.less'
 interface LanguageDropdownProps {
     isOpen: boolean
     searchTerm: string
+    detectedLanguage?: { code: string; name: string }
     filteredLanguages: Array<{ code: string; name: string }>
     buttonRef: RefObject<HTMLButtonElement>
     onClose: () => void
@@ -21,6 +24,7 @@ interface LanguageDropdownProps {
 export default function LanguageDropdown({
     isOpen,
     searchTerm,
+    detectedLanguage,
     filteredLanguages,
     buttonRef,
     onClose,
@@ -52,6 +56,31 @@ export default function LanguageDropdown({
                 onChange={onSearchChange}
             />
             <DropdownBody>
+                {detectedLanguage && (
+                    <div className={css.detectedLanguageContainer}>
+                        <span className={css.translateDropdownText}>
+                            Detected language
+                        </span>
+                        <DropdownItem
+                            key={detectedLanguage.code}
+                            option={{
+                                label: detectedLanguage.name,
+                                value: detectedLanguage.code,
+                            }}
+                            onClick={() =>
+                                handleLanguageClick(detectedLanguage.code)
+                            }
+                            shouldCloseOnSelect
+                        >
+                            {detectedLanguage.name}
+                        </DropdownItem>
+                        <Separator className={css.detectedLanguageSeparator} />
+                        <span className={css.translateDropdownText}>
+                            All languages (A{`->`}Z)
+                        </span>
+                    </div>
+                )}
+
                 {filteredLanguages.map(({ code, name }) => (
                     <DropdownItem
                         key={code}

@@ -32,6 +32,7 @@ export default function Translate({ getEditorState, setEditorState }: Props) {
     const {
         isOpen,
         searchTerm,
+        detectedLanguage,
         filteredLanguages,
         toggleDropdown,
         closeDropdown,
@@ -85,6 +86,7 @@ export default function Translate({ getEditorState, setEditorState }: Props) {
             <LanguageDropdown
                 isOpen={isOpen}
                 searchTerm={searchTerm}
+                detectedLanguage={detectedLanguage}
                 filteredLanguages={filteredLanguages}
                 buttonRef={buttonRef}
                 onClose={closeDropdown}
