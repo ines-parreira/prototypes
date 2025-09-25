@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, Map as ImmutableMap } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -9,13 +9,11 @@ import thunk from 'redux-thunk'
 import { ACTION_TEMPLATES } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 
 import TicketSubmitButtons from '../TicketSubmitButtons'
 
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
-jest.mock('providers/OutboundTranslationProvider')
 
 jest.mock(
     'pages/common/components/button/ConfirmButton',
@@ -32,22 +30,8 @@ jest.mock(
 )
 
 const mockStore = configureMockStore([thunk])
-const mockUseOutboundTranslationContext =
-    useOutboundTranslationContext as jest.Mock
-
-const mockContext = {
-    ticketIdToDraftIdMap: new Map(),
-    translationCache: new Map(),
-    getTranslationFromCache: jest.fn(),
-    registerTranslationDraft: jest.fn(),
-    getCurrentDraftId: jest.fn(),
-    isTranslationPending: false,
-}
 
 describe('<TicketSubmitButtons />', () => {
-    beforeEach(() => {
-        mockUseOutboundTranslationContext.mockReturnValue(mockContext)
-    })
     const state = {
         newMessage: fromJS({
             newMessage: {
@@ -70,10 +54,7 @@ describe('<TicketSubmitButtons />', () => {
         const actions = actionNames.map(
             (name) => ACTION_TEMPLATES.find((action) => action.name === name)!,
         )
-        return fromJS({ state: { appliedMacro: { actions } } }) as ImmutableMap<
-            any,
-            any
-        >
+        return fromJS({ state: { appliedMacro: { actions } } }) as Map<any, any>
     }
 
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
@@ -214,13 +195,25 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should disable buttons when translation is pending', () => {
-        mockUseOutboundTranslationContext.mockReturnValue({
-            ...mockContext,
-            isTranslationPending: true,
-        })
-
         const { getAllByRole } = render(
-            <Provider store={mockStore(state)}>
+            <Provider
+                store={mockStore({
+                    ...state,
+                    newMessage: fromJS({
+                        newMessage: {
+                            body_text: 'abc',
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        state: {
+                            isTranslationPending: true,
+                        },
+                    }),
+                })}
+            >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
             </Provider>,
         )

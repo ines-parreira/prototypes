@@ -1,4 +1,4 @@
-import React, { DragEvent, ReactNode, useState } from 'react'
+import React, { DragEvent, ReactNode, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -8,6 +8,7 @@ import { Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     GuidanceVariable,
     GuidanceVariableList,
@@ -21,6 +22,10 @@ import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/typ
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
+import {
+    getIsTranslationPending,
+    hasTranslation as hasTranslationSelector,
+} from 'state/newMessage/selectors'
 import { insertText } from 'utils'
 
 import GuidanceVariablePicker from './components/GuidanceVariablePicker'
@@ -68,7 +73,6 @@ type Props = {
     onLinkClose: () => void
     getWorkflowVariables?: () => WorkflowVariableList
     getGuidanceVariables?: () => GuidanceVariableList
-    isToolbarDisabled?: boolean
 } & ActionInjectedProps
 
 const renderButton = (
@@ -111,7 +115,6 @@ const Toolbar = ({
     onLinkOpen,
     onLinkClose,
     getWorkflowVariables,
-    isToolbarDisabled = false,
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
@@ -194,10 +197,17 @@ const Toolbar = ({
     const isActionDisplayed = (name: ActionName) =>
         isDisplayedAction(name, displayedActions)
 
+    const hasTranslation = useAppSelector(hasTranslationSelector)
+    const isTranslationPending = useAppSelector(getIsTranslationPending)
+    const isTranslationActive = useMemo(
+        () => hasTranslation || isTranslationPending,
+        [hasTranslation, isTranslationPending],
+    )
+
     const actionsProps = {
         getEditorState,
         setEditorState,
-        isDisabled: isToolbarDisabled,
+        isDisabled: isTranslationActive,
     }
 
     return (
@@ -278,7 +288,7 @@ const Toolbar = ({
                     )}
 
                     {buttons?.map((button, index) =>
-                        renderButton(button, index, isToolbarDisabled),
+                        renderButton(button, index, isTranslationActive),
                     )}
 
                     <div className={css.hoverOverlay}>

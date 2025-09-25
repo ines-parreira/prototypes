@@ -80,6 +80,7 @@ const initialReplyAreaState: ReplyAreaState = {
     appliedMacro: null,
     firstNewMessage: true,
     inserted_discounts: [],
+    isTranslationPending: false,
 }
 
 export const initialState: NewMessageState = fromJS({
@@ -109,6 +110,7 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
         .setIn(['state', 'selectionState'], null)
         .setIn(['state', 'inserted_discounts'], fromJS([]))
         .deleteIn(['state', 'originalContentState'])
+        .setIn(['state', 'isTranslationPending'], false)
 }
 
 export default function reducer(
@@ -818,6 +820,13 @@ export default function reducer(
             }
 
             return state
+        }
+
+        case types.SET_TRANSLATION_PENDING: {
+            return state.setIn(
+                ['state', 'isTranslationPending'],
+                action.payload,
+            )
         }
 
         default:

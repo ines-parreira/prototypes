@@ -22,11 +22,11 @@ import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import withTypingActivity, {
     TypingActivityProps,
 } from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
-import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { isNewChannel } from 'services/channels'
 import { getOtherAgents } from 'state/agents/selectors'
 import { addAttachments, setResponseText } from 'state/newMessage/actions'
 import {
+    getIsTranslationPending,
     getNewMessageAttachments,
     getNewMessageType,
     hasTranslation,
@@ -52,7 +52,7 @@ type Props = {
     ticket: Map<any, any>
     flags?: LDFlagSet
 } & ConnectedProps<typeof connector> &
-    TypingActivityProps & { isTranslationPending: boolean }
+    TypingActivityProps
 
 // debounce the updating of the redux because it's slow otherwise when we type
 export const updateMessageText = _debounce(
@@ -379,7 +379,6 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             replyAreaHeader,
             handleTypingActivity,
             hasTranslation,
-            isTranslationPending,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -494,7 +493,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                             'submitMessage',
                         ]) ||
                         hasTranslation ||
-                        isTranslationPending
+                        this.props.isTranslationPending
                     }
                     {...mentionProps}
                     placeholder="Click here to reply, or press r."
@@ -514,23 +513,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     canDropFiles
                     emailExtraEnabled
                     spellCheck
-                    isToolbarDisabled={hasTranslation || isTranslationPending}
                     {...predictionProps}
                 />
             </div>
-        )
-    }
-}
-
-// HOC to inject translation pending state
-function withOutboundTranslationContext<P>(
-    Component: React.ComponentType<P & { isTranslationPending: boolean }>,
-) {
-    return (props: P) => {
-        const { isTranslationPending } = useOutboundTranslationContext()
-
-        return (
-            <Component {...props} isTranslationPending={isTranslationPending} />
         )
     }
 }
@@ -541,6 +526,7 @@ const connector = connect(
         attachments: getNewMessageAttachments(state),
         isNewMessagePublic: isNewMessagePublic(state),
         hasTranslation: hasTranslation(state),
+        isTranslationPending: getIsTranslationPending(state),
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         predictionContext: getContext(state),
@@ -553,7 +539,5 @@ const connector = connect(
 )
 
 export default connector(
-    withOutboundTranslationContext(
-        withTypingActivity(withLDConsumer()(TicketReplyEditorContainer)),
-    ),
+    withTypingActivity(withLDConsumer()(TicketReplyEditorContainer)),
 )

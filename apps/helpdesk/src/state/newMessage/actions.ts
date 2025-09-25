@@ -1557,3 +1557,6 @@ export const setTranslationState = createAction<{
 export const clearTranslationState = createAction(
     constants.CLEAR_TRANSLATION_STATE,
 )
+export const setTranslationPending = createAction<boolean>(
+    constants.SET_TRANSLATION_PENDING,
+)

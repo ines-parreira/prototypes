@@ -115,7 +115,6 @@ type Props = {
     getWorkflowVariables?: () => WorkflowVariableList
     getGuidanceVariables?: () => GuidanceVariableList
     onKeyDown?: (event: KeyboardEvent) => void
-    isToolbarDisabled?: boolean
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -137,7 +136,6 @@ export class RichFieldEditor extends Component<Props, State> {
         | 'isFocused'
         | 'canAddVideoPlayer'
         | 'onInsertVideoAddedFromPastedLink'
-        | 'isToolbarDisabled'
     > = {
         emailExtraEnabled: false,
         notify: () => Promise.resolve(),
@@ -147,7 +145,6 @@ export class RichFieldEditor extends Component<Props, State> {
         isFocused: false,
         canAddVideoPlayer: false,
         onInsertVideoAddedFromPastedLink: _noop,
-        isToolbarDisabled: false,
     }
 
     plugins: Plugin[]
@@ -493,7 +490,6 @@ export class RichFieldEditor extends Component<Props, State> {
             }>
         }
         const pluginMethods = this.editor?.getPluginMethods()
-
         return (
             <div
                 className={classnames(className, 'rich-textarea-wrapper', {
@@ -584,7 +580,6 @@ export class RichFieldEditor extends Component<Props, State> {
                         uploadType={uploadType}
                         {...pluginMethods}
                         getWorkflowVariables={this.props.getWorkflowVariables}
-                        isToolbarDisabled={this.props.isToolbarDisabled}
                     />
                 )}
             </div>

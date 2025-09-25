@@ -25,7 +25,6 @@ import { MacroActionName } from 'models/macroAction/types'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
-import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
@@ -98,11 +97,6 @@ jest.mock('state/ticket/actions', () => ({
 }))
 
 jest.mock('core/flags/hooks/useFlag')
-
-jest.mock('providers/OutboundTranslationProvider')
-const mockUseOutboundTranslationContext =
-    useOutboundTranslationContext as jest.Mock
-
 const mockStore = configureMockStore([thunk])
 let mockedStore = mockStore({
     ticket: fromJS({
@@ -321,9 +315,6 @@ describe('TicketDetailContainer component', () => {
             },
             joinTicket: mockJoinTicket,
             leaveTicket: mockLeaveTicket,
-        })
-        mockUseOutboundTranslationContext.mockReturnValue({
-            isTranslationPending: false,
         })
     })
 
@@ -1383,15 +1374,13 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should not call ticket submit if translation is pending', () => {
-        mockUseOutboundTranslationContext.mockReturnValue({
-            isTranslationPending: true,
-        })
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
                         {...minProps}
                         canSendMessage={true}
+                        isTranslationPending={true}
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -1407,15 +1396,13 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should not call ticket submit & close if translation is pending', () => {
-        mockUseOutboundTranslationContext.mockReturnValue({
-            isTranslationPending: true,
-        })
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
                         {...minProps}
                         canSendMessage={true}
+                        isTranslationPending={true}
                     />
                 </Provider>
             </QueryClientProvider>,

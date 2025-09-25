@@ -10,7 +10,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { ActionInjectedProps } from '../../types'
 import Button from '../Button'
 import { useLanguageDropdown } from './hooks/useLanguageDropdown'
-import { useOutboundTranslation } from './hooks/useOutboundTranslation'
+import { useTranslation } from './hooks/useTranslation'
 import LanguageDropdown from './LanguageDropdown'
 
 import css from './Translate.less'
@@ -27,7 +27,7 @@ export default function Translate({ getEditorState, setEditorState }: Props) {
         hasTranslation,
         requestTranslation,
         toggleOriginal,
-    } = useOutboundTranslation(getEditorState, setEditorState)
+    } = useTranslation(getEditorState, setEditorState)
 
     const {
         isOpen,

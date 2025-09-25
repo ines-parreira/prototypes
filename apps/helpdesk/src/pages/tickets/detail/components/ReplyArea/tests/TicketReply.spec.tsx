@@ -28,12 +28,6 @@ jest.mock('draft-js-plugins-editor', () => ({
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 
-jest.mock('providers/OutboundTranslationProvider', () => ({
-    useOutboundTranslationContext: jest.fn().mockReturnValue({
-        isTranslationPending: false,
-    }),
-}))
-
 const mockStore = configureMockStore([thunk])
 
 describe('<TicketReply />', () => {

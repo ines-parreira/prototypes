@@ -4,21 +4,18 @@ import { createEvent, fireEvent, render } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
-import { fromJS, Map as ImmutableMap } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import * as channelsService from 'services/channels'
 import { convertToHTML, createDraftJSKeyGeneratorMock } from 'utils/editor'
 import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
 import { TicketReplyEditorContainer } from '../TicketReplyEditor'
-
-jest.mock('providers/OutboundTranslationProvider')
 
 jest.mock('draft-js/lib/generateRandomKey', () =>
     jest.fn().mockReturnValue('mock-key'),
@@ -33,24 +30,12 @@ const store = mockStore({
     ui: { editor: {} },
 })
 
-const mockUseOutboundTranslationContext =
-    useOutboundTranslationContext as jest.Mock
-
 describe('TicketReplyEditor component', () => {
     beforeEach(() => {
         const generateKey = createDraftJSKeyGeneratorMock()
         const generateRandomKeyFunction = generateRandomKey as jest.SpyInstance
         generateRandomKeyFunction.mockImplementation(generateKey)
         jest.useRealTimers()
-
-        mockUseOutboundTranslationContext.mockReturnValue({
-            ticketIdToDraftIdMap: new Map(),
-            translationCache: new Map(),
-            getTranslationFromCache: jest.fn(),
-            registerTranslationDraft: jest.fn(),
-            getCurrentDraftId: jest.fn(),
-            isTranslationPending: false,
-        })
     })
 
     const minProps: ComponentProps<typeof TicketReplyEditorContainer> = {
@@ -205,7 +190,7 @@ describe('TicketReplyEditor component', () => {
     // test for debouncer bug
     // https://github.com/gorgias/gorgias/issues/2510
     it('should not set newMessage value after component is unmounted', (done) => {
-        const ticket: ImmutableMap<any, any> = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -223,7 +208,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage: ImmutableMap<any, any> = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: ContentState.createFromText(''),
                 selectionState: null,
@@ -279,7 +264,7 @@ describe('TicketReplyEditor component', () => {
     })
 
     it('should allow inline image', () => {
-        const ticket: ImmutableMap<any, any> = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -297,7 +282,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage: ImmutableMap<any, any> = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: ContentState.createFromText(''),
                 selectionState: null,
@@ -324,7 +309,7 @@ describe('TicketReplyEditor component', () => {
     })
 
     it('should render message with inline image', (done) => {
-        const ticket: ImmutableMap<any, any> = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -342,7 +327,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage: ImmutableMap<any, any> = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: null,
                 selectionState: null,

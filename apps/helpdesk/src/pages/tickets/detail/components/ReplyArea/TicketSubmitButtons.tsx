@@ -13,7 +13,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import shortcutManager from 'services/shortcutManager'
 import { submitSetting } from 'state/currentUser/actions'
 import {
@@ -23,6 +22,7 @@ import {
 import {
     canSend as getCanSend,
     hasContent as getHasContent,
+    getIsTranslationPending,
 } from 'state/newMessage/selectors'
 import { hasContentlessAction as getHasContentlessAction } from 'state/ticket/selectors'
 
@@ -66,8 +66,6 @@ type Props = {
 export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const dispatch = useAppDispatch()
 
-    const { isTranslationPending } = useOutboundTranslationContext()
-
     const hasContent = useAppSelector(getHasContent)
     const currentUserPreferences = useAppSelector(getPreferences)
     const isHidingTips = useAppSelector(getIsHidingTips)
@@ -75,6 +73,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
     const ticket = useAppSelector((state) => state.ticket)
+    const isTranslationPending = useAppSelector(getIsTranslationPending)
 
     const tip = useMemo(() => _sample(TIPS), [])
 
