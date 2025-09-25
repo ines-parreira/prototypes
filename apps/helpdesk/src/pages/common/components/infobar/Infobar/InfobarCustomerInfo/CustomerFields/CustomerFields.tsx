@@ -1,19 +1,12 @@
 import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomerFieldValues } from 'custom-fields/hooks/queries/useCustomerFieldValues'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomFieldValue } from 'custom-fields/types'
 
 import CustomerField from './CustomerField'
 import { Heading } from './Heading'
 
-type CustomerFieldsProps = {
-    customerId: number
-    values: Array<{ id: number; value: CustomFieldValue }>
-}
-
-export default function CustomerFields({
-    customerId,
-    values,
-}: CustomerFieldsProps) {
+export default function CustomerFields({ customerId }: { customerId: number }) {
     const {
         data: definitionsData,
         isLoading: isDefinitionLoading,
@@ -23,14 +16,21 @@ export default function CustomerFields({
         object_type: OBJECT_TYPES.CUSTOMER,
     })
 
-    const isLoading = isDefinitionLoading
-    const isError = isDefinitionError
+    const {
+        data: valuesData,
+        isLoading: isValueLoading,
+        isError: isValueError,
+    } = useCustomerFieldValues(customerId)
+
+    const isLoading = isDefinitionLoading || isValueLoading
+    const isError = isDefinitionError || isValueError
 
     if (isLoading || isError || definitionsData?.data.length === 0) {
         return null
     }
 
     const customFieldDefinitions = definitionsData?.data || []
+    const customFieldValues = valuesData?.data || []
 
     return (
         <>
@@ -40,7 +40,12 @@ export default function CustomerFields({
                     <CustomerField
                         key={field.id}
                         field={field}
-                        value={values.find((v) => field.id === v.id)?.value}
+                        value={
+                            customFieldValues.find(
+                                ({ field: valueField }) =>
+                                    field.id === valueField.id,
+                            )?.value as CustomFieldValue
+                        }
                         customerId={customerId}
                     />
                 )

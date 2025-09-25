@@ -94,8 +94,6 @@ const InfobarCustomerInfo = ({
         ).length > 0
 
     const customerIntegrationsData: Map<any, any> = customer.get('integrations')
-    const customerFieldsValues: Array<{ id: number; value: string }> =
-        Object.values(customer.get('custom_fields')?.toJS() ?? [])
 
     const shouldSuggestCustomerProfileShopifySync = useShouldShowProfileSync(
         isEditing,
@@ -284,10 +282,7 @@ const InfobarCustomerInfo = ({
                         />
                     </div>
                 </div>
-                <CustomerFields
-                    customerId={Number(customer.get('id'))}
-                    values={customerFieldsValues}
-                />
+                <CustomerFields customerId={Number(customer.get('id'))} />
                 <Separator className={css.separator} />
                 <CustomerChannels
                     channels={customer.get('channels') || fromJS([])}
@@ -300,8 +295,6 @@ const InfobarCustomerInfo = ({
                     customerName={customer.get('name', '')}
                 >
                     <CustomerNote
-                        // A bit dirty hack to force re-render when note changes
-                        key={`${customer.get('id')}-${customer.get('note')}`}
                         customerId={Number(customer.get('id'))}
                         initialNote={customer.get('note')}
                     />
