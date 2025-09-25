@@ -37,6 +37,19 @@
         color: var(--content-neutral-default);
 
         .body-semibold();
+
+        &:disabled {
+            cursor: default;
+        }
+
+        &.ghostButton {
+            padding: 0 var(--spacing-xs);
+        }
+    }
+
+    .iconWithTextButton {
+        padding: 0 12px 0 8px;
+        gap: var(--spacing-xxxs);
     }
 
     .separator {
@@ -47,7 +60,7 @@
         border-left: 1px solid var(--border-neutral-default);
     }
 
-    .filledButton {
+    .secondaryButton {
         border-radius: var(--layout-spacing-xs);
         border: 0.5px solid var(--border-neutral-tertiary);
         background: var(--surface-button-secondary);
@@ -58,7 +71,7 @@
             color: var(--content-neutral-default);
         }
 
-        &:hover {
+        &:hover:not(:disabled) {
             background: linear-gradient(
                 0deg,
                 var(--hover-default) 0%,
@@ -66,8 +79,12 @@
             );
         }
 
-        &:active {
+        &:active:not(:disabled) {
             box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
+        }
+
+        &:disabled {
+            opacity: 0.5;
         }
     }
 
@@ -130,9 +147,5 @@
 
             box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
         }
-    }
-
-    .disabled:disabled {
-        cursor: default;
     }
 }

@@ -12,6 +12,7 @@ export const KnowledgeEditorTopBarTitle = ({ title, onChangeTitle }: Props) =>
         <input
             type="text"
             name="title"
+            placeholder="Title"
             value={title}
             className={classNames(css.title, css.editableTitle)}
             onChange={(event) => onChangeTitle(event.target.value)}

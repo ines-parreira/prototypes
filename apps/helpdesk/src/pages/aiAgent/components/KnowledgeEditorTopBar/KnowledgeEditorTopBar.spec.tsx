@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
 
 describe('KnowledgeEditorTopBar', () => {
-    it('should render', () => {
+    it('renders', () => {
         const onToggleFullscreen = jest.fn()
         const onClose = jest.fn()
         const onToggleDetailsView = jest.fn()
@@ -56,5 +56,26 @@ describe('KnowledgeEditorTopBar', () => {
         })
 
         expect(onChangeTitle).toHaveBeenCalledWith('New Title')
+    })
+
+    it('renders fullscreen', () => {
+        const onToggleFullscreen = jest.fn()
+
+        render(
+            <KnowledgeEditorTopBar
+                title="Guidance"
+                isFullscreen={true}
+                onToggleFullscreen={onToggleFullscreen}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+            />,
+        )
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        )
+
+        expect(onToggleFullscreen).toHaveBeenCalled()
     })
 })

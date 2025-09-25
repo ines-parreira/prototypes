@@ -1,12 +1,6 @@
 import classNames from 'classnames'
 
-import arrowExpand from 'assets/img/knowledge/icons/arrow-expand.svg'
-import arrowShrink from 'assets/img/knowledge/icons/arrow-shrink.svg'
-import chevronLeft from 'assets/img/knowledge/icons/chevron-left.svg'
-import chevronRight from 'assets/img/knowledge/icons/chevron-right.svg'
-import close from 'assets/img/knowledge/icons/close.svg'
-import systemBarCollapse from 'assets/img/knowledge/icons/system-bar-collapse.svg'
-import systemBarExpand from 'assets/img/knowledge/icons/system-bar-expand.svg'
+import { Icon } from '@gorgias/axiom'
 
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'
 
@@ -42,8 +36,9 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
                     onClick={props.onClickPrevious}
                     disabled={props.onClickPrevious === undefined}
+                    aria-label="previous"
                 >
-                    <img src={chevronLeft} alt="previous" />
+                    <Icon name="arrow-chevron-left" />
                 </button>
                 <button
                     className={classNames(
@@ -52,8 +47,9 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
                     onClick={props.onClickNext}
                     disabled={props.onClickNext === undefined}
+                    aria-label="next"
                 >
-                    <img src={chevronRight} alt="next" />
+                    <Icon name="arrow-chevron-right" />
                 </button>
             </div>
 
@@ -75,16 +71,16 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 <button
                     className={classNames(
                         controlsCss.icon,
-                        controlsCss.filledButton,
+                        controlsCss.secondaryButton,
                     )}
                     onClick={props.onToggleFullscreen}
+                    aria-label={
+                        props.isFullscreen ? 'leave fullscreen' : 'fullscreen'
+                    }
                 >
-                    <img
-                        src={props.isFullscreen ? arrowShrink : arrowExpand}
-                        alt={
-                            props.isFullscreen
-                                ? 'leave fullscreen'
-                                : 'fullscreen'
+                    <Icon
+                        name={
+                            props.isFullscreen ? 'arrow-shrink' : 'arrow-expand'
                         }
                     />
                 </button>
@@ -92,11 +88,12 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 <button
                     className={classNames(
                         controlsCss.icon,
-                        controlsCss.filledButton,
+                        controlsCss.secondaryButton,
                     )}
                     onClick={props.onClose}
+                    aria-label="close"
                 >
-                    <img src={close} alt="close" />
+                    <Icon name="close" />
                 </button>
 
                 <button
@@ -105,17 +102,17 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         controlsCss.ghostButton,
                     )}
                     onClick={props.onToggleDetailsView}
+                    aria-label={
+                        props.isDetailsView
+                            ? 'collapse side panel'
+                            : 'expand side panel'
+                    }
                 >
-                    <img
-                        src={
+                    <Icon
+                        name={
                             props.isDetailsView
-                                ? systemBarCollapse
-                                : systemBarExpand
-                        }
-                        alt={
-                            props.isDetailsView
-                                ? 'collapse side panel'
-                                : 'expand side panel'
+                                ? 'system-bar-collapsed'
+                                : 'system-bar-expanded'
                         }
                     />
                 </button>

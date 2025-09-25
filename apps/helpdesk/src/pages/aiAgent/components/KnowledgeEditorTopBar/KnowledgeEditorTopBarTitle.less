@@ -11,10 +11,20 @@
         color: var(--content-neutral-default);
 
         display: flex;
+        width: 100%;
 
         padding: 6px 8px;
         align-items: center;
         gap: 8px;
         border: none;
+        box-sizing: border-box;
+        border-radius: 4px;
+
+        &:focus {
+            border: 2px solid var(--main-primary, #0075ff);
+            box-shadow: 0 0 0 2px rgba(74, 141, 249, 0.2);
+            outline: none;
+            padding-left: 6px;
+        }
     }
 }

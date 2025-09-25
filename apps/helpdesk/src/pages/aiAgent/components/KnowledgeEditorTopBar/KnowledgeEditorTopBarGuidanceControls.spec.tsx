@@ -3,14 +3,14 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { KnowledgeEditorTopBarGuidanceControls } from './KnowledgeEditorTopBarGuidanceControls'
 
 describe('KnowledgeEditorTopBarGuidanceControls', () => {
-    it('renders readonly mode', () => {
+    it('renders read mode', () => {
         const onEdit = jest.fn()
         const onDelete = jest.fn()
 
         render(
             <KnowledgeEditorTopBarGuidanceControls
                 mode={{
-                    mode: 'readonly',
+                    mode: 'read',
                     onEdit,
                     onDelete,
                 }}

@@ -1,24 +1,27 @@
 import classNames from 'classnames'
 
-import editPencil from 'assets/img/knowledge/icons/edit-pencil.svg'
-import trashEmpty from 'assets/img/knowledge/icons/trash-empty.svg'
+import {
+    CancelButton,
+    DeleteIconButton,
+    EditIconButton,
+} from './KnowledgeEditorTopBarCommonControls'
 
 import css from './KnowledgeEditorTopBarControls.less'
 
 type GuidanceMode =
     | {
-          mode: 'readonly'
+          mode: 'read'
           onEdit: () => void
           onDelete: () => void
       }
     | {
           mode: 'edit'
-          onSave?: () => void // undefined is button is disabled
+          onSave?: () => void // undefined if button is disabled
           onCancel: () => void
       }
     | {
           mode: 'create'
-          onCreate?: () => void // undefined is button is disabled
+          onCreate?: () => void // undefined if button is disabled
           onCancel: () => void
       }
 
@@ -26,41 +29,19 @@ type Props = {
     mode: GuidanceMode
 }
 
-const ReadOnlyControls = (
-    props: Extract<GuidanceMode, { mode: 'readonly' }>,
-) => (
+const ReadControls = (props: Extract<GuidanceMode, { mode: 'read' }>) => (
     <>
-        <button
-            className={classNames(css.icon, css.filledButton)}
-            onClick={props.onEdit}
-        >
-            <img src={editPencil} alt="edit" />
-        </button>
-
-        <button
-            className={classNames(css.icon, css.filledButton)}
-            onClick={props.onDelete}
-        >
-            <img src={trashEmpty} alt="delete" />
-        </button>
+        <EditIconButton onEdit={props.onEdit} />
+        <DeleteIconButton onDelete={props.onDelete} />
     </>
 )
 
 const EditControls = (props: Extract<GuidanceMode, { mode: 'edit' }>) => (
     <>
-        <button
-            className={classNames(css.button, css.ghostButton)}
-            onClick={props.onCancel}
-        >
-            Cancel
-        </button>
+        <CancelButton onCancel={props.onCancel} />
 
         <button
-            className={classNames(
-                css.button,
-                css.primaryButton,
-                props.onSave ? undefined : css.disabled,
-            )}
+            className={classNames(css.button, css.primaryButton)}
             onClick={props.onSave}
             disabled={props.onSave === undefined}
         >
@@ -71,19 +52,10 @@ const EditControls = (props: Extract<GuidanceMode, { mode: 'edit' }>) => (
 
 const CreateControls = (props: Extract<GuidanceMode, { mode: 'create' }>) => (
     <>
-        <button
-            className={classNames(css.button, css.ghostButton)}
-            onClick={props.onCancel}
-        >
-            Cancel
-        </button>
+        <CancelButton onCancel={props.onCancel} />
 
         <button
-            className={classNames(
-                css.button,
-                css.primaryButton,
-                props.onCreate ? undefined : css.disabled,
-            )}
+            className={classNames(css.button, css.primaryButton)}
             onClick={props.onCreate}
             disabled={props.onCreate === undefined}
         >
@@ -93,8 +65,8 @@ const CreateControls = (props: Extract<GuidanceMode, { mode: 'create' }>) => (
 )
 
 export const KnowledgeEditorTopBarGuidanceControls = (props: Props) =>
-    props.mode.mode === 'readonly' ? (
-        <ReadOnlyControls {...props.mode} />
+    props.mode.mode === 'read' ? (
+        <ReadControls {...props.mode} />
     ) : props.mode.mode === 'edit' ? (
         <EditControls {...props.mode} />
     ) : (
