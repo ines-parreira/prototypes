@@ -2,15 +2,17 @@ import { assumeMock } from '@repo/testing'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import {
+    mockEnqueueStep,
     mockIvrMenuStep,
     mockPlayMessageStep,
     mockSendToSMSStep,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { useFormContext } from 'core/forms'
 
 import { VoiceFlowNodeType } from '../../constants'
+import { VoiceFlowNode } from '../../types'
 import { useVoiceFlow } from '../../useVoiceFlow'
 import { transformToReactFlowNodes } from '../../utils'
 import { useDeleteNode } from '../useDeleteNode'
@@ -24,8 +26,11 @@ const useFormContextMock = assumeMock(useFormContext)
 let useVoiceFlowReturnValue: ReturnType<typeof useVoiceFlow>
 let useFormContextReturnValue: ReturnType<typeof useFormContext>
 
-const renderHookWithMocks = (flow: CallRoutingFlow) => {
-    const nodes = transformToReactFlowNodes(flow)
+const renderHookWithMocks = (
+    flow: CallRoutingFlow,
+    initialNodes?: VoiceFlowNode[],
+) => {
+    const nodes = initialNodes || transformToReactFlowNodes(flow)
 
     useVoiceFlowReturnValue = {
         getNodes: () => nodes,
@@ -470,6 +475,248 @@ describe('useDeleteNode', () => {
 
             expect(useVoiceFlowReturnValue.setNodes).not.toHaveBeenCalled()
             expect(useFormContextReturnValue.unregister).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('deleteEnqueueBranches', () => {
+        it('should only delete enqueue branches but not the enqueue node', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'enqueue-1',
+            })
+            const enqueueStep = mockEnqueueStep({
+                id: 'enqueue-1',
+                next_step_id: 'default-branch-step',
+                skip_step_id: 'skip-branch-step',
+                conditional_routing: true,
+            })
+            const defaultBranchStep = mockPlayMessageStep({
+                id: 'default-branch-step',
+                next_step_id: 'last-node',
+            })
+            const skipBranchStep = mockPlayMessageStep({
+                id: 'skip-branch-step',
+                next_step_id: 'last-node',
+            })
+            const lastNode = mockPlayMessageStep({
+                id: 'last-node',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [enqueueStep.id]: enqueueStep,
+                    [defaultBranchStep.id]: defaultBranchStep,
+                    [skipBranchStep.id]: skipBranchStep,
+                    [lastNode.id]: lastNode,
+                },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
+                false
+
+            const { result } = renderHookWithMocks(flow, nodes)
+
+            await act(async () => {
+                await result.current.deleteEnqueueBranches(enqueueStep.id)
+            })
+
+            await waitFor(() => {
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.default-branch-step')
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.skip-branch-step')
+                // check that we only have the incoming, first step, enqueue, last node and end call nodes
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {
+                        [firstStep.id]: firstStep,
+                        [enqueueStep.id]: {
+                            ...enqueueStep,
+                            next_step_id: 'last-node',
+                            skip_step_id: undefined,
+                        },
+                        [lastNode.id]: lastNode,
+                    },
+                    { shouldDirty: true },
+                )
+            })
+        })
+
+        it('should only remove link to skip step when branches are empty', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'enqueue-1',
+            })
+            const enqueueStep = mockEnqueueStep({
+                id: 'enqueue-1',
+                next_step_id: 'connector-step',
+                skip_step_id: 'connector-step',
+                conditional_routing: true,
+            })
+            const connectorStep = mockPlayMessageStep({
+                id: 'connector-step',
+                next_step_id: 'last-node',
+            })
+            const lastNode = mockPlayMessageStep({
+                id: 'last-node',
+                next_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [enqueueStep.id]: enqueueStep,
+                    [connectorStep.id]: connectorStep,
+                    [lastNode.id]: lastNode,
+                },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
+                false
+
+            const { result } = renderHookWithMocks(flow, nodes)
+
+            await act(async () => {
+                await result.current.deleteEnqueueBranches(enqueueStep.id)
+            })
+
+            await waitFor(() => {
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {
+                        [firstStep.id]: firstStep,
+                        [enqueueStep.id]: {
+                            ...enqueueStep,
+                            next_step_id: 'connector-step',
+                            skip_step_id: undefined,
+                        },
+                        [connectorStep.id]: connectorStep,
+                        [lastNode.id]: lastNode,
+                    },
+                    { shouldDirty: true },
+                )
+            })
+        })
+
+        it('should delete default branch correctly when skip branch is empty', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'enqueue-1',
+            })
+            const enqueueStep = mockEnqueueStep({
+                id: 'enqueue-1',
+                next_step_id: 'default-branch-step',
+                skip_step_id: 'last-node',
+                conditional_routing: true,
+            })
+            const defaultBranchStep = mockPlayMessageStep({
+                id: 'default-branch-step',
+                next_step_id: 'last-node',
+            })
+            const lastNode = mockPlayMessageStep({
+                id: 'last-node',
+                next_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [enqueueStep.id]: enqueueStep,
+                    [defaultBranchStep.id]: defaultBranchStep,
+                    [lastNode.id]: lastNode,
+                },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
+                false
+
+            const { result } = renderHookWithMocks(flow, nodes)
+
+            await act(async () => {
+                await result.current.deleteEnqueueBranches(enqueueStep.id)
+            })
+
+            await waitFor(() => {
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {
+                        [firstStep.id]: firstStep,
+                        [enqueueStep.id]: {
+                            ...enqueueStep,
+                            next_step_id: lastNode.id,
+                            skip_step_id: undefined,
+                        },
+                        [lastNode.id]: lastNode,
+                    },
+                    { shouldDirty: true },
+                )
+            })
+        })
+
+        it('should delete skip branch correctly when default branch is empty', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'enqueue-1',
+            })
+            const enqueueStep = mockEnqueueStep({
+                id: 'enqueue-1',
+                next_step_id: 'default-branch-step',
+                skip_step_id: 'last-node',
+                conditional_routing: true,
+            })
+            const defaultBranchStep = mockPlayMessageStep({
+                id: 'default-branch-step',
+                next_step_id: 'last-node',
+            })
+            const lastNode = mockPlayMessageStep({
+                id: 'last-node',
+                next_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [enqueueStep.id]: enqueueStep,
+                    [defaultBranchStep.id]: defaultBranchStep,
+                    [lastNode.id]: lastNode,
+                },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
+                false
+
+            const { result } = renderHookWithMocks(flow, nodes)
+
+            await act(async () => {
+                await result.current.deleteEnqueueBranches(enqueueStep.id)
+            })
+
+            await waitFor(() => {
+                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
+                    'steps',
+                    {
+                        [firstStep.id]: firstStep,
+                        [enqueueStep.id]: {
+                            ...enqueueStep,
+                            next_step_id: lastNode.id,
+                            skip_step_id: undefined,
+                        },
+                        [lastNode.id]: lastNode,
+                    },
+                    { shouldDirty: true },
+                )
+            })
         })
     })
 })

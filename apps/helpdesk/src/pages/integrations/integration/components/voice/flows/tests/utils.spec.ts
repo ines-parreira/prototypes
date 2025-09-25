@@ -2,6 +2,7 @@ import { Edge } from '@xyflow/react'
 import * as uuid from 'uuid'
 
 import {
+    mockEnqueueStep,
     mockForwardToExternalNumberStep,
     mockIvrMenuStep,
     mockPlayMessageStep,
@@ -28,6 +29,8 @@ import {
 } from '../constants'
 import {
     EndCallNode,
+    EnqueueNode,
+    EnqueueOptionNode,
     ForwardToExternalNode,
     IntermediaryNode,
     IvrMenuNode,
@@ -42,6 +45,7 @@ import {
 import {
     addIvrOption,
     canAddNewStepOnEdge,
+    createEnqueueOptionNode,
     createIvrOptionNode,
     createTimeSplitOptionNode,
     findConvergencePointsInVoiceFlow,
@@ -124,6 +128,35 @@ describe('utils', () => {
     })
 
     describe('getNextNodes', () => {
+        it('should return the next nodes for an Enqueue with conditional routing', () => {
+            const node: EnqueueNode = {
+                type: VoiceFlowNodeType.Enqueue,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockEnqueueStep({
+                    conditional_routing: true,
+                    next_step_id: '2',
+                    skip_step_id: '3',
+                }),
+            }
+
+            expect(getNextNodes(node, [])).toEqual(['2', '3'])
+        })
+
+        it('should return the next nodes for an Enqueue without conditional routing', () => {
+            const node: EnqueueNode = {
+                type: VoiceFlowNodeType.Enqueue,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockEnqueueStep({
+                    conditional_routing: false,
+                    next_step_id: '2',
+                }),
+            }
+
+            expect(getNextNodes(node, [])).toEqual(['2'])
+        })
+
         it('should return the next nodes for a time split conditional', () => {
             const node: TimeSplitConditionalNode = {
                 type: VoiceFlowNodeType.TimeSplitConditional,
@@ -207,6 +240,37 @@ describe('utils', () => {
                     optionIndex: 0,
                     next_step_id:
                         ivrMenuNode.data.branch_options[0].next_step_id,
+                },
+            })
+        })
+    })
+
+    describe('createEnqueueOptionNode', () => {
+        it('should create an Enqueue option node', () => {
+            const enqueueNodeSkipStep = createEnqueueOptionNode('1', true, '2')
+            const enqueueNodeDefaultStep = createEnqueueOptionNode(
+                '1',
+                false,
+                '2',
+            )
+
+            expect(enqueueNodeSkipStep).toEqual({
+                id: expect.any(String),
+                type: VoiceFlowNodeType.EnqueueOption,
+                data: {
+                    parentId: '1',
+                    isSkipStep: true,
+                    next_step_id: '2',
+                },
+            })
+
+            expect(enqueueNodeDefaultStep).toEqual({
+                id: expect.any(String),
+                type: VoiceFlowNodeType.EnqueueOption,
+                data: {
+                    parentId: '1',
+                    isSkipStep: false,
+                    next_step_id: '2',
                 },
             })
         })
@@ -586,25 +650,98 @@ describe('utils', () => {
                 (node) => node.type === VoiceFlowNodeType.Intermediary,
             )
             expect(intermediaryNodes).toHaveLength(6)
-            // const intermediaryNode1 = intermediaryNodes[0] as IntermediaryNode
-            // const intermediaryNode2 = intermediaryNodes[1] as IntermediaryNode
-            //
-            // // check options from ivr menu point to intermediary node 2
-            // ;['play_message_3', 'voicemail'].forEach((id) => {
-            //     const convergingNode = nodes.find((node) => node.id === id)
-            //     expect(convergingNode).toBeDefined()
-            //     expect((convergingNode as any).data.next_step_id).toBe(
-            //         intermediaryNode2.id,
-            //     )
-            // })
-            // // check play message 2 and intermediary node 2 to intermediary node 1
-            // ;['play_message_2', intermediaryNode2.id].forEach((id) => {
-            //     const convergingNode = nodes.find((node) => node.id === id)
-            //     expect(convergingNode).toBeDefined()
-            //     expect((convergingNode as any).data.next_step_id).toBe(
-            //         intermediaryNode1.id,
-            //     )
-            // })
+        })
+
+        it('should transform a simple enqueue node with conditional routing', () => {
+            const enqueueNode = mockEnqueueStep({
+                id: 'enqueue',
+                conditional_routing: true,
+                next_step_id: null,
+                skip_step_id: null,
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: 'enqueue',
+                steps: { enqueue: enqueueNode },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+
+            expect(nodes).toEqual([
+                expect.objectContaining({
+                    ...INCOMING_CALL_NODE,
+                    data: { next_step_id: 'enqueue' },
+                }),
+                expect.objectContaining({
+                    id: enqueueNode.id,
+                    data: {
+                        ...enqueueNode,
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
+                        skip_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
+                    },
+                }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.EnqueueOption,
+                    data: {
+                        parentId: enqueueNode.id,
+                        isSkipStep: true,
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
+                    },
+                }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.EnqueueOption,
+                    data: {
+                        parentId: enqueueNode.id,
+                        isSkipStep: false,
+                        next_step_id: expect.not.stringMatching(
+                            END_CALL_NODE.id,
+                        ),
+                    },
+                }),
+                expect.objectContaining({ ...END_CALL_NODE }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: expect.objectContaining({
+                        next_step_id: END_CALL_NODE.id,
+                    }),
+                }),
+            ])
+        })
+
+        it('should transform a simple enqueue node without conditional routing', () => {
+            const enqueueNode = mockEnqueueStep({
+                id: 'enqueue',
+                conditional_routing: false,
+                next_step_id: 'end-call',
+            })
+
+            const flow: CallRoutingFlow = {
+                first_step_id: 'enqueue',
+                steps: { enqueue: enqueueNode },
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+
+            expect(nodes).toEqual([
+                expect.objectContaining({
+                    ...INCOMING_CALL_NODE,
+                    data: { next_step_id: 'enqueue' },
+                }),
+                expect.objectContaining({
+                    id: enqueueNode.id,
+                    data: {
+                        ...enqueueNode,
+                        next_step_id: 'end-call',
+                    },
+                }),
+                expect.objectContaining({ ...END_CALL_NODE }),
+            ])
         })
     })
 
@@ -744,19 +881,22 @@ describe('utils', () => {
     })
 
     describe('getEdgeProps', () => {
-        it('should return short edge props for IvrMenu source', () => {
+        it.each([
+            VoiceFlowNodeType.IvrMenu,
+            VoiceFlowNodeType.TimeSplitConditional,
+            VoiceFlowNodeType.Enqueue,
+        ])('should return short edge props for %s source', (type) => {
             const edge: Edge = {
                 id: 'edge1',
-                source: 'ivr-node',
+                source: 'node',
                 target: 'target-node',
             }
             const nodes: VoiceFlowNode[] = [
                 {
-                    id: 'ivr-node',
-                    type: VoiceFlowNodeType.IvrMenu,
-                    data: mockIvrMenuStep(),
+                    id: edge.source,
+                    type,
                     position: { x: 0, y: 0 },
-                } as IvrMenuNode,
+                } as VoiceFlowNode,
             ]
 
             const result = getEdgeProps(edge, nodes)
@@ -764,38 +904,22 @@ describe('utils', () => {
             expect(result).toEqual({ weight: 50, height: 12 })
         })
 
-        it('should return short edge props for TimeSplitConditional source', () => {
+        it.each([
+            VoiceFlowNodeType.IvrOption,
+            VoiceFlowNodeType.TimeSplitOption,
+            VoiceFlowNodeType.EnqueueOption,
+        ])('should return short edge props for %s source', (type) => {
             const edge: Edge = {
                 id: 'edge1',
-                source: 'time-split-node',
+                source: 'node',
                 target: 'target-node',
             }
             const nodes: VoiceFlowNode[] = [
                 {
-                    id: 'time-split-node',
-                    type: VoiceFlowNodeType.TimeSplitConditional,
-                    data: mockTimeSplitConditionalStep(),
+                    id: edge.source,
+                    type,
                     position: { x: 0, y: 0 },
-                } as TimeSplitConditionalNode,
-            ]
-
-            const result = getEdgeProps(edge, nodes)
-
-            expect(result).toEqual({ weight: 50, height: 12 })
-        })
-
-        it('should return short edge props for IvrOption source', () => {
-            const edge: Edge = {
-                id: 'edge1',
-                source: 'ivr-option-node',
-                target: 'target-node',
-            }
-            const nodes: VoiceFlowNode[] = [
-                {
-                    id: 'ivr-option-node',
-                    type: VoiceFlowNodeType.IvrOption,
-                    position: { x: 0, y: 0 },
-                } as IvrOptionNode,
+                } as VoiceFlowNode,
             ]
 
             const result = getEdgeProps(edge, nodes)
@@ -868,6 +992,21 @@ describe('utils', () => {
             expect(isBranchingOption(node)).toBe(true)
         })
 
+        it('should return true for EnqueueOption node', () => {
+            const node: EnqueueOptionNode = {
+                type: VoiceFlowNodeType.EnqueueOption,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: {
+                    parentId: '1',
+                    isSkipStep: true,
+                    next_step_id: '2',
+                },
+            }
+
+            expect(isBranchingOption(node)).toBe(true)
+        })
+
         it('should return false for PlayMessage node', () => {
             const node: PlayMessageNode = {
                 type: VoiceFlowNodeType.PlayMessage,
@@ -881,37 +1020,40 @@ describe('utils', () => {
     })
 
     describe('isBranchingNode', () => {
-        it('should return true for IvrMenu node', () => {
-            const node: IvrMenuNode = {
+        it.each([
+            {
                 type: VoiceFlowNodeType.IvrMenu,
-                id: '1',
-                position: { x: 0, y: 0 },
                 data: mockIvrMenuStep(),
-            }
-
-            expect(isBranchingNode(node)).toBe(true)
-        })
-
-        it('should return true for TimeSplitConditional node', () => {
-            const node: TimeSplitConditionalNode = {
+                expected: true,
+            },
+            {
                 type: VoiceFlowNodeType.TimeSplitConditional,
-                id: '1',
-                position: { x: 0, y: 0 },
                 data: mockTimeSplitConditionalStep(),
-            }
-
-            expect(isBranchingNode(node)).toBe(true)
-        })
-
-        it('should return false for PlayMessage node', () => {
-            const node: PlayMessageNode = {
+                expected: true,
+            },
+            {
+                type: VoiceFlowNodeType.Enqueue,
+                data: mockEnqueueStep({ conditional_routing: true }),
+                expected: true,
+            },
+            {
+                type: VoiceFlowNodeType.Enqueue,
+                data: mockEnqueueStep({ conditional_routing: false }),
+                expected: false,
+            },
+            {
                 type: VoiceFlowNodeType.PlayMessage,
+                data: mockPlayMessageStep(),
+                expected: false,
+            },
+        ])('should return true for %s node', ({ type, data, expected }) => {
+            const node = {
+                type,
                 id: '1',
                 position: { x: 0, y: 0 },
-                data: mockPlayMessageStep(),
+                data,
             }
-
-            expect(isBranchingNode(node)).toBe(false)
+            expect(isBranchingNode(node)).toBe(expected)
         })
     })
 
@@ -1205,6 +1347,85 @@ describe('utils', () => {
 
             expect(updated?.on_true_step_id).toBe('other-id')
             expect(updated?.on_false_step_id).toBe('new-id')
+        })
+
+        it('should update EnqueueOption skip step branch', () => {
+            const relatedNode: EnqueueOptionNode = {
+                id: 'enqueue-option-1',
+                type: VoiceFlowNodeType.EnqueueOption,
+                data: {
+                    parentId: 'enqueue-1',
+                    isSkipStep: true,
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = mockEnqueueStep({
+                next_step_id: 'old-id',
+                conditional_routing: true,
+            })
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as EnqueueStep
+
+            expect(updated?.skip_step_id).toBe('new-id')
+            expect(updated?.next_step_id).toBe('old-id')
+        })
+
+        it('should update EnqueueOption default step branch', () => {
+            const relatedNode: EnqueueOptionNode = {
+                id: 'enqueue-option-1',
+                type: VoiceFlowNodeType.EnqueueOption,
+                data: {
+                    parentId: 'enqueue-1',
+                    isSkipStep: false,
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+            const formStep = mockEnqueueStep({
+                next_step_id: 'old-id',
+                conditional_routing: true,
+                skip_step_id: 'skip-id',
+            })
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as EnqueueStep
+
+            expect(updated?.next_step_id).toBe('new-id')
+            expect(updated?.skip_step_id).toBe('skip-id')
+        })
+
+        it('should update Enqueue next_step_id when conditional routing is false', () => {
+            const relatedNode: EnqueueNode = {
+                id: 'enqueue-1',
+                type: VoiceFlowNodeType.Enqueue,
+                data: {
+                    next_step_id: 'old-id',
+                } as EnqueueStep,
+                position: { x: 0, y: 0 },
+            }
+            const formStep = mockEnqueueStep({
+                next_step_id: 'old-id',
+                conditional_routing: false,
+                skip_step_id: null,
+            })
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as EnqueueStep
+
+            expect(updated?.next_step_id).toBe('new-id')
+            expect(updated?.skip_step_id).toBeNull()
         })
 
         it('should update PlayMessage next_step_id', () => {
@@ -1760,6 +1981,18 @@ describe('utils', () => {
                 'step-7': {
                     id: 'step-7',
                 } as any,
+                'step-8': mockEnqueueStep({
+                    id: 'step-8',
+                    next_step_id: 'step-9',
+                    skip_step_id: 'step-10',
+                    conditional_routing: true,
+                }),
+                'step-9': mockEnqueueStep({
+                    id: 'step-8',
+                    next_step_id: 'step-9',
+                    skip_step_id: 'step-10',
+                    conditional_routing: false,
+                }),
             }
 
             expect(getNextSteps(steps, 'step-1')).toEqual(['step-2'])
@@ -1773,6 +2006,24 @@ describe('utils', () => {
             expect(getNextSteps(steps, 'step-5')).toEqual(['step-6'])
             expect(getNextSteps(steps, 'step-6')).toEqual([null])
             expect(getNextSteps(steps, 'step-7')).toEqual([])
+            expect(getNextSteps(steps, 'step-8')).toEqual(['step-9', 'step-10'])
+            expect(getNextSteps(steps, 'step-9')).toEqual(['step-9'])
+        })
+
+        it('should return skip step for Enqueue nodes even if conditional routing is false when includeInactive is true', () => {
+            const steps: CallRoutingFlowSteps = {
+                'step-1': mockEnqueueStep({
+                    id: 'step-1',
+                    next_step_id: 'step-2',
+                    skip_step_id: 'step-3',
+                    conditional_routing: false,
+                }),
+            }
+
+            expect(getNextSteps(steps, 'step-1', true)).toEqual([
+                'step-2',
+                'step-3',
+            ])
         })
     })
 
@@ -1806,6 +2057,10 @@ describe('utils', () => {
                 }),
                 'step-6': mockSendToSMSStep({
                     id: 'step-6',
+                    next_step_id: 'step-7',
+                }),
+                'step-7': mockEnqueueStep({
+                    id: 'step-7',
                     next_step_id: null,
                 }),
             }
@@ -1820,6 +2075,7 @@ describe('utils', () => {
                 'step-3',
                 'step-5',
             ])
+            expect(getParentSteps(steps, 'step-7')).toEqual(['step-6'])
         })
     })
 
@@ -1927,7 +2183,7 @@ describe('utils', () => {
             })
         })
 
-        it('should update the flow correctly when the parent node is an ivr node', () => {
+        it('should update the flow correctly when the parent node is an ivr node and current node is on branch option', () => {
             const firstStep = mockPlayMessageStep({
                 id: 'first-step',
                 next_step_id: 'second-step',
@@ -1983,6 +2239,44 @@ describe('utils', () => {
                 },
                 [branchOption1Extra.id]: branchOption1Extra,
                 [branchOption2.id]: branchOption2,
+            })
+        })
+
+        it('should update the flow correctly when the parent node is an ivr node and current node is the convergence point of branches', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockIvrMenuStep({
+                id: 'second-step',
+                branch_options: [
+                    { input_digit: '1', next_step_id: 'conv-node' },
+                    { input_digit: '2', next_step_id: 'conv-node' },
+                ],
+            })
+            const convNode = mockSendToSMSStep({
+                id: 'conv-node',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [convNode.id]: convNode,
+                },
+            }
+            const updated = updateFormFlowOnNodeDelete(flow, convNode.id, [])
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: firstStep,
+                [secondStep.id]: {
+                    ...secondStep,
+                    branch_options: [
+                        { ...secondStep.branch_options[0], next_step_id: null },
+                        { ...secondStep.branch_options[1], next_step_id: null },
+                    ],
+                },
             })
         })
 
@@ -2075,6 +2369,49 @@ describe('utils', () => {
                     on_false_step_id: null,
                 },
                 [branchOption1.id]: branchOption1,
+            })
+        })
+
+        it('should update the flow correctly when the parent node is an enqueue node', () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockEnqueueStep({
+                id: 'second-step',
+                conditional_routing: true,
+                next_step_id: 'third-step',
+                skip_step_id: 'third-step',
+            })
+            const thirdStep = mockPlayMessageStep({
+                id: 'third-step',
+                next_step_id: 'fourth-step',
+            })
+            const fourthStep = mockSendToSMSStep({
+                id: 'fourth-step',
+                next_step_id: null,
+            })
+            const flow: CallRoutingFlow = {
+                first_step_id: firstStep.id,
+                steps: {
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [thirdStep.id]: thirdStep,
+                    [fourthStep.id]: fourthStep,
+                },
+            }
+
+            const updated = updateFormFlowOnNodeDelete(flow, thirdStep.id, [])
+
+            expect(updated.first_step_id).toBe(firstStep.id)
+            expect(updated.steps).toEqual({
+                [firstStep.id]: firstStep,
+                [secondStep.id]: {
+                    ...secondStep,
+                    next_step_id: fourthStep.id,
+                    skip_step_id: fourthStep.id,
+                },
+                [fourthStep.id]: fourthStep,
             })
         })
     })

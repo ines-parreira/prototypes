@@ -3,6 +3,7 @@ export enum VoiceFlowNodeType {
     EndCall = 'end_call',
     PlayMessage = 'play_message',
     Enqueue = 'enqueue',
+    EnqueueOption = 'enqueue_option',
     SendToVoicemail = 'send_to_voicemail',
     TimeSplitConditional = 'time_split_conditional',
     TimeSplitOption = 'time_split_option',

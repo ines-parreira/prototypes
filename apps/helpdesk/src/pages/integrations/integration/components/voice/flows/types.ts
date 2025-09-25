@@ -14,6 +14,12 @@ import { Node } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from './constants'
 
+export type EnqueueOptionStep = {
+    parentId: string
+    isSkipStep: boolean
+    next_step_id: string
+}
+
 export type IvrOptionStep = {
     parentId: string
     optionIndex: number
@@ -40,6 +46,10 @@ export type PlayMessageNode = Node<
     VoiceFlowNodeType.PlayMessage
 >
 export type EnqueueNode = Node<EnqueueStep, VoiceFlowNodeType.Enqueue>
+export type EnqueueOptionNode = Node<
+    EnqueueOptionStep,
+    VoiceFlowNodeType.EnqueueOption
+>
 export type SendToVoicemailNode = Node<
     SendToVoicemailStep,
     VoiceFlowNodeType.SendToVoicemail
@@ -74,6 +84,7 @@ export type VoiceFlowNode =
     | IvrOptionNode
     | PlayMessageNode
     | EnqueueNode
+    | EnqueueOptionNode
     | SendToVoicemailNode
     | TimeSplitConditionalNode
     | TimeSplitOptionNode

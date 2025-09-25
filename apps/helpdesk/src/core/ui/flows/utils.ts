@@ -336,7 +336,7 @@ export function insertConvergenceNodes<
     return modifiedNodes
 }
 
-export function bfsNodesBetween<TNode extends Node>(
+export function bfsNodesBetween<TNode extends Omit<Node, 'position'>>(
     nodes: TNode[],
     startNodeId: string,
     endNodeId: string,

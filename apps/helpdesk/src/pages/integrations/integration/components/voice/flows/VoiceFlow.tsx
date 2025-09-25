@@ -16,6 +16,7 @@ import { createFlowGraph } from 'core/ui/flows/utils'
 import { VoiceFlowNodeType } from './constants'
 import { EndCallNode } from './nodes/EndCallNode'
 import { EnqueueNode } from './nodes/EnqueueNode'
+import { EnqueueOptionNode } from './nodes/EnqueueOptionNode'
 import { ForwardToNode } from './nodes/ForwardToNode'
 import { IncomingCallNode } from './nodes/IncomingCallNode'
 import { IntermediaryNode } from './nodes/IntermediaryNode'
@@ -42,6 +43,7 @@ const nodeTypes = {
     [VoiceFlowNodeType.SendToSMS]: SendToSMSNode,
     [VoiceFlowNodeType.Intermediary]: IntermediaryNode,
     [VoiceFlowNodeType.Enqueue]: EnqueueNode,
+    [VoiceFlowNodeType.EnqueueOption]: EnqueueOptionNode,
     [VoiceFlowNodeType.ForwardToExternalNumber]: ForwardToNode,
 }
 

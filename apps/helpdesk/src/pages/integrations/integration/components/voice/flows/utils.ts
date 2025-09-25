@@ -28,6 +28,7 @@ import {
     VoiceFlowNodeType,
 } from './constants'
 import {
+    EnqueueNode,
     IntermediaryNode,
     IvrMenuNode,
     IvrOptionNode,
@@ -65,9 +66,17 @@ export function isVoiceFlowStep(
 export function isBranchingNode(
     node: VoiceFlowNodeBase,
 ): node is IvrMenuNode | TimeSplitConditionalNode {
+    const isEnqueueBranchingNode =
+        node.type === VoiceFlowNodeType.Enqueue &&
+        'conditional_routing' in node.data &&
+        node.data.conditional_routing
+
     return (
-        node.type === VoiceFlowNodeType.IvrMenu ||
-        node.type === VoiceFlowNodeType.TimeSplitConditional
+        isEnqueueBranchingNode ||
+        [
+            VoiceFlowNodeType.IvrMenu,
+            VoiceFlowNodeType.TimeSplitConditional,
+        ].includes(node.type)
     )
 }
 
@@ -76,7 +85,8 @@ export function isBranchingOption(
 ): node is TimeSplitOptionNode | IvrOptionNode {
     return (
         node.type === VoiceFlowNodeType.TimeSplitOption ||
-        node.type === VoiceFlowNodeType.IvrOption
+        node.type === VoiceFlowNodeType.IvrOption ||
+        node.type === VoiceFlowNodeType.EnqueueOption
     )
 }
 
@@ -85,6 +95,12 @@ export function getNextNodes(
     nodes: VoiceFlowNode[],
 ): string[] {
     switch (node.type) {
+        case VoiceFlowNodeType.Enqueue:
+            const nextStepId = node.data.next_step_id ?? END_CALL_NODE.id
+            const skipStepId = node.data.skip_step_id ?? END_CALL_NODE.id
+            return node.data.conditional_routing
+                ? [nextStepId, skipStepId]
+                : [nextStepId]
         case VoiceFlowNodeType.TimeSplitConditional:
             return [node.data.on_true_step_id, node.data.on_false_step_id]
         case VoiceFlowNodeType.IvrMenu:
@@ -107,6 +123,7 @@ export function getNextNodes(
 export function getNextSteps(
     steps: CallRoutingFlowSteps,
     stepId: string,
+    includeInactive?: boolean,
 ): (string | null | undefined)[] {
     const step = steps[stepId]
 
@@ -115,6 +132,10 @@ export function getNextSteps(
             return step.branch_options.map((option) => option.next_step_id)
         case VoiceFlowNodeType.TimeSplitConditional:
             return [step.on_true_step_id, step.on_false_step_id]
+        case VoiceFlowNodeType.Enqueue:
+            return includeInactive || step.conditional_routing
+                ? [step.next_step_id, step.skip_step_id]
+                : [step.next_step_id]
         default:
             if ('next_step_id' in step) {
                 return [step.next_step_id]
@@ -128,7 +149,7 @@ export function getParentSteps(
     stepId: string,
 ): string[] {
     const parentSteps = Object.keys(steps).filter((id) => {
-        return getNextSteps(steps, id).includes(stepId)
+        return getNextSteps(steps, id, true).includes(stepId)
     })
 
     return parentSteps
@@ -166,8 +187,24 @@ export function createTimeSplitOptionNode(
     }
 }
 
+export function createEnqueueOptionNode(
+    parentId: string,
+    isSkipStep: boolean,
+    nextStepId: string | null,
+): VoiceFlowNodeBase {
+    return {
+        id: uuidv4(),
+        type: VoiceFlowNodeType.EnqueueOption,
+        data: {
+            parentId,
+            isSkipStep,
+            next_step_id: nextStepId,
+        },
+    }
+}
+
 function handleBranchingNode(
-    node: IvrMenuNode | TimeSplitConditionalNode,
+    node: IvrMenuNode | TimeSplitConditionalNode | EnqueueNode,
     voiceFlowNodes: VoiceFlowNodeBase[],
 ): VoiceFlowNodeBase[] {
     switch (node.type) {
@@ -194,7 +231,7 @@ function handleBranchingNode(
 
             return [...updatedVoiceFlowNodes, ...branchNodes]
         }
-        case VoiceFlowNodeType.TimeSplitConditional:
+        case VoiceFlowNodeType.TimeSplitConditional: {
             /* create empty nodes for on_true and on_false */
             const onTrueNode = createTimeSplitOptionNode(
                 node,
@@ -219,10 +256,40 @@ function handleBranchingNode(
                 n.id === node.id ? updatedParentNode : n,
             )
             return [...updatedVoiceFlowNodes, onTrueNode, onFalseNode]
+        }
+        case VoiceFlowNodeType.Enqueue: {
+            if (!node.data.conditional_routing) {
+                return voiceFlowNodes
+            }
+
+            const skipOptionNode = createEnqueueOptionNode(
+                node.id,
+                true,
+                node.data.skip_step_id ?? null,
+            )
+            const defaultOptionNode = createEnqueueOptionNode(
+                node.id,
+                false,
+                node.data.next_step_id ?? null,
+            )
+            const updatedParentNode = {
+                ...node,
+                data: {
+                    ...node.data,
+                    next_step_id: defaultOptionNode.id,
+                    skip_step_id: skipOptionNode.id,
+                },
+            }
+            const updatedVoiceFlowNodes = voiceFlowNodes.map((n) =>
+                n.id === node.id ? updatedParentNode : n,
+            )
+
+            return [...updatedVoiceFlowNodes, skipOptionNode, defaultOptionNode]
+        }
     }
 }
 
-export function connectTerminalStepsToEndCallStep(
+function connectTerminalStepsToEndCallStep(
     steps: CallRoutingFlowSteps,
 ): CallRoutingFlowSteps {
     const newSteps = cloneDeep(steps)
@@ -237,6 +304,11 @@ export function connectTerminalStepsToEndCallStep(
         } else if (step.step_type === 'time_split_conditional') {
             step.on_true_step_id = step.on_true_step_id || END_CALL_NODE.id
             step.on_false_step_id = step.on_false_step_id || END_CALL_NODE.id
+        } else if (step.step_type === 'enqueue') {
+            step.next_step_id = step.next_step_id || END_CALL_NODE.id
+            if (step.conditional_routing) {
+                step.skip_step_id = step.skip_step_id || END_CALL_NODE.id
+            }
         } else if ('next_step_id' in step) {
             step.next_step_id = step.next_step_id || END_CALL_NODE.id
         }
@@ -367,9 +439,11 @@ export function getEdgeProps(
         // short edges, that bring the elements closer together
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.TimeSplitConditional:
+        case VoiceFlowNodeType.Enqueue:
             return { weight: 50, height: 12 }
         case VoiceFlowNodeType.IvrOption:
         case VoiceFlowNodeType.TimeSplitOption:
+        case VoiceFlowNodeType.EnqueueOption:
             return { weight: 45, height: 24 }
         default:
             return { weight: 1, height: 24 }
@@ -590,7 +664,26 @@ export const linkFormStep = (
                 ),
             }
         case VoiceFlowNodeType.PlayMessage:
+            return {
+                ...formStep,
+                next_step_id: nextStepId,
+            }
         case VoiceFlowNodeType.Enqueue:
+            if (
+                formStep.conditional_routing &&
+                relatedNode.type !== VoiceFlowNodeType.EnqueueOption
+            ) {
+                return null
+            }
+            if (
+                relatedNode.type === VoiceFlowNodeType.EnqueueOption &&
+                relatedNode.data.isSkipStep
+            ) {
+                return {
+                    ...formStep,
+                    skip_step_id: nextStepId,
+                }
+            }
             return {
                 ...formStep,
                 next_step_id: nextStepId,
@@ -658,14 +751,21 @@ export function updateFormFlowOnNodeDelete(
         const parentStep = flow.steps[parentStepId]
 
         switch (parentStep.step_type) {
-            case VoiceFlowNodeType.IvrMenu:
-                const optionIndex = parentStep.branch_options.findIndex(
-                    (option) => option.next_step_id === nodeId,
-                )
-                parentStep.branch_options[optionIndex] = {
-                    ...parentStep.branch_options[optionIndex],
-                    next_step_id: nextStepId,
+            case VoiceFlowNodeType.Enqueue:
+                if (parentStep.next_step_id === nodeId) {
+                    parentStep.next_step_id = nextStepId
                 }
+                if (parentStep.skip_step_id === nodeId) {
+                    parentStep.skip_step_id = nextStepId
+                }
+                break
+            case VoiceFlowNodeType.IvrMenu:
+                parentStep.branch_options.forEach((option) => {
+                    if (option.next_step_id === nodeId) {
+                        option.next_step_id = nextStepId
+                    }
+                })
+
                 break
             case VoiceFlowNodeType.TimeSplitConditional:
                 if (parentStep.on_true_step_id === nodeId) {

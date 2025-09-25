@@ -1,6 +1,8 @@
 import { ComponentProps } from 'react'
 
-import { screen } from '@testing-library/react'
+import { assumeMock } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
 
 import {
@@ -13,9 +15,23 @@ import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
+import { useDeleteNode } from 'pages/integrations/integration/components/voice/flows/utils/useDeleteNode'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
+import * as utils from '../../utils'
 import { EnqueueNode } from '../EnqueueNode'
+
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
+)
+
+const useDeleteNodeMock = assumeMock(useDeleteNode)
+const mockDeleteEnqueueBranches = jest.fn()
+
+const transformToReactFlowNodesSpy = jest.spyOn(
+    utils,
+    'transformToReactFlowNodes',
+)
 
 const server = setupServer()
 beforeAll(() => {
@@ -37,6 +53,10 @@ describe('EnqueueNode', () => {
 
         server.use(mockGetVoiceQueue.handler)
         server.use(mockListVoiceQueues.handler)
+
+        useDeleteNodeMock.mockReturnValue({
+            deleteEnqueueBranches: mockDeleteEnqueueBranches,
+        } as unknown as ReturnType<typeof useDeleteNode>)
     })
 
     afterEach(() => {
@@ -190,5 +210,42 @@ describe('EnqueueNode', () => {
         renderComponent(step, flow as any)
 
         expect(screen.queryByText('Route to')).not.toBeInTheDocument()
+    })
+
+    it('should call transformToReactFlowNodes when conditional routing is enabled', async () => {
+        const user = userEvent.setup()
+
+        const mockStep = mockEnqueueStep({
+            conditional_routing: false,
+            next_step_id: 'next-step',
+        })
+        renderComponent(mockStep)
+
+        await act(async () => {
+            await user.click(screen.getByText('Skip queue when it’s too busy'))
+        })
+
+        await waitFor(() => {
+            expect(transformToReactFlowNodesSpy).toHaveBeenCalled()
+        })
+
+        expect(mockDeleteEnqueueBranches).not.toHaveBeenCalled()
+    })
+
+    it('should call deleteEnqueueBranches when conditional routing is disabled', async () => {
+        const user = userEvent.setup()
+
+        const mockStep = mockEnqueueStep({
+            conditional_routing: true,
+        })
+        renderComponent(mockStep)
+
+        await act(async () => {
+            await user.click(screen.getByText('Skip queue when it’s too busy'))
+        })
+
+        await waitFor(() => {
+            expect(mockDeleteEnqueueBranches).toHaveBeenCalled()
+        })
     })
 })

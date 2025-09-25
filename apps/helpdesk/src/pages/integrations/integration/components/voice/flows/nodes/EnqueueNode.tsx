@@ -1,13 +1,11 @@
 import { useMemo } from 'react'
 
-import { useWatch } from 'react-hook-form'
-
-import { CheckBoxField } from '@gorgias/axiom'
+import { CheckBoxField, CheckBoxFieldProps } from '@gorgias/axiom'
 import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType, EnqueueStep } from '@gorgias/helpdesk-types'
 import { validateVoiceCallbackRequests } from '@gorgias/helpdesk-validators'
 
-import { FormField } from 'core/forms'
+import { FormField, useFormContext, useWatch } from 'core/forms'
 import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import {
@@ -20,6 +18,9 @@ import VoiceMessageField from '../../VoiceMessageField'
 import VoiceQueueSelectField from '../../VoiceQueueSelectField'
 import VoiceQueueSummary from '../../VoiceQueueSummary'
 import { type EnqueueNode } from '../types'
+import { useVoiceFlow } from '../useVoiceFlow'
+import { transformToReactFlowNodes } from '../utils'
+import { useDeleteNode } from '../utils/useDeleteNode'
 import VoiceNodeFormSection from './VoiceNodeFormSection'
 import { VoiceStepNode } from './VoiceStepNode'
 
@@ -28,6 +29,9 @@ import css from './VoiceStepNode.less'
 export function EnqueueNode(props: NodeProps<EnqueueNode>) {
     const { id } = props.data
     const step: EnqueueStep | null = useWatch({ name: `steps.${id}` })
+    const { watch, register } = useFormContext()
+    const { setNodes } = useVoiceFlow()
+    const { deleteEnqueueBranches } = useDeleteNode()
 
     const { data: queueData } = useGetVoiceQueue(
         step?.queue_id ?? 0,
@@ -64,6 +68,24 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
 
         return errors
     }, [step])
+
+    const handleConditionalRoutingChange = (nextValue: boolean) => {
+        if (nextValue) {
+            const first_step_id = watch('first_step_id')
+            const steps = watch('steps')
+            register(`steps.${id}.skip_step_id`, {
+                value: step?.next_step_id,
+            })
+            const nodes = transformToReactFlowNodes(
+                { first_step_id, steps },
+                id,
+            )
+            setNodes(nodes)
+            return
+        }
+
+        deleteEnqueueBranches(id)
+    }
 
     if (!step) {
         return null
@@ -115,7 +137,10 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                 >
                     <FormField
                         name={`steps.${id}.conditional_routing`}
-                        field={CheckBoxField}
+                        field={ConditionalRoutingCheckBoxField}
+                        onConditionalRoutingChange={
+                            handleConditionalRoutingChange
+                        }
                         label={'Skip queue when it’s too busy'}
                     />
                 </VoiceNodeFormSection>
@@ -174,5 +199,23 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                 </VoiceNodeFormSection>
             </div>
         </VoiceStepNode>
+    )
+}
+
+const ConditionalRoutingCheckBoxField = ({
+    onChange,
+    onConditionalRoutingChange,
+    ...props
+}: CheckBoxFieldProps & {
+    onConditionalRoutingChange: (nextValue: boolean) => void
+}) => {
+    return (
+        <CheckBoxField
+            {...props}
+            onChange={(nextValue) => {
+                onChange?.(nextValue)
+                onConditionalRoutingChange(nextValue)
+            }}
+        />
     )
 }
