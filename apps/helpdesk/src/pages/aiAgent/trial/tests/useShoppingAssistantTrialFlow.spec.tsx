@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
@@ -33,6 +34,7 @@ jest.mock('common/segment')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/notifications/actions')
+jest.mock('core/flags')
 jest.mock(
     'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl',
 )
@@ -53,6 +55,7 @@ const mockLogEvent = assumeMock(logEvent)
 const mockNotify = assumeMock(notify)
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseAppSelector = assumeMock(useAppSelector)
+const mockUseFlag = assumeMock(useFlag)
 const mockExtractShopNameFromUrl = assumeMock(extractShopNameFromUrl)
 const mockGetShopNameFromStoreActivations = assumeMock(
     getShopNameFromStoreActivations,
@@ -119,6 +122,8 @@ describe('useShoppingAssistantTrialFlow', () => {
         )
 
         mockUseAppDispatch.mockReturnValue(mockDispatch)
+
+        mockUseFlag.mockReturnValue(false)
 
         mockUseAiAgentTrialOnboarding.mockReturnValue({
             startOnboardingWizard: mockStartOnboardingAfterTrial,
@@ -396,6 +401,63 @@ describe('useShoppingAssistantTrialFlow', () => {
             })
 
             expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
+            expect(mockHistoryPush).not.toHaveBeenCalled()
+        })
+
+        describe('with feature flag enabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
+            it('should start onboarding when closeTrialFinishSetupModal is called with ShoppingAssistant trial type and isOnboarded=false', () => {
+                const { result } = renderHookWithDefaults({
+                    trialType: TrialType.ShoppingAssistant,
+                    isOnboarded: false,
+                })
+
+                act(() => {
+                    result.current.closeTrialFinishSetupModal()
+                })
+
+                expect(mockStartOnboardingAfterTrial).toHaveBeenCalledTimes(1)
+                expect(mockHistoryPush).not.toHaveBeenCalled()
+            })
+
+            it('should not start onboarding when closeTrialFinishSetupModal is called with ShoppingAssistant trial type and isOnboarded=true', () => {
+                const { result } = renderHookWithDefaults({
+                    isOnboarded: true,
+                })
+
+                act(() => {
+                    result.current.closeTrialFinishSetupModal()
+                })
+
+                expect(mockStartOnboardingAfterTrial).not.toHaveBeenCalled()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/ai-agent/customer-engagement',
+                )
+            })
+        })
+
+        describe('with feature flag disabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(false)
+            })
+
+            it('should not start onboarding when closeTrialFinishSetupModal is called with ShoppingAssistant trial type and isOnboarded=false', () => {
+                const { result } = renderHookWithDefaults({
+                    isOnboarded: false,
+                })
+
+                act(() => {
+                    result.current.closeTrialFinishSetupModal()
+                })
+
+                expect(mockStartOnboardingAfterTrial).not.toHaveBeenCalled()
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/ai-agent/customer-engagement',
+                )
+            })
         })
 
         it('should open upgrade plan modal and log trial event when openUpgradePlanModal is called with isTrial=true', () => {

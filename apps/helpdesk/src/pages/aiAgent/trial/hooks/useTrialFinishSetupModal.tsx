@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -24,20 +27,37 @@ const DISCOUNT_STRATEGY = {
 
 export const TEXTS = {
     [TrialType.ShoppingAssistant]: {
-        features: [
-            {
-                icon: 'check',
-                title: 'Shopping Assistant features are now live!',
-                description:
-                    'All features are unlocked, so you can start seeing impact today.',
-                isCompleted: true,
-            },
-            ENGAGEMENT_TOOLS,
-            DISCOUNT_STRATEGY,
-        ],
-        content:
-            'Just two simple steps to increase conversions and make the most of your trial.',
-        ctaLabel: 'Finish setup',
+        onboarded: {
+            features: [
+                {
+                    icon: 'check',
+                    title: 'Shopping Assistant features are now live!',
+                    description:
+                        'All features are unlocked, so you can start seeing impact today.',
+                    isCompleted: true,
+                },
+                ENGAGEMENT_TOOLS,
+                DISCOUNT_STRATEGY,
+            ],
+            content:
+                'Just two simple steps to increase conversions and make the most of your trial.',
+            ctaLabel: 'Finish setup',
+        },
+        'not-onboarded': {
+            features: [
+                {
+                    icon: '',
+                    title: 'Select and configure channels',
+                    description:
+                        "Select the channels you want to use, so your AI Agent is ready to respond to customers when you're ready to launch it.",
+                },
+                ENGAGEMENT_TOOLS,
+                DISCOUNT_STRATEGY,
+            ],
+            content:
+                'Get started in just a few simple steps and make the most of your trial. Don’t worry, you can adjust everything anytime in settings.',
+            ctaLabel: 'Get Started',
+        },
     },
     [TrialType.AiAgent]: {
         features: [
@@ -51,13 +71,14 @@ export const TEXTS = {
             DISCOUNT_STRATEGY,
         ],
         content:
-            "Get started in just a few simple steps and make the most of your trial. Don't worry, you can adjust everything anytime in settings.",
+            'Get started in just a few simple steps and make the most of your trial. Don’t worry, you can adjust everything anytime in settings.',
         ctaLabel: 'Get Started',
     },
 }
 
 export type UseTrialFinishSetupModalProps = {
     trialType: TrialType
+    isOnboarded: boolean | undefined
     storeName?: string
 }
 
@@ -74,38 +95,76 @@ export type UseTrialFinishSetupModalReturn = Pick<
 
 export const useTrialFinishSetupModal = ({
     trialType,
+    isOnboarded,
     storeName,
 }: UseTrialFinishSetupModalProps): UseTrialFinishSetupModalReturn => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const { storeActivations } = useStoreActivations({ storeName })
+    const isExpandingTrialExperienceMilestone2Enabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
+        false,
+    )
 
     const { isTrialFinishSetupModalOpen, closeTrialFinishSetupModal } =
         useShoppingAssistantTrialFlow({
             accountDomain,
             storeActivations,
             trialType,
+            isOnboarded,
         })
 
-    return useMemo(
-        () => ({
+    return useMemo((): UseTrialFinishSetupModalReturn => {
+        const getTrialTexts = () => {
+            if (trialType === TrialType.AiAgent) {
+                return TEXTS[trialType]
+            }
+
+            if (!isExpandingTrialExperienceMilestone2Enabled) {
+                return TEXTS[trialType]['onboarded']
+            }
+
+            const type = isOnboarded === true ? 'onboarded' : 'not-onboarded'
+            return TEXTS[trialType][type]
+        }
+
+        const trialTexts = getTrialTexts()
+
+        const getTitleSuffix = () => {
+            if (
+                isExpandingTrialExperienceMilestone2Enabled &&
+                isOnboarded === false &&
+                trialType === TrialType.ShoppingAssistant
+            ) {
+                return 'after onboarding.'
+            }
+
+            return 'now.'
+        }
+
+        return {
             title: (
                 <>
                     Ready. Set. Grow. <br />
-                    Your 14-days trial starts <br />
-                    now.
+                    Your 14-day trial starts <br />
+                    {getTitleSuffix()}
                 </>
             ),
             subtitle: "Let's unlock its full potential.",
-            content: TEXTS[trialType].content,
+            content: trialTexts.content,
             primaryAction: {
-                label: TEXTS[trialType].ctaLabel,
+                label: trialTexts.ctaLabel,
                 onClick: closeTrialFinishSetupModal,
             },
             isOpen: isTrialFinishSetupModalOpen,
             onClose: closeTrialFinishSetupModal,
-            features: TEXTS[trialType].features,
-        }),
-        [closeTrialFinishSetupModal, isTrialFinishSetupModalOpen, trialType],
-    )
+            features: trialTexts.features,
+        }
+    }, [
+        closeTrialFinishSetupModal,
+        isTrialFinishSetupModalOpen,
+        trialType,
+        isOnboarded,
+        isExpandingTrialExperienceMilestone2Enabled,
+    ])
 }

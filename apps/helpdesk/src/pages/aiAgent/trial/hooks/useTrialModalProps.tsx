@@ -1157,6 +1157,7 @@ export const useTrialModalProps = ({
     )
     const trialFinishSetupModal = useTrialFinishSetupModal({
         trialType,
+        isOnboarded,
         storeName,
     })
     const trialActivatedModal = useTrialActivatedModal()

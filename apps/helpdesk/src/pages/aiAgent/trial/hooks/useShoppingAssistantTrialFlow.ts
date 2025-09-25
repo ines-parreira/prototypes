@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
@@ -26,6 +28,7 @@ type UseShoppingAssistantTrialFlowProps = {
     onUpgradeModalClose?: () => void
     onSuccessModalOpen?: () => void
     trialType: TrialType
+    isOnboarded?: boolean
 }
 
 const TRIAL_UPGRADE_MODAL_NAME = 'ShoppingAssistantTrialUpgradeModal'
@@ -119,8 +122,13 @@ export const useShoppingAssistantTrialFlow = ({
     onUpgradeModalClose,
     onSuccessModalOpen,
     trialType,
+    isOnboarded,
 }: UseShoppingAssistantTrialFlowProps): UseShoppingAssistantTrialFlowReturn => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
+    const isExpandingTrialExperienceMilestone2Enabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
+        false,
+    )
     const {
         trialUpgradeModalName,
         upgradeModalName,
@@ -316,14 +324,21 @@ export const useShoppingAssistantTrialFlow = ({
     }
 
     const closeTrialFinishSetupModal = useCallback(() => {
-        if (isAiAgentTrial) {
+        if (
+            isAiAgentTrial ||
+            (isOnboarded === false &&
+                isExpandingTrialExperienceMilestone2Enabled)
+        ) {
             void startOnboardingWizard()
         } else {
             history.push(routes.customerEngagement)
         }
+
         trialFinishSetupModal.closeModal(trialFinishSetupModalName)
     }, [
         isAiAgentTrial,
+        isOnboarded,
+        isExpandingTrialExperienceMilestone2Enabled,
         routes.customerEngagement,
         history,
         trialFinishSetupModal,

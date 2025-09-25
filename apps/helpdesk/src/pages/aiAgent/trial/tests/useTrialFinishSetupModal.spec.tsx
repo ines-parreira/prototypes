@@ -2,6 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { create } from 'react-test-renderer'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -17,12 +18,14 @@ import { renderHookWithRouter } from 'tests/renderHookWithRouter'
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/useAppSelector')
+jest.mock('core/flags')
 
 const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,
 )
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 const mockUseAppSelector = assumeMock(useAppSelector)
+const mockUseFlag = assumeMock(useFlag)
 
 const defaultMockUseShoppingAssistantTrialFlow =
     getUseShoppingAssistantTrialFlowFixture()
@@ -32,15 +35,19 @@ describe('useTrialFinishSetupModal', () => {
     const mockPropsShoppingAssistant = {
         trialType: TrialType.ShoppingAssistant,
         storeName: mockStoreName,
+        isOnboarded: true,
     }
+
     const mockPropsAiAgent = {
         trialType: TrialType.AiAgent,
         storeName: mockStoreName,
+        isOnboarded: false,
     }
+
     const expectedTitleTree = create(
         <>
             Ready. Set. Grow. <br />
-            Your 14-days trial starts <br />
+            Your 14-day trial starts <br />
             now.
         </>,
     ).toJSON()
@@ -74,6 +81,7 @@ describe('useTrialFinishSetupModal', () => {
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             defaultMockUseShoppingAssistantTrialFlow,
         )
+        mockUseFlag.mockReturnValue(false)
     })
 
     afterEach(() => {
@@ -81,7 +89,7 @@ describe('useTrialFinishSetupModal', () => {
     })
 
     describe('Shopping Assistant trial type', () => {
-        it('should return correct modal props', () => {
+        it('should return correct modal props when AI agent is onboarded', () => {
             const { result } = renderHookWithRouter(() =>
                 useTrialFinishSetupModal(mockPropsShoppingAssistant),
             )
@@ -144,6 +152,7 @@ describe('useTrialFinishSetupModal', () => {
             const { result } = renderHookWithRouter(() =>
                 useTrialFinishSetupModal({
                     trialType: TrialType.ShoppingAssistant,
+                    isOnboarded: true,
                 }),
             )
 
@@ -152,6 +161,91 @@ describe('useTrialFinishSetupModal', () => {
             ).toJSON()
             expect(titleTree).toEqual(expectedTitleTree)
             expect(result.current.primaryAction?.label).toBe('Finish setup')
+        })
+
+        describe('with feature flag enabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
+            it('should return not-onboarded text when isOnboarded is false and feature flag is enabled', () => {
+                const mockPropsNotOnboarded = {
+                    ...mockPropsShoppingAssistant,
+                    isOnboarded: false,
+                }
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialFinishSetupModal(mockPropsNotOnboarded),
+                )
+
+                const expectedTitleTreeNotOnboarded = create(
+                    <>
+                        Ready. Set. Grow. <br />
+                        Your 14-day trial starts <br />
+                        after onboarding.
+                    </>,
+                ).toJSON()
+
+                const modal = result.current
+                const titleTree = create(
+                    modal.title as React.ReactElement,
+                ).toJSON()
+                expect(titleTree).toEqual(expectedTitleTreeNotOnboarded)
+                expect(modal.content).toBe(
+                    'Get started in just a few simple steps and make the most of your trial. Don’t worry, you can adjust everything anytime in settings.',
+                )
+                expect(modal.primaryAction?.label).toBe('Get Started')
+                expect(modal.features).toHaveLength(3)
+                expect(modal.features[0].title).toBe(
+                    'Select and configure channels',
+                )
+            })
+        })
+
+        describe('with feature flag disabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(false)
+            })
+
+            it('should return onboarded text when isOnboarded is false but feature flag is disabled', () => {
+                const expectedTitleTreeOnboarded = create(
+                    <>
+                        Ready. Set. Grow. <br />
+                        Your 14-day trial starts <br />
+                        now.
+                    </>,
+                ).toJSON()
+
+                const mockPropsNotOnboarded = {
+                    ...mockPropsShoppingAssistant,
+                    isOnboarded: false,
+                }
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialFinishSetupModal(mockPropsNotOnboarded),
+                )
+
+                const modal = result.current
+                const titleTree = create(
+                    modal.title as React.ReactElement,
+                ).toJSON()
+                expect(titleTree).toEqual(expectedTitleTreeOnboarded)
+                expect(modal.subtitle).toBe("Let's unlock its full potential.")
+                expect(modal.content).toBe(
+                    'Just two simple steps to increase conversions and make the most of your trial.',
+                )
+                expect(modal.primaryAction?.label).toBe('Finish setup')
+                expect(modal.isOpen).toBe(false)
+                expect(modal.onClose).toEqual(expect.any(Function))
+                expect(modal.features).toHaveLength(3)
+                expect(modal.features[0]).toEqual({
+                    icon: 'check',
+                    title: 'Shopping Assistant features are now live!',
+                    description:
+                        'All features are unlocked, so you can start seeing impact today.',
+                    isCompleted: true,
+                })
+            })
         })
     })
 
@@ -166,7 +260,7 @@ describe('useTrialFinishSetupModal', () => {
             expect(titleTree).toEqual(expectedTitleTree)
             expect(modal.subtitle).toBe("Let's unlock its full potential.")
             expect(modal.content).toBe(
-                "Get started in just a few simple steps and make the most of your trial. Don't worry, you can adjust everything anytime in settings.",
+                'Get started in just a few simple steps and make the most of your trial. Don’t worry, you can adjust everything anytime in settings.',
             )
             expect(modal.primaryAction?.label).toBe('Get Started')
             expect(modal.isOpen).toBe(false)
@@ -217,7 +311,10 @@ describe('useTrialFinishSetupModal', () => {
 
         it('should work without storeName', () => {
             const { result } = renderHookWithRouter(() =>
-                useTrialFinishSetupModal({ trialType: TrialType.AiAgent }),
+                useTrialFinishSetupModal({
+                    trialType: TrialType.AiAgent,
+                    isOnboarded: undefined,
+                }),
             )
 
             const titleTree = create(
