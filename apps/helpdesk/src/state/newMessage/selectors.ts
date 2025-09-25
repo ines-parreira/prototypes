@@ -288,8 +288,3 @@ export const hasTranslation = createSelector(
     getNewMessageState,
     (state) => !!state.getIn(['state', 'originalContentState']),
 )
-
-export const getIsTranslationPending = createSelector(
-    getNewMessageState,
-    (state) => state.getIn(['state', 'isTranslationPending'], false),
-)

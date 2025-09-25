@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
 import App from 'pages/App'
-import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketList from 'pages/tickets/list/TicketList'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
 
 import { MobileRoutes } from '../MobileRoutes'
 
@@ -41,7 +41,7 @@ describe('MobileRoutes', () => {
             '/app/ticket/:ticketId',
             '/app/ticket/123456',
             {
-                content: TicketDetailContainer,
+                content: TicketWrapper,
                 navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
                 infobarOnMobile: true,
@@ -56,7 +56,7 @@ describe('MobileRoutes', () => {
             '/app/views/:viewId/:ticketId',
             '/app/views/123/456',
             {
-                content: TicketDetailContainer,
+                content: TicketWrapper,
                 navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
                 infobarOnMobile: true,
