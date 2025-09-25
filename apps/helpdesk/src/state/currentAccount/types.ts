@@ -177,6 +177,17 @@ export type AccountViewsOrderingSettingData = {
     view_sections: Record<string, { display_order: number }>
 }
 
+export interface CustomSSOProvider {
+    name: string
+    client_id: string
+    client_secret: string
+    server_metadata_url: string
+}
+
+export interface CustomSSOProviders {
+    [providerId: string]: CustomSSOProvider
+}
+
 export type AccountSettingAccess = {
     id: number
     type: AccountSettingType.Access
@@ -186,6 +197,7 @@ export type AccountSettingAccess = {
         google_sso_enabled: boolean
         office365_sso_enabled: boolean
         two_fa_enforced_datetime: string | null
+        custom_sso_providers?: CustomSSOProviders
     }
 }
 

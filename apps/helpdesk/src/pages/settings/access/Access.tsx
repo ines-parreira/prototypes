@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 
 import classnames from 'classnames'
 import { List } from 'immutable'
@@ -22,10 +22,12 @@ import {
 import {
     AccountSettingAccess,
     AccountSettingType,
+    CustomSSOProviders,
     AccountSettingAccessSignupMode as SignupMode,
 } from 'state/currentAccount/types'
 import { RootState } from 'state/types'
 
+import CustomSsoProviders from './CustomSsoProviders'
 import SsoToggleButton from './SsoToggleButton'
 
 import css from '../settings.less'
@@ -37,6 +39,7 @@ enum LoadingKey {
     GoogleSSO = 'sso_google',
     Office365SSO = 'sso_office_365',
     TwoFAEnforcement = 'two_fa_enforcement',
+    CustomSSO = 'custom_sso',
 }
 
 const FORBIDDEN_DOMAINS = ['gmail.com', 'outlook.com']
@@ -89,6 +92,9 @@ export const AccessContainer = (props: Props) => {
         ['data', 'office365_sso_enabled'],
         false,
     )
+    const customSsoProviders: CustomSSOProviders = accessSettings
+        .getIn(['data', 'custom_sso_providers'], {})
+        .toJS()
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
@@ -96,6 +102,8 @@ export const AccessContainer = (props: Props) => {
     const [allowedDomains, setAllowedDomains] = useState(
         allowedDomainsSetting.join('\n'),
     )
+    const [customSsoProvidersState, setCustomSsoProvidersState] =
+        useState<CustomSSOProviders>(customSsoProviders)
 
     const domainError =
         validateDomains(allowedDomains) ||
@@ -117,6 +125,7 @@ export const AccessContainer = (props: Props) => {
                 google_sso_enabled: googleSsoEnabled,
                 office365_sso_enabled: office365SsoEnabled,
                 two_fa_enforced_datetime: twoFAEnforcedDatetime,
+                custom_sso_providers: customSsoProvidersState,
             }
 
             setIsLoading(loadingKey)
@@ -138,6 +147,7 @@ export const AccessContainer = (props: Props) => {
             googleSsoEnabled,
             office365SsoEnabled,
             twoFAEnforcedDatetime,
+            customSsoProvidersState,
         ],
     )
 
@@ -192,6 +202,20 @@ export const AccessContainer = (props: Props) => {
         [saveSettings],
     )
 
+    const handleCustomSsoProvidersUpdate = useCallback(
+        (providers: CustomSSOProviders) => {
+            setCustomSsoProvidersState(providers)
+            return saveSettings(
+                LoadingKey.CustomSSO,
+                {
+                    custom_sso_providers: providers,
+                },
+                'Custom SSO providers successfully updated',
+            )
+        },
+        [saveSettings],
+    )
+
     const handleSubmit = useCallback(
         (evt: FormEvent) => {
             evt.preventDefault()
@@ -239,6 +263,13 @@ export const AccessContainer = (props: Props) => {
                                 isLoading !== LoadingKey.Office365SSO
                             }
                             setValue={toggleOffice365Sso}
+                        />
+
+                        <CustomSsoProviders
+                            providers={customSsoProvidersState}
+                            accountDomain={accountDomain}
+                            onUpdate={handleCustomSsoProvidersUpdate}
+                            disabled={!!isLoading}
                         />
 
                         <h4 className="mt-5 mb-2">Auto-join helpdesk</h4>

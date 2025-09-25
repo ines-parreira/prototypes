@@ -97,6 +97,14 @@ exports[`<Access/> should render properly 1`] = `
               </b>
             </label>
           </div>
+          <div
+            class="mt-4"
+            style="display: flex; flex-direction: column;"
+          >
+            <div
+              style="display: flex; flex-direction: column;"
+            />
+          </div>
           <h4
             class="mt-5 mb-2"
           >
@@ -121,14 +129,14 @@ exports[`<Access/> should render properly 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-3864 label"
-                for="toggle-button-3"
+                for="toggle-button-4"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-3"
-                  name="toggle-button-3"
+                  id="toggle-button-4"
+                  name="toggle-button-4"
                   type="checkbox"
                 />
                 <div
@@ -266,14 +274,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-3864 label"
-                for="toggle-button-5"
+                for="toggle-button-6"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-5"
-                  name="toggle-button-5"
+                  id="toggle-button-6"
+                  name="toggle-button-6"
                   type="checkbox"
                 />
                 <div
@@ -298,14 +306,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <label
               aria-checked="false"
               class="ui-label-label-3864 label"
-              for="toggle-button-6"
+              for="toggle-button-7"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-6"
-                name="toggle-button-6"
+                id="toggle-button-7"
+                name="toggle-button-7"
                 type="checkbox"
               />
               <div
@@ -322,6 +330,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
                  SSO
               </b>
             </label>
+          </div>
+          <div
+            class="mt-4"
+            style="display: flex; flex-direction: column;"
+          >
+            <div
+              style="display: flex; flex-direction: column;"
+            />
           </div>
           <h4
             class="mt-5 mb-2"
@@ -347,15 +363,15 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="true"
                 class="ui-label-label-3864 label"
-                for="toggle-button-7"
+                for="toggle-button-9"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-7"
-                  name="toggle-button-7"
+                  id="toggle-button-9"
+                  name="toggle-button-9"
                   type="checkbox"
                 />
                 <div
@@ -495,14 +511,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="false"
                 class="ui-label-label-3864 label"
-                for="toggle-button-17"
+                for="toggle-button-21"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-17"
-                  name="toggle-button-17"
+                  id="toggle-button-21"
+                  name="toggle-button-21"
                   type="checkbox"
                 />
                 <div
@@ -527,14 +543,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <label
               aria-checked="false"
               class="ui-label-label-3864 label"
-              for="toggle-button-18"
+              for="toggle-button-22"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-18"
-                name="toggle-button-18"
+                id="toggle-button-22"
+                name="toggle-button-22"
                 type="checkbox"
               />
               <div
@@ -551,6 +567,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
                  SSO
               </b>
             </label>
+          </div>
+          <div
+            class="mt-4"
+            style="display: flex; flex-direction: column;"
+          >
+            <div
+              style="display: flex; flex-direction: column;"
+            />
           </div>
           <h4
             class="mt-5 mb-2"
@@ -576,15 +600,15 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="true"
                 class="ui-label-label-3864 label"
-                for="toggle-button-19"
+                for="toggle-button-24"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-19"
-                  name="toggle-button-19"
+                  id="toggle-button-24"
+                  name="toggle-button-24"
                   type="checkbox"
                 />
                 <div

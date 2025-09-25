@@ -95,6 +95,7 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     CustomBusinessHours = 'business-hours-by-integration',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
+    CustomSso = 'linear.CRMCHN-2927.add-custom-sso-account-settings',
     DefaultEmailAddress = 'default-email-address',
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
@@ -166,10 +167,10 @@ export enum FeatureFlagKey {
     ShopifyOrderNotes = 'shopify-order-notes',
     ShoppingAssistantEnforceDeactivation = 'ai-shopping-assistant-enforce-deactivation',
     /** @deprecated Full evaluated to `true`
-    https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production */
+     https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production */
     ShoppingAssistantTrialImprovement = 'linear.project_post-ga-shopping-assistant-trial-improvement',
     /** @deprecated Full evaluated to `milestone-1`
-    https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
+     https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
     ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',

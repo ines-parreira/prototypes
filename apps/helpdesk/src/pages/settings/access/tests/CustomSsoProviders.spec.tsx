@@ -1,0 +1,723 @@
+import { configureStore } from '@reduxjs/toolkit'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
+
+import * as flagsModule from 'core/flags'
+import type { CustomSSOProviders } from 'state/currentAccount/types'
+
+import CustomSsoProviders from '../CustomSsoProviders'
+
+jest.mock('uuid', () => ({
+    v4: jest.fn(),
+}))
+
+describe('CustomSsoProviders', () => {
+    const mockOnUpdate = jest.fn()
+    const mockUuid = uuidv4 as jest.Mock
+
+    // Create a minimal mock store for Redux Provider
+    const mockStore = configureStore({
+        reducer: {
+            // Add minimal reducers if needed
+        },
+    })
+
+    const defaultProps = {
+        accountDomain: 'test-company',
+        onUpdate: mockOnUpdate,
+        providers: {} as CustomSSOProviders,
+    }
+
+    const mockProviders: CustomSSOProviders = {
+        'provider-1': {
+            name: 'Okta',
+            client_id: 'okta-client-id',
+            client_secret: 'okta-secret',
+            server_metadata_url: 'https://okta.example.com',
+        },
+        'provider-2': {
+            name: 'Auth0',
+            client_id: 'auth0-client-id',
+            client_secret: 'auth0-secret',
+            server_metadata_url: 'https://auth0.example.com',
+        },
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUuid.mockReturnValue('new-provider-id')
+        jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
+    })
+
+    describe('Initial rendering', () => {
+        it('renders without providers', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('Custom Identity Providers'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: '+ Add provider' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders with existing providers', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={mockProviders}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Custom Identity Providers'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Okta SSO')).toBeInTheDocument()
+            expect(screen.getByText('Auth0 SSO')).toBeInTheDocument()
+        })
+
+        it('renders add provider button when feature flag is enabled', () => {
+            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: '+ Add provider' }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render add provider button when feature flag is disabled', () => {
+            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(false)
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: '+ Add provider' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('disables add provider button when disabled prop is true', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} disabled={true} />
+                </Provider>,
+            )
+
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            expect(addButton).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    describe('Provider management', () => {
+        describe('Creating providers', () => {
+            it('opens create modal when add provider button is clicked', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders {...defaultProps} />
+                    </Provider>,
+                )
+
+                const addButton = screen.getByRole('button', {
+                    name: '+ Add provider',
+                })
+                await user.click(addButton)
+
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Add a custom SSO provider'),
+                ).toBeInTheDocument()
+            })
+
+            it('creates new provider with form data', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders {...defaultProps} />
+                    </Provider>,
+                )
+
+                const addButton = screen.getByRole('button', {
+                    name: '+ Add provider',
+                })
+                await user.click(addButton)
+
+                await user.type(
+                    screen.getByLabelText(/provider name/i),
+                    'New Provider',
+                )
+                await user.type(
+                    screen.getByLabelText(/client id/i),
+                    'new-client-id',
+                )
+                await user.type(
+                    screen.getByLabelText(/client secret/i),
+                    'new-secret',
+                )
+                await user.type(
+                    screen.getByLabelText(/provider url/i),
+                    'https://new.provider.com',
+                )
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Add SSO Provider',
+                })
+                await user.click(saveButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'new-provider-id': {
+                        name: 'New Provider',
+                        client_id: 'new-client-id',
+                        client_secret: 'new-secret',
+                        server_metadata_url:
+                            'https://new.provider.com/.well-known/openid-configuration',
+                    },
+                })
+            })
+
+            it('adds provider to existing providers', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={{
+                                'existing-id': mockProviders['provider-1'],
+                            }}
+                        />
+                    </Provider>,
+                )
+
+                const addButton = screen.getByRole('button', {
+                    name: '+ Add provider',
+                })
+                await user.click(addButton)
+
+                await user.type(
+                    screen.getByLabelText(/provider name/i),
+                    'Additional Provider',
+                )
+                await user.type(
+                    screen.getByLabelText(/client id/i),
+                    'additional-client-id',
+                )
+                await user.type(
+                    screen.getByLabelText(/client secret/i),
+                    'additional-secret',
+                )
+                await user.type(
+                    screen.getByLabelText(/provider url/i),
+                    'https://additional.provider.com',
+                )
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Add SSO Provider',
+                })
+                await user.click(saveButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'existing-id': mockProviders['provider-1'],
+                    'new-provider-id': {
+                        name: 'Additional Provider',
+                        client_id: 'additional-client-id',
+                        client_secret: 'additional-secret',
+                        server_metadata_url:
+                            'https://additional.provider.com/.well-known/openid-configuration',
+                    },
+                })
+            })
+        })
+
+        describe('Editing providers', () => {
+            it('opens edit modal with provider data when edit is clicked', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={mockProviders}
+                        />
+                    </Provider>,
+                )
+
+                const editButtons = screen.getAllByRole('button', {
+                    name: /edit/i,
+                })
+                await user.click(editButtons[0])
+
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Edit SSO provider'),
+                ).toBeInTheDocument()
+                expect(screen.getByLabelText(/provider name/i)).toHaveValue(
+                    'Okta',
+                )
+                expect(screen.getByLabelText(/client id/i)).toHaveValue(
+                    'okta-client-id',
+                )
+                expect(screen.getByLabelText(/provider url/i)).toHaveValue(
+                    'https://okta.example.com',
+                )
+            })
+
+            it('updates provider with new data', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={mockProviders}
+                        />
+                    </Provider>,
+                )
+
+                const editButtons = screen.getAllByRole('button', {
+                    name: /edit/i,
+                })
+                await user.click(editButtons[0])
+
+                const nameField = screen.getByLabelText(/provider name/i)
+                await user.clear(nameField)
+                await user.type(nameField, 'Updated Okta')
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Save Changes',
+                })
+                await user.click(saveButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'provider-1': {
+                        name: 'Updated Okta',
+                        client_id: 'okta-client-id',
+                        client_secret: 'okta-secret',
+                        server_metadata_url:
+                            'https://okta.example.com/.well-known/openid-configuration',
+                    },
+                    'provider-2': mockProviders['provider-2'],
+                })
+            })
+
+            it('preserves existing client secret when not changed', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={mockProviders}
+                        />
+                    </Provider>,
+                )
+
+                const editButtons = screen.getAllByRole('button', {
+                    name: /edit/i,
+                })
+                await user.click(editButtons[0])
+
+                const nameField = screen.getByLabelText(/provider name/i)
+                await user.clear(nameField)
+                await user.type(nameField, 'Updated Provider')
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Save Changes',
+                })
+                await user.click(saveButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'provider-1': {
+                        name: 'Updated Provider',
+                        client_id: 'okta-client-id',
+                        client_secret: 'okta-secret',
+                        server_metadata_url:
+                            'https://okta.example.com/.well-known/openid-configuration',
+                    },
+                    'provider-2': mockProviders['provider-2'],
+                })
+            })
+
+            it('updates client secret when changed', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={mockProviders}
+                        />
+                    </Provider>,
+                )
+
+                const editButtons = screen.getAllByRole('button', {
+                    name: /edit/i,
+                })
+                await user.click(editButtons[0])
+
+                const secretField = screen.getByLabelText(/client secret/i)
+                await user.type(secretField, 'new-secret')
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Save Changes',
+                })
+                await user.click(saveButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'provider-1': {
+                        name: 'Okta',
+                        client_id: 'okta-client-id',
+                        client_secret: 'new-secret',
+                        server_metadata_url:
+                            'https://okta.example.com/.well-known/openid-configuration',
+                    },
+                    'provider-2': mockProviders['provider-2'],
+                })
+            })
+        })
+
+        describe('Deleting providers', () => {
+            it('deletes provider when delete is clicked', async () => {
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProviders
+                            {...defaultProps}
+                            providers={mockProviders}
+                        />
+                    </Provider>,
+                )
+
+                const deleteButtons = screen.getAllByRole('button', {
+                    name: /remove/i,
+                })
+                await user.click(deleteButtons[0])
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'provider-2': mockProviders['provider-2'],
+                })
+            })
+
+            it('deletes correct provider from multiple providers', async () => {
+                const user = userEvent.setup()
+                const threeProviders = {
+                    ...mockProviders,
+                    'provider-3': {
+                        name: 'Azure AD',
+                        client_id: 'azure-client-id',
+                        client_secret: 'azure-secret',
+                        server_metadata_url: 'https://azure.example.com',
+                    },
+                }
+                render(
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={threeProviders}
+                    />,
+                )
+
+                const deleteButtons = screen.getAllByRole('button', {
+                    name: /remove/i,
+                })
+                await user.click(deleteButtons[1])
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'provider-1': mockProviders['provider-1'],
+                    'provider-3': threeProviders['provider-3'],
+                })
+            })
+
+            it('handles deleting last provider', async () => {
+                const user = userEvent.setup()
+                const singleProvider = {
+                    'provider-1': mockProviders['provider-1'],
+                }
+                render(
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={singleProvider}
+                    />,
+                )
+
+                const deleteButton = screen.getByRole('button', {
+                    name: /remove/i,
+                })
+                await user.click(deleteButton)
+
+                expect(mockOnUpdate).toHaveBeenCalledWith({})
+            })
+        })
+    })
+
+    describe('Modal interactions', () => {
+        it('closes modal when cancel is clicked', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            await user.click(addButton)
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            await user.click(cancelButton)
+
+            // Modal will start closing animation
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+        })
+
+        it('does not call onUpdate when modal is cancelled', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            await user.click(addButton)
+
+            await user.type(
+                screen.getByLabelText(/provider name/i),
+                'Cancelled Provider',
+            )
+
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            await user.click(cancelButton)
+
+            expect(mockOnUpdate).not.toHaveBeenCalled()
+        })
+
+        it('passes correct callback URL to modal based on account domain', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        accountDomain="my-company"
+                    />
+                </Provider>,
+            )
+
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            await user.click(addButton)
+
+            expect(
+                screen.getByDisplayValue(
+                    'https://my-company.gorgias.com/idp/sso/oidc/callback',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Disabled state', () => {
+        it('disables provider items when disabled prop is true', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={mockProviders}
+                        disabled={true}
+                    />
+                </Provider>,
+            )
+
+            const editButtons = screen.getAllByRole('button', { name: /edit/i })
+            const deleteButtons = screen.getAllByRole('button', {
+                name: /remove/i,
+            })
+
+            editButtons.forEach((button) => {
+                expect(button).toHaveAttribute('aria-disabled', 'true')
+            })
+            deleteButtons.forEach((button) => {
+                expect(button).toHaveAttribute('aria-disabled', 'true')
+            })
+        })
+
+        it('enables provider items when disabled prop is false', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={mockProviders}
+                        disabled={false}
+                    />
+                </Provider>,
+            )
+
+            const editButtons = screen.getAllByRole('button', { name: /edit/i })
+            const deleteButtons = screen.getAllByRole('button', {
+                name: /remove/i,
+            })
+
+            editButtons.forEach((button) => {
+                expect(button).toHaveAttribute('aria-disabled', 'false')
+            })
+            deleteButtons.forEach((button) => {
+                expect(button).toHaveAttribute('aria-disabled', 'false')
+            })
+        })
+    })
+
+    describe('Edge cases', () => {
+        it('handles empty providers object', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} providers={{}} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('Custom Identity Providers'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: '+ Add provider' }),
+            ).toBeInTheDocument()
+        })
+
+        it('handles undefined providers', () => {
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={undefined as any}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('Custom Identity Providers'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: '+ Add provider' }),
+            ).toBeInTheDocument()
+        })
+
+        it('generates unique IDs for multiple new providers', async () => {
+            const user = userEvent.setup()
+            mockUuid
+                .mockReturnValueOnce('first-provider-id')
+                .mockReturnValueOnce('second-provider-id')
+
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders {...defaultProps} />
+                </Provider>,
+            )
+
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            await user.click(addButton)
+
+            await user.type(
+                screen.getByLabelText(/provider name/i),
+                'First Provider',
+            )
+            await user.type(screen.getByLabelText(/client id/i), 'first-id')
+            await user.type(
+                screen.getByLabelText(/client secret/i),
+                'first-secret',
+            )
+            await user.type(
+                screen.getByLabelText(/provider url/i),
+                'https://first.com',
+            )
+
+            const saveButton = screen.getByRole('button', {
+                name: 'Add SSO Provider',
+            })
+            await user.click(saveButton)
+
+            expect(mockOnUpdate).toHaveBeenCalledWith({
+                'first-provider-id': {
+                    name: 'First Provider',
+                    client_id: 'first-id',
+                    client_secret: 'first-secret',
+                    server_metadata_url:
+                        'https://first.com/.well-known/openid-configuration',
+                },
+            })
+        })
+
+        it('handles providers with missing properties gracefully', () => {
+            const incompleteProviders = {
+                'provider-1': {
+                    name: undefined as any,
+                    client_id: 'client-id',
+                    client_secret: 'secret',
+                    server_metadata_url: 'https://example.com',
+                },
+            }
+
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={incompleteProviders}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Custom Identity Providers'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Integration with hooks', () => {
+        it('uses useCustomSsoProviderModalState hook correctly', async () => {
+            const user = userEvent.setup()
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProviders
+                        {...defaultProps}
+                        providers={mockProviders}
+                    />
+                </Provider>,
+            )
+
+            // Test opening create modal
+            const addButton = screen.getByRole('button', {
+                name: '+ Add provider',
+            })
+            await user.click(addButton)
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Add a custom SSO provider'),
+            ).toBeInTheDocument()
+
+            // Test closing modal
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+            await user.click(cancelButton)
+
+            // Test opening edit modal
+            const editButtons = screen.getAllByRole('button', { name: /edit/i })
+            await user.click(editButtons[0])
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Edit SSO provider')).toBeInTheDocument()
+        })
+    })
+})

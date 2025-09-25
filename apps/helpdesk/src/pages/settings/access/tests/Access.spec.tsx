@@ -23,6 +23,7 @@ const accessSettings = fromJS({
     data: {
         signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
         allowed_domains: ['gorgias.com', 'gorgias.io'],
+        custom_sso_providers: {},
     },
 })
 const accessSettingsOnlyWildcards = fromJS({
@@ -31,6 +32,7 @@ const accessSettingsOnlyWildcards = fromJS({
     data: {
         signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
         allowed_domains: ['*.*'],
+        custom_sso_providers: {},
     },
 })
 const accessSettingsDangerousWildcard = fromJS({
@@ -39,6 +41,7 @@ const accessSettingsDangerousWildcard = fromJS({
     data: {
         signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
         allowed_domains: ['*gorgias.com'],
+        custom_sso_providers: {},
     },
 })
 const accessSettingsGeneric = fromJS({
@@ -47,6 +50,7 @@ const accessSettingsGeneric = fromJS({
     data: {
         signup_mode: AccountSettingAccessSignupMode.AllowedDomains,
         allowed_domains: ['gmail.com'],
+        custom_sso_providers: {},
     },
 })
 
@@ -60,7 +64,9 @@ describe('<Access/>', () => {
             <Provider store={mockStore()}>
                 <AccessContainer
                     accountDomain="acme"
-                    accessSettings={fromJS({})}
+                    accessSettings={fromJS({
+                        data: { custom_sso_providers: {} },
+                    })}
                     submitSetting={jest.fn()}
                 />
             </Provider>,
@@ -135,7 +141,9 @@ describe('<Access/>', () => {
             <Provider store={mockStore()}>
                 <AccessContainer
                     accountDomain="acme"
-                    accessSettings={fromJS({})}
+                    accessSettings={fromJS({
+                        data: { custom_sso_providers: {} },
+                    })}
                     submitSetting={submitSetting}
                 />
             </Provider>,
