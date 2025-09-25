@@ -1,9 +1,14 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Cadence, CouponSummary, Plan } from 'models/billing/types'
+import {
+    Cadence,
+    CouponSummary,
+    Plan,
+    SubscriptionStatus,
+} from 'models/billing/types'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 import { formatAmount } from '../../utils/formatAmount'
@@ -93,9 +98,11 @@ function usePriceSummary(selectedPlans: SelectedPlans) {
 
     const { data: billingState } = useBillingStateWithSideEffects()
     const coupon: CouponSummary | null =
-        billingState?.subscription?.coupon ||
-        billingState?.customer?.coupon ||
-        null
+        billingState?.subscription?.status === SubscriptionStatus.CANCELED
+            ? billingState?.customer?.coupon || null
+            : billingState?.subscription?.coupon ||
+              billingState?.customer?.coupon ||
+              null
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(

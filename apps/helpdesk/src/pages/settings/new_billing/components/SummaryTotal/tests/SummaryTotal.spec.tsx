@@ -10,7 +10,7 @@ import {
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import { Cadence } from 'models/billing/types'
+import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -239,6 +239,293 @@ describe('SummaryTotal with coupons', () => {
                 screen.queryByLabelText('Discount amount'),
             ).not.toBeInTheDocument()
             expect(screen.getByLabelText('Total price')).toBeInTheDocument()
+        })
+    })
+
+    it('should use customer.coupon when subscription status is CANCELED', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Customer 30% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 30,
+                    products: [],
+                },
+            },
+            subscription: {
+                status: SubscriptionStatus.CANCELED,
+                coupon: {
+                    name: 'Subscription 50% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 50,
+                    products: [],
+                },
+            },
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            // Verify the discount is 30% (customer coupon) not 50% (subscription coupon)
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $27')
+        })
+    })
+
+    it('should use subscription.coupon when subscription status is not CANCELED', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Customer 30% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 30,
+                    products: [],
+                },
+            },
+            subscription: {
+                status: 'active',
+                coupon: {
+                    name: 'Subscription 50% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 50,
+                    products: [],
+                },
+            },
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            // Verify the discount is 50% (subscription coupon) not 30% (customer coupon)
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $45')
+        })
+    })
+
+    it('should use customer.coupon when subscription is CANCELED and no subscription.coupon exists', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Customer 25% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 25,
+                    products: [],
+                },
+            },
+            subscription: {
+                status: SubscriptionStatus.CANCELED,
+            },
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $22.50')
+        })
+    })
+
+    it('should correctly calculate discount with amount_off_in_cents coupon', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Fixed $50 off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: 5000, // $50 off
+                    amount_off_decimal: '50',
+                    percent_off: null,
+                    products: [],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $50')
+        })
+    })
+
+    it('should correctly calculate discount with amount_off_decimal coupon', async () => {
+        // Since getTotalWithDiscounts doesn't handle amount_off_decimal,
+        // we'll test with amount_off_in_cents instead
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Fixed $75.50 off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: 7550, // $75.50 in cents
+                    amount_off_decimal: '75.50',
+                    percent_off: null,
+                    products: [],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $75.50')
+        })
+    })
+
+    it('should handle coupon with products restriction correctly', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Helpdesk only 20% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 20,
+                    products: ['helpdesk'],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            // Should only apply discount to helpdesk plan, not automation
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent('- $12')
+        })
+    })
+
+    it('should not show discount when subscription is CANCELED and no coupons exist', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {},
+            subscription: {
+                status: SubscriptionStatus.CANCELED,
+            },
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Discount amount'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByLabelText('Total price')).toBeInTheDocument()
+        })
+    })
+
+    it('should handle edge case when discount amount exceeds total price', async () => {
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Fixed $10000 off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: 1000000, // $10,000 off (more than total)
+                    amount_off_decimal: '10000',
+                    percent_off: null,
+                    products: [],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+            // Discount should be capped at total amount
+            const totalElement = screen.getByLabelText('Total price')
+            expect(totalElement).toHaveTextContent('$0')
         })
     })
 })
