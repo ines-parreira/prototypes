@@ -45,7 +45,7 @@ export function TaxIdField<
                 value.replace(/[^0-9a-zA-Z-]/g, '').toUpperCase()
             }
             rules={{
-                required: instructions,
+                required: false,
                 pattern: {
                     value: pattern,
                     message: instructions,
