@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import { Component } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import { get, set } from 'lodash'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
@@ -123,7 +122,7 @@ const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
     currentUser: Map<any, any>
-    flags?: LDFlagSet
+    flags?: FeatureFlagsMap
     integration: Map<any, any>
     actions: typeof IntegrationsActions
     articleRecommendationEnabled: boolean
@@ -1631,6 +1630,6 @@ const connector = connect(
     },
 )
 
-export default withLDConsumer()(
+export default withFeatureFlags(
     connector(GorgiasChatIntegrationPreferencesComponent),
 )

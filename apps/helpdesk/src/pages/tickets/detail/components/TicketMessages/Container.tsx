@@ -1,10 +1,9 @@
 import { Component, ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classNamesBind from 'classnames/bind'
 import { fromJS, Map } from 'immutable'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _memoize from 'lodash/memoize'
 import moment, { Moment } from 'moment'
 
@@ -53,7 +52,7 @@ type Props = {
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
     shouldDisplayAuditLogEvents?: boolean
-    flags?: LDFlagSet
+    flags?: FeatureFlagsMap
     isImpersonated?: boolean
 }
 
@@ -308,4 +307,4 @@ export class Container extends Component<Props> {
     }
 }
 
-export default withLDConsumer()(withMessageTranslations(Container))
+export default withFeatureFlags(withMessageTranslations(Container))

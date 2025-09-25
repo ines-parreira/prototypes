@@ -1,9 +1,9 @@
 import { Component, ComponentType, ContextType, ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _isArray from 'lodash/isArray'
 import { parse, stringify } from 'qs'
 import { connect, ConnectedProps } from 'react-redux'
@@ -70,7 +70,7 @@ type Props = OwnProps &
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
         typeof fetchViewItems
-    > & { flags?: LDFlagSet }
+    > & { flags?: FeatureFlagsMap }
 
 export class ViewTableContainer extends Component<Props> {
     static defaultProps: Pick<Props, 'items' | 'type'> = {
@@ -450,5 +450,5 @@ export default withRouter(
     >(
         'fetchViewItemsCancellable',
         fetchViewItems,
-    )(connector(withViewSearchUrlSync(withLDConsumer()(ViewTableContainer)))),
+    )(connector(withViewSearchUrlSync(withFeatureFlags(ViewTableContainer)))),
 )

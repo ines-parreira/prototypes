@@ -1,5 +1,4 @@
-import type { ComponentType, ReactNode } from 'react'
-import React from 'react'
+import type { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
@@ -20,13 +19,6 @@ let _mockClient = {
 }
 
 export const useFlags = () => _flags
-export const withLDConsumer =
-    (__: unknown) =>
-    (WrappedComponent: ComponentType<unknown>) =>
-    (props: object) => {
-        const allProps = { ...props }
-        return <WrappedComponent {...allProps} />
-    }
 
 export function decorator(
     story: () => ReactNode,

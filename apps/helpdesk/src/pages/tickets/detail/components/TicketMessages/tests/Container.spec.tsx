@@ -37,9 +37,10 @@ jest.mock(
     }),
 )
 
-// Mock the LaunchDarkly consumer
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    withLDConsumer: (Component: React.ComponentType<any>) => Component,
+// Mock the FeatureFlags consumer
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    withFeatureFlags: (Component: React.ComponentType<any>) => Component,
 }))
 
 jest.mock(

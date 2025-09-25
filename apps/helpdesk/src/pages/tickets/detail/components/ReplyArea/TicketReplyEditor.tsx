@@ -1,11 +1,10 @@
-import React, { Component, ReactNode } from 'react'
+import { Component, ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
+import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
-import { LDFlagSet } from 'launchdarkly-js-client-sdk'
-import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import { connect, ConnectedProps } from 'react-redux'
@@ -50,7 +49,7 @@ type Props = {
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
-    flags?: LDFlagSet
+    flags?: FeatureFlagsMap
 } & ConnectedProps<typeof connector> &
     TypingActivityProps
 
@@ -539,5 +538,5 @@ const connector = connect(
 )
 
 export default connector(
-    withTypingActivity(withLDConsumer()(TicketReplyEditorContainer)),
+    withTypingActivity(withFeatureFlags(TicketReplyEditorContainer)),
 )
