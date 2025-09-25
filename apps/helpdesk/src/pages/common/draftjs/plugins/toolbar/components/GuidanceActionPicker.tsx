@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import { Button, Tooltip } from '@gorgias/axiom'
 
-import actionsIconDisabled from 'assets/img/icons/guidance-actions-disabled.svg'
-import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -44,14 +42,10 @@ const GuidanceActionPicker = ({
                 intent="secondary"
                 ref={anchorEl}
                 onClick={handleToggle}
+                leadingIcon="webhook"
                 trailingIcon="arrow_drop_down"
                 isDisabled={isDisabled}
             >
-                <img
-                    src={isDisabled ? actionsIconDisabled : actionsIcon}
-                    alt={'Actions'}
-                    className={css.icon}
-                />{' '}
                 Actions
             </Button>
             <GuidanceActionDropdown
