@@ -1,6 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -97,7 +97,9 @@ describe('AiAgentReasoningFeedback', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Rate the quality of this reasoning'),
+                screen.getByText(
+                    "Rate how well this explains AI Agent's response",
+                ),
             ).toBeInTheDocument()
             expect(screen.getAllByRole('button')[0]).toBeInTheDocument()
             expect(screen.getAllByRole('button')[1]).toBeInTheDocument()
@@ -111,12 +113,14 @@ describe('AiAgentReasoningFeedback', () => {
 
             fireEvent.mouseOver(thumbUpButton)
             await waitFor(() => {
-                expect(screen.getByText('Quality is good')).toBeInTheDocument()
+                expect(screen.getByText('Well explained')).toBeInTheDocument()
             })
 
             fireEvent.mouseOver(thumbDownButton)
             await waitFor(() => {
-                expect(screen.getByText('Quality is bad')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Not well explained'),
+                ).toBeInTheDocument()
             })
         })
 
@@ -299,6 +303,7 @@ describe('AiAgentReasoningFeedback', () => {
             const thumbDownButton = screen.getAllByRole('button')[1]
             fireEvent.click(thumbDownButton)
 
+            // Should submit negative feedback immediately
             await waitFor(() => {
                 expect(mockMutateAsync).toHaveBeenCalledWith({
                     data: {
@@ -323,7 +328,142 @@ describe('AiAgentReasoningFeedback', () => {
             )
         })
 
-        it('should update existing feedback when changing vote', async () => {
+        it('should show feedback form when thumbs down is already selected', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Feedback form should be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+                expect(screen.getByText('Too long to read')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Contains repetitive information'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Missing knowledge source references'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Mentions actions not included in reply'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Unclear decision-making explanation'),
+                ).toBeInTheDocument()
+                expect(screen.getByText('Other')).toBeInTheDocument()
+            })
+        })
+
+        it('should submit feedback immediately when checkboxes are selected', async () => {
+            // Set up initial state with thumbs down already selected
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            mockMutateAsync.mockResolvedValue({})
+            renderComponent()
+
+            // Form should be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Select first checkbox
+            const checkboxes = screen.getAllByRole('checkbox')
+            act(() => {
+                fireEvent.click(checkboxes[0]) // Too long
+            })
+
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).toHaveBeenCalledWith({
+                        data: {
+                            feedbackToUpsert: [
+                                {
+                                    objectId: '123',
+                                    objectType: 'TICKET',
+                                    executionId: 'exec-123',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'TOO_LONG',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    })
+                },
+                { timeout: 2000 },
+            )
+
+            // Select second checkbox
+            act(() => {
+                fireEvent.click(checkboxes[2]) // Missing knowledge source references
+            })
+
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).toHaveBeenCalledWith({
+                        data: {
+                            feedbackToUpsert: [
+                                {
+                                    objectId: '123',
+                                    objectType: 'TICKET',
+                                    executionId: 'exec-123',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'MISSING_REFERENCES',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    })
+                },
+                { timeout: 2000 },
+            )
+        })
+
+        it('should update existing feedback when changing vote from up to down', async () => {
             mockUseGetFeedback.mockReturnValue({
                 data: mockFeedbackData,
                 isLoading: false,
@@ -332,6 +472,7 @@ describe('AiAgentReasoningFeedback', () => {
             mockMutateAsync.mockResolvedValue({})
             renderComponent()
 
+            // Click thumbs down
             const thumbDownButton = screen.getAllByRole('button')[1]
             fireEvent.click(thumbDownButton)
 
@@ -389,6 +530,236 @@ describe('AiAgentReasoningFeedback', () => {
             })
 
             expect(mockOnFeedbackGiven).not.toHaveBeenCalled()
+        })
+
+        it('should remove feedback when checkbox is unchecked', async () => {
+            // Set up initial state with thumbs down already selected
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            mockMutateAsync.mockResolvedValue({})
+            renderComponent()
+
+            // Form should be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Select checkbox
+            const checkboxes = screen.getAllByRole('checkbox')
+            act(() => {
+                fireEvent.click(checkboxes[0]) // Too long
+            })
+
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).toHaveBeenCalledWith({
+                        data: {
+                            feedbackToUpsert: [
+                                {
+                                    objectId: '123',
+                                    objectType: 'TICKET',
+                                    executionId: 'exec-123',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'TOO_LONG',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    })
+                },
+                { timeout: 2000 },
+            )
+
+            mockMutateAsync.mockClear()
+
+            // Uncheck the same checkbox
+            act(() => {
+                fireEvent.click(checkboxes[0])
+            })
+
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).toHaveBeenCalledWith({
+                        data: {
+                            feedbackToUpsert: [
+                                {
+                                    objectId: '123',
+                                    objectType: 'TICKET',
+                                    executionId: 'exec-123',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: null,
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    })
+                },
+                { timeout: 2000 },
+            )
+        })
+
+        it('should show textarea when Other is selected', async () => {
+            // Set up initial state with thumbs down already selected
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Form should be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Select 'Other' checkbox
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5] // 'Other' is the last option
+            act(() => {
+                fireEvent.click(otherCheckbox)
+            })
+
+            // Textarea should appear
+            await waitFor(() => {
+                expect(
+                    screen.getByPlaceholderText(
+                        'Please provide more details...',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should auto-save textarea content after typing stops', async () => {
+            // Set up initial state with thumbs down already selected
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            jest.useFakeTimers()
+            mockMutateAsync.mockResolvedValue({})
+            renderComponent()
+
+            // Form should be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Select 'Other' checkbox
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5] // 'Other' is the last option
+            act(() => {
+                fireEvent.click(otherCheckbox)
+            })
+
+            // Textarea should appear
+            await waitFor(() => {
+                expect(
+                    screen.getByPlaceholderText(
+                        'Please provide more details...',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            // Type in textarea
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            act(() => {
+                fireEvent.change(textarea, {
+                    target: { value: 'This is my additional feedback' },
+                })
+            })
+
+            // Fast forward timers to trigger debounced save
+            act(() => {
+                jest.advanceTimersByTime(1500)
+            })
+
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).toHaveBeenCalledWith({
+                        data: {
+                            feedbackToUpsert: [
+                                {
+                                    objectId: '123',
+                                    objectType: 'TICKET',
+                                    executionId: 'exec-123',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        'This is my additional feedback',
+                                    feedbackType: 'REASONING_FREEFORM',
+                                },
+                            ],
+                        },
+                    })
+                },
+                { timeout: 3000 },
+            )
+
+            jest.useRealTimers()
         })
     })
 
@@ -563,6 +934,855 @@ describe('AiAgentReasoningFeedback', () => {
             fireEvent.keyDown(thumbUpButton, { key: 'Tab' })
             thumbDownButton.focus()
             expect(document.activeElement).toBe(thumbDownButton)
+        })
+    })
+
+    describe('Existing feedback restoration', () => {
+        it('should restore existing reason checkboxes from backend data', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'TOO_LONG',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'MISSING_REFERENCES',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Check that the correct checkboxes are selected
+            const checkboxes = screen.getAllByRole('checkbox')
+            const tooLongCheckbox = checkboxes[0] // First option
+            const missingRefCheckbox = checkboxes[2] // Third option
+
+            expect(tooLongCheckbox).toBeChecked()
+            expect(missingRefCheckbox).toBeChecked()
+            expect(checkboxes[1]).not.toBeChecked() // Second option not selected
+        })
+
+        it('should restore existing freeform feedback text from backend data', async () => {
+            const existingText = 'This is my existing feedback text'
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: existingText,
+                                    feedbackType: 'REASONING_FREEFORM',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Check that OTHER checkbox is selected and textarea is visible with text
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5] // OTHER is the last option
+            expect(otherCheckbox).toBeChecked()
+
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            expect(textarea).toBeInTheDocument()
+            expect(textarea).toHaveValue(existingText)
+        })
+
+        it('should handle mixed existing feedback types correctly', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'REPETITIVE',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-4',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'Custom feedback text',
+                                    feedbackType: 'REASONING_FREEFORM',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            const checkboxes = screen.getAllByRole('checkbox')
+
+            // Check that correct reason checkboxes are selected
+            expect(checkboxes[1]).toBeChecked() // REPETITIVE
+            expect(checkboxes[5]).toBeChecked() // OTHER
+
+            // Check that textarea has the freeform text
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            expect(textarea).toHaveValue('Custom feedback text')
+        })
+    })
+
+    describe('OTHER checkbox disabled state', () => {
+        it('should disable OTHER checkbox when textarea has content', async () => {
+            // Set up initial state with thumbs down selected
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // OTHER checkbox should be enabled initially (no text in textarea)
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5] // OTHER is the last option
+            expect(otherCheckbox).not.toBeDisabled()
+
+            // Type in textarea
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            act(() => {
+                fireEvent.change(textarea, {
+                    target: { value: 'Some feedback text' },
+                })
+            })
+
+            // OTHER checkbox should now be disabled
+            await waitFor(() => {
+                expect(otherCheckbox).toBeDisabled()
+            })
+        })
+
+        it('should enable OTHER checkbox when textarea is cleared', async () => {
+            // Set up with existing freeform feedback
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'Existing text',
+                                    feedbackType: 'REASONING_FREEFORM',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // OTHER checkbox should be disabled initially (textarea has text)
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5] // OTHER is the last option
+            expect(otherCheckbox).toBeDisabled()
+
+            // Clear textarea
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            act(() => {
+                fireEvent.change(textarea, {
+                    target: { value: '' },
+                })
+            })
+
+            // OTHER checkbox should now be enabled
+            await waitFor(() => {
+                expect(otherCheckbox).not.toBeDisabled()
+            })
+        })
+
+        it('should not disable non-OTHER checkboxes when textarea has content', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Type in textarea
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            act(() => {
+                fireEvent.change(textarea, {
+                    target: { value: 'Some feedback text' },
+                })
+            })
+
+            // All other checkboxes should remain enabled
+            const checkboxes = screen.getAllByRole('checkbox')
+            for (let i = 0; i < checkboxes.length - 1; i++) {
+                // All except the last one (OTHER)
+                expect(checkboxes[i]).not.toBeDisabled()
+            }
+        })
+    })
+
+    describe('Freeform feedback deletion', () => {
+        it('should delete freeform feedback when OTHER checkbox is deselected', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'Some freeform text',
+                                    feedbackType: 'REASONING_FREEFORM',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            mockMutateAsync.mockResolvedValue({})
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Clear textarea first to enable OTHER checkbox
+            const textarea = screen.getByPlaceholderText(
+                'Please provide more details...',
+            )
+            act(() => {
+                fireEvent.change(textarea, { target: { value: '' } })
+            })
+
+            // Wait for checkbox to be enabled
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5]
+            await waitFor(() => {
+                expect(otherCheckbox).not.toBeDisabled()
+            })
+
+            // Deselect OTHER checkbox
+            act(() => {
+                fireEvent.click(otherCheckbox)
+            })
+
+            // Should call mutation to delete freeform feedback
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledWith({
+                    data: {
+                        feedbackToUpsert: [
+                            {
+                                id: 'feedback-3',
+                                objectId: '123',
+                                objectType: 'TICKET',
+                                executionId: 'exec-123',
+                                targetType: 'REASONING',
+                                targetId: '1001',
+                                feedbackValue: null,
+                                feedbackType: 'REASONING_FREEFORM',
+                            },
+                        ],
+                    },
+                })
+            })
+
+            // Textarea should be cleared
+            expect(textarea).toHaveValue('')
+        })
+
+        it('should not delete freeform feedback when OTHER is deselected but no existing freeform exists', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'OTHER',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Clear existing call count
+            mockMutateAsync.mockClear()
+
+            // Deselect OTHER checkbox
+            const checkboxes = screen.getAllByRole('checkbox')
+            const otherCheckbox = checkboxes[5]
+            act(() => {
+                fireEvent.click(otherCheckbox)
+            })
+
+            // Should not make any mutation calls for freeform deletion
+            // (only the regular checkbox mutation should happen after debounce)
+            await waitFor(() => {
+                const freeformDeletionCalls = mockMutateAsync.mock.calls.filter(
+                    (call) =>
+                        call[0]?.data?.feedbackToUpsert?.[0]?.feedbackType ===
+                        'REASONING_FREEFORM',
+                )
+                expect(freeformDeletionCalls).toHaveLength(0)
+            })
+        })
+    })
+
+    describe('Auto-save state management', () => {
+        it('should show initial auto-save state when component loads', () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // AutoSaveBadge should be rendered but not show saving/saved state initially
+            expect(screen.queryByText('Saving...')).not.toBeInTheDocument()
+            expect(screen.queryByText('Saved')).not.toBeInTheDocument()
+        })
+
+        it('should show saving state during mutation and saved state after success', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            let resolveMutation: (value: any) => void
+            const mutationPromise = new Promise((resolve) => {
+                resolveMutation = resolve
+            })
+            mockMutateAsync.mockReturnValue(mutationPromise)
+
+            renderComponent()
+
+            // Select a checkbox to trigger mutation
+            const checkboxes = screen.getAllByRole('checkbox')
+            act(() => {
+                fireEvent.click(checkboxes[0])
+            })
+
+            // Should show saving state
+            await waitFor(() => {
+                expect(screen.getByText(/Saving/)).toBeInTheDocument()
+            })
+
+            // Resolve the mutation
+            act(() => {
+                resolveMutation({})
+            })
+
+            // Should show saved state
+            await waitFor(() => {
+                expect(screen.getByText(/Saved/)).toBeInTheDocument()
+            })
+        })
+
+        it('should revert to initial state on mutation failure', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            let rejectMutation: (error: Error) => void
+            const mutationPromise = new Promise((resolve, reject) => {
+                rejectMutation = reject
+            })
+            mockMutateAsync.mockReturnValue(mutationPromise)
+            renderComponent()
+
+            // Select a checkbox to trigger mutation
+            const checkboxes = screen.getAllByRole('checkbox')
+            act(() => {
+                fireEvent.click(checkboxes[0])
+            })
+
+            // Should show saving state initially
+            await waitFor(() => {
+                expect(screen.getByText(/Saving/)).toBeInTheDocument()
+            })
+
+            // Reject the mutation
+            act(() => {
+                rejectMutation(new Error('Network error'))
+            })
+
+            // After failure, should not show saving or saved state
+            await waitFor(() => {
+                expect(screen.queryByText(/Saving/)).not.toBeInTheDocument()
+                expect(screen.queryByText(/Saved/)).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Edge cases and race conditions', () => {
+        it('should handle rapid checkbox selections without duplicate submissions', async () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            jest.useFakeTimers()
+            mockMutateAsync.mockResolvedValue({})
+            renderComponent()
+
+            // Wait for form to be visible
+            await waitFor(() => {
+                expect(
+                    screen.getByText("What's wrong with this explanation?"),
+                ).toBeInTheDocument()
+            })
+
+            // Rapidly select multiple checkboxes
+            const checkboxes = screen.getAllByRole('checkbox')
+            act(() => {
+                fireEvent.click(checkboxes[0]) // TOO_LONG
+                fireEvent.click(checkboxes[1]) // REPETITIVE
+                fireEvent.click(checkboxes[2]) // MISSING_REFERENCES
+            })
+
+            // Fast forward past debounce time
+            act(() => {
+                jest.advanceTimersByTime(800)
+            })
+
+            // Should have made only one batch call with all changes
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+                expect(mockMutateAsync).toHaveBeenCalledWith({
+                    data: {
+                        feedbackToUpsert: expect.arrayContaining([
+                            expect.objectContaining({
+                                feedbackValue: 'MISSING_REFERENCES',
+                            }),
+                        ]),
+                    },
+                })
+            })
+
+            jest.useRealTimers()
+        })
+
+        it('should handle null feedback values in existing data', () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: null, // null feedback value
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            // Should not throw errors and render properly
+            expect(() => renderComponent()).not.toThrow()
+
+            // Form should be visible
+            expect(
+                screen.getByText("What's wrong with this explanation?"),
+            ).toBeInTheDocument()
+
+            // All checkboxes should be unchecked (since null values are filtered out)
+            const checkboxes = screen.getAllByRole('checkbox')
+            checkboxes.forEach((checkbox) => {
+                expect(checkbox).not.toBeChecked()
+            })
+        })
+
+        it('should handle feedback with different target IDs correctly', () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001', // Current message ID
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '9999', // Different message ID
+                                    feedbackValue: 'TOO_LONG',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-3',
+                                    targetType: 'REASONING',
+                                    targetId: '1001', // Current message ID
+                                    feedbackValue: 'REPETITIVE',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Form should be visible
+            expect(
+                screen.getByText("What's wrong with this explanation?"),
+            ).toBeInTheDocument()
+
+            const checkboxes = screen.getAllByRole('checkbox')
+
+            // Only feedback with matching targetId should be selected
+            expect(checkboxes[0]).not.toBeChecked() // TOO_LONG (wrong targetId)
+            expect(checkboxes[1]).toBeChecked() // REPETITIVE (correct targetId)
+        })
+
+        it('should handle empty executions array', () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [], // Empty executions
+                },
+                isLoading: false,
+            } as any)
+
+            expect(() => renderComponent()).not.toThrow()
+
+            // Should render with default state (no feedback form visible)
+            expect(
+                screen.queryByText("What's wrong with this explanation?"),
+            ).not.toBeInTheDocument()
+
+            // Buttons should be in default state
+            const buttons = screen.getAllByRole('button')
+            expect(
+                buttons[0].querySelector('.material-icons-outlined'),
+            ).toBeInTheDocument()
+            expect(
+                buttons[1].querySelector('.material-icons-outlined'),
+            ).toBeInTheDocument()
         })
     })
 })

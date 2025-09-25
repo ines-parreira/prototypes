@@ -469,25 +469,29 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
             }
 
             return (
-                <AiAgentReasoningFeedback
-                    ticketId={ticketId}
-                    accountId={accountId}
-                    userId={userId}
-                    executionId={executionId}
-                    messageId={messageId}
-                />
+                <div className={css.feedbackContainer}>
+                    <AiAgentReasoningFeedback
+                        ticketId={ticketId}
+                        accountId={accountId}
+                        userId={userId}
+                        executionId={executionId}
+                        messageId={messageId}
+                    />
+                </div>
             )
         }
 
         const content = (
-            <div className={css.executionContainer}>
+            <>
                 {renderFeedbackSection()}
                 {renderExecutionId()}
-            </div>
+            </>
         )
 
         if (isError) {
-            return isImpersonated ? content : null
+            {
+                renderExecutionId()
+            }
         }
 
         return (
