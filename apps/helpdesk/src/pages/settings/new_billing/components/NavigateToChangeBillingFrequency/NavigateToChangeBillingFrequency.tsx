@@ -84,22 +84,19 @@ export default function NavigateToChangeBillingFrequency({
                 </>
             )
         } else if (isScheduledToCancel) {
-            toolTipContent = null
-            // toolTipContent = (
-            //     <>
-            //         Your subscription is scheduled to cancel. To reactivate,
-            //         please{' '}
-            //         <span
-            //             className={css.link}
-            //             onClick={() =>
-            //                 contactBilling(TicketPurpose.CONTACT_US)
-            //             }
-            //         >
-            //             get in touch
-            //         </span>{' '}
-            //         with our team.
-            //     </>
-            // )
+            toolTipContent = (
+                <>
+                    Your subscription is scheduled to cancel. To reactivate,
+                    please{' '}
+                    <span
+                        className={css.link}
+                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                    >
+                        get in touch
+                    </span>{' '}
+                    with our team.
+                </>
+            )
         } else if (isSubscribedToVoiceOrSMS && !isVettedForPhone) {
             toolTipContent = (
                 <>

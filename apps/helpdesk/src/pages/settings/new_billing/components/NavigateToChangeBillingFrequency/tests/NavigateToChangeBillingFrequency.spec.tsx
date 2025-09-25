@@ -143,8 +143,7 @@ describe('NavigateToChangeBillingFrequency', () => {
         )
     })
 
-    it('should tell the user to nothing if their subscription is scheduled to cancel', async () => {
-        // it('should tell the user to contact us if their subscription is scheduled to cancel', async () => {
+    it('should tell the user to contact us if their subscription is scheduled to cancel', async () => {
         renderWithStoreAndQueryClientProvider(
             <NavigateToChangeBillingFrequency {...props} />,
             {
@@ -164,18 +163,17 @@ describe('NavigateToChangeBillingFrequency', () => {
         expect(button).toHaveClass(css.disabledText)
         await act(() => userEvent.hover(button))
 
-        expect(() => screen.getByRole('tooltip')).toThrow()
-        // const tooltip = screen.getByRole('tooltip')
-        // expect(tooltip).toBeInTheDocument()
-        // expect(tooltip).toHaveTextContent(
-        //     'Your subscription is scheduled to cancel. To reactivate, please',
-        // )
+        const tooltip = screen.getByRole('tooltip')
+        expect(tooltip).toBeInTheDocument()
+        expect(tooltip).toHaveTextContent(
+            'Your subscription is scheduled to cancel. To reactivate, please',
+        )
 
-        // const contact = screen.getByText('get in touch')
-        // await act(() => userEvent.click(contact))
-        // expect(contactBillingMock).toHaveBeenCalledWith(
-        //     TicketPurpose.CONTACT_US,
-        // )
+        const contact = screen.getByText('get in touch')
+        await act(() => userEvent.click(contact))
+        expect(contactBillingMock).toHaveBeenCalledWith(
+            TicketPurpose.CONTACT_US,
+        )
     })
 
     it('should tell the user to contact us if they are not vetted for phone', async () => {
