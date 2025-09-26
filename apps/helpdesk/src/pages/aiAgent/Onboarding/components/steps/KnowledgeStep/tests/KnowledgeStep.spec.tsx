@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -9,8 +10,14 @@ import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
 import { shopifyIntegration } from 'fixtures/integrations'
+import useAppDispatch from 'hooks/useAppDispatch'
 import * as hooks from 'hooks/useAppSelector'
+import {
+    useGetStoresConfigurationForAccount,
+    useStartSalesTrialMutation,
+} from 'models/aiAgent/queries'
 import { OnboardingNotificationState } from 'models/aiAgent/types'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useOnboardingNotificationState } from 'pages/aiAgent/hooks/useOnboardingNotificationState'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
@@ -22,8 +29,10 @@ import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboa
 import { useTopLocations } from 'pages/aiAgent/Onboarding/hooks/useTopLocations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { notify } from 'state/notifications/actions'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('core/flags', () => ({
@@ -58,6 +67,16 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData', () => ({
     useGetKnowledgePreviewData: jest.fn(),
 }))
 
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+jest.mock('@repo/hooks')
+jest.mock('models/aiAgent/queries', () => ({
+    ...jest.requireActual('models/aiAgent/queries'),
+    useStartSalesTrialMutation: jest.fn(),
+    useGetStoresConfigurationForAccount: jest.fn(),
+}))
+jest.mock('hooks/useAppDispatch')
+jest.mock('state/notifications/actions')
+
 const useGetHelpCentersByShopNameMock = assumeMock(useGetHelpCentersByShopName)
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 
@@ -69,6 +88,13 @@ const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 const mockUseUpdateOnboarding = useUpdateOnboarding as jest.Mock
 const mockUseGetKnowledgePreviewData = useGetKnowledgePreviewData as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
+const mockUseTrialAccess = useTrialAccess as jest.Mock
+const mockUseLocalStorage = useLocalStorage as jest.Mock
+const mockUseStartSalesTrialMutation = useStartSalesTrialMutation as jest.Mock
+const mockUseGetStoresConfigurationForAccount =
+    useGetStoresConfigurationForAccount as jest.Mock
+const mockUseAppDispatch = useAppDispatch as jest.Mock
+const mockNotify = notify as jest.Mock
 
 const defaultProps: StepProps = {
     currentStep: 2,
@@ -104,6 +130,12 @@ const renderWithProvider = (props = defaultProps) => {
 }
 
 describe('KnowledgeStep', () => {
+    const mockDispatch = jest.fn()
+    const mockRemoveShoppingAssistantTrialOptin = jest.fn()
+    const mockStartSalesTrialMutateAsync = jest
+        .fn()
+        .mockResolvedValue(undefined)
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -131,7 +163,7 @@ describe('KnowledgeStep', () => {
 
         mockUseUpdateOnboarding.mockReturnValue({
             mutate: (_data: any, { onSuccess }: any) => {
-                onSuccess()
+                Promise.resolve(onSuccess()).then(() => {})
             },
             isLoading: false,
         })
@@ -162,6 +194,42 @@ describe('KnowledgeStep', () => {
         })
 
         mockUseFlag.mockReturnValue(false)
+
+        mockUseAppDispatch.mockReturnValue(mockDispatch)
+        mockNotify.mockReturnValue({ type: 'NOTIFY', payload: {} })
+
+        mockUseTrialAccess.mockReturnValue({
+            trialType: TrialType.ShoppingAssistant,
+            hasCurrentStoreTrialStarted: false,
+            hasAnyTrialStarted: false,
+            canSeeTrialCTA: false,
+            isLoading: false,
+        })
+
+        mockUseLocalStorage.mockReturnValue([
+            false, // shoppingAssistantTrialOptin
+            jest.fn(), // setter (not used)
+            mockRemoveShoppingAssistantTrialOptin, // remove function
+        ])
+
+        mockUseStartSalesTrialMutation.mockReturnValue({
+            mutateAsync: mockStartSalesTrialMutateAsync,
+            mutate: jest.fn(),
+            data: undefined,
+            error: null,
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+        })
+
+        mockUseGetStoresConfigurationForAccount.mockReturnValue({
+            isLoading: false,
+            data: {
+                storeConfigurations: [],
+            },
+            error: null,
+            isFetched: true,
+        })
 
         jest.useFakeTimers()
     })
@@ -313,6 +381,137 @@ describe('KnowledgeStep', () => {
             expect(history.location.search).toEqual(
                 `?shopName=${encodeURIComponent(shopifyIntegration.meta.shop_name)}&from=onboarding`,
             )
+        })
+    })
+
+    describe('Shopping Assistant trial functionality', () => {
+        beforeEach(() => {
+            mockUseLocalStorage.mockReturnValue([
+                true, // shoppingAssistantTrialOptin = true
+                jest.fn(),
+                mockRemoveShoppingAssistantTrialOptin,
+            ])
+
+            useGetHelpCentersByShopNameMock.mockReturnValue({
+                isHelpCenterLoading: false,
+                helpCenters: getHelpCentersResponseFixture.data,
+            })
+        })
+
+        it('should start Shopping Assistant trial when conditions are met', async () => {
+            const { history } = renderWithProvider()
+            jest.runAllTimers()
+
+            const nextButton = screen.getByText('Next')
+
+            act(() => {
+                userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(mockStartSalesTrialMutateAsync).toHaveBeenCalledWith([
+                    shopifyIntegration.meta.shop_name,
+                ])
+                expect(mockRemoveShoppingAssistantTrialOptin).toHaveBeenCalled()
+                expect(history.location.pathname).toEqual(
+                    '/app/ai-agent/overview',
+                )
+            })
+        })
+
+        it('should NOT start Shopping Assistant trial when opt-in is false', async () => {
+            mockUseLocalStorage.mockReturnValue([
+                false, // shoppingAssistantTrialOptin = false
+                jest.fn(),
+                mockRemoveShoppingAssistantTrialOptin,
+            ])
+
+            const { history } = renderWithProvider()
+            jest.runAllTimers()
+
+            const nextButton = screen.getByText('Next')
+
+            act(() => {
+                userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(mockStartSalesTrialMutateAsync).not.toHaveBeenCalled()
+                expect(
+                    mockRemoveShoppingAssistantTrialOptin,
+                ).not.toHaveBeenCalled()
+                expect(history.location.pathname).toEqual(
+                    '/app/ai-agent/overview',
+                )
+            })
+        })
+
+        it('should preserve AI Agent flow and NOT start Shopping Assistant trial', async () => {
+            mockUseTrialAccess.mockReturnValue({
+                trialType: TrialType.AiAgent, // AI Agent type
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                canSeeTrialCTA: false,
+                isLoading: false,
+            })
+
+            const { history } = renderWithProvider()
+            jest.runAllTimers()
+
+            const nextButton = screen.getByText('Next')
+
+            act(() => {
+                userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(mockStartSalesTrialMutateAsync).not.toHaveBeenCalled()
+                expect(
+                    mockRemoveShoppingAssistantTrialOptin,
+                ).not.toHaveBeenCalled()
+                expect(history.location.pathname).toEqual(
+                    '/app/ai-agent/overview',
+                )
+            })
+        })
+
+        it('should configure error handling correctly in the mutation hook', async () => {
+            // Capture the onError callback that was passed to the hook
+            let capturedOnErrorCallback: (() => void) | undefined
+            mockUseStartSalesTrialMutation.mockImplementation(({ onError }) => {
+                capturedOnErrorCallback = onError
+                return {
+                    mutateAsync: mockStartSalesTrialMutateAsync,
+                    mutate: jest.fn(),
+                    data: undefined,
+                    error: null,
+                    isLoading: false,
+                    isError: false,
+                    isSuccess: false,
+                }
+            })
+
+            renderWithProvider()
+            jest.runAllTimers()
+
+            // Verify that the error callback was configured
+            expect(capturedOnErrorCallback).toBeDefined()
+
+            // Simulate calling the error callback
+            if (capturedOnErrorCallback) {
+                act(() => {
+                    capturedOnErrorCallback?.()
+                })
+            }
+
+            // Verify the error notification was dispatched
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        type: 'NOTIFY',
+                    }),
+                )
+            })
         })
     })
 })

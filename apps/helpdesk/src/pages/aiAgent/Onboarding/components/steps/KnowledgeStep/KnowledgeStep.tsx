@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { useLocalStorage } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -6,7 +7,12 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
-import { storeConfigurationKeys } from 'models/aiAgent/queries'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    storeConfigurationKeys,
+    useStartSalesTrialMutation,
+} from 'models/aiAgent/queries'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import KnowledgePreview from 'pages/aiAgent/Onboarding/components/KnowledgePreview/KnowledgePreview'
@@ -31,7 +37,10 @@ import {
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const KnowledgeStep: React.FC<StepProps> = ({
     currentStep,
@@ -40,6 +49,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     isStoreSelected,
 }) => {
     const history = useHistory()
+    const dispatch = useAppDispatch()
 
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
@@ -63,6 +73,25 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     const { knowledgeSources, helpCenters } =
         useGetKnowledgeSourceStatuses(shopName)
 
+    const trialAccess = useTrialAccess(shopName)
+    const [shoppingAssistantTrialOptin, , removeShoppingAssistantTrialOptin] =
+        useLocalStorage<boolean>(
+            `${shopName}-shopping-assistant-trial-optin`,
+            false,
+        )
+    const { mutateAsync: startShoppingAssistantTrial } =
+        useStartSalesTrialMutation({
+            onError: () => {
+                dispatch(
+                    notify({
+                        message:
+                            'Failed to start the Shopping Assistant trial. Please try again.',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            },
+        })
+
     const nextPath = !!isAiAgentExpandingTrialExperienceForAllEnabled
         ? routes.perShopOverview
         : routes.overview
@@ -80,10 +109,19 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     },
                 },
                 {
-                    onSuccess: () => {
+                    onSuccess: async () => {
                         void queryClient.invalidateQueries({
                             queryKey: storeConfigurationKeys.all(),
                         })
+
+                        if (
+                            trialAccess.trialType ===
+                                TrialType.ShoppingAssistant &&
+                            shoppingAssistantTrialOptin
+                        ) {
+                            await startShoppingAssistantTrial([shopName])
+                            removeShoppingAssistantTrialOptin()
+                        }
 
                         logEvent(
                             SegmentEvent.AiAgentNewOnboardingWizardFinished,
