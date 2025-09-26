@@ -78,6 +78,13 @@ jest.mock('uuid', () => {
 
 describe('utils', () => {
     describe('canAddNewStepOnEdge', () => {
+        const targetNode: VoiceFlowNode = {
+            type: VoiceFlowNodeType.PlayMessage,
+            id: '2',
+            position: { x: 0, y: 0 },
+            data: mockPlayMessageStep(),
+        }
+
         it('should return false if the edge is an IVRMenu', () => {
             const sourceNode: IvrMenuNode = {
                 type: VoiceFlowNodeType.IvrMenu,
@@ -86,7 +93,7 @@ describe('utils', () => {
                 data: mockIvrMenuStep(),
             }
 
-            expect(canAddNewStepOnEdge(sourceNode)).toBe(false)
+            expect(canAddNewStepOnEdge(sourceNode, targetNode)).toBe(false)
         })
 
         it('should return false if the edge is a voicemail', () => {
@@ -96,7 +103,7 @@ describe('utils', () => {
                 position: { x: 0, y: 0 },
             } as SendToVoicemailNode
 
-            expect(canAddNewStepOnEdge(edge)).toBe(false)
+            expect(canAddNewStepOnEdge(edge, targetNode)).toBe(false)
         })
 
         it('should return false if the edge is a forward to', () => {
@@ -106,7 +113,7 @@ describe('utils', () => {
                 position: { x: 0, y: 0 },
             } as ForwardToExternalNode
 
-            expect(canAddNewStepOnEdge(edge)).toBe(false)
+            expect(canAddNewStepOnEdge(edge, targetNode)).toBe(false)
         })
 
         it('should return true if the edge is not an IVRMenu', () => {
@@ -117,7 +124,36 @@ describe('utils', () => {
                 data: {},
             }
 
-            expect(canAddNewStepOnEdge(sourceNode)).toBe(true)
+            expect(canAddNewStepOnEdge(sourceNode, targetNode)).toBe(true)
+        })
+
+        it('should return false if the source is an Enqueue and the target is an EnqueueOption', () => {
+            const sourceNode: EnqueueNode = {
+                type: VoiceFlowNodeType.Enqueue,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockEnqueueStep(),
+            }
+
+            const targetNode: EnqueueOptionNode = {
+                type: VoiceFlowNodeType.EnqueueOption,
+                id: '2',
+                position: { x: 0, y: 0 },
+                data: {} as any,
+            }
+
+            expect(canAddNewStepOnEdge(sourceNode, targetNode)).toBe(false)
+        })
+
+        it('should return true if the source is an Enqueue and the target is not an EnqueueOption', () => {
+            const sourceNode: EnqueueNode = {
+                type: VoiceFlowNodeType.Enqueue,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockEnqueueStep(),
+            }
+
+            expect(canAddNewStepOnEdge(sourceNode, targetNode)).toBe(true)
         })
     })
 

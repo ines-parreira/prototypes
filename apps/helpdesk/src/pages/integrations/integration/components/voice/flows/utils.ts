@@ -39,7 +39,10 @@ import {
     VoiceFlowNodeData,
 } from './types'
 
-export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
+export function canAddNewStepOnEdge(
+    source: VoiceFlowNode,
+    target: VoiceFlowNode,
+): boolean {
     switch (source.type) {
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.SendToVoicemail:
@@ -48,6 +51,8 @@ export function canAddNewStepOnEdge(source: VoiceFlowNode): boolean {
         case VoiceFlowNodeType.Intermediary:
         case VoiceFlowNodeType.ForwardToExternalNumber:
             return false
+        case VoiceFlowNodeType.Enqueue:
+            return target.type !== VoiceFlowNodeType.EnqueueOption
         default:
             return true
     }
