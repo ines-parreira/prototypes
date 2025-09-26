@@ -10,5 +10,5 @@ export const STEPS_NAMES = {
 }
 
 export const JOURNEY_COMPLETE_REASON = {
-    OPTED_OUT: 'Eligibility::Opted Out',
+    OPTED_OUT: 'Eligibility::Shopper Opted Out',
 }

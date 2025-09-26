@@ -12,6 +12,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
+import { useAIJourneyOptOutRate } from '../useAIJourneyOptOutRate/useAIJourneyOptOutRate'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
 import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
 import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
@@ -90,6 +91,13 @@ export const useAIJourneyKpis = ({
         shopName,
     )
 
+    const optOutRate = useAIJourneyOptOutRate(
+        integrationId,
+        userTimezone,
+        filters,
+        shopName,
+    )
+
     return {
         metrics: [
             gmvInfluenced,
@@ -97,6 +105,7 @@ export const useAIJourneyKpis = ({
             conversionRate,
             clickThroughRate,
             responseRate,
+            optOutRate,
         ],
     }
 }
