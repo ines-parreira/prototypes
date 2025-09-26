@@ -127,7 +127,7 @@ const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
         icon: 'check',
         title: 'Today',
         description:
-            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
+            'Your 14-day trial starts after onboarding. All features are unlocked, so you can start seeing impact today.',
     },
     {
         icon: 'notifications_none',
