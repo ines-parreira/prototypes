@@ -28,6 +28,10 @@ const mockUseAppDispatch = require('hooks/useAppDispatch').default as jest.Mock
 jest.mock('state/newMessage/actions')
 const mockSetTranslationState = setTranslationState as unknown as jest.Mock
 
+jest.mock('state/newMessage/ticketReplyCache')
+const mockTicketReplyCache =
+    require('state/newMessage/ticketReplyCache').default
+
 describe('OutboundTranslationProvider', () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
         <OutboundTranslationProvider ticketId="123">
@@ -200,6 +204,53 @@ describe('OutboundTranslationProvider', () => {
             onEventListener?.(event)
         })
         expect(result.current.isTranslationPending).toBe(false)
+    })
+
+    it('updates cache when translation completes for a different ticket', () => {
+        let onEventListener: ((event: DomainEvent) => void) | undefined
+        mockUseChannel.mockImplementation(({ onEvent }) => {
+            onEventListener = onEvent
+        })
+
+        const mockCachedContent = new Map([
+            ['contentState', { blocks: [{ text: 'Original text' }] }],
+        ])
+        mockTicketReplyCache.get = jest.fn().mockReturnValue(mockCachedContent)
+        mockTicketReplyCache.set = jest.fn()
+
+        const { result } = renderHook(() => useOutboundTranslationContext(), {
+            wrapper,
+        })
+
+        act(() => {
+            result.current.registerTranslationDraft('456', 'draft789')
+        })
+
+        const event = {
+            dataschema:
+                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+            data: {
+                id: 'draft789',
+                stripped_html: '<p>Translated content</p>',
+                stripped_text: 'Translated content',
+            },
+        } as DomainEvent
+
+        act(() => {
+            onEventListener?.(event)
+        })
+
+        expect(mockTicketReplyCache.get).toHaveBeenCalledWith('456')
+        expect(mockTicketReplyCache.set).toHaveBeenCalledWith('456', {
+            contentState: expect.objectContaining({
+                blocks: expect.arrayContaining([
+                    expect.objectContaining({
+                        text: 'Translated content',
+                    }),
+                ]),
+            }),
+            originalContentState: { blocks: [{ text: 'Original text' }] },
+        })
     })
 
     it('throws error when useOutboundTranslationContext is used outside provider', () => {

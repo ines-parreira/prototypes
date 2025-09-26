@@ -22,6 +22,7 @@ export type RawCachedTicket = {
     emailExtraAdded: boolean
     topRankMacroState?: TopRankMacroState | null
     inserted_discounts?: DiscountCode[] | null
+    originalContentState?: RawDraftContentState | null
 }
 
 const defaultRawCachedTicket: RawCachedTicket = {
@@ -32,6 +33,7 @@ const defaultRawCachedTicket: RawCachedTicket = {
     emailExtraAdded: false,
     topRankMacroState: null,
     inserted_discounts: null,
+    originalContentState: null,
 }
 
 const defaultCachedTicket: Map<any, any> = fromJS(defaultRawCachedTicket)

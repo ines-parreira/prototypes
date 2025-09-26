@@ -7,7 +7,7 @@ import {
     useState,
 } from 'react'
 
-import { ContentState, EditorState } from 'draft-js'
+import { ContentState, convertToRaw, EditorState } from 'draft-js'
 
 import { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
@@ -17,11 +17,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
+import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import { ExtractEvent } from 'tickets/core/hooks/translations/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 export type OutboundTranslationData = {
-    originalContent: ContentState
     translatedContent: ContentState
     ticketId?: string | number
 }
@@ -67,6 +67,8 @@ export const OutboundTranslationProvider = ({
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
     const dispatch = useAppDispatch()
+    //const { ticketId } = useParams<{ ticketId: string }>()
+
     const getEditorStateRef = useRef<(() => EditorState) | undefined>()
     const setEditorStateRef = useRef<
         ((editorState: EditorState) => void) | undefined
@@ -120,10 +122,22 @@ export const OutboundTranslationProvider = ({
                 stripped_html || undefined,
             )
 
-            if (
-                ticketId &&
-                ticketIdToDraftIdMap.get(String(ticketId)) === draft_id
-            ) {
+            let translationTicketId: string | undefined
+            for (const [
+                translationid,
+                draftId,
+            ] of ticketIdToDraftIdMap.entries()) {
+                if (draftId === draft_id) {
+                    translationTicketId = translationid
+                    break
+                }
+            }
+
+            if (!translationTicketId) {
+                return
+            }
+
+            if (ticketId && String(ticketId) === translationTicketId) {
                 dispatch(
                     setTranslationState({
                         translatedContentState: translatedContentState,
@@ -139,13 +153,24 @@ export const OutboundTranslationProvider = ({
                     )
                     setEditorStateRef.current?.(newEditorState)
                 }
+            } else {
+                const cachedTicket = ticketReplyCache.get(translationTicketId)
 
-                setTicketIdToDraftIdMap((prev) => {
-                    const newMap = new Map(prev)
-                    newMap.delete(String(ticketId))
-                    return newMap
-                })
+                const originalContentState = cachedTicket.get('contentState')
+
+                if (originalContentState) {
+                    ticketReplyCache.set(translationTicketId, {
+                        contentState: convertToRaw(translatedContentState),
+                        originalContentState: originalContentState,
+                    })
+                }
             }
+
+            setTicketIdToDraftIdMap((prev) => {
+                const newMap = new Map(prev)
+                newMap.delete(translationTicketId as string)
+                return newMap
+            })
         },
         [ticketId, ticketIdToDraftIdMap, dispatch],
     )
@@ -174,13 +199,16 @@ export const OutboundTranslationProvider = ({
 
     const handleChannelEvent = useCallback(
         (event: DomainEvent) => {
-            switch (event.dataschema) {
-                case '//helpdesk/draft-ticket-message-translation.completed/1.0.0':
-                    handleTranslationCompletedEvent(event)
-                    break
-                case '//helpdesk/draft-ticket-message-translation.failed/1.0.0':
-                    handleTranslationFailedEvent(event)
-                    break
+            if (
+                event.dataschema ===
+                '//helpdesk/draft-ticket-message-translation.completed/1.0.0'
+            ) {
+                handleTranslationCompletedEvent(event)
+            } else if (
+                event.dataschema ===
+                '//helpdesk/draft-ticket-message-translation.failed/1.0.0'
+            ) {
+                handleTranslationFailedEvent(event)
             }
         },
         [handleTranslationCompletedEvent, handleTranslationFailedEvent],

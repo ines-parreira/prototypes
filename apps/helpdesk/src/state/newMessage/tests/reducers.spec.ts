@@ -143,33 +143,6 @@ describe('new message reducer', () => {
             )
         })
 
-        it('prevents editing when translation is active (SET_RESPONSE_TEXT)', () => {
-            const originalContent = ContentState.createFromText('Original text')
-            const translatedContent =
-                ContentState.createFromText('Translated text')
-            const newContent = ContentState.createFromText('New text')
-
-            const stateWithTranslation = initialState
-                .setIn(['state', 'contentState'], translatedContent)
-                .setIn(['state', 'originalContentState'], originalContent)
-
-            const action = {
-                type: types.SET_RESPONSE_TEXT,
-                args: fromJS({
-                    contentState: newContent,
-                }),
-            }
-
-            const newState = reducer(stateWithTranslation, action)
-
-            expect(newState.getIn(['state', 'contentState'])).toEqual(
-                translatedContent,
-            )
-            expect(newState.getIn(['state', 'originalContentState'])).toEqual(
-                originalContent,
-            )
-        })
-
         it('clears translation state when message is submitted', () => {
             const originalContent = ContentState.createFromText('Original text')
             const translatedContent =
@@ -826,6 +799,38 @@ describe('new message reducer', () => {
                 ),
             ).toMatchSnapshot()
         })
+
+        it('should restore originalContentState from context cache', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            addCacheSpy.mockImplementation(
+                (context: responseUtils.MessageContext) => {
+                    return {
+                        ...context,
+                        contentState: translatedContent,
+                        originalContentState: originalContent,
+                    }
+                },
+            )
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: translatedContent,
+                }),
+            }
+
+            const result = reducer(initialState, action)
+
+            expect(result.getIn(['state', 'contentState'])).toEqual(
+                translatedContent,
+            )
+            expect(result.getIn(['state', 'originalContentState'])).toEqual(
+                originalContent,
+            )
+        })
     })
 
     describe('NEW_MESSAGE_SET_RECEIVERS action', () => {
@@ -1176,6 +1181,33 @@ describe('new message reducer', () => {
                     >
                 ).toJS(),
             ).toMatchSnapshot()
+        })
+
+        it('should restore originalContentState', () => {
+            const contentState = ContentState.createFromText('Translated text')
+            const originalContentState =
+                ContentState.createFromText('Original text')
+            const selectionState = SelectionState.createEmpty(
+                contentState.getFirstBlock().getKey(),
+            )
+
+            const action = restoreNewMessageBodyText({
+                contentState,
+                originalContentState,
+                emailExtraAdded: false,
+                selectionState,
+                forceFocus: false,
+                forceUpdate: false,
+            } as responseUtils.MessageContext)
+
+            const result = reducer(initialState, action)
+
+            expect(result.getIn(['state', 'contentState'])).toEqual(
+                contentState,
+            )
+            expect(result.getIn(['state', 'originalContentState'])).toEqual(
+                originalContentState,
+            )
         })
     })
 

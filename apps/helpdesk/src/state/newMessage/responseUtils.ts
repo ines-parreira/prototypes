@@ -45,6 +45,7 @@ export type MessageContext = {
     selectionState?: SelectionState
     sourceType?: string
     inserted_discounts?: DiscountCode[] | null
+    originalContentState?: ContentState
 }
 
 export const getSourceTypeCache = (
@@ -148,6 +149,15 @@ export const transformMessageContext = (
             'inserted_discounts',
             fromJS([]),
         )
+
+        const cachedOriginalContentState = cachedContent.get(
+            'originalContentState',
+        )
+        if (cachedOriginalContentState) {
+            contextResult.originalContentState = convertFromRaw(
+                cachedOriginalContentState.toJS(),
+            )
+        }
     }
 
     return contextResult
@@ -165,6 +175,7 @@ export const updateCache = (context: MessageContext) => {
         sourceType,
         emailExtraAdded,
         topRankMacroState,
+        originalContentState,
     } = context
     // We're storing the content state in a persistent storage so we can keep it after page refresh
     if (
@@ -177,12 +188,17 @@ export const updateCache = (context: MessageContext) => {
         appliedMacro
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
-        ticketReplyCache.set(action.ticketId, {
+        const cacheData = {
             selectionState,
             sourceType,
             emailExtraAdded,
             contentState: convertToRawWithoutPredictions(contentState),
-        })
+            ...(originalContentState && {
+                originalContentState:
+                    convertToRawWithoutPredictions(originalContentState),
+            }),
+        }
+        ticketReplyCache.set(action.ticketId, cacheData)
     } else if (topRankMacroState) {
         ticketReplyCache.delete(action.ticketId)
         ticketReplyCache.set(action.ticketId, {

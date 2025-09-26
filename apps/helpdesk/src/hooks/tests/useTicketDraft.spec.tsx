@@ -2,6 +2,7 @@ import React, { ComponentType } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
+import { ContentState, convertToRaw } from 'draft-js'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -124,6 +125,51 @@ describe('useTicketDraft hook', () => {
 
         await waitFor(() => {
             expect(mockSetItem).toHaveBeenCalledTimes(2)
+        })
+    })
+
+    it('should persist originalContentState when saving draft with translation', async () => {
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+            mockGetTableObject,
+        )
+
+        const originalContent = ContentState.createFromText('Original text')
+        const translatedContent = ContentState.createFromText('Translated text')
+
+        const stateWithTranslation = {
+            ...defaultState,
+            newMessage: fromJS({
+                state: {
+                    contentState: translatedContent,
+                    originalContentState: originalContent,
+                },
+                newMessage: {
+                    attachments: [],
+                    body_html: '<p>Translated text</p>',
+                    body_text: 'Translated text',
+                    source: {},
+                },
+            }),
+        } as RootState
+
+        renderHook(() => useTicketDraft(true), {
+            wrapper: (({ children }: { children: React.ReactNode }) => (
+                <Provider store={mockStore(stateWithTranslation)}>
+                    {children}
+                </Provider>
+            )) as unknown as ComponentType,
+        })
+
+        await waitFor(() => {
+            expect(mockSetItem).toHaveBeenCalledWith(
+                'new',
+                expect.objectContaining({
+                    ticket: expect.objectContaining({
+                        contentState: convertToRaw(translatedContent),
+                        originalContentState: convertToRaw(originalContent),
+                    }),
+                }),
+            )
         })
     })
 })

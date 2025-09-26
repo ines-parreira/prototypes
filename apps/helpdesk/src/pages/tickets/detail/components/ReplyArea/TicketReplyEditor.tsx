@@ -283,8 +283,12 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
     }
 
     getButtons = () => {
-        const { attachments, newMessage, newMessageType, hasTranslation } =
-            this.props
+        const {
+            attachments,
+            newMessage,
+            newMessageType,
+            isTranslationPending,
+        } = this.props
         let attachmentsMask: string
 
         if (
@@ -339,7 +343,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     id="attachments-input"
                     type="file"
                     multiple
-                    disabled={hasTranslation}
+                    disabled={isTranslationPending}
                     onChange={(event) => {
                         event.target.files &&
                             this.handleFiles(
@@ -377,7 +381,6 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             shouldDisplayQuickReply,
             replyAreaHeader,
             handleTypingActivity,
-            hasTranslation,
             isTranslationPending,
         } = this.props
 
@@ -457,8 +460,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         return (
             <div
                 className={classnames(css.component, {
-                    [css.isReadOnly]:
-                        hasTranslation || this.props.isTranslationPending,
+                    [css.isReadOnly]: this.props.isTranslationPending,
                 })}
             >
                 <TicketRichField
@@ -491,9 +493,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                             '_internal',
                             'loading',
                             'submitMessage',
-                        ]) ||
-                        hasTranslation ||
-                        isTranslationPending
+                        ]) || isTranslationPending
                     }
                     {...mentionProps}
                     placeholder="Click here to reply, or press r."
@@ -513,7 +513,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     canDropFiles
                     emailExtraEnabled
                     spellCheck
-                    isToolbarDisabled={hasTranslation || isTranslationPending}
+                    isToolbarDisabled={isTranslationPending}
                     {...predictionProps}
                 />
             </div>

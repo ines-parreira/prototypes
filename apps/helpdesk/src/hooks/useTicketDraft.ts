@@ -30,6 +30,7 @@ import {
     getNewMessageSource,
     getNewMessageState,
     getNewMessageType,
+    getOriginalContentState,
     isNewMessageEmailExtraAdded,
 } from 'state/newMessage/selectors'
 import { Message } from 'state/newMessage/types'
@@ -58,6 +59,7 @@ export type TicketDraft = {
     tags: Ticket['tags']
     ticket: {
         contentState: RawDraftContentState
+        originalContentState?: RawDraftContentState
     } | null
     temporaryId: string
 }
@@ -132,6 +134,7 @@ export default function useTicketDraft(isTicketNew = false) {
         isNewMessageEmailExtraAdded,
     )
     const newMessageContentState = useAppSelector(getNewMessageContentState)
+    const originalContentState = useAppSelector(getOriginalContentState)
     const newMessageSelectionState = useMemo(
         () =>
             newMessageState.getIn([
@@ -176,6 +179,10 @@ export default function useTicketDraft(isTicketNew = false) {
                 inserted_discounts: newMessageDiscountCodes.toJS(),
                 selectionState: newMessageSelectionState?.toJS(),
                 sourceType,
+                ...(originalContentState && {
+                    originalContentState:
+                        convertToRawWithoutPredictions(originalContentState),
+                }),
             }
         }
         return null
@@ -186,6 +193,7 @@ export default function useTicketDraft(isTicketNew = false) {
         newMessageIsEmailExtraAdded,
         newMessageSelectionState,
         newMessageSignature,
+        originalContentState,
         sourceType,
     ])
 

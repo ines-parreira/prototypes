@@ -428,6 +428,28 @@ describe('responseUtils', () => {
                 topRankMacroState,
             })
         })
+
+        it('should persist originalContentState when present', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const context: MessageContext = {
+                ...updateCacheContext,
+                originalContentState: originalContent,
+            }
+            const {
+                contentState,
+                selectionState,
+                sourceType,
+                action: { ticketId },
+            } = context
+            updateCache(context)
+            expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
+                contentState: convertToRawWithoutPredictions(contentState),
+                selectionState,
+                sourceType,
+                originalContentState:
+                    convertToRawWithoutPredictions(originalContent),
+            })
+        })
     })
 
     describe('toReplyAreaStateJS', () => {
@@ -598,6 +620,29 @@ describe('responseUtils', () => {
             }
             transformMessageContext(fromJS(rawCachedTicket), mutatedContext)
             expect(getMessageContextSnapshot(mutatedContext)).toMatchSnapshot()
+        })
+
+        it('should restore originalContentState from cache', () => {
+            const originalContent = ContentState.createFromText('Original text')
+            const translatedContent =
+                ContentState.createFromText('Translated text')
+
+            const cachedTicketWithTranslation: RawCachedTicket = {
+                ...rawCachedTicket,
+                contentState: convertToRaw(translatedContent),
+                originalContentState: convertToRaw(originalContent),
+            }
+
+            const result = transformMessageContext(
+                fromJS(cachedTicketWithTranslation),
+            )
+
+            expect(result.contentState.getPlainText()).toEqual(
+                'Translated text',
+            )
+            expect(result.originalContentState?.getPlainText()).toEqual(
+                'Original text',
+            )
         })
     })
 })

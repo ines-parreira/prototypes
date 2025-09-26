@@ -442,11 +442,6 @@ export default function reducer(
         }
 
         case types.SET_RESPONSE_TEXT: {
-            // don't allow editing if ticket translation is active (originalContentState exists)
-            if (state.getIn(['state', 'originalContentState'])) {
-                return state
-            }
-
             const prevContentState = state.getIn([
                 'state',
                 'contentState',
@@ -516,31 +511,39 @@ export default function reducer(
                 insertedDiscounts = context.inserted_discounts
             }
 
-            return (
-                context.state
-                    .update('newMessage', (newMessage: Map<any, any>) => {
-                        return fromJS(
-                            updateNewMessageWithContentState(
-                                newMessage.toJS() as NewMessage,
-                                contentState,
-                            ),
-                        ) as Map<any, any>
-                    })
-                    .mergeDeep({
-                        state: {
-                            dirty,
-                            forceFocus: !!context.forceFocus,
-                            forceUpdate: !!context.forceUpdate,
-                            cacheAdded: !!context.cacheAdded,
-                            emailExtraAdded: !!context.emailExtraAdded,
-                            inserted_discounts: insertedDiscounts,
-                        },
-                    })
-                    // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-                    .setIn(['state', 'contentState'], contentState)
-                    .setIn(['state', 'selectionState'], selectionState)
-                    .setIn(['newMessage', 'mention_ids'], ids)
-            )
+            let newState = context.state
+                .update('newMessage', (newMessage: Map<any, any>) => {
+                    return fromJS(
+                        updateNewMessageWithContentState(
+                            newMessage.toJS() as NewMessage,
+                            contentState,
+                        ),
+                    ) as Map<any, any>
+                })
+                .mergeDeep({
+                    state: {
+                        dirty,
+                        forceFocus: !!context.forceFocus,
+                        forceUpdate: !!context.forceUpdate,
+                        cacheAdded: !!context.cacheAdded,
+                        emailExtraAdded: !!context.emailExtraAdded,
+                        inserted_discounts: insertedDiscounts,
+                    },
+                })
+                // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
+                .setIn(['state', 'contentState'], contentState)
+                .setIn(['state', 'selectionState'], selectionState)
+                .setIn(['newMessage', 'mention_ids'], ids)
+
+            // Restore originalContentState from cache if it exists
+            if (context.originalContentState) {
+                newState = newState.setIn(
+                    ['state', 'originalContentState'],
+                    context.originalContentState,
+                )
+            }
+
+            return newState
         }
 
         case types.NEW_MESSAGE_ADD_EMAIL_EXTRA: {
@@ -729,6 +732,7 @@ export default function reducer(
                 selectionState,
                 forceFocus,
                 forceUpdate,
+                originalContentState,
             } = context
 
             const ids = getMentionIds(
@@ -741,32 +745,39 @@ export default function reducer(
                 dirty = true
             }
 
-            return (
-                state
-                    .update(
-                        'newMessage',
-                        (newMessage: Map<any, any>) =>
-                            fromJS(
-                                updateNewMessageWithContentState(
-                                    newMessage.toJS() as NewMessage,
-                                    contentState,
-                                ),
-                            ) as Map<any, any>,
-                    )
-                    .mergeDeep({
-                        state: {
-                            dirty,
-                            emailExtraAdded,
-                            inserted_discounts,
-                            forceFocus,
-                            forceUpdate,
-                        },
-                    })
-                    // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-                    .setIn(['state', 'contentState'], contentState)
-                    .setIn(['state', 'selectionState'], selectionState)
-                    .setIn(['newMessage', 'mention_ids'], ids)
-            )
+            let newState = state
+                .update(
+                    'newMessage',
+                    (newMessage: Map<any, any>) =>
+                        fromJS(
+                            updateNewMessageWithContentState(
+                                newMessage.toJS() as NewMessage,
+                                contentState,
+                            ),
+                        ) as Map<any, any>,
+                )
+                .mergeDeep({
+                    state: {
+                        dirty,
+                        emailExtraAdded,
+                        inserted_discounts,
+                        forceFocus,
+                        forceUpdate,
+                    },
+                })
+                // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
+                .setIn(['state', 'contentState'], contentState)
+                .setIn(['state', 'selectionState'], selectionState)
+                .setIn(['newMessage', 'mention_ids'], ids)
+
+            if (originalContentState) {
+                newState = newState.setIn(
+                    ['state', 'originalContentState'],
+                    originalContentState,
+                )
+            }
+
+            return newState
         }
 
         case types.SET_NEW_MESSAGE_ACTIONS: {
@@ -807,6 +818,7 @@ export default function reducer(
                 state = state
                     .setIn(['state', 'contentState'], originalContent)
                     .deleteIn(['state', 'originalContentState'])
+                    .setIn(['state', 'forceUpdate'], true)
                     .update('newMessage', (newMessage: Map<any, any>) => {
                         return fromJS(
                             updateNewMessageWithContentState(
