@@ -14,21 +14,28 @@ export const useTrialDescription = (
     trialMetrics: TrialMetrics,
     isTrialProgress: boolean,
     trialType: TrialType,
+    isExpandingTrialExperienceMilestone2Enabled: boolean,
+    isOnboarded?: boolean,
 ): {
     description: string
     shouldShowDescriptionIcon: boolean
 } => {
     const { gmvInfluenced, gmvInfluencedRate, automationRate, isLoading } =
         trialMetrics
-
     return useMemo(() => {
-        // AI Agent trial type logic
-        if (trialType === TrialType.AiAgent) {
+        // AI Agent trial type logic and USD-5 Shopping Assistant where AI agent is not onboarded
+        const isShoppingAssistantNonOnboarded =
+            isExpandingTrialExperienceMilestone2Enabled &&
+            isOnboarded === false &&
+            trialType === TrialType.ShoppingAssistant
+        if (
+            trialType === TrialType.AiAgent ||
+            isShoppingAssistantNonOnboarded
+        ) {
             if (!isTrialProgress) {
-                let description =
-                    'Enhance every step of the shopping journey, from pre to post-sales.'
                 return {
-                    description,
+                    description:
+                        'Enhance every step of the shopping journey, from pre to post-sales.',
                     shouldShowDescriptionIcon: false,
                 }
             }
@@ -83,5 +90,7 @@ export const useTrialDescription = (
         isTrialProgress,
         trialType,
         automationRate,
+        isOnboarded,
+        isExpandingTrialExperienceMilestone2Enabled,
     ])
 }

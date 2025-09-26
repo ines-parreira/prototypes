@@ -13,18 +13,29 @@ describe('useTrialDescription', () => {
         ...overrides,
     })
 
-    it('shows GMV influenced when in trial and opted out', () => {
-        const canNotifyAdmin = false
-        const isTrialProgress = true
+    const createMockData = (overrides = {}) => ({
+        canNotifyAdmin: false,
+        isTrialProgress: false,
+        trialType: TrialType.ShoppingAssistant,
+        isExpandingTrialExperienceMilestone2Enabled: false,
+        isOnboarded: true,
+        ...overrides,
+    })
 
+    it('shows GMV influenced when in trial and opted out', () => {
+        const mockData = createMockData({
+            isTrialProgress: true,
+        })
         const trialMetrics = createTrialMetrics()
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -33,9 +44,9 @@ describe('useTrialDescription', () => {
     })
 
     it('shows GMV influenced when in trial and GMV rate above threshold', () => {
-        const canNotifyAdmin = false
-        const isTrialProgress = true
-
+        const mockData = createMockData({
+            isTrialProgress: true,
+        })
         const trialMetrics = createTrialMetrics({
             gmvInfluenced: '$500',
             gmvInfluencedRate: 0.06,
@@ -43,10 +54,12 @@ describe('useTrialDescription', () => {
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -55,9 +68,9 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description when in trial but GMV rate below threshold and not opted out', () => {
-        const canNotifyAdmin = false
-        const isTrialProgress = true
-
+        const mockData = createMockData({
+            isTrialProgress: true,
+        })
         const trialMetrics = createTrialMetrics({
             gmvInfluenced: '$100',
             gmvInfluencedRate: 0.003,
@@ -65,10 +78,12 @@ describe('useTrialDescription', () => {
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -77,19 +92,21 @@ describe('useTrialDescription', () => {
     })
 
     it('shows empty description and no icon when metrics are loading', () => {
-        const canNotifyAdmin = false
-        const isTrialProgress = true
-
+        const mockData = createMockData({
+            isTrialProgress: true,
+        })
         const trialMetrics = createTrialMetrics({
-            isLoading: true, // Loading state
+            isLoading: true,
         })
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -98,9 +115,7 @@ describe('useTrialDescription', () => {
     })
 
     it('shows default description when not in trial', () => {
-        const canNotifyAdmin = false
-        const isTrialProgress = false
-
+        const mockData = createMockData()
         const trialMetrics = createTrialMetrics({
             gmvInfluenced: '$0',
             gmvInfluencedRate: 0,
@@ -108,10 +123,12 @@ describe('useTrialDescription', () => {
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -122,9 +139,9 @@ describe('useTrialDescription', () => {
     })
 
     it('shows trial duration description when user can notify admin', () => {
-        const canNotifyAdmin = true
-        const isTrialProgress = false
-
+        const mockData = createMockData({
+            canNotifyAdmin: true,
+        })
         const trialMetrics = createTrialMetrics({
             gmvInfluenced: '$0',
             gmvInfluencedRate: 0,
@@ -132,10 +149,12 @@ describe('useTrialDescription', () => {
 
         const { result } = renderHook(() =>
             useTrialDescription(
-                canNotifyAdmin,
+                mockData.canNotifyAdmin,
                 trialMetrics,
-                isTrialProgress,
-                TrialType.ShoppingAssistant,
+                mockData.isTrialProgress,
+                mockData.trialType,
+                mockData.isExpandingTrialExperienceMilestone2Enabled,
+                mockData.isOnboarded,
             ),
         )
 
@@ -147,9 +166,9 @@ describe('useTrialDescription', () => {
 
     describe('AI Agent trial type', () => {
         it('shows default AI Agent description when not in trial', () => {
-            const canNotifyAdmin = false
-            const isTrialProgress = false
-
+            const mockData = createMockData({
+                trialType: TrialType.AiAgent,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
@@ -157,10 +176,12 @@ describe('useTrialDescription', () => {
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
@@ -171,9 +192,10 @@ describe('useTrialDescription', () => {
         })
 
         it('shows AI Agent description when user can notify admin and not in trial', () => {
-            const canNotifyAdmin = true
-            const isTrialProgress = false
-
+            const mockData = createMockData({
+                canNotifyAdmin: true,
+                trialType: TrialType.AiAgent,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
@@ -181,10 +203,12 @@ describe('useTrialDescription', () => {
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
@@ -195,14 +219,15 @@ describe('useTrialDescription', () => {
         })
 
         it('shows automation rate when in trial and above threshold', () => {
-            const canNotifyAdmin = false
-            const isTrialProgress = true
-
+            const mockData = createMockData({
+                trialType: TrialType.AiAgent,
+                isTrialProgress: true,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
                 automationRate: {
-                    value: 0.075, // 7.5%
+                    value: 0.075,
                     prevValue: 0.065,
                     isLoading: false,
                 },
@@ -210,10 +235,12 @@ describe('useTrialDescription', () => {
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
@@ -222,14 +249,15 @@ describe('useTrialDescription', () => {
         })
 
         it('shows empty description when in trial but automation rate below threshold', () => {
-            const canNotifyAdmin = false
-            const isTrialProgress = true
-
+            const mockData = createMockData({
+                trialType: TrialType.AiAgent,
+                isTrialProgress: true,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
                 automationRate: {
-                    value: 0.003, // 0.3% (below 0.5% threshold)
+                    value: 0.003,
                     prevValue: 0.002,
                     isLoading: false,
                 },
@@ -237,10 +265,12 @@ describe('useTrialDescription', () => {
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
@@ -249,25 +279,28 @@ describe('useTrialDescription', () => {
         })
 
         it('shows empty description and no icon when automation rate is loading', () => {
-            const canNotifyAdmin = false
-            const isTrialProgress = true
-
+            const mockData = createMockData({
+                trialType: TrialType.AiAgent,
+                isTrialProgress: true,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
                 automationRate: {
-                    value: 0.075, // 7.5%
+                    value: 0.075,
                     prevValue: 0.065,
-                    isLoading: true, // Loading state
+                    isLoading: true,
                 },
             })
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
@@ -276,9 +309,10 @@ describe('useTrialDescription', () => {
         })
 
         it('shows empty description when no automation rate data provided', () => {
-            const canNotifyAdmin = false
-            const isTrialProgress = true
-
+            const mockData = createMockData({
+                trialType: TrialType.AiAgent,
+                isTrialProgress: true,
+            })
             const trialMetrics = createTrialMetrics({
                 gmvInfluenced: '$0',
                 gmvInfluencedRate: 0,
@@ -287,14 +321,129 @@ describe('useTrialDescription', () => {
 
             const { result } = renderHook(() =>
                 useTrialDescription(
-                    canNotifyAdmin,
+                    mockData.canNotifyAdmin,
                     trialMetrics,
-                    isTrialProgress,
-                    TrialType.AiAgent,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
                 ),
             )
 
             expect(result.current.description).toBe('')
+            expect(result.current.shouldShowDescriptionIcon).toBe(false)
+        })
+    })
+
+    describe('Shopping Assistant with non-onboarded AI Agent', () => {
+        it('shows AI Agent description when feature flag enabled and AI agent not onboarded', () => {
+            const mockData = createMockData({
+                isExpandingTrialExperienceMilestone2Enabled: true,
+                isOnboarded: false,
+                trialType: TrialType.ShoppingAssistant,
+            })
+            const trialMetrics = createTrialMetrics({
+                gmvInfluenced: '$0',
+                gmvInfluencedRate: 0,
+            })
+
+            const { result } = renderHook(() =>
+                useTrialDescription(
+                    mockData.canNotifyAdmin,
+                    trialMetrics,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
+                ),
+            )
+
+            expect(result.current.description).toBe(
+                'Enhance every step of the shopping journey, from pre to post-sales.',
+            )
+            expect(result.current.shouldShowDescriptionIcon).toBe(false)
+        })
+        it('shows regular Shopping Assistant description when feature flag disabled even if AI agent not onboarded', () => {
+            const mockData = createMockData({
+                isExpandingTrialExperienceMilestone2Enabled: false,
+                isOnboarded: false,
+                trialType: TrialType.ShoppingAssistant,
+            })
+            const trialMetrics = createTrialMetrics({
+                gmvInfluenced: '$0',
+                gmvInfluencedRate: 0,
+            })
+
+            const { result } = renderHook(() =>
+                useTrialDescription(
+                    mockData.canNotifyAdmin,
+                    trialMetrics,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
+                ),
+            )
+
+            expect(result.current.description).toBe(
+                'Go beyond automation and grow revenue by 1.5%.',
+            )
+            expect(result.current.shouldShowDescriptionIcon).toBe(false)
+        })
+
+        it('shows regular Shopping Assistant description when feature flag enabled but AI agent is onboarded', () => {
+            const mockData = createMockData({
+                isExpandingTrialExperienceMilestone2Enabled: true,
+                isOnboarded: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+            const trialMetrics = createTrialMetrics({
+                gmvInfluenced: '$0',
+                gmvInfluencedRate: 0,
+            })
+
+            const { result } = renderHook(() =>
+                useTrialDescription(
+                    mockData.canNotifyAdmin,
+                    trialMetrics,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
+                ),
+            )
+
+            expect(result.current.description).toBe(
+                'Go beyond automation and grow revenue by 1.5%.',
+            )
+            expect(result.current.shouldShowDescriptionIcon).toBe(false)
+        })
+
+        it('shows regular Shopping Assistant description when isOnboarded is undefined', () => {
+            const mockData = createMockData({
+                isExpandingTrialExperienceMilestone2Enabled: true,
+                isOnboarded: undefined,
+                trialType: TrialType.ShoppingAssistant,
+            })
+            const trialMetrics = createTrialMetrics({
+                gmvInfluenced: '$0',
+                gmvInfluencedRate: 0,
+            })
+
+            const { result } = renderHook(() =>
+                useTrialDescription(
+                    mockData.canNotifyAdmin,
+                    trialMetrics,
+                    mockData.isTrialProgress,
+                    mockData.trialType,
+                    mockData.isExpandingTrialExperienceMilestone2Enabled,
+                    mockData.isOnboarded,
+                ),
+            )
+
+            expect(result.current.description).toBe(
+                'Go beyond automation and grow revenue by 1.5%.',
+            )
             expect(result.current.shouldShowDescriptionIcon).toBe(false)
         })
     })

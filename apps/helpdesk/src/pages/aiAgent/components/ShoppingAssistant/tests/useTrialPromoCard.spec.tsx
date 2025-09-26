@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
@@ -89,6 +90,30 @@ describe('useTrialPromoCard', () => {
         )
     }
 
+    const mockFeatureFlags = (
+        shoppingAssistantTrialImprovement: boolean = true,
+        aiAgentExpandingTrialExperienceMilestone2: boolean = false,
+        aiAgentExpandingTrialExperienceForAll: boolean = true,
+    ) => {
+        mockUseFlag.mockImplementation((flagKey: string) => {
+            if (flagKey === FeatureFlagKey.ShoppingAssistantTrialImprovement) {
+                return shoppingAssistantTrialImprovement
+            }
+            if (
+                flagKey ===
+                FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2
+            ) {
+                return aiAgentExpandingTrialExperienceMilestone2
+            }
+            if (
+                flagKey === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll
+            ) {
+                return aiAgentExpandingTrialExperienceForAll
+            }
+            return false
+        })
+    }
+
     const mockAccount = fromJS({
         id: 123,
         domain: 'test-account',
@@ -115,7 +140,7 @@ describe('useTrialPromoCard', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(true)
+        mockFeatureFlags(true, false, true)
         const mockDispatch = jest.fn()
 
         jest.spyOn(require('hooks/useAppDispatch'), 'default').mockReturnValue(
@@ -161,7 +186,6 @@ describe('useTrialPromoCard', () => {
             isSubscriptionUpdating: false,
         } as any)
         mockUseShoppingAssistantTrialFlow.mockReturnValue(mockTrialFlow)
-        mockUseTrialAccess.mockReturnValue(baseTrialAccess)
         mockUseTrialEnding.mockReturnValue(
             getUseTrialEndingFixture({
                 remainingDays: 7,
@@ -234,8 +258,8 @@ describe('useTrialPromoCard', () => {
     })
 
     describe('Feature flag disabled', () => {
-        it('should return null when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
+        it('should return null when main feature flag is disabled', () => {
+            mockFeatureFlags(false, false)
 
             const { result } = renderHook(
                 () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
@@ -272,6 +296,7 @@ describe('useTrialPromoCard', () => {
 
     describe('User Story: Admin with Starter/Basic Plan - Trial Access', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
@@ -400,6 +425,7 @@ describe('useTrialPromoCard', () => {
 
     describe('User Story: Admin with Pro+ Plan - Demo Access', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
@@ -465,6 +491,7 @@ describe('useTrialPromoCard', () => {
 
     describe('User Story: Team Lead with Starter/Basic Plan - Notify Admin', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
@@ -526,6 +553,7 @@ describe('useTrialPromoCard', () => {
 
     describe('User Story: Team Lead with Pro+ Plan - Notify admin / book a demo', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: false,
@@ -602,6 +630,10 @@ describe('useTrialPromoCard', () => {
     })
 
     describe('During trial - Trial Priority Logic', () => {
+        beforeEach(() => {
+            mockFeatureFlags(true, true, true)
+        })
+
         it('should prioritize trial progress over pre-trial access for admin', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
@@ -956,6 +988,7 @@ describe('useTrialPromoCard', () => {
 
     describe('Trial Metrics Integration', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 isAdminUser: true,
@@ -1137,6 +1170,7 @@ describe('useTrialPromoCard', () => {
 
     describe('Progress Bar Logic and Display', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             mockUseTrialAccess.mockReturnValue({
                 ...baseTrialAccess,
                 canSeeTrialCTA: true,
@@ -1379,6 +1413,7 @@ describe('useTrialPromoCard', () => {
     describe('Admin/Lead Trial Progress Button States', () => {
         describe('Admin trial progress scenarios', () => {
             beforeEach(() => {
+                mockFeatureFlags(true, false, true)
                 mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     isAdminUser: true,
@@ -1559,6 +1594,7 @@ describe('useTrialPromoCard', () => {
 
         describe('Lead trial progress scenarios', () => {
             beforeEach(() => {
+                mockFeatureFlags(true, false, true)
                 mockUseTrialAccess.mockReturnValue({
                     ...baseTrialAccess,
                     canSeeTrialCTA: false,
@@ -1788,6 +1824,7 @@ describe('useTrialPromoCard', () => {
 
     describe('AI Agent trial type promoCardContent', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, false, true)
             // Mock store activations with AI Agent trial configuration
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: {
@@ -2030,6 +2067,7 @@ describe('useTrialPromoCard', () => {
 
     describe('Shopping Assistant trial type promoCardContent', () => {
         beforeEach(() => {
+            mockFeatureFlags(true, true, true)
             // Mock store activations with Shopping Assistant trial configuration
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: {
@@ -2086,7 +2124,18 @@ describe('useTrialPromoCard', () => {
             })
         })
 
-        it('should return correct Shopping Assistant title when not in trial progress', () => {
+        it('should return correct Shopping Assistant title when not in trial progress and AI agent is onboarded', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: true,
+            })
+
             const { result } = renderHook(
                 () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
                 {
@@ -2126,6 +2175,152 @@ describe('useTrialPromoCard', () => {
             )
             expect(result.current?.promoCardContent?.variant).toBe(
                 'admin-trial-progress',
+            )
+        })
+    })
+
+    describe('Expanding Trial Experience Milestone 2 Feature Flag', () => {
+        beforeEach(() => {
+            mockFeatureFlags(true, false, true)
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+            })
+        })
+
+        it('should show "AI Agent & Shopping Assistant" title when feature flag enabled and AI agent not onboarded', () => {
+            mockFeatureFlags(true, true)
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: false,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent?.title).toBe(
+                'AI Agent & Shopping Assistant',
+            )
+        })
+
+        it('should show "Unlock new AI Agent skills" title when feature flag enabled but AI agent is onboarded', () => {
+            mockFeatureFlags(true, true)
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: true,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent?.title).toBe(
+                'Unlock new AI Agent skills',
+            )
+        })
+
+        it('should show "Unlock new AI Agent skills" title when feature flag disabled regardless of onboarding status', () => {
+            mockFeatureFlags(true, false, true)
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: false,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent?.title).toBe(
+                'Unlock new AI Agent skills',
+            )
+        })
+
+        it('should show "Shopping Assistant trial" title when in trial progress and feature flag enabled', () => {
+            mockFeatureFlags(true, true)
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                isAdminUser: true,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: true,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: false,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent?.title).toBe(
+                'Shopping Assistant trial',
+            )
+        })
+
+        it('should show AI Agent description when feature flag enabled and AI agent not onboarded', () => {
+            mockFeatureFlags(true, true)
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                trialType: TrialType.ShoppingAssistant,
+                canSeeTrialCTA: true,
+                canBookDemo: false,
+                canNotifyAdmin: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: false,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent?.description).toBe(
+                'Enhance every step of the shopping journey, from pre to post-sales.',
             )
         })
     })

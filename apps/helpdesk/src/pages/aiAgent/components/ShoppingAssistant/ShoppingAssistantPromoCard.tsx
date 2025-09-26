@@ -118,6 +118,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                         promoContent={promoContent}
                         trialType={trialAccess.trialType}
                         storageKey={getStoreSpecificStorageKey(variant)}
+                        isOnboarded={trialAccess.isOnboarded}
                     />
                 </>
             )
@@ -130,6 +131,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                     promoContent={promoContent}
                     trialType={trialAccess.trialType}
                     storageKey={getStoreSpecificStorageKey(variant)}
+                    isOnboarded={trialAccess.isOnboarded}
                 />
             )
             break
@@ -147,6 +149,7 @@ export const ShoppingAssistantPromoCard: React.FC<
                         promoContent={promoContent}
                         trialType={trialAccess.trialType}
                         storageKey={getStoreSpecificStorageKey(variant)}
+                        isOnboarded={trialAccess.isOnboarded}
                     />
                 </>
             )

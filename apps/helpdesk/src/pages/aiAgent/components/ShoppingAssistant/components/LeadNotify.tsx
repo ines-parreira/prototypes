@@ -1,11 +1,8 @@
 import React from 'react'
 
-import preTrialBannerAiAgentThumbnail from 'assets/img/pre-trial-banner-ai-agent.png'
-import preTrialBannerThumbnail from 'assets/img/pre-trial-banner-thumbnail.png'
-import aiAgentPreviewVideo from 'assets/video/ai-agent-sales-video.mp4'
-import aiAgentTrialPromoVideo from 'assets/video/ai-agent-trial-promo.mp4'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
+import { usePromoCardVideoContent } from '../hooks/usePromoCardVideoContent'
 import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
 import { NotificationIcon } from './SharedIcons'
 
@@ -16,6 +13,7 @@ interface LeadNotifyProps {
     promoContent: PromoCardContent
     trialType: TrialType
     storageKey?: string
+    isOnboarded?: boolean
 }
 
 export const LeadNotify: React.FC<LeadNotifyProps> = ({
@@ -23,6 +21,7 @@ export const LeadNotify: React.FC<LeadNotifyProps> = ({
     promoContent,
     trialType,
     storageKey,
+    isOnboarded,
 }) => {
     const {
         title,
@@ -36,6 +35,11 @@ export const LeadNotify: React.FC<LeadNotifyProps> = ({
     } = promoContent
 
     const isAiAgentTrial = trialType === TrialType.AiAgent
+    const videoContentConfig = usePromoCardVideoContent({
+        trialType,
+        isAIAgentOnboarded: isOnboarded,
+        isAiAgentTrial,
+    })
 
     return (
         <div className={css.promoCardSection}>
@@ -53,34 +57,14 @@ export const LeadNotify: React.FC<LeadNotifyProps> = ({
                         }}
                     >
                         <PromoCard.VideoThumbnail
-                            poster={
-                                isAiAgentTrial
-                                    ? preTrialBannerAiAgentThumbnail
-                                    : preTrialBannerThumbnail
-                            }
-                            alt={
-                                isAiAgentTrial
-                                    ? 'AI Agent Demo'
-                                    : 'Shopping Assistant Demo'
-                            }
-                            videoUrl={
-                                isAiAgentTrial
-                                    ? aiAgentTrialPromoVideo
-                                    : aiAgentPreviewVideo
-                            }
-                            className={
-                                isAiAgentTrial
-                                    ? css.videoThumbnailAiAgent
-                                    : css.videoThumbnail
-                            }
+                            poster={videoContentConfig.poster}
+                            alt={videoContentConfig.alt}
+                            videoUrl={videoContentConfig.videoUrl}
+                            className={videoContentConfig.className}
                         />
 
                         <PromoCard.VideoModal
-                            videoUrl={
-                                isAiAgentTrial
-                                    ? aiAgentTrialPromoVideo
-                                    : aiAgentPreviewVideo
-                            }
+                            videoUrl={videoContentConfig.videoUrl}
                             ctaButton={
                                 videoModalButton
                                     ? {

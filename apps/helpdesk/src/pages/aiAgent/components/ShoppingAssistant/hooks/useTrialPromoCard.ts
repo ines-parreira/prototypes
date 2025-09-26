@@ -24,6 +24,7 @@ import {
     TrialType,
 } from '../types/ShoppingAssistant'
 import { logTrialBannerEvent } from '../utils/eventLogger'
+import { getPromoCardTitle } from '../utils/trialPromoCardUtils'
 import { usePrimaryCTA } from './usePrimaryCTA'
 import { useSecondaryCTA } from './useSecondaryCTA'
 import { useTrialDescription } from './useTrialDescription'
@@ -49,6 +50,10 @@ export const useTrialPromoCard = (
 
     const isFeatureEnabled = useFlag(
         FeatureFlagKey.ShoppingAssistantTrialImprovement,
+        false,
+    )
+    const isExpandingTrialExperienceMilestone2Enabled = useFlag(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
         false,
     )
 
@@ -85,6 +90,8 @@ export const useTrialPromoCard = (
         trialMetrics,
         isTrialProgress,
         trialAccess.trialType,
+        isExpandingTrialExperienceMilestone2Enabled,
+        trialAccess.isOnboarded,
     )
     const { progressPercentage, progressText } = useTrialProgress(
         trialEnding.remainingDays,
@@ -101,13 +108,14 @@ export const useTrialPromoCard = (
     const promoCardContent = useMemo((): PromoCardContent | null => {
         if (!isFeatureEnabled || !hasAnyAccess) return null
 
+        const title = getPromoCardTitle(
+            isExpandingTrialExperienceMilestone2Enabled,
+            trialAccess.trialType,
+            isTrialProgress,
+            trialAccess.canSeeTrialCTA,
+            trialAccess.isOnboarded,
+        )
         if (trialAccess.trialType === TrialType.AiAgent) {
-            const title = isTrialProgress
-                ? 'AI Agent trial'
-                : trialAccess.canSeeTrialCTA
-                  ? 'AI Agent'
-                  : 'Try AI Agent for free'
-
             return {
                 variant,
                 title,
@@ -140,11 +148,10 @@ export const useTrialPromoCard = (
                 progressText: isTrialProgress ? progressText : undefined,
             }
         }
+
         return {
             variant,
-            title: isTrialProgress
-                ? 'Shopping Assistant trial'
-                : 'Unlock new AI Agent skills',
+            title,
             description,
             shouldShowDescriptionIcon,
             showVideo: !isTrialProgress,
@@ -183,6 +190,8 @@ export const useTrialPromoCard = (
         progressText,
         trialAccess.canSeeTrialCTA,
         trialAccess.trialType,
+        trialAccess.isOnboarded,
+        isExpandingTrialExperienceMilestone2Enabled,
         trialFlow,
     ])
 
