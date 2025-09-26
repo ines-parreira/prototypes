@@ -486,6 +486,10 @@ export default function reducer(
                 forceUpdate: forceUpdate as boolean,
                 forceFocus: forceFocus as boolean,
                 topRankMacroState,
+                originalContentState: state.getIn([
+                    'state',
+                    'originalContentState',
+                ]) as ContentState,
             }
 
             context = addCache(context)

@@ -307,6 +307,7 @@ exports[`new message reducer SET_RESPONSE_TEXT action should add cache 1`] = `
   "forceFocus": undefined,
   "forceUpdate": undefined,
   "inserted_discounts": null,
+  "originalContentState": undefined,
   "sourceType": "email",
   "state": Immutable.Map {
     "state": Immutable.Map {
