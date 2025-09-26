@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { mockBranchOptions } from '@gorgias/helpdesk-mocks'
@@ -160,5 +160,114 @@ describe('IvrMenuActionsFieldArray', () => {
         })
 
         expect(screen.queryByText('close')).not.toBeInTheDocument()
+    })
+
+    describe('maxOptions prop', () => {
+        it('should hide Add option button when options reach maxOptions limit', () => {
+            const branchOptionsWithMax = [
+                mockBranchOptions({
+                    input_digit: '1',
+                    branch_name: 'Option 1',
+                }),
+                mockBranchOptions({
+                    input_digit: '2',
+                    branch_name: 'Option 2',
+                }),
+                mockBranchOptions({
+                    input_digit: '3',
+                    branch_name: 'Option 3',
+                }),
+            ]
+
+            renderComponent(
+                { ...defaultProps, maxOptions: 3 },
+                { someFieldArray: branchOptionsWithMax },
+            )
+
+            expect(
+                screen.queryByRole('button', { name: 'Add option' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show Add option button when options are below maxOptions limit', () => {
+            const branchOptionsBelow = [
+                mockBranchOptions({
+                    input_digit: '1',
+                    branch_name: 'Option 1',
+                }),
+                mockBranchOptions({
+                    input_digit: '2',
+                    branch_name: 'Option 2',
+                }),
+            ]
+
+            renderComponent(
+                { ...defaultProps, maxOptions: 3 },
+                { someFieldArray: branchOptionsBelow },
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Add option' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should default to maxOptions of 9 when not specified', () => {
+            const branchOptions8 = [
+                mockBranchOptions({
+                    input_digit: '1',
+                    branch_name: 'Option 1',
+                }),
+                mockBranchOptions({
+                    input_digit: '2',
+                    branch_name: 'Option 2',
+                }),
+                mockBranchOptions({
+                    input_digit: '3',
+                    branch_name: 'Option 3',
+                }),
+                mockBranchOptions({
+                    input_digit: '4',
+                    branch_name: 'Option 4',
+                }),
+                mockBranchOptions({
+                    input_digit: '5',
+                    branch_name: 'Option 5',
+                }),
+                mockBranchOptions({
+                    input_digit: '6',
+                    branch_name: 'Option 6',
+                }),
+                mockBranchOptions({
+                    input_digit: '7',
+                    branch_name: 'Option 7',
+                }),
+                mockBranchOptions({
+                    input_digit: '8',
+                    branch_name: 'Option 8',
+                }),
+            ]
+
+            renderComponent(defaultProps, { someFieldArray: branchOptions8 })
+
+            expect(
+                screen.getByRole('button', { name: 'Add option' }),
+            ).toBeInTheDocument()
+
+            cleanup()
+
+            const branchOptions9 = [
+                ...branchOptions8,
+                mockBranchOptions({
+                    input_digit: '9',
+                    branch_name: 'Option 9',
+                }),
+            ]
+
+            renderComponent(defaultProps, { someFieldArray: branchOptions9 })
+
+            expect(
+                screen.queryByRole('button', { name: 'Add option' }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

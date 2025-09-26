@@ -10,6 +10,7 @@ type Props = {
     onAddOption?: (option: BranchOptions, insertAtIndex: number) => void
     onRemoveOption?: (optionIndex: number) => void
     branchNextId: string | null
+    maxOptions?: number
 }
 
 export function IvrMenuActionsFieldArray({
@@ -17,6 +18,7 @@ export function IvrMenuActionsFieldArray({
     onAddOption,
     onRemoveOption,
     branchNextId,
+    maxOptions = 9,
 }: Props): JSX.Element {
     const { fields, insert, remove } = useFieldArray({
         name,
@@ -24,7 +26,7 @@ export function IvrMenuActionsFieldArray({
     const fieldValue = useWatch({ name })
 
     const handleAddOption = () => {
-        const nextAvailableDigit = getNextAvailableDigit(fieldValue)
+        const nextAvailableDigit = getNextAvailableDigit(fieldValue, maxOptions)
 
         if (nextAvailableDigit) {
             const insertAtIndex = Number(nextAvailableDigit) - 1
@@ -60,7 +62,7 @@ export function IvrMenuActionsFieldArray({
                     />
                 )
             })}
-            {fields.length < 9 && (
+            {fields.length < maxOptions && (
                 <Button
                     intent="secondary"
                     onClick={handleAddOption}
@@ -75,9 +77,10 @@ export function IvrMenuActionsFieldArray({
 
 const getNextAvailableDigit = (
     branchOptions: BranchOptions[],
+    maxOptions: number,
 ): string | null => {
     const digits = branchOptions.map((option) => option.input_digit)
-    for (let i = 1; i <= 9; i++) {
+    for (let i = 1; i <= maxOptions; i++) {
         if (!digits.includes(i.toString())) {
             return i.toString()
         }

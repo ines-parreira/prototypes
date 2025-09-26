@@ -138,6 +138,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                     onRemoveOption={(optionIndex) =>
                         deleteIvrBranch(optionIndex, id, intermediaryNodeId)
                     }
+                    maxOptions={isNestedIvr ? 8 : 9}
                 />
             </div>
         </VoiceStepNode>
