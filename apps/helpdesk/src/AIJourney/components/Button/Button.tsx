@@ -26,6 +26,10 @@ export const Button = ({
         [css['fakeBorder--disabled']]: isDisabled,
     })
 
+    const secondaryButtonClass = classNames(css.secondaryButton, {
+        [css['fakeBorder--disabled']]: isDisabled,
+    })
+
     if (variant === 'link') {
         return (
             <Link className={css.linkButton} to={redirectLink}>
@@ -42,7 +46,7 @@ export const Button = ({
             <button
                 onClick={onClick}
                 disabled={isDisabled}
-                className={css.secondaryButton}
+                className={secondaryButtonClass}
             >
                 <span className={css.secondaryButtonContent}>{label}</span>
             </button>

@@ -199,7 +199,7 @@ describe('<AiJourneyOnboarding />', () => {
         }))
     })
 
-    it('should render AI Journey landing page', () => {
+    it('should render AI onboarding page', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>

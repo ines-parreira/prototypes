@@ -281,7 +281,7 @@ export const Setup = () => {
                 />
             )}
 
-            {customInstructionEnabled && (
+            {customInstructionEnabled && !isAiJourneyPlaygroundEnabled && (
                 <JourneyMessageInstructionsField
                     value={journeyMessageInstructions}
                     onChange={setJourneyMessageInstructions}
