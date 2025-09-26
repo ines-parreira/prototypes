@@ -156,6 +156,26 @@ const mockFeatures: TrialFinishSetupFeature[] = [
     },
 ]
 
+const createMockTrialEndingFixture = (overrides = {}) =>
+    getUseTrialEndingFixture({
+        trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
+        remainingDays: 0,
+        remainingDaysFloat: 0,
+        trialEndDatetime: '2023-11-15T00:00:00.000Z',
+        optedOutDatetime: '2023-11-14T00:00:00.000Z',
+        ...overrides,
+    })
+
+const mockTrialEndingTomorrowFixture = (overrides = {}) =>
+    createMockTrialEndingFixture({
+        trialTerminationDatetime: null,
+        remainingDays: 1,
+        remainingDaysFloat: 0.5,
+        trialEndDatetime: '2023-11-16T00:00:00.000Z',
+        optedOutDatetime: null,
+        ...overrides,
+    })
+
 const createMockTrialModalProps = (): TrialModalProps => ({
     trialUpgradePlanModal: {
         title: 'Test Trial Upgrade Title',
@@ -366,15 +386,7 @@ describe('TrialEndedModal', () => {
     })
 
     it('should render modal when trial has ended and not dismissed', () => {
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
-                optedOutDatetime: '2023-11-14T00:00:00.000Z',
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndedModal
@@ -391,7 +403,7 @@ describe('TrialEndedModal', () => {
 
     it('should not render modal when trial has not ended', () => {
         mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
+            createMockTrialEndingFixture({
                 trialTerminationDatetime: '2023-11-17T00:00:00.000Z',
                 remainingDays: 1,
                 remainingDaysFloat: 1,
@@ -421,15 +433,7 @@ describe('TrialEndedModal', () => {
             return null
         })
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
-                optedOutDatetime: '2023-11-14T00:00:00.000Z',
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
         const { container } = renderWithStoreAndQueryClientProvider(
             <TrialEndedModal
@@ -443,11 +447,7 @@ describe('TrialEndedModal', () => {
 
     it('should not render modal when user has not opted out', () => {
         mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
+            createMockTrialEndingFixture({
                 optedOutDatetime: null,
             }),
         )
@@ -465,15 +465,7 @@ describe('TrialEndedModal', () => {
     it('should dismiss modal when close button is clicked', async () => {
         const user = userEvent.setup()
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
-                optedOutDatetime: '2023-11-14T00:00:00.000Z',
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndedModal
@@ -502,15 +494,7 @@ describe('TrialEndedModal', () => {
     it('should dismiss modal when secondary action is clicked', async () => {
         const user = userEvent.setup()
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
-                optedOutDatetime: '2023-11-14T00:00:00.000Z',
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndedModal
@@ -549,15 +533,7 @@ describe('TrialEndedModal', () => {
             isError: false,
         })
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
-                remainingDays: 0,
-                remainingDaysFloat: 0,
-                trialEndDatetime: '2023-11-15T00:00:00.000Z',
-                optedOutDatetime: '2023-11-14T00:00:00.000Z',
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(createMockTrialEndingFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndedModal
@@ -608,15 +584,7 @@ describe('TrialEndingModal', () => {
     })
 
     it('should call useTrialEnding with correct parameters', () => {
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
-                remainingDays: 1,
-                remainingDaysFloat: 0.5,
-                trialEndDatetime: '2023-11-16T00:00:00.000Z',
-                optedOutDatetime: null,
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndingModal
@@ -632,15 +600,7 @@ describe('TrialEndingModal', () => {
     })
 
     it('should render modal when trial ends tomorrow and not dismissed', () => {
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
-                remainingDays: 1,
-                remainingDaysFloat: 0.5,
-                trialEndDatetime: '2023-11-16T00:00:00.000Z',
-                optedOutDatetime: null,
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndingModal
@@ -658,8 +618,8 @@ describe('TrialEndingModal', () => {
 
     it('should not render modal when remaining days is not 1', () => {
         mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-17T00:00:00.000Z',
+            createMockTrialEndingFixture({
+                trialTerminationDatetime: null,
                 remainingDays: 2,
                 remainingDaysFloat: 2,
                 trialEndDatetime: '2023-11-17T00:00:00.000Z',
@@ -688,9 +648,22 @@ describe('TrialEndingModal', () => {
             return null
         })
 
+        mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
+
+        const { container } = renderWithStoreAndQueryClientProvider(
+            <TrialEndingModal
+                storeName={mockStoreConfiguration.storeName}
+                trialType={TrialType.ShoppingAssistant}
+            />,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should not render modal when trialTerminationDatetime is set even if trial ends tomorrow', () => {
         mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
+            createMockTrialEndingFixture({
+                trialTerminationDatetime: '2023-11-15T00:00:00.000Z',
                 remainingDays: 1,
                 remainingDaysFloat: 0.5,
                 trialEndDatetime: '2023-11-16T00:00:00.000Z',
@@ -711,15 +684,7 @@ describe('TrialEndingModal', () => {
     it('should dismiss modal when close button is clicked', async () => {
         const user = userEvent.setup()
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
-                remainingDays: 1,
-                remainingDaysFloat: 0.5,
-                trialEndDatetime: '2023-11-16T00:00:00.000Z',
-                optedOutDatetime: null,
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndingModal
@@ -748,15 +713,7 @@ describe('TrialEndingModal', () => {
     it('should dismiss modal when primary action (Dismiss) is clicked', async () => {
         const user = userEvent.setup()
 
-        mockUseTrialEnding.mockReturnValue(
-            getUseTrialEndingFixture({
-                trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
-                remainingDays: 1,
-                remainingDaysFloat: 0.5,
-                trialEndDatetime: '2023-11-16T00:00:00.000Z',
-                optedOutDatetime: null,
-            }),
-        )
+        mockUseTrialEnding.mockReturnValue(mockTrialEndingTomorrowFixture())
 
         renderWithStoreAndQueryClientProvider(
             <TrialEndingModal
@@ -786,8 +743,8 @@ describe('TrialEndingModal', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
             mockUseTrialEnding.mockReturnValue(
-                getUseTrialEndingFixture({
-                    trialTerminationDatetime: '2023-11-16T00:00:00.000Z',
+                createMockTrialEndingFixture({
+                    trialTerminationDatetime: null,
                     remainingDays: 1,
                     remainingDaysFloat: 0.5,
                     trialEndDatetime: '2023-11-16T00:00:00.000Z',

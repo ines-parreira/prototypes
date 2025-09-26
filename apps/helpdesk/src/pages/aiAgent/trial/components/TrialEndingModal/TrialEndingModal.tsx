@@ -32,8 +32,12 @@ export const TrialEndingModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const { storeActivations } = useStoreActivations({ storeName })
     const { trialEndingModal } = useTrialModalProps({ storeName })
-    const { remainingDaysFloat, trialEndDatetime, optedOutDatetime } =
-        useTrialEnding(storeName, trialType)
+    const {
+        remainingDaysFloat,
+        trialEndDatetime,
+        optedOutDatetime,
+        trialTerminationDatetime,
+    } = useTrialEnding(storeName, trialType)
     const accountDomain = currentAccount.get('domain')
     const { openUpgradePlanModal, onRequestTrialExtension } =
         useShoppingAssistantTrialFlow({
@@ -95,7 +99,10 @@ export const TrialEndingModal = ({
 
     const oneDayRemaining = remainingDaysFloat > 0 && remainingDaysFloat <= 1
     const isModalOpen =
-        oneDayRemaining && !!trialEndDatetime && !isModalDismissed
+        oneDayRemaining &&
+        !!trialEndDatetime &&
+        !isModalDismissed &&
+        trialTerminationDatetime === null
 
     if (!isModalOpen) {
         return null

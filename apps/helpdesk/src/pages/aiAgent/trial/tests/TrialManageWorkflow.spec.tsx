@@ -8,7 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
-import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
@@ -163,7 +162,6 @@ describe('TrialManageWorkflow', () => {
                 <button onClick={props.onClose}>Close</button>
             </div>
         ))
-        ;(TrialEndingModal as jest.Mock).mockImplementation(() => null)
         ;(UpgradePlanModal as jest.Mock).mockImplementation(() => null)
     })
 
