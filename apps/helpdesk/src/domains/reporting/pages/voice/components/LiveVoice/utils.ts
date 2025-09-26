@@ -8,7 +8,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -24,13 +24,13 @@ export enum AgentStatusCategory {
     Unavailable = 'Unavailable',
 }
 
-export const liveVoiceCallTableColumns: VoiceCallTableColumnName[] = [
-    VoiceCallTableColumnName.Activity,
-    VoiceCallTableColumnName.LiveStatus,
-    VoiceCallTableColumnName.OngoingTime,
-    VoiceCallTableColumnName.Integration,
-    VoiceCallTableColumnName.Queue,
-    VoiceCallTableColumnName.Ticket,
+export const liveVoiceCallTableColumns: VoiceCallTableColumn[] = [
+    VoiceCallTableColumn.Activity,
+    VoiceCallTableColumn.LiveStatus,
+    VoiceCallTableColumn.OngoingTime,
+    VoiceCallTableColumn.Integration,
+    VoiceCallTableColumn.Queue,
+    VoiceCallTableColumn.Ticket,
 ]
 
 export const isAgentBusy = (agent: LiveCallQueueAgent): boolean => {

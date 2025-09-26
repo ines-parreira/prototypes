@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import {
     VoiceAgentsMetric,
     VoiceMetric,
@@ -11,27 +11,27 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 
 export const getVoiceDrillDownColumns = (
     metricName?: string,
-): VoiceCallTableColumnName[] => {
+): VoiceCallTableColumn[] => {
     switch (metricName) {
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.QueueAverageWaitTime:
             return [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ]
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.QueueAverageTalkTime:
             return [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ]
         case VoiceMetric.QueueInboundCalls:
         case VoiceMetric.QueueInboundUnansweredCalls:
@@ -43,47 +43,56 @@ export const getVoiceDrillDownColumns = (
         case VoiceAgentsMetric.AgentInboundMissedCalls:
         case VoiceAgentsMetric.AgentOutboundCalls:
             return [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+            ]
+        case VoiceAgentsMetric.AgentInboundTransferredCalls:
+            return [
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ]
         case VoiceAgentsMetric.AgentAverageTalkTime:
             return [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ]
         default:
             return [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
             ]
     }
 }
 
 export type Cell<T extends typeof BodyCell | typeof HeaderCellProperty> = {
-    key: VoiceCallTableColumnName
+    key: VoiceCallTableColumn
     props: ComponentProps<T>
 }
 
 export const filterAndOrderCells = <
     T extends typeof BodyCell | typeof HeaderCellProperty,
 >(
-    allColumns: Record<VoiceCallTableColumnName, Pick<Cell<T>, 'props'>>,
-    requiredColumns: VoiceCallTableColumnName[] = getVoiceDrillDownColumns(),
+    allColumns: Record<VoiceCallTableColumn, Pick<Cell<T>, 'props'>>,
+    requiredColumns: VoiceCallTableColumn[] = getVoiceDrillDownColumns(),
 ): Cell<T>[] => {
     const result = requiredColumns.map((columnName) => {
         const cellProps = allColumns[columnName]
@@ -99,24 +108,24 @@ export const filterAndOrderCells = <
 }
 
 export const voiceCallTableColumnNameToDimension = (
-    columnName: VoiceCallTableColumnName,
+    columnName: VoiceCallTableColumn,
 ): VoiceCallDimension | undefined => {
     switch (columnName) {
-        case VoiceCallTableColumnName.Integration:
+        case VoiceCallTableColumn.Integration:
             return VoiceCallDimension.IntegrationId
-        case VoiceCallTableColumnName.Date:
+        case VoiceCallTableColumn.Date:
             return VoiceCallDimension.CreatedAt
-        case VoiceCallTableColumnName.State:
+        case VoiceCallTableColumn.State:
             return VoiceCallDimension.DisplayStatus
-        case VoiceCallTableColumnName.Duration:
+        case VoiceCallTableColumn.Duration:
             return VoiceCallDimension.Duration
-        case VoiceCallTableColumnName.OngoingTime:
+        case VoiceCallTableColumn.OngoingTime:
             return VoiceCallDimension.Duration
-        case VoiceCallTableColumnName.WaitTime:
+        case VoiceCallTableColumn.WaitTime:
             return VoiceCallDimension.WaitTime
-        case VoiceCallTableColumnName.TalkTime:
+        case VoiceCallTableColumn.TalkTime:
             return VoiceCallDimension.TalkTime
-        case VoiceCallTableColumnName.Ticket:
+        case VoiceCallTableColumn.Ticket:
             return VoiceCallDimension.TicketId
         default:
             return undefined
@@ -124,14 +133,14 @@ export const voiceCallTableColumnNameToDimension = (
 }
 
 export const isVoiceCallTableColumnSortable = (
-    columnName: VoiceCallTableColumnName,
+    columnName: VoiceCallTableColumn,
 ): boolean => {
     switch (columnName) {
-        case VoiceCallTableColumnName.Activity:
-        case VoiceCallTableColumnName.Integration:
-        case VoiceCallTableColumnName.Ticket:
-        case VoiceCallTableColumnName.Recording:
-        case VoiceCallTableColumnName.Queue:
+        case VoiceCallTableColumn.Activity:
+        case VoiceCallTableColumn.Integration:
+        case VoiceCallTableColumn.Ticket:
+        case VoiceCallTableColumn.Recording:
+        case VoiceCallTableColumn.Queue:
             return false
         default:
             return true

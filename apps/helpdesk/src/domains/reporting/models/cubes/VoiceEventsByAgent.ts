@@ -1,4 +1,5 @@
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { Cube } from 'domains/reporting/models/types'
 import { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
 
@@ -11,6 +12,14 @@ export enum VoiceEventsByAgentDimension {
     PeriodEnd = 'VoiceEventsByAgent.periodEnd',
     IntegrationId = 'VoiceEventsByAgent.integrationId',
     AgentId = 'VoiceEventsByAgent.agentId',
+    CreatedAt = 'VoiceEventsByAgent.createdAt',
+    TicketId = 'VoiceEventsByAgent.ticketId',
+    Direction = 'VoiceEventsByAgent.direction',
+    Status = 'VoiceEventsByAgent.status',
+    TransferType = 'VoiceEventsByAgent.transferType',
+    TransferTargetAgentId = 'VoiceEventsByAgent.transferTargetAgentId',
+    TransferTargetExternalNumber = 'VoiceEventsByAgent.transferTargetExternalNumber',
+    TransferTargetQueueId = 'VoiceEventsByAgent.transferTargetQueueId',
 }
 
 export enum VoiceEventsByAgentMember {
@@ -36,7 +45,7 @@ export const VoiceEventsByAgentFiltersMembers: StatsFiltersMembers = {
 
 export type VoiceEventsByAgentCube = Cube<
     VoiceEventsByAgentMeasure,
-    VoiceEventsByAgentDimension,
+    VoiceEventsByAgentDimension | VoiceCallDimension,
     VoiceEventsByAgentSegment,
     VoiceEventsByAgentMember,
     never

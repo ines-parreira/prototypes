@@ -1,4 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
@@ -97,4 +98,32 @@ export const transferredInboundVoiceCallsCountQueryFactory = (
         VoiceEventsByAgentSegment.transferredInboundCalls,
     ),
     filters: voiceEventsByAgentDefaultFilters(filters),
+})
+
+export const transferredInboundVoiceCallsPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<VoiceEventsByAgentCube> => ({
+    metricName: METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_PER_AGENT,
+    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+    dimensions: [
+        VoiceEventsByAgentDimension.AgentId,
+        VoiceEventsByAgentDimension.IntegrationId,
+        VoiceEventsByAgentDimension.CreatedAt,
+        VoiceEventsByAgentDimension.TicketId,
+        VoiceEventsByAgentDimension.TransferType,
+        VoiceEventsByAgentDimension.TransferTargetAgentId,
+        VoiceEventsByAgentDimension.TransferTargetExternalNumber,
+        VoiceEventsByAgentDimension.TransferTargetQueueId,
+        VoiceCallDimension.Duration,
+        VoiceCallDimension.DisplayStatus,
+        VoiceCallDimension.CallRecordingAvailable,
+        VoiceCallDimension.CallRecordingUrl,
+    ],
+    timezone,
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.transferredInboundCalls,
+    ),
+    filters: voiceEventsByAgentDefaultFilters(filters),
+    order: [[VoiceEventsByAgentDimension.CreatedAt, OrderDirection.Desc]],
 })

@@ -1,3 +1,5 @@
+import { MetricValueFormat } from '@repo/reporting'
+
 import { Metric } from 'domains/reporting/hooks/metrics'
 import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -6,7 +8,6 @@ import {
 } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceEventsByAgentMember } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -135,6 +136,7 @@ export const columns: VoiceAgentsTableColumnConfig[] = [
         tooltip:
             'Total number of transferred calls to an agent, queue or external number.',
         id: VoiceAgentsTableColumn.InboundTransferredCalls,
+        metricName: VoiceAgentsMetric.AgentInboundTransferredCalls,
     },
     {
         title: 'Inbound Missed',

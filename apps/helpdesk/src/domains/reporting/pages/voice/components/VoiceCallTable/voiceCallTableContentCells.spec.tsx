@@ -5,11 +5,15 @@ import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
 import VoiceCallRecording from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import {
+    VoiceCallTableColumn,
+    voiceCallTableColumnName,
+} from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import {
     getOrderedCells,
     getOrderedHeaderCells,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/voiceCallTableContentCells'
+import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
@@ -22,31 +26,36 @@ jest.mock('pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge')
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording',
 )
+jest.mock(
+    'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity',
+)
 jest.mock('pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel')
 
 const LiveVoiceCallStatusLabelMock = assumeMock(LiveVoiceCallStatusLabel)
 const VoiceCallTimerBadgeMock = assumeMock(VoiceCallTimerBadge)
 const VoiceCallRecordingMock = assumeMock(VoiceCallRecording)
+const VoiceCallTransferActivityMock = assumeMock(VoiceCallTransferActivity)
 const VoiceCallStatusLabelMock = assumeMock(VoiceCallStatusLabel)
 
 describe('voiceCallTableContentCells', () => {
     describe('header cells ', () => {
         it('should return a list of {key, props} objects in the order specified by the columns arg', () => {
             const columns = [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.LiveStatus,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.LiveStatus,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.LiveStatus,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.LiveStatus,
             ]
 
             const result = getOrderedHeaderCells({
@@ -55,30 +64,34 @@ describe('voiceCallTableContentCells', () => {
             })
 
             expect(result.map((cell) => cell.key)).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.LiveStatus,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.LiveStatus,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.LiveStatus,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.LiveStatus,
             ])
 
             /* each cell should have props */
             result.forEach((cell) => {
                 expect(cell.props).toBeDefined()
+                expect(cell.props.title).toEqual(
+                    voiceCallTableColumnName[cell.key],
+                )
             })
         })
 
         it('should return the custom title for the OngoingTime column when it is provided', () => {
-            const columns = [VoiceCallTableColumnName.OngoingTime]
+            const columns = [VoiceCallTableColumn.OngoingTime]
 
             const result = getOrderedHeaderCells({
                 columns,
@@ -93,20 +106,21 @@ describe('voiceCallTableContentCells', () => {
     describe('getOrderedCells', () => {
         it('should return a list of {key, props} objects in the order specified by the columns arg', () => {
             const columns = [
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.LiveStatus,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.LiveStatus,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.LiveStatus,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.LiveStatus,
             ]
 
             const result = getOrderedCells({
@@ -116,20 +130,21 @@ describe('voiceCallTableContentCells', () => {
             })
 
             expect(result.map((cell) => cell.key)).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.LiveStatus,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
-                VoiceCallTableColumnName.OngoingTime,
-                VoiceCallTableColumnName.LiveStatus,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.LiveStatus,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
+                VoiceCallTableColumn.OngoingTime,
+                VoiceCallTableColumn.LiveStatus,
             ])
 
             /* each cell should have props */
@@ -141,7 +156,7 @@ describe('voiceCallTableContentCells', () => {
         it('should return correct props for the LiveStatus cell', () => {
             LiveVoiceCallStatusLabelMock.mockReturnValue(<div>LiveStatus</div>)
 
-            const columns = [VoiceCallTableColumnName.LiveStatus]
+            const columns = [VoiceCallTableColumn.LiveStatus]
 
             const result = getOrderedCells({
                 item: {
@@ -167,7 +182,7 @@ describe('voiceCallTableContentCells', () => {
         it('should return correct props for the Ongoing Time cell', () => {
             VoiceCallTimerBadgeMock.mockReturnValue(<div>TimerBadge</div>)
 
-            const columns = [VoiceCallTableColumnName.OngoingTime]
+            const columns = [VoiceCallTableColumn.OngoingTime]
 
             const result = getOrderedCells({
                 item: {
@@ -191,7 +206,7 @@ describe('voiceCallTableContentCells', () => {
             it('should return correct props for the Recording cell when recording is downloadable', () => {
                 VoiceCallRecordingMock.mockReturnValue(<div>Recording</div>)
 
-                const columns = [VoiceCallTableColumnName.Recording]
+                const columns = [VoiceCallTableColumn.Recording]
 
                 const result = getOrderedCells({
                     item: {} as VoiceCallSummary,
@@ -214,7 +229,7 @@ describe('voiceCallTableContentCells', () => {
             it('should return correct props for the Recording cell when recording is not downloadable', () => {
                 VoiceCallRecordingMock.mockReturnValue(<div>Recording</div>)
 
-                const columns = [VoiceCallTableColumnName.Recording]
+                const columns = [VoiceCallTableColumn.Recording]
 
                 const result = getOrderedCells({
                     item: {} as VoiceCallSummary,
@@ -238,7 +253,7 @@ describe('voiceCallTableContentCells', () => {
         it('should return correct props for the state cell', () => {
             VoiceCallStatusLabelMock.mockReturnValue(<div>Status</div>)
 
-            const columns = [VoiceCallTableColumnName.State]
+            const columns = [VoiceCallTableColumn.State]
 
             const result = getOrderedCells({
                 item: {
@@ -256,6 +271,32 @@ describe('voiceCallTableContentCells', () => {
                 {},
             )
             expect(screen.getByText('Status')).toBeInTheDocument()
+        })
+
+        it('should return correct props for the TransferActivity cell', () => {
+            VoiceCallTransferActivityMock.mockReturnValue(
+                <div>TransferActivity</div>,
+            )
+
+            const columns = [VoiceCallTableColumn.TransferActivity]
+            const mockVoiceCall = {
+                id: 'test-call-id',
+            } as unknown as VoiceCallSummary
+
+            const result = getOrderedCells({
+                item: mockVoiceCall,
+                columns,
+                isTableScrolled: false,
+            })
+
+            render(result[0].props.children as any)
+            expect(VoiceCallTransferActivityMock).toHaveBeenCalledWith(
+                {
+                    voiceCall: mockVoiceCall,
+                },
+                {},
+            )
+            expect(screen.getByText('TransferActivity')).toBeInTheDocument()
         })
     })
 })

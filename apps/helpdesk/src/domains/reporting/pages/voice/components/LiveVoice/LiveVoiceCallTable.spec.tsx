@@ -12,7 +12,7 @@ import {
     formatVoiceCallsData,
     orderLiveVoiceCallsByOngoingTime,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
@@ -125,7 +125,7 @@ describe('LiveVoiceCallTable', () => {
 
         act(() => {
             VoiceCallTableContentMock.mock.lastCall?.[0]?.onColumnClick?.(
-                VoiceCallTableColumnName.OngoingTime,
+                VoiceCallTableColumn.OngoingTime,
             )
         })
 
@@ -135,7 +135,7 @@ describe('LiveVoiceCallTable', () => {
         )
         expect(VoiceCallTableContentMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                orderBy: VoiceCallTableColumnName.OngoingTime,
+                orderBy: VoiceCallTableColumn.OngoingTime,
                 orderDirection: 'desc',
             }),
             {},

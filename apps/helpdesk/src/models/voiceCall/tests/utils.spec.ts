@@ -1,6 +1,7 @@
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { voiceCall } from 'fixtures/voiceCalls'
 import * as momentUtils from 'utils/date'
 
@@ -11,6 +12,7 @@ import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     getFormattedDurationTranscriptionStart,
+    getTransferTargetVoiceCallSubject,
     isCallTransfer,
     isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
@@ -561,5 +563,70 @@ describe('voice call utils', () => {
                 ).toBe(false)
             })
         })
+    })
+
+    describe('getTransferTargetVoiceCallSubject', () => {
+        it('should return agent subject when transferType is "agent" and transferTargetAgentId is present', () => {
+            const result = getTransferTargetVoiceCallSubject({
+                transferType: 'agent',
+                transferTargetAgentId: 123,
+            } as VoiceCallSummary)
+
+            expect(result).toEqual({
+                type: VoiceCallSubjectType.Agent,
+                id: 123,
+            })
+        })
+
+        it('should return external subject when transferType is "external" and transferTargetExternalNumber is present', () => {
+            const result = getTransferTargetVoiceCallSubject({
+                transferType: 'external',
+                transferTargetExternalNumber: '+1234567890',
+            } as VoiceCallSummary)
+
+            expect(result).toEqual({
+                type: VoiceCallSubjectType.External,
+                value: '+1234567890',
+            })
+        })
+
+        it('should return queue subject when transferType is "queue" and transferTargetQueueId is present', () => {
+            const result = getTransferTargetVoiceCallSubject({
+                transferType: 'queue',
+                transferTargetQueueId: 456,
+            } as VoiceCallSummary)
+
+            expect(result).toEqual({
+                type: VoiceCallSubjectType.Queue,
+                id: 456,
+            })
+        })
+
+        it.each([
+            {
+                transferType: 'agent',
+            },
+            {
+                transferType: 'external',
+            },
+            {
+                transferType: 'queue',
+            },
+            {
+                transferType: null,
+                transferTargetAgentId: 123,
+                transferTargetExternalNumber: '+1234567890',
+                transferTargetQueueId: 456,
+            },
+        ])(
+            'should return null when transfer data is incomplete or malformed',
+            (voiceCall) => {
+                const result = getTransferTargetVoiceCallSubject(
+                    voiceCall as VoiceCallSummary,
+                )
+
+                expect(result).toBeNull()
+            },
+        )
     })
 })

@@ -12,6 +12,7 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { VoiceEventsByAgentDimension } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { OrderConversionDimension } from 'domains/reporting/pages/convert/clients/constants'
 import { SLAPolicyStatus } from 'domains/reporting/pages/sla/components/SlaStatusCell'
@@ -214,14 +215,26 @@ export const formatVoiceDrillDownRowData = ({
     row,
     metricField,
 }: DrillDownFormatterProps): VoiceCallDrillDownRowData => ({
-    agentId: row[VoiceCallDimension.AgentId],
+    agentId:
+        row[VoiceCallDimension.AgentId] ||
+        row[VoiceEventsByAgentDimension.AgentId],
     customerId: row[VoiceCallDimension.CustomerId],
-    direction: row[VoiceCallDimension.Direction],
-    integrationId: row[VoiceCallDimension.IntegrationId],
-    createdAt: row[VoiceCallDimension.CreatedAt],
-    status: row[VoiceCallDimension.Status],
+    direction:
+        row[VoiceCallDimension.Direction] ||
+        row[VoiceEventsByAgentDimension.Direction],
+    integrationId:
+        row[VoiceCallDimension.IntegrationId] ||
+        row[VoiceEventsByAgentDimension.IntegrationId],
+    createdAt:
+        row[VoiceCallDimension.CreatedAt] ||
+        row[VoiceEventsByAgentDimension.CreatedAt],
+    status:
+        row[VoiceCallDimension.Status] ||
+        row[VoiceEventsByAgentDimension.Status],
     duration: row[VoiceCallDimension.Duration],
-    ticketId: row[VoiceCallDimension.TicketId],
+    ticketId:
+        row[VoiceCallDimension.TicketId] ||
+        row[VoiceEventsByAgentDimension.TicketId],
     phoneNumberDestination: row[VoiceCallDimension.PhoneNumberDestination],
     phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
     talkTime: row[VoiceCallDimension.TalkTime],
@@ -233,6 +246,13 @@ export const formatVoiceDrillDownRowData = ({
     displayStatus: row[VoiceCallDimension.DisplayStatus],
     queueId: row[VoiceCallDimension.QueueId],
     queueName: row[VoiceCallDimension.QueueName],
+    transferType: row[VoiceEventsByAgentDimension.TransferType],
+    transferTargetAgentId:
+        row[VoiceEventsByAgentDimension.TransferTargetAgentId],
+    transferTargetQueueId:
+        row[VoiceEventsByAgentDimension.TransferTargetQueueId],
+    transferTargetExternalNumber:
+        row[VoiceEventsByAgentDimension.TransferTargetExternalNumber],
     metricValue: row[metricField],
     rowData: row,
 })

@@ -2,7 +2,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import {
     skeletonColumnsWidth,
-    VoiceCallTableColumnName,
+    VoiceCallTableColumn,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import { useVoiceQueueContext } from 'domains/reporting/pages/voice/hooks/useVoiceQueueContext'
 
@@ -21,7 +21,7 @@ function VoiceQueueLabel({ queueId, queueName }: Props) {
         return (
             <Skeleton
                 inline
-                width={skeletonColumnsWidth[VoiceCallTableColumnName.Queue]}
+                width={skeletonColumnsWidth[VoiceCallTableColumn.Queue]}
                 containerTestId={LOADING_TEST_ID}
             />
         )

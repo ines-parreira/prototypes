@@ -7,9 +7,13 @@ import { TruncateCellContent } from 'domains/reporting/pages/common/components/T
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
 import VoiceCallActivity from 'domains/reporting/pages/voice/components/VoiceCallActivity/VoiceCallActivity'
 import VoiceCallRecording from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import {
+    VoiceCallTableColumn,
+    voiceCallTableColumnName,
+} from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import { filterAndOrderCells } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
+import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
 import {
     isInboundVoiceCallSummary,
     VoiceCallSummary,
@@ -28,43 +32,55 @@ export const getOrderedHeaderCells = ({
     columns,
     ongoingTimeColumnTitle,
 }: {
-    columns?: VoiceCallTableColumnName[]
+    columns?: VoiceCallTableColumn[]
     isTableScrolled: boolean
     ongoingTimeColumnTitle?: string
 }) => {
     const headerCells: Record<
-        VoiceCallTableColumnName,
+        VoiceCallTableColumn,
         { props: ComponentProps<typeof HeaderCellProperty> }
     > = {
-        [VoiceCallTableColumnName.Activity]: {
+        [VoiceCallTableColumn.Activity]: {
             props: {
-                title: VoiceCallTableColumnName.Activity,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Activity],
                 className: classNames(css.activityCell, {
                     [css.withShadow]: isTableScrolled,
                 }),
             },
         },
-        [VoiceCallTableColumnName.Integration]: {
+        [VoiceCallTableColumn.TransferActivity]: {
             props: {
-                title: VoiceCallTableColumnName.Integration,
+                title: voiceCallTableColumnName[
+                    VoiceCallTableColumn.TransferActivity
+                ],
+                className: classNames(css.transferActivityCell, {
+                    [css.withShadow]: isTableScrolled,
+                }),
+            },
+        },
+        [VoiceCallTableColumn.Integration]: {
+            props: {
+                title: voiceCallTableColumnName[
+                    VoiceCallTableColumn.Integration
+                ],
                 className: css.integrationCell,
             },
         },
-        [VoiceCallTableColumnName.Queue]: {
+        [VoiceCallTableColumn.Queue]: {
             props: {
-                title: VoiceCallTableColumnName.Queue,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Queue],
                 className: css.integrationCell,
             },
         },
-        [VoiceCallTableColumnName.Date]: {
+        [VoiceCallTableColumn.Date]: {
             props: {
-                title: VoiceCallTableColumnName.Date,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Date],
                 className: css.dateCell,
             },
         },
-        [VoiceCallTableColumnName.State]: {
+        [VoiceCallTableColumn.State]: {
             props: {
-                title: VoiceCallTableColumnName.State,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.State],
                 className: css.tinyCell,
                 tooltip: (
                     <>
@@ -81,24 +97,24 @@ export const getOrderedHeaderCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Recording]: {
+        [VoiceCallTableColumn.Recording]: {
             props: {
-                title: VoiceCallTableColumnName.Recording,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Recording],
                 className: css.smallCell,
                 tooltip: 'Call recording or voicemail left by customer.',
             },
         },
-        [VoiceCallTableColumnName.Duration]: {
+        [VoiceCallTableColumn.Duration]: {
             props: {
-                title: VoiceCallTableColumnName.Duration,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Duration],
                 justifyContent: 'right',
                 wrapContent: true,
                 className: css.tinyCell,
             },
         },
-        [VoiceCallTableColumnName.TalkTime]: {
+        [VoiceCallTableColumn.TalkTime]: {
             props: {
-                title: VoiceCallTableColumnName.TalkTime,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.TalkTime],
                 justifyContent: 'right',
                 wrapContent: true,
                 className: css.tinyCell,
@@ -106,9 +122,9 @@ export const getOrderedHeaderCells = ({
                     'Total duration from the moment the agent accepts the call.',
             },
         },
-        [VoiceCallTableColumnName.WaitTime]: {
+        [VoiceCallTableColumn.WaitTime]: {
             props: {
-                title: VoiceCallTableColumnName.WaitTime,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.WaitTime],
                 justifyContent: 'right',
                 wrapContent: true,
                 className: css.smallCell,
@@ -116,23 +132,25 @@ export const getOrderedHeaderCells = ({
                     'Time a customer spent waiting to be connected to an agent or sent to voicemail.',
             },
         },
-        [VoiceCallTableColumnName.Ticket]: {
+        [VoiceCallTableColumn.Ticket]: {
             props: {
-                title: VoiceCallTableColumnName.Ticket,
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Ticket],
                 className: css.ticketCell,
             },
         },
-        [VoiceCallTableColumnName.OngoingTime]: {
+        [VoiceCallTableColumn.OngoingTime]: {
             props: {
                 title:
                     ongoingTimeColumnTitle ??
-                    VoiceCallTableColumnName.OngoingTime,
+                    voiceCallTableColumnName[VoiceCallTableColumn.OngoingTime],
                 className: css.smallCell,
             },
         },
-        [VoiceCallTableColumnName.LiveStatus]: {
+        [VoiceCallTableColumn.LiveStatus]: {
             props: {
-                title: VoiceCallTableColumnName.LiveStatus,
+                title: voiceCallTableColumnName[
+                    VoiceCallTableColumn.LiveStatus
+                ],
                 className: css.smallCell,
             },
         },
@@ -148,15 +166,15 @@ export const getOrderedCells = ({
     isRecordingDownloadable,
 }: {
     item: VoiceCallSummary
-    columns?: VoiceCallTableColumnName[]
+    columns?: VoiceCallTableColumn[]
     isTableScrolled: boolean
     isRecordingDownloadable?: boolean
 }) => {
     const cells: Record<
-        VoiceCallTableColumnName,
+        VoiceCallTableColumn,
         { props: ComponentProps<typeof BodyCell> }
     > = {
-        [VoiceCallTableColumnName.Activity]: {
+        [VoiceCallTableColumn.Activity]: {
             props: {
                 className: classNames(css.activityCell, {
                     [css.withShadow]: isTableScrolled,
@@ -164,7 +182,15 @@ export const getOrderedCells = ({
                 children: <VoiceCallActivity voiceCall={item} />,
             },
         },
-        [VoiceCallTableColumnName.Integration]: {
+        [VoiceCallTableColumn.TransferActivity]: {
+            props: {
+                className: classNames(css.transferActivityCell, {
+                    [css.withShadow]: isTableScrolled,
+                }),
+                children: <VoiceCallTransferActivity voiceCall={item} />,
+            },
+        },
+        [VoiceCallTableColumn.Integration]: {
             props: {
                 className: css.integrationCell,
                 children: (
@@ -189,7 +215,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Queue]: {
+        [VoiceCallTableColumn.Queue]: {
             props: {
                 className: css.integrationCell,
                 children: (
@@ -210,7 +236,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Date]: {
+        [VoiceCallTableColumn.Date]: {
             props: {
                 className: css.dateCell,
                 children: (
@@ -221,7 +247,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.State]: {
+        [VoiceCallTableColumn.State]: {
             props: {
                 className: css.tinyCell,
                 children: (
@@ -229,7 +255,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Recording]: {
+        [VoiceCallTableColumn.Recording]: {
             props: {
                 className: css.smallCell,
                 children: (
@@ -240,7 +266,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Duration]: {
+        [VoiceCallTableColumn.Duration]: {
             props: {
                 className: css.tinyCell,
                 justifyContent: 'right',
@@ -253,7 +279,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.TalkTime]: {
+        [VoiceCallTableColumn.TalkTime]: {
             props: {
                 className: css.smallCell,
                 justifyContent: 'right',
@@ -266,7 +292,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.WaitTime]: {
+        [VoiceCallTableColumn.WaitTime]: {
             props: {
                 className: css.smallCell,
                 justifyContent: 'right',
@@ -279,7 +305,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Ticket]: {
+        [VoiceCallTableColumn.Ticket]: {
             props: {
                 className: css.ticketCell,
                 children: (
@@ -298,7 +324,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.OngoingTime]: {
+        [VoiceCallTableColumn.OngoingTime]: {
             props: {
                 className: css.smallCell,
                 children: (
@@ -312,7 +338,7 @@ export const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.LiveStatus]: {
+        [VoiceCallTableColumn.LiveStatus]: {
             props: {
                 className: css.smallCell,
                 children: (

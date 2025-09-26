@@ -11,6 +11,7 @@ import { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/
 import { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { VoiceEventsByAgentCube } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
 export enum JobStatus {
@@ -70,6 +71,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube
+    | VoiceEventsByAgentCube
     | TicketTagsEnrichedCube
     | TicketMessagesEnrichedResponseTimes
     | AiSalesAgentConversationsCube

@@ -1,5 +1,5 @@
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import {
     filterAndOrderCells,
     getVoiceDrillDownColumns,
@@ -23,7 +23,7 @@ describe('utils', () => {
 
             const result = filterAndOrderCells(
                 allColumns as any,
-                requiredColumns as VoiceCallTableColumnName[],
+                requiredColumns as VoiceCallTableColumn[],
             )
 
             expect(result).toEqual([
@@ -41,12 +41,12 @@ describe('utils', () => {
             const result = getVoiceDrillDownColumns(metric)
 
             expect(result).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ])
         })
 
@@ -57,12 +57,12 @@ describe('utils', () => {
             const result = getVoiceDrillDownColumns(metric)
 
             expect(result).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ])
         })
 
@@ -80,12 +80,27 @@ describe('utils', () => {
             const result = getVoiceDrillDownColumns(metric)
 
             expect(result).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+            ])
+        })
+
+        it('should return the correct columns for AgentInboundTransferredCalls', () => {
+            const result = getVoiceDrillDownColumns(
+                VoiceAgentsMetric.AgentInboundTransferredCalls,
+            )
+
+            expect(result).toEqual([
+                VoiceCallTableColumn.TransferActivity,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ])
         })
 
@@ -95,12 +110,12 @@ describe('utils', () => {
             )
 
             expect(result).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.TalkTime,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.TalkTime,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
             ])
         })
 
@@ -108,33 +123,33 @@ describe('utils', () => {
             const result = getVoiceDrillDownColumns()
 
             expect(result).toEqual([
-                VoiceCallTableColumnName.Activity,
-                VoiceCallTableColumnName.Integration,
-                VoiceCallTableColumnName.Queue,
-                VoiceCallTableColumnName.Date,
-                VoiceCallTableColumnName.State,
-                VoiceCallTableColumnName.Recording,
-                VoiceCallTableColumnName.Duration,
-                VoiceCallTableColumnName.WaitTime,
-                VoiceCallTableColumnName.Ticket,
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Queue,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.WaitTime,
+                VoiceCallTableColumn.Ticket,
             ])
         })
     })
 
     describe('voiceCallTableColumnNameToDimension', () => {
         it.each([
-            [VoiceCallTableColumnName.Activity, undefined],
+            [VoiceCallTableColumn.Activity, undefined],
             [
-                VoiceCallTableColumnName.Integration,
+                VoiceCallTableColumn.Integration,
                 VoiceCallDimension.IntegrationId,
             ],
-            [VoiceCallTableColumnName.Date, VoiceCallDimension.CreatedAt],
-            [VoiceCallTableColumnName.State, VoiceCallDimension.DisplayStatus],
-            [VoiceCallTableColumnName.Duration, VoiceCallDimension.Duration],
-            [VoiceCallTableColumnName.WaitTime, VoiceCallDimension.WaitTime],
-            [VoiceCallTableColumnName.Ticket, VoiceCallDimension.TicketId],
-            [VoiceCallTableColumnName.TalkTime, VoiceCallDimension.TalkTime],
-            [VoiceCallTableColumnName.OngoingTime, VoiceCallDimension.Duration],
+            [VoiceCallTableColumn.Date, VoiceCallDimension.CreatedAt],
+            [VoiceCallTableColumn.State, VoiceCallDimension.DisplayStatus],
+            [VoiceCallTableColumn.Duration, VoiceCallDimension.Duration],
+            [VoiceCallTableColumn.WaitTime, VoiceCallDimension.WaitTime],
+            [VoiceCallTableColumn.Ticket, VoiceCallDimension.TicketId],
+            [VoiceCallTableColumn.TalkTime, VoiceCallDimension.TalkTime],
+            [VoiceCallTableColumn.OngoingTime, VoiceCallDimension.Duration],
         ])(
             'should return the correct dimension for %s',
             (columnName, dimension) => {
@@ -147,10 +162,10 @@ describe('utils', () => {
 
     describe('isVoiceCallTableColumnSortable', () => {
         it.each([
-            VoiceCallTableColumnName.Activity,
-            VoiceCallTableColumnName.Integration,
-            VoiceCallTableColumnName.Recording,
-            VoiceCallTableColumnName.Ticket,
+            VoiceCallTableColumn.Activity,
+            VoiceCallTableColumn.Integration,
+            VoiceCallTableColumn.Recording,
+            VoiceCallTableColumn.Ticket,
         ])('should return false for %s', (columnName) => {
             const result = isVoiceCallTableColumnSortable(columnName)
 
@@ -158,12 +173,12 @@ describe('utils', () => {
         })
 
         it.each([
-            VoiceCallTableColumnName.Date,
-            VoiceCallTableColumnName.Duration,
-            VoiceCallTableColumnName.WaitTime,
-            VoiceCallTableColumnName.TalkTime,
-            VoiceCallTableColumnName.OngoingTime,
-            VoiceCallTableColumnName.State,
+            VoiceCallTableColumn.Date,
+            VoiceCallTableColumn.Duration,
+            VoiceCallTableColumn.WaitTime,
+            VoiceCallTableColumn.TalkTime,
+            VoiceCallTableColumn.OngoingTime,
+            VoiceCallTableColumn.State,
         ])('should return true for %s', (columnName) => {
             const result = isVoiceCallTableColumnSortable(columnName)
 

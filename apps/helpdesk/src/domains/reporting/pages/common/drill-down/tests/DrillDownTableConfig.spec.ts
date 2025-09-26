@@ -69,6 +69,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceAgentsMetric.AgentInboundMissedCalls,
     VoiceAgentsMetric.AgentOutboundCalls,
     VoiceAgentsMetric.AgentAverageTalkTime,
+    VoiceAgentsMetric.AgentInboundTransferredCalls,
     AiSalesAgentChart.AiSalesAgentSuccessRate,
     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
     AiSalesAgentChart.AiSalesAgentTotalSalesConv,

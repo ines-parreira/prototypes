@@ -3,6 +3,7 @@ import moment from 'moment'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getMoment, stringToDatetime } from 'utils/date'
 
 import {
@@ -246,4 +247,31 @@ export const isCallTransfer = (voiceCall: VoiceCall) => {
             voiceCall.status === VoiceCallStatus.Queued
         )
     }
+}
+
+export const getTransferTargetVoiceCallSubject = (
+    voiceCall: VoiceCallSummary,
+): VoiceCallSubject | null => {
+    if (voiceCall.transferType === 'agent' && voiceCall.transferTargetAgentId) {
+        return {
+            type: VoiceCallSubjectType.Agent,
+            id: voiceCall.transferTargetAgentId,
+        }
+    }
+    if (
+        voiceCall.transferType === 'external' &&
+        voiceCall.transferTargetExternalNumber
+    ) {
+        return {
+            type: VoiceCallSubjectType.External,
+            value: voiceCall.transferTargetExternalNumber,
+        }
+    }
+    if (voiceCall.transferType === 'queue' && voiceCall.transferTargetQueueId) {
+        return {
+            type: VoiceCallSubjectType.Queue,
+            id: voiceCall.transferTargetQueueId,
+        }
+    }
+    return null
 }

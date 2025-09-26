@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import VoiceQueueProvider from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
@@ -134,15 +134,15 @@ const data = [
 ]
 
 const columns = [
-    VoiceCallTableColumnName.Activity,
-    VoiceCallTableColumnName.Integration,
-    VoiceCallTableColumnName.Queue,
-    VoiceCallTableColumnName.Date,
-    VoiceCallTableColumnName.State,
-    VoiceCallTableColumnName.Recording,
-    VoiceCallTableColumnName.Duration,
-    VoiceCallTableColumnName.WaitTime,
-    VoiceCallTableColumnName.Ticket,
+    VoiceCallTableColumn.Activity,
+    VoiceCallTableColumn.Integration,
+    VoiceCallTableColumn.Queue,
+    VoiceCallTableColumn.Date,
+    VoiceCallTableColumn.State,
+    VoiceCallTableColumn.Recording,
+    VoiceCallTableColumn.Duration,
+    VoiceCallTableColumn.WaitTime,
+    VoiceCallTableColumn.Ticket,
 ]
 
 describe('VoiceCallTableContent', () => {
@@ -305,7 +305,7 @@ describe('VoiceCallTableContent', () => {
         const { getByText } = renderComponent({
             data,
             isFetching: false,
-            columns: [VoiceCallTableColumnName.Activity],
+            columns: [VoiceCallTableColumn.Activity],
             onColumnClick,
         })
 
@@ -357,12 +357,10 @@ describe('VoiceCallTableContent', () => {
             const { queryByText } = renderComponent({
                 data: [{}] as VoiceCallSummary[],
                 isFetching: false,
-                columns: [VoiceCallTableColumnName.Queue],
+                columns: [VoiceCallTableColumn.Queue],
             })
 
-            expect(
-                queryByText(VoiceCallTableColumnName.Queue),
-            ).toBeInTheDocument()
+            expect(queryByText(VoiceCallTableColumn.Queue)).toBeInTheDocument()
         })
     })
 })

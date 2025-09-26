@@ -4,6 +4,7 @@ import {
 } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { VoiceEventsByAgentDimension } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import {
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
@@ -58,6 +59,65 @@ describe('DrillDownFormatters', () => {
                 callRecordingAvailable: 'callRecordingAvailable',
                 callRecordingUrl: 'callRecordingUrl',
                 metricValue: 'metricField',
+                rowData: row,
+            })
+        })
+
+        it('should return the formatted row data from VoiceEventsByAgent', () => {
+            const row = {
+                [VoiceEventsByAgentDimension.AgentId]: 'agentId',
+                [VoiceCallDimension.CustomerId]: 'customerId',
+                [VoiceEventsByAgentDimension.Direction]: 'direction',
+                [VoiceEventsByAgentDimension.IntegrationId]: 'integrationId',
+                [VoiceEventsByAgentDimension.CreatedAt]: 'createdAt',
+                [VoiceEventsByAgentDimension.Status]: 'status',
+                [VoiceCallDimension.Duration]: 'duration',
+                [VoiceEventsByAgentDimension.TicketId]: 'ticketId',
+                [VoiceCallDimension.PhoneNumberDestination]:
+                    'phoneNumberDestination',
+                [VoiceCallDimension.PhoneNumberSource]: 'phoneNumberSource',
+                [VoiceCallDimension.TalkTime]: 'talkTime',
+                [VoiceCallDimension.WaitTime]: 'waitTime',
+                [VoiceCallDimension.VoicemailAvailable]: 'voicemailAvailable',
+                [VoiceCallDimension.VoicemailUrl]: 'voicemailUrl',
+                [VoiceCallDimension.CallRecordingAvailable]:
+                    'callRecordingAvailable',
+                [VoiceCallDimension.CallRecordingUrl]: 'callRecordingUrl',
+                [VoiceEventsByAgentDimension.TransferType]: 'transferType',
+                [VoiceEventsByAgentDimension.TransferTargetAgentId]: 'agentId',
+                [VoiceEventsByAgentDimension.TransferTargetQueueId]: 'queueId',
+                [VoiceEventsByAgentDimension.TransferTargetExternalNumber]:
+                    'externalNumber',
+                metricField: 'metricField',
+            }
+
+            const result = formatVoiceDrillDownRowData({
+                row,
+                metricField: 'metricField',
+            })
+
+            expect(result).toEqual({
+                agentId: 'agentId',
+                customerId: 'customerId',
+                direction: 'direction',
+                integrationId: 'integrationId',
+                createdAt: 'createdAt',
+                status: 'status',
+                duration: 'duration',
+                ticketId: 'ticketId',
+                phoneNumberDestination: 'phoneNumberDestination',
+                phoneNumberSource: 'phoneNumberSource',
+                talkTime: 'talkTime',
+                waitTime: 'waitTime',
+                voicemailAvailable: 'voicemailAvailable',
+                voicemailUrl: 'voicemailUrl',
+                callRecordingAvailable: 'callRecordingAvailable',
+                callRecordingUrl: 'callRecordingUrl',
+                metricValue: 'metricField',
+                transferType: 'transferType',
+                transferTargetAgentId: 'agentId',
+                transferTargetQueueId: 'queueId',
+                transferTargetExternalNumber: 'externalNumber',
                 rowData: row,
             })
         })

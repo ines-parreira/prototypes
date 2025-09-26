@@ -1,5 +1,8 @@
 import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
-import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+import {
+    VoiceCallStatus,
+    VoiceCallTransferReceiverType,
+} from '@gorgias/helpdesk-types'
 
 import {
     VoiceCallDimension,
@@ -52,6 +55,10 @@ export type VoiceCallSummary = {
     displayStatus: VoiceCallDisplayStatus | null
     queueId: number | null
     queueName?: string | null
+    transferType?: VoiceCallTransferReceiverType | null
+    transferTargetAgentId?: number | null
+    transferTargetExternalNumber?: string | null
+    transferTargetQueueId?: number | null
 }
 
 export enum VoiceCallFilterDirection {

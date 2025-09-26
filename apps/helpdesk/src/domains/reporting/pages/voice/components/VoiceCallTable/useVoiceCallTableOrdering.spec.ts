@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
@@ -13,7 +13,7 @@ const render = () => renderHook(() => useVoiceCallTableOrdering())
 
 describe('useVoiceCallTableOrdering', () => {
     const useOrderByMockValue: ReturnType<typeof useOrderBy> = {
-        orderBy: VoiceCallTableColumnName.Date,
+        orderBy: VoiceCallTableColumn.Date,
         toggleOrderBy: jest.fn(),
         orderDirection: OrderDirection.Desc,
         orderParam: null,
@@ -27,20 +27,18 @@ describe('useVoiceCallTableOrdering', () => {
         const { result } = render()
 
         expect(mockUseOrderBy).toHaveBeenCalledWith(
-            VoiceCallTableColumnName.Date,
+            VoiceCallTableColumn.Date,
             OrderDirection.Desc,
         )
 
-        expect(result.current.orderByColumnName).toBe(
-            VoiceCallTableColumnName.Date,
-        )
+        expect(result.current.orderByColumnName).toBe(VoiceCallTableColumn.Date)
         expect(result.current.orderDirection).toBe(OrderDirection.Desc)
         expect(result.current.orderByDimension).toBeDefined()
     })
 
     it('should call toggleOrderBy when onOrderChange is called with a sortable column', () => {
         const { result } = render()
-        const column = VoiceCallTableColumnName.Date
+        const column = VoiceCallTableColumn.Date
 
         act(() => {
             result.current.onOrderChange(column)
@@ -52,7 +50,7 @@ describe('useVoiceCallTableOrdering', () => {
 
     it('should not call toggleOrderBy when onOrderChange is called with a non-sortable column', () => {
         const { result } = render()
-        const column = VoiceCallTableColumnName.Activity
+        const column = VoiceCallTableColumn.Activity
 
         act(() => {
             result.current.onOrderChange(column)
@@ -62,14 +60,14 @@ describe('useVoiceCallTableOrdering', () => {
     })
 
     it.each([
-        VoiceCallTableColumnName.Date,
-        VoiceCallTableColumnName.State,
-        VoiceCallTableColumnName.Duration,
-        VoiceCallTableColumnName.WaitTime,
-        VoiceCallTableColumnName.TalkTime,
-        VoiceCallTableColumnName.OngoingTime,
-        VoiceCallTableColumnName.LiveStatus,
-    ])('should allow ordering by %s', (column: VoiceCallTableColumnName) => {
+        VoiceCallTableColumn.Date,
+        VoiceCallTableColumn.State,
+        VoiceCallTableColumn.Duration,
+        VoiceCallTableColumn.WaitTime,
+        VoiceCallTableColumn.TalkTime,
+        VoiceCallTableColumn.OngoingTime,
+        VoiceCallTableColumn.LiveStatus,
+    ])('should allow ordering by %s', (column: VoiceCallTableColumn) => {
         const { result } = render()
 
         act(() => {

@@ -427,6 +427,8 @@ export const METRIC_NAMES = {
         'voice-transferred-inbound-calls-count',
     VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT:
         'voice-transferred-inbound-calls-count-per-agent',
+    VOICE_TRANSFERRED_INBOUND_CALLS_PER_AGENT:
+        'voice-transferred-inbound-calls-per-agent',
 
     // Voice of Customer
     VOICE_OF_CUSTOMER_RETURN_MENTIONS_PER_PRODUCT:

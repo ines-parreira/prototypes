@@ -46,6 +46,7 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import { transferredInboundVoiceCallsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import {
     Sentiment,
     StatsFilters,
@@ -149,6 +150,7 @@ const ticketCountForIntentDrillDownQueryFactoryMock = assumeMock(
 )
 
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')
+jest.mock('domains/reporting/models/queryFactories/voice/voiceEventsByAgent')
 jest.mock(
     'domains/reporting/pages/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory',
 )
@@ -180,6 +182,9 @@ const waitingTimeCallsListQueryFactoryMock = assumeMock(
     waitingTimeCallsListQueryFactory,
 )
 const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
+const voiceEventsByAgentVoiceCallListQueryFactoryMock = assumeMock(
+    transferredInboundVoiceCallsPerAgentQueryFactory,
+)
 const liveDashboardVoiceCallListQueryFactoryMock = assumeMock(
     liveDashBoardVoiceCallListQueryFactory,
 )
@@ -490,6 +495,10 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: VoiceAgentsMetric.AgentAverageTalkTime,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentInboundTransferredCalls,
             perAgentId: 123,
         },
     ]
@@ -819,6 +828,25 @@ describe('getDrillDownQuery', () => {
             expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
         },
     )
+
+    it('should call voiceEventsByAgentVoiceCallListQueryFactory for AgentInboundTransferredCalls', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: VoiceAgentsMetric.AgentInboundTransferredCalls,
+            perAgentId: 123,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            voiceEventsByAgentVoiceCallListQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                agents: withDefaultLogicalOperator([123]),
+            }),
+            timezone,
+        )
+    })
 
     it.each([
         {

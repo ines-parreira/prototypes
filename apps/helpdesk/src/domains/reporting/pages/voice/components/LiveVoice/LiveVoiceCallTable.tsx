@@ -12,7 +12,7 @@ import {
     liveVoiceCallTableColumns,
     orderLiveVoiceCallsByOngoingTime,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { LIVE_VOICE_CALLS_TITLE } from 'domains/reporting/pages/voice/constants/liveVoice'
 import useOrderBy from 'hooks/useOrderBy'
@@ -29,8 +29,8 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
         LiveVoiceStatusFilterOption.ALL,
     )
     const { orderBy, orderDirection, toggleOrderBy } =
-        useOrderBy<VoiceCallTableColumnName>(
-            VoiceCallTableColumnName.OngoingTime,
+        useOrderBy<VoiceCallTableColumn>(
+            VoiceCallTableColumn.OngoingTime,
             OrderDirection.Asc,
         )
 
@@ -52,8 +52,8 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
         setStatusFilter(status)
     }
 
-    const handleTableColumnClick = (column: VoiceCallTableColumnName) => {
-        if (column !== VoiceCallTableColumnName.OngoingTime) {
+    const handleTableColumnClick = (column: VoiceCallTableColumn) => {
+        if (column !== VoiceCallTableColumn.OngoingTime) {
             return
         }
 

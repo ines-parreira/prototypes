@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
@@ -75,15 +75,15 @@ export const VoiceCallTable = ({
                 orderDirection={orderDirection}
                 onColumnClick={onOrderChange}
                 columns={[
-                    VoiceCallTableColumnName.Activity,
-                    VoiceCallTableColumnName.Integration,
-                    VoiceCallTableColumnName.Queue,
-                    VoiceCallTableColumnName.Date,
-                    VoiceCallTableColumnName.State,
-                    VoiceCallTableColumnName.Recording,
-                    VoiceCallTableColumnName.Duration,
-                    VoiceCallTableColumnName.WaitTime,
-                    VoiceCallTableColumnName.Ticket,
+                    VoiceCallTableColumn.Activity,
+                    VoiceCallTableColumn.Integration,
+                    VoiceCallTableColumn.Queue,
+                    VoiceCallTableColumn.Date,
+                    VoiceCallTableColumn.State,
+                    VoiceCallTableColumn.Recording,
+                    VoiceCallTableColumn.Duration,
+                    VoiceCallTableColumn.WaitTime,
+                    VoiceCallTableColumn.Ticket,
                 ]}
             />
             {totalPages > 1 && (

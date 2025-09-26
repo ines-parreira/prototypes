@@ -3,6 +3,7 @@ import {
     connectedCallsListQueryFactory,
     voiceCallListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import { transferredInboundVoiceCallsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     Domain,
@@ -56,6 +57,16 @@ export const VoiceAgentsMetricsConfig: Record<
                 statsFilters,
                 timezone,
                 VoiceCallSegment.outboundCalls,
+            ),
+        title: '',
+    },
+    [VoiceAgentsMetric.AgentInboundTransferredCalls]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
+            transferredInboundVoiceCallsPerAgentQueryFactory(
+                statsFilters,
+                timezone,
             ),
         title: '',
     },

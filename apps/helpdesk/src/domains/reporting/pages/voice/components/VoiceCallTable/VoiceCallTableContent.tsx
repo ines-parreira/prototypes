@@ -8,7 +8,7 @@ import { Skeleton } from '@gorgias/axiom'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import {
     skeletonColumnsWidth,
-    VoiceCallTableColumnName,
+    VoiceCallTableColumn,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import { Cell } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
@@ -30,16 +30,16 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 type VoiceCallTableContentProps = {
     data?: VoiceCallSummary[]
     isFetching: boolean
-    columns: VoiceCallTableColumnName[]
+    columns: VoiceCallTableColumn[]
     onRowClick?: (voiceCall: VoiceCallSummary) => void
     isRecordingDownloadable?: boolean
     useMeasuredWidth?: boolean
     noDataTitle?: string
     noDataDescription?: string
     ongoingTimeColumnTitle?: string
-    orderBy?: VoiceCallTableColumnName
+    orderBy?: VoiceCallTableColumn
     orderDirection?: OrderDirection
-    onColumnClick?: (column: VoiceCallTableColumnName) => void
+    onColumnClick?: (column: VoiceCallTableColumn) => void
 }
 
 export default function VoiceCallTableContent({
@@ -81,15 +81,15 @@ export default function VoiceCallTableContent({
                     <BodyCell
                         key={key}
                         justifyContent={
-                            key === VoiceCallTableColumnName.Duration ||
-                            key === VoiceCallTableColumnName.WaitTime
+                            key === VoiceCallTableColumn.Duration ||
+                            key === VoiceCallTableColumn.WaitTime
                                 ? 'right'
                                 : 'left'
                         }
                         className={classNames({
                             [css.withShadow]:
                                 isTableScrolled &&
-                                key === VoiceCallTableColumnName.Activity,
+                                key === VoiceCallTableColumn.Activity,
                         })}
                     >
                         <Skeleton inline width={width} />

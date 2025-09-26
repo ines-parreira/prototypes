@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
@@ -14,6 +15,7 @@ import {
     declinedVoiceCallsCountQueryFactory,
     transferredInboundVoiceCallsCountPerAgentQueryFactory,
     transferredInboundVoiceCallsCountQueryFactory,
+    transferredInboundVoiceCallsPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import {
     StatsFilters,
@@ -226,14 +228,63 @@ describe('voice events by agent factories', () => {
         })
     })
 
-    it.each([
-        declinedVoiceCallsCountPerAgentQueryFactory,
-        declinedVoiceCallsCountQueryFactory,
-        transferredInboundVoiceCallsCountPerAgentQueryFactory,
-        transferredInboundVoiceCallsCountQueryFactory,
-    ])(
-        'should append ticket period filters when requesting tags',
-        (factory) => {
+    it('voiceEventsByAgentVoiceCallListQueryFactory should create a query with sorting', () => {
+        const query = transferredInboundVoiceCallsPerAgentQueryFactory(
+            statsFilters,
+            'UTC',
+        )
+
+        expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_PER_AGENT,
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [
+                VoiceEventsByAgentDimension.AgentId,
+                VoiceEventsByAgentDimension.IntegrationId,
+                VoiceEventsByAgentDimension.CreatedAt,
+                VoiceEventsByAgentDimension.TicketId,
+                VoiceEventsByAgentDimension.TransferType,
+                VoiceEventsByAgentDimension.TransferTargetAgentId,
+                VoiceEventsByAgentDimension.TransferTargetExternalNumber,
+                VoiceEventsByAgentDimension.TransferTargetQueueId,
+                VoiceCallDimension.Duration,
+                VoiceCallDimension.DisplayStatus,
+                VoiceCallDimension.CallRecordingAvailable,
+                VoiceCallDimension.CallRecordingUrl,
+            ],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.transferredInboundCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+            order: [
+                [VoiceEventsByAgentDimension.CreatedAt, OrderDirection.Desc],
+            ],
+        })
+    })
+
+    it.each(
+        [
+            declinedVoiceCallsCountPerAgentQueryFactory,
+            declinedVoiceCallsCountQueryFactory,
+            transferredInboundVoiceCallsCountPerAgentQueryFactory,
+            transferredInboundVoiceCallsCountQueryFactory,
+            transferredInboundVoiceCallsPerAgentQueryFactory,
+        ].map((factory) => ({ factoryName: factory.name, factory })),
+    )(
+        '$factoryName should append ticket period filters when requesting tags',
+        ({ factory }) => {
             const statsFilters: StatsFilters = {
                 period: {
                     end_datetime: periodEnd,

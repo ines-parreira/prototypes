@@ -1,4 +1,4 @@
-import { VoiceCallTableColumnName } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import {
     isVoiceCallTableColumnSortable,
     voiceCallTableColumnNameToDimension,
@@ -11,8 +11,8 @@ export default function useVoiceCallTableOrdering() {
         orderBy: orderByColumnName,
         toggleOrderBy,
         orderDirection,
-    } = useOrderBy<VoiceCallTableColumnName>(
-        VoiceCallTableColumnName.Date,
+    } = useOrderBy<VoiceCallTableColumn>(
+        VoiceCallTableColumn.Date,
         OrderDirection.Desc,
     )
 
@@ -20,7 +20,7 @@ export default function useVoiceCallTableOrdering() {
         orderByColumnName &&
         voiceCallTableColumnNameToDimension(orderByColumnName)
 
-    const onOrderChange = (column: VoiceCallTableColumnName) => {
+    const onOrderChange = (column: VoiceCallTableColumn) => {
         if (isVoiceCallTableColumnSortable(column)) {
             toggleOrderBy(column)
         }
