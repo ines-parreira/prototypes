@@ -65,6 +65,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
                     error,
                     onLetterEntered,
                     onKeyDown,
+                    placeholder,
                 }: {
                     onChange: (value: string) => void
                     value: string
@@ -72,6 +73,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
                     onLetterEntered?: (value: string) => void
                     onCountryChange?: (country: CountryCode) => void
                     onKeyDown?: (e: React.KeyboardEvent) => void
+                    placeholder?: string
                 },
                 __ref: React.Ref<PhoneNumberInputHandle>,
             ) => {
@@ -88,6 +90,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
                                 }
                             }}
                             onKeyDown={onKeyDown}
+                            placeholder={placeholder}
                             data-testid="mock-phone-input"
                         />
                         <div data-testid="mock-phone-input-error">{error}</div>
@@ -161,6 +164,16 @@ describe('PhoneDeviceDialerInput', () => {
 
         expect(screen.getByTestId('mock-phone-input')).toBeInTheDocument()
         expect(screen.getByTestId('mock-dialer-body')).toBeInTheDocument()
+    })
+
+    it('renders phone number input with placeholder text', () => {
+        renderComponent()
+
+        const phoneInput = screen.getByTestId('mock-phone-input')
+        expect(phoneInput).toHaveAttribute(
+            'placeholder',
+            'Type a name or number',
+        )
     })
 
     it('calls handleChange when phone value changes', async () => {

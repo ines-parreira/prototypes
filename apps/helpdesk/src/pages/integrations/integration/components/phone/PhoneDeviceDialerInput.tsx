@@ -96,6 +96,7 @@ export default function PhoneDeviceDialerInput({
                     ref={phoneNumberInputRef}
                     onKeyDown={handleInputKeyDown}
                     suppressUIJumps
+                    placeholder="Type a name or number"
                 />
             )}
 
