@@ -1,32 +1,29 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import _get from 'lodash/get'
+import { DropdownItem } from 'reactstrap'
 
+import { Label } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import {
     VoiceMessage as ApiVoiceMessage,
-    VoiceMessageType as ApiVoiceMessageType,
     CustomRecordingType,
+    VoiceMessageType,
+    type VoiceMessageType as VoiceMessageTypeType,
 } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiResponseDataError } from 'models/api/types'
-import {
-    MAX_VOICE_RECORDING_FILE_SIZE_MB,
-    TEXT_TO_SPEECH_MAX_LENGTH,
-} from 'models/integration/constants'
-import {
-    VoiceMessage,
-    VoiceMessageTextToSpeech,
-    VoiceMessageType,
-} from 'models/integration/types'
-import RadioButton from 'pages/common/components/RadioButton'
-import Textarea from 'pages/common/forms/TextArea'
+import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
+import { VoiceMessage } from 'models/integration/types'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { countLines } from 'utils/string'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
 import VoiceRecordingInput from './VoiceRecordingInput'
 
 import css from './VoiceMessageField.less'
@@ -36,11 +33,15 @@ type Props = {
     onChange: (value: VoiceMessage) => void
     allowNone?: boolean
     maxRecordingDuration?: number
-    horizontal?: boolean
-    radioButtonId?: string
     isDisabled?: boolean
-    shouldUpload?: boolean
-    customRecordingType?: CustomRecordingType
+    customRecordingType: CustomRecordingType
+    label?: string
+}
+
+const LABELS = {
+    [VoiceMessageType.None]: 'None',
+    [VoiceMessageType.TextToSpeech]: 'Text-to-speech',
+    [VoiceMessageType.VoiceRecording]: 'Custom recording',
 }
 
 const VoiceMessageField = ({
@@ -48,17 +49,24 @@ const VoiceMessageField = ({
     onChange,
     allowNone,
     maxRecordingDuration,
-    horizontal = false,
-    radioButtonId = '',
     isDisabled = false,
-    shouldUpload = false,
     customRecordingType,
+    label,
 }: Props): JSX.Element => {
+    const floatingRef = useRef<HTMLDivElement>(null)
+    const targetRef = useRef<HTMLDivElement>(null)
+
     const dispatch = useAppDispatch()
     const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined | null
     >()
+    const [isDropdownOpened, setIsDropdownOpened] = useState(false)
+    const options: VoiceMessageType[] = [
+        VoiceMessageType.TextToSpeech,
+        VoiceMessageType.VoiceRecording,
+        ...(allowNone ? [VoiceMessageType.None] : []),
+    ]
 
     useEffect(() => {
         if (
@@ -70,23 +78,21 @@ const VoiceMessageField = ({
         }
     }, [value, voiceRecordingPath, setVoiceRecordingPath])
 
-    const handleVoiceMessageTypeChange = useCallback(
-        // TODO(React18): Remove any type
-        (type: any) => {
-            onChange({
-                ...value,
-                voice_message_type: type,
-            })
-        },
-        [value, onChange],
-    )
+    const handleVoiceMessageTypeChange = (type: VoiceMessageTypeType) => {
+        setIsDropdownOpened(false)
+        onChange({
+            text_to_speech_content: value.text_to_speech_content,
+            voice_recording_file_path: value.voice_recording_file_path,
+            voice_message_type: type,
+        })
+    }
 
     const { mutate: uploadFile, isLoading } = useUploadCustomVoiceRecording({
         mutation: {
             onSuccess: (response) => {
                 const newValue: ApiVoiceMessage = {
                     voice_recording_file_path: response.data.url,
-                    voice_message_type: ApiVoiceMessageType.VoiceRecording,
+                    voice_message_type: VoiceMessageType.VoiceRecording,
                 }
                 setVoiceRecordingPath(newValue.voice_recording_file_path)
                 onChange(newValue)
@@ -113,234 +119,80 @@ const VoiceMessageField = ({
             event,
             maxRecordingDuration,
             MAX_VOICE_RECORDING_FILE_SIZE_MB,
-            horizontal,
+            true,
         )
         if (voiceRecordingUpload) {
-            if (shouldUpload && customRecordingType) {
-                const { uploadedFile } = voiceRecordingUpload
-                const params = {
-                    type: customRecordingType,
-                }
-                uploadFile({ data: { file: uploadedFile }, params })
-            } else {
-                const { url, newVoiceFields } = voiceRecordingUpload
-                setVoiceRecordingPath(url)
-
-                const newValue: VoiceMessage = {
-                    ...value,
-                    ...newVoiceFields,
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                }
-                onChange(newValue)
+            const { uploadedFile } = voiceRecordingUpload
+            const params = {
+                type: customRecordingType,
             }
+            uploadFile({ data: { file: uploadedFile }, params })
         }
     }
 
-    if (horizontal) {
-        return (
-            <>
-                <div className={css.horizontalRadioButtons}>
-                    <TextToSpeechRadioButton
-                        selectedVoiceMessageType={value.voice_message_type}
-                        onChange={handleVoiceMessageTypeChange}
-                        id={radioButtonId}
-                        isDisabled={isDisabled}
-                    />
-                    <CustomRecordingRadioButton
-                        selectedVoiceMessageType={value.voice_message_type}
-                        onChange={handleVoiceMessageTypeChange}
-                        id={radioButtonId}
-                        isDisabled={isDisabled}
-                    />
-                    {allowNone && (
-                        <NoneRadioButton
-                            selectedVoiceMessageType={value.voice_message_type}
-                            onChange={handleVoiceMessageTypeChange}
-                            id={radioButtonId}
-                            isDisabled={isDisabled}
-                        />
-                    )}
-                </div>
-                {value.voice_message_type ===
-                    VoiceMessageType.VoiceRecording && (
-                    <VoiceRecordingInput
-                        voiceRecordingPath={voiceRecordingPath}
-                        onVoiceRecordingUpload={handleVoiceRecordingUpload}
-                        className={css.optionContentHorizontal}
-                        replaceLabel={'Replace File'}
-                        uploadLabel={'Upload File'}
-                        maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
-                        isDisabled={isDisabled}
-                        isLoading={isLoading}
-                    />
-                )}
-                {value.voice_message_type === VoiceMessageType.TextToSpeech && (
-                    <TextToSpeechRecordingInput
-                        onChange={onChange}
-                        selectedValue={value}
-                        className={css.optionContentHorizontal}
-                        isDisabled={isDisabled}
-                    />
-                )}
-            </>
-        )
-    }
-
     return (
-        <>
-            <TextToSpeechRadioButton
-                selectedVoiceMessageType={value.voice_message_type}
-                onChange={handleVoiceMessageTypeChange}
-                id={radioButtonId}
-            />
-            {value.voice_message_type === VoiceMessageType.TextToSpeech && (
-                <TextToSpeechRecordingInput
-                    onChange={onChange}
-                    selectedValue={value}
-                />
-            )}
-            <CustomRecordingRadioButton
-                selectedVoiceMessageType={value.voice_message_type}
-                onChange={handleVoiceMessageTypeChange}
-                id={radioButtonId}
-            />
+        <div>
+            <div className={css.dropdownSelect}>
+                {label && <Label className={css.label}>{label}</Label>}
+                <SelectInputBox
+                    floating={floatingRef}
+                    label={LABELS[value.voice_message_type]}
+                    onToggle={setIsDropdownOpened}
+                    onClick={() => {
+                        setIsDropdownOpened((prev) => !prev)
+                    }}
+                    ref={targetRef}
+                    aria-expanded={isDropdownOpened}
+                    aria-controls="voice-message-type-selector"
+                >
+                    <Dropdown
+                        id="voice-message-type-selector"
+                        isOpen={isDropdownOpened}
+                        onToggle={setIsDropdownOpened}
+                        ref={floatingRef}
+                        target={targetRef}
+                        value={value.voice_message_type}
+                    >
+                        <DropdownBody>
+                            {options.map((option) => (
+                                <DropdownItem
+                                    key={option}
+                                    option={{
+                                        label: LABELS[option],
+                                        value: option,
+                                    }}
+                                    onClick={() => {
+                                        handleVoiceMessageTypeChange(option)
+                                    }}
+                                    toggle={false}
+                                >
+                                    {LABELS[option]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownBody>
+                    </Dropdown>
+                </SelectInputBox>
+            </div>
             {value.voice_message_type === VoiceMessageType.VoiceRecording && (
                 <VoiceRecordingInput
                     voiceRecordingPath={voiceRecordingPath}
                     onVoiceRecordingUpload={handleVoiceRecordingUpload}
+                    className={css.optionContentHorizontal}
                     replaceLabel={'Replace File'}
                     uploadLabel={'Upload File'}
                     maxSizeInMB={MAX_VOICE_RECORDING_FILE_SIZE_MB}
                     isDisabled={isDisabled}
+                    isLoading={isLoading}
                 />
             )}
-            {allowNone && (
-                <NoneRadioButton
-                    selectedVoiceMessageType={value.voice_message_type}
-                    onChange={handleVoiceMessageTypeChange}
-                    id={radioButtonId}
+            {value.voice_message_type === VoiceMessageType.TextToSpeech && (
+                <TextToSpeechRecordingInput
+                    onChange={onChange}
+                    selectedValue={value}
+                    className={css.optionContentHorizontal}
+                    isDisabled={isDisabled}
                 />
             )}
-        </>
-    )
-}
-
-type VoiceMessageRadioButtonProps = {
-    selectedVoiceMessageType: VoiceMessageType | ApiVoiceMessageType
-    onChange: (value: string) => void
-    label?: string
-    caption?: string
-    id?: string
-    isDisabled?: boolean
-}
-
-const NoneRadioButton = ({
-    selectedVoiceMessageType,
-    onChange,
-    label = 'None',
-    id = '',
-    isDisabled = false,
-}: VoiceMessageRadioButtonProps) => {
-    return (
-        <RadioButton
-            className={css.radioButtonOption}
-            label={label}
-            value={VoiceMessageType.None}
-            isSelected={selectedVoiceMessageType === VoiceMessageType.None}
-            onChange={onChange}
-            id={`${id}${VoiceMessageType.None}`}
-            isDisabled={isDisabled}
-        />
-    )
-}
-
-const TextToSpeechRadioButton = ({
-    selectedVoiceMessageType,
-    onChange,
-    label = 'Text-to-speech',
-    id = '',
-    isDisabled = false,
-}: VoiceMessageRadioButtonProps) => {
-    return (
-        <RadioButton
-            className={css.radioButtonOption}
-            label={label}
-            value={VoiceMessageType.TextToSpeech}
-            isSelected={
-                selectedVoiceMessageType === VoiceMessageType.TextToSpeech
-            }
-            onChange={onChange}
-            id={`${id}${VoiceMessageType.TextToSpeech}`}
-            isDisabled={isDisabled}
-        />
-    )
-}
-
-const CustomRecordingRadioButton = ({
-    selectedVoiceMessageType,
-    onChange,
-    label = 'Custom recording',
-    caption = '',
-    id = '',
-    isDisabled = false,
-}: VoiceMessageRadioButtonProps) => {
-    return (
-        <RadioButton
-            className={css.radioButtonOption}
-            label={label}
-            value={VoiceMessageType.VoiceRecording}
-            isSelected={
-                selectedVoiceMessageType === VoiceMessageType.VoiceRecording
-            }
-            onChange={onChange}
-            caption={caption}
-            id={`${id}${VoiceMessageType.VoiceRecording}`}
-            isDisabled={isDisabled}
-        />
-    )
-}
-
-type PropsTextToSpeechRecordingInput = {
-    selectedValue: VoiceMessageTextToSpeech
-    onChange: (value: VoiceMessage) => void
-    className?: string
-    isDisabled?: boolean
-}
-
-const TextToSpeechRecordingInput = ({
-    selectedValue,
-    onChange,
-    className = css.optionContent,
-    isDisabled = false,
-}: PropsTextToSpeechRecordingInput) => {
-    const textToSpeechLines =
-        selectedValue.voice_message_type === VoiceMessageType.TextToSpeech &&
-        selectedValue.text_to_speech_content
-            ? countLines(selectedValue.text_to_speech_content)
-            : 0
-    const value = selectedValue.text_to_speech_content ?? ''
-    const noMessageProvided = value.length === 0
-    return (
-        <div className={className}>
-            <Textarea
-                className={css.textToSpeechTextarea}
-                maxLength={TEXT_TO_SPEECH_MAX_LENGTH}
-                value={value}
-                onChange={(message) => {
-                    onChange({
-                        ...selectedValue,
-                        text_to_speech_content: message,
-                    })
-                }}
-                rows={textToSpeechLines > 2 ? textToSpeechLines : 2}
-                placeholder={'Write a message to convert to speech'}
-                error={
-                    noMessageProvided
-                        ? 'Text-to-speech message is required'
-                        : ''
-                }
-                isDisabled={isDisabled}
-            />
         </div>
     )
 }

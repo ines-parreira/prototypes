@@ -111,8 +111,6 @@ describe('VoiceIntegrationSettingCallRecording', () => {
         expect(FormFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'meta.recording_notification',
-                shouldUpload: true,
-                radioButtonId: 'call_recording_notification',
                 maxRecordingDuration: RECORDING_NOTIFICATION_MAX_DURATION,
             }),
             {},

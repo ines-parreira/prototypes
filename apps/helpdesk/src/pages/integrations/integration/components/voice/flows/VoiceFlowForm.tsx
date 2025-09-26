@@ -48,21 +48,24 @@ function VoiceFlowForm({
         <Form
             onValidSubmit={onSubmit}
             defaultValues={getDefaultValues(defaultValues)}
-            mode="onChange"
             resetOptions={{
                 keepDirty: false,
                 keepDefaultValues: false,
                 keepDirtyValues: false,
             }}
             validator={(values: VoiceFlowFormValues) => {
-                return toFormErrors(
-                    validateCallRoutingFlow(
-                        omit(values, [
-                            'business_hours_id',
-                            'record_inbound_calls',
-                        ]),
-                    ),
-                )
+                try {
+                    return toFormErrors(
+                        validateCallRoutingFlow(
+                            omit(values, [
+                                'business_hours_id',
+                                'record_inbound_calls',
+                            ]),
+                        ),
+                    )
+                } catch {
+                    return { steps: 'An unexpected error occurred' }
+                }
             }}
         >
             <div className={css.buttonsBanner}>

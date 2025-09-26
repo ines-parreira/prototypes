@@ -165,7 +165,7 @@ describe('IvrMenuNode', () => {
             },
         })
 
-        expect(screen.getAllByText('Custom recording')).toHaveLength(2)
+        expect(screen.getByText('Custom recording')).toBeInTheDocument()
     })
 
     it('should show correct description when text_to_speech_content is empty', () => {

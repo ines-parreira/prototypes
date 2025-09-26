@@ -1,7 +1,5 @@
-import { assumeMock } from '@repo/testing'
-import { act, fireEvent, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     UploadedCustomRecording,
@@ -13,423 +11,400 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
 import { Account } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
-import { RootState, StoreDispatch } from 'state/types'
-import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceMessageField from '../VoiceMessageField'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
-
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-
-const useUploadCustomVoiceRecordingMock = assumeMock(
-    useUploadCustomVoiceRecording,
-)
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+jest.mock('../utils', () => ({
+    getAudioFileDuration: jest
+        .fn()
+        .mockRejectedValue(new Error('Invalid format')),
+}))
 
 const mutateUploadMock = jest.fn()
-const uploadResponse = () =>
+
+const uploadResponse = (isLoading = false) =>
     ({
-        isLoading: false,
+        isLoading,
         mutate: mutateUploadMock,
     }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
 
-describe('<VoiceMessageField />', () => {
-    const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
-        jest.fn()
+describe('VoiceMessageField', () => {
+    const onChange = jest.fn()
 
-    const defaultMessage = {
+    const defaultMessage: VoiceMessage = {
         voice_message_type: VoiceMessageType.TextToSpeech,
-        text_to_speech_content: 'Cannot answer right now',
+        text_to_speech_content: 'Thank you for calling',
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
         window.GORGIAS_STATE.currentAccount = {
             domain: 'acme',
         } as Account
+        ;(useUploadCustomVoiceRecording as jest.Mock).mockReturnValue(
+            uploadResponse(),
+        )
     })
 
     const renderComponent = (
         value: VoiceMessage = defaultMessage,
-        props = {},
+        props: Partial<Parameters<typeof VoiceMessageField>[0]> = {},
     ) => {
-        useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
-        return renderWithQueryClientProvider(
-            <Provider store={mockStore({})}>
-                <VoiceMessageField
-                    value={value}
-                    onChange={onChange}
-                    {...props}
-                />
-            </Provider>,
+        return renderWithStoreAndQueryClientProvider(
+            <VoiceMessageField
+                value={value}
+                onChange={onChange}
+                customRecordingType={CustomRecordingType.GreetingMessage}
+                {...props}
+            />,
         )
     }
 
-    it('should allow changing the text to speech text', () => {
-        const { container } = renderComponent()
-        const textarea = container.querySelector('textarea')
-        if (textarea) {
-            fireEvent.change(textarea, {
-                target: { value: 'Please hold' },
+    describe('Dropdown functionality', () => {
+        it('should render with default text-to-speech option', () => {
+            renderComponent()
+
+            expect(screen.getByText('Text-to-speech')).toBeInTheDocument()
+            expect(
+                screen.getByPlaceholderText(
+                    'Write a message to convert to speech',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should display label when provided', () => {
+            renderComponent(defaultMessage, { label: 'Voice Message' })
+
+            expect(screen.getByText('Voice Message')).toBeInTheDocument()
+        })
+
+        it('should toggle dropdown state when clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const dropdownButton = screen
+                .getByText('Text-to-speech')
+                .closest('[aria-expanded]')
+            expect(dropdownButton).toHaveAttribute('aria-expanded', 'false')
+
+            await act(async () => {
+                await user.click(dropdownButton!)
             })
-        }
 
-        expect(onChange).toHaveBeenCalledWith({
-            voice_message_type: VoiceMessageType.TextToSpeech,
-            text_to_speech_content: 'Please hold',
-        })
-    })
-
-    it('should allow inserting a custom recording', async () => {
-        const file = new File(['audio data'], 'example.mp3', {
-            type: 'audio/mpeg',
+            await waitFor(() => {
+                expect(dropdownButton).toHaveAttribute('aria-expanded', 'true')
+            })
         })
 
-        const defaultMessage: VoiceMessage = {
-            voice_message_type: VoiceMessageType.VoiceRecording,
-        }
-
-        const { container } = renderComponent(defaultMessage)
-
-        const input = container.querySelector('input[type="file"]')
-        if (input) {
-            fireEvent.change(input, { target: { files: [file] } })
-        }
-
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith({
+        it('should render custom recording option when selected', () => {
+            const customRecordingMessage: VoiceMessage = {
                 voice_message_type: VoiceMessageType.VoiceRecording,
-                new_voice_recording_file:
-                    'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
-                new_voice_recording_file_name: 'example.mp3',
-                new_voice_recording_file_type: 'audio/mpeg',
-            })
+            }
+            renderComponent(customRecordingMessage)
+
+            expect(screen.getByText('Custom recording')).toBeInTheDocument()
+            expect(
+                screen.queryByPlaceholderText(
+                    'Write a message to convert to speech',
+                ),
+            ).not.toBeInTheDocument()
         })
 
-        expect(container).toHaveTextContent('Supported file: .mp3 (Max 2MB)')
+        it('should render None option when selected with allowNone', () => {
+            const noneMessage: VoiceMessage = {
+                voice_message_type: VoiceMessageType.None,
+            }
+            renderComponent(noneMessage, { allowNone: true })
+
+            expect(screen.getByText('None')).toBeInTheDocument()
+            expect(
+                screen.queryByPlaceholderText(
+                    'Write a message to convert to speech',
+                ),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Upload File')).not.toBeInTheDocument()
+        })
     })
 
-    it('should validate custom recording duration if given a maxRecordingDuration prop', async () => {
-        const file = new File(['audio data'], 'example.mp3', {
-            type: 'audio/mpeg',
+    describe('Text-to-speech functionality', () => {
+        it('should display text-to-speech input when selected', () => {
+            renderComponent()
+
+            const textarea = screen.getByPlaceholderText(
+                'Write a message to convert to speech',
+            )
+            expect(textarea).toBeInTheDocument()
+            expect(textarea).toHaveValue('Thank you for calling')
         })
 
-        const defaultMessage: VoiceMessage = {
-            voice_message_type: VoiceMessageType.VoiceRecording,
-        }
+        it('should update text-to-speech content when typing', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        const { container } = renderComponent(defaultMessage, {
-            maxRecordingDuration: 5,
-        })
+            const textarea = screen.getByPlaceholderText(
+                'Write a message to convert to speech',
+            )
+            await act(async () => {
+                await user.type(textarea, 'A')
+            })
 
-        const input = container.querySelector('input[type="file"]')
-        if (input) {
-            fireEvent.change(input, { target: { files: [file] } })
-        }
-
-        await expect(
-            waitFor(() => {
-                expect(onChange).toHaveBeenCalledWith({
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    new_voice_recording_file:
-                        'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
-                    new_voice_recording_file_name: 'example.mp3',
-                    new_voice_recording_file_type: 'audio/mpeg',
+            await waitFor(() => {
+                expect(onChange).toHaveBeenLastCalledWith({
+                    voice_message_type: VoiceMessageType.TextToSpeech,
+                    text_to_speech_content: 'Thank you for callingA',
                 })
-            }),
-        ).rejects.toThrow()
-    })
-
-    it('should allow setting no voice message', () => {
-        const { getByLabelText } = renderComponent(defaultMessage, {
-            allowNone: true,
-        })
-
-        const noneOption = getByLabelText(/None/)
-        fireEvent.click(noneOption)
-
-        expect(onChange).toHaveBeenCalledWith({
-            voice_message_type: VoiceMessageType.None,
-            text_to_speech_content: 'Cannot answer right now',
-        })
-    })
-})
-
-describe('<VoiceMessageField horizontal="true" />', () => {
-    const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
-        jest.fn()
-
-    const defaultMessage = {
-        voice_message_type: VoiceMessageType.TextToSpeech,
-        text_to_speech_content: 'Cannot answer right now',
-    }
-
-    const renderComponent = ({
-        message = defaultMessage,
-        isDisabled,
-        shouldUpload = false,
-    }: {
-        message?: VoiceMessage
-        isDisabled?: boolean
-        shouldUpload?: boolean
-    } = {}) => {
-        return renderWithQueryClientProvider(
-            <Provider store={mockStore()}>
-                <VoiceMessageField
-                    value={message}
-                    onChange={onChange}
-                    allowNone
-                    horizontal={true}
-                    isDisabled={isDisabled}
-                    shouldUpload={shouldUpload}
-                    customRecordingType={
-                        CustomRecordingType.VoicemailNotification
-                    }
-                />
-            </Provider>,
-        )
-    }
-
-    beforeEach(() => {
-        jest.resetAllMocks()
-        window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
-        window.GORGIAS_STATE.currentAccount = {
-            domain: 'acme',
-        } as Account
-        useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
-    })
-
-    it('should render', () => {
-        const { getByLabelText } = renderComponent()
-        expect(getByLabelText('Text-to-speech')).toBeInTheDocument()
-        expect(getByLabelText('Custom recording')).toBeInTheDocument()
-        expect(getByLabelText('None')).toBeInTheDocument()
-    })
-
-    it('should allow changing the text to speech text', () => {
-        const { container } = renderComponent()
-        const textarea = container.querySelector('textarea')
-        if (textarea) {
-            fireEvent.change(textarea, {
-                target: { value: 'Please hold' },
             })
-        }
-
-        expect(onChange).toHaveBeenCalledWith({
-            voice_message_type: VoiceMessageType.TextToSpeech,
-            text_to_speech_content: 'Please hold',
         })
-    })
 
-    it('should allow showing the text to speech text with empty text', () => {
-        const message: VoiceMessage = {
-            voice_message_type: VoiceMessageType.TextToSpeech,
-            text_to_speech_content: null,
-        }
-        const { container, getByPlaceholderText } = renderComponent({ message })
-
-        expect(
-            getByPlaceholderText('Write a message to convert to speech'),
-        ).toBeInTheDocument()
-
-        const textarea = container.querySelector('textarea')
-        expect(textarea).toBeInTheDocument()
-        if (textarea) {
-            fireEvent.change(textarea, {
-                target: { value: 'Please hold' },
+        it('should show error when text-to-speech content is empty', () => {
+            renderComponent({
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: '',
             })
-        }
 
-        expect(onChange).toHaveBeenCalledWith({
-            voice_message_type: VoiceMessageType.TextToSpeech,
-            text_to_speech_content: 'Please hold',
+            expect(
+                screen.getByText('Text-to-speech message is required'),
+            ).toBeInTheDocument()
+        })
+
+        it('should be disabled when isDisabled is true', () => {
+            renderComponent(defaultMessage, { isDisabled: true })
+
+            const textarea = screen.getByPlaceholderText(
+                'Write a message to convert to speech',
+            )
+            expect(textarea).toBeDisabled()
         })
     })
 
-    it('should show error on no text to speech field provided', () => {
-        const message = {
-            voice_message_type: VoiceMessageType.TextToSpeech,
-        } as VoiceMessage
-        const { getByText } = renderComponent({ message })
-
-        expect(
-            getByText('Text-to-speech message is required'),
-        ).toBeInTheDocument()
-    })
-
-    it('should allow inserting a custom recording', async () => {
-        const file = new File(['audio data'], 'example.mp3', {
-            type: 'audio/mpeg',
-        })
-
-        const message: VoiceMessage = {
+    describe('Custom recording functionality', () => {
+        const customRecordingMessage: VoiceMessage = {
             voice_message_type: VoiceMessageType.VoiceRecording,
         }
 
-        const { container } = renderComponent({ message })
+        it('should display file upload when custom recording is selected', () => {
+            renderComponent(customRecordingMessage)
 
-        const input = container.querySelector('input[type="file"]')
-        expect(input).toBeInTheDocument()
-        if (input) {
-            fireEvent.change(input, { target: { files: [file] } })
-        }
-
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith({
-                voice_message_type: VoiceMessageType.VoiceRecording,
-                new_voice_recording_file:
-                    'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
-                new_voice_recording_file_name: 'example.mp3',
-                new_voice_recording_file_type: 'audio/mpeg',
-            })
+            expect(screen.getByText('Upload File')).toBeInTheDocument()
+            expect(
+                screen.getByText('Supported file: .mp3 (Max 2MB)'),
+            ).toBeInTheDocument()
         })
 
-        expect(container).toHaveTextContent('Supported file: .mp3 (Max 2MB)')
-    })
-
-    it('should allow setting no voice message', () => {
-        const { getByLabelText } = renderComponent()
-
-        const noneOption = getByLabelText(/None/)
-        fireEvent.click(noneOption)
-
-        expect(onChange).toHaveBeenCalledWith({
-            voice_message_type: VoiceMessageType.None,
-            text_to_speech_content: 'Cannot answer right now',
-        })
-    })
-
-    it('should disable all options when isDisabled is true', () => {
-        const { getByLabelText } = renderComponent({
-            isDisabled: true,
-        })
-
-        const textToSpeechOption = getByLabelText('Text-to-speech')
-        const customRecordingOption = getByLabelText('Custom recording')
-        const noneOption = getByLabelText('None')
-
-        expect(textToSpeechOption).toBeDisabled()
-        expect(customRecordingOption).toBeDisabled()
-        expect(noneOption).toBeDisabled()
-    })
-
-    describe('<VoiceMessageField /> uploads file', () => {
-        const renderWithUpload = (message: VoiceMessage) => {
-            return renderComponent({
-                message,
-                shouldUpload: true,
-            })
-        }
-
-        it('should allow uploading a custom recording', async () => {
+        it('should handle file upload', async () => {
+            const user = userEvent.setup()
             const file = new File(['audio data'], 'example.mp3', {
                 type: 'audio/mpeg',
             })
+            Object.defineProperty(file, 'size', { value: 1024 }) // 1KB file
 
-            const message: VoiceMessage = {
-                voice_message_type: VoiceMessageType.VoiceRecording,
-            }
-            const { container } = renderWithUpload(message)
+            const { container } = renderComponent(customRecordingMessage)
 
-            const input = container.querySelector('input[type="file"]')
+            const input = container.querySelector(
+                'input[type="file"]',
+            ) as HTMLInputElement
             expect(input).toBeInTheDocument()
-            act(() => {
-                if (input) {
-                    fireEvent.change(input, { target: { files: [file] } })
-                }
 
-                ;(
-                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                        typeof useUploadCustomVoiceRecording
-                    >
-                ).mock.calls[0][0]?.mutation?.onSuccess!(
-                    axiosSuccessResponse<UploadedCustomRecording>({
-                        url: 'https://example.com/voice-recording.mp3',
-                        name: 'example.mp3',
-                        content_type: 'audio/mpeg',
-                        size: 23,
-                    }),
-                    '' as any,
-                    '' as any,
-                )
+            await act(async () => {
+                await user.upload(input, file)
             })
 
             await waitFor(() => {
                 expect(mutateUploadMock).toHaveBeenCalledWith({
                     data: { file },
                     params: {
-                        type: CustomRecordingType.VoicemailNotification,
+                        type: CustomRecordingType.GreetingMessage,
                     },
-                })
-                expect(onChange).toHaveBeenCalledWith({
-                    voice_message_type: VoiceMessageType.VoiceRecording,
-                    voice_recording_file_path:
-                        'https://example.com/voice-recording.mp3',
                 })
             })
         })
 
-        it('should display error when uploading a custom recording', async () => {
+        it('should show existing recording with audio element', () => {
+            const messageWithRecording: VoiceMessage = {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path: 'https://example.com/recording.mp3',
+            }
+
+            renderComponent(messageWithRecording)
+
+            expect(screen.getByText('Replace File')).toBeInTheDocument()
+            const audioElement = screen.getByLabelText('voice-recording')
+            expect(audioElement).toHaveAttribute(
+                'src',
+                'https://example.com/recording.mp3',
+            )
+        })
+
+        it('should handle upload success', async () => {
+            const user = userEvent.setup()
             const file = new File(['audio data'], 'example.mp3', {
                 type: 'audio/mpeg',
             })
 
-            const message: VoiceMessage = {
-                voice_message_type: VoiceMessageType.VoiceRecording,
-            }
+            const { container } = renderComponent(customRecordingMessage)
+            const input = container.querySelector(
+                'input[type="file"]',
+            ) as HTMLInputElement
 
-            const { container } = renderWithUpload(message)
-            act(() => {
-                ;(
-                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                        typeof useUploadCustomVoiceRecording
-                    >
-                ).mock.calls[0][0]?.mutation?.onError!(
-                    {
-                        response: { data: { error: 'error' } },
-                    },
-                    '' as any,
-                    '' as any,
+            await act(async () => {
+                await user.upload(input, file)
+
+                // Simulate successful upload
+                const mockCall = (useUploadCustomVoiceRecording as jest.Mock)
+                    .mock.calls[0]
+                mockCall[0].mutation.onSuccess(
+                    axiosSuccessResponse<UploadedCustomRecording>({
+                        url: 'https://example.com/voice-recording.mp3',
+                        name: 'example.mp3',
+                        content_type: 'audio/mpeg',
+                        size: 23,
+                    }),
+                    null as any,
+                    null as any,
                 )
             })
 
-            const input = container.querySelector('input[type="file"]')
-            expect(input).toBeInTheDocument()
-            if (input) {
-                fireEvent.change(input, { target: { files: [file] } })
-            }
-
-            await waitFor(() => {
-                expect(onChange).not.toHaveBeenCalled()
-                expect(notify).toHaveBeenCalledWith({
-                    status: 'error',
-                    title: 'Failed to upload custom recording',
-                })
+            expect(onChange).toHaveBeenCalledWith({
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                voice_recording_file_path:
+                    'https://example.com/voice-recording.mp3',
             })
         })
 
-        it('disabled the upload button when the file is uploading', () => {
-            const mutateUploadMock = jest.fn()
-            const uploadResponse = () =>
-                ({
-                    isLoading: true,
-                    mutate: mutateUploadMock,
-                }) as unknown as ReturnType<
-                    typeof useUploadCustomVoiceRecording
-                >
+        it('should handle upload error', async () => {
+            const user = userEvent.setup()
+            const file = new File(['audio data'], 'example.mp3', {
+                type: 'audio/mpeg',
+            })
 
-            useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
-            const message: VoiceMessage = {
-                voice_message_type: VoiceMessageType.VoiceRecording,
+            const { container } = renderComponent(customRecordingMessage)
+            const input = container.querySelector(
+                'input[type="file"]',
+            ) as HTMLInputElement
+
+            await act(async () => {
+                await user.upload(input, file)
+
+                // Simulate upload error
+                const mockCall = (useUploadCustomVoiceRecording as jest.Mock)
+                    .mock.calls[0]
+                mockCall[0].mutation.onError(
+                    {
+                        response: {
+                            data: {
+                                error: { msg: 'File too large' },
+                            },
+                        },
+                    },
+                    null as any,
+                    null as any,
+                )
+            })
+
+            expect(notify).toHaveBeenCalledWith({
+                title: 'File too large',
+                status: 'error',
+            })
+        })
+
+        it('should disable upload button when loading', () => {
+            ;(useUploadCustomVoiceRecording as jest.Mock).mockReturnValue(
+                uploadResponse(true),
+            )
+
+            renderComponent(customRecordingMessage)
+
+            const uploadButton = screen
+                .getByText('Upload File')
+                .closest('button')
+            expect(uploadButton).toBeAriaDisabled()
+        })
+
+        it('should validate file size', async () => {
+            const user = userEvent.setup()
+            const largeFile = new File(
+                ['x'.repeat(3 * 1024 * 1024)],
+                'large.mp3',
+                {
+                    type: 'audio/mpeg',
+                },
+            )
+            Object.defineProperty(largeFile, 'size', { value: 3 * 1024 * 1024 }) // 3MB file
+
+            const { container } = renderComponent(customRecordingMessage)
+            const input = container.querySelector(
+                'input[type="file"]',
+            ) as HTMLInputElement
+
+            await act(async () => {
+                await user.upload(input, largeFile)
+            })
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    title: 'Failed to upload',
+                    message:
+                        'File too large. Upload a recording smaller than 2MB.',
+                    status: 'error',
+                })
+                expect(mutateUploadMock).not.toHaveBeenCalled()
+            })
+        })
+    })
+
+    describe('None option functionality', () => {
+        it('should not display any input fields when None is selected', async () => {
+            const noneMessage: VoiceMessage = {
+                voice_message_type: VoiceMessageType.None,
             }
 
-            const { getByText } = renderWithUpload(message)
+            renderComponent(noneMessage, { allowNone: true })
+
             expect(
-                getByText('Upload File').closest('button'),
-            ).toBeAriaDisabled()
+                screen.queryByPlaceholderText(
+                    'Write a message to convert to speech',
+                ),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Upload File')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Option switching', () => {
+        it('should preserve existing values when voice message type changes', () => {
+            // Test that the component handles switching between voice message types
+            const messageWithContent: VoiceMessage = {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Original content',
+            }
+
+            const { unmount } = renderComponent(messageWithContent)
+
+            expect(
+                screen.getByDisplayValue('Original content'),
+            ).toBeInTheDocument()
+
+            // Unmount the previous component
+            unmount()
+
+            // Render with VoiceRecording type
+            const switchedMessage: VoiceMessage = {
+                voice_message_type: VoiceMessageType.VoiceRecording,
+                text_to_speech_content: 'Original content',
+            }
+
+            renderComponent(switchedMessage)
+
+            expect(screen.getByText('Upload File')).toBeInTheDocument()
+            expect(
+                screen.queryByPlaceholderText(
+                    'Write a message to convert to speech',
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 })

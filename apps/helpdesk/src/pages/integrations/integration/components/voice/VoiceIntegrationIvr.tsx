@@ -15,9 +15,9 @@ import {
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { updatePhoneIvrConfiguration } from 'pages/integrations/integration/components/phone/actions'
 import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray'
-import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import settingsCss from 'pages/settings/settings.less'
 
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
 import css from './VoiceIntegrationIvr.less'
@@ -87,7 +87,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                 <Col lg={8} xl={8}>
                     <Form onSubmit={onSubmit}>
                         <div className="mb-4">
-                            <VoiceMessageField
+                            <DEPRECATED_VoiceMessageField
                                 value={
                                     payload?.greeting_message ??
                                     DEFAULT_VOICE_MESSAGE

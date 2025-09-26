@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { Banner, Label } from '@gorgias/axiom'
+import { Banner } from '@gorgias/axiom'
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
@@ -54,25 +54,18 @@ function VoiceIntegrationSettingCallRecording({
                 />
 
                 {isRecordingOutboundCalls && (
-                    <div className={css.sectionData}>
-                        <Label>Call recording notification</Label>
-                        <div>
-                            <FormField
-                                field={VoiceMessageField}
-                                name="meta.recording_notification"
-                                allowNone
-                                maxRecordingDuration={
-                                    RECORDING_NOTIFICATION_MAX_DURATION
-                                }
-                                horizontal={true}
-                                shouldUpload={true}
-                                customRecordingType={
-                                    CustomRecordingType.CallRecordingNotification
-                                }
-                                radioButtonId="call_recording_notification"
-                            />
-                        </div>
-                    </div>
+                    <FormField
+                        field={VoiceMessageField}
+                        label={'Call recording notification'}
+                        name="meta.recording_notification"
+                        allowNone
+                        maxRecordingDuration={
+                            RECORDING_NOTIFICATION_MAX_DURATION
+                        }
+                        customRecordingType={
+                            CustomRecordingType.CallRecordingNotification
+                        }
+                    />
                 )}
             </div>
         </>

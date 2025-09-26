@@ -161,13 +161,10 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                                 <FormField
                                     name={`steps.${id}.callback_requests.prompt_message`}
                                     field={VoiceMessageField}
-                                    horizontal
-                                    shouldUpload
                                     allowNone={false}
                                     customRecordingType={
                                         CustomRecordingType.CallbackRequests
                                     }
-                                    radioButtonId={`${id}-prompt-message`}
                                 />
                             </StaticVerticalStep>
                             <StaticVerticalStep stepDescription="Then, confirm their request:">
@@ -176,13 +173,10 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
                                         <FormField
                                             name={`steps.${id}.callback_requests.confirmation_message`}
                                             field={VoiceMessageField}
-                                            horizontal
-                                            shouldUpload
                                             allowNone
                                             customRecordingType={
                                                 CustomRecordingType.CallbackRequests
                                             }
-                                            radioButtonId={`${id}-confirmation-message`}
                                         />
                                     </div>
                                     <FormField

@@ -3,15 +3,15 @@ import { render, screen } from '@testing-library/react'
 
 import { VoiceMessageType } from 'models/integration/types'
 
-import VoiceMessageField from '../VoiceMessageField'
+import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'
 import VoiceMessageFieldWithLabel from '../VoiceMessageFieldWithLabel'
 
-jest.mock('../VoiceMessageField', () =>
+jest.mock('../DEPRECATED_VoiceMessageField', () =>
     jest.fn(() => (
         <div data-testid="voice-message-field">VoiceMessageField</div>
     )),
 )
-const VoiceMessageFieldMock = assumeMock(VoiceMessageField)
+const VoiceMessageFieldMock = assumeMock(DEPRECATED_VoiceMessageField)
 
 describe('VoiceMessageFieldWithLabel', () => {
     const defaultProps = {

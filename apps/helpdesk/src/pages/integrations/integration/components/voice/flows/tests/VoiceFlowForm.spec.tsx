@@ -117,6 +117,7 @@ const wrapper = ({
             name="steps.play-message.message.text_to_speech_content"
             data-testid="play-message-content"
         />
+        <FormField label="Steps" name="steps" data-testid="steps-field" />
     </VoiceFlowForm>
 )
 
@@ -269,5 +270,32 @@ describe('VoiceFlowForm', () => {
         )
 
         expect(mockNotify.warning).toHaveBeenCalled()
+    })
+
+    it('should handle unexpected errors during validation', async () => {
+        const unexpectedError = new Error('Unexpected validation error')
+        mockValidateCallRoutingFlow.mockImplementation(() => {
+            throw unexpectedError
+        })
+
+        const user = userEvent.setup()
+
+        renderComponent()
+
+        const submitButton = screen.getByRole('button', {
+            name: /save changes/i,
+        })
+
+        await act(async () => {
+            await user.click(submitButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('An unexpected error occurred'),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockOnSubmit).not.toHaveBeenCalled()
     })
 })

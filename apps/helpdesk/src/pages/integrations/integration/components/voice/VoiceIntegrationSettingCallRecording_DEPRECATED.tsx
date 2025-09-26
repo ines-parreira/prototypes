@@ -9,7 +9,7 @@ import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { FormField } from 'core/forms'
 import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
 
-import VoiceMessageField from './VoiceMessageField'
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
 import css from './VoiceIntegrationSettingCallRecording.less'
 
@@ -42,7 +42,7 @@ function VoiceIntegrationSettingCallRecording_DEPRECATED() {
                     <Label>Call recording notification</Label>
                     <div>
                         <FormField
-                            field={VoiceMessageField}
+                            field={DEPRECATED_VoiceMessageField}
                             name="meta.recording_notification"
                             allowNone
                             maxRecordingDuration={

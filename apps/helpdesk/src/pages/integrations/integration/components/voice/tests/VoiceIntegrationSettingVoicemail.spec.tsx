@@ -7,8 +7,8 @@ import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 
+import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'
 import VoiceIntegrationSettingVoicemail from '../VoiceIntegrationSettingVoicemail'
-import VoiceMessageField from '../VoiceMessageField'
 
 jest.mock('core/forms')
 const FormFieldMock = assumeMock(FormField)
@@ -122,7 +122,7 @@ describe('VoiceIntegrationSettingVoicemail', () => {
         expect(FormFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'meta.voicemail.outside_business_hours',
-                field: VoiceMessageField,
+                field: DEPRECATED_VoiceMessageField,
             }),
             {},
         )

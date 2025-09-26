@@ -16,10 +16,10 @@ import { Drawer } from 'pages/common/components/Drawer'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { getSmsIntegrations } from 'state/integrations/selectors'
 
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 import IvrMenuActionSelect from './IvrMenuActionSelect'
 import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
-import VoiceMessageField from './VoiceMessageField'
 
 import css from './IvrMenuActionField.less'
 
@@ -95,7 +95,7 @@ const IvrMenuActionField = ({
                                 />
                             </Drawer.Header>
                             <Drawer.Content className={css.drawerContent}>
-                                <VoiceMessageField
+                                <DEPRECATED_VoiceMessageField
                                     value={editingVoiceMessage}
                                     onChange={setEditingVoiceMessage}
                                     radioButtonId={'play-message'}

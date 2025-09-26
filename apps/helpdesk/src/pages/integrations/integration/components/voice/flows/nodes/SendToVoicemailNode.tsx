@@ -60,12 +60,10 @@ export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
                 <FormField
                     name={`steps.${id}.voicemail`}
                     field={VoiceMessageField}
-                    horizontal={true}
-                    shouldUpload={true}
                     customRecordingType={
                         CustomRecordingType.VoicemailNotification
                     }
-                    radioButtonId={id}
+                    label={'Message type'}
                 />
             </div>
             <FormField

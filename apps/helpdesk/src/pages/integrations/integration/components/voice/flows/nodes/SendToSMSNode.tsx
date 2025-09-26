@@ -112,13 +112,10 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
                         <FormField
                             name={`steps.${id}.confirmation_message`}
                             field={VoiceMessageField}
-                            horizontal={true}
-                            shouldUpload={true}
                             allowNone={false}
                             customRecordingType={
                                 CustomRecordingType.GreetingMessage
                             }
-                            radioButtonId={id}
                         />
                     </div>
                 </div>

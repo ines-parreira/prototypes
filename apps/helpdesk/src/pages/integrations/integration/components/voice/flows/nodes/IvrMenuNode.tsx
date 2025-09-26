@@ -113,22 +113,13 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                         callers to press 9 to go back.
                     </Banner>
                 )}
-                <div className={css.formSection}>
-                    <Label>Greeting message</Label>
-                    <div>
-                        <FormField
-                            name={`steps.${id}.message`}
-                            field={VoiceMessageField}
-                            horizontal={true}
-                            shouldUpload={true}
-                            allowNone={false}
-                            customRecordingType={
-                                CustomRecordingType.GreetingMessage
-                            }
-                            radioButtonId={id}
-                        />
-                    </div>
-                </div>
+                <FormField
+                    name={`steps.${id}.message`}
+                    field={VoiceMessageField}
+                    allowNone={false}
+                    customRecordingType={CustomRecordingType.GreetingMessage}
+                    label={'Greeting message'}
+                />
                 <Label>Menu options</Label>
                 <IvrMenuActionsFieldArray
                     name={`steps.${id}.branch_options`}

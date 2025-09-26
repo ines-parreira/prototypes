@@ -11,7 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
-import VoiceMessageField from './VoiceMessageField'
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
 import css from './VoiceIntegrationSettingVoicemail.less'
 
@@ -32,7 +32,7 @@ function VoiceIntegrationSettingVoicemail() {
             <div>
                 <FormField
                     name={'meta.voicemail'}
-                    field={VoiceMessageField}
+                    field={DEPRECATED_VoiceMessageField}
                     allowNone
                     horizontal={true}
                     shouldUpload={true}
@@ -63,7 +63,7 @@ function VoiceIntegrationSettingVoicemail() {
                     <div className={css.outsideBusinessHoursMessage}>
                         <FormField
                             name={'meta.voicemail.outside_business_hours'}
-                            field={VoiceMessageField}
+                            field={DEPRECATED_VoiceMessageField}
                             allowNone
                             horizontal={true}
                             shouldUpload={true}

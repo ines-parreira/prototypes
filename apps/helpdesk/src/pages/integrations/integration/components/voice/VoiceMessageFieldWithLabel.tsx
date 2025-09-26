@@ -4,11 +4,11 @@ import { Label } from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
-import VoiceMessageField from './VoiceMessageField'
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
 import css from './VoiceMessageFieldWithLabel.less'
 
-type Props = ComponentProps<typeof VoiceMessageField> & {
+type Props = ComponentProps<typeof DEPRECATED_VoiceMessageField> & {
     label: string
     tooltip?: string | ReactNode
 }
@@ -25,7 +25,7 @@ export default function VoiceMessageFieldWithLabel({
                 {tooltip && <IconTooltip>{tooltip}</IconTooltip>}
             </Label>
             <div>
-                <VoiceMessageField {...props} />
+                <DEPRECATED_VoiceMessageField {...props} />
             </div>
         </div>
     )

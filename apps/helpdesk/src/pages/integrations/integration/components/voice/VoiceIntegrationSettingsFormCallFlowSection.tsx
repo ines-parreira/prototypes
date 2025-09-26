@@ -3,12 +3,12 @@ import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { FormField } from 'core/forms'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 import VoiceIntegrationSettingCallbackRequests from './VoiceIntegrationSettingCallbackRequests'
 import VoiceIntegrationSettingCallRecording_DEPRECATED from './VoiceIntegrationSettingCallRecording_DEPRECATED'
 import VoiceIntegrationSettingCallTranscription_DEPRECATED from './VoiceIntegrationSettingCallTranscription_DEPRECATED'
 import VoiceIntegrationSettingDistributionBehavior from './VoiceIntegrationSettingDistributionBehavior'
 import VoiceIntegrationSettingVoicemail from './VoiceIntegrationSettingVoicemail'
-import VoiceMessageField from './VoiceMessageField'
 import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
 
 function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
@@ -20,7 +20,7 @@ function VoiceIntegrationSettingsFormCallFlowSection(): JSX.Element {
                     description={'Customize your greeting message'}
                 >
                     <FormField
-                        field={VoiceMessageField}
+                        field={DEPRECATED_VoiceMessageField}
                         name={'meta.greeting_message'}
                         allowNone
                         horizontal={true}

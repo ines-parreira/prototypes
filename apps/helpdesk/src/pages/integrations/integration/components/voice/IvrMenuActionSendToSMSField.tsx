@@ -21,7 +21,7 @@ import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import VoiceMessageField from './VoiceMessageField'
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
 import css from './IvrMenuActionField.less'
 
@@ -176,7 +176,7 @@ const IvrMenuActionSendToSMSField = ({
                         This message will be played to callers once the SMS menu
                         option is selected
                     </p>
-                    <VoiceMessageField
+                    <DEPRECATED_VoiceMessageField
                         value={smsConfirmationMessage}
                         onChange={setSmsConfirmationMessage}
                         radioButtonId={`sms-confirmation-message-${idForRadioButtons}`}

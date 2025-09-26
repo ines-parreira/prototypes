@@ -16,10 +16,11 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { updatePhoneVoicemailConfiguration } from 'pages/integrations/integration/components/phone/actions'
 import useVoiceMessageValidation from 'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation'
-import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import { fetchIntegrations } from 'state/integrations/actions'
+
+import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
 
 import css from './VoiceIntegrationVoicemail.less'
 
@@ -98,7 +99,7 @@ export default function VoiceIntegrationVoicemail({
 
                 <Form onSubmit={onSubmit}>
                     <div>
-                        <VoiceMessageField
+                        <DEPRECATED_VoiceMessageField
                             value={payload ?? VOICEMAIL_DEFAULT_VOICE_MESSAGE}
                             onChange={(message) => {
                                 setPayload((payload) => ({
