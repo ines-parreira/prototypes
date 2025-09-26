@@ -12,6 +12,8 @@ import {
     getOriginalContentState,
     hasTranslation,
 } from 'state/newMessage/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { useOutboundTranslation } from '../useOutboundTranslation'
 
@@ -41,6 +43,9 @@ jest.mock('state/newMessage/selectors')
 
 jest.mock('state/newMessage/actions')
 const mockClearTranslationState = clearTranslationState as unknown as jest.Mock
+
+jest.mock('state/notifications/actions')
+const mockNotify = notify as jest.Mock
 
 describe('useOutboundTranslation', () => {
     const mockGetEditorState = jest.fn()
@@ -232,7 +237,7 @@ describe('useOutboundTranslation', () => {
     })
 
     describe('error handling', () => {
-        it('unregisters draft on translation error', () => {
+        it('unregisters draft and shows error notification on translation error', () => {
             mockUseTranslateTicketDraft.mockReturnValue({
                 mutate: mockTranslateTicketDraft,
                 isLoading: false,
@@ -244,6 +249,32 @@ describe('useOutboundTranslation', () => {
             )
 
             expect(mockUnregisterTranslationDraft).toHaveBeenCalledWith('123')
+            expect(mockDispatch).toHaveBeenCalledWith(
+                mockNotify({
+                    message: 'Translation on ticket 123 failed. Please retry.',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
+
+        it('shows error message for new tickets', () => {
+            mockUseParams.mockReturnValue({ ticketId: 'new' })
+            mockUseTranslateTicketDraft.mockReturnValue({
+                mutate: mockTranslateTicketDraft,
+                isLoading: false,
+                isError: true,
+            })
+
+            renderHook(() =>
+                useOutboundTranslation(mockGetEditorState, mockSetEditorState),
+            )
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                mockNotify({
+                    message: 'Translation failed. Please retry.',
+                    status: NotificationStatus.Error,
+                }),
+            )
         })
     })
 })

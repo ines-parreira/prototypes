@@ -14,6 +14,8 @@ import {
     getOriginalContentState,
     hasTranslation as hasTranslationSelector,
 } from 'state/newMessage/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { convertToHTML } from 'utils/editor'
 
 export function useOutboundTranslation(
@@ -80,8 +82,22 @@ export function useOutboundTranslation(
     useEffect(() => {
         if (isErrorTranslationRequest) {
             unregisterTranslationDraft(ticketId)
+            dispatch(
+                notify({
+                    message:
+                        ticketId !== 'new'
+                            ? `Translation on ticket ${ticketId} failed. Please retry.`
+                            : 'Translation failed. Please retry.',
+                    status: NotificationStatus.Error,
+                }),
+            )
         }
-    }, [isErrorTranslationRequest, unregisterTranslationDraft, ticketId])
+    }, [
+        isErrorTranslationRequest,
+        unregisterTranslationDraft,
+        ticketId,
+        dispatch,
+    ])
 
     const toggleOriginal = useCallback(() => {
         if (hasTranslation) {

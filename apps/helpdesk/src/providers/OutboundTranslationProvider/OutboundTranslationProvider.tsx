@@ -2,6 +2,7 @@ import {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useRef,
     useState,
@@ -18,6 +19,8 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { ExtractEvent } from 'tickets/core/hooks/translations/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
@@ -60,6 +63,8 @@ type OutboundTranslationProviderProps = {
     ticketId?: string | number
 }
 
+const PENDING_TRANSLATION_TIMEOUT = 60_000
+
 export const OutboundTranslationProvider = ({
     children,
     ticketId,
@@ -67,7 +72,6 @@ export const OutboundTranslationProvider = ({
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
     const dispatch = useAppDispatch()
-    //const { ticketId } = useParams<{ ticketId: string }>()
 
     const getEditorStateRef = useRef<(() => EditorState) | undefined>()
     const setEditorStateRef = useRef<
@@ -77,6 +81,8 @@ export const OutboundTranslationProvider = ({
     const [ticketIdToDraftIdMap, setTicketIdToDraftIdMap] = useState<
         Map<string, string>
     >(new Map())
+
+    const timeoutRefs = useRef<Map<string, NodeJS.Timeout>>(new Map())
 
     const registerEditorMethods = useCallback(
         ({
@@ -99,17 +105,56 @@ export const OutboundTranslationProvider = ({
                 newMap.set(ticketId, draftId)
                 return newMap
             })
+
+            const existingTimeout = timeoutRefs.current.get(ticketId)
+            if (existingTimeout) {
+                clearTimeout(existingTimeout)
+            }
+
+            const timeout = setTimeout(() => {
+                setTicketIdToDraftIdMap((prev) => {
+                    const newMap = new Map(prev)
+                    newMap.delete(ticketId)
+                    return newMap
+                })
+                timeoutRefs.current.delete(ticketId)
+
+                dispatch(
+                    notify({
+                        message:
+                            ticketId !== 'new'
+                                ? `Translation on ticket ${ticketId} timed out. Please retry.`
+                                : 'Translation timed out. Please retry.',
+                        status: NotificationStatus.Info,
+                    }),
+                )
+            }, PENDING_TRANSLATION_TIMEOUT)
+
+            timeoutRefs.current.set(ticketId, timeout)
         },
-        [],
+        [dispatch],
     )
 
-    const unregisterTranslationDraft = useCallback((ticketId: string) => {
-        setTicketIdToDraftIdMap((prev) => {
-            const newMap = new Map(prev)
-            newMap.delete(ticketId)
-            return newMap
-        })
+    const clearDraftTimeout = useCallback((ticketId: string) => {
+        const timeout = timeoutRefs.current.get(ticketId)
+        if (timeout) {
+            clearTimeout(timeout)
+            timeoutRefs.current.delete(ticketId)
+        }
     }, [])
+
+    const unregisterTranslationDraft = useCallback(
+        (ticketId: string) => {
+            setTicketIdToDraftIdMap((prev) => {
+                const newMap = new Map(prev)
+                newMap.delete(ticketId)
+                return newMap
+            })
+
+            clearDraftTimeout(ticketId)
+        },
+        [clearDraftTimeout],
+    )
 
     const handleTranslationCompletedEvent = useCallback(
         (
@@ -166,13 +211,15 @@ export const OutboundTranslationProvider = ({
                 }
             }
 
+            clearDraftTimeout(translationTicketId as string)
+
             setTicketIdToDraftIdMap((prev) => {
                 const newMap = new Map(prev)
                 newMap.delete(translationTicketId as string)
                 return newMap
             })
         },
-        [ticketId, ticketIdToDraftIdMap, dispatch],
+        [ticketId, ticketIdToDraftIdMap, dispatch, clearDraftTimeout],
     )
 
     const handleTranslationFailedEvent = useCallback(
@@ -183,18 +230,35 @@ export const OutboundTranslationProvider = ({
 
             if (draft_id) {
                 setTicketIdToDraftIdMap((prev) => {
+                    let failedTicketId: string | undefined
+
                     const newMap = new Map(prev)
                     for (const [ticketId, draftId] of newMap.entries()) {
                         if (draftId === draft_id) {
+                            failedTicketId = ticketId
                             newMap.delete(ticketId)
                             break
                         }
                     }
+
+                    if (failedTicketId) {
+                        clearDraftTimeout(failedTicketId as string)
+                        dispatch(
+                            notify({
+                                message:
+                                    failedTicketId !== 'new'
+                                        ? `Translation on ticket ${failedTicketId} failed. Please retry.`
+                                        : 'Translation failed. Please retry.',
+                                status: NotificationStatus.Error,
+                            }),
+                        )
+                    }
+
                     return newMap
                 })
             }
         },
-        [],
+        [dispatch, clearDraftTimeout],
     )
 
     const handleChannelEvent = useCallback(
@@ -222,6 +286,18 @@ export const OutboundTranslationProvider = ({
         },
         onEvent: handleChannelEvent,
     })
+
+    useEffect(() => {
+        return () => {
+            // we want to access the current value of timeoutRefs.current
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            timeoutRefs.current.forEach((timeout) => {
+                clearTimeout(timeout)
+            })
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            timeoutRefs.current.clear()
+        }
+    }, [])
 
     const isTranslationPending = useMemo(() => {
         const draftId = ticketIdToDraftIdMap.get(String(ticketId))

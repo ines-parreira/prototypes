@@ -10,6 +10,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
+import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     OutboundTranslationProvider,
@@ -29,8 +32,10 @@ jest.mock('state/newMessage/actions')
 const mockSetTranslationState = setTranslationState as unknown as jest.Mock
 
 jest.mock('state/newMessage/ticketReplyCache')
-const mockTicketReplyCache =
-    require('state/newMessage/ticketReplyCache').default
+const mockTicketReplyCache = ticketReplyCache
+
+jest.mock('state/notifications/actions')
+const mockNotify = notify as jest.Mock
 
 describe('OutboundTranslationProvider', () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -48,6 +53,10 @@ describe('OutboundTranslationProvider', () => {
         })
 
         mockUseAppDispatch.mockReturnValue(jest.fn())
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     it('provides initial context values', () => {
@@ -170,6 +179,10 @@ describe('OutboundTranslationProvider', () => {
 
         await waitFor(() => {
             expect(result.current.ticketIdToDraftIdMap.has('123')).toBe(false)
+            expect(mockNotify).toHaveBeenCalledWith({
+                message: 'Translation on ticket 123 failed. Please retry.',
+                status: NotificationStatus.Error,
+            })
         })
     })
 
@@ -253,7 +266,71 @@ describe('OutboundTranslationProvider', () => {
         })
     })
 
-    it('throws error when useOutboundTranslationContext is used outside provider', () => {
+    it('shows timeout notification and clears draft mapping after 60 seconds', async () => {
+        jest.useFakeTimers()
+
+        const { result } = renderHook(() => useOutboundTranslationContext(), {
+            wrapper,
+        })
+
+        act(() => {
+            result.current.registerTranslationDraft('456', 'draft789')
+        })
+
+        expect(result.current.ticketIdToDraftIdMap.has('456')).toBe(true)
+
+        act(() => {
+            jest.advanceTimersByTime(60_000)
+        })
+
+        await waitFor(() => {
+            expect(result.current.ticketIdToDraftIdMap.has('456')).toBe(false)
+        })
+
+        expect(mockNotify).toHaveBeenCalledWith({
+            message: 'Translation on ticket 456 timed out. Please retry.',
+            status: 'info',
+        })
+    })
+
+    it('clears timeout when translation completes successfully', () => {
+        jest.useFakeTimers()
+
+        let onEventListener: ((event: DomainEvent) => void) | undefined
+        mockUseChannel.mockImplementation(({ onEvent }) => {
+            onEventListener = onEvent
+        })
+
+        const { result } = renderHook(() => useOutboundTranslationContext(), {
+            wrapper,
+        })
+
+        act(() => {
+            result.current.registerTranslationDraft('123', 'draft789')
+        })
+
+        const event = {
+            dataschema:
+                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+            data: {
+                id: 'draft789',
+                stripped_html: '<p>Translated content</p>',
+                stripped_text: 'Translated content',
+            },
+        } as DomainEvent
+
+        act(() => {
+            onEventListener?.(event)
+        })
+
+        act(() => {
+            jest.advanceTimersByTime(60_000)
+        })
+
+        expect(mockNotify).not.toHaveBeenCalled()
+    })
+
+    it('useOutboundTranslationContext throws error when useOutboundTranslationContext is used outside provider', () => {
         expect(() => {
             renderHook(() => useOutboundTranslationContext())
         }).toThrow(
