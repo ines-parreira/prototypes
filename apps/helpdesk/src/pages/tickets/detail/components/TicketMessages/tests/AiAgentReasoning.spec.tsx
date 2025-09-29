@@ -1208,6 +1208,51 @@ describe('AiAgentReasoning', () => {
             expect(screen.getByText(/This is the outcome/)).toBeInTheDocument()
             expect(screen.queryByText(/Full details:/)).not.toBeInTheDocument()
         })
+
+        it('should filter out TASK reasoning whose targetId is not in usedTasks', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Response content',
+                        },
+                        {
+                            responseType: 'TASK',
+                            targetId: 'task1',
+                            value: 'Task 1 content - should be included',
+                        },
+                        {
+                            responseType: 'TASK',
+                            targetId: 'task2',
+                            value: 'Task 2 content - should be filtered out',
+                        },
+                        {
+                            responseType: 'TASK',
+                            targetId: 'task3',
+                            value: 'Task 3 content - should be included',
+                        },
+                    ],
+                    resources: [],
+                    usedTasks: ['task1', 'task3'],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText(/Response content/)).toBeInTheDocument()
+            expect(
+                screen.getByText(/Task 1 content - should be included/),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(/Task 2 content - should be filtered out/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText(/Task 3 content - should be included/),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('Error state', () => {

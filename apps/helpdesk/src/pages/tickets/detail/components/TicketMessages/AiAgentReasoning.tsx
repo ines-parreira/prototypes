@@ -190,7 +190,11 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     messageAiReasoning.reasoning.filter(
                         (reasoning) =>
                             reasoning.responseType ===
-                            ReasoningResponseType.TASK,
+                                ReasoningResponseType.TASK &&
+                            (!messageAiReasoning.usedTasks ||
+                                messageAiReasoning.usedTasks.includes(
+                                    reasoning.targetId,
+                                )),
                     )
 
                 const hasFullDetails = fullDetailsReasoning.length > 0
@@ -292,6 +296,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
             messageAiReasoning?.reasoning,
             messageAiReasoning?.resources,
             messageAiReasoning?.execution?.endDatetime,
+            messageAiReasoning?.usedTasks,
             isHandover,
         ])
 
