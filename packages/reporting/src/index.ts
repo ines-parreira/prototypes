@@ -5,3 +5,5 @@
  * @type reporting-ui-kit
  */
 export { TrendIcon } from './components/TrendIcon/TrendIcon'
+
+export { type MetricValueFormat, type MetricTrendFormat } from './types'
