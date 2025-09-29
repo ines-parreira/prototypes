@@ -35,7 +35,7 @@ jobs:
   
       - name: Install dependencies
         shell: bash
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run deprecation analysis
         run: pnpm platform:deprecated-analysis

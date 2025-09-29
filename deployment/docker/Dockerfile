@@ -11,7 +11,7 @@ COPY . .
 RUN --mount=type=secret,id=NPM_TOKEN,env=NPM_TOKEN \
     echo "@gorgias:registry=https://npm.pkg.github.com" >> .npmrc && \
     echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc && \
-    pnpm install && \
+    pnpm install --frozen-lockfile && \
     rm -f .npmrc
 
 RUN NO_CONTENT_HASH=1 pnpm build

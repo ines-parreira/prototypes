@@ -58,6 +58,7 @@ export type Message = {
     id: number
     created_datetime: string
 }
+// Test
 type Property = {
     type: string
     format: 'email'
