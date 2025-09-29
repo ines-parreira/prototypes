@@ -196,7 +196,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                 <Button
                     variant="link"
                     redirectLink={`/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'conversation-setup'}`}
-                    label="Back"
+                    label="Return"
                 />
                 <Button
                     label="Activate"

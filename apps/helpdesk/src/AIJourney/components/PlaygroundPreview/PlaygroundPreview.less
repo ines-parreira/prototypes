@@ -15,7 +15,8 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-s);
-        padding: var(--layout-spacing-m);
+        padding: var(--layout-spacing-s) var(--layout-spacing-m)
+            var(--layout-spacing-m) var(--layout-spacing-m);
         height: 100%;
         width: 350px;
         max-height: 550px;
@@ -30,10 +31,11 @@
         flex-direction: column;
         gap: var(--layout-spacing-xs);
         align-items: center;
-        height: 100%;
+        height: fit-content;
     }
 
     .messageBubble {
+        align-self: flex-start;
         border-radius: 16px 16px 16px 0;
         background: #fff;
         box-shadow:

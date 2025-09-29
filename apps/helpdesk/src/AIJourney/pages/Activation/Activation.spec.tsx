@@ -247,10 +247,10 @@ describe('<Activation />', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Back')).toBeInTheDocument()
+            expect(screen.getByText('Return')).toBeInTheDocument()
         })
 
-        const returnButton = screen.getByText('Back')
+        const returnButton = screen.getByText('Return')
         expect(returnButton).toBeInTheDocument()
         expect(returnButton).toBeEnabled()
         expect(returnButton).toHaveAttribute(

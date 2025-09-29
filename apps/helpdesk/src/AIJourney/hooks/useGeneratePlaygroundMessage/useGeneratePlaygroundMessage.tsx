@@ -114,6 +114,7 @@ export const useGeneratePlaygroundMessage = ({
                 return
             }
 
+            setPlaygroundMessages([])
             setIsGeneratingMessages(true)
 
             const testSessionResponse = await createTestSession.mutateAsync([])
