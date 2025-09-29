@@ -33,7 +33,10 @@ import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
-import { PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP } from 'pages/settings/new_billing/constants'
+import {
+    BILLING_PAYMENT_FREQUENCY_PATH,
+    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+} from 'pages/settings/new_billing/constants'
 import {
     storeWithCanceledSubscription,
     storeWithTrialingSubscription,
@@ -223,10 +226,10 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        // and the merchant can update its plan cadence from monthly to yearly
+        // and the merchant can update its plan cadence
         expect(screen.getByText('Update')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/frequency',
+            BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })
 
@@ -319,7 +322,7 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        // and the merchant can NOT update its plan cadence from monthly to yearly
+        // and the merchant can NOT update its plan cadence
         const updateBillingFrequencyButton = container.querySelector(
             '#update-billing-frequency',
         )
@@ -437,11 +440,11 @@ describe('UsageAndPlansView', () => {
             {},
         )
 
-        // the merchant cannot update frequency as without a voice plan they are
-        // considered not vetted for phone
-        const button = screen.getByText('Update')
-        expect(button).toBeInTheDocument()
-        expect(button).toHaveClass('disabledText')
+        // and the merchant can update its plan cadence
+        expect(screen.getByText('Update')).toHaveAttribute(
+            'to',
+            BILLING_PAYMENT_FREQUENCY_PATH,
+        )
     })
 
     it('should render with active subscription containing Helpdesk starter product', () => {
@@ -598,7 +601,7 @@ describe('UsageAndPlansView', () => {
         )
         expect(screen.getByText('Update').closest('a')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/frequency',
+            BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })
 
@@ -712,10 +715,10 @@ describe('UsageAndPlansView', () => {
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
 
-        // and the merchant can update its plan cadence from monthly to yearly
+        // and the merchant can update its plan cadence
         expect(screen.getByText('Update')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/frequency',
+            BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })
 

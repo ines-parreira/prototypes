@@ -75,10 +75,9 @@ describe('PaymentInformationView', () => {
         await act(() => userEvent.hover(screen.getByText('Change Frequency')))
 
         expect(
-            screen.getByText(
-                `To switch from ${getCadenceName(Cadence.Year)} to ${getCadenceName(Cadence.Month)} billing, please `,
-                { exact: false },
-            ),
+            screen.getByText(`To downgrade billing frequency, please `, {
+                exact: false,
+            }),
         )
     })
 

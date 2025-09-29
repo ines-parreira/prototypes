@@ -9,13 +9,10 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     legacyAutomatePlan,
-    SMS_PRODUCT_ID,
     starterHelpdeskPlan,
-    VOICE_PRODUCT_ID,
-    voicePlan1,
 } from 'fixtures/productPrices'
 import { Cadence } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import { isOtherCadenceDowngrade } from 'models/billing/utils'
 import { TicketPurpose } from 'state/billing/types'
 import { StoreState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
@@ -176,77 +173,47 @@ describe('NavigateToChangeBillingFrequency', () => {
         )
     })
 
-    it('should tell the user to contact us if they are not vetted for phone', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
-            {
-                ...store,
-                currentAccount: fromJS({
-                    ...account,
-                    current_subscription: {
-                        ...account.current_subscription,
-                        products: {
-                            ...account.current_subscription.products,
-                            [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
-                            [SMS_PRODUCT_ID]: undefined,
+    const cadenceValues = Object.values(Cadence)
+    const cadenceDowndgrades = cadenceValues
+        .flatMap((a) => cadenceValues.map((b) => [a, b]))
+        .filter(([a, b]) => isOtherCadenceDowngrade(a, b))
+    it.each(cadenceDowndgrades)(
+        'should tell the user to contact us when downgrading billing frequency',
+        async () => {
+            renderWithStoreAndQueryClientProvider(
+                <NavigateToChangeBillingFrequency {...props} />,
+                {
+                    ...store,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                ...account.current_subscription.products,
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicYearlyHelpdeskPlan.price_id,
+                            },
                         },
-                    },
-                }),
-            },
-        )
+                    }),
+                },
+            )
 
-        const button = screen.getByText('Change Frequency')
-        expect(button).toBeInTheDocument()
-        expect(button).toHaveClass(css.disabledText)
-        await act(() => userEvent.hover(button))
+            const button = screen.getByText('Change Frequency')
+            expect(button).toBeInTheDocument()
+            expect(button).toHaveClass(css.disabledText)
+            await act(() => userEvent.hover(button))
 
-        const tooltip = screen.getByRole('tooltip')
-        expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent(
-            `To switch from ${getCadenceName(Cadence.Month)} to ${getCadenceName(Cadence.Year)} billing, please `,
-        )
+            const tooltip = screen.getByRole('tooltip')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent(
+                `To downgrade billing frequency, please`,
+            )
 
-        const contact = screen.getByText('get in touch')
-        await act(() => userEvent.click(contact))
-        expect(contactBillingMock).toHaveBeenCalledWith(
-            TicketPurpose.MONTHLY_TO_YEARLY,
-        )
-    })
-
-    it('should tell the user to contact us when downgrading billing frequency', async () => {
-        renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
-            {
-                ...store,
-                currentAccount: fromJS({
-                    ...account,
-                    current_subscription: {
-                        ...account.current_subscription,
-                        products: {
-                            ...account.current_subscription.products,
-                            [HELPDESK_PRODUCT_ID]:
-                                basicYearlyHelpdeskPlan.price_id,
-                        },
-                    },
-                }),
-            },
-        )
-
-        const button = screen.getByText('Change Frequency')
-        expect(button).toBeInTheDocument()
-        expect(button).toHaveClass(css.disabledText)
-        await act(() => userEvent.hover(button))
-
-        const tooltip = screen.getByRole('tooltip')
-        expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent(
-            `To switch from ${getCadenceName(Cadence.Year)} to ${getCadenceName(Cadence.Month)} billing, please `,
-        )
-
-        const contact = screen.getByText('get in touch')
-        await act(() => userEvent.click(contact))
-        expect(contactBillingMock).toHaveBeenCalledWith(
-            TicketPurpose.CONTACT_US,
-        )
-    })
+            const contact = screen.getByText('get in touch')
+            await act(() => userEvent.click(contact))
+            expect(contactBillingMock).toHaveBeenCalledWith(
+                TicketPurpose.YEARLY_TO_MONTHLY,
+            )
+        },
+    )
 })

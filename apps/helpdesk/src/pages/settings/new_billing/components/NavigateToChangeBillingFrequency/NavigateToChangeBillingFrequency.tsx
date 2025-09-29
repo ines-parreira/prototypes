@@ -4,16 +4,10 @@ import { Tooltip, TooltipProps } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
-import {
-    getCadenceName,
-    isLegacyAutomate,
-    isOtherCadenceUpgrade,
-} from 'models/billing/utils'
+import { isLegacyAutomate, isOtherCadenceUpgrade } from 'models/billing/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
-    getCurrentSmsPlan,
-    getCurrentVoicePlan,
 } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
@@ -37,8 +31,6 @@ export default function NavigateToChangeBillingFrequency({
 }: NavigateToChangeBillingFrequencyProps) {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
-    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
     const isScheduledToCancel = !!currentSubscription.get(
@@ -47,7 +39,6 @@ export default function NavigateToChangeBillingFrequency({
 
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
-    const isSubscribedToVoiceOrSMS = !!currentVoicePlan || !!currentSmsPlan
     const isAAOLegacy =
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
 
@@ -56,10 +47,6 @@ export default function NavigateToChangeBillingFrequency({
         Object.values(Cadence).find((other) =>
             isOtherCadenceUpgrade(cadence, other),
         ) !== undefined
-
-    const isVettedForPhone = Boolean(
-        currentSmsPlan?.plan_id && currentVoicePlan?.plan_id,
-    )
 
     let toolTipContent
 
@@ -97,33 +84,18 @@ export default function NavigateToChangeBillingFrequency({
                     with our team.
                 </>
             )
-        } else if (isSubscribedToVoiceOrSMS && !isVettedForPhone) {
-            toolTipContent = (
-                <>
-                    To switch from {getCadenceName(Cadence.Month)} to{' '}
-                    {getCadenceName(Cadence.Year)} billing, please{' '}
-                    <span
-                        className={css.link}
-                        onClick={() =>
-                            contactBilling(TicketPurpose.MONTHLY_TO_YEARLY)
-                        }
-                    >
-                        get in touch
-                    </span>{' '}
-                    with our team.
-                </>
-            )
         } else {
             return <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>{buttonText}</Link>
         }
     } else {
         toolTipContent = (
             <>
-                To switch from {getCadenceName(Cadence.Year)} to{' '}
-                {getCadenceName(Cadence.Month)} billing, please{' '}
+                To downgrade billing frequency, please{' '}
                 <span
                     className={css.link}
-                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                    onClick={() =>
+                        contactBilling(TicketPurpose.YEARLY_TO_MONTHLY)
+                    }
                 >
                     get in touch
                 </span>{' '}
