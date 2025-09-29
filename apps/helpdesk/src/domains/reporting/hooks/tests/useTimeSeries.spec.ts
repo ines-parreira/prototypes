@@ -266,6 +266,218 @@ describe('useTimeSeries', () => {
             expect(result).toEqual(expectedTimeSeriesResult)
         })
     })
+
+    describe('edge cases for select function', () => {
+        it('should handle empty data array', () => {
+            renderHook(() => useTimeSeries(defaultQuery))
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+
+            const result = select?.({
+                data: {
+                    ...defaultResult,
+                    data: [],
+                },
+            } as unknown as AxiosResponse<ReportingResponse<never[]>>)
+
+            expect(result).toEqual([
+                [
+                    {
+                        dateTime: '2022-01-02T00:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T01:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T02:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T03:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T04:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                ],
+                [
+                    {
+                        dateTime: '2022-01-02T00:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T01:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T02:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T03:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T04:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                ],
+            ])
+        })
+
+        it('should handle single data point with all measures populated', () => {
+            renderHook(() => useTimeSeries(defaultQuery))
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+
+            const singleDataPoint = [
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '42',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '4.5',
+                    extraField: 'extraValue',
+                },
+            ]
+
+            const result = select?.({
+                data: {
+                    ...defaultResult,
+                    data: singleDataPoint,
+                },
+            } as unknown as AxiosResponse<
+                ReportingResponse<typeof singleDataPoint>
+            >)
+
+            expect(result).toEqual([
+                [
+                    {
+                        dateTime: '2022-01-02T00:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T01:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 42,
+                        rawData: {
+                            [TicketDimension.CreatedDatetime]:
+                                '2022-01-02T01:00:00',
+                            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                                '42',
+                            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]:
+                                '4.5',
+                            extraField: 'extraValue',
+                        },
+                    },
+                    {
+                        dateTime: '2022-01-02T02:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T03:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T04:00:00.000',
+                        label: TicketMessagesMeasure.MedianFirstResponseTime,
+                        value: 0,
+                    },
+                ],
+                [
+                    {
+                        dateTime: '2022-01-02T00:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T01:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 4.5,
+                        rawData: {
+                            [TicketDimension.CreatedDatetime]:
+                                '2022-01-02T01:00:00',
+                            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                                '42',
+                            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]:
+                                '4.5',
+                            extraField: 'extraValue',
+                        },
+                    },
+                    {
+                        dateTime: '2022-01-02T02:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T03:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                    {
+                        dateTime: '2022-01-02T04:00:00.000',
+                        label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                        value: 0,
+                    },
+                ],
+            ])
+        })
+
+        it('should handle data with null and undefined measure values', () => {
+            renderHook(() => useTimeSeries(defaultQuery))
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+
+            const dataWithNulls = [
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: null,
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: undefined,
+                },
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '0',
+                },
+            ]
+
+            const result = select?.({
+                data: {
+                    ...defaultResult,
+                    data: dataWithNulls,
+                },
+            } as unknown as AxiosResponse<
+                ReportingResponse<typeof dataWithNulls>
+            >)
+
+            // Test that rawData is preserved for both data points
+            expect(result).toBeDefined()
+            expect(Array.isArray(result)).toBe(true)
+            if (result && Array.isArray(result) && result.length > 0) {
+                expect(result[0][1]?.rawData).toEqual({
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: null,
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: undefined,
+                })
+                expect(result[0][2]?.rawData).toEqual({
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+                    [TicketMessagesMeasure.MedianFirstResponseTime]: '',
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '0',
+                })
+            }
+        })
+    })
 })
 
 describe('TimeSeriesPerDimension', () => {

@@ -64,31 +64,27 @@ const select =
         const { dimension, dateRange, granularity } = timeDimensions[0]
 
         const dateTimeToValuesMap = res.reduce<
-            Partial<Record<string, number[]>>
+            Partial<Record<string, { values: number[]; rawData: any }>>
         >((acc, item) => {
             const key = formatReportingQueryDate(item[String(dimension)])
             const values = measures.map((measure) =>
                 parseFloat(item[measure] || '0'),
             )
-            return {
-                ...acc,
-                [key]: values,
-            }
+            acc[key] = { values, rawData: item }
+            return acc
         }, {})
+
         const dateTimes = getPeriodDateTimes(dateRange, granularity)
         return measures.map((_, index) => {
             return dateTimes.map((dateTime) => {
-                const values = dateTimeToValuesMap[dateTime] || []
-                const rawItem = res.find(
-                    (item) =>
-                        formatReportingQueryDate(item[String(dimension)]) ===
-                        dateTime,
-                )
+                const entry = dateTimeToValuesMap[dateTime]
+                const values = entry?.values || []
+                const rawData = entry?.rawData
                 return {
                     dateTime,
                     value: values[index] || 0,
                     label: measures[index],
-                    rawData: rawItem, // Include all properties from the raw data in a separate property
+                    rawData, // Include all properties from the raw data in a separate property
                 }
             })
         })
