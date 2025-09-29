@@ -8,7 +8,6 @@ export type ButtonVariant = 'primary' | 'secondary' | 'link'
 type ButtonProps = {
     label: string
     isDisabled?: boolean
-    iconLeft?: string
     onClick?: () => void
     redirectLink?: string
     variant?: ButtonVariant
@@ -17,7 +16,6 @@ type ButtonProps = {
 export const Button = ({
     label,
     isDisabled = false,
-    iconLeft,
     onClick,
     redirectLink = '',
     variant = 'primary',
@@ -33,9 +31,6 @@ export const Button = ({
     if (variant === 'link') {
         return (
             <Link className={css.linkButton} to={redirectLink}>
-                {iconLeft && (
-                    <i className="material-icons-outlined">{iconLeft}</i>
-                )}
                 {label}
             </Link>
         )
