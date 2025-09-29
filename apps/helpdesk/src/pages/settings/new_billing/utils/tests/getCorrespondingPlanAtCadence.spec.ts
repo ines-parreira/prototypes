@@ -34,34 +34,23 @@ describe('getCorrespondingPlanAtInterval', () => {
         expect(result3).toBe(basicYearlyHelpdeskPlan2)
     })
 
-    it('should thow an error if the price for the given cadence does not exist', () => {
-        try {
-            getCorrespondingPlanAtCadence({
-                availablePlans: [],
-                currentPlan: basicMonthlyHelpdeskPlan,
-                cadence: Cadence.Year,
-            })
-        } catch (e) {
-            expect(e).toEqual(
-                new Error(
-                    'Plan not found at this cadence: basic-monthly-usd-4',
-                ),
-            )
-        }
+    it('should return undefined if the price for the given cadence does not exist', () => {
+        const result = getCorrespondingPlanAtCadence({
+            availablePlans: [],
+            currentPlan: basicMonthlyHelpdeskPlan,
+            cadence: Cadence.Year,
+        })
+
+        expect(result).toBeUndefined()
     })
 
     it('should not return the current plan if the plan id does not contain a cadence', () => {
-        try {
-            getCorrespondingPlanAtCadence({
-                availablePlans: [legacyAutomatePlan],
-                currentPlan: legacyAutomatePlan,
-                cadence: Cadence.Year,
-            })
-        } catch (e) {
-            expect(e).toEqual(
-                new Error('Plan not found at this cadence: free-automation'),
-            )
-        }
+        const result = getCorrespondingPlanAtCadence({
+            availablePlans: [legacyAutomatePlan],
+            currentPlan: legacyAutomatePlan,
+            cadence: Cadence.Year,
+        })
+        expect(result).toBeUndefined()
     })
 
     it('should return undefined if the currentPrice is not provided', () => {

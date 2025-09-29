@@ -15,7 +15,6 @@ import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import { TicketPurpose } from 'state/billing/types'
-import { reportError } from 'utils/errors'
 
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -110,48 +109,46 @@ const BillingFrequencyView = ({
         )
 
         otherCadences.forEach((otherCadence) => {
-            try {
-                const helpdeskPlan = getCorrespondingPlanAtCadence({
-                    availablePlans: helpdeskAvailablePlans,
-                    cadence: otherCadence,
-                    currentPlan: currentHelpdeskPlan,
-                })
-                const automatePlan = getCorrespondingPlanAtCadence({
-                    availablePlans: automateAvailablePlans,
-                    cadence: otherCadence,
-                    currentPlan: currentAutomatePlan,
-                })
-                const voicePlan = getCorrespondingPlanAtCadence({
-                    availablePlans: voiceAvailablePlans ?? [],
-                    cadence: otherCadence,
-                    currentPlan: currentVoicePlan,
-                })
-                const smsPlan = getCorrespondingPlanAtCadence({
-                    availablePlans: smsAvailablePlans ?? [],
-                    cadence: otherCadence,
-                    currentPlan: currentSmsPlan,
-                })
-                const convertPlan = getCorrespondingPlanAtCadence({
-                    availablePlans: convertAvailablePlans ?? [],
-                    cadence: otherCadence,
-                    currentPlan: currentConvertPlan,
-                })
+            const helpdeskPlan = getCorrespondingPlanAtCadence({
+                availablePlans: helpdeskAvailablePlans,
+                cadence: otherCadence,
+                currentPlan: currentHelpdeskPlan,
+            })
+            const automatePlan = getCorrespondingPlanAtCadence({
+                availablePlans: automateAvailablePlans,
+                cadence: otherCadence,
+                currentPlan: currentAutomatePlan,
+            })
+            const voicePlan = getCorrespondingPlanAtCadence({
+                availablePlans: voiceAvailablePlans,
+                cadence: otherCadence,
+                currentPlan: currentVoicePlan,
+            })
+            const smsPlan = getCorrespondingPlanAtCadence({
+                availablePlans: smsAvailablePlans,
+                cadence: otherCadence,
+                currentPlan: currentSmsPlan,
+            })
+            const convertPlan = getCorrespondingPlanAtCadence({
+                availablePlans: convertAvailablePlans,
+                cadence: otherCadence,
+                currentPlan: currentConvertPlan,
+            })
 
+            if (
+                helpdeskPlan === undefined ||
+                automatePlan === undefined ||
+                voicePlan === undefined ||
+                smsPlan === undefined ||
+                convertPlan === undefined
+            ) {
+                disabledCadences.add(otherCadence)
+            } else {
                 helpdeskPlansForAllCadences[otherCadence] = helpdeskPlan
                 automatePlansForAllCadences[otherCadence] = automatePlan
                 voicePlansForAllCadences[otherCadence] = voicePlan
                 smsPlansForAllCadences[otherCadence] = smsPlan
                 convertPlansForAllCadences[otherCadence] = convertPlan
-            } catch (error) {
-                if (
-                    error instanceof Error &&
-                    error.message.startsWith('Plan not found at this cadence')
-                ) {
-                    reportError(error, { extra: { otherCadence } })
-                    disabledCadences.add(otherCadence)
-                } else {
-                    throw error
-                }
             }
         })
 

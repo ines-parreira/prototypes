@@ -31,11 +31,5 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
                 plan.generation === currentPlan.generation),
     )
 
-    if (!plan) {
-        throw new Error(
-            `Plan not found at this cadence: ${currentPlan.plan_id}`,
-        )
-    }
-
     return plan
 }
