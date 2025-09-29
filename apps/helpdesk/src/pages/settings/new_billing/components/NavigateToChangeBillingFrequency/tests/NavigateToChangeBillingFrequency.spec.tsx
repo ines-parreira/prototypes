@@ -212,7 +212,7 @@ describe('NavigateToChangeBillingFrequency', () => {
             const contact = screen.getByText('get in touch')
             await act(() => userEvent.click(contact))
             expect(contactBillingMock).toHaveBeenCalledWith(
-                TicketPurpose.YEARLY_TO_MONTHLY,
+                TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
             )
         },
     )

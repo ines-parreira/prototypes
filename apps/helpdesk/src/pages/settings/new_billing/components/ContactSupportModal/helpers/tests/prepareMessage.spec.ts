@@ -111,10 +111,10 @@ describe('prepareMessage', () => {
         })
     })
 
-    describe('MONTHLY_TO_YEARLY ticket purpose', () => {
+    describe('BILLING_FREQUENCY_DOWNGRADE ticket purpose', () => {
         it('should format message for monthly to yearly subscription change', () => {
             const message = 'I want to change my billing frequency'
-            const ticketPurpose = TicketPurpose.MONTHLY_TO_YEARLY
+            const ticketPurpose = TicketPurpose.BILLING_FREQUENCY_DOWNGRADE
             const helpdeskPlanName = 'Basic Plan'
             const isInTrial = false
 
@@ -126,29 +126,7 @@ describe('prepareMessage', () => {
             )
 
             expect(result).toBe(
-                'Billing request: Subscription change from Monthly to Yearly with Voice/SMS\n' +
-                    'Request:\n' +
-                    'I want to change my billing frequency',
-            )
-        })
-    })
-
-    describe('YEARLY_TO_MONTHLY ticket purpose', () => {
-        it('should format message for monthly to yearly subscription change', () => {
-            const message = 'I want to change my billing frequency'
-            const ticketPurpose = TicketPurpose.YEARLY_TO_MONTHLY
-            const helpdeskPlanName = 'Basic Plan'
-            const isInTrial = false
-
-            const result = prepareMessage(
-                message,
-                ticketPurpose,
-                helpdeskPlanName,
-                isInTrial,
-            )
-
-            expect(result).toBe(
-                'Billing request: Subscription change from Yearly to Monthly with Voice/SMS\n' +
+                'Billing request: Subscription downgrade billing frequency\n' +
                     'Request:\n' +
                     'I want to change my billing frequency',
             )

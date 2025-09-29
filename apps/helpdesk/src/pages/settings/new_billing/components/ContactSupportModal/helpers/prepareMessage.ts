@@ -1,5 +1,3 @@
-import { Cadence } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
 import { TicketPurpose } from 'state/billing/types'
 
 export function prepareMessage(
@@ -19,15 +17,9 @@ export function prepareMessage(
             )
         case TicketPurpose.ERROR:
             return `Billing request: Billing error\n` + `Request:\n` + message
-        case TicketPurpose.MONTHLY_TO_YEARLY:
+        case TicketPurpose.BILLING_FREQUENCY_DOWNGRADE:
             return (
-                `Billing request: Subscription change from ${getCadenceName(Cadence.Month)} to ${getCadenceName(Cadence.Year)} with Voice/SMS\n` +
-                `Request:\n` +
-                message
-            )
-        case TicketPurpose.YEARLY_TO_MONTHLY:
-            return (
-                `Billing request: Subscription change from ${getCadenceName(Cadence.Year)} to ${getCadenceName(Cadence.Month)} with Voice/SMS\n` +
+                `Billing request: Subscription downgrade billing frequency\n` +
                 `Request:\n` +
                 message
             )

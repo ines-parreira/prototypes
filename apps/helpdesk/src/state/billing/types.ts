@@ -132,8 +132,7 @@ export type ReduxBillingState = {
 
 export enum TicketPurpose {
     ENTERPRISE = 'enterprise',
-    YEARLY_TO_MONTHLY = 'yearlyToMonthly',
-    MONTHLY_TO_YEARLY = 'monthlyToYearly',
+    BILLING_FREQUENCY_DOWNGRADE = 'billingFrequencyDowngrade',
     ERROR = 'error',
     CONTACT_US = 'contactUs',
 }

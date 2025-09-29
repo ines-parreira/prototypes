@@ -94,7 +94,9 @@ export default function NavigateToChangeBillingFrequency({
                 <span
                     className={css.link}
                     onClick={() =>
-                        contactBilling(TicketPurpose.YEARLY_TO_MONTHLY)
+                        contactBilling(
+                            TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
+                        )
                     }
                 >
                     get in touch
