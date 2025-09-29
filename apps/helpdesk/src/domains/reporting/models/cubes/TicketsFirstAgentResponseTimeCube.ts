@@ -12,6 +12,7 @@ export enum TicketsFirstAgentResponseTimeDimension {
     FirstAgentResponseTime = 'TicketFirstAgentResponseTime.firstAgentResponseTime',
     FirstAgentResponseTimeInSeconds = 'TicketFirstAgentResponseTime.firstAgentResponseTimeInSeconds',
     Integration = 'TicketFirstAgentResponseTime.integration',
+    Store = 'TicketFirstAgentResponseTime.store',
     TicketId = 'TicketFirstAgentResponseTime.ticketId',
 }
 

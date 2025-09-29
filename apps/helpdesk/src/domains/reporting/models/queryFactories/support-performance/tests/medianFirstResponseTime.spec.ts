@@ -6,6 +6,7 @@ import {
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketFirstHumanAgentResponseTimeMember } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
@@ -48,6 +49,7 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
             TicketChannel.Chat,
         ]),
         integrations: withDefaultLogicalOperator([1]),
+        stores: withDefaultLogicalOperator([1]),
         tags: [
             {
                 ...withDefaultLogicalOperator([1, 2]),
@@ -89,9 +91,14 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     values: [formatReportingQueryDate(periodEnd)],
                 },
                 {
-                    member: TicketMessagesMember.Integration,
+                    member: TicketFirstHumanAgentResponseTimeMember.Integration,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.integrations?.values.map(String),
+                },
+                {
+                    member: TicketFirstHumanAgentResponseTimeMember.Store,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.stores?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,
@@ -144,9 +151,14 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     values: [formatReportingQueryDate(periodEnd)],
                 },
                 {
-                    member: TicketMessagesMember.Integration,
+                    member: TicketFirstHumanAgentResponseTimeMember.Integration,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.integrations?.values.map(String),
+                },
+                {
+                    member: TicketFirstHumanAgentResponseTimeMember.Store,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.stores?.values.map(String),
                 },
                 {
                     member: TicketMember.Channel,

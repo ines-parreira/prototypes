@@ -22,6 +22,7 @@ import {
     TicketMeasure,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketFirstHumanAgentResponseTimeMember } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMember } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketsFirstAgentResponseTimeDimension } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
@@ -85,11 +86,15 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
 export const TicketMessagesEnrichedFirstResponseTimesMembers = {
     ...TicketStatsFiltersMembers,
     agents: TicketMessagesMember.FirstHelpdeskMessageUserId,
+    integrations: TicketFirstHumanAgentResponseTimeMember.Integration,
+    stores: TicketFirstHumanAgentResponseTimeMember.Store,
 }
 
 export const TicketsFirstAgentResponseTimeMembers = {
     ...TicketStatsFiltersMembers,
     agents: TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+    integrations: TicketsFirstAgentResponseTimeDimension.Integration,
+    stores: TicketsFirstAgentResponseTimeDimension.Store,
 }
 
 export const TicketMessagesEnrichedResponseTimesMembers: StatsFiltersMembers = {

@@ -26,6 +26,7 @@ export enum TicketFirstHumanAgentResponseTimeMember {
     FirstHumanAgentResponseTime = 'TicketFirstHumanAgentResponseTime.firstHumanAgentResponseTime',
     FirstHumanAgentResponseTimeInSeconds = 'TicketFirstHumanAgentResponseTime.firstHumanAgentResponseTimeInSeconds',
     Integration = 'TicketFirstHumanAgentResponseTime.integration',
+    Store = 'TicketFirstHumanAgentResponseTime.store',
     TicketId = 'TicketFirstHumanAgentResponseTime.ticketId',
 }
 
