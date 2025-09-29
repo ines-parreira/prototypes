@@ -15,6 +15,7 @@ interface UsePaginatedProductsByIdsProps {
 }
 
 interface UsePaginatedProductsByIdsReturn {
+    allProducts: Product[]
     products: Product[]
     isLoading: boolean
     isFetching: boolean
@@ -127,6 +128,8 @@ const usePaginatedProductsByIds = ({
             return (data as Product[]) || []
         }
 
+        setCurrentPage(1)
+
         if (!debouncedSearchTerm) {
             return allProducts
         }
@@ -164,6 +167,7 @@ const usePaginatedProductsByIds = ({
 
     return useMemo(
         () => ({
+            allProducts,
             products: paginatedFilteredProducts,
             isLoading,
             isFetching,
@@ -177,6 +181,7 @@ const usePaginatedProductsByIds = ({
             setSearchTerm: handleSearch,
         }),
         [
+            allProducts,
             paginatedFilteredProducts,
             isLoading,
             isFetching,

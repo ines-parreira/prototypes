@@ -38,6 +38,7 @@ export const ProductRecommendationRuleCard = ({
     }, [isDrawerOpen])
 
     const {
+        allProducts: allProductRules,
         products: productRules,
         isLoading: isLoadingProductRules,
         isFetching: isFetchingProductRules,
@@ -111,7 +112,7 @@ export const ProductRecommendationRuleCard = ({
                 itemLabelSingular="product"
                 itemLabelPlural="products"
                 totalItems={productIds.length}
-                items={mapProducts(productRules.slice(0, 5))}
+                items={mapProducts(allProductRules.slice(0, 5))}
                 onDelete={(deletedProductId: string) =>
                     onUpsert(
                         productIds.filter(

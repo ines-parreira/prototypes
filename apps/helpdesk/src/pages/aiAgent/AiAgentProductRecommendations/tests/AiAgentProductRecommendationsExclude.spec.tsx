@@ -165,6 +165,7 @@ const renderComponent = (
                       : filteredProducts
 
             return {
+                allProducts: productsToReturn,
                 products: productsToReturn,
                 isLoading: false,
                 isError: false,

@@ -98,6 +98,7 @@ describe('ProductRecommendationRuleCard', () => {
         jest.clearAllMocks()
 
         mockUsePaginatedProductsByIds.mockReturnValue({
+            allProducts: mockProducts,
             products: mockProducts,
             isLoading: false,
             isError: false,
@@ -248,6 +249,7 @@ describe('ProductRecommendationRuleCard', () => {
 
     it('should handle empty product list', () => {
         mockUsePaginatedProductsByIds.mockReturnValue({
+            allProducts: [],
             products: [],
             isLoading: false,
             isError: false,
