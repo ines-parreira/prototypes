@@ -2,6 +2,7 @@ import {
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     basicYearlyHelpdeskPlan2,
+    legacyAutomatePlan,
 } from 'fixtures/productPrices'
 import { Cadence } from 'models/billing/types'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
@@ -45,6 +46,20 @@ describe('getCorrespondingPlanAtInterval', () => {
                 new Error(
                     'Plan not found at this cadence: basic-monthly-usd-4',
                 ),
+            )
+        }
+    })
+
+    it('should not return the current plan if the plan id does not contain a cadence', () => {
+        try {
+            getCorrespondingPlanAtCadence({
+                availablePlans: [legacyAutomatePlan],
+                currentPlan: legacyAutomatePlan,
+                cadence: Cadence.Year,
+            })
+        } catch (e) {
+            expect(e).toEqual(
+                new Error('Plan not found at this cadence: free-automation'),
             )
         }
     })

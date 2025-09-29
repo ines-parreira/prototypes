@@ -13,18 +13,19 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
     cadence,
 }: Props<T>): T | undefined => {
     // If the current plan is null or already has the desired cadence, return it
-    if (!currentPlan || currentPlan?.cadence === cadence) {
+    if (!currentPlan || currentPlan.cadence === cadence) {
         return currentPlan
     }
 
-    const targetPlanId = currentPlan?.plan_id.replace(
+    const targetPlanId = currentPlan.plan_id.replace(
         getCadenceName(currentPlan.cadence).toLowerCase(),
         getCadenceName(cadence).toLowerCase(),
     )
+    const canUseIDCheck = currentPlan.plan_id !== targetPlanId
 
     const plan = availablePlans.find(
         (plan) =>
-            plan.plan_id === targetPlanId ||
+            (canUseIDCheck && plan.plan_id === targetPlanId) ||
             (plan.cadence === cadence &&
                 plan.product === currentPlan.product &&
                 plan.generation === currentPlan.generation),
