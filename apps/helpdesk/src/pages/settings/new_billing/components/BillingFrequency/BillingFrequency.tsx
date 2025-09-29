@@ -1,24 +1,29 @@
 import { Cadence } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
 import css from './BillingFrequency.less'
 
 export type BillingFrequencyProps = {
+    currentCadence: Cadence
     selectedCadence: Cadence | null
-    onCadenceSelect: (cadence: Cadence) => void
+    allowDowngrades: boolean
     disabledCadences?: Set<Cadence>
+    onCadenceSelect: (cadence: Cadence) => void
 }
 
 const BillingFrequency = ({
+    currentCadence,
     selectedCadence,
-    onCadenceSelect,
+    allowDowngrades,
     disabledCadences = new Set(),
+    onCadenceSelect,
 }: BillingFrequencyProps) => {
     const hasDisabledCadences = disabledCadences.size > 0
     const disabledCadenceNames = Array.from(disabledCadences)
         .map((cadence) => getCadenceName(cadence))
         .join(' and ')
+
     return (
         <div className={css.container}>
             <div className={css.radioButtons}>
@@ -29,7 +34,14 @@ const BillingFrequency = ({
                         value={cadence}
                         onClick={() => onCadenceSelect(cadence)}
                         label={getCadenceName(cadence)}
-                        isDisabled={disabledCadences.has(cadence)}
+                        isDisabled={
+                            disabledCadences.has(cadence) ||
+                            (!allowDowngrades &&
+                                isOtherCadenceDowngrade(
+                                    currentCadence,
+                                    cadence,
+                                ))
+                        }
                     />
                 ))}
             </div>

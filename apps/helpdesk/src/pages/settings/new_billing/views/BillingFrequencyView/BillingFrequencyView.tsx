@@ -241,7 +241,9 @@ const BillingFrequencyView = ({
                     }}
                 >
                     <BillingFrequency
+                        currentCadence={cadence}
                         selectedCadence={selectedCadence}
+                        allowDowngrades={false}
                         onCadenceSelect={onFrequencySelect}
                         disabledCadences={disabledCadences}
                     />

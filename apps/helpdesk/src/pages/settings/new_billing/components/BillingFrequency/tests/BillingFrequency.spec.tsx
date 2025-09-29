@@ -1,17 +1,29 @@
-import { fireEvent, render } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Cadence } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 
 import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
 
+const getRadioButton = (cadence: Cadence) => {
+    // The component used wraps a radio input inside a div with forced aria labels
+    // this means getByRole finds multiple, so we need to filter these down to what
+    // we are really looking for - i.e. the radio component
+    const components = screen.getAllByRole('radio', {
+        name: getCadenceName(cadence),
+    })
+    return components.find((el) => el.getAttribute('type') === 'radio')
+}
+
 describe('BillingFrequency', () => {
-    const mockSelectedCadence = Cadence.Month
     const mockOnFrequencySelect = jest.fn()
 
     const setup = (props?: Partial<BillingFrequencyProps>) => {
         const defaultProps: BillingFrequencyProps = {
-            selectedCadence: mockSelectedCadence,
+            currentCadence: Cadence.Month,
+            selectedCadence: Cadence.Month,
+            allowDowngrades: false,
             onCadenceSelect: mockOnFrequencySelect,
             ...props,
         }
@@ -19,78 +31,98 @@ describe('BillingFrequency', () => {
         return render(<BillingFrequency {...defaultProps} />)
     }
 
+    const cadenceValues = Object.values(Cadence)
+    it('assumes correctly the cadence enum is ordered from lowest to highest', () => {
+        // This test only exists to ensure the assumption in the component is correct
+        // without this test we'd have to either have this logic in the component - which
+        // then coverage would object to the `: -1` branch not being covered - or we'd
+        // have to blindly trust the assumption, and risk incorrect ordering of radio buttons
+        const orderedCadences = Object.values(Cadence).sort((a, b) =>
+            isOtherCadenceDowngrade(a, b) ? 1 : -1,
+        )
+        expect(orderedCadences).toEqual(cadenceValues)
+    })
+
     it('should render correctly', () => {
-        const { getByText } = setup()
-        expect(getByText(getCadenceName(Cadence.Month))).toBeInTheDocument()
-        expect(getByText(getCadenceName(Cadence.Year))).toBeInTheDocument()
+        setup()
+
+        for (const cadence of cadenceValues) {
+            const radioButton = getRadioButton(cadence)
+            expect(radioButton).toBeInTheDocument()
+        }
     })
 
-    it('should call setSelectedCadence and setSelectedPlans with the correct values when a radio button is clicked', () => {
-        const { getByLabelText } = setup()
-        const monthlyRadioButton = getByLabelText(
-            getCadenceName(Cadence.Month),
-            {
-                selector: 'input',
-            },
-        )
-        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
-            selector: 'input',
-        })
+    it.each(cadenceValues)(
+        'should not allow selection of cadence downgrades when allowDowngrades is false [currentCadence=%s]',
+        (currentCadence: Cadence) => {
+            setup({
+                currentCadence,
+                allowDowngrades: false,
+            })
 
-        fireEvent.click(monthlyRadioButton)
-        expect(mockOnFrequencySelect).toHaveBeenCalledWith(Cadence.Month)
+            for (const cadence of cadenceValues) {
+                const radioButton = getRadioButton(cadence)
 
-        fireEvent.click(yearlyRadioButton)
-        expect(mockOnFrequencySelect).toHaveBeenCalledWith(Cadence.Year)
-    })
+                if (isOtherCadenceDowngrade(currentCadence, cadence)) {
+                    expect(radioButton).toBeDisabled()
+                } else {
+                    expect(radioButton).not.toBeDisabled()
+                }
+            }
+        },
+    )
 
-    it('should show text when monthly billing is not available', () => {
-        const { getByLabelText, container } = setup({
-            disabledCadences: new Set([Cadence.Month]),
-        })
-        const monthlyRadioButton = getByLabelText(
-            getCadenceName(Cadence.Month),
-            {
-                selector: 'input',
-            },
-        )
-        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
-            selector: 'input',
-        })
+    it.each(cadenceValues)(
+        'should allow selection of cadence downgrades when allowDowngrades is true [currentCadence=%s]',
+        (currentCadence: Cadence) => {
+            setup({
+                currentCadence,
+                allowDowngrades: true,
+            })
 
-        fireEvent.click(yearlyRadioButton)
-        expect(mockOnFrequencySelect).toHaveBeenCalledWith(Cadence.Year)
+            for (const cadence of cadenceValues) {
+                const radioButton = getRadioButton(cadence)
+                expect(radioButton).not.toBeDisabled()
+            }
+        },
+    )
 
-        expect(monthlyRadioButton).toBeDisabled()
-        expect(
-            container.getElementsByClassName('disabledMessage')[0].textContent,
-        ).toContain(
-            `${getCadenceName(Cadence.Month)} billing is not available for your current plan configuration.`,
-        )
-    })
+    it.each(cadenceValues)(
+        'should not allow selecting disabled cadences [cadence=%s]',
+        (cadence: Cadence) => {
+            setup({
+                disabledCadences: new Set([cadence]),
+            })
 
-    it('should show text when yearly billing is not available', () => {
-        const { getByLabelText, container } = setup({
-            disabledCadences: new Set([Cadence.Year]),
-        })
-        const monthlyRadioButton = getByLabelText(
-            getCadenceName(Cadence.Month),
-            {
-                selector: 'input',
-            },
-        )
-        const yearlyRadioButton = getByLabelText(getCadenceName(Cadence.Year), {
-            selector: 'input',
-        })
+            const radioButton = getRadioButton(cadence)
+            expect(radioButton).toBeDisabled()
 
-        fireEvent.click(monthlyRadioButton)
-        expect(mockOnFrequencySelect).toHaveBeenCalledWith(Cadence.Month)
+            const otherCadenceValues = cadenceValues.filter(
+                (value: Cadence) => value !== cadence,
+            )
+            for (const cadence of otherCadenceValues) {
+                const radioButton = getRadioButton(cadence)
+                expect(radioButton).not.toBeDisabled()
+            }
 
-        expect(yearlyRadioButton).toBeDisabled()
-        expect(
-            container.getElementsByClassName('disabledMessage')[0].textContent,
-        ).toContain(
-            `${getCadenceName(Cadence.Year)} billing is not available for your current plan configuration.`,
-        )
+            expect(
+                screen.getByText(
+                    `${getCadenceName(cadence)} billing is not available for your current plan configuration.`,
+                    { exact: false },
+                ),
+            ).toBeInTheDocument()
+        },
+    )
+
+    it('should call onCadenceSelect with the correct values when a radio button is clicked', async () => {
+        setup()
+
+        for (const cadence of cadenceValues) {
+            const radioButton = getRadioButton(cadence)
+            if (!radioButton) continue
+
+            await act(() => userEvent.click(radioButton))
+            expect(mockOnFrequencySelect).toHaveBeenCalledWith(cadence)
+        }
     })
 })
