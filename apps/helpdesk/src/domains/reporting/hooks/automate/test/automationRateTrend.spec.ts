@@ -1,8 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
-import { useFlag } from 'core/flags'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
@@ -27,9 +25,6 @@ import {
     useAutomationRateTrend,
 } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
@@ -198,29 +193,6 @@ describe('AutomationRateTrend', () => {
                 isError: false,
             })
         })
-
-        it('should calculate data with NonFilteredDenominator when the flag is on', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-                )
-                    return true
-                return false
-            })
-            const { result } = renderHook(() =>
-                useAutomationRateTrend(statsFilters, timezone),
-            )
-
-            expect(result.current).toEqual({
-                data: {
-                    value: 0.7260541950441965,
-                    prevValue: 0,
-                },
-                isFetching: false,
-                isError: false,
-            })
-        })
     })
 
     describe('fetchAutomationRateTrend', () => {
@@ -283,7 +255,6 @@ describe('AutomationRateTrend', () => {
             const result = await fetchAutomationRateTrend(
                 statsFilters,
                 timezone,
-                false,
                 aiAgentUserId,
             )
 
@@ -297,11 +268,10 @@ describe('AutomationRateTrend', () => {
             })
         })
 
-        it('should calculate data with NonFilteredDenominator when the flag is on', async () => {
+        it('should calculate data with NonFilteredDenominator', async () => {
             const result = await fetchAutomationRateTrend(
                 statsFilters,
                 timezone,
-                true,
                 aiAgentUserId,
             )
 

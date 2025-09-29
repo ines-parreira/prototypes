@@ -1,9 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
-import { useFlag } from 'core/flags'
 import { getMockData } from 'domains/reporting/hooks/automate/test/useAutomationDataset.spec'
 import {
     fetchAutomationDatasetTimeSeries,
@@ -21,9 +19,6 @@ import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/aut
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/automate/timeSeries')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
@@ -140,16 +135,7 @@ describe('useAutomationRateTimeSeriesData', () => {
             })
         })
 
-        it('should use NonFilteredDenominator InAutomationRate when the flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate
-                )
-                    return true
-                return false
-            })
-
+        it('should use NonFilteredDenominator InAutomationRate', () => {
             const { result } = renderHook(() =>
                 useAutomationRateTimeSeriesData(
                     statsFilters,
@@ -181,7 +167,6 @@ describe('useAutomationRateTimeSeriesData', () => {
                 statsFilters,
                 timezone,
                 granularity,
-                false,
                 undefined,
             )
 
@@ -199,7 +184,6 @@ describe('useAutomationRateTimeSeriesData', () => {
                 statsFilters,
                 timezone,
                 granularity,
-                false,
                 undefined,
             )
 
@@ -210,12 +194,11 @@ describe('useAutomationRateTimeSeriesData', () => {
             })
         })
 
-        it('should use NonFilteredDenominator InAutomationRate when the flag is enabled', async () => {
+        it('should use NonFilteredDenominator InAutomationRate', async () => {
             const result = await fetchAutomationRateTimeSeriesData(
                 statsFilters,
                 timezone,
                 granularity,
-                true,
                 undefined,
             )
 

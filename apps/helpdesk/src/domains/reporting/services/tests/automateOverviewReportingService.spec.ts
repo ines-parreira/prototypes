@@ -247,7 +247,6 @@ describe('reporting', () => {
         const timezone = 'UTC'
         const granularity = ReportingGranularity.Day
         const context = {
-            isAutomateNonFilteredDenominatorInAutomationRate: false,
             aiAgentUserId: 123,
         }
         const fileName = getCsvFileNameWithDates(
@@ -292,7 +291,6 @@ describe('reporting', () => {
         const timezone = 'UTC'
         const granularity = ReportingGranularity.Day
         const context = {
-            isAutomateNonFilteredDenominatorInAutomationRate: false,
             aiAgentUserId: 123,
         }
         const fileName = getCsvFileNameWithDates(

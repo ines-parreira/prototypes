@@ -1,10 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
-import {
-    getAIAgentAutomationRateTrend,
-    getAIAgentAutomationRateUnfilteredDenominatorTrend,
-} from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
+import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
@@ -24,11 +18,6 @@ export const useAIAgentAutomationRateTrend = (
     filters: StatsFilters,
     timezone: string,
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate:
-        | boolean
-        | undefined = useFlag(
-        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
-    )
     const aiAgentUserId = useAIAgentUserId()
 
     const aiAgentAutomatedInteractions = useTrendFromMultipleMetricsTrend(
@@ -62,28 +51,20 @@ export const useAIAgentAutomationRateTrend = (
         allAutomatedInteractions.isError ||
         billableTicketsExcludingAIAgent.isError
 
-    return isAutomateNonFilteredDenominatorInAutomationRate
-        ? getAIAgentAutomationRateUnfilteredDenominatorTrend({
-              isFetching,
-              isError,
-              aiAgentAutomatedInteractions: aiAgentAutomatedInteractions.data,
-              allAutomatedInteractions: allAutomatedInteractions.data,
-              allAutomatedInteractionsByAutoResponders:
-                  allAutomatedInteractionsByAutoResponders.data,
-              billableTicketsCount: billableTicketsExcludingAIAgent.data,
-          })
-        : getAIAgentAutomationRateTrend(
-              isFetching,
-              isError,
-              aiAgentAutomatedInteractions.data,
-              billableTicketsExcludingAIAgent.data,
-          )
+    return getAIAgentAutomationRateUnfilteredDenominatorTrend({
+        isFetching,
+        isError,
+        aiAgentAutomatedInteractions: aiAgentAutomatedInteractions.data,
+        allAutomatedInteractions: allAutomatedInteractions.data,
+        allAutomatedInteractionsByAutoResponders:
+            allAutomatedInteractionsByAutoResponders.data,
+        billableTicketsCount: billableTicketsExcludingAIAgent.data,
+    })
 }
 
 export const fetchAIAgentAutomationRateTrend = async (
     filters: StatsFilters,
     timezone: string,
-    isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ) => {
     return Promise.all([
@@ -103,24 +84,15 @@ export const fetchAIAgentAutomationRateTrend = async (
             allAutomatedInteractions,
             billableTicketsExcludingAIAgent,
         ]) => {
-            return isAutomateNonFilteredDenominatorInAutomationRate
-                ? getAIAgentAutomationRateUnfilteredDenominatorTrend({
-                      isFetching: false,
-                      isError: false,
-                      aiAgentAutomatedInteractions:
-                          aiAgentAutomatedInteractions.data,
-                      allAutomatedInteractions: allAutomatedInteractions.data,
-                      allAutomatedInteractionsByAutoResponders:
-                          allAutomatedInteractionsByAutoResponders.data,
-                      billableTicketsCount:
-                          billableTicketsExcludingAIAgent.data,
-                  })
-                : getAIAgentAutomationRateTrend(
-                      false,
-                      false,
-                      aiAgentAutomatedInteractions.data,
-                      billableTicketsExcludingAIAgent.data,
-                  )
+            return getAIAgentAutomationRateUnfilteredDenominatorTrend({
+                isFetching: false,
+                isError: false,
+                aiAgentAutomatedInteractions: aiAgentAutomatedInteractions.data,
+                allAutomatedInteractions: allAutomatedInteractions.data,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders.data,
+                billableTicketsCount: billableTicketsExcludingAIAgent.data,
+            })
         },
     )
 }

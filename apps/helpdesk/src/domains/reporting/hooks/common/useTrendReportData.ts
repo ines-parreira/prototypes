@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -23,9 +20,6 @@ export const useTrendReportData = (
         title: string
     }[],
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
-        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
-    )
     const aiAgentUserId = useAIAgentUserId()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
@@ -43,7 +37,6 @@ export const useTrendReportData = (
             r.fetchTrend(
                 cleanStatsFilters,
                 userTimezone,
-                isAutomateNonFilteredDenominatorInAutomationRate,
                 aiAgentUserId,
                 costSavedPerInteraction,
             ),
@@ -70,7 +63,6 @@ export const useTrendReportData = (
         aiAgentUserId,
         cleanStatsFilters,
         costSavedPerInteraction,
-        isAutomateNonFilteredDenominatorInAutomationRate,
         trendsReportSource,
         userTimezone,
     ])

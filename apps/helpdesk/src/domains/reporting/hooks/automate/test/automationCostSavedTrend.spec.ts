@@ -102,7 +102,6 @@ describe('AutomationCostSavedTrend', () => {
                 statsFilters,
                 userTimezone,
                 undefined,
-                undefined,
                 moneySavedPerInteractionWithAutomate,
             )
 

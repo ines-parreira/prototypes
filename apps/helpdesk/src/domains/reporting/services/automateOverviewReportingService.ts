@@ -192,7 +192,6 @@ export const fetchAutomatePerformanceReport = async (
     userTimezone: string,
     granularity: ReportingGranularity,
     context: {
-        isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: number | undefined
     },
 ) => {
@@ -200,7 +199,6 @@ export const fetchAutomatePerformanceReport = async (
         statsFilters,
         userTimezone,
         granularity,
-        context.isAutomateNonFilteredDenominatorInAutomationRate,
         context.aiAgentUserId,
     ).then((result) => {
         const greyArea = calculateGreyArea(
@@ -274,7 +272,6 @@ export const fetchPerformanceByFeatureReport = async (
     userTimezone: string,
     granularity: ReportingGranularity,
     context: {
-        isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: number | undefined
     },
 ) => {
@@ -287,7 +284,6 @@ export const fetchPerformanceByFeatureReport = async (
         statsFilters,
         userTimezone,
         granularity,
-        context.isAutomateNonFilteredDenominatorInAutomationRate,
         context.aiAgentUserId,
     ).then((result) => {
         const greyArea = calculateGreyArea(

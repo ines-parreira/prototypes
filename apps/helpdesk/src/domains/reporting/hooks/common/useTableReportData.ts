@@ -50,9 +50,6 @@ export const useTables = (
     granularity: ReportingGranularity,
     fetchTables: { title: string; fetchTable: ReportFetch }[],
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
-        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
-    )
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )
@@ -134,7 +131,6 @@ export const useTables = (
             ticketFieldsTicketTimeReference,
             getAgentDetails,
             integrations,
-            isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
             campaignsReportContext,
             tagResultsSelection,
@@ -157,7 +153,6 @@ export const useTables = (
             isReportingFilteringAndCalculationsTagsReportEnabled,
             getAgentDetails,
             integrations,
-            isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
             tagResultsSelection,
         ],

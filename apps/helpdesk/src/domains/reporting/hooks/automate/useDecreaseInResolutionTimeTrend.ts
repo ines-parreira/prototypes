@@ -64,7 +64,6 @@ export const useDecreaseInResolutionTimeTrend = (
 export const fetchDecreaseInResolutionTimeTrend = async (
     filters: StatsFilters,
     timezone: string,
-    _isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ) => {
     return Promise.all([

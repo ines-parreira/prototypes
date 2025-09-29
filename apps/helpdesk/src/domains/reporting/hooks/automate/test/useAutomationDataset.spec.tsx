@@ -229,7 +229,6 @@ describe('useAutomationDatasetV2', () => {
             statsFilters,
             timezone,
             granularity,
-            false,
             aIAgentUserId,
         )
 
@@ -260,14 +259,12 @@ describe('useAutomationDatasetV2', () => {
     }
 
     const allAutomatedInteractionsData = {
-        'AutomationDataset.automatedInteractions': {
-            value: 10021,
-            prevValue: 0,
-        },
-        'AutomationDataset.automatedInteractionsByAutoResponders': {
-            value: 1108,
-            prevValue: 0,
-        },
+        value: 10021,
+        prevValue: 0,
+    }
+    const allAutomatedInteractionsByAutoRespondersData = {
+        value: 1108,
+        prevValue: 0,
     }
     const BillableTicketsExcludingAIAgent = {
         value: 4889,
@@ -302,7 +299,7 @@ describe('useAutomationDatasetV2', () => {
                 isFetched: true,
             } as any)
             useAllAutomatedInteractionsByAutoRespondersMock.mockReturnValue({
-                data: allAutomatedInteractionsData,
+                data: allAutomatedInteractionsByAutoRespondersData,
                 isFetched: true,
                 isFetching: false,
             } as any)

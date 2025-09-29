@@ -1,12 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
-import {
-    automationRate,
-    automationRateUnfilteredDenominator,
-} from 'domains/reporting/hooks/automate/automateStatsFormulae'
+import { automationRateUnfilteredDenominator } from 'domains/reporting/hooks/automate/automateStatsFormulae'
 import {
     fetchAutomationDatasetTimeSeries,
     fetchBillableTicketDatasetTimeSeries,
@@ -27,9 +21,6 @@ export const useAutomationRateTimeSeriesData = (
     timezone: string,
     granularity: ReportingGranularity,
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
-        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
-    )
     const aiAgentUserId = useAIAgentUserId()
     const onlyPeriodFilter = useMemo(
         () => ({ [FilterKey.Period]: filters.period }),
@@ -45,11 +36,6 @@ export const useAutomationRateTimeSeriesData = (
         timezone,
         granularity,
     )
-    const filteredInteractionsByAutoRespondersSeries =
-        getAutomateStatsByMeasure(
-            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-            filteredAutomatedInteractionsData.data,
-        )
 
     const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -87,9 +73,6 @@ export const useAutomationRateTimeSeriesData = (
             filteredAutomatedInteractionsSeries?.forEach(
                 (timeSeries, index) => {
                     const filteredAutomatedInteractions = timeSeries.value
-                    const filteredAutomatedInteractionsByAutoResponders =
-                        filteredInteractionsByAutoRespondersSeries?.[index]
-                            .value
                     const billableTicketCount =
                         billableTicketCountsSeries?.[index].value
                     const allAutomatedInteractions =
@@ -100,18 +83,12 @@ export const useAutomationRateTimeSeriesData = (
 
                     rates.push({
                         dateTime: timeSeries.dateTime,
-                        value: isAutomateNonFilteredDenominatorInAutomationRate
-                            ? automationRateUnfilteredDenominator({
-                                  filteredAutomatedInteractions,
-                                  allAutomatedInteractions,
-                                  allAutomatedInteractionsByAutoResponders,
-                                  billableTicketsCount: billableTicketCount,
-                              })
-                            : automationRate(
-                                  filteredAutomatedInteractions,
-                                  billableTicketCount,
-                                  filteredAutomatedInteractionsByAutoResponders,
-                              ),
+                        value: automationRateUnfilteredDenominator({
+                            filteredAutomatedInteractions,
+                            allAutomatedInteractions,
+                            allAutomatedInteractionsByAutoResponders,
+                            billableTicketsCount: billableTicketCount,
+                        }),
                         label: AUTOMATION_RATE_LABEL,
                     })
                 },
@@ -126,8 +103,6 @@ export const useAutomationRateTimeSeriesData = (
         billableTicketData.isFetched,
         filteredAutomatedInteractionsData.isFetched,
         filteredAutomatedInteractionsSeries,
-        filteredInteractionsByAutoRespondersSeries,
-        isAutomateNonFilteredDenominatorInAutomationRate,
     ])
 
     const isFetching =
@@ -149,7 +124,6 @@ export const fetchAutomationRateTimeSeriesData = async (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ) => {
     const onlyPeriodFilter = { [FilterKey.Period]: filters.period }
@@ -173,12 +147,6 @@ export const fetchAutomationRateTimeSeriesData = async (
             allAutomatedInteractionsData,
             billableTicketData,
         ]) => {
-            const filteredInteractionsByAutoRespondersSeries =
-                getAutomateStatsByMeasure(
-                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-                    filteredAutomatedInteractionsData,
-                )
-
             const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
                 AutomationDatasetMeasure.AutomatedInteractions,
                 allAutomatedInteractionsData,
@@ -208,9 +176,6 @@ export const fetchAutomationRateTimeSeriesData = async (
                 filteredAutomatedInteractionsSeries?.forEach(
                     (timeSeries, index) => {
                         const filteredAutomatedInteractions = timeSeries.value
-                        const filteredAutomatedInteractionsByAutoResponders =
-                            filteredInteractionsByAutoRespondersSeries?.[index]
-                                .value
                         const billableTicketCount =
                             billableTicketCountsSeries?.[index].value
                         const allAutomatedInteractions =
@@ -222,18 +187,12 @@ export const fetchAutomationRateTimeSeriesData = async (
 
                         automationRates.push({
                             dateTime: timeSeries.dateTime,
-                            value: isAutomateNonFilteredDenominatorInAutomationRate
-                                ? automationRateUnfilteredDenominator({
-                                      filteredAutomatedInteractions,
-                                      allAutomatedInteractions,
-                                      allAutomatedInteractionsByAutoResponders,
-                                      billableTicketsCount: billableTicketCount,
-                                  })
-                                : automationRate(
-                                      filteredAutomatedInteractions,
-                                      billableTicketCount,
-                                      filteredAutomatedInteractionsByAutoResponders,
-                                  ),
+                            value: automationRateUnfilteredDenominator({
+                                filteredAutomatedInteractions,
+                                allAutomatedInteractions,
+                                allAutomatedInteractionsByAutoResponders,
+                                billableTicketsCount: billableTicketCount,
+                            }),
                             label: AUTOMATION_RATE_LABEL,
                         })
                     },

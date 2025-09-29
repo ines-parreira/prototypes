@@ -68,7 +68,6 @@ export const fetchAutomateMetricsTimeSeries = async (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ): Promise<CalculatedTimeSeries> => {
     return Promise.all([
@@ -86,7 +85,6 @@ export const fetchAutomateMetricsTimeSeries = async (
             filters,
             timezone,
             granularity,
-            isAutomateNonFilteredDenominatorInAutomationRate,
             aiAgentUserId,
         ),
     ]).then(

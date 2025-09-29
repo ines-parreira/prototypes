@@ -1,21 +1,13 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
-import {
-    getAutomationRateTrend,
-    getAutomationRateUnfilteredDenominatorTrend,
-} from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
+import { getAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
     fetchBillableTicketsExcludingAIAgent,
     fetchFilteredAutomatedInteractions,
-    fetchFilteredAutomatedInteractionsByAutoResponders,
     useAllAutomatedInteractions,
     useAllAutomatedInteractionsByAutoResponders,
     useBillableTicketsExcludingAIAgent,
     useFilteredAutomatedInteractions,
-    useFilteredAutomatedInteractionsByAutoResponders,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -24,9 +16,6 @@ export const useAutomationRateTrend = (
     filters: StatsFilters,
     timezone: string,
 ) => {
-    const isAutomateNonFilteredDenominatorInAutomationRate = useFlag(
-        FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate,
-    )
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
@@ -46,9 +35,6 @@ export const useAutomationRateTrend = (
         aiAgentUserId,
     )
 
-    const filteredAutomatedInteractionsByAutoResponders =
-        useFilteredAutomatedInteractionsByAutoResponders(filters, timezone)
-
     const isFetching =
         filteredAutomatedInteractions.isFetching ||
         allAutomatedInteractions.isFetching ||
@@ -59,29 +45,20 @@ export const useAutomationRateTrend = (
         allAutomatedInteractions.isError ||
         billableTicketsExcludingAIAgent.isError
 
-    return isAutomateNonFilteredDenominatorInAutomationRate
-        ? getAutomationRateUnfilteredDenominatorTrend({
-              isFetching,
-              isError,
-              filteredAutomatedInteractions: filteredAutomatedInteractions.data,
-              allAutomatedInteractions: allAutomatedInteractions.data,
-              allAutomatedInteractionsByAutoResponders:
-                  allAutomatedInteractionsByAutoResponders.data,
-              billableTicketsCount: billableTicketsExcludingAIAgent.data,
-          })
-        : getAutomationRateTrend(
-              isFetching,
-              isError,
-              filteredAutomatedInteractions.data,
-              billableTicketsExcludingAIAgent.data,
-              filteredAutomatedInteractionsByAutoResponders.data,
-          )
+    return getAutomationRateUnfilteredDenominatorTrend({
+        isFetching,
+        isError,
+        filteredAutomatedInteractions: filteredAutomatedInteractions.data,
+        allAutomatedInteractions: allAutomatedInteractions.data,
+        allAutomatedInteractionsByAutoResponders:
+            allAutomatedInteractionsByAutoResponders.data,
+        billableTicketsCount: billableTicketsExcludingAIAgent.data,
+    })
 }
 
 export const fetchAutomationRateTrend = async (
     filters: StatsFilters,
     timezone: string,
-    isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ) => {
     return Promise.all([
@@ -89,34 +66,23 @@ export const fetchAutomationRateTrend = async (
         fetchAllAutomatedInteractionsByAutoResponders(filters, timezone),
         fetchAllAutomatedInteractions(filters, timezone),
         fetchBillableTicketsExcludingAIAgent(filters, timezone, aiAgentUserId),
-        fetchFilteredAutomatedInteractionsByAutoResponders(filters, timezone),
     ]).then(
         ([
             filteredAutomatedInteractions,
             allAutomatedInteractionsByAutoResponders,
             allAutomatedInteractions,
             billableTicketsExcludingAIAgent,
-            filteredAutomatedInteractionsByAutoResponders,
         ]) => {
-            return isAutomateNonFilteredDenominatorInAutomationRate
-                ? getAutomationRateUnfilteredDenominatorTrend({
-                      isFetching: false,
-                      isError: false,
-                      filteredAutomatedInteractions:
-                          filteredAutomatedInteractions.data,
-                      allAutomatedInteractions: allAutomatedInteractions.data,
-                      allAutomatedInteractionsByAutoResponders:
-                          allAutomatedInteractionsByAutoResponders.data,
-                      billableTicketsCount:
-                          billableTicketsExcludingAIAgent.data,
-                  })
-                : getAutomationRateTrend(
-                      false,
-                      false,
-                      filteredAutomatedInteractions.data,
-                      billableTicketsExcludingAIAgent.data,
-                      filteredAutomatedInteractionsByAutoResponders.data,
-                  )
+            return getAutomationRateUnfilteredDenominatorTrend({
+                isFetching: false,
+                isError: false,
+                filteredAutomatedInteractions:
+                    filteredAutomatedInteractions.data,
+                allAutomatedInteractions: allAutomatedInteractions.data,
+                allAutomatedInteractionsByAutoResponders:
+                    allAutomatedInteractionsByAutoResponders.data,
+                billableTicketsCount: billableTicketsExcludingAIAgent.data,
+            })
         },
     )
 }

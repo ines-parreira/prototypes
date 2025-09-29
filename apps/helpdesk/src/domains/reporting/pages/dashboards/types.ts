@@ -136,7 +136,6 @@ export type ReportFetch = (
         ticketFieldsTicketTimeReference: TicketTimeReference
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
-        isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: number | undefined
         campaignsReportContext: CampaignReportContext
         tagResultsSelection: TagSelection

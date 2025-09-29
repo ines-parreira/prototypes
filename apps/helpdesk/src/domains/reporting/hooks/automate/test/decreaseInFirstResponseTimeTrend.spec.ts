@@ -148,7 +148,6 @@ describe('decreaseInFirstResponseTimeTrend', () => {
             const result = await fetchDecreaseInFirstResponseTimeTrend(
                 statsFilters,
                 timezone,
-                undefined,
                 aIAgentUserId,
             )
 

@@ -58,7 +58,6 @@ export const useDecreaseInFirstResponseTimeTrend = (
 export const fetchDecreaseInFirstResponseTimeTrend = async (
     filters: StatsFilters,
     timezone: string,
-    _isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: number | undefined,
 ) => {
     return Promise.all([
