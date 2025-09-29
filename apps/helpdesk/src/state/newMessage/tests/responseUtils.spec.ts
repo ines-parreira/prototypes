@@ -336,6 +336,7 @@ describe('responseUtils', () => {
             updateCache(updateCacheContext)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
                 contentState: convertToRaw(contentState),
+                originalContentState: null,
                 selectionState,
                 sourceType,
             })
@@ -367,6 +368,7 @@ describe('responseUtils', () => {
                 contentState: convertToRawWithoutPredictions(
                     predictionEditorState.getCurrentContent(),
                 ),
+                originalContentState: null,
                 selectionState,
                 sourceType,
             })
@@ -387,6 +389,7 @@ describe('responseUtils', () => {
             updateCache(context)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
                 contentState: convertToRaw(contentState),
+                originalContentState: null,
                 selectionState,
                 sourceType,
             })
@@ -407,6 +410,7 @@ describe('responseUtils', () => {
             updateCache(context)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
                 contentState: convertToRaw(contentState),
+                originalContentState: null,
                 selectionState,
                 sourceType,
                 emailExtraAdded,

@@ -53,6 +53,7 @@ export type ReplyAreaState = {
     forceUpdate: boolean
     forceFocus: boolean
     contentState: ContentState
+    originalContentState?: ContentState
     selectionState: SelectionState | null
     appliedMacro: Map<any, any> | null
     firstNewMessage: boolean

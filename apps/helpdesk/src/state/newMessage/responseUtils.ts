@@ -193,10 +193,10 @@ export const updateCache = (context: MessageContext) => {
             sourceType,
             emailExtraAdded,
             contentState: convertToRawWithoutPredictions(contentState),
-            ...(originalContentState && {
-                originalContentState:
-                    convertToRawWithoutPredictions(originalContentState),
-            }),
+
+            originalContentState: !!originalContentState
+                ? convertToRawWithoutPredictions(originalContentState)
+                : null,
         }
         ticketReplyCache.set(action.ticketId, cacheData)
     } else if (topRankMacroState) {
