@@ -6,9 +6,6 @@
     "exports": {
         ".": "./src/index.ts"
     },
-    "dependencies": {
-        "@gorgias/design-tokens": "0.10.5"
-    },
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
@@ -26,12 +23,14 @@
     "peerDependencies": {
         "react": "catalog:react",
         "react-dom": "catalog:react",
-        "@gorgias/axiom": "catalog:axiom"
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
         "@repo/testing": "workspace:*",
         "@repo/hooks": "workspace:*",
+        "@types/jest": "catalog:test",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

@@ -5,6 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
+  analytics-ui-kit:
+    '@gorgias/analytics-ui-kit':
+      specifier: 0.1.14
+      version: 0.1.14
   axiom:
     '@gorgias/axiom':
       specifier: 0.54.1
@@ -315,9 +319,6 @@ importers:
       '@formatjs/intl-pluralrules':
         specifier: 3.4.7
         version: 3.4.7
-      '@gorgias/analytics-ui-kit':
-        specifier: 0.1.14
-        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -817,6 +818,9 @@ importers:
       '@codecov/webpack-plugin':
         specifier: ^0.0.1-beta.6
         version: 0.0.1-beta.6(webpack@5.97.1(@swc/core@1.12.1(@swc/helpers@0.5.17))(esbuild@0.25.2))
+      '@gorgias/analytics-ui-kit':
+        specifier: catalog:analytics-ui-kit
+        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/config':
         specifier: ^0.2.4
         version: 0.2.4(@babel/core@7.27.4)(@babel/eslint-parser@7.23.10(@babel/core@7.27.4)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.1))(eslint-plugin-import@2.25.2(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)
@@ -1347,6 +1351,19 @@ importers:
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.0)(tsx@4.20.3)(yaml@2.8.0)
 
   packages/ai-agent:
+    dependencies:
+      '@gorgias/analytics-ui-kit':
+        specifier: catalog:analytics-ui-kit
+        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+      '@gorgias/axiom':
+        specifier: catalog:axiom
+        version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/design-tokens':
+        specifier: 0.10.5
+        version: 0.10.5
+      classnames:
+        specifier: 2.2.6
+        version: 2.2.6
     devDependencies:
       '@repo/config':
         specifier: workspace:*
@@ -1366,6 +1383,9 @@ importers:
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      '@types/classnames':
+        specifier: 2.2.10
+        version: 2.2.10
       '@types/react':
         specifier: catalog:react
         version: 18.2.67
@@ -1610,6 +1630,9 @@ importers:
 
   packages/reporting:
     dependencies:
+      '@gorgias/analytics-ui-kit':
+        specifier: catalog:analytics-ui-kit
+        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -1653,6 +1676,9 @@ importers:
       '@types/classnames':
         specifier: 2.2.10
         version: 2.2.10
+      '@types/jest':
+        specifier: catalog:test
+        version: 29.5.13
       '@types/react':
         specifier: catalog:react
         version: 18.2.67

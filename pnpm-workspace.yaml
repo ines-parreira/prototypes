@@ -56,6 +56,8 @@ minimumReleaseAgeExclude:
 catalogs:
   axiom:
     '@gorgias/axiom': '0.54.1'
+  analytics-ui-kit:
+    '@gorgias/analytics-ui-kit': '0.1.14'
   rest-api-sdk:
     '@gorgias/convert-client': '^0.3.8'
     '@gorgias/convert-mocks': '^0.2.25'

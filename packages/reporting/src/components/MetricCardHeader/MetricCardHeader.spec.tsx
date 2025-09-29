@@ -34,5 +34,7 @@ describe('MetricCardHeader', () => {
         await waitFor(() => {
             expect(screen.getByText(hint.title)).toBeInTheDocument()
         })
+
+        expect(screen.getByText(/Title/)).toBeInTheDocument()
     })
 })

@@ -6,6 +6,10 @@
     "exports": {
         ".": "./src/index.ts"
     },
+    "dependencies": {
+        "@gorgias/design-tokens": "0.10.5",
+        "classnames": "2.2.6"
+    },
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
@@ -17,7 +21,9 @@
     },
     "peerDependencies": {
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
@@ -28,6 +34,7 @@
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
+        "@types/classnames": "2.2.10",
         "@vitest/coverage-v8": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
