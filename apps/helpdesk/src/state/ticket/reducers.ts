@@ -42,6 +42,7 @@ export const initialState: TicketState = fromJS({
     },
     _internal: {
         shouldDisplayAuditLogEvents: false,
+        shouldDisplayAllFollowUps: false,
         loading: {
             fetchTicket: false,
             deleteMessage: false,
@@ -982,6 +983,13 @@ export default function reducer(
         case types.SET_HAS_ATTEMPTED_TO_CLOSE_TICKET: {
             return state.setIn(
                 ['state', 'hasAttemptedToCloseTicket'],
+                action.payload,
+            )
+        }
+
+        case types.SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS: {
+            return state.setIn(
+                ['_internal', 'shouldDisplayAllFollowUps'],
                 action.payload,
             )
         }

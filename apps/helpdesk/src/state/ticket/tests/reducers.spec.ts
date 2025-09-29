@@ -1866,4 +1866,43 @@ describe('ticket reducers', () => {
             expect(nextState.toJS()).toMatchSnapshot()
         })
     })
+
+    describe('action SET_SHOULD_DISPLAY_FOLLOW_UPS', () => {
+        it('should set shouldDisplayAllFollowUps to true', () => {
+            const action = {
+                type: types.SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS,
+                payload: true,
+            }
+
+            const nextState = reducer(initialState, action)
+            expect(
+                nextState.getIn(['_internal', 'shouldDisplayAllFollowUps']),
+            ).toBe(true)
+        })
+
+        it('should set shouldDisplayAllFollowUps to false', () => {
+            const action = {
+                type: types.SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS,
+                payload: false,
+            }
+
+            const nextState = reducer(initialState, action)
+            expect(
+                nextState.getIn(['_internal', 'shouldDisplayAllFollowUps']),
+            ).toBe(false)
+        })
+
+        it('should create _internal if it does not exist', () => {
+            const stateWithoutInternal = initialState.delete('_internal')
+            const action = {
+                type: types.SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS,
+                payload: true,
+            }
+
+            const nextState = reducer(stateWithoutInternal, action)
+            expect(
+                nextState.getIn(['_internal', 'shouldDisplayAllFollowUps']),
+            ).toBe(true)
+        })
+    })
 })

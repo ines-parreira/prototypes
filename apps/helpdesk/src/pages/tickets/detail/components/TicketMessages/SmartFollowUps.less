@@ -1,0 +1,26 @@
+@import '~css/typography';
+
+:local {
+    .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .pill {
+        height: 24px;
+        padding: 0 var(--layout-spacing-xs) 0 6px;
+        border: 1px solid var(--border-neutral-secondary);
+        border-radius: 6px;
+        background: var(--neutral-grey-0);
+        text-align: center;
+
+        color: var(--content-neutral-secondary);
+        .caption-semibold();
+        letter-spacing: 0.12px;
+    }
+
+    .topSpacing {
+        margin-top: 12px;
+    }
+}

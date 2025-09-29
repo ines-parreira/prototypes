@@ -160,6 +160,7 @@ export enum FeatureFlagKey {
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SendCallsToVoicemailPreference = 'send-calls-to-voicemail-preference',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
+    SmartFollowUps = 'linear.task_AIEXP-7399.smart-follow-ups-on-helpdesk',
     ShopifyCustomerTimeline = 'linear.project_add-shopify-to-customer-timeline',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',

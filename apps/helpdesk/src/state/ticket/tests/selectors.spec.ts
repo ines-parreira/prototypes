@@ -878,4 +878,52 @@ describe('ticket selectors', () => {
             },
         )
     })
+
+    describe('getShouldDisplayAllFollowUps', () => {
+        it('should return true when shouldDisplayAllFollowUps is set to true', () => {
+            const stateWithFollowUps = {
+                ...state,
+                ticket: state.ticket.mergeDeep({
+                    _internal: {
+                        shouldDisplayAllFollowUps: true,
+                    },
+                }),
+            }
+
+            const result =
+                selectors.getShouldDisplayAllFollowUps(stateWithFollowUps)
+            expect(result).toBe(true)
+        })
+
+        it('should return false when shouldDisplayAllFollowUps is set to false', () => {
+            const stateWithFollowUps = {
+                ...state,
+                ticket: state.ticket.mergeDeep({
+                    _internal: {
+                        shouldDisplayAllFollowUps: false,
+                    },
+                }),
+            }
+
+            const result =
+                selectors.getShouldDisplayAllFollowUps(stateWithFollowUps)
+            expect(result).toBe(false)
+        })
+
+        it('should return false when shouldDisplayAllFollowUps is not set', () => {
+            const result = selectors.getShouldDisplayAllFollowUps(state)
+            expect(result).toBe(false)
+        })
+
+        it('should return undefined when _internal is not set', () => {
+            const stateWithoutInternal = {
+                ...state,
+                ticket: state.ticket.delete('_internal'),
+            }
+
+            const result =
+                selectors.getShouldDisplayAllFollowUps(stateWithoutInternal)
+            expect(result).toBeUndefined()
+        })
+    })
 })

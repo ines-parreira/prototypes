@@ -2126,4 +2126,14 @@ describe('ticket actions', () => {
         store.dispatch(actions.setHasAttemptedToCloseTicket(true))
         return expect(store.getActions()).toMatchSnapshot()
     })
+
+    it('setShouldDisplayAllFollowUps', () => {
+        store.dispatch(actions.setShouldDisplayAllFollowUps(true))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('setShouldDisplayAllFollowUps with false', () => {
+        store.dispatch(actions.setShouldDisplayAllFollowUps(false))
+        return expect(store.getActions()).toMatchSnapshot()
+    })
 })

@@ -94,6 +94,12 @@ export const shouldDisplayAuditLogEvents = createImmutableSelector(
         state.getIn(['_internal', 'shouldDisplayAuditLogEvents']) as boolean,
 )
 
+export const getShouldDisplayAllFollowUps = createImmutableSelector(
+    getTicketState,
+    (state) =>
+        state.getIn(['_internal', 'shouldDisplayAllFollowUps']) as boolean,
+)
+
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = (name: string) =>

@@ -8,6 +8,8 @@ import { mapQuotedTweetTicketMessageToEmbeddedCard } from 'pages/common/componen
 import FacebookCarousel from 'pages/tickets/detail/components/FacebookCarousel'
 
 import Content from './Content'
+import { useSmartFollowUps } from './hooks/useSmartFollowUps'
+import SmartFollowUps from './SmartFollowUps'
 
 import css from './Body.less'
 
@@ -23,21 +25,37 @@ type Props = {
 const Body = (props: Props) => {
     const { message, className, messagePosition = 1 } = props
 
+    const {
+        smartFollowUps,
+        selectedSmartFollowUpIndex,
+        shouldRenderMessageContent,
+        shouldRenderSmartFollowUps,
+    } = useSmartFollowUps(message.meta)
+
     return (
         <div
             className={classNames(css.component, className, {
                 hasError: props.hasError,
             })}
         >
-            <Content
-                html={message.body_html}
-                text={message.body_text}
-                messageId={message.id}
-                strippedHtml={message.stripped_html}
-                strippedText={message.stripped_text}
-                meta={message.meta}
-                messagePosition={messagePosition}
-            />
+            {shouldRenderMessageContent && (
+                <Content
+                    html={message.body_html}
+                    text={message.body_text}
+                    messageId={message.id}
+                    strippedHtml={message.stripped_html}
+                    strippedText={message.stripped_text}
+                    meta={message.meta}
+                    messagePosition={messagePosition}
+                />
+            )}
+
+            {shouldRenderSmartFollowUps && (
+                <SmartFollowUps
+                    smartFollowUps={smartFollowUps}
+                    selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
+                />
+            )}
 
             {message.meta && message.meta.facebook_carousel && (
                 <FacebookCarousel data={message.meta.facebook_carousel} />

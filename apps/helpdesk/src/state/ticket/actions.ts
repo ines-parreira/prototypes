@@ -1533,3 +1533,8 @@ export const setHasAttemptedToCloseTicket = (value: boolean) => ({
     type: types.SET_HAS_ATTEMPTED_TO_CLOSE_TICKET,
     payload: value,
 })
+
+export const setShouldDisplayAllFollowUps = (value: boolean) => ({
+    type: types.SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS,
+    payload: value,
+})

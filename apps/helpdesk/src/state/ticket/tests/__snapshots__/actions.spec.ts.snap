@@ -86,6 +86,7 @@ exports[`ticket actions applyMacro() dispatches actions 1`] = `
       "id": 1,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -174,6 +175,7 @@ exports[`ticket actions applyMacroAction() 1`] = `
     "id": 1,
     "_internal": Immutable.Map {
       "shouldDisplayAuditLogEvents": false,
+      "shouldDisplayAllFollowUps": false,
       "loading": Immutable.Map {
         "fetchTicket": false,
         "deleteMessage": false,
@@ -478,6 +480,7 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
       "id": 1,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -604,6 +607,7 @@ exports[`ticket actions fetchTicket() existing ticket 1`] = `
       "id": 1,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -679,6 +683,7 @@ exports[`ticket actions fetchTicket() new ticket 1`] = `
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -768,6 +773,7 @@ exports[`ticket actions fetchTicket() should send ticket-viewed event when ticke
       "id": 1,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -902,6 +908,7 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1011,6 +1018,7 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1131,6 +1139,7 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and wait for p
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1260,6 +1269,7 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1369,6 +1379,7 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1489,6 +1500,7 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait f
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1589,6 +1601,7 @@ exports[`ticket actions handleMessageActionError() should fetch the ticket becau
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1689,6 +1702,7 @@ exports[`ticket actions handleMessageError() should fetch the ticket because the
       "assignee_user": null,
       "_internal": Immutable.Map {
         "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayAllFollowUps": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
@@ -1918,6 +1932,24 @@ exports[`ticket actions setHasAttemptedToCloseTicket 1`] = `
   {
     "payload": true,
     "type": "SET_HAS_ATTEMPTED_TO_CLOSE_TICKET",
+  },
+]
+`;
+
+exports[`ticket actions setShouldDisplayAllFollowUps 1`] = `
+[
+  {
+    "payload": true,
+    "type": "SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS",
+  },
+]
+`;
+
+exports[`ticket actions setShouldDisplayAllFollowUps with false 1`] = `
+[
+  {
+    "payload": false,
+    "type": "SET_SHOULD_DISPLAY_ALL_FOLLOW_UPS",
   },
 ]
 `;

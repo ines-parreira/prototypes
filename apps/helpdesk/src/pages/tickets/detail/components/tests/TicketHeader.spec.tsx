@@ -74,6 +74,7 @@ jest.mock('state/notifications/actions', () => ({
 
 jest.mock('state/ticket/selectors', () => ({
     shouldDisplayAuditLogEvents: jest.fn(() => false),
+    getShouldDisplayAllFollowUps: jest.fn(() => false),
 }))
 
 jest.mock('state/ticket/actions', () => ({
@@ -86,6 +87,7 @@ jest.mock('state/ticket/actions', () => ({
     hideAuditLogEvents: jest.fn(),
     removeTag: jest.fn(),
     setAgent: jest.fn(),
+    setShouldDisplayAllFollowUps: jest.fn(),
     setSpam: jest.fn((_spam, callback?: () => void) => () => {
         callback?.()
         return Promise.resolve()
@@ -1864,6 +1866,166 @@ describe('<TicketHeader />', () => {
             expect(translateIcon).toHaveClass('isInputFocused')
 
             fireEvent.blur(editableTitle)
+        })
+    })
+
+    describe('Smart follow ups control', () => {
+        describe('Feature flag disabled', () => {
+            beforeEach(() => {
+                jest.clearAllMocks()
+                mockUseFlagForFeature(FeatureFlagKey.SmartFollowUps, false)
+            })
+
+            it('should not show Smart follow ups control actions when feature flag is disabled', () => {
+                // Mock the selector to return false (follow ups hidden)
+                ;(
+                    ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
+                ).mockReturnValue(false)
+
+                const { getByText, queryByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider store={mockStore(defaultStore)}>
+                            <TicketHeader
+                                {...minProps}
+                                ticket={fromJS(ticket)}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                fireEvent.click(getByText(/more_vert/))
+                expect(
+                    queryByText(/Show all follow-ups/),
+                ).not.toBeInTheDocument()
+                expect(
+                    queryByText(/Hide all follow-ups/),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('Feature flag enabled', () => {
+            beforeEach(() => {
+                jest.clearAllMocks()
+                mockUseFlagForFeature(FeatureFlagKey.SmartFollowUps, true)
+            })
+
+            it('should show "Show all follow-ups" action when follow ups are hidden', () => {
+                // Mock the selector to return false (follow ups hidden)
+                ;(
+                    ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
+                ).mockReturnValue(false)
+
+                const { getByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider store={mockStore(defaultStore)}>
+                            <TicketHeader
+                                {...minProps}
+                                ticket={fromJS(ticket)}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                fireEvent.click(getByText(/more_vert/))
+                expect(getByText(/Show all follow-ups/)).toBeInTheDocument()
+            })
+
+            it('should show "Hide all follow-ups" action when follow ups are displayed', () => {
+                // Mock the selector to return true (follow ups displayed)
+                ;(
+                    ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
+                ).mockReturnValue(true)
+
+                const { getByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider store={mockStore(defaultStore)}>
+                            <TicketHeader
+                                {...minProps}
+                                ticket={fromJS(ticket)}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                fireEvent.click(getByText(/more_vert/))
+                expect(getByText(/Hide all follow-ups/)).toBeInTheDocument()
+            })
+
+            it('should dispatch setShouldDisplayAllFollowUps with true when showing follow ups', () => {
+                // Mock the selector to return false (follow ups hidden)
+                ;(
+                    ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
+                ).mockReturnValue(false)
+
+                const { getByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider store={mockStore(defaultStore)}>
+                            <TicketHeader
+                                {...minProps}
+                                ticket={fromJS(ticket)}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                fireEvent.click(getByText(/more_vert/))
+                fireEvent.click(getByText(/Show all follow-ups/))
+
+                expect(
+                    ticketActions.setShouldDisplayAllFollowUps,
+                ).toHaveBeenCalledWith(true)
+            })
+
+            it('should dispatch setShouldDisplayAllFollowUps with false when hiding follow ups', () => {
+                // Mock the selector to return true (follow ups displayed)
+                ;(
+                    ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
+                ).mockReturnValue(true)
+
+                const { getByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider store={mockStore(defaultStore)}>
+                            <TicketHeader
+                                {...minProps}
+                                ticket={fromJS(ticket)}
+                            />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                fireEvent.click(getByText(/more_vert/))
+                fireEvent.click(getByText(/Hide all follow-ups/))
+
+                expect(
+                    ticketActions.setShouldDisplayAllFollowUps,
+                ).toHaveBeenCalledWith(false)
+            })
+
+            it('should not show follow-ups toggle action for new tickets without ID', () => {
+                const newTicket = fromJS(_omit(ticket, 'id'))
+
+                const { queryByText } = render(
+                    <QueryClientProvider client={appQueryClient}>
+                        <Provider
+                            store={mockStore({
+                                ...defaultStore,
+                                ticket: newTicket,
+                            })}
+                        >
+                            <TicketHeader {...minProps} ticket={newTicket} />
+                        </Provider>
+                    </QueryClientProvider>,
+                )
+
+                // For new tickets without ID, the more_vert button should not be present
+                expect(queryByText(/more_vert/)).not.toBeInTheDocument()
+                expect(
+                    queryByText(/Show all follow-ups/),
+                ).not.toBeInTheDocument()
+                expect(
+                    queryByText(/Hide all follow-ups/),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 

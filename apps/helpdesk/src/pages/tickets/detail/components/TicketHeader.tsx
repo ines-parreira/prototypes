@@ -31,6 +31,7 @@ import {
     hideAuditLogEvents,
     removeTag,
     setAgent,
+    setShouldDisplayAllFollowUps,
     setSpam,
     setSubject,
     setTeam,
@@ -38,7 +39,10 @@ import {
     snoozeTicket,
     ticketPartialUpdate,
 } from 'state/ticket/actions'
-import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
+import {
+    getShouldDisplayAllFollowUps,
+    shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents,
+} from 'state/ticket/selectors'
 import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
@@ -91,6 +95,7 @@ const TicketHeader = ({
     )
     const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
     const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const smartFollowUpsEnabled = useFlag(FeatureFlagKey.SmartFollowUps)
 
     const { primary, languagesNotToTranslateFor } =
         useCurrentUserPreferredLanguage()
@@ -113,6 +118,10 @@ const TicketHeader = ({
         if (isInitialLoading) return true
         return !translationMap[ticket.get('id')]?.subject
     }, [shouldTranslateTicketSubject, isInitialLoading, translationMap, ticket])
+
+    const shouldDisplayAllFollowUps = useAppSelector(
+        getShouldDisplayAllFollowUps,
+    )
 
     const dispatch = useAppDispatch()
 
@@ -259,6 +268,10 @@ const TicketHeader = ({
         )
     }
 
+    const toggleFollowUps = () => {
+        dispatch(setShouldDisplayAllFollowUps(!shouldDisplayAllFollowUps))
+    }
+
     const createActions = (onDisplayConfirmation: () => void) => {
         const actions: Action[] = []
         actions.push(['Merge ticket', 'call_merge', toggleMergeTicketModal])
@@ -278,6 +291,13 @@ const TicketHeader = ({
                 'event_note',
                 toggleAuditLogEvents,
             ])
+        }
+
+        if (smartFollowUpsEnabled) {
+            const actionLabel = shouldDisplayAllFollowUps
+                ? 'Hide all follow-ups'
+                : 'Show all follow-ups'
+            actions.push([actionLabel, 'assistant', toggleFollowUps])
         }
 
         actions.push(['Print ticket', 'print', handlePrint])

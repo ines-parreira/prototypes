@@ -4,6 +4,8 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
+import { useSmartFollowUps } from 'pages/tickets/detail/components/TicketMessages/hooks/useSmartFollowUps'
+import SmartFollowUps from 'pages/tickets/detail/components/TicketMessages/SmartFollowUps'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'
 import { TicketMessageElement } from '../types'
@@ -24,9 +26,27 @@ export function TicketMessage({ element }: Props) {
     const isMinimal = element.flags?.includes('minimal') ?? false
     const error = element.flags?.find(isErrorFlag)?.[1]
 
+    const {
+        smartFollowUps,
+        selectedSmartFollowUpIndex,
+        shouldRenderMessageContent,
+        shouldRenderSmartFollowUps,
+    } = useSmartFollowUps(element.data.meta)
+
     const messageBody = (
         <MessageBody message={element.data} isAI={isAI}>
-            <MessageContent message={element.data} isFailed={Boolean(error)} />
+            {shouldRenderMessageContent && (
+                <MessageContent
+                    message={element.data}
+                    isFailed={Boolean(error)}
+                />
+            )}
+            {shouldRenderSmartFollowUps && (
+                <SmartFollowUps
+                    smartFollowUps={smartFollowUps}
+                    selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
+                />
+            )}
             {error && <MessageError error={error} />}
         </MessageBody>
     )

@@ -1,6 +1,8 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
+import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -9,8 +11,13 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
-import { TicketMessage } from 'models/ticket/types'
+import {
+    SmartFollowUp,
+    SmartFollowUpType,
+    TicketMessage,
+} from 'models/ticket/types'
 import { Account } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -23,6 +30,20 @@ const store = mockStore({
         rules: {},
     },
 } as RootState)
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
+
+jest.mock(
+    '../SmartFollowUps',
+    () => (props: { smartFollowUps: SmartFollowUp[] }) => (
+        <div>
+            {props.smartFollowUps.map((followUp: SmartFollowUp) => (
+                <div key={followUp.text}>{followUp.text}</div>
+            ))}
+        </div>
+    ),
+)
 
 describe('Body', () => {
     beforeAll(() => {
@@ -316,5 +337,230 @@ describe('Body', () => {
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    describe('Smart follow ups', () => {
+        const mockSmartFollowUps: SmartFollowUp[] = [
+            {
+                text: 'Order status',
+                type: SmartFollowUpType.DYNAMIC,
+            },
+        ]
+
+        describe('Feature flag disabled', () => {
+            beforeEach(() => {
+                jest.clearAllMocks()
+                useFlagMock.mockReturnValue(false)
+            })
+
+            it('should not render smart follow ups when feature flag is disabled', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.queryByText('Order status'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should show message content because feature flag is disabled, even though a smart follow up has been selected', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                        // Smart follow up has been selected.
+                        selected_smart_follow_up_index: 0,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.getByText('Message body text'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Order status'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('Feature flag enabled', () => {
+            beforeEach(() => {
+                jest.clearAllMocks()
+                useFlagMock.mockImplementation(
+                    (flag) => flag === FeatureFlagKey.SmartFollowUps,
+                )
+            })
+
+            it('should render smart follow ups when feature flag is enabled', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(screen.getByText('Order status')).toBeInTheDocument()
+            })
+
+            it('should not render smart follow ups when message does not have them', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: [],
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.queryByText('Order status'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should render message content if no smart follow ups have been selected', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.getByText('Message body text'),
+                ).toBeInTheDocument()
+                expect(screen.getByText('Order status')).toBeInTheDocument()
+            })
+
+            it('should render message content if a smart follow up was selected, but message has no follow ups to render', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: [],
+                        // Smart follow up has been selected.
+                        selected_smart_follow_up_index: 0,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.getByText('Message body text'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Order status'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should render message content if a smart follow up was selected, but message does not have the selected follow up', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                        // Smart follow up has been selected -- Index out of bounds
+                        selected_smart_follow_up_index:
+                            mockSmartFollowUps.length + 1,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.getByText('Message body text'),
+                ).toBeInTheDocument()
+                expect(screen.getByText('Order status')).toBeInTheDocument()
+            })
+
+            it('should not render message content if a smart follow up has been selected', () => {
+                const messageWithSmartFollowUps = {
+                    ...defaultMessage,
+                    body_text: 'Message body text',
+                    meta: {
+                        smart_follow_ups: mockSmartFollowUps,
+                        // Smart follow up has been selected.
+                        selected_smart_follow_up_index: 0,
+                    },
+                }
+
+                render(
+                    <Provider store={store}>
+                        <Body
+                            message={messageWithSmartFollowUps}
+                            messagePosition={1}
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    screen.queryByText('Message body text'),
+                ).not.toBeInTheDocument()
+                expect(screen.getByText('Order status')).toBeInTheDocument()
+            })
+        })
     })
 })

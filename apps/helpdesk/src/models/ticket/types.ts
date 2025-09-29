@@ -201,6 +201,15 @@ export enum MessageMetadataType {
     Signal = 'signal',
 }
 
+export enum SmartFollowUpType {
+    DYNAMIC = 'dynamic_follow_up',
+}
+
+export type SmartFollowUp = {
+    text: string
+    type: SmartFollowUpType
+}
+
 export enum ActionStatus {
     Error = 'error',
     Pending = 'pending',
@@ -270,6 +279,8 @@ export type Meta = {
     sms_deflection?: string
     hidden?: boolean
     type?: MessageMetadataType
+    smart_follow_ups?: SmartFollowUp[]
+    selected_smart_follow_up_index?: number
     workflow_execution?: {
         configuration_id: string
         execution_id: string

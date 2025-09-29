@@ -1,9 +1,13 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
+import { Meta, SmartFollowUp, SmartFollowUpType } from 'models/ticket/types'
 
 import type { FailedFlag, TicketMessageElement } from '../../types'
 import { MessageAvatar } from '../MessageAvatar'
@@ -37,6 +41,20 @@ jest.mock('models/ticket/predicates', () => ({
     isTicketMessageDeleted: jest.fn(() => false),
     isTicketMessageHidden: jest.fn(() => false),
 }))
+
+jest.mock(
+    'pages/tickets/detail/components/TicketMessages/SmartFollowUps',
+    () => (props: { smartFollowUps: SmartFollowUp[] }) => (
+        <div>
+            {props.smartFollowUps.map((followUp: SmartFollowUp) => (
+                <div key={followUp.text}>{followUp.text}</div>
+            ))}
+        </div>
+    ),
+)
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('TicketMessage', () => {
     const mockedElement = {
@@ -247,6 +265,142 @@ describe('TicketMessage', () => {
             const messageBody = screen.getByText(/body/i)
             expect(messageBody).toBeInTheDocument()
             expect(messageBody).toHaveTextContent('MessageContent')
+        })
+
+        describe('SmartFollowUps', () => {
+            const prepareMockElement = (meta: Meta) => ({
+                ...mockedElement,
+                data: {
+                    ...mockedElement.data,
+                    meta,
+                },
+            })
+
+            const mockSmartFollowUps = [
+                {
+                    text: 'Order status',
+                    type: SmartFollowUpType.DYNAMIC,
+                },
+            ]
+
+            const mockedElementWithSmartFollowUps = prepareMockElement({
+                smart_follow_ups: mockSmartFollowUps,
+            })
+
+            const mockedElementWithSelectedSmartFollowUp = prepareMockElement({
+                smart_follow_ups: mockSmartFollowUps,
+                selected_smart_follow_up_index: 0,
+            })
+
+            describe('Feature flag disabled', () => {
+                beforeEach(() => {
+                    jest.clearAllMocks()
+                    useFlagMock.mockReturnValue(false)
+                })
+
+                it('should not render smart follow ups when feature flag is disabled', () => {
+                    render(
+                        <TicketMessage
+                            element={mockedElementWithSmartFollowUps}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).toHaveTextContent('MessageContent')
+                    expect(messageBody).not.toHaveTextContent('Order status')
+                })
+
+                it('should show message content because feature flag is disabled, even though a smart follow up has been selected', () => {
+                    render(
+                        <TicketMessage
+                            element={mockedElementWithSelectedSmartFollowUp}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).toHaveTextContent('MessageContent')
+                    expect(messageBody).not.toHaveTextContent('Order status')
+                })
+            })
+
+            describe('Feature flag enabled', () => {
+                beforeEach(() => {
+                    jest.clearAllMocks()
+                    useFlagMock.mockImplementation(
+                        (flag) => flag === FeatureFlagKey.SmartFollowUps,
+                    )
+                })
+
+                it('should render smart follow ups when feature flag is enabled', () => {
+                    render(
+                        <TicketMessage
+                            element={mockedElementWithSmartFollowUps}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).toHaveTextContent('Order status')
+                })
+
+                it('should not render smart follow ups when message does not have them', () => {
+                    render(
+                        <TicketMessage
+                            element={prepareMockElement({
+                                smart_follow_ups: [],
+                            })}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).not.toHaveTextContent('Order status')
+                })
+
+                it('should render message content if no smart follow ups have been selected', () => {
+                    render(
+                        <TicketMessage
+                            element={mockedElementWithSmartFollowUps}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).toHaveTextContent('MessageContent')
+                    expect(messageBody).toHaveTextContent('Order status')
+                })
+
+                it('should render message content if a smart follow up was selected, but message has no follow ups to render', () => {
+                    render(
+                        <TicketMessage
+                            element={prepareMockElement({
+                                smart_follow_ups: [],
+                                selected_smart_follow_up_index: 0,
+                            })}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).toHaveTextContent('MessageContent')
+                    expect(messageBody).not.toHaveTextContent('Order status')
+                })
+
+                it('should not render message content if a smart follow up has been selected', () => {
+                    render(
+                        <TicketMessage
+                            element={mockedElementWithSelectedSmartFollowUp}
+                        />,
+                    )
+
+                    const messageBody = screen.getByText(/body/i)
+                    expect(messageBody).toBeInTheDocument()
+                    expect(messageBody).not.toHaveTextContent('MessageContent')
+                    expect(messageBody).toHaveTextContent('Order status')
+                })
+            })
         })
     })
 
