@@ -219,9 +219,7 @@ export const formatVoiceDrillDownRowData = ({
         row[VoiceCallDimension.AgentId] ||
         row[VoiceEventsByAgentDimension.AgentId],
     customerId: row[VoiceCallDimension.CustomerId],
-    direction:
-        row[VoiceCallDimension.Direction] ||
-        row[VoiceEventsByAgentDimension.Direction],
+    direction: row[VoiceCallDimension.Direction],
     integrationId:
         row[VoiceCallDimension.IntegrationId] ||
         row[VoiceEventsByAgentDimension.IntegrationId],

@@ -67,7 +67,7 @@ describe('DrillDownFormatters', () => {
             const row = {
                 [VoiceEventsByAgentDimension.AgentId]: 'agentId',
                 [VoiceCallDimension.CustomerId]: 'customerId',
-                [VoiceEventsByAgentDimension.Direction]: 'direction',
+                [VoiceCallDimension.Direction]: 'direction',
                 [VoiceEventsByAgentDimension.IntegrationId]: 'integrationId',
                 [VoiceEventsByAgentDimension.CreatedAt]: 'createdAt',
                 [VoiceEventsByAgentDimension.Status]: 'status',

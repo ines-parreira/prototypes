@@ -37,6 +37,7 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<VoiceEventsByAgentCube> => ({
+    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [VoiceEventsByAgentDimension.AgentId],
     timezone,
@@ -49,13 +50,13 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
               order: [[VoiceEventsByAgentMeasure.VoiceEventsCount, sorting]],
           }
         : {}),
-    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
 })
 
 export const declinedVoiceCallsCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ) => ({
+    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [],
     timezone,
@@ -63,7 +64,35 @@ export const declinedVoiceCallsCountQueryFactory = (
         VoiceEventsByAgentSegment.declinedCalls,
     ),
     filters: voiceEventsByAgentDefaultFilters(filters),
-    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
+})
+
+export const declinedVoiceCallsPerAgentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<VoiceEventsByAgentCube> => ({
+    metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_PER_AGENT,
+    measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+    dimensions: [
+        VoiceEventsByAgentDimension.IntegrationId,
+        VoiceEventsByAgentDimension.CreatedAt,
+        VoiceEventsByAgentDimension.TicketId,
+        VoiceEventsByAgentDimension.Status,
+        VoiceCallDimension.AgentId,
+        VoiceCallDimension.CustomerId,
+        VoiceCallDimension.Direction,
+        VoiceCallDimension.Duration,
+        VoiceCallDimension.VoicemailAvailable,
+        VoiceCallDimension.VoicemailUrl,
+        VoiceCallDimension.CallRecordingAvailable,
+        VoiceCallDimension.CallRecordingUrl,
+        VoiceCallDimension.DisplayStatus,
+    ],
+    timezone,
+    segments: withVoiceEventsByAgentDefaultSegment(
+        VoiceEventsByAgentSegment.declinedCalls,
+    ),
+    filters: voiceEventsByAgentDefaultFilters(filters),
+    order: [[VoiceEventsByAgentDimension.CreatedAt, OrderDirection.Desc]],
 })
 
 export const transferredInboundVoiceCallsCountPerAgentQueryFactory = (

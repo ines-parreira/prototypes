@@ -46,7 +46,10 @@ import {
     voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { transferredInboundVoiceCallsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsPerAgentQueryFactory,
+    transferredInboundVoiceCallsPerAgentQueryFactory,
+} from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import {
     Sentiment,
     StatsFilters,
@@ -184,6 +187,9 @@ const waitingTimeCallsListQueryFactoryMock = assumeMock(
 const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
 const voiceEventsByAgentVoiceCallListQueryFactoryMock = assumeMock(
     transferredInboundVoiceCallsPerAgentQueryFactory,
+)
+const declinedVoiceCallsPerAgentQueryFactoryMock = assumeMock(
+    declinedVoiceCallsPerAgentQueryFactory,
 )
 const liveDashboardVoiceCallListQueryFactoryMock = assumeMock(
     liveDashBoardVoiceCallListQueryFactory,
@@ -499,6 +505,10 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: VoiceAgentsMetric.AgentInboundTransferredCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentInboundDeclinedCalls,
             perAgentId: 123,
         },
     ]
@@ -841,6 +851,23 @@ describe('getDrillDownQuery', () => {
         expect(
             voiceEventsByAgentVoiceCallListQueryFactoryMock,
         ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                agents: withDefaultLogicalOperator([123]),
+            }),
+            timezone,
+        )
+    })
+
+    it('should call declinedVoiceCallsPerAgentQueryFactory for AgentInboundDeclinedCalls', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: VoiceAgentsMetric.AgentInboundDeclinedCalls,
+            perAgentId: 123,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(declinedVoiceCallsPerAgentQueryFactoryMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 agents: withDefaultLogicalOperator([123]),
             }),

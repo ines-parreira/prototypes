@@ -422,6 +422,7 @@ export const METRIC_NAMES = {
     VOICE_DECLINED_CALLS_COUNT: 'voice-declined-calls-count',
     VOICE_DECLINED_CALLS_COUNT_PER_AGENT:
         'voice-declined-calls-count-per-agent',
+    VOICE_DECLINED_CALLS_PER_AGENT: 'voice-declined-calls-per-agent',
     VOICE_WAITING_TIME_CALLS_LIST: 'voice-waiting-time-calls-list',
     VOICE_TRANSFERRED_INBOUND_CALLS_COUNT:
         'voice-transferred-inbound-calls-count',

@@ -42,6 +42,7 @@ export const getVoiceDrillDownColumns = (
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
         case VoiceAgentsMetric.AgentInboundMissedCalls:
         case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentInboundDeclinedCalls:
             return [
                 VoiceCallTableColumn.Activity,
                 VoiceCallTableColumn.Duration,

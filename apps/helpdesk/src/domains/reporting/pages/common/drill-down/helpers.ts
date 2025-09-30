@@ -403,6 +403,7 @@ export const getDrillDownQuery = (
         case VoiceAgentsMetric.AgentOutboundCalls:
         case VoiceAgentsMetric.AgentAverageTalkTime:
         case VoiceAgentsMetric.AgentInboundTransferredCalls:
+        case VoiceAgentsMetric.AgentInboundDeclinedCalls:
             return queryBuilderWithAgentFilter(
                 metricData.perAgentId,
                 VoiceAgentsMetricsConfig[metricData.metricName].drillDownQuery,
@@ -606,7 +607,9 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceAgentsMetric.AgentInboundMissedCalls ||
         metricData.metricName === VoiceAgentsMetric.AgentOutboundCalls ||
         metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime ||
-        metricData.metricName === VoiceAgentsMetric.AgentInboundTransferredCalls
+        metricData.metricName ===
+            VoiceAgentsMetric.AgentInboundTransferredCalls ||
+        metricData.metricName === VoiceAgentsMetric.AgentInboundDeclinedCalls
     ) {
         metricTitle = VoiceAgentsMetricsConfig[metricData.metricName].title
     } else if (

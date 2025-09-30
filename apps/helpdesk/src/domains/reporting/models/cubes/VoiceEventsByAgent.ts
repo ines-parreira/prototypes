@@ -14,7 +14,6 @@ export enum VoiceEventsByAgentDimension {
     AgentId = 'VoiceEventsByAgent.agentId',
     CreatedAt = 'VoiceEventsByAgent.createdAt',
     TicketId = 'VoiceEventsByAgent.ticketId',
-    Direction = 'VoiceEventsByAgent.direction',
     Status = 'VoiceEventsByAgent.status',
     TransferType = 'VoiceEventsByAgent.transferType',
     TransferTargetAgentId = 'VoiceEventsByAgent.transferTargetAgentId',

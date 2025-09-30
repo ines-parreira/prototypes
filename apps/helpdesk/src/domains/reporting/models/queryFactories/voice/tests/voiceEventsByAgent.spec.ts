@@ -13,6 +13,7 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     declinedVoiceCallsCountQueryFactory,
+    declinedVoiceCallsPerAgentQueryFactory,
     transferredInboundVoiceCallsCountPerAgentQueryFactory,
     transferredInboundVoiceCallsCountQueryFactory,
     transferredInboundVoiceCallsPerAgentQueryFactory,
@@ -274,10 +275,58 @@ describe('voice events by agent factories', () => {
         })
     })
 
+    it('declinedVoiceCallsPerAgentQueryFactory should create a query', () => {
+        const query = declinedVoiceCallsPerAgentQueryFactory(
+            statsFilters,
+            'UTC',
+        )
+
+        expect(query).toEqual({
+            metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_PER_AGENT,
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [
+                VoiceEventsByAgentDimension.IntegrationId,
+                VoiceEventsByAgentDimension.CreatedAt,
+                VoiceEventsByAgentDimension.TicketId,
+                VoiceEventsByAgentDimension.Status,
+                VoiceCallDimension.AgentId,
+                VoiceCallDimension.CustomerId,
+                VoiceCallDimension.Direction,
+                VoiceCallDimension.Duration,
+                VoiceCallDimension.VoicemailAvailable,
+                VoiceCallDimension.VoicemailUrl,
+                VoiceCallDimension.CallRecordingAvailable,
+                VoiceCallDimension.CallRecordingUrl,
+                VoiceCallDimension.DisplayStatus,
+            ],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            timezone: 'UTC',
+            segments: [
+                VoiceEventsByAgentSegment.declinedCalls,
+                VoiceEventsByAgentSegment.callsInFinalStatus,
+            ],
+            order: [
+                [VoiceEventsByAgentDimension.CreatedAt, OrderDirection.Desc],
+            ],
+        })
+    })
+
     it.each(
         [
             declinedVoiceCallsCountPerAgentQueryFactory,
             declinedVoiceCallsCountQueryFactory,
+            declinedVoiceCallsPerAgentQueryFactory,
             transferredInboundVoiceCallsCountPerAgentQueryFactory,
             transferredInboundVoiceCallsCountQueryFactory,
             transferredInboundVoiceCallsPerAgentQueryFactory,

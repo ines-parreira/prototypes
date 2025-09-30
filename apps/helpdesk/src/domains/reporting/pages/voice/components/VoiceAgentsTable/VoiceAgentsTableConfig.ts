@@ -146,6 +146,7 @@ export const columns: VoiceAgentsTableColumnConfig[] = [
     {
         title: 'Inbound Declined',
         id: VoiceAgentsTableColumn.InboundDeclinedCalls,
+        metricName: VoiceAgentsMetric.AgentInboundDeclinedCalls,
     },
     {
         title: 'Outbound',

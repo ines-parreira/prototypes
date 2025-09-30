@@ -113,6 +113,7 @@ export enum VoiceAgentsMetric {
     AgentInboundMissedCalls = 'agent_inbound_missed_calls',
     AgentInboundAnsweredCalls = 'agent_inbound_answered_calls',
     AgentInboundTransferredCalls = 'agent_inbound_transferred_calls',
+    AgentInboundDeclinedCalls = 'agent_inbound_declined_calls',
     AgentOutboundCalls = 'agent_outbound_calls',
     AgentAverageTalkTime = 'agent_average_talk_time',
 }
