@@ -263,3 +263,10 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
     }
     return result
 }
+
+export const hasFlowEndEvent = (events: VoiceCallEvent[]): boolean =>
+    events.some(
+        (event) =>
+            event.type === PhoneIntegrationEvent.EndingTriggered &&
+            event.meta.ending_reason === 'end-of-call-flow',
+    ) && !events.some((event) => event.type === PhoneIntegrationEvent.Enqueued)

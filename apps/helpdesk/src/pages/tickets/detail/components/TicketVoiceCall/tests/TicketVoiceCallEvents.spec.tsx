@@ -39,8 +39,10 @@ jest.mock(
         ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
+const hasFlowEndEventMock = jest.fn()
 jest.mock('models/voiceCall/processEvents', () => ({
     processEvents: (events: any): any => events,
+    hasFlowEndEvent: (...args: any[]) => hasFlowEndEventMock(...args),
 }))
 
 jest.mock(
@@ -57,12 +59,19 @@ jest.mock(
 )
 
 describe('TicketVoiceCallEvents', () => {
-    afterEach(cleanup)
+    afterEach(() => {
+        cleanup()
+        hasFlowEndEventMock.mockReset()
+    })
 
     beforeEach(() => {
+        hasFlowEndEventMock.mockReturnValue(false)
         useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
             if (key === FeatureFlagKey.TransferCallToExternalNumber) {
                 return true
+            }
+            if (key === FeatureFlagKey.ExtendedCallFlows) {
+                return false
             }
             return false
         })
@@ -141,6 +150,51 @@ describe('TicketVoiceCallEvents', () => {
             ).toBeInTheDocument()
         },
     )
+
+    it('should render flow end message when ExtendedCallFlows is enabled and hasFlowEndEvent returns true', () => {
+        useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.TransferCallToExternalNumber) {
+                return true
+            }
+            if (key === FeatureFlagKey.ExtendedCallFlows) {
+                return true
+            }
+            return false
+        })
+        hasFlowEndEventMock.mockReturnValue(true)
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: { data: { data: [] } },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(
+            screen.getByText(
+                'No events. This call was handled by a flow and no agent interaction took place until reaching the end of the flow.',
+            ),
+        ).toBeInTheDocument()
+        expect(hasFlowEndEventMock).toHaveBeenCalledWith([])
+    })
+
+    it('should not check hasFlowEndEvent when ExtendedCallFlows is disabled', () => {
+        hasFlowEndEventMock.mockReturnValue(true)
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: { data: { data: [] } },
+            isLoading: false,
+            error: null,
+        } as any)
+
+        render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(
+            screen.getByText(
+                'No events. This call was either made outside business hours or ended due to no available agents.',
+            ),
+        ).toBeInTheDocument()
+        expect(hasFlowEndEventMock).not.toHaveBeenCalled()
+    })
 
     it('should render generic no events message when data is available but there are no displayable events', () => {
         useListVoiceCallEventsSpy.mockReturnValue({

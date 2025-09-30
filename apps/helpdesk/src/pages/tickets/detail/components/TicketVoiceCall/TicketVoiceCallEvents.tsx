@@ -7,7 +7,11 @@ import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
-import { ProcessedEvent, processEvents } from 'models/voiceCall/processEvents'
+import {
+    hasFlowEndEvent,
+    ProcessedEvent,
+    processEvents,
+} from 'models/voiceCall/processEvents'
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -52,6 +56,7 @@ const NewTicketVoiceCallEvents = ({
     callId,
     terminationStatus,
 }: TicketVoiceCallEventsProps) => {
+    const isExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
     const { data, isLoading, error } = useListVoiceCallEvents({
         call_id: callId,
     })
@@ -80,6 +85,18 @@ const NewTicketVoiceCallEvents = ({
                     <div className={css.noEventsInfo}>
                         No events. The caller ended the call while waiting,
                         before reaching an available agent.
+                    </div>
+                </Timeline>
+            )
+        }
+
+        if (isExtendedCallFlows && hasFlowEndEvent(data.data.data)) {
+            return (
+                <Timeline>
+                    <div className={css.noEventsInfo}>
+                        No events. This call was handled by a flow and no agent
+                        interaction took place until reaching the end of the
+                        flow.
                     </div>
                 </Timeline>
             )

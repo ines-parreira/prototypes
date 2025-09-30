@@ -17,4 +17,6 @@ export enum PhoneIntegrationEvent {
     PhoneCallAnswered = 'phone-call-answered',
     PhoneCallTransferInitiated = 'phone-call-transfer-initiated',
     PhoneCallTransferFailed = 'phone-call-transfer-failed',
+    EndingTriggered = 'call-ending-triggered',
+    Enqueued = 'phone-call-enqueued',
 }

@@ -1,5 +1,9 @@
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import { ProcessedEvent, processEvents } from 'models/voiceCall/processEvents'
+import {
+    hasFlowEndEvent,
+    ProcessedEvent,
+    processEvents,
+} from 'models/voiceCall/processEvents'
 
 import { VoiceCallEvent, VoiceCallSubjectType } from '../types'
 
@@ -912,5 +916,74 @@ describe('processEvents', () => {
                 showTransferPrefix: true,
             },
         ] as ProcessedEvent[])
+    })
+})
+
+describe('hasFlowEndEvent', () => {
+    const createEvent = (
+        type: PhoneIntegrationEvent,
+        meta: Record<string, unknown> = {},
+    ): VoiceCallEvent => ({
+        id: 1,
+        type,
+        account_id: 1,
+        call_id: 1,
+        user_id: null,
+        customer_id: 1,
+        created_datetime: '2025-01-01T10:00:00Z',
+        meta,
+    })
+
+    it('should return false when events array is empty', () => {
+        expect(hasFlowEndEvent([])).toBe(false)
+    })
+
+    it('should return false when there is no EndingTriggered event', () => {
+        const events = [
+            createEvent(PhoneIntegrationEvent.PhoneCallAnswered),
+            createEvent(PhoneIntegrationEvent.CompletedPhoneCall),
+        ]
+
+        expect(hasFlowEndEvent(events)).toBe(false)
+    })
+
+    it('should return false when EndingTriggered event exists but ending_reason is not end-of-call-flow', () => {
+        const events = [
+            createEvent(PhoneIntegrationEvent.EndingTriggered, {
+                ending_reason: 'agent-hung-up',
+            }),
+        ]
+
+        expect(hasFlowEndEvent(events)).toBe(false)
+    })
+
+    it('should return false when EndingTriggered event exists with end-of-call-flow but Enqueued event also exists', () => {
+        const events = [
+            createEvent(PhoneIntegrationEvent.Enqueued),
+            createEvent(PhoneIntegrationEvent.EndingTriggered, {
+                ending_reason: 'end-of-call-flow',
+            }),
+        ]
+
+        expect(hasFlowEndEvent(events)).toBe(false)
+    })
+
+    it('should return true when EndingTriggered event exists with end-of-call-flow and no Enqueued event', () => {
+        const events = [
+            createEvent(PhoneIntegrationEvent.EndingTriggered, {
+                ending_reason: 'end-of-call-flow',
+            }),
+        ]
+
+        expect(hasFlowEndEvent(events)).toBe(true)
+    })
+
+    it('should return false when EndingTriggered has no ending_reason in meta', () => {
+        const events = [
+            createEvent(PhoneIntegrationEvent.EndingTriggered, {}),
+            createEvent(PhoneIntegrationEvent.PhoneCallAnswered),
+        ]
+
+        expect(hasFlowEndEvent(events)).toBe(false)
     })
 })
