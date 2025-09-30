@@ -279,7 +279,8 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0': {
+                case '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0':
+                case '//helpdesk/phone.voice-call.inbound.enqueued/1.2.0': {
                     updateVoiceCallInLiveCallsQueryCacheWithDebounce(
                         {
                             id: event.data.voice_call_id,
