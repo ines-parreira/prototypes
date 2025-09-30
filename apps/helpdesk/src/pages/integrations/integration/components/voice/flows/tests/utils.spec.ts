@@ -401,7 +401,6 @@ describe('utils', () => {
                     id: 'play_message_start',
                     type: VoiceFlowNodeType.PlayMessage,
                     data: playMessageNodeStart,
-                    selected: false,
                 },
                 {
                     id: 'ivr_menu',
@@ -415,7 +414,6 @@ describe('utils', () => {
                             }),
                         ]),
                     },
-                    selected: false,
                 },
                 {
                     id: expect.any(String),
@@ -445,7 +443,6 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
-                    selected: false,
                 },
                 {
                     id: 'time_split_conditional',
@@ -459,7 +456,6 @@ describe('utils', () => {
                             timeSplitConditionalNode.on_false_step_id,
                         ),
                     },
-                    selected: false,
                 },
                 {
                     id: expect.any(String),
@@ -489,7 +485,6 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
-                    selected: false,
                 },
                 {
                     id: 'voicemail',
@@ -501,7 +496,6 @@ describe('utils', () => {
                             END_CALL_NODE.id,
                         ),
                     },
-                    selected: false,
                 },
                 {
                     ...END_CALL_NODE,

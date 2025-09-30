@@ -41,7 +41,6 @@ describe('AddStepMenuContent', () => {
         type: VoiceFlowNodeType.PlayMessage,
         data: { ...mockStep, next_step_id: 'end_call' },
         position: { x: 0, y: 0 },
-        selected: false,
     }
 
     const mockTargetNode: VoiceFlowNode = {
@@ -134,7 +133,6 @@ describe('AddStepMenuContent', () => {
                         },
                         next_step_id: 'end_call',
                     },
-                    selected: true,
                     position: {
                         x: 0,
                         y: 0,
@@ -170,7 +168,6 @@ describe('AddStepMenuContent', () => {
                         },
                         next_step_id: 'source-node',
                     },
-                    selected: true,
                     position: {
                         x: 0,
                         y: 0,

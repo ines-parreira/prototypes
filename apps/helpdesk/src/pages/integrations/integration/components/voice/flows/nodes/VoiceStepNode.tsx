@@ -1,5 +1,4 @@
-import { useState } from 'react'
-
+import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
 
 import {
@@ -14,6 +13,7 @@ import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 
 import { useVoiceFlow } from '../useVoiceFlow'
 import { useDeleteNode } from '../utils/useDeleteNode'
+import { useVoiceFlowContext } from '../VoiceFlowContext'
 
 import css from './VoiceStepNode.less'
 
@@ -35,20 +35,34 @@ export function VoiceStepNode({
     drawerRef,
     ...rest
 }: VoiceStepNodeProps) {
-    const [selected, setSelected] = useState(rest.selected || false)
+    const { selectedNode, setSelectedNode } = useVoiceFlowContext()
+    const selected = selectedNode === rest.id
     const { updateNode } = useVoiceFlow()
     const { deleteNode } = useDeleteNode()
 
     const handleDrawerClose = () => {
-        setSelected(false)
+        setSelectedNode(null)
         // Update the React Flow node's selected state to avoid re-render issues
         updateNode(rest.id, { selected: false })
     }
 
+    const handleDrawerOpen = () => {
+        setSelectedNode(rest.id)
+    }
+
+    useKey(
+        'Escape',
+        () => {
+            handleDrawerClose()
+        },
+        undefined,
+        [handleDrawerClose],
+    )
+
     return (
         <>
             <NodeWrapper {...rest}>
-                <div onClick={() => setSelected(true)} aria-label={'Step node'}>
+                <div onClick={handleDrawerOpen} aria-label={'Step node'}>
                     <StepCard
                         icon={icon}
                         title={title}
@@ -78,13 +92,15 @@ export function VoiceStepNode({
                 </div>
             </NodeWrapper>
             <Drawer
+                className={css.drawer}
                 fullscreen={false}
                 aria-label={title}
                 open={selected}
                 portalRootId="app-root"
-                onBackdropClick={handleDrawerClose}
                 isLoading={false}
                 withFooter={false}
+                showBackdrop={false}
+                containerZIndices={[10, 10]}
             >
                 <Drawer.Header className={css.drawerHeader}>
                     <span>{title}</span>

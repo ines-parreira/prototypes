@@ -324,7 +324,6 @@ function connectTerminalStepsToEndCallStep(
 
 export function transformToReactFlowNodes(
     flow: CallRoutingFlow,
-    selectedNodeId?: string,
 ): VoiceFlowNode[] {
     const steps = connectTerminalStepsToEndCallStep(flow.steps)
     const nodes = Object.entries(steps).map(([id, step]) => {
@@ -333,7 +332,6 @@ export function transformToReactFlowNodes(
                   id,
                   type: step.step_type,
                   data: step,
-                  selected: selectedNodeId === id,
               }
             : null
     })

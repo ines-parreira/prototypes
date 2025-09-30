@@ -76,10 +76,7 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
             register(`steps.${id}.skip_step_id`, {
                 value: step?.next_step_id,
             })
-            const nodes = transformToReactFlowNodes(
-                { first_step_id, steps },
-                id,
-            )
+            const nodes = transformToReactFlowNodes({ first_step_id, steps })
             setNodes(nodes)
             return
         }

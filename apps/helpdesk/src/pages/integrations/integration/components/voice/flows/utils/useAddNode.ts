@@ -12,10 +12,12 @@ import {
     pointsToEndNode,
     transformToReactFlowNodes,
 } from '../utils'
+import { useVoiceFlowContext } from '../VoiceFlowContext'
 
 export const useAddNode = (source: string, target: string) => {
     const { watch, setValue } = useFormContext<VoiceFlowFormValues>()
     const { getNode, getNodes, setNodes } = useVoiceFlow()
+    const { setSelectedNode } = useVoiceFlowContext()
 
     const sourceNode = getNode(source)
     const targetNode = getNode(target)
@@ -62,11 +64,9 @@ export const useAddNode = (source: string, target: string) => {
 
         const first_step_id = watch('first_step_id')
         const steps = watch('steps')
-        const nodes = transformToReactFlowNodes(
-            { first_step_id, steps },
-            newNodeData.id,
-        )
+        const nodes = transformToReactFlowNodes({ first_step_id, steps })
         setNodes(nodes)
+        setSelectedNode(newNodeData.id)
     }
 
     return { addNode, addNewStepInForm, canAddFinalNode }

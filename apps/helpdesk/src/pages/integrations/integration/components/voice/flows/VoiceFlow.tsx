@@ -30,6 +30,7 @@ import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
 import { VoiceFlowNode } from './types'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge } from './VoiceFlowEdge'
+import VoiceFlowProvider from './VoiceFlowProvider'
 
 const nodeTypes = {
     [VoiceFlowNodeType.IncomingCall]: IncomingCallNode,
@@ -72,16 +73,19 @@ export function VoiceFlow({ flow }: VoiceFlowProps) {
     useAutoLayout<VoiceFlowNode>(getEdgeProps, computeEdges)
 
     return (
-        <Flow<VoiceFlowNode, Edge>
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-        >
-            <Background />
-            <CustomControls />
-        </Flow>
+        <VoiceFlowProvider>
+            <Flow<VoiceFlowNode, Edge>
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onlyRenderVisibleElements={false}
+            >
+                <Background />
+                <CustomControls />
+            </Flow>
+        </VoiceFlowProvider>
     )
 }

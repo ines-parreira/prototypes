@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { FlowProvider } from 'core/ui/flows'
 
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { VoiceStepNode } from '../VoiceStepNode'
 
 const mockUseDeleteNode = jest.fn()
@@ -27,7 +28,9 @@ const mockChildren = <div>Test Content</div>
 const renderComponent = (props: any) => {
     return render(
         <FlowProvider>
-            <VoiceStepNode {...props} />
+            <VoiceFlowProvider>
+                <VoiceStepNode {...props} />
+            </VoiceFlowProvider>
         </FlowProvider>,
     )
 }
@@ -171,7 +174,7 @@ describe('VoiceStepNode', () => {
             })
         })
 
-        it('closes drawer and updates node when backdrop is clicked', async () => {
+        it('closes drawer when Escape key is pressed', async () => {
             const user = userEvent.setup()
             renderComponent(defaultProps)
 
@@ -189,10 +192,9 @@ describe('VoiceStepNode', () => {
                 )
             })
 
-            // Click on the backdrop
-            const backdrop = screen.getByRole('presentation')
+            // Press Escape key
             await act(async () => {
-                await user.click(backdrop)
+                await user.keyboard('{Escape}')
             })
 
             // Verify card is no longer selected
@@ -206,14 +208,6 @@ describe('VoiceStepNode', () => {
             expect(mockUpdateNode).toHaveBeenCalledWith('test-id', {
                 selected: false,
             })
-        })
-
-        it('renders with selected prop set to true', () => {
-            renderComponent({ ...defaultProps, selected: true })
-
-            // Card should be selected
-            const stepCardWrapper = screen.getByLabelText('Step node')
-            expect(stepCardWrapper?.firstElementChild).toHaveClass('selected')
         })
     })
 })
