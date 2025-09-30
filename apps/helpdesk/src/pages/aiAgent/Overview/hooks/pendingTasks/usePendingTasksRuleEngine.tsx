@@ -188,6 +188,9 @@ export const usePendingTasksRuleEngine = ({
         FeatureFlagKey.AiShoppingAssistantEnabled,
         false,
     )
+    const isTriggerOnSearchDisabled = useFlag(
+        FeatureFlagKey.TriggerOnSearchKillSwitch,
+    )
 
     // Calculate tasks using useMemo to prevent infinite rerenders
     const { completedTasks, pendingTasks } = useMemo(() => {
@@ -214,6 +217,7 @@ export const usePendingTasksRuleEngine = ({
                 storeKnowledgeStatus: storeKnowledgeStatusData,
                 alreadyUsedEmailIntegrationsIds,
                 isStandaloneMerchant,
+                isTriggerOnSearchDisabled,
             },
             {
                 aiAgentRoutes: routes,
@@ -239,6 +243,7 @@ export const usePendingTasksRuleEngine = ({
         alreadyUsedEmailIntegrationsIds,
         isStandaloneMerchant,
         routes,
+        isTriggerOnSearchDisabled,
     ])
 
     if (shouldFakeTasks) {

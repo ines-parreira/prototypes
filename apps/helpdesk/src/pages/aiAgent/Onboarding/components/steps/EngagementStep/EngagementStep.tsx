@@ -1,8 +1,10 @@
 import { FC, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData } from 'models/aiAgent/types'
 import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days'
@@ -42,6 +44,10 @@ export const EngagementStep: FC<StepProps> = ({
 
     const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] =
         useState(false)
+
+    const isTriggerOnSearchDisabled = useFlag(
+        FeatureFlagKey.TriggerOnSearchKillSwitch,
+    )
 
     const methods = useForm({
         values: {
@@ -145,11 +151,13 @@ export const EngagementStep: FC<StepProps> = ({
                 <Separator />
                 <FormProvider {...methods}>
                     <div className={css.form}>
-                        <TriggerOnSearchSettings
-                            description="Send tailored messages after searches to guide shoppers and boost conversions."
-                            gmv={gmv}
-                            isGmvLoading={isGmvLoading}
-                        />
+                        {!isTriggerOnSearchDisabled && (
+                            <TriggerOnSearchSettings
+                                description="Send tailored messages after searches to guide shoppers and boost conversions."
+                                gmv={gmv}
+                                isGmvLoading={isGmvLoading}
+                            />
+                        )}
                         <ConversationStartersSettings
                             description="Display AI-generated FAQs based on shopper intent to help them buy faster."
                             isEnabled

@@ -103,4 +103,30 @@ describe('EnableTriggerOnSearchTask', () => {
 
         expect(task.display).toBe(false)
     })
+
+    it('should not display the task when user do have the trigger on search kill switch flag', () => {
+        const aiAgentStoreConfiguration =
+            AiAgentStoreConfigurationFixture.start()
+                .withoutTriggerOnSearch()
+                .withConnectedChatIntegrations([1])
+                .withScopes([AiAgentScope.Support, AiAgentScope.Sales])
+                .withConnectedHelpCenter(1)
+                .withChatChannelEnabled()
+                .build()
+
+        const task = new EnableTriggerOnSearchTask(
+            buildRuleEngineData({
+                aiAgentStoreConfiguration,
+                storeKnowledgeStatus: {
+                    has_public_resources: true,
+                } as any,
+                selfServiceChatChannels: [{ value: { id: 1 } }] as any,
+                chatIntegrationsStatus: [{ chatId: 1, installed: true }] as any,
+                isTriggerOnSearchDisabled: true,
+            }),
+            buildRuleEngineRoutes(),
+        )
+
+        expect(task.display).toBe(false)
+    })
 })
