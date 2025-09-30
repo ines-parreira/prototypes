@@ -917,10 +917,50 @@ describe('utils', () => {
     })
 
     describe('getEdgeProps', () => {
+        it('should return branching edge props for Enqueue with conditional routing', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'node',
+                target: 'target-node',
+            }
+
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: edge.source,
+                    type: VoiceFlowNodeType.Enqueue,
+                    data: mockEnqueueStep({ conditional_routing: true }),
+                    position: { x: 0, y: 0 },
+                } as VoiceFlowNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+
+            expect(result).toEqual({ weight: 50, height: 12 })
+        })
+
+        it('should return default edge props for Enqueue without conditional routing', () => {
+            const edge: Edge = {
+                id: 'edge1',
+                source: 'node',
+                target: 'target-node',
+            }
+
+            const nodes: VoiceFlowNode[] = [
+                {
+                    id: edge.source,
+                    type: VoiceFlowNodeType.Enqueue,
+                    data: mockEnqueueStep({ conditional_routing: false }),
+                    position: { x: 0, y: 0 },
+                } as VoiceFlowNode,
+            ]
+
+            const result = getEdgeProps(edge, nodes)
+            expect(result).toEqual({ weight: 1, height: 24 })
+        })
+
         it.each([
             VoiceFlowNodeType.IvrMenu,
             VoiceFlowNodeType.TimeSplitConditional,
-            VoiceFlowNodeType.Enqueue,
         ])('should return short edge props for %s source', (type) => {
             const edge: Edge = {
                 id: 'edge1',

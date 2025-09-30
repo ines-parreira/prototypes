@@ -440,18 +440,25 @@ export function getEdgeProps(
 ): { weight?: number; height?: number } {
     const sourceStep = nodes.find((node) => node.id === edge.source)
 
+    const BRANCHING_PROP = { weight: 50, height: 12 }
+    const OPTIONS_PROP = { weight: 45, height: 24 }
+    const DEFAULT_PROP = { weight: 1, height: 24 }
+
     switch (sourceStep?.type) {
+        case VoiceFlowNodeType.Enqueue:
+            return sourceStep?.data.conditional_routing
+                ? BRANCHING_PROP
+                : DEFAULT_PROP
         // short edges, that bring the elements closer together
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.TimeSplitConditional:
-        case VoiceFlowNodeType.Enqueue:
-            return { weight: 50, height: 12 }
+            return BRANCHING_PROP
         case VoiceFlowNodeType.IvrOption:
         case VoiceFlowNodeType.TimeSplitOption:
         case VoiceFlowNodeType.EnqueueOption:
-            return { weight: 45, height: 24 }
+            return OPTIONS_PROP
         default:
-            return { weight: 1, height: 24 }
+            return DEFAULT_PROP
     }
 }
 
