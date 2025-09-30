@@ -6,6 +6,7 @@ import {
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
+// oxlint-disable-next-line no-unused-vars
 import { TicketFirstHumanAgentResponseTimeMember } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import {
     TicketMessagesDimension,
@@ -91,12 +92,12 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     values: [formatReportingQueryDate(periodEnd)],
                 },
                 {
-                    member: TicketFirstHumanAgentResponseTimeMember.Integration,
+                    member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.integrations?.values.map(String),
                 },
                 {
-                    member: TicketFirstHumanAgentResponseTimeMember.Store,
+                    member: TicketMessagesMember.Store,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.stores?.values.map(String),
                 },
@@ -151,12 +152,12 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
                     values: [formatReportingQueryDate(periodEnd)],
                 },
                 {
-                    member: TicketFirstHumanAgentResponseTimeMember.Integration,
+                    member: TicketMessagesMember.Integration,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.integrations?.values.map(String),
                 },
                 {
-                    member: TicketFirstHumanAgentResponseTimeMember.Store,
+                    member: TicketMessagesMember.Store,
                     operator: ReportingFilterOperator.Equals,
                     values: statsFilters.stores?.values.map(String),
                 },

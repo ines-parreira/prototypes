@@ -5,6 +5,7 @@ import {
     humanResponseTimeAfterAiHandoffPerChannelQueryFactory,
     humanResponseTimeAfterAiHandoffQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
@@ -17,6 +18,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
             end_datetime: periodEnd,
             start_datetime: periodStart,
         },
+        integrations: withDefaultLogicalOperator([1]),
+        stores: withDefaultLogicalOperator([1]),
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
@@ -65,6 +68,16 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         member: 'TicketEnriched.periodEnd',
                         operator: 'beforeDate',
                         values: ['2025-01-07T23:59:59.000'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.integration',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.store',
+                        operator: 'equals',
+                        values: ['1'],
                     },
                 ],
                 order: [
@@ -126,6 +139,16 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         operator: 'beforeDate',
                         values: ['2025-01-07T23:59:59.000'],
                     },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.integration',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.store',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
                 ],
                 order: [
                     [
@@ -184,6 +207,16 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         member: 'TicketEnriched.periodEnd',
                         operator: 'beforeDate',
                         values: ['2025-01-07T23:59:59.000'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.integration',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.store',
+                        operator: 'equals',
+                        values: ['1'],
                     },
                 ],
                 order: [
@@ -246,6 +279,16 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                         member: 'TicketEnriched.periodEnd',
                         operator: 'beforeDate',
                         values: ['2025-01-07T23:59:59.000'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.integration',
+                        operator: 'equals',
+                        values: ['1'],
+                    },
+                    {
+                        member: 'TicketFirstHumanAgentResponseTime.store',
+                        operator: 'equals',
+                        values: ['1'],
                     },
                 ],
                 limit: 100,
