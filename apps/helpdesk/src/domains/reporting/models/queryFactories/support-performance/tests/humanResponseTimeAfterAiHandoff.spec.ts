@@ -214,8 +214,8 @@ describe('humanResponseTimeAfterAiHandoff', () => {
                 ],
                 dimensions: [
                     'TicketEnriched.ticketId',
-                    'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageUserId',
                     'TicketFirstHumanAgentResponseTime.firstHumanAgentResponseTime',
+                    'TicketFirstHumanAgentResponseTime.firstHumanAgentMessageUserId',
                 ],
                 timezone: 'someTimeZone',
                 filters: [

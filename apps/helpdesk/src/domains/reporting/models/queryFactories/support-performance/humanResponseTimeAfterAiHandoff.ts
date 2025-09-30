@@ -111,8 +111,8 @@ export function humanResponseTimeAfterAiHandoffDrillDownQueryFactory(
 
     query.dimensions.push(
         TicketDimension.TicketId,
-        TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId,
         TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentResponseTime,
+        TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId,
     )
 
     query.limit = DRILLDOWN_QUERY_LIMIT
