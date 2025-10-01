@@ -87,7 +87,8 @@ export const AiAgentReasoningFeedback = ({
             ?.find(
                 (feedback) =>
                     feedback.targetType === 'REASONING' &&
-                    feedback.targetId === messageId.toString(),
+                    feedback.targetId === messageId.toString() &&
+                    feedback.feedbackType === 'REASONING_BINARY',
             )
     }, [data, messageId])
 

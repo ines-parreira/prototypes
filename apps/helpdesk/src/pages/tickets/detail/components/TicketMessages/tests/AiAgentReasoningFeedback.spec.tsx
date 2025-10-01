@@ -1760,6 +1760,57 @@ describe('AiAgentReasoningFeedback', () => {
             expect(checkboxes[1]).toBeChecked() // REPETITIVE (correct targetId)
         })
 
+        it('should use REASONING_BINARY feedback for reasoning thumbs up/down', () => {
+            mockUseGetFeedback.mockReturnValue({
+                data: {
+                    executions: [
+                        {
+                            executionId: 'exec-123',
+                            feedback: [
+                                {
+                                    id: 'feedback-1',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue: 'TOO_LONG',
+                                    feedbackType:
+                                        'REASONING_BAD_EXPLANATION_REASON',
+                                },
+                                {
+                                    id: 'feedback-2',
+                                    targetType: 'REASONING',
+                                    targetId: '1001',
+                                    feedbackValue:
+                                        AiAgentBinaryFeedbackEnum.DOWN,
+                                    feedbackType: 'REASONING_BINARY',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+            } as any)
+
+            renderComponent()
+
+            // Should show feedback form (since REASONING_BINARY with DOWN value exists)
+            expect(
+                screen.getByText("What's wrong with this explanation?"),
+            ).toBeInTheDocument()
+
+            // Thumbs down button should be filled and have negative feedback class
+            const thumbDownButton = screen.getAllByRole('button')[1]
+
+            expect(
+                thumbDownButton.querySelector('.material-icons'),
+            ).toBeInTheDocument()
+            expect(
+                thumbDownButton.querySelector('.material-icons-outlined'),
+            ).not.toBeInTheDocument()
+            expect(thumbDownButton.closest('button')).toHaveClass(
+                'negativeFeedback',
+            )
+        })
+
         it('should handle empty executions array', () => {
             mockUseGetFeedback.mockReturnValue({
                 data: {
