@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
 import { Button, IconButton } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -146,10 +144,6 @@ export const PublicSourcesItem = ({
 
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
-
-    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
-        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
-    )
 
     const { onKnowledgeSourcesFiltered } = useKnowledgeTracking({ shopName })
 
@@ -335,20 +329,18 @@ export const PublicSourcesItem = ({
                         isDisabled={deleteDisabled}
                     />
                 )}
-                {isAiAgentFilesAndUrlsKnowledgeVisible && (
-                    <IconButton
-                        size="small"
-                        fillStyle="ghost"
-                        intent="secondary"
-                        aria-label="Open articles"
-                        onClick={() => handleOpenArticles(source)}
-                        className={css.arrowIcon}
-                        icon="keyboard_arrow_right"
-                        isDisabled={
-                            !source.articleIds || source.articleIds.length === 0
-                        }
-                    />
-                )}
+                <IconButton
+                    size="small"
+                    fillStyle="ghost"
+                    intent="secondary"
+                    aria-label="Open articles"
+                    onClick={() => handleOpenArticles(source)}
+                    className={css.arrowIcon}
+                    icon="keyboard_arrow_right"
+                    isDisabled={
+                        !source.articleIds || source.articleIds.length === 0
+                    }
+                />
             </div>
 
             <SyncDomainConfirmationModal

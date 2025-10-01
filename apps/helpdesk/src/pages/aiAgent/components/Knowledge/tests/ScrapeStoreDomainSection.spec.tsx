@@ -5,7 +5,6 @@ import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
@@ -18,14 +17,12 @@ import { ScrapeStoreDomainSection } from '../ScrapeStoreDomainSection'
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useIngestionLogMutation')
-jest.mock('core/flags')
 
 const mockUseGetStoreDomainIngestionLog = assumeMock(
     useGetStoreDomainIngestionLog,
 )
 const mockUseIngestionLogMutation = assumeMock(useIngestionLogMutation)
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
-const useFlagMock = assumeMock(useFlag)
 
 const mockedShopName = 'test-shop'
 const mockedShopDomain = 'test-shop.example.com'
@@ -97,7 +94,9 @@ describe('ScrapeStoreDomainSection', () => {
         )
         expect(screen.getByText('Last synced 03/22/24')).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
-        expect(screen.getByText('Manage')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Open articles' }),
+        ).toBeInTheDocument()
     })
 
     it('should not render sync date if storeDomainIngestionLog is undefined', () => {
@@ -125,36 +124,20 @@ describe('ScrapeStoreDomainSection', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('calls history.push when Manage button is clicked', () => {
+    it('calls history.push when Open articles button is clicked', () => {
         renderComponent()
 
-        fireEvent.click(screen.getByText('Manage'))
+        fireEvent.click(screen.getByRole('button', { name: 'Open articles' }))
         expect(history.push).toHaveBeenCalledWith('/questions-content')
     })
 
     describe('Articles button visibility', () => {
-        useFlagMock.mockReturnValue(false)
-        it('should show Manage button when feature flag is disabled', () => {
-            renderComponent()
-
-            expect(
-                screen.getByRole('button', { name: 'Manage' }),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Open articles' }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should show articles button when feature flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
+        it('should always show articles button', () => {
             renderComponent()
 
             expect(
                 screen.getByRole('button', { name: 'Open articles' }),
             ).toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Manage' }),
-            ).not.toBeInTheDocument()
         })
     })
 })

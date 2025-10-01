@@ -2,7 +2,6 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { Components } from 'rest_api/help_center_api/client.generated'
@@ -17,7 +16,6 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useFileIngestion')
 jest.mock('rest_api/help_center_api/uploadAttachments')
-jest.mock('core/flags')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -33,7 +31,6 @@ const useFileIngestionMock = assumeMock(useFileIngestion)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const uploadAttachmentsMock = assumeMock(uploadAttachments)
 const notifyMock = assumeMock(notify)
-const useFlagMock = assumeMock(useFlag)
 
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
@@ -315,30 +312,7 @@ describe('ExternalFilesSection', () => {
         )
     })
 
-    it('should not show articles button when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-        renderComponent({
-            ingestedFiles: [
-                {
-                    id: 1,
-                    help_center_id: 1,
-                    filename: 'test.pdf',
-                    status: 'SUCCESSFUL',
-                    google_storage_url:
-                        'https://storage.googleapis.com/test.pdf',
-                    uploaded_datetime: '2024-11-04T19:24:08Z',
-                    snippets_article_ids: [],
-                },
-            ],
-        })
-
-        expect(
-            screen.queryByRole('button', { name: 'Open articles' }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should show articles button when feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should always show articles button for ingested files', () => {
         renderComponent({
             ingestedFiles: [
                 {
@@ -360,8 +334,6 @@ describe('ExternalFilesSection', () => {
     })
 
     it('should not show articles button when there are no files', () => {
-        useFlagMock.mockReturnValue(true)
-
         renderComponent({
             ingestedFiles: [],
         })
@@ -436,7 +408,6 @@ describe('ExternalFilesSection', () => {
     })
 
     it('the open articles button should be disable if the file is .xlsx', () => {
-        useFlagMock.mockReturnValue(true)
         renderComponent({
             ingestedFiles: [
                 {
@@ -464,8 +435,6 @@ describe('ExternalFilesSection', () => {
     })
 
     it('should navigate to file articles page with selectedResource in location state when Open articles button is clicked and file is not .xlsx', () => {
-        useFlagMock.mockReturnValue(true)
-
         const ingestedFile: Components.Schemas.RetrieveFileIngestionLogDto = {
             id: 1,
             help_center_id: 1,

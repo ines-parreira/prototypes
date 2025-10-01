@@ -52,9 +52,6 @@ export const AiAgentKnowledgeContainer = () => {
     const isAiAgentScrapeStoreDomainEnabled = useFlag(
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
-    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
-        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
-    )
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -269,17 +266,16 @@ export const AiAgentKnowledgeContainer = () => {
                                 data-candu-id="ai-agent-configuration-knowledge-copy"
                             >
                                 <div className={css.cardsContainer}>
-                                    {isAiAgentFilesAndUrlsKnowledgeVisible &&
-                                        guidanceHelpCenter && (
-                                            <Card className={css.cardSection}>
-                                                <GuidanceSection
-                                                    helpCenterId={
-                                                        guidanceHelpCenter.id
-                                                    }
-                                                    shopName={shopName}
-                                                />
-                                            </Card>
-                                        )}
+                                    {guidanceHelpCenter && (
+                                        <Card className={css.cardSection}>
+                                            <GuidanceSection
+                                                helpCenterId={
+                                                    guidanceHelpCenter.id
+                                                }
+                                                shopName={shopName}
+                                            />
+                                        </Card>
+                                    )}
 
                                     {snippetHelpCenter && (
                                         <Card className={css.cardSection}>

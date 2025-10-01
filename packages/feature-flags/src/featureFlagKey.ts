@@ -17,7 +17,6 @@ export enum FeatureFlagKey {
     /** @deprecated Fully evaluated to `true` */
     AiAgentExpandingTrialExperienceForAll = 'linear.expanding-trial-experience-of-ai-agent-for-all-customers',
     AiAgentExpandingTrialExperienceMilestone2 = 'linear.expanding-trial-experience-of-ai-agent-milestone-2',
-    AiAgentFilesAndUrlsKnowledgeVisibilityButton = 'ai-agent-files-and-urls-knowledge-visibility-button',
     AiAgentKnowledgeTab = 'ai-agent-knowledge-tab',
     /** @deprecated Fully evaluated to `true` */
     AiAgentNewActivationXp = 'ai-agent-new-activation-xp',

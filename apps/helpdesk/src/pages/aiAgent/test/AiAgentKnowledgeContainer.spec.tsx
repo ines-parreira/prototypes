@@ -182,14 +182,12 @@ const renderComponent = ({
     isLoadingHelpCenters = false,
     noStoreConfiguration = false,
     isAiAgentScrapeStoreDomainEnabled = false,
-    isAiAgentFilesAndUrlsKnowledgeVisibilityButton = false,
     helpCenterId = 1,
 }: {
     isStoreConfigLoading?: boolean
     isLoadingHelpCenters?: boolean
     noStoreConfiguration?: boolean
     isAiAgentScrapeStoreDomainEnabled?: boolean
-    isAiAgentFilesAndUrlsKnowledgeVisibilityButton?: boolean
     helpCenterId?: number | null
 } = {}) => {
     mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -295,10 +293,7 @@ const renderComponent = ({
     mockUseFlag.mockImplementation((key) =>
         key === FeatureFlagKey.AiAgentScrapeStoreDomain
             ? isAiAgentScrapeStoreDomainEnabled
-            : key ===
-                FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton
-              ? isAiAgentFilesAndUrlsKnowledgeVisibilityButton
-              : false,
+            : false,
     )
 
     return renderWithRouter(
@@ -455,23 +450,23 @@ describe('AiAgentKnowledgeContainer', () => {
         jest.useRealTimers()
     })
 
-    it('should show scrape store domain section if feature flag is enabled', () => {
+    it('should show scrape store domain section', () => {
         renderComponent({ isAiAgentScrapeStoreDomainEnabled: true })
 
         expect(screen.getByText('Store website')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Use your website’s content and product pages as knowledge for AI Agent. Re-sync when your site is updated to ensure accurate responses.',
+                /Use your website.+content and product pages as knowledge/,
             ),
         ).toBeInTheDocument()
         expect(screen.getByText('Sync')).toBeInTheDocument()
-        expect(screen.getByText('Manage')).toBeInTheDocument()
+        const arrowButtons = screen.getAllByLabelText('Open articles')
+        expect(arrowButtons.length).toBeGreaterThan(0)
     })
 
-    it('should show guidance section if feature flag is enabled', () => {
+    it('should show guidance section when scrape store domain is enabled', () => {
         renderComponent({
             isAiAgentScrapeStoreDomainEnabled: true,
-            isAiAgentFilesAndUrlsKnowledgeVisibilityButton: true,
         })
 
         expect(screen.getByText('Guidance')).toBeInTheDocument()

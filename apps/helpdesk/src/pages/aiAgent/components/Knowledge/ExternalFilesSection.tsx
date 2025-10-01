@@ -1,12 +1,10 @@
 import React, { createRef, useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
 import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
@@ -59,10 +57,6 @@ export const ExternalFilesSection = ({
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
     const history = useHistory()
-
-    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
-        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
-    )
 
     const { onKnowledgeSourcesFiltered, onKnowledgeContentCreated } =
         useKnowledgeTracking({ shopName })
@@ -317,34 +311,32 @@ export const ExternalFilesSection = ({
                                         )}
                                     </ConfirmationPopover>
                                 </div>
-                                {isAiAgentFilesAndUrlsKnowledgeVisible && (
-                                    <div className={css.articlesIcons}>
-                                        <IconButton
-                                            id={`open-articles-${ingestedFile.id}`}
-                                            size="small"
-                                            fillStyle="ghost"
-                                            intent="secondary"
-                                            aria-label="Open articles"
-                                            onClick={() =>
-                                                handleOpenArticles(ingestedFile)
-                                            }
-                                            icon="keyboard_arrow_right"
-                                            isDisabled={isExcelFile(
-                                                ingestedFile.filename,
-                                            )}
-                                        />
-                                        {isExcelFile(ingestedFile.filename) && (
-                                            <Tooltip
-                                                target={`open-articles-${ingestedFile.id}`}
-                                                placement="top-start"
-                                            >
-                                                Viewing content from .xlsx files
-                                                is not supported. Download to
-                                                view its content.
-                                            </Tooltip>
+                                <div className={css.articlesIcons}>
+                                    <IconButton
+                                        id={`open-articles-${ingestedFile.id}`}
+                                        size="small"
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        aria-label="Open articles"
+                                        onClick={() =>
+                                            handleOpenArticles(ingestedFile)
+                                        }
+                                        icon="keyboard_arrow_right"
+                                        isDisabled={isExcelFile(
+                                            ingestedFile.filename,
                                         )}
-                                    </div>
-                                )}
+                                    />
+                                    {isExcelFile(ingestedFile.filename) && (
+                                        <Tooltip
+                                            target={`open-articles-${ingestedFile.id}`}
+                                            placement="top-start"
+                                        >
+                                            Viewing content from .xlsx files is
+                                            not supported. Download to view its
+                                            content.
+                                        </Tooltip>
+                                    )}
+                                </div>
                             </li>
                         ))}
                     </ul>

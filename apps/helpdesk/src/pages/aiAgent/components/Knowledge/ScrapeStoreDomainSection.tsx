@@ -1,11 +1,9 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
 import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import {
     HeaderType,
     IngestionLogStatus,
@@ -42,9 +40,6 @@ export const ScrapeStoreDomainSection = ({
     const id = useId()
     const syncDateId = `syncDate-${id}`
     const syncButtonId = `syncButton-${id}`
-    const isAiAgentFilesAndUrlsKnowledgeVisible = useFlag(
-        FeatureFlagKey.AiAgentFilesAndUrlsKnowledgeVisibilityButton,
-    )
 
     const { routes } = useAiAgentNavigation({ shopName })
     const { onKnowledgeSourcesFiltered } = useKnowledgeTracking({ shopName })
@@ -146,24 +141,14 @@ export const ScrapeStoreDomainSection = ({
                                 {`Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
                             </Tooltip>
                         )}
-                        {isAiAgentFilesAndUrlsKnowledgeVisible ? (
-                            <IconButton
-                                size="small"
-                                fillStyle="ghost"
-                                intent="secondary"
-                                aria-label="Open articles"
-                                onClick={onManage}
-                                icon="keyboard_arrow_right"
-                            />
-                        ) : (
-                            <Button
-                                intent="primary"
-                                fillStyle="ghost"
-                                onClick={onManage}
-                            >
-                                Manage
-                            </Button>
-                        )}
+                        <IconButton
+                            size="small"
+                            fillStyle="ghost"
+                            intent="secondary"
+                            aria-label="Open articles"
+                            onClick={onManage}
+                            icon="keyboard_arrow_right"
+                        />
                     </div>
                 </div>
             </div>

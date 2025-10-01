@@ -4,19 +4,16 @@ import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { PublicSourcesItem } from '../PublicSourcesItem'
 import { SourceItem } from '../types'
 
-jest.mock('core/flags')
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)
-const useFlagMock = assumeMock(useFlag)
 
 const renderComponent = ({
     source = {
@@ -52,19 +49,7 @@ describe('PublicSourcesItem', () => {
         mockUseParams.mockReturnValue({ shopName: 'test' })
     })
     describe('Articles button visibility', () => {
-        it('should not show articles button when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
-
-            renderComponent()
-
-            expect(
-                screen.queryByRole('button', { name: 'Open articles' }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should show articles button when feature flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
-
+        it('should always show articles button', () => {
             renderComponent()
 
             expect(
@@ -73,8 +58,6 @@ describe('PublicSourcesItem', () => {
         })
 
         it('should navigate to url articles page with selectedResource in location state when Open articles button is clicked', () => {
-            useFlagMock.mockReturnValue(true)
-
             const source = {
                 id: 1,
                 url: 'https://example.com',
@@ -100,7 +83,6 @@ describe('PublicSourcesItem', () => {
 
     describe('deleteDisabled logic', () => {
         it('should disable delete button when source created less than 1 hour ago with loading status', () => {
-            useFlagMock.mockReturnValue(false)
             const oneMinuteAgo = new Date()
             oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
 
@@ -120,7 +102,6 @@ describe('PublicSourcesItem', () => {
         })
 
         it('should enable delete button when source created more than 1 hour ago with loading status', () => {
-            useFlagMock.mockReturnValue(false)
             const twoHoursAgo = new Date()
             twoHoursAgo.setHours(twoHoursAgo.getHours() - 2)
 
@@ -140,7 +121,6 @@ describe('PublicSourcesItem', () => {
         })
 
         it('should enable delete button for non-loading status regardless of creation time', () => {
-            useFlagMock.mockReturnValue(false)
             const oneMinuteAgo = new Date()
             oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1)
 
@@ -164,7 +144,6 @@ describe('PublicSourcesItem', () => {
         })
 
         it('should use latestSync date when available instead of createdDatetime', () => {
-            useFlagMock.mockReturnValue(false)
             const twoHoursAgo = new Date()
             twoHoursAgo.setHours(twoHoursAgo.getHours() - 2)
             const oneMinuteAgo = new Date()
@@ -187,7 +166,6 @@ describe('PublicSourcesItem', () => {
         })
 
         it('should enable delete button when latestSync is more than 1 hour ago', () => {
-            useFlagMock.mockReturnValue(false)
             const threeHoursAgo = new Date()
             threeHoursAgo.setHours(threeHoursAgo.getHours() - 3)
             const twoHoursAgo = new Date()
