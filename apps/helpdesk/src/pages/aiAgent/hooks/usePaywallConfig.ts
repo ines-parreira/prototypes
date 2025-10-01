@@ -13,6 +13,7 @@ export type PaywallFeature = {
     contentSubtitle: string
     hideLearnMore?: boolean
     showRoiCalculator: boolean
+    logo: 'aiAgent' | 'shoppingAssistant'
 }
 
 export const usePaywallConfig = (
@@ -46,6 +47,7 @@ export const usePaywallConfig = (
                 contentSubtitle: 'AI Agent Skills',
                 hideLearnMore: false,
                 showRoiCalculator: true,
+                logo: 'aiAgent',
             }
         case AIAgentPaywallFeatures.SalesWaitlist:
             return {
@@ -78,6 +80,7 @@ export const usePaywallConfig = (
                 contentSubtitle: 'Sales features',
                 hideLearnMore: true,
                 showRoiCalculator: false,
+                logo: 'aiAgent',
             }
         case AIAgentPaywallFeatures.TrialSetup:
         default:
@@ -107,6 +110,36 @@ export const usePaywallConfig = (
                 contentSubtitle: 'AI Agent Skills',
                 hideLearnMore: true,
                 showRoiCalculator: false,
+                logo: 'aiAgent',
+            }
+        case AIAgentPaywallFeatures.ShoppingAssistantTrialSetup:
+            return {
+                title: '',
+                subtitle:
+                    'Introducing AI Agent with Shopping Assistant: Your new team member that drives sales and automates support in 1:1 conversations.',
+                descriptions: [
+                    'Leads customers to fast resolutions in seconds, not hours.',
+                    'Enhances team productivity, reducing workload & response times by automating up to 60% of your tickets.',
+                    'Offers tailored discounts and product recommendations to drive personalized shopping experiences.',
+                ],
+                toggleElements: [
+                    {
+                        title: 'Support',
+                        contentSrc: assetsUrl(
+                            '/video/ai-agent_paywall_support.mp4',
+                        ),
+                        type: 'video',
+                    },
+                    {
+                        title: 'Sales',
+                        contentSrc: SalesStrategy,
+                        type: 'image',
+                    },
+                ],
+                contentSubtitle: 'AI Agent Skills',
+                hideLearnMore: true,
+                showRoiCalculator: false,
+                logo: 'shoppingAssistant',
             }
         case AIAgentPaywallFeatures.Upgrade:
             return {
@@ -139,6 +172,7 @@ export const usePaywallConfig = (
                 contentSubtitle: 'Sales features',
                 hideLearnMore: true,
                 showRoiCalculator: false,
+                logo: 'aiAgent',
             }
     }
 }

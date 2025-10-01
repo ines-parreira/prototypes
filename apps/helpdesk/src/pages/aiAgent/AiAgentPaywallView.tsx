@@ -8,6 +8,8 @@ import { Button } from '@gorgias/axiom'
 
 import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.svg'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.svg'
+import ShoppingAssistantDarkMode from 'assets/img/ai-agent/shopping-assistant-dark-mode.svg'
+import ShoppingAssistantLightMode from 'assets/img/ai-agent/shopping-assistant-light-mode.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'
@@ -43,6 +45,7 @@ export const AiAgentPaywallView = ({
         contentSubtitle,
         hideLearnMore,
         showRoiCalculator,
+        logo,
     } = usePaywallConfig(aiAgentPaywallFeature)
 
     useEffectOnce(() => {
@@ -94,19 +97,34 @@ export const AiAgentPaywallView = ({
 
     const theme = useTheme()
 
+    const isDarkTheme = theme.resolvedName === 'dark'
+    const isShoppingAssistant = logo === 'shoppingAssistant'
+
+    const logoSrc = isShoppingAssistant
+        ? isDarkTheme
+            ? ShoppingAssistantDarkMode
+            : ShoppingAssistantLightMode
+        : isDarkTheme
+          ? AiAgentLogoWhite
+          : AiAgentLogo
+
+    const logoAlt = isShoppingAssistant
+        ? 'Shopping Assistant Logo'
+        : 'AI Agent Logo'
+
+    const logoClassName = isShoppingAssistant
+        ? css.logoShoppingAssistant
+        : css.logo
+
     return (
         <div className={css.pageContainer}>
             <div className={css.setupPaywall}>
                 <section className={css.infoContainer}>
                     <div>
                         <img
-                            src={
-                                theme.resolvedName === 'dark'
-                                    ? AiAgentLogoWhite
-                                    : AiAgentLogo
-                            }
-                            className={css.logo}
-                            alt="AI Agent Logo"
+                            src={logoSrc}
+                            className={logoClassName}
+                            alt={logoAlt}
                         />
                         <div className="heading-section-semibold">{title}</div>
                         <Separator className={css.separator} />

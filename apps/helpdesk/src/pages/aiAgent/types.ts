@@ -127,6 +127,7 @@ export enum AIAgentPaywallFeatures {
     Automate = 'Automate', // We should deprecate this and replace Automate paywalls with AiAgent paywalls (TrialSetup)
     SalesWaitlist = 'SalesWaitlist',
     TrialSetup = 'TrialSetup',
+    ShoppingAssistantTrialSetup = 'ShoppingAssistantTrialSetup',
     Upgrade = 'Upgrade',
 }
 

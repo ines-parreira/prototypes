@@ -233,31 +233,67 @@ describe('<AiAgentPaywallView />', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
-    describe('AI Agent logo display', () => {
-        it('displays logo in light theme', () => {
-            renderComponent({
-                aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
+    describe('Logo display', () => {
+        describe('AI Agent logo', () => {
+            it('displays AI Agent logo for TrialSetup', () => {
+                renderComponent({
+                    aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
+                })
+
+                expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Shopping Assistant Logo'),
+                ).not.toBeInTheDocument()
             })
 
-            const logo = screen.getByAltText('AI Agent Logo')
-            expect(logo).toBeInTheDocument()
-            expect(logo).toHaveAttribute('src', 'test-file-stub')
+            it('displays AI Agent logo for Automate feature', () => {
+                renderComponent({
+                    aiAgentPaywallFeature: AIAgentPaywallFeatures.Automate,
+                })
+
+                expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Shopping Assistant Logo'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('displays AI Agent logo for SalesWaitlist feature', () => {
+                renderComponent({
+                    aiAgentPaywallFeature: AIAgentPaywallFeatures.SalesWaitlist,
+                })
+
+                expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Shopping Assistant Logo'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('displays AI Agent logo for Upgrade feature', () => {
+                renderComponent({
+                    aiAgentPaywallFeature: AIAgentPaywallFeatures.Upgrade,
+                })
+
+                expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Shopping Assistant Logo'),
+                ).not.toBeInTheDocument()
+            })
         })
 
-        it('displays logo in dark theme', () => {
-            mockUseTheme.mockReturnValue({
-                name: THEME_NAME.Dark,
-                resolvedName: 'dark',
-                tokens: {} as any,
-            })
+        describe('Shopping Assistant logo', () => {
+            it('displays Shopping Assistant logo for ShoppingAssistantTrialSetup', () => {
+                renderComponent({
+                    aiAgentPaywallFeature:
+                        AIAgentPaywallFeatures.ShoppingAssistantTrialSetup,
+                })
 
-            renderComponent({
-                aiAgentPaywallFeature: AIAgentPaywallFeatures.TrialSetup,
+                expect(
+                    screen.getByAltText('Shopping Assistant Logo'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('AI Agent Logo'),
+                ).not.toBeInTheDocument()
             })
-
-            const logo = screen.getByAltText('AI Agent Logo')
-            expect(logo).toBeInTheDocument()
-            expect(logo).toHaveAttribute('src', 'test-file-stub')
         })
     })
 })

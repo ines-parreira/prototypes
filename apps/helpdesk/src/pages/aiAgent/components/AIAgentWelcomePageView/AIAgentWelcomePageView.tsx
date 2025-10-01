@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -64,6 +64,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     const onboardingState = useAiAgentOnboardingState(props.shopName)
 
     const trialAccess = useTrialAccess(props.shopName)
+    const isAiAgentTrial = trialAccess.trialType === TrialType.AiAgent
 
     const trialModalProps = useTrialModalProps({
         storeName: props.shopName,
@@ -308,10 +309,9 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     const canNotifyAdmin = trialAccess.canNotifyAdmin
     const canSeeTrial = trialAccess.canSeeTrialCTA
 
-    const learnMoreUrl =
-        trialAccess.trialType === TrialType.AiAgent
-            ? EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
-            : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
+    const learnMoreUrl = isAiAgentTrial
+        ? EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
+        : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
 
     const { ctas, modals, afterCtas } = useAiAgentCtas({
         canStartOnboarding,
@@ -341,10 +341,16 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isOnUpdateOnboardingWizard,
     })
 
+    const paywallFeature = useMemo(
+        () =>
+            isAiAgentTrial || isAfterTrialOrHasNewAutomatePlan
+                ? AIAgentPaywallFeatures.TrialSetup
+                : AIAgentPaywallFeatures.ShoppingAssistantTrialSetup,
+        [isAiAgentTrial, isAfterTrialOrHasNewAutomatePlan],
+    )
+
     return (
-        <AiAgentPaywallView
-            aiAgentPaywallFeature={AIAgentPaywallFeatures.TrialSetup}
-        >
+        <AiAgentPaywallView aiAgentPaywallFeature={paywallFeature}>
             {ctas}
             {afterCtas}
             {modals}

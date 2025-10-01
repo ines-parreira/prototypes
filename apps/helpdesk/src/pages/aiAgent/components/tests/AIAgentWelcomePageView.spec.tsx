@@ -598,4 +598,89 @@ describe('<AIAgentWelcomePageView />', () => {
             ).toBeInTheDocument()
         })
     })
+
+    describe('Paywall type selection based on trial conditions', () => {
+        it('should display AI Agent logo when in AI Agent trial', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                trialType: TrialType.AiAgent,
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('Shopping Assistant Logo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display AI Agent logo when has Automate plan generation 6+', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 6 },
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('Shopping Assistant Logo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display AI Agent logo when trial expired and not onboarded', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                hasCurrentStoreTrialExpired: true,
+                isOnboarded: false,
+                currentAutomatePlan: { generation: 5 },
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('Shopping Assistant Logo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display Shopping Assistant logo when neither AI Agent trial nor new Automate plan', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                trialType: TrialType.ShoppingAssistant,
+                currentAutomatePlan: { generation: 5 },
+                hasCurrentStoreTrialExpired: false,
+                isOnboarded: true,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByAltText('Shopping Assistant Logo'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('AI Agent Logo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display Shopping Assistant logo when onboarded with old Automate plan', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                trialType: TrialType.ShoppingAssistant,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: true,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByAltText('Shopping Assistant Logo'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('AI Agent Logo'),
+            ).not.toBeInTheDocument()
+        })
+    })
 })
