@@ -2,7 +2,7 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, Skeleton } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
@@ -142,9 +142,14 @@ export const ActionDrivenNavigationItems = ({
                                                 <div
                                                     className={css.navItemCount}
                                                 >
-                                                    {isLoadingOpportunities
-                                                        ? 0
-                                                        : opportunitiesCount}
+                                                    {isLoadingOpportunities ? (
+                                                        <Skeleton
+                                                            width={24}
+                                                            height={24}
+                                                        />
+                                                    ) : (
+                                                        opportunitiesCount
+                                                    )}
                                                 </div>
                                             </div>
                                         ) : (
@@ -175,9 +180,11 @@ export const ActionDrivenNavigationItems = ({
                                     </Badge>
                                 </div>
                                 <div className={css.navItemCount}>
-                                    {isLoadingOpportunities
-                                        ? 0
-                                        : opportunitiesCount}
+                                    {isLoadingOpportunities ? (
+                                        <Skeleton width={24} height={24} />
+                                    ) : (
+                                        opportunitiesCount
+                                    )}
                                 </div>
                             </div>
                         ) : (

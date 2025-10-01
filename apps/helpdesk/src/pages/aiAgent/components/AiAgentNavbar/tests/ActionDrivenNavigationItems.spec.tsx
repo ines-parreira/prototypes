@@ -13,6 +13,11 @@ import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
 
 const mockStore = configureStore([])
 
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Skeleton: () => <div data-testid="skeleton" />,
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({
         id: 1,
@@ -577,7 +582,7 @@ describe('ActionDrivenNavigationItems', () => {
             expect(screen.getByText('5')).toBeInTheDocument()
         })
 
-        it('shows 0 when opportunities are loading', () => {
+        it('shows skeleton when opportunities are loading', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 10,
                 isLoading: true,
@@ -604,7 +609,8 @@ describe('ActionDrivenNavigationItems', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('0')).toBeInTheDocument()
+            expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+            expect(screen.queryByText('10')).not.toBeInTheDocument()
         })
 
         it('shows opportunities count when not loading', () => {
