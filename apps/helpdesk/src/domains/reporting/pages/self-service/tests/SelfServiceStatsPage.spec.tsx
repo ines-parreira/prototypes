@@ -16,7 +16,9 @@ import {
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
-import SelfServiceStatsPage from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
+import SelfServiceStatsPageWithPaywall, {
+    SelfServiceStatsPage,
+} from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -35,6 +37,11 @@ import {
 import { IntegrationType } from 'models/integration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import {
+    type TrialAccess,
+    useTrialAccess,
+} from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -99,6 +106,9 @@ jest.mock('pages/settings/helpCenter/queries', () => ({
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
+    useTrialAccess: jest.fn(),
+}))
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
@@ -137,8 +147,37 @@ const mockUseGetSelfServiceConfigurations =
 const mockUseGetAIArticles = useGetAIArticles as jest.MockedFunction<
     typeof useGetAIArticles
 >
+const mockUseTrialAccess = useTrialAccess as jest.MockedFunction<
+    typeof useTrialAccess
+>
 
 const mockClient = mockQueryClient()
+
+const createMockTrialAccess = (
+    overrides: Partial<TrialAccess> = {},
+): TrialAccess => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasAnyTrialOptedIn: false,
+    hasCurrentStoreTrialActive: false,
+    hasAnyTrialActive: false,
+    isAdminUser: true,
+    isLoading: false,
+    isError: false,
+    trialType: TrialType.ShoppingAssistant,
+    currentAutomatePlan: undefined,
+    isInAiAgentTrial: false,
+    isOnboarded: false,
+    ...overrides,
+})
 
 const WFConfigData = [
     {
@@ -385,7 +424,7 @@ describe('<SelfServiceStatsPage />', () => {
         const { container } = render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -415,7 +454,7 @@ describe('<SelfServiceStatsPage />', () => {
         const { container } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -448,7 +487,7 @@ describe('<SelfServiceStatsPage />', () => {
         const { container, getByText } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -472,7 +511,7 @@ describe('<SelfServiceStatsPage />', () => {
         render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -488,7 +527,7 @@ describe('<SelfServiceStatsPage />', () => {
         render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -508,7 +547,7 @@ describe('<SelfServiceStatsPage />', () => {
         render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -527,7 +566,7 @@ describe('<SelfServiceStatsPage />', () => {
         render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -566,7 +605,7 @@ describe('<SelfServiceStatsPage />', () => {
         const { getAllByText } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
-                    <SelfServiceStatsPage />
+                    <SelfServiceStatsPageWithPaywall />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -583,5 +622,149 @@ describe('<SelfServiceStatsPage />', () => {
             downloadData.data,
             downloadData.contentType,
         )
+    })
+
+    describe('SelfServiceStatsPage with trial access logic', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+
+            useStatResourceMock.mockReturnValue([null, false, _noop])
+            mockedUseWorkflowConfigurations.mockReturnValue({
+                isLoading: false,
+                data: [],
+            } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+            mockUseGetAIArticles.mockReturnValue({
+                data: [],
+                isLoading: false,
+            } as any)
+            mockUseGetSelfServiceConfigurations.mockReturnValue({
+                data: mockSelfServiceConfigurations,
+                isLoading: false,
+            } as any)
+        })
+
+        it('should render loader when useTrialAccess is loading', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: false,
+                    isLoading: true,
+                }),
+            )
+
+            render(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByTestId('self-service-loader'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render SelfServiceStatsPageCore when hasAnyTrialActive is true', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: true,
+                    isLoading: false,
+                }),
+            )
+
+            useStatResourceMock.mockImplementation(({ resourceName }) => {
+                if (
+                    resourceName ===
+                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                ) {
+                    return [
+                        selfServiceArticleRecommendationPerformance,
+                        false,
+                        _noop,
+                    ]
+                } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
+                    return [selfServiceTopReportedIssues, false, _noop]
+                }
+                return [
+                    selfServiceProductsWithMostIssuesAndReturnRequests,
+                    false,
+                    _noop,
+                ]
+            })
+
+            const { container } = renderWithRouter(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByTestId('self-service-loader'),
+            ).not.toBeInTheDocument()
+            expect(container.firstChild).toBeTruthy()
+        })
+
+        it('should render SelfServiceStatsPageWithPaywall when hasAnyTrialActive is false', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: false,
+                    isLoading: false,
+                }),
+            )
+
+            render(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            // Should not show the loader
+            expect(
+                screen.queryByTestId('self-service-loader'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should handle undefined passed to useTrialAccess', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: false,
+                    isLoading: false,
+                }),
+            )
+
+            render(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(mockUseTrialAccess).toHaveBeenCalled()
+        })
+
+        it('should call useTrialAccess hook on component mount', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: false,
+                    isLoading: false,
+                }),
+            )
+
+            render(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(mockUseTrialAccess).toHaveBeenCalled()
+            expect(mockUseTrialAccess).toHaveBeenCalledTimes(1)
+        })
     })
 })

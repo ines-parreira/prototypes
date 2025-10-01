@@ -241,7 +241,10 @@ export const SalesPaywallMiddleware =
         if (
             !hasAutomate &&
             !isTrialAccessLoading &&
-            !(hasCurrentStoreTrialStarted && !hasCurrentStoreTrialExpired)
+            ((shopName === undefined && !hasAnyTrialActive) ||
+                (shopName !== undefined &&
+                    (!hasCurrentStoreTrialStarted ||
+                        hasCurrentStoreTrialExpired)))
         ) {
             return (
                 <PaywallWrapper>

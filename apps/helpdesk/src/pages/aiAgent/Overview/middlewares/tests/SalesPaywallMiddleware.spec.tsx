@@ -1892,6 +1892,70 @@ describe('SalesPaywallMiddleware', () => {
                     )
                 })
 
+                it('should show child component when shopName is undefined and hasAnyTrialActive is true', () => {
+                    setupUseAppSelectorMock({
+                        hasAutomate: false, // No automate plan
+                        currentAutomatePlan: { generation: 5 },
+                    })
+                    mockUseFlag.mockImplementation(
+                        (key) =>
+                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                            false,
+                    )
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            hasAnyTrialActive: true, // Has any trial active
+                            isLoading: false,
+                        }),
+                    )
+
+                    const { history } = renderMiddlewareWithCustomRoute(
+                        '/shops/ai-agent/sales',
+                        '/shops/ai-agent/sales',
+                    )
+
+                    expect(
+                        screen.getByTestId('mock-child-component'),
+                    ).toBeInTheDocument()
+                    expect(
+                        screen.queryByText(/Layout Mock/),
+                    ).not.toBeInTheDocument()
+                    expect(history.location.pathname).toBe(
+                        '/shops/ai-agent/sales',
+                    )
+                })
+
+                it('should show TrialPaywallMiddleware when shopName is undefined and hasAnyTrialActive is false', () => {
+                    setupUseAppSelectorMock({
+                        hasAutomate: false, // No automate plan
+                        currentAutomatePlan: { generation: 5 },
+                    })
+                    mockUseFlag.mockImplementation(
+                        (key) =>
+                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                            false,
+                    )
+                    mockUseTrialAccess.mockReturnValue(
+                        createMockTrialAccess({
+                            hasAnyTrialActive: false, // No active trials
+                            isLoading: false,
+                        }),
+                    )
+
+                    const { history } = renderMiddlewareWithCustomRoute(
+                        '/shops/ai-agent/sales',
+                        '/shops/ai-agent/sales',
+                    )
+
+                    expect(
+                        screen.queryByTestId('mock-child-component'),
+                    ).not.toBeInTheDocument()
+                    expect(screen.getByText(/Layout Mock/)).toBeInTheDocument()
+                    expect(history.location.pathname).toBe(
+                        '/shops/ai-agent/sales',
+                    )
+                })
+
                 it('should show paywall when no trials are active', () => {
                     setupUseAppSelectorMock({
                         hasAutomate: true,

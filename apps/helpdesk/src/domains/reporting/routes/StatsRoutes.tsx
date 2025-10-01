@@ -30,7 +30,7 @@ import {
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
 } from 'domains/reporting/pages/self-service/constants'
-import SelfServiceStatsPage from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
+import { SelfServiceStatsPage } from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
 import SupportPerformanceAgentsReport from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'

@@ -41,6 +41,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
@@ -57,7 +58,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { assetsUrl } from 'utils'
 
-export const SelfServiceStatsPage = (): JSX.Element => {
+const SelfServiceStatsPageCore = (): JSX.Element => {
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
 
@@ -494,7 +495,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     )
 }
 
-export default withFeaturePaywall(
+const SelfServiceStatsPageWithPaywall = withFeaturePaywall(
     AccountFeature.AutomationSelfServiceStatistics,
     undefined,
     {
@@ -519,6 +520,24 @@ export default withFeaturePaywall(
 )(
     withEcommerceIntegration(
         PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-        SelfServiceStatsPage,
+        SelfServiceStatsPageCore,
     ),
 )
+
+export const SelfServiceStatsPage = (): JSX.Element => {
+    const { hasAnyTrialActive, isLoading } = useTrialAccess()
+
+    if (isLoading) {
+        return <Loader data-testid="self-service-loader" />
+    }
+
+    // If user has active trial, show the page directly (bypass feature paywall)
+    if (hasAnyTrialActive) {
+        return <SelfServiceStatsPageCore />
+    }
+
+    // Otherwise, show the wrapped component with feature paywall
+    return <SelfServiceStatsPageWithPaywall />
+}
+
+export default SelfServiceStatsPageWithPaywall
