@@ -1,0 +1,72 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--layout-spacing-m);
+        align-self: stretch;
+    }
+
+    .header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+            margin-bottom: 0;
+        }
+    }
+
+    .progress {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+        padding: 0 8px 0 6px;
+        width: 111px;
+    }
+
+    .loadingIcon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .stepsAccordion {
+        width: 100%;
+        gap: 12px;
+    }
+
+    .stepItem {
+        border-radius: 12px;
+        border: 1px solid var(--border-neutral-default, #ebecef);
+        background: var(--elevation-neutral-mid, #fff);
+
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .stepHeader {
+        i {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .stepTitleContainer {
+        display: flex;
+        flex-direction: row;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-xxs);
+
+        > span {
+            color: var(--content-neutral-secondary);
+        }
+
+        > h4 {
+            margin-bottom: 0;
+        }
+    }
+}

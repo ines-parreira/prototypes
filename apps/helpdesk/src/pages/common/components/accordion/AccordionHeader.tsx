@@ -9,14 +9,19 @@ import css from './AccordionHeader.less'
 export type AccordionHeaderProps = {
     action?: ReactNode
     children?: ReactNode
+    className?: string
 }
 
-const AccordionHeader = ({ action, children }: AccordionHeaderProps) => {
+const AccordionHeader = ({
+    action,
+    children,
+    className,
+}: AccordionHeaderProps) => {
     const { isExpanded, isDisabled, toggleItem } = useAccordionItemContext()
 
     return (
         <div
-            className={css.container}
+            className={classnames(css.container, className)}
             onClick={!isExpanded ? toggleItem : undefined}
         >
             {action}

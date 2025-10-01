@@ -1,0 +1,29 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+        padding: 0 var(--layout-spacing-m) var(--layout-spacing-xxs);
+        padding-left: 28px;
+
+        > span {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .channelsToggles {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+
+        i {
+            visibility: hidden;
+        }
+
+        label {
+            gap: var(--layout-spacing-xs);
+        }
+    }
+}

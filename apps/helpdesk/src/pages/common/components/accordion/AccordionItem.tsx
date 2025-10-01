@@ -15,6 +15,7 @@ export type AccordionItemProps = {
     isDisabled?: boolean
     children?: ReactNode
     highlightOnExpand?: boolean
+    className?: string
 }
 
 const AccordionItem = ({
@@ -22,6 +23,7 @@ const AccordionItem = ({
     isDisabled = false,
     highlightOnExpand = true,
     children,
+    className,
 }: AccordionItemProps) => {
     const randomId = useId()
     const id = idProp || randomId
@@ -56,7 +58,7 @@ const AccordionItem = ({
             <div
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                className={classnames(css.container, {
+                className={classnames(css.container, className, {
                     [css.isExpanded]:
                         highlightOnExpand && accordionItemContext.isExpanded,
                     [css.isDisabled]: accordionItemContext.isDisabled,

@@ -13,6 +13,7 @@ type Props = {
     toggleRef?: Ref<HTMLButtonElement> | null | undefined
     onToggleClick: () => void
     toggleCanduId?: string
+    customIcon?: string
 }
 
 const DropdownButton = (
@@ -25,6 +26,7 @@ const DropdownButton = (
         toggleId,
         toggleRef,
         toggleCanduId,
+        customIcon,
         ...others
     }: Props & ComponentProps<typeof Button>,
     ref: ForwardedRef<HTMLDivElement>,
@@ -51,7 +53,7 @@ const DropdownButton = (
                     isDisabled={others.isDisabled}
                     data-candu-id={toggleCanduId}
                 >
-                    arrow_drop_down
+                    {customIcon || 'arrow_drop_down'}
                 </IconButton>
             </ButtonGroup>
         </div>

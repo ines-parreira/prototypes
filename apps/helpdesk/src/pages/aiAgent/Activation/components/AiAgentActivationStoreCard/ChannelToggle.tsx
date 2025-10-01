@@ -23,6 +23,7 @@ type ChannelToggleProps = {
         visible: boolean
         content: React.ReactNode
     }
+    color?: string
 }
 export const ChannelToggle = ({
     label,
@@ -31,6 +32,7 @@ export const ChannelToggle = ({
     onChange,
     warnings,
     tooltip,
+    color,
 }: ChannelToggleProps) => {
     const id = useId()
     const warningId = `channel_${id}_warning_icon`
@@ -47,6 +49,7 @@ export const ChannelToggle = ({
                         checked={checked}
                         onChange={onChange}
                         stopPropagation
+                        color={color}
                     />
                     {label}
                 </Label>
