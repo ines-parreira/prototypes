@@ -1,6 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
@@ -15,8 +14,7 @@ import css from './AutomateNavbar.less'
 
 const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const hasAiAgentPreview =
-        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
+    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )

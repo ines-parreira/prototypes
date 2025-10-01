@@ -1,14 +1,11 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import { Theme } from 'core/theme/types'
 import { account } from 'fixtures/account'
@@ -35,11 +32,16 @@ const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration: StoreConfiguration =
     getStoreConfigurationFixture()
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useTheme: jest.fn(),
 }))
 const useThemeMock = assumeMock(useTheme)
+const mockUseFlag = assumeMock(useFlag)
 
 const defaultState = {
     currentAccount: fromJS(account),
@@ -83,9 +85,7 @@ describe('AutomateNavbarSectionBlock', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        mockFlags({
-            [FeatureFlagKey.AIAgentPreviewModeAllowed]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         useStoreConfigurationMock.mockReturnValue({
             storeConfiguration: defaultStoreConfiguration,

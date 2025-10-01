@@ -3,8 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
+import { useFlag } from 'core/flags'
 import {
     useCreateTestSessionMutation,
     useGetTestSessionLogs,
@@ -87,11 +87,10 @@ jest.mock('models/aiAgent/resources/ai-journey', () => ({
     createContextAndTriggerAIJourney: jest.fn(),
 }))
 
-mockFlags({
-    [FeatureFlagKey.AiAgentAIGeneratedGuidances]: true,
-})
+jest.mock('core/flags')
 
 const mockUseHelpCenterApi = jest.mocked(useHelpCenterApi)
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 const getAIGeneratedGuidances = jest.spyOn(
     guidanceResources,
@@ -134,6 +133,16 @@ describe('queries', () => {
         queryClient.clear()
         useQuerySpy.mockClear()
         useMutationSpy.mockClear()
+
+        // Mock feature flags
+        mockUseFlag.mockImplementation((flag: string) => {
+            switch (flag) {
+                case FeatureFlagKey.AiAgentAIGeneratedGuidances:
+                    return true
+                default:
+                    return false
+            }
+        })
     })
 
     describe('useGetStoreConfigurationPure', () => {

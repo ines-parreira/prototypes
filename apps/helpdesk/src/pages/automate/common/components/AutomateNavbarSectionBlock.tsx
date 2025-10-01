@@ -1,10 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
+import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
@@ -57,9 +57,8 @@ const AutomateNavbarSectionBlock = ({
 
     const { routes: aiAgentRoutes } = useAiAgentNavigation({ shopName })
 
-    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
-    const hasAiAgentPreview =
-        useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
+    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
+    const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,

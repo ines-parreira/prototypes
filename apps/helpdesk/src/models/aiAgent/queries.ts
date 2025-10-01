@@ -6,8 +6,8 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -338,8 +338,9 @@ export const useGetAIGeneratedGuidances = <
 ) => {
     const { client } = useHelpCenterApi()
 
-    const isAiAgentAIGeneratedGuidancesEnabled =
-        useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
+    const isAiAgentAIGeneratedGuidancesEnabled = useFlag(
+        FeatureFlagKey.AiAgentAIGeneratedGuidances,
+    )
 
     return useQuery({
         queryKey: aiGeneratedGuidanceKeys.listWithStore(

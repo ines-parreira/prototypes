@@ -1,10 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
@@ -23,9 +23,10 @@ import css from './ConnectedChannelsChatView.less'
 import cssEmail from './ConnectedChannelsEmailView.less'
 
 export const ConnectedChannelsEmailView = () => {
-    const isAiAgentOnboardingWizardEnabled =
-        useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
-    const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
+    const isAiAgentOnboardingWizardEnabled = useFlag(
+        FeatureFlagKey.AiAgentOnboardingWizard,
+    )
+    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const { shopName } = useParams<{
         shopType: string

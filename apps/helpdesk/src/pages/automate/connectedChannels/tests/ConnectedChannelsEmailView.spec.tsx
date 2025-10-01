@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -37,8 +34,12 @@ jest.mock('react-router-dom', () => ({
     })),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
+const mockUseFlag = jest.mocked(useFlag)
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
@@ -80,9 +81,7 @@ describe('ConnectedChannelsEmailView', () => {
             handleOnTriggerTrialRequestNotification: jest.fn(),
             isAiAgentOnboardingNotificationEnabled: true,
         })
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizard]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
     })
     it('should show loading spinner when fetching data', () => {
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
@@ -330,9 +329,7 @@ describe('ConnectedChannelsEmailView', () => {
             upsertStoreConfiguration: handleUpsertStoreConfiguration,
             error: null,
         })
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizard]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         renderWithQueryClientProvider(
             <Router history={history}>
@@ -366,9 +363,7 @@ describe('ConnectedChannelsEmailView', () => {
             updateSettingsAfterAiAgentEnabled,
         })
 
-        mockFlags({
-            [FeatureFlagKey.AiAgentOnboardingWizard]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         renderWithQueryClientProvider(
             <Router history={history}>

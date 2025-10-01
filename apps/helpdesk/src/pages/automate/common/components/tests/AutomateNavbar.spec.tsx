@@ -1,4 +1,3 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
@@ -25,12 +24,10 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import AutomateNavbar from '../AutomateNavbar'
 
-jest.mock('utils/launchDarkly')
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('launchdarkly-react-client-sdk')
 const allFlagsMock = assumeMock(useFlags)
 allFlagsMock.mockReturnValue({})
 
