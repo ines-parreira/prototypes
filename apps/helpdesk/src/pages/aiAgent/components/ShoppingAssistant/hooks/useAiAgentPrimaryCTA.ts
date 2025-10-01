@@ -101,6 +101,13 @@ export const useAiAgentPrimaryCTA = ({
         disabled: true,
     })
 
+    if (trialAccess.hasCurrentStoreTrialExpired) {
+        return {
+            variant: PromoCardVariant.Hidden,
+            button: disabledButton(''),
+        }
+    }
+
     // ===== IN-TRIAL =====
     if (isInTrial) {
         const shouldShowUpgrade = isOptedOut || automationAboveThreshold

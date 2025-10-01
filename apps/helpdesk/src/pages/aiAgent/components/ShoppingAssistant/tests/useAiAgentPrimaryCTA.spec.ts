@@ -326,6 +326,39 @@ describe('useAiAgentPrimaryCTA', () => {
         expect(mockOpenTrialRequestModal).toHaveBeenCalled()
     })
 
+    it('returns Hidden variant for expired trial - promo card should not be shown regardless of admin user or can notify admin', () => {
+        const props = {
+            trialAccess: createMockTrialAccess({
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: true,
+                isAdminUser: true,
+                canBookDemo: true,
+            }),
+            trialFlow: createMockTrialFlow(),
+            isDisabled: false,
+            trialMetrics: createMockTrialMetrics({
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
+                isLoading: false,
+            }),
+            routeShopName: undefined,
+            firstShopifyIntegration: shopifyIntegration,
+        }
+
+        const { result } = renderHook(() => useAiAgentPrimaryCTA(props))
+
+        expect(result.current).toEqual({
+            variant: PromoCardVariant.Hidden,
+            button: {
+                label: '',
+                disabled: true,
+            },
+        })
+    })
+
     it('returns Hidden variant with empty button as default', () => {
         const props = {
             trialAccess: createMockTrialAccess({

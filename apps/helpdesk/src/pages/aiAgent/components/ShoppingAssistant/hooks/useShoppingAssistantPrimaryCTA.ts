@@ -135,6 +135,12 @@ export const useShoppingAssistantPrimaryCTA = ({
         disabled: false,
     })
 
+    if (trialAccess.hasCurrentStoreTrialExpired) {
+        return {
+            variant: PromoCardVariant.Hidden,
+            button: learnMoreButton(),
+        }
+    }
     // ===== IN-TRIAL =====
     if (isInTrial) {
         const shouldShowUpgrade = isOptedOut || gmvAboveThreshold

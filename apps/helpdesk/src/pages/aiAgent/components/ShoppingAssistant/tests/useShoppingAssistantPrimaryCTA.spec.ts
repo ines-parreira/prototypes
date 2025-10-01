@@ -387,11 +387,12 @@ describe('useShoppingAssistantPrimaryCTA', () => {
         })
     })
 
-    it('returns Hidden variant for expired trial - promo card should not be shown', () => {
+    it('returns Hidden variant for expired trial - promo card should not be shown regardless of admin user or can book demo', () => {
         const props = {
             trialAccess: createMockTrialAccess({
                 hasCurrentStoreTrialStarted: true,
                 hasCurrentStoreTrialExpired: true,
+                canBookDemo: true,
                 isAdminUser: true,
             }),
             trialFlow: createMockTrialFlow(),
