@@ -27,12 +27,14 @@ type Props = {
     description?: string
     gmv: TimeSeriesDataItem[][] | undefined
     isGmvLoading: boolean
+    isDisabled?: boolean
 }
 
 export const TriggerOnSearchSettings = ({
     description = 'Send a personalized message right after a shopper searches to guide them to the right product and drive more conversions.',
     gmv,
     isGmvLoading,
+    isDisabled,
 }: Props) => {
     const { watch, setValue } = useFormContext()
     const isSalesHelpOnSearchEnabled = watch('isSalesHelpOnSearchEnabled')
@@ -76,6 +78,7 @@ export const TriggerOnSearchSettings = ({
                         <EngagementSettingsCardToggle
                             isChecked={isSalesHelpOnSearchEnabled}
                             onChange={handleToggle}
+                            isDisabled={isDisabled}
                         />
                     </div>
 

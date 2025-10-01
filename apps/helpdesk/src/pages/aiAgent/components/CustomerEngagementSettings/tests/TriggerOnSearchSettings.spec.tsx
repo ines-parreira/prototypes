@@ -97,4 +97,19 @@ describe('TriggerOnSearchSettings', () => {
         fireEvent.click(toggle)
         expect(toggle).toBeChecked()
     })
+
+    it('should disable the toggle', () => {
+        render(
+            <Wrapper>
+                <TriggerOnSearchSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    isDisabled
+                />
+            </Wrapper>,
+        )
+
+        const toggle = screen.getByRole('switch')
+        expect(toggle).not.toBeAriaDisabled()
+    })
 })

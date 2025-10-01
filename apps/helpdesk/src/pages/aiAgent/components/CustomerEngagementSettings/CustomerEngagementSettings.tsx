@@ -200,6 +200,13 @@ export const CustomerEngagementSettings = () => {
         storeIntegration?.id,
     )
 
+    const isTriggerOnSearchDisabled = useFlag(
+        FeatureFlagKey.TriggerOnSearchKillSwitch,
+    )
+
+    const initialIsSalesHelpOnSearchEnabled =
+        storeConfiguration?.isSalesHelpOnSearchEnabled ?? false
+
     return (
         <>
             <UnsavedChangesPrompt
@@ -236,10 +243,14 @@ export const CustomerEngagementSettings = () => {
 
                         <div data-candu-id="ai-sales-agent-customer-engagement-settings-educational-content" />
 
-                        <TriggerOnSearchSettings
-                            gmv={gmv}
-                            isGmvLoading={isGmvLoading}
-                        />
+                        {(!isTriggerOnSearchDisabled ||
+                            initialIsSalesHelpOnSearchEnabled) && (
+                            <TriggerOnSearchSettings
+                                gmv={gmv}
+                                isGmvLoading={isGmvLoading}
+                                isDisabled={isTriggerOnSearchDisabled}
+                            />
+                        )}
                         <ConversationStartersSettings
                             isEnabled={isAiShoppingAssistantEnabled}
                             gmv={gmv}

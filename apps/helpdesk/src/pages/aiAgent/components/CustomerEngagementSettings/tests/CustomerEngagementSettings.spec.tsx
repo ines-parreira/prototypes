@@ -175,6 +175,13 @@ const getFloatingInputToggle = (container: HTMLElement) => {
     return within(label.closest('.cardContentWrapper')!).getByRole('switch')
 }
 
+const getTriggerOnSearchToggle = (container: HTMLElement) => {
+    const label = within(container).getByText(
+        'Send a personalized message right after a shopper searches to guide them to the right product and drive more conversions.',
+    )
+    return within(label.closest('.cardContentWrapper')!).getByRole('switch')
+}
+
 describe('CustomerEngagementSettings', () => {
     beforeEach(() => {
         store.clearActions()
@@ -852,6 +859,70 @@ describe('CustomerEngagementSettings', () => {
 
             // Save button should still be disabled
             expect(getSaveButton(result)).toBeAriaDisabled()
+        })
+    })
+
+    describe('Trigger on search', () => {
+        it('should render the settings if kill switch is disabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.TriggerOnSearchKillSwitch) {
+                    return false
+                }
+
+                return true
+            })
+
+            const result = renderComponent()
+
+            const toggle = getTriggerOnSearchToggle(result.container)
+
+            expect(toggle).toBeInTheDocument()
+        })
+
+        it('should render the settings if kill switch is enabled but feature is enabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.TriggerOnSearchKillSwitch) {
+                    return true
+                }
+
+                return true
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    monitoredChatIntegrations: [1],
+                    floatingChatInputConfiguration: undefined,
+                    isSalesHelpOnSearchEnabled: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            const result = renderComponent()
+
+            const toggle = getTriggerOnSearchToggle(result.container)
+
+            expect(toggle).toBeInTheDocument()
+            expect(toggle).toHaveClass('disabled')
+        })
+
+        it('should not render the settings if kill switch is enabled and feature is disabled', () => {
+            mockUseFlag.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.TriggerOnSearchKillSwitch) {
+                    return true
+                }
+
+                return true
+            })
+
+            const result = renderComponent()
+
+            expect(
+                within(result.container).queryByText('Trigger on search'),
+            ).not.toBeInTheDocument()
         })
     })
 })
