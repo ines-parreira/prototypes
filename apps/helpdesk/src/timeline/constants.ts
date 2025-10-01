@@ -55,37 +55,6 @@ export const DEFAULT_SORT_OPTION: SortOption = {
     label: SORTABLE_KEY_TO_LABEL['last_message_datetime'],
 }
 
-// We need to keep DEFAULT_SORT_OPTION object’s reference for the it to be
-// preselected in the select field
-export const SORT_OPTIONS: SortOption[] = [
-    {
-        key: 'last_message_datetime',
-        order: 'asc',
-        label: SORTABLE_KEY_TO_LABEL['last_message_datetime'],
-    },
-    DEFAULT_SORT_OPTION,
-    {
-        key: 'last_received_message_datetime',
-        order: 'asc',
-        label: SORTABLE_KEY_TO_LABEL['last_received_message_datetime'],
-    },
-    {
-        key: 'last_received_message_datetime',
-        order: 'desc',
-        label: SORTABLE_KEY_TO_LABEL['last_received_message_datetime'],
-    },
-    {
-        key: 'created_datetime',
-        order: 'asc',
-        label: SORTABLE_KEY_TO_LABEL['created_datetime'],
-    },
-    {
-        key: 'created_datetime',
-        order: 'desc',
-        label: SORTABLE_KEY_TO_LABEL['created_datetime'],
-    },
-]
-
 export const SORT_OPTIONS_WITH_ORDERS: SortOption[] = [
     {
         key: 'last_message_datetime',

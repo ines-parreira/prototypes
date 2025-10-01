@@ -1,7 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { isEmpty } from 'lodash'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Customer } from 'models/customer/types'
 import { getActiveCustomer } from 'state/customers/selectors'
@@ -22,14 +20,9 @@ export function useTimelineData(shopperId?: number) {
 
     const { tickets, isError, isLoading } = useTicketList(shopperId)
 
-    const enableOrdersInTimeline = useFlag(
-        FeatureFlagKey.ShopifyCustomerTimeline,
-        false,
-    )
-
     let items: TimelineItem[] = tickets.map((v) => timelineItem.fromTicket(v))
 
-    if (enableOrdersInTimeline && activeCustomer) {
+    if (activeCustomer) {
         const orders = extractOrders(customer)
         items = [...items, ...orders.map((v) => timelineItem.fromOrder(v))]
     }
@@ -38,6 +31,5 @@ export function useTimelineData(shopperId?: number) {
         items,
         isLoading,
         isError,
-        enableOrdersInTimeline,
     }
 }

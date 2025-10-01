@@ -2,7 +2,6 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useListTickets } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { Customer } from 'models/customer/types'
 import * as timelineItem from 'timeline/helpers/timelineItem'
@@ -22,7 +21,6 @@ jest.mock('core/flags', () => ({
 
 const useListTicketsMock = assumeMock(useListTickets)
 const useAppSelectorMock = assumeMock(useAppSelector)
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 describe('useTimelineData', () => {
     const ticketList = [
@@ -102,8 +100,6 @@ describe('useTimelineData', () => {
             isLoading: true as boolean,
             isError: false,
         } as ReturnType<typeof useListTickets>)
-
-        mockUseFlag.mockReturnValue(false)
     })
 
     it('should call useListTicket with correct params', () => {
@@ -155,7 +151,6 @@ describe('useTimelineData', () => {
     })
 
     it('should return mixed ticket and order list', () => {
-        mockUseFlag.mockReturnValue(true)
         useAppSelectorMock
             .mockReturnValueOnce({
                 toJS: () => ({
@@ -241,8 +236,6 @@ describe('useTimelineData', () => {
                 })
                 .mockReturnValueOnce(mockActiveCustomer)
 
-            mockUseFlag.mockReturnValue(true)
-
             const { result } = renderHook(() => useTimelineData(123))
 
             const items = result.current.items
@@ -265,8 +258,6 @@ describe('useTimelineData', () => {
                 })
                 .mockReturnValueOnce(mockActiveCustomer)
 
-            mockUseFlag.mockReturnValue(true)
-
             const { result } = renderHook(() => useTimelineData(123))
 
             const items = result.current.items
@@ -287,8 +278,6 @@ describe('useTimelineData', () => {
                     toJS: () => null, // Null ticket customer
                 })
                 .mockReturnValueOnce(mockActiveCustomer)
-
-            mockUseFlag.mockReturnValue(true)
 
             const { result } = renderHook(() => useTimelineData(123))
 
@@ -311,32 +300,12 @@ describe('useTimelineData', () => {
                 })
                 .mockReturnValueOnce(null) // No active customer
 
-            mockUseFlag.mockReturnValue(true)
-
             const { result } = renderHook(() => useTimelineData(123))
 
             const items = result.current.items
             const orderItems = items.filter(timelineItem.isOrder)
 
             // Should not extract orders because activeCustomer check fails
-            expect(orderItems).toHaveLength(0)
-        })
-
-        it('should not extract orders when orders feature flag is disabled', () => {
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => mockTicketCustomer,
-                })
-                .mockReturnValueOnce(mockActiveCustomer)
-
-            mockUseFlag.mockReturnValue(false) // Feature flag disabled
-
-            const { result } = renderHook(() => useTimelineData(123))
-
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
-
-            // Should not extract orders because feature flag is disabled
             expect(orderItems).toHaveLength(0)
         })
 
@@ -347,8 +316,6 @@ describe('useTimelineData', () => {
                     toJS: () => mockTicketCustomer,
                 })
                 .mockReturnValueOnce(mockActiveCustomer)
-
-            mockUseFlag.mockReturnValue(true)
 
             const { result } = renderHook(() => useTimelineData(123))
 
@@ -370,8 +337,6 @@ describe('useTimelineData', () => {
                     toJS: () => ({}), // Empty ticket customer
                 })
                 .mockReturnValueOnce({}) // Empty active customer (Record<string, never>)
-
-            mockUseFlag.mockReturnValue(true)
 
             const { result } = renderHook(() => useTimelineData(123))
 

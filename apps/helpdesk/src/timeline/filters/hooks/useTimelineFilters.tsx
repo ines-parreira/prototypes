@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
-import { useFlag } from '../../../core/flags'
-import { SORT_OPTIONS, SORT_OPTIONS_WITH_ORDERS } from '../../constants'
+import { SORT_OPTIONS_WITH_ORDERS } from '../../constants'
 import {
     FilterKey,
     InteractionFilterType,
@@ -28,11 +26,6 @@ type UseTimelineFilters = {
 const INTERACTION_TYPE_FILTER_KEY = 'ct::interaction-type-filter'
 
 export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
-    const enableOrdersInTimeline = useFlag(
-        FeatureFlagKey.ShopifyCustomerTimeline,
-        false,
-    )
-
     const [memoizedFilters, setMemoizedFilters] = useLocalStorage<
         Record<InteractionFilterType, boolean>
     >(INTERACTION_TYPE_FILTER_KEY, { ticket: true, order: true })
@@ -85,10 +78,6 @@ export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
 
     const { setSortOption, sortedTickets, sortOption } = useSort(mappedTickets)
 
-    const sortOptions = enableOrdersInTimeline
-        ? SORT_OPTIONS_WITH_ORDERS
-        : SORT_OPTIONS
-
     return {
         activeFilters,
         memoizedFilters,
@@ -100,7 +89,7 @@ export const useTimelineFilters = ({ items }: UseTimelineFilters) => {
         setRangeFilter,
         setSortOption,
         sortedTickets,
-        sortOptions,
+        sortOptions: SORT_OPTIONS_WITH_ORDERS,
         sortOption,
     }
 }

@@ -1,8 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
+import { Dispatch, SetStateAction } from 'react'
 
 import { FilterKey, InteractionFilterType, Range } from '../types'
 import { ActiveFilters } from './hooks/useTimelineFilters'
@@ -33,26 +29,18 @@ const Filters = ({
     isTypeFilterDisabled,
     rangeFilter,
 }: FilterProps) => {
-    const enableOrdersInTimeline = useFlag(
-        FeatureFlagKey.ShopifyCustomerTimeline,
-        false,
-    )
-
     return (
         <div className={css.filtersBar}>
             <RangeFilter range={rangeFilter} setRangeFilter={setRangeFilter} />
-
-            {enableOrdersInTimeline && (
-                <InteractionType
-                    selectedType={selectedTypeKeys}
-                    toggleSelectedType={(value) => {
-                        setMemoizedFilters((prev) => ({
-                            ...prev,
-                            [value]: !prev[value],
-                        }))
-                    }}
-                />
-            )}
+            <InteractionType
+                selectedType={selectedTypeKeys}
+                toggleSelectedType={(value) => {
+                    setMemoizedFilters((prev) => ({
+                        ...prev,
+                        [value]: !prev[value],
+                    }))
+                }}
+            />
 
             <TicketStatusFilter
                 selectedStatus={selectedStatusKeys}

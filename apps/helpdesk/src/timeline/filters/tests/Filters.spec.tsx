@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
@@ -54,15 +53,15 @@ describe('Filters', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useFlagMock.mockReturnValue(true) // Enable ShopifyCustomerTimeline by default
     })
 
     describe('Component rendering', () => {
-        it('should render RangeFilter and TicketStatusFilter by default', () => {
+        it('should render RangeFilter, TicketStatusFilter and InteractionType by default', () => {
             render(<Filters {...defaultProps} />)
 
             expect(screen.getByTestId('RangeFilter')).toBeInTheDocument()
             expect(screen.getByTestId('TicketStatusFilter')).toBeInTheDocument()
+            expect(screen.getByTestId('InteractionType')).toBeInTheDocument()
             expect(RangeFilterMock).toHaveBeenCalledWith(
                 {
                     range: defaultProps.rangeFilter,
@@ -78,14 +77,6 @@ describe('Filters', () => {
                 },
                 {},
             )
-        })
-
-        it('should render InteractionType when ShopifyCustomerTimeline flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
-
-            render(<Filters {...defaultProps} />)
-
-            expect(screen.getByTestId('InteractionType')).toBeInTheDocument()
             expect(InteractionTypeMock).toHaveBeenCalledWith(
                 {
                     selectedType: defaultProps.selectedTypeKeys,
@@ -94,24 +85,9 @@ describe('Filters', () => {
                 {},
             )
         })
-
-        it('should not render InteractionType when ShopifyCustomerTimeline flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
-
-            render(<Filters {...defaultProps} />)
-
-            expect(
-                screen.queryByTestId('InteractionType'),
-            ).not.toBeInTheDocument()
-            expect(InteractionTypeMock).not.toHaveBeenCalled()
-        })
     })
 
     describe('InteractionType toggle behavior', () => {
-        beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
-        })
-
         it('should toggle interaction type using setMemoizedFilters', () => {
             render(<Filters {...defaultProps} />)
 
@@ -306,31 +282,6 @@ describe('Filters', () => {
                 },
                 {},
             )
-        })
-    })
-
-    describe('Feature flag integration', () => {
-        it('should check for ShopifyCustomerTimeline feature flag', () => {
-            render(<Filters {...defaultProps} />)
-
-            expect(useFlagMock).toHaveBeenCalledWith(
-                FeatureFlagKey.ShopifyCustomerTimeline,
-                false,
-            )
-        })
-
-        it('should conditionally render InteractionType based on feature flag', () => {
-            // Test with flag disabled
-            useFlagMock.mockReturnValue(false)
-            const { rerender } = render(<Filters {...defaultProps} />)
-
-            expect(InteractionTypeMock).not.toHaveBeenCalled()
-
-            // Test with flag enabled
-            useFlagMock.mockReturnValue(true)
-            rerender(<Filters {...defaultProps} />)
-
-            expect(InteractionTypeMock).toHaveBeenCalled()
         })
     })
 })
