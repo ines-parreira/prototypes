@@ -144,12 +144,12 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
     return (
         <>
             <Container fluid className={settingsCss.pageContainer}>
-                <Col
-                    lg={6}
-                    xl={7}
-                    className={classnames('pl-0', settingsCss.mb24)}
-                >
-                    {showImportMigrationBanner && !isBaseIntegration && (
+                {showImportMigrationBanner && !isBaseIntegration && (
+                    <Col
+                        lg={6}
+                        xl={7}
+                        className={classnames('pl-0', settingsCss.mb24)}
+                    >
                         <Banner
                             type="info"
                             fillStyle="fill"
@@ -172,8 +172,8 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
                             Gorgias. This helps you keep your past email content
                             and metadata in one place.
                         </Banner>
-                    )}
-                </Col>
+                    </Col>
+                )}
                 <h2 className={settingsCss.headingSection}>General</h2>
                 <Col lg={6} xl={7} className="pl-0">
                     <div className="mt-4">
