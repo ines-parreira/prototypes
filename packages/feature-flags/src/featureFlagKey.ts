@@ -165,6 +165,7 @@ export enum FeatureFlagKey {
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyInventoryItemScopeBanner = 'shopify-inventory-item-scope-banner',
     ShopifyOrderNotes = 'shopify-order-notes',
+    ShopifyStorefrontPermissions = 'linear-aiexp-7340-shopify-storefront-permissions',
     ShoppingAssistantEnforceDeactivation = 'ai-shopping-assistant-enforce-deactivation',
     /** @deprecated Full evaluated to `true`
      https://app.launchdarkly.com/projects/default/flags/ai-shopping-assistant-enforce-deactivation/targeting?env=test&env=production */

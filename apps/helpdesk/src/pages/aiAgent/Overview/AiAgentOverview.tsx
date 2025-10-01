@@ -1,13 +1,16 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
+import { AlertBannerTypes } from 'AlertBanners'
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
@@ -21,6 +24,12 @@ import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModa
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import {
+    getShopifyIntegrationByShopName,
+    makeGetRedirectUri,
+} from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStyle } from 'state/notifications/types'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
 import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
@@ -31,7 +40,12 @@ export const AiAgentOverview = () => {
         shopType: string
     }>()
 
+    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const getRedirectUri = useAppSelector(makeGetRedirectUri)
+    const shopifyIntegration = useAppSelector(
+        getShopifyIntegrationByShopName(shopName || ''),
+    )
 
     const hasResourceSection = useFlag(
         FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection,
@@ -39,6 +53,10 @@ export const AiAgentOverview = () => {
 
     const isShoppingAssistantTrialImprovement = useFlag(
         FeatureFlagKey.ShoppingAssistantTrialImprovement,
+    )
+
+    const isShopifyStorefrontPermissionsEnabled = useFlag(
+        FeatureFlagKey.ShopifyStorefrontPermissions,
     )
 
     const {
@@ -107,6 +125,64 @@ export const AiAgentOverview = () => {
     const onCloseModal = () => handleModalAction('close')
 
     const trialModalProps = useTrialModalProps({ onConfirmTrial })
+
+    const redirectUriTemplate = getRedirectUri(IntegrationType.Shopify)
+
+    const REQUIRED_INVENTORY_SCOPES = [
+        'unauthenticated_read_product_listings',
+        'unauthenticated_read_product_inventory',
+    ]
+
+    const currentScopes = shopifyIntegration?.getIn(
+        ['meta', 'oauth', 'scope'],
+        '',
+    )
+    const isMissingInventoryScopes = REQUIRED_INVENTORY_SCOPES.some(
+        (scope) => !currentScopes?.includes(scope),
+    )
+
+    const needScopeUpdate =
+        Boolean(
+            shopifyIntegration?.getIn(['meta', 'need_scope_update'], false),
+        ) && isMissingInventoryScopes
+
+    const retriggerOAuthFlow = useCallback(() => {
+        if (redirectUriTemplate && shopName) {
+            window.location.href = redirectUriTemplate.replace(
+                '{shop_name}',
+                shopName,
+            )
+        }
+    }, [shopName, redirectUriTemplate])
+
+    useEffect(() => {
+        if (
+            isShopifyStorefrontPermissionsEnabled &&
+            needScopeUpdate &&
+            shopName
+        ) {
+            dispatch(
+                notify({
+                    id: `ai-agent-inventory-scope-${shopName}`,
+                    style: NotificationStyle.Banner,
+                    type: AlertBannerTypes.Warning,
+                    message:
+                        'Unlock smarter recommendations by giving AI Agent access to your Shopify inventory, ensuring it suggests in-stock items based on shopper location.',
+                    CTA: {
+                        type: 'action',
+                        text: 'Allow Inventory Access',
+                        onClick: retriggerOAuthFlow,
+                    },
+                }),
+            )
+        }
+    }, [
+        dispatch,
+        isShopifyStorefrontPermissionsEnabled,
+        needScopeUpdate,
+        shopName,
+        retriggerOAuthFlow,
+    ])
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>
