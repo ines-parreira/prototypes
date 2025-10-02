@@ -22,6 +22,7 @@ import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
@@ -64,6 +65,8 @@ jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 
 jest.mock('pages/aiAgent/Overview/hooks/useHasNoOnboardedStores')
 const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
+
+jest.mock('pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled')
 
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
@@ -143,6 +146,12 @@ describe('AiAgentOverview', () => {
         )
 
         mockUseHasNoOnboardedStores.mockReturnValue(false)
+
+        // Default mock for useAiAgentOverviewModeEnabled
+        jest.mocked(useAiAgentOverviewModeEnabled).mockReturnValue({
+            isAiAgentLiveModeEnabled: false,
+            isLoading: false,
+        })
 
         // Mock billing queries
         mockUseBillingState.mockReturnValue({

@@ -1,0 +1,221 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { account } from 'fixtures/account'
+import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
+import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
+import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
+import { RootState } from 'state/types'
+import { mockStore } from 'utils/testing'
+
+import { useAiAgentOverviewModeEnabled } from '../useAiAgentOverviewModeEnabled'
+
+jest.mock('models/aiAgent/queries')
+jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
+jest.mock('pages/aiAgent/utils/store-configuration.utils')
+
+const mockUseGetStoreConfigurationPure =
+    useGetStoreConfigurationPure as jest.MockedFunction<
+        typeof useGetStoreConfigurationPure
+    >
+const mockUseGetPostStoreInstallationStepsPure =
+    useGetPostStoreInstallationStepsPure as jest.MockedFunction<
+        typeof useGetPostStoreInstallationStepsPure
+    >
+const mockIsAiAgentEnabledForStore =
+    isAiAgentEnabledForStore as jest.MockedFunction<
+        typeof isAiAgentEnabledForStore
+    >
+
+const defaultState = {
+    currentAccount: fromJS({
+        ...account,
+        domain: 'test-domain',
+        id: 'test-account-id',
+    }),
+} as RootState
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+})
+
+describe('useAiAgentOverviewModeEnabled', () => {
+    const renderUseAiAgentOverviewModeEnabled = (
+        shopName = 'test-shop',
+        shopType = 'shopify',
+        enabled = true,
+    ) => {
+        return renderHook(
+            () => useAiAgentOverviewModeEnabled(shopName, shopType, enabled),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+    })
+
+    it('should return isAiAgentLiveModeEnabled as null and isLoading as true when store config is loading', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: null,
+            isLoading: true,
+        })
+    })
+
+    it('should return isAiAgentLiveModeEnabled as null and isLoading as true when post installation steps are loading', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: { data: { storeConfiguration: {} } },
+            isFetching: false,
+        } as any)
+
+        mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: null,
+            isLoading: true,
+        })
+    })
+
+    it('should return isAiAgentLiveModeEnabled as null when storeData is undefined', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: null,
+            isLoading: false,
+        })
+    })
+
+    it('should return isAiAgentLiveModeEnabled as null when enabled is false', () => {
+        const { result } = renderUseAiAgentOverviewModeEnabled(
+            'test-shop',
+            'shopify',
+            false,
+        )
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: null,
+            isLoading: false,
+        })
+    })
+
+    it('should return isAiAgentLiveModeEnabled as true when AI agent is enabled', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: { data: { storeConfiguration: {} } },
+            isFetching: false,
+        } as any)
+
+        mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+            data: { postStoreInstallationSteps: [] },
+            isFetching: false,
+        } as any)
+
+        mockIsAiAgentEnabledForStore.mockReturnValue(true)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: true,
+            isLoading: false,
+        })
+
+        expect(mockIsAiAgentEnabledForStore).toHaveBeenCalledWith({})
+    })
+
+    it('should return isAiAgentLiveModeEnabled as true when post onboarding steps are completed', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: { data: { storeConfiguration: {} } },
+            isFetching: false,
+        } as any)
+
+        mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+            data: {
+                postStoreInstallationSteps: [
+                    {
+                        type: PostStoreInstallationStepType.POST_ONBOARDING,
+                        completedDatetime: '2023-01-01T00:00:00Z',
+                    },
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        mockIsAiAgentEnabledForStore.mockReturnValue(false)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: true,
+            isLoading: false,
+        })
+    })
+
+    it('should return isAiAgentLiveModeEnabled as false when AI agent is not enabled and post onboarding steps are not completed', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: { data: { storeConfiguration: {} } },
+            isFetching: false,
+        } as any)
+
+        mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+            data: {
+                postStoreInstallationSteps: [
+                    {
+                        type: PostStoreInstallationStepType.POST_ONBOARDING,
+                        completedDatetime: null,
+                    },
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        mockIsAiAgentEnabledForStore.mockReturnValue(false)
+
+        const { result } = renderUseAiAgentOverviewModeEnabled()
+
+        expect(result.current).toEqual({
+            isAiAgentLiveModeEnabled: false,
+            isLoading: false,
+        })
+    })
+})

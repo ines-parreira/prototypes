@@ -30,6 +30,8 @@ export enum FeatureFlagKey {
     AiAgentOnboardingWizardKnowledgeRedirect = 'ai-agent-onboarding-wizard-knowledge-redirect',
     AiAgentOptimizeTab = 'ai-agent-optimize-tab',
     AiAgentOptimizeTabL2Drilldown = 'ai-agent-optimize-tab-l2-drilldown',
+    AiAgentPostOnboardingSteps = 'linear.project_improve_post_onboarding_experience.enable-post-onboarding-steps',
+    AiAgentPostStoreInstallationSteps = 'linear.project_improve_post_onboarding_experience.enable-post-store-installation-steps',
     AIAgentPreviewModeAllowed = 'ai-agent-preview-mode-allowed',
     AiAgentScrapeStoreDomain = 'ai-agent-scrape-store-domain',
     AiAgentSms = 'ai-agent-for-sms',

@@ -14,6 +14,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
+import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
@@ -32,7 +33,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
-import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
     const { shopName, shopType } = useParams<{
@@ -221,7 +221,9 @@ export const AiAgentOverview = () => {
                 showEarlyAccessModal={showEarlyAccessModal}
                 shopName={shopName}
             />
-            <PendingTasksSectionConnected shopName={shopName} />
+
+            <AiAgentTaskSection shopName={shopName} shopType={shopType} />
+
             {hasResourceSection && <ResourcesSection />}
             <ThankYouModal
                 isOpen={isOpen}

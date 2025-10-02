@@ -70,3 +70,7 @@ export type UpdateNotificationAcknowledgementRequest = {
 export type PostStoreInstallationStepsResponse = {
     postStoreInstallationSteps: PostStoreInstallationSteps
 }
+
+export type GetPostStoreInstallationStepsResponse = {
+    postStoreInstallationSteps: PostStoreInstallationSteps[]
+}

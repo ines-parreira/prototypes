@@ -6,6 +6,7 @@ import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {
     CreatePostStoreInstallationStepPayload,
     GetPostStoreInstallationStepsParams,
+    GetPostStoreInstallationStepsResponse,
     PostStoreInstallationSteps,
     PostStoreInstallationStepsResponse,
     UpdateNotificationAcknowledgementRequest,
@@ -51,7 +52,7 @@ export const createPostStoreInstallationStep = async (
 export const getPostStoreInstallationSteps = async (
     params: GetPostStoreInstallationStepsParams,
 ) => {
-    const response = await apiClient.get<PostStoreInstallationStepsResponse>(
+    const response = await apiClient.get<GetPostStoreInstallationStepsResponse>(
         `/config/post-store-installation-steps`,
         { params },
     )
