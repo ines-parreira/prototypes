@@ -1,8 +1,6 @@
 describe('isRealtimeEnabledOnCluster', () => {
     const US_EAST1_CLUSTER = 'us-east1-635c'
-    const OTHER_CLUSTER = 'eu-west1-123a'
-    const SUPPORTED_DOMAIN = 'artemisathletix'
-    const UNSUPPORTED_DOMAIN = 'otherdomain'
+    const OTHER_CLUSTER = 'europe-west1-c511'
 
     beforeEach(() => {
         jest.resetModules()
@@ -11,41 +9,21 @@ describe('isRealtimeEnabledOnCluster', () => {
     it.each([
         {
             cluster: US_EAST1_CLUSTER,
-            domain: SUPPORTED_DOMAIN,
             expected: true,
-            description: 'cluster is us-east1-635c and domain is supported',
-        },
-        {
-            cluster: US_EAST1_CLUSTER,
-            domain: UNSUPPORTED_DOMAIN,
-            expected: false,
-            description: 'cluster is us-east1-635c but domain is not supported',
+            description: 'cluster is us-east1-635c ',
         },
         {
             cluster: OTHER_CLUSTER,
-            domain: SUPPORTED_DOMAIN,
             expected: false,
-            description: 'domain is supported but cluster is different',
+            description: 'cluster is not us-east1-635c',
         },
-        {
-            cluster: OTHER_CLUSTER,
-            domain: UNSUPPORTED_DOMAIN,
-            expected: false,
-            description: 'both cluster and domain are not matching',
-        },
-    ])(
-        'should return $expected when $description',
-        ({ cluster, domain, expected }) => {
-            window.GORGIAS_CLUSTER = cluster
-            window.GORGIAS_STATE = {
-                currentAccount: { domain },
-            } as any
+    ])('should return $expected when $description', ({ cluster, expected }) => {
+        window.GORGIAS_CLUSTER = cluster
 
-            const {
-                isRealtimeEnabledOnCluster,
-            } = require('../isRealtimeEnabledOnCluster')
+        const {
+            isRealtimeEnabledOnCluster,
+        } = require('../isRealtimeEnabledOnCluster')
 
-            expect(isRealtimeEnabledOnCluster).toBe(expected)
-        },
-    )
+        expect(isRealtimeEnabledOnCluster).toBe(expected)
+    })
 })
