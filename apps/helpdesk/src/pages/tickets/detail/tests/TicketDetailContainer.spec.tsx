@@ -39,6 +39,7 @@ import {
 import { triggerTicketFieldsErrors } from 'state/ticket/actions'
 import * as ticketUtils from 'state/ticket/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { useLiveTicketTranslationsUpdates } from 'tickets/core/hooks/translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 import * as customFieldsUtils from 'utils/customFields'
 import { makeExecuteKeyboardAction, renderWithRouter } from 'utils/testing'
 
@@ -205,6 +206,13 @@ const mockUseKnowledgeSourceSideBar =
     require('pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
         .useKnowledgeSourceSideBar as jest.Mock
 
+jest.mock(
+    'tickets/core/hooks/translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates',
+)
+
+const mockUseLiveTicketTranslationsUpdates =
+    useLiveTicketTranslationsUpdates as jest.Mock
+
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
     const newTicket = fromJS({
@@ -329,6 +337,9 @@ describe('TicketDetailContainer component', () => {
         })
         mockUseOutboundTranslationContext.mockReturnValue({
             isTranslationPending: false,
+        })
+        mockUseLiveTicketTranslationsUpdates.mockReturnValue({
+            handleTicketMessageTranslationEvents: jest.fn(),
         })
     })
 
@@ -1716,6 +1727,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should call joinTicket and leaveTicket from realtime package on mount / unmount', () => {
+        const mockHandleTicketMessageTranslationEvents = jest.fn()
+        mockUseLiveTicketTranslationsUpdates.mockReturnValue({
+            handleTicketMessageTranslationEvents:
+                mockHandleTicketMessageTranslationEvents,
+        })
         const { unmount } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
@@ -1728,7 +1744,18 @@ describe('TicketDetailContainer component', () => {
             },
         )
 
-        expect(mockJoinTicket).toHaveBeenCalled()
+        expect(mockJoinTicket).toHaveBeenCalledWith(1, {
+            onEvent: expect.any(Function),
+        })
+
+        const onEventCall = mockJoinTicket.mock.calls[0][1].onEvent
+        const mockDomainEvent = { type: 'test-event', data: {} }
+
+        onEventCall(mockDomainEvent)
+
+        expect(mockHandleTicketMessageTranslationEvents).toHaveBeenCalledWith(
+            mockDomainEvent,
+        )
 
         unmount()
         expect(mockLeaveTicket).toHaveBeenCalled()

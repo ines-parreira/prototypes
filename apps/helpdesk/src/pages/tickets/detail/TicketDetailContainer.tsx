@@ -7,6 +7,7 @@ import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { DomainEvent } from '@gorgias/events'
 import { useAgentActivity } from '@gorgias/realtime'
 
 import {
@@ -153,6 +154,15 @@ export const TicketDetailContainer = ({
             ticketLanguage: ticket.get('language'),
             ticketMessages: ticket.get('messages')?.toJS() ?? [],
         })
+
+    const handleTicketMessageTranslationsRef = useRef(
+        handleTicketMessageTranslationEvents,
+    )
+
+    useEffect(() => {
+        handleTicketMessageTranslationsRef.current =
+            handleTicketMessageTranslationEvents
+    }, [handleTicketMessageTranslationEvents])
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -651,7 +661,9 @@ export const TicketDetailContainer = ({
 
     useEffect(() => {
         joinTicket(Number(ticketIdParam), {
-            onEvent: handleTicketMessageTranslationEvents,
+            onEvent: (event: DomainEvent) => {
+                handleTicketMessageTranslationsRef.current(event)
+            },
         })
         joinTicketAbly(Number(ticketIdParam))
 
@@ -663,7 +675,6 @@ export const TicketDetailContainer = ({
         ticketIdParam,
         joinTicket,
         leaveTicket,
-        handleTicketMessageTranslationEvents,
         joinTicketAbly,
         leaveTicketAbly,
     ])
