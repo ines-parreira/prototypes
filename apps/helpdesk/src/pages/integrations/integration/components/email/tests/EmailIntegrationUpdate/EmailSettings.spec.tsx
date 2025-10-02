@@ -220,7 +220,7 @@ describe('EmailSettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Categories include Social, Promotions, Updates, and Forums',
+                    'Categories include Social, Promotions, Updates and Forums.',
                 ),
             ).toBeInTheDocument()
         })
@@ -250,7 +250,7 @@ describe('EmailSettings', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText('Send emails via Gmail API'),
@@ -310,7 +310,7 @@ describe('EmailSettings', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText('Send emails via Outlook API'),

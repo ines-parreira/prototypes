@@ -202,7 +202,7 @@ const EmailSettings = ({
                                             className={css.gmailTogglesWrapper}
                                         >
                                             <ToggleField
-                                                caption="Categories include Social, Promotions, Updates, and Forums"
+                                                caption="Categories include Social, Promotions, Updates and Forums."
                                                 label="Tag tickets with Gmail categories"
                                                 name="use_gmail_categories"
                                                 value={useGmailCategories}

@@ -89,7 +89,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -141,7 +141,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -189,7 +189,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -237,7 +237,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings'),
+                screen.getByText('Outbound email delivery settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -273,7 +273,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         })
 
         expect(
-            screen.getByText('Outbound Email Delivery Settings'),
+            screen.getByText('Outbound email delivery settings'),
         ).toBeInTheDocument()
 
         expect(
@@ -290,7 +290,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         })
 
         expect(
-            screen.getByText('Outbound Email Delivery Settings'),
+            screen.getByText('Outbound email delivery settings'),
         ).toBeInTheDocument()
 
         expect(

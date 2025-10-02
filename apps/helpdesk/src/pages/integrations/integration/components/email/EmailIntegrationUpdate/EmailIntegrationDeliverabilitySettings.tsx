@@ -98,7 +98,7 @@ export default function EmailIntegrationDeliverabilitySettings({
 
     return (
         <FormSection
-            title="Outbound Email Delivery Settings"
+            title="Outbound email delivery settings"
             description={caption}
             headingSize="small"
             className="mb-0"
