@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
+import classNames from 'classnames'
 
 import {
     Button,
@@ -36,6 +37,7 @@ export const ItemSelectionDrawer = ({
     onClose,
     onSubmit,
     onSearch,
+    onShowProducts,
 }: {
     isOpen: boolean
     isLoading: boolean
@@ -58,8 +60,9 @@ export const ItemSelectionDrawer = ({
         onNextClick: () => void
     }
     onClose: () => void
-    onSubmit: (itemsIds: string[]) => Promise<void>
-    onSearch: (searchTerm: string) => void
+    onSubmit?: (itemsIds: string[]) => Promise<void>
+    onSearch?: (searchTerm: string) => void
+    onShowProducts?: (id: string) => void
 }) => {
     const dispatch = useAppDispatch()
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -95,6 +98,7 @@ export const ItemSelectionDrawer = ({
 
     useDebouncedEffect(
         () => {
+            if (!onSearch) return
             onSearch(localSearchTerm)
         },
         [localSearchTerm],
@@ -122,6 +126,7 @@ export const ItemSelectionDrawer = ({
             open={isOpen}
             portalRootId="app-root"
             onBackdropClick={onClose}
+            withFooter={onSubmit !== undefined}
         >
             <Drawer.Header>
                 {title}
@@ -133,13 +138,15 @@ export const ItemSelectionDrawer = ({
 
             <Drawer.Content className={css.contentContainer}>
                 <div className={css.contentInner}>
-                    <div className={css.searchBar}>
-                        <SearchBar
-                            placeholder={`Search ${itemLabelPlural}`}
-                            onChange={setLocalSearchTerm}
-                            value={localSearchTerm}
-                        />
-                    </div>
+                    {onSearch && (
+                        <div className={css.searchBar}>
+                            <SearchBar
+                                placeholder={`Search ${itemLabelPlural}`}
+                                onChange={setLocalSearchTerm}
+                                value={localSearchTerm}
+                            />
+                        </div>
+                    )}
 
                     <div ref={itemsContainerRef} className={css.items}>
                         {isLoading && (
@@ -155,19 +162,27 @@ export const ItemSelectionDrawer = ({
                         )}
 
                         {!isLoading &&
-                            items?.map((item) => (
+                            items.map((item) => (
                                 <div
                                     key={item.id}
-                                    className={css.item}
-                                    onClick={() => handleItemClick(item.id)}
+                                    className={classNames(css.item, {
+                                        [css.itemHover]: !!onSubmit,
+                                    })}
+                                    onClick={
+                                        onSubmit
+                                            ? () => handleItemClick(item.id)
+                                            : undefined
+                                    }
                                 >
-                                    <div>
-                                        <CheckBoxField
-                                            value={localSelectedItemIds.includes(
-                                                item.id,
-                                            )}
-                                        />
-                                    </div>
+                                    {onSubmit && (
+                                        <div>
+                                            <CheckBoxField
+                                                value={localSelectedItemIds.includes(
+                                                    item.id,
+                                                )}
+                                            />
+                                        </div>
+                                    )}
                                     {hasImages && (
                                         <div>
                                             {item.img ? (
@@ -195,6 +210,21 @@ export const ItemSelectionDrawer = ({
                                                 variant="selection-drawer"
                                             />
                                         </div>
+                                    )}
+                                    {onShowProducts && (
+                                        <IconButton
+                                            size="medium"
+                                            fillStyle="ghost"
+                                            className={css.iconButton}
+                                            onClick={(
+                                                e: React.MouseEvent<HTMLButtonElement>,
+                                            ) => {
+                                                e.stopPropagation()
+                                                onShowProducts(item.id)
+                                            }}
+                                            aria-label="Show products"
+                                            icon="keyboard_arrow_right"
+                                        />
                                     )}
                                 </div>
                             ))}
@@ -246,63 +276,67 @@ export const ItemSelectionDrawer = ({
                 </div>
             </Drawer.Content>
 
-            <Drawer.Footer>
-                <div className={css.footerContainer}>
-                    <Button
-                        onClick={async () => {
-                            setIsSubmitting(true)
+            {onSubmit && (
+                <Drawer.Footer>
+                    <div className={css.footerContainer}>
+                        <Button
+                            onClick={async () => {
+                                setIsSubmitting(true)
 
-                            try {
-                                await onSubmit(localSelectedItemIds)
-                                onClose()
+                                try {
+                                    await onSubmit(localSelectedItemIds)
+                                    onClose()
 
-                                void dispatch(
-                                    notify({
-                                        message:
-                                            'Product recommendations saved.',
-                                        status: NotificationStatus.Success,
-                                    }),
-                                )
-                            } catch (error) {
-                                let errorMessage =
-                                    'Failed to save product recommendations.'
+                                    void dispatch(
+                                        notify({
+                                            message:
+                                                'Product recommendations saved.',
+                                            status: NotificationStatus.Success,
+                                        }),
+                                    )
+                                } catch (error) {
+                                    let errorMessage =
+                                        'Failed to save product recommendations.'
 
-                                if (
-                                    isProductRecommendationConflictError(error)
-                                ) {
-                                    errorMessage = formatConflictMessage(
-                                        error.response!.data,
-                                        ruleType,
+                                    if (
+                                        isProductRecommendationConflictError(
+                                            error,
+                                        )
+                                    ) {
+                                        errorMessage = formatConflictMessage(
+                                            error.response!.data,
+                                            ruleType,
+                                        )
+                                    }
+
+                                    void dispatch(
+                                        notify({
+                                            message: errorMessage,
+                                            status: NotificationStatus.Error,
+                                        }),
                                     )
                                 }
 
-                                void dispatch(
-                                    notify({
-                                        message: errorMessage,
-                                        status: NotificationStatus.Error,
-                                    }),
-                                )
-                            }
+                                setIsSubmitting(false)
+                            }}
+                            intent="primary"
+                            type="submit"
+                            isDisabled={isSubmitting}
+                        >
+                            Save Changes
+                        </Button>
 
-                            setIsSubmitting(false)
-                        }}
-                        intent="primary"
-                        type="submit"
-                        isDisabled={isSubmitting}
-                    >
-                        Save Changes
-                    </Button>
-
-                    <Button
-                        onClick={onClose}
-                        intent="secondary"
-                        size="medium"
-                        fillStyle="ghost"
-                    >
-                        Cancel
-                    </Button>
-                </div>
-            </Drawer.Footer>
+                        <Button
+                            onClick={onClose}
+                            intent="secondary"
+                            size="medium"
+                            fillStyle="ghost"
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                </Drawer.Footer>
+            )}
         </Drawer>
     )
 }

@@ -3,7 +3,7 @@ import { ApiPaginationParams } from 'models/api/types'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import { LookupValue } from './types'
+import { LookupValue, Product } from './types'
 
 const client = createClient()
 client.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -39,4 +39,21 @@ export const fetchEcommerceLookupValues = async (
         }
     }>(`/api/ecommerce/lookup_values/${type}/shopify/${integrationId}`, {
         params,
+    })
+
+export const fetchEcommerceProducts = async (
+    integrationId: number,
+    params: ApiPaginationParams = {},
+) =>
+    await client.get<{
+        data: Product[]
+        metadata: {
+            next_cursor: string | null
+            prev_cursor: string | null
+        }
+    }>(`/api/ecommerce/product/shopify`, {
+        params: {
+            integration_id: integrationId,
+            ...params,
+        },
     })

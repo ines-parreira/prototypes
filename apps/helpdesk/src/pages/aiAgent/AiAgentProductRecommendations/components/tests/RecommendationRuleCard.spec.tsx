@@ -9,6 +9,7 @@ import { RecommendationRuleCard } from '../RecommendationRuleCard'
 const mockOnAddButtonClick = jest.fn()
 const mockOnDelete = jest.fn()
 const mockOnSeeAllClick = jest.fn()
+const mockOnShowProducts = jest.fn()
 const mockDispatch: jest.Mock = jest.fn((action: any) => {
     if (typeof action === 'function') {
         const mockGetState = () => ({ notifications: [] })
@@ -37,6 +38,7 @@ const renderComponent = (
         isLoading?: boolean
         disableActions?: boolean
         hasImages?: boolean
+        hasOnShowProducts?: boolean
         itemLabelSingular?: string
         itemLabelPlural?: string
         items?: Array<{
@@ -65,6 +67,7 @@ const renderComponent = (
             { id: '7', title: 'Test product 7' },
             { id: '8', title: 'Test product 8' },
         ],
+        hasOnShowProducts = false,
     } = options
 
     const store = createMockStore()
@@ -90,6 +93,9 @@ const renderComponent = (
                 onDelete={mockOnDelete}
                 onSeeAllClick={mockOnSeeAllClick}
                 ruleType="product"
+                onShowProducts={
+                    hasOnShowProducts ? mockOnShowProducts : undefined
+                }
             />
         </Provider>,
     )
@@ -236,6 +242,38 @@ describe('RecommendationRuleCard', () => {
             screen.getAllByRole('button', { name: 'Remove product' }),
         ).toHaveLength(3)
         expect(screen.queryAllByText('Loading...')).toHaveLength(1)
+    })
+
+    it('should handle clicks on show products button correctly', () => {
+        const screen = renderComponent({ hasOnShowProducts: true })
+
+        expect(
+            screen.getAllByRole('button', { name: 'Show products' }),
+        ).toHaveLength(4)
+
+        const button1 = screen.getAllByRole('button', {
+            name: 'Show products',
+        })[2]
+        fireEvent.click(button1)
+
+        expect(mockOnShowProducts).toHaveBeenCalledTimes(1)
+        expect(mockOnShowProducts).toHaveBeenCalledWith('3')
+
+        const button2 = screen.getAllByRole('button', {
+            name: 'Show products',
+        })[3]
+        fireEvent.click(button2)
+
+        expect(mockOnShowProducts).toHaveBeenCalledTimes(2)
+        expect(mockOnShowProducts).toHaveBeenCalledWith('4')
+    })
+
+    it('should not show products button when onShowProducts is not provided', () => {
+        const screen = renderComponent()
+
+        expect(
+            screen.queryAllByRole('button', { name: 'Show products' }),
+        ).toHaveLength(0)
     })
 
     it('should render draft badges for products with draft status', () => {

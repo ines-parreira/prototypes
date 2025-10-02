@@ -8,6 +8,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import {
     useGetEcommerceItemByExternalId,
     useGetEcommerceLookupValues,
+    useGetEcommerceProducts,
 } from '../queries'
 import * as resources from '../resources'
 import {
@@ -26,6 +27,8 @@ const fetchEcommerceLookupValues = jest.spyOn(
     resources,
     'fetchEcommerceLookupValues',
 )
+
+const fetchEcommerceProducts = jest.spyOn(resources, 'fetchEcommerceProducts')
 
 const queryClient = mockQueryClient()
 
@@ -191,6 +194,67 @@ describe('Ecommerce Queries', () => {
 
             expect(result.current.isLoading).toBe(true)
             expect(fetchEcommerceItemByExternalId).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetEcommerceProducts', () => {
+        it('should fetch ecommerce products', async () => {
+            fetchEcommerceProducts.mockResolvedValueOnce({
+                data: {
+                    data: [
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                    ],
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(() => useGetEcommerceProducts(123), {
+                wrapper,
+            })
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(result.current.data).toEqual({
+                data: [mockEcommerceItem, mockEcommerceItem, mockEcommerceItem],
+                metadata: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            })
+            expect(fetchEcommerceProducts).toHaveBeenCalledWith(123, {})
+        })
+
+        it('should not call the api function when enabled false', () => {
+            fetchEcommerceProducts.mockResolvedValueOnce({
+                data: {
+                    data: [
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                    ],
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () => useGetEcommerceProducts(123, {}, { enabled: false }),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+            expect(fetchEcommerceProducts).toHaveBeenCalledTimes(0)
         })
     })
 })

@@ -30,12 +30,16 @@ const mockOnClose = jest.fn()
 const mockSetSearchTerm = jest.fn()
 const mockFetchNext = jest.fn()
 const mockFetchPrev = jest.fn()
+const mockOnShowProducts = jest.fn()
 
 const renderComponent = (
     options: {
         isOpen?: boolean
         isLoading?: boolean
         hasImages?: boolean
+        hasOnSubmit?: boolean
+        hasOnSearch?: boolean
+        hasOnShowProducts?: boolean
         title?: string
         selectedItemIds?: string[]
         itemLabelPlural?: string
@@ -53,6 +57,9 @@ const renderComponent = (
         isOpen = true,
         isLoading = false,
         hasImages = true,
+        hasOnSubmit = true,
+        hasOnSearch = true,
+        hasOnShowProducts = true,
         title = 'Select products',
         selectedItemIds = [],
         itemLabelPlural = 'products',
@@ -96,8 +103,9 @@ const renderComponent = (
                 onPrevClick: mockFetchPrev,
             }}
             onClose={mockOnClose}
-            onSubmit={mockOnSubmit}
-            onSearch={mockSetSearchTerm}
+            onSubmit={hasOnSubmit ? mockOnSubmit : undefined}
+            onSearch={hasOnSearch ? mockSetSearchTerm : undefined}
+            onShowProducts={hasOnShowProducts ? mockOnShowProducts : undefined}
         />,
     )
 }
@@ -123,7 +131,39 @@ describe('ItemSelectionDrawer', () => {
         expect(screen.queryByText('Test product 7')).toBeInTheDocument()
         expect(screen.queryByText('Test product 8')).toBeInTheDocument()
 
+        expect(
+            screen.getAllByRole('button', { name: 'Show products' }),
+        ).toHaveLength(8)
+
         expect(screen.queryByText('No products found')).not.toBeInTheDocument()
+    })
+
+    it('should hide search input when onSearch is false', () => {
+        const screen = renderComponent({
+            hasOnSearch: false,
+        })
+
+        expect(
+            screen.queryByPlaceholderText('Search products'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should hide submit button when onSubmit is false', () => {
+        const screen = renderComponent({
+            hasOnSubmit: false,
+        })
+
+        expect(screen.queryByText('Save Changes')).not.toBeInTheDocument()
+    })
+
+    it('should hide show products button when onShowProducts is false', () => {
+        const screen = renderComponent({
+            hasOnShowProducts: false,
+        })
+
+        expect(
+            screen.queryAllByRole('button', { name: 'Show products' }),
+        ).toHaveLength(0)
     })
 
     it('should show loading spinner when loading', () => {
@@ -204,6 +244,19 @@ describe('ItemSelectionDrawer', () => {
         jest.advanceTimersByTime(200)
         expect(mockSetSearchTerm).toHaveBeenCalledWith('Test product 1')
         jest.useRealTimers()
+    })
+
+    it('should handle onShowProducts correctly', () => {
+        const screen = renderComponent()
+        const buttons = screen.getAllByRole('button', { name: 'Show products' })
+
+        fireEvent.click(buttons[0])
+
+        expect(mockOnShowProducts).toHaveBeenLastCalledWith('1')
+
+        fireEvent.click(buttons[5])
+
+        expect(mockOnShowProducts).toHaveBeenLastCalledWith('6')
     })
 
     it('should handle pagination correctly', () => {

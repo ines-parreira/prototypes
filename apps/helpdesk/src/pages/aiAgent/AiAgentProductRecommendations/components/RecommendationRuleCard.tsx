@@ -33,6 +33,7 @@ export const RecommendationRuleCard = ({
     itemLabelPlural,
     totalItems,
     items,
+    onShowProducts,
     onDelete,
     onSeeAllClick,
     ruleType,
@@ -61,6 +62,7 @@ export const RecommendationRuleCard = ({
         status?: string
     }>
     ruleType: ProductRecommendationRuleType
+    onShowProducts?: (id: string) => void
     onDelete: (id: string) => Promise<void>
     onSeeAllClick: () => void
 }) => {
@@ -171,20 +173,33 @@ export const RecommendationRuleCard = ({
                                 </Badge>
                             )}
                         </div>
-                        <div className={css.iconContainer}>
+                        <div className={css.buttons}>
                             {deletingItemId === item.id && (
-                                <LoadingSpinner size="small" />
+                                <div className={css.spinnerContainer}>
+                                    <LoadingSpinner size="small" />
+                                </div>
                             )}
 
                             {deletingItemId !== item.id && (
                                 <IconButton
-                                    size="small"
+                                    size="medium"
                                     fillStyle="ghost"
                                     className={css.iconButton}
                                     onClick={onDeleteItem(item.id)}
                                     aria-label={`Remove ${itemLabelSingular}`}
-                                    icon="close"
+                                    icon="delete_outline"
                                     isDisabled={disableActions}
+                                />
+                            )}
+
+                            {onShowProducts && (
+                                <IconButton
+                                    size="medium"
+                                    fillStyle="ghost"
+                                    className={css.iconButton}
+                                    onClick={() => onShowProducts(item.id)}
+                                    aria-label="Show products"
+                                    icon="keyboard_arrow_right"
                                 />
                             )}
                         </div>

@@ -9,7 +9,10 @@ import { MemoryRouter } from 'react-router-dom'
 import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
+import {
+    useGetEcommerceLookupValues,
+    useGetEcommerceProducts,
+} from 'models/ecommerce/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
@@ -48,6 +51,7 @@ const mockUsePaginatedProductIntegration =
 
 jest.mock('models/ecommerce/queries')
 const mockUseGetEcommerceLookupValues = useGetEcommerceLookupValues as jest.Mock
+const mockUseGetEcommerceProducts = useGetEcommerceProducts as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -213,6 +217,17 @@ const renderComponent = (
         },
         isLoading: false,
     }))
+
+    mockUseGetEcommerceProducts.mockReturnValue({
+        data: {
+            data: [],
+            metadata: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+        isLoading: false,
+    })
 
     return render(
         <MemoryRouter>

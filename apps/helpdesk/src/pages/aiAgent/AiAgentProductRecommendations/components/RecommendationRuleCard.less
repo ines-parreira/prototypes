@@ -34,9 +34,9 @@
 
     .item {
         display: flex;
-        gap: var(--layout-spacing-s);
+        gap: var(--spacing-lg);
         align-items: center;
-        padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        padding: var(--spacing-xs) var(--spacing-lg);
         border-top: 1px solid var(--neutral-grey-3);
 
         .itemImage {
@@ -59,13 +59,21 @@
             color: var(--neutral-grey-6);
         }
 
-        .iconContainer {
-            height: 24px;
-            width: 24px;
+        .buttons {
+            display: flex;
+            gap: var(--spacing-xxxs);
+        }
+
+        .spinnerContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 32px;
+            width: 32px;
         }
 
         .iconButton {
-            color: var(--neutral-grey-5) !important;
+            color: var(--content-neutral-default) !important;
         }
     }
 

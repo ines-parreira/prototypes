@@ -14,7 +14,6 @@
     .searchBar {
         padding: 0 var(--layout-spacing-m) var(--layout-spacing-s)
             var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .noItemsFound {
@@ -26,6 +25,7 @@
     .items {
         flex-grow: 1;
         overflow-y: auto;
+        border-top: 1px solid var(--neutral-grey-3);
 
         .loading {
             height: 100%;
@@ -40,15 +40,7 @@
         gap: var(--layout-spacing-s);
         align-items: center;
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
-
-        &:not(:first-child) {
-            border-top: 1px solid var(--neutral-grey-3);
-        }
-
-        &:hover {
-            background-color: var(--neutral-grey-1);
-            cursor: pointer;
-        }
+        border-bottom: 1px solid var(--neutral-grey-3);
 
         .itemImage {
             width: 32px;
@@ -71,12 +63,22 @@
         }
     }
 
+    .itemHover {
+        &:hover {
+            background-color: var(--neutral-grey-1);
+            cursor: pointer;
+        }
+    }
+
+    .iconButton {
+        color: var(--content-neutral-default) !important;
+    }
+
     .pagination {
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
-        border-top: 1px solid var(--neutral-grey-3);
     }
 
     .footerContainer {

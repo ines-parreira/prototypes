@@ -5,9 +5,11 @@ import client from 'models/api/resources'
 import {
     fetchEcommerceItemByExternalId,
     fetchEcommerceLookupValues,
+    fetchEcommerceProducts,
 } from '../resources'
 import {
     mockEcommerceData,
+    mockEcommerceItem,
     mockEcommerceProductTags,
     mockEcommerceVendors,
 } from './mocks'
@@ -154,6 +156,58 @@ describe('Ecommerce Resources', () => {
 
             return expect(
                 fetchEcommerceLookupValues('vendor', integrationId),
+            ).rejects.toEqual(new Error('Request failed with status code 500'))
+        })
+    })
+
+    describe('fetchEcommerceProducts', () => {
+        it('should fetch products', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(`/api/ecommerce/product/shopify`, {
+                    params: {
+                        integration_id: integrationId,
+                    },
+                })
+                .reply(200, {
+                    data: [
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                        mockEcommerceItem,
+                    ],
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                })
+
+            const result = await fetchEcommerceProducts(integrationId)
+
+            expect(result.data.data).toEqual([
+                mockEcommerceItem,
+                mockEcommerceItem,
+                mockEcommerceItem,
+            ])
+            expect(result.data.metadata).toEqual({
+                next_cursor: 'next-cursor',
+                prev_cursor: 'prev-cursor',
+            })
+        })
+
+        it('should handle error when fetching products', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(`/api/ecommerce/product/shopify`, {
+                    params: {
+                        integration_id: integrationId,
+                    },
+                })
+                .reply(500, { message: 'error' })
+
+            return expect(
+                fetchEcommerceProducts(integrationId),
             ).rejects.toEqual(new Error('Request failed with status code 500'))
         })
     })

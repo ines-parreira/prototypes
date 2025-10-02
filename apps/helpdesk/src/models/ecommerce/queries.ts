@@ -7,6 +7,7 @@ import { IntegrationDataItem } from 'models/integration/types/misc'
 import {
     fetchEcommerceItemByExternalId,
     fetchEcommerceLookupValues,
+    fetchEcommerceProducts,
 } from './resources'
 
 export const ecommerceKeys = {
@@ -30,6 +31,8 @@ export const ecommerceKeys = {
         integrationId: number,
         params: EcommerceLookupValuesParams,
     ) => [...ecommerceKeys.all(), type, integrationId, params] as const,
+    products: (integrationId: number, params: EcommerceProductsParams) =>
+        [...ecommerceKeys.all(), integrationId, params] as const,
 }
 
 /**
@@ -89,6 +92,29 @@ export const useGetEcommerceLookupValues = (
                 integrationId,
                 params,
             )
+            return response.data
+        },
+        ...overrides,
+    })
+}
+
+type EcommerceProductsParams = ApiPaginationParams & {
+    data_tags?: string
+    data_vendor?: string
+    data_product_type?: string
+}
+
+export const useGetEcommerceProducts = (
+    integrationId: number,
+    params: EcommerceProductsParams = {},
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof fetchEcommerceProducts>>['data']
+    >,
+) => {
+    return useQuery({
+        queryKey: ecommerceKeys.products(integrationId, params),
+        queryFn: async () => {
+            const response = await fetchEcommerceProducts(integrationId, params)
             return response.data
         },
         ...overrides,

@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
+import {
+    useGetEcommerceLookupValues,
+    useGetEcommerceProducts,
+} from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
@@ -23,44 +26,55 @@ export const TagRecommendationRuleCard = ({
     isUpserting: boolean
     onUpsert: (tags: string[]) => Promise<any>
 }) => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [allTagsDrawerConfig, setAllTagsDrawerConfig] = useState<{
+        isOpen: boolean
+        cursor: string | null
+        searchValue: string | null
+    }>({
+        isOpen: false,
+        cursor: null,
+        searchValue: null,
+    })
+
+    const [tagProductsDrawerConfig, setTagProductsDrawerConfig] = useState<{
+        isOpen: boolean
+        cursor: string | null
+        tag: string | null
+    }>({
+        isOpen: false,
+        cursor: null,
+        tag: null,
+    })
+
     const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
-    const [isEnabled, setIsEnabled] = useState(false)
-    const [params, setParams] = useState<
-        Parameters<typeof useGetEcommerceLookupValues>[2]
-    >({ limit: 25 })
 
-    // Only load tags when drawer is open
-    useEffect(() => {
-        if (!isDrawerOpen) {
-            return
-        }
-
-        setIsEnabled(true)
-    }, [isDrawerOpen])
-
-    const { data, isLoading: isLoadingAllTags } = useGetEcommerceLookupValues(
+    const allTags = useGetEcommerceLookupValues(
         'product_tag',
         integrationId,
-        params,
-        { enabled: isEnabled },
+        {
+            limit: 25,
+            cursor: allTagsDrawerConfig.cursor,
+            value: allTagsDrawerConfig.searchValue ?? undefined,
+        },
+        { enabled: allTagsDrawerConfig.isOpen },
     )
 
-    const allTags = (data?.data || []).map((tag) => ({
-        id: tag.value,
-        title: tag.value,
-    }))
+    const tagProducts = useGetEcommerceProducts(
+        integrationId,
+        {
+            limit: 25,
+            cursor: tagProductsDrawerConfig.cursor,
+            data_tags: tagProductsDrawerConfig.tag ?? undefined,
+        },
+        { enabled: tagProductsDrawerConfig.isOpen },
+    )
 
     const selectedTags = tags.map((tag) => ({
         id: tag,
         title: tag,
     }))
 
-    const { paginatedItems, pagination, setSearch, resetPagination } =
-        usePaginatedItems(selectedTags)
-
-    const { next_cursor: nextCursor, prev_cursor: prevCursor } =
-        data?.metadata || {}
+    const paginatedSelectedTags = usePaginatedItems(selectedTags)
 
     const typeMap = {
         promote: {
@@ -91,12 +105,24 @@ export const TagRecommendationRuleCard = ({
                 type={type}
                 addButton={{
                     label: 'Select tags',
-                    onClick: () => setIsDrawerOpen(true),
+                    onClick: () =>
+                        setAllTagsDrawerConfig({
+                            isOpen: true,
+                            cursor: null,
+                            searchValue: null,
+                        }),
                 }}
                 itemLabelSingular="tag"
                 itemLabelPlural="tags"
                 totalItems={tags.length}
                 items={selectedTags}
+                onShowProducts={(tag: string) => {
+                    setTagProductsDrawerConfig({
+                        isOpen: true,
+                        tag,
+                        cursor: null,
+                    })
+                }}
                 onDelete={(deletedTag: string) =>
                     onUpsert(tags.filter((tag) => tag !== deletedTag))
                 }
@@ -105,28 +131,83 @@ export const TagRecommendationRuleCard = ({
             />
 
             <ItemSelectionDrawer
-                isOpen={isDrawerOpen}
-                isLoading={isLoadingAllTags}
+                isOpen={allTagsDrawerConfig.isOpen}
+                isLoading={allTags.isLoading}
                 hasImages={false}
                 title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="tags"
                 ruleType="tag"
                 selectedItemIds={tags}
-                onClose={() => setIsDrawerOpen(false)}
+                onClose={() =>
+                    setAllTagsDrawerConfig((old) => ({ ...old, isOpen: false }))
+                }
                 onSubmit={onUpsert}
-                items={allTags}
+                items={(allTags.data?.data || []).map((tag) => ({
+                    id: tag.value,
+                    title: tag.value,
+                }))}
                 pagination={{
-                    hasNextPage: !!nextCursor,
-                    hasPrevPage: !!prevCursor,
+                    hasNextPage: !!allTags.data?.metadata.next_cursor,
+                    hasPrevPage: !!allTags.data?.metadata.prev_cursor,
                     onNextClick: () => {
-                        setParams({ ...params, cursor: nextCursor })
+                        setAllTagsDrawerConfig((old) => ({
+                            ...old,
+                            cursor: allTags.data?.metadata.next_cursor ?? null,
+                        }))
                     },
                     onPrevClick: () => {
-                        setParams({ ...params, cursor: prevCursor })
+                        setAllTagsDrawerConfig((old) => ({
+                            ...old,
+                            cursor: allTags.data?.metadata.prev_cursor ?? null,
+                        }))
                     },
                 }}
                 onSearch={(value) => {
-                    setParams({ ...params, value })
+                    setAllTagsDrawerConfig((old) => ({
+                        ...old,
+                        searchValue: value,
+                    }))
+                }}
+            />
+
+            <ItemSelectionDrawer
+                isOpen={tagProductsDrawerConfig.isOpen}
+                isLoading={tagProducts.isLoading}
+                hasImages={true}
+                title={`Products within tag: ${tagProductsDrawerConfig.tag}`}
+                type={type}
+                itemLabelPlural="products"
+                ruleType="product"
+                selectedItemIds={[]}
+                onClose={() =>
+                    setTagProductsDrawerConfig((old) => ({
+                        ...old,
+                        isOpen: false,
+                    }))
+                }
+                items={(tagProducts.data?.data || []).map((product) => ({
+                    id: product.external_id,
+                    title: product.data.title,
+                    status: product.data.status,
+                    img: product.data.featuredMedia?.image?.url,
+                }))}
+                pagination={{
+                    hasNextPage: !!tagProducts.data?.metadata.next_cursor,
+                    hasPrevPage: !!tagProducts.data?.metadata.prev_cursor,
+                    onNextClick: () => {
+                        setTagProductsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                tagProducts.data?.metadata.next_cursor ?? null,
+                        }))
+                    },
+                    onPrevClick: () => {
+                        setTagProductsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                tagProducts.data?.metadata.prev_cursor ?? null,
+                        }))
+                    },
                 }}
             />
 
@@ -134,19 +215,27 @@ export const TagRecommendationRuleCard = ({
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="tags"
                 ruleType="tag"
-                items={paginatedItems}
+                items={paginatedSelectedTags.paginatedItems}
                 selectedItemIds={tags}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={false}
                 hasImages={false}
                 type={type}
-                pagination={pagination}
+                pagination={paginatedSelectedTags.pagination}
+                onShowProducts={(tag: string) => {
+                    setIsSeeAllDrawerOpen(false)
+                    setTagProductsDrawerConfig({
+                        isOpen: true,
+                        tag,
+                        cursor: null,
+                    })
+                }}
                 onClose={() => {
                     setIsSeeAllDrawerOpen(false)
-                    resetPagination()
+                    paginatedSelectedTags.resetPagination()
                 }}
                 onSubmit={onUpsert}
-                onSearch={setSearch}
+                onSearch={paginatedSelectedTags.setSearch}
             />
         </div>
     )

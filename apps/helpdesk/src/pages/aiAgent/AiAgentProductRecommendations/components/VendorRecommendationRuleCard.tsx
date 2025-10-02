@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { useGetEcommerceLookupValues } from 'models/ecommerce/queries'
+import {
+    useGetEcommerceLookupValues,
+    useGetEcommerceProducts,
+} from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
 import { ItemSelectionDrawer } from './ItemSelectionDrawer'
@@ -23,42 +26,56 @@ export const VendorRecommendationRuleCard = ({
     isUpserting: boolean
     onUpsert: (vendors: string[]) => Promise<any>
 }) => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-    const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
-    const [isEnabled, setIsEnabled] = useState(false)
-    const [params, setParams] = useState<
-        Parameters<typeof useGetEcommerceLookupValues>[2]
-    >({ limit: 25 })
+    const [allVendorsDrawerConfig, setAllVendorsDrawerConfig] = useState<{
+        isOpen: boolean
+        cursor: string | null
+        searchValue: string | null
+    }>({
+        isOpen: false,
+        cursor: null,
+        searchValue: null,
+    })
 
-    // Only load vendors when drawer is open
-    useEffect(() => {
-        if (!isDrawerOpen) {
-            return
-        }
-
-        setIsEnabled(true)
-    }, [isDrawerOpen])
-
-    const { data, isLoading: isLoadingAllVendors } =
-        useGetEcommerceLookupValues('vendor', integrationId, params, {
-            enabled: isEnabled,
+    const [vendorProductsDrawerConfig, setVendorProductsDrawerConfig] =
+        useState<{
+            isOpen: boolean
+            cursor: string | null
+            vendor: string | null
+        }>({
+            isOpen: false,
+            cursor: null,
+            vendor: null,
         })
 
-    const allVendors = (data?.data || []).map((vendor) => ({
-        id: vendor.value,
-        title: vendor.value,
-    }))
+    const [isSeeAllDrawerOpen, setIsSeeAllDrawerOpen] = useState(false)
+
+    const allVendors = useGetEcommerceLookupValues(
+        'vendor',
+        integrationId,
+        {
+            limit: 25,
+            cursor: allVendorsDrawerConfig.cursor,
+            value: allVendorsDrawerConfig.searchValue ?? undefined,
+        },
+        { enabled: allVendorsDrawerConfig.isOpen },
+    )
+
+    const vendorProducts = useGetEcommerceProducts(
+        integrationId,
+        {
+            limit: 25,
+            cursor: vendorProductsDrawerConfig.cursor,
+            data_vendor: vendorProductsDrawerConfig.vendor ?? undefined,
+        },
+        { enabled: vendorProductsDrawerConfig.isOpen },
+    )
 
     const selectedVendors = vendors.map((vendor) => ({
         id: vendor,
         title: vendor,
     }))
 
-    const { paginatedItems, pagination, setSearch, resetPagination } =
-        usePaginatedItems(selectedVendors)
-
-    const { next_cursor: nextCursor, prev_cursor: prevCursor } =
-        data?.metadata || {}
+    const paginatedSelectedVendors = usePaginatedItems(selectedVendors)
 
     const typeMap = {
         promote: {
@@ -89,12 +106,24 @@ export const VendorRecommendationRuleCard = ({
                 type={type}
                 addButton={{
                     label: 'Select vendors',
-                    onClick: () => setIsDrawerOpen(true),
+                    onClick: () =>
+                        setAllVendorsDrawerConfig({
+                            isOpen: true,
+                            cursor: null,
+                            searchValue: null,
+                        }),
                 }}
                 itemLabelSingular="vendor"
                 itemLabelPlural="vendors"
                 totalItems={vendors.length}
                 items={selectedVendors}
+                onShowProducts={(vendor: string) => {
+                    setVendorProductsDrawerConfig({
+                        isOpen: true,
+                        vendor,
+                        cursor: null,
+                    })
+                }}
                 ruleType="vendor"
                 onDelete={(deletedVendor: string) =>
                     onUpsert(
@@ -105,28 +134,90 @@ export const VendorRecommendationRuleCard = ({
             />
 
             <ItemSelectionDrawer
-                isOpen={isDrawerOpen}
-                isLoading={isLoadingAllVendors}
+                isOpen={allVendorsDrawerConfig.isOpen}
+                isLoading={allVendors.isLoading}
                 hasImages={false}
                 title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="vendors"
                 ruleType="vendor"
                 selectedItemIds={vendors}
-                onClose={() => setIsDrawerOpen(false)}
+                onClose={() =>
+                    setAllVendorsDrawerConfig((old) => ({
+                        ...old,
+                        isOpen: false,
+                    }))
+                }
                 onSubmit={onUpsert}
-                items={allVendors}
+                items={(allVendors.data?.data || []).map((vendor) => ({
+                    id: vendor.value,
+                    title: vendor.value,
+                }))}
                 pagination={{
-                    hasNextPage: !!nextCursor,
-                    hasPrevPage: !!prevCursor,
+                    hasNextPage: !!allVendors.data?.metadata.next_cursor,
+                    hasPrevPage: !!allVendors.data?.metadata.prev_cursor,
                     onNextClick: () => {
-                        setParams({ ...params, cursor: nextCursor })
+                        setAllVendorsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                allVendors.data?.metadata.next_cursor ?? null,
+                        }))
                     },
                     onPrevClick: () => {
-                        setParams({ ...params, cursor: prevCursor })
+                        setAllVendorsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                allVendors.data?.metadata.prev_cursor ?? null,
+                        }))
                     },
                 }}
                 onSearch={(value) => {
-                    setParams({ ...params, value })
+                    setAllVendorsDrawerConfig((old) => ({
+                        ...old,
+                        searchValue: value,
+                    }))
+                }}
+            />
+
+            <ItemSelectionDrawer
+                isOpen={vendorProductsDrawerConfig.isOpen}
+                isLoading={vendorProducts.isLoading}
+                hasImages={true}
+                title={`Products within vendor: ${vendorProductsDrawerConfig.vendor}`}
+                type={type}
+                itemLabelPlural="products"
+                ruleType="product"
+                selectedItemIds={[]}
+                onClose={() =>
+                    setVendorProductsDrawerConfig((old) => ({
+                        ...old,
+                        isOpen: false,
+                    }))
+                }
+                items={(vendorProducts.data?.data || []).map((product) => ({
+                    id: product.external_id,
+                    title: product.data.title,
+                    status: product.data.status,
+                    img: product.data.featuredMedia?.image?.url,
+                }))}
+                pagination={{
+                    hasNextPage: !!vendorProducts.data?.metadata.next_cursor,
+                    hasPrevPage: !!vendorProducts.data?.metadata.prev_cursor,
+                    onNextClick: () => {
+                        setVendorProductsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                vendorProducts.data?.metadata.next_cursor ??
+                                null,
+                        }))
+                    },
+                    onPrevClick: () => {
+                        setVendorProductsDrawerConfig((old) => ({
+                            ...old,
+                            cursor:
+                                vendorProducts.data?.metadata.prev_cursor ??
+                                null,
+                        }))
+                    },
                 }}
             />
 
@@ -134,19 +225,27 @@ export const VendorRecommendationRuleCard = ({
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="vendors"
                 ruleType="vendor"
-                items={paginatedItems}
+                items={paginatedSelectedVendors.paginatedItems}
                 selectedItemIds={vendors}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={false}
                 hasImages={false}
                 type={type}
-                pagination={pagination}
+                pagination={paginatedSelectedVendors.pagination}
+                onShowProducts={(vendor: string) => {
+                    setIsSeeAllDrawerOpen(false)
+                    setVendorProductsDrawerConfig({
+                        isOpen: true,
+                        vendor,
+                        cursor: null,
+                    })
+                }}
                 onClose={() => {
                     setIsSeeAllDrawerOpen(false)
-                    resetPagination()
+                    paginatedSelectedVendors.resetPagination()
                 }}
                 onSubmit={onUpsert}
-                onSearch={setSearch}
+                onSearch={paginatedSelectedVendors.setSearch}
             />
         </div>
     )

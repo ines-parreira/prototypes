@@ -7,3 +7,16 @@ export type LookupValue = {
     created_datetime: string
     value: string
 }
+
+export type Product = {
+    external_id: string
+    data: {
+        title: string
+        status: string
+        featuredMedia?: {
+            image?: {
+                url: string
+            }
+        }
+    }
+}
