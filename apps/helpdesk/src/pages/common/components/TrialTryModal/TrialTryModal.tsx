@@ -205,9 +205,12 @@ const PlanPricingSection = ({
                         </span>
                         <Tooltip
                             target="new-plan-price-tooltip"
-                            placement="top"
+                            placement="top-start"
+                            className={css.customTooltip}
                         >
-                            {newPlan.priceTooltipText}
+                            <div className={css.customTooltipInner}>
+                                {newPlan.priceTooltipText}
+                            </div>
                         </Tooltip>
                     </>
                 )}
