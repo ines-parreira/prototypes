@@ -82,8 +82,8 @@ jest.mock(
 jest.mock('common/segment')
 
 const mockViewTickets = jest.fn()
-jest.mock('@gorgias/realtime', () => ({
-    useAgentActivity: () => ({
+jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({
+    useAblyAgentActivity: () => ({
         viewTickets: mockViewTickets,
     }),
 }))

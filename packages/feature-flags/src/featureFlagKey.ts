@@ -1,5 +1,7 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
+    AblyRealtime = 'linear.project_poc-migrate-activity-to-ably.enable-realtime-ably',
+    AblyRealtimeLogging = 'linear.project_poc-migrate-activity-to-ably.enable-realtime-ably-logging',
     ActionEventsLogs = 'action-events-logs',
     Actions3plObjects = 'actions-3pl-objects',
     ActionsInputsProduct = 'actions-inputs-product',

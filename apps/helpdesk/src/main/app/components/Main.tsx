@@ -14,6 +14,7 @@ import { NotificationsProvider } from 'common/notifications'
 import { ThemeProvider } from 'core/theme'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
+import AblyRealtimeProviders from 'providers/realtime-ably/AblyRealtimeProviders'
 import RealtimeAppProvider from 'providers/realtime/RealtimeAppProvider'
 import { SpotlightProvider } from 'providers/ui/SpotlightProvider'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
@@ -30,31 +31,33 @@ export default function Main({ children }: Props) {
             <ThemeProvider>
                 <NotificationsProvider>
                     <BannersContextProvider>
-                        <RealtimeAppProvider>
-                            <SpotlightProvider>
-                                <VoiceDeviceProvider>
-                                    <AgentOnlineStatusProvider>
-                                        <AgentActivityProvider>
-                                            <SplitTicketViewProvider>
-                                                <CookiesProvider
-                                                    defaultSetOptions={{
-                                                        path: '/',
-                                                    }}
-                                                >
-                                                    <NavigationProvider>
-                                                        <NavBarProvider>
-                                                            <App>
-                                                                {children}
-                                                            </App>
-                                                        </NavBarProvider>
-                                                    </NavigationProvider>
-                                                </CookiesProvider>
-                                            </SplitTicketViewProvider>
-                                        </AgentActivityProvider>
-                                    </AgentOnlineStatusProvider>
-                                </VoiceDeviceProvider>
-                            </SpotlightProvider>
-                        </RealtimeAppProvider>
+                        <AblyRealtimeProviders>
+                            <RealtimeAppProvider>
+                                <SpotlightProvider>
+                                    <VoiceDeviceProvider>
+                                        <AgentOnlineStatusProvider>
+                                            <AgentActivityProvider>
+                                                <SplitTicketViewProvider>
+                                                    <CookiesProvider
+                                                        defaultSetOptions={{
+                                                            path: '/',
+                                                        }}
+                                                    >
+                                                        <NavigationProvider>
+                                                            <NavBarProvider>
+                                                                <App>
+                                                                    {children}
+                                                                </App>
+                                                            </NavBarProvider>
+                                                        </NavigationProvider>
+                                                    </CookiesProvider>
+                                                </SplitTicketViewProvider>
+                                            </AgentActivityProvider>
+                                        </AgentOnlineStatusProvider>
+                                    </VoiceDeviceProvider>
+                                </SpotlightProvider>
+                            </RealtimeAppProvider>
+                        </AblyRealtimeProviders>
                     </BannersContextProvider>
                 </NotificationsProvider>
             </ThemeProvider>

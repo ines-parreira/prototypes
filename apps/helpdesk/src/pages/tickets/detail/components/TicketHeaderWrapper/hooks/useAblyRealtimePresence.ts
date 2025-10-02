@@ -1,17 +1,16 @@
 import { useMemo } from 'react'
 
-import { useAgentActivity } from '@gorgias/realtime'
-
 import useAppSelector from 'hooks/useAppSelector'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { TicketPresenceState } from './useCollisionDetection'
 
-export default function useRealtimePresence(
+export default function useAblyRealtimePresence(
     ticketId: number,
 ): TicketPresenceState {
     const currentUser = useAppSelector(getCurrentUser)
-    const { getTicketActivity } = useAgentActivity()
+    const { getTicketActivity } = useAblyAgentActivity()
     const ticketActivity = getTicketActivity(ticketId)
 
     const agentsViewing = useMemo(

@@ -51,6 +51,7 @@ minimumReleaseAgeExclude:
   - '@gorgias/knowledge-service-validators'
   - '@gorgias/knowledge-service-spec'
   - '@gorgias/realtime'
+  - '@gorgias/realtime-ably'
   - '@gorgias/static-analysis'
 
 catalogs:

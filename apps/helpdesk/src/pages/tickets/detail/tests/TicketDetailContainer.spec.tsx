@@ -26,6 +26,7 @@ import * as voiceCallQueries from 'models/voiceCall/queries'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
@@ -41,6 +42,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import * as customFieldsUtils from 'utils/customFields'
 import { makeExecuteKeyboardAction, renderWithRouter } from 'utils/testing'
 
+// oxlint-disable-next-line no-named-as-default
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
 import { TicketDetailContainer } from '../TicketDetailContainer'
@@ -166,6 +168,11 @@ jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()
+
+jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
+const mockUseAblyAgentActivity = useAblyAgentActivity as jest.Mock
+const mockJoinTicketAbly = jest.fn()
+const mockLeaveTicketAbly = jest.fn()
 
 // Mock knowledge source sidebar components
 jest.mock(
@@ -313,14 +320,12 @@ describe('TicketDetailContainer component', () => {
         })
 
         mockUseAgentActivity.mockReturnValue({
-            getTicketActivity: () => {
-                return {
-                    typing: [],
-                    viewing: [],
-                }
-            },
             joinTicket: mockJoinTicket,
             leaveTicket: mockLeaveTicket,
+        })
+        mockUseAblyAgentActivity.mockReturnValue({
+            joinTicket: mockJoinTicketAbly,
+            leaveTicket: mockLeaveTicketAbly,
         })
         mockUseOutboundTranslationContext.mockReturnValue({
             isTranslationPending: false,
@@ -1727,6 +1732,21 @@ describe('TicketDetailContainer component', () => {
 
         unmount()
         expect(mockLeaveTicket).toHaveBeenCalled()
+    })
+
+    it('should call joinTicket and leaveTicket from realtime ably package on mount / unmount', () => {
+        const { unmount } = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        expect(mockJoinTicketAbly).toHaveBeenCalled()
+
+        unmount()
+        expect(mockLeaveTicketAbly).toHaveBeenCalled()
     })
 
     describe('Mobile view functionality', () => {

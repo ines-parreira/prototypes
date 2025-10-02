@@ -13,7 +13,6 @@ import { fromJS, List } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { Ticket } from '@gorgias/helpdesk-queries'
-import { useAgentActivity } from '@gorgias/realtime'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -27,6 +26,7 @@ import { isCreationUrl, isSearchUrl } from 'pages/common/utils/url'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import { TicketListActions } from 'pages/tickets/list/components/TicketListActions'
 import css from 'pages/tickets/list/TicketList.less'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { fetchTags } from 'state/tags/actions'
 import { getTickets } from 'state/tickets/selectors'
 import { updateSelectedItemsIds } from 'state/views/actions'
@@ -58,7 +58,7 @@ const TicketList = () => {
         ticket_ids: ticketIds,
     })
 
-    const { viewTickets } = useAgentActivity()
+    const { viewTickets } = useAblyAgentActivity()
     useEffect(() => {
         viewTickets(ticketIds)
     }, [ticketIds, viewTickets])

@@ -2,16 +2,16 @@ import { renderHook } from '@repo/testing'
 
 import { useFlag } from 'core/flags'
 
+import useAblyRealtimePresence from '../useAblyRealtimePresence'
 import useCollisionDetection from '../useCollisionDetection'
-import useRealtimePresence from '../useRealtimePresence'
 import useSocketIOPresence from '../useSocketIOPresence'
 
 jest.mock('core/flags')
-jest.mock('../useRealtimePresence')
+jest.mock('../useAblyRealtimePresence')
 jest.mock('../useSocketIOPresence')
 
 const mockUseFlag = useFlag as jest.Mock
-const mockUseRealtimePresence = useRealtimePresence as jest.Mock
+const mockUseAblyRealtimePresence = useAblyRealtimePresence as jest.Mock
 const mockUseSocketIOPresence = useSocketIOPresence as jest.Mock
 
 describe('useCollisionDetection', () => {
@@ -34,7 +34,7 @@ describe('useCollisionDetection', () => {
     it('should use SocketIO presence when FF is false', () => {
         mockUseFlag.mockReturnValue(false)
         mockUseSocketIOPresence.mockReturnValue(mockPresence1)
-        mockUseRealtimePresence.mockReturnValue(mockPresence2)
+        mockUseAblyRealtimePresence.mockReturnValue(mockPresence2)
 
         const { result } = renderHook(() => useCollisionDetection(ticketId))
 
@@ -44,7 +44,7 @@ describe('useCollisionDetection', () => {
     it('should use Realtime presence when FF is true', () => {
         mockUseFlag.mockReturnValue(true)
         mockUseSocketIOPresence.mockReturnValue(mockPresence2)
-        mockUseRealtimePresence.mockReturnValue(mockPresence1)
+        mockUseAblyRealtimePresence.mockReturnValue(mockPresence1)
 
         const { result } = renderHook(() => useCollisionDetection(ticketId))
 

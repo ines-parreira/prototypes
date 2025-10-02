@@ -20,6 +20,7 @@ import {
     WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { useAblyAgentsOnlineStatus } from 'providers/realtime-ably/hooks/useAblyAgentsOnlineStatus'
 
 type Props = {
     agents: LiveCallQueueAgent[]
@@ -27,7 +28,14 @@ type Props = {
 
 export default function LiveVoiceAgentsList({ agents }: Props) {
     const isLiveUpdatesEnabled = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
-    const { onlineAgents } = useAgentsOnlineStatus()
+    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
+    const { onlineAgents: ablyOnlineAgents } = useAblyAgentsOnlineStatus()
+    const { onlineAgents: pubNubOnlineAgents } = useAgentsOnlineStatus()
+
+    const onlineAgents = useMemo(
+        () => (isAblyRealtimeEnabled ? ablyOnlineAgents : pubNubOnlineAgents),
+        [isAblyRealtimeEnabled, ablyOnlineAgents, pubNubOnlineAgents],
+    )
 
     const data: WithChildren<Data>[] = useMemo(() => {
         const agentsWithOnlineStatus = isLiveUpdatesEnabled

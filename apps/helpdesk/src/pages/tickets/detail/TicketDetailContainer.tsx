@@ -31,6 +31,7 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
@@ -72,6 +73,7 @@ import { isMacOs } from 'utils/platform'
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'
 import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
+// oxlint-disable-next-line no-named-as-default
 import TicketView from './components/TicketView'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
@@ -644,20 +646,26 @@ export const TicketDetailContainer = ({
     }
 
     const { joinTicket, leaveTicket } = useAgentActivity()
+    const { joinTicket: joinTicketAbly, leaveTicket: leaveTicketAbly } =
+        useAblyAgentActivity()
 
     useEffect(() => {
         joinTicket(Number(ticketIdParam), {
             onEvent: handleTicketMessageTranslationEvents,
         })
+        joinTicketAbly(Number(ticketIdParam))
 
         return () => {
             leaveTicket()
+            leaveTicketAbly()
         }
     }, [
         ticketIdParam,
         joinTicket,
         leaveTicket,
         handleTicketMessageTranslationEvents,
+        joinTicketAbly,
+        leaveTicketAbly,
     ])
 
     const isMobileResolution = useIsMobileResolution()

@@ -1,19 +1,18 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { useAgentActivity } from '@gorgias/realtime'
-
 import useAppSelector from 'hooks/useAppSelector'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 
-import useRealtimePresence from '../useRealtimePresence'
+import useAblyRealtimePresence from '../useAblyRealtimePresence'
 
+jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
 jest.mock('hooks/useAppSelector')
-jest.mock('@gorgias/realtime')
 
 const mockUseAppSelector = useAppSelector as jest.Mock
-const mockUseAgentActivity = useAgentActivity as jest.Mock
+const mockUseAblyAgentActivity = useAblyAgentActivity as jest.Mock
 
-describe('useRealtimePresence', () => {
+describe('useAblyRealtimePresence', () => {
     const ticketId = 123
 
     it('should return the correct presence data', () => {
@@ -24,11 +23,11 @@ describe('useRealtimePresence', () => {
         }
 
         mockUseAppSelector.mockReturnValue(currentUser)
-        mockUseAgentActivity.mockReturnValue({
+        mockUseAblyAgentActivity.mockReturnValue({
             getTicketActivity: () => ticketActivity,
         })
 
-        const { result } = renderHook(() => useRealtimePresence(ticketId))
+        const { result } = renderHook(() => useAblyRealtimePresence(ticketId))
 
         expect(result.current).toEqual({
             agentsViewing: [{ id: 'agent1' }, { id: 'agent2' }],

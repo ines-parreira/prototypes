@@ -4,7 +4,7 @@ import { User } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 
-import useRealtimePresence from './useRealtimePresence'
+import useAblyRealtimePresence from './useAblyRealtimePresence'
 import useSocketIOPresence from './useSocketIOPresence'
 
 export type TicketPresenceState = {
@@ -16,7 +16,7 @@ export type TicketPresenceState = {
 export default function useCollisionDetection(
     ticketId: number,
 ): TicketPresenceState {
-    const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
+    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
 
     const { agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth } =
         useSocketIOPresence()
@@ -25,9 +25,9 @@ export default function useCollisionDetection(
         agentsViewingNotTyping: realtime_agentsViewingNotTyping,
         agentsTyping: realtime_agentsTyping,
         hasBoth: realtime_hasBoth,
-    } = useRealtimePresence(ticketId)
+    } = useAblyRealtimePresence(ticketId)
 
-    return isRealtimeEnabled
+    return isAblyRealtimeEnabled
         ? {
               agentsViewing: realtime_agentsViewing,
               agentsViewingNotTyping: realtime_agentsViewingNotTyping,

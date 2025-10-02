@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
 
-import { useAgentActivity } from '@gorgias/realtime'
+import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 
 import useViewTickets, { DEBOUNCED_VIEW_TICKETS_DELAY } from '../useViewTickets'
 
-jest.mock('@gorgias/realtime')
-const mockUseAgentActivity = useAgentActivity as jest.Mock
+jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
+const mockUseAgentActivity = useAblyAgentActivity as jest.Mock
 
 describe('useViewTickets', () => {
     beforeEach(() => {
