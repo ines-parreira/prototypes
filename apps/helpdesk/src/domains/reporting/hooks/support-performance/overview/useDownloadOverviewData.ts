@@ -10,6 +10,7 @@ import {
     MetricPerDimensionFetch,
 } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     OverviewChartConfig,
@@ -27,13 +28,6 @@ export const WORKLOAD_REPORT_FILE_NAME = 'workload'
 export const TICKET_VOLUME_REPORT_FILE_NAME = 'ticket-volume'
 export const CUSTOMER_EXPERIENCE_REPORT_FILE_NAME = 'customer-experience'
 export const OVER_VIEW_METRICS_REPORT_FILE_NAME = 'overview-metrics'
-
-const ticketVolumeReportSource = [
-    OverviewMetric.CustomerSatisfaction,
-    OverviewMetric.MedianFirstResponseTime,
-    OverviewMetric.MedianResolutionTime,
-    OverviewMetric.MessagesPerTicket,
-].map((metric) => OverviewMetricConfig[metric])
 
 const timeSeriesMetrics: TimeSeriesMetric[] = [
     OverviewMetric.TicketsCreated,
@@ -62,8 +56,33 @@ export const workloadReportSources = workloadReportMetrics.map(
     (metric) => OverviewMetricConfig[metric],
 )
 
+function insertAt<T>(arr: T[], item: T, idx: number): void {
+    arr.splice(idx, 0, item)
+}
+
 export const useDownloadOverViewData = (fetchingEnabled = true) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+
+    const isHrtAiEnabled = useIsHrtAiEnabled()
+
+    const ticketVolumeReportSource = useMemo(() => {
+        const metricNames = [
+            OverviewMetric.CustomerSatisfaction,
+            OverviewMetric.MedianFirstResponseTime,
+            OverviewMetric.MedianResolutionTime,
+            OverviewMetric.MessagesPerTicket,
+        ]
+
+        if (isHrtAiEnabled) {
+            insertAt(
+                metricNames,
+                OverviewMetric.HumanResponseTimeAfterAiHandoff,
+                metricNames.indexOf(OverviewMetric.MedianFirstResponseTime) + 1,
+            )
+        }
+
+        return metricNames.map((metric) => OverviewMetricConfig[metric])
+    }, [isHrtAiEnabled])
 
     const workloadTrendData = useTrendReportData(
         cleanStatsFilters,

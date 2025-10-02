@@ -18,7 +18,7 @@ import {
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketMessagesEnrichedFirstHumanResponseTimesMembers,
+    TicketFirstHumanAgentResponseTimeMembers,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -43,7 +43,7 @@ export function humanResponseTimeAfterAiHandoffQueryFactory(
                 values: getFilterDateRange(statsFilters.period),
             },
             ...statsFiltersToReportingFilters(
-                TicketMessagesEnrichedFirstHumanResponseTimesMembers,
+                TicketFirstHumanAgentResponseTimeMembers,
                 statsFilters,
             ),
         ],

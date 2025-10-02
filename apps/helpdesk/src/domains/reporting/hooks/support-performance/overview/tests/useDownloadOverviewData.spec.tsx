@@ -14,6 +14,7 @@ import {
     WORKLOAD_REPORT_FILE_NAME,
 } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
@@ -32,6 +33,9 @@ import {
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
+
+jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
+const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
 
 jest.mock('utils/file')
 jest.mock('domains/reporting/services/supportPerformanceReportingService')
@@ -85,6 +89,7 @@ describe('useDownloadOverviewData', () => {
     } as ReturnType<typeof useTimeSeries>
 
     beforeEach(() => {
+        useIsHrtAiEnabledMock.mockReturnValue(true)
         useNewStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: defaultStatsFilters,
             granularity: ReportingGranularity.Day,

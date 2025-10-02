@@ -39,6 +39,11 @@ import {
 } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
+    TicketsFirstAgentResponseTimeCube,
+    TicketsFirstAgentResponseTimeDimension,
+    TicketsFirstAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
+import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
@@ -65,6 +70,7 @@ type AgentIdentifierDimension =
     | TicketMessagesMember.SenderId
     | TicketMessagesEnrichedResponseTimesDimension.TicketMessageUserId
     | TicketFirstHumanAgentResponseTimeDimension.FirstHumanAgentMessageUserId
+    | TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId
 
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -73,6 +79,7 @@ type AgentReportMetrics =
     | AgentTimeTrackingCube['measures']
     | HandleTimeCube['measures']
     | TicketFirstHumanAgentResponseTimeMeasure
+    | TicketsFirstAgentResponseTimeCube['measures']
 
 type ReportDataMap = Record<
     AgentsTableColumn,
@@ -188,10 +195,6 @@ export const getData = (
 ) => {
     const AssigneeUserId = TicketDimension.AssigneeUserId
     const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
-    const FirstHelpdeskMessageUserId =
-        TicketMessagesDimension.FirstHelpdeskMessageUserId
-    const MedianFirstResponseTime =
-        TicketMessagesMeasure.MedianFirstResponseTime
     const MedianResponseTime =
         TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime
     const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
@@ -230,8 +233,10 @@ export const getData = (
         [AgentsTableColumn.MedianFirstResponseTime]: {
             column: AgentsTableColumn.MedianFirstResponseTime,
             metricData: data.medianFirstResponseTimeMetric,
-            idField: FirstHelpdeskMessageUserId,
-            metricField: MedianFirstResponseTime,
+            idField:
+                TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+            metricField:
+                TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
             averageData: average.medianFirstResponseTimeMetric.data?.value,
             totalData: total.medianFirstResponseTimeMetric.data?.value,
         },

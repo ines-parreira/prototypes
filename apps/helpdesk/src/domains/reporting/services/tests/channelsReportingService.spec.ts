@@ -3,6 +3,7 @@ import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/Handle
 import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketFirstHumanAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMeasure } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -59,7 +60,7 @@ describe('channelsReportingService', () => {
             ),
             humanTimeAfterAiHandoffMetricPerChannel: exampleData(
                 channelA.slug,
-                TicketMessagesMeasure.MedianFirstResponseTime,
+                TicketFirstHumanAgentResponseTimeMeasure.MedianFirstHumanAgentResponseTime,
                 '69',
             ),
             percentageOfCreatedTicketsMetricPerChannel: exampleData(

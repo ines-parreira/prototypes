@@ -50,6 +50,7 @@ import { useTicketsRepliedPerHourPerAgent } from 'domains/reporting/hooks/useTic
 import { AgentTimeTrackingMember } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketFirstHumanAgentResponseTimeMember } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesDimension } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketsFirstAgentResponseTimeDimension } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
@@ -586,6 +587,7 @@ export const agentIdFields = [
     HelpdeskMessageMember.SenderId,
     AgentTimeTrackingMember.UserId,
     TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+    TicketFirstHumanAgentResponseTimeMember.FirstHumanAgentMessageUserId,
 ]
 
 const isAgentsMetric = (

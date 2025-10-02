@@ -15,6 +15,10 @@ import {
     HelpdeskMessageMeasure,
 } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
+import {
+    TicketFirstHumanAgentResponseTimeCube,
+    TicketFirstHumanAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMeasure } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -38,6 +42,7 @@ export type ChannelsReportMetrics =
     | HelpdeskMessageCubeWithJoins['measures']
     | AgentTimeTrackingCube['measures']
     | HandleTimeCube['measures']
+    | TicketFirstHumanAgentResponseTimeCube['measures']
 
 type ReportDataMap = Record<
     ChannelsTableColumns,
@@ -133,7 +138,8 @@ export const saveReport = (
             column: ChannelsTableColumns.FirstResponseTime,
             metricData: data.humanTimeAfterAiHandoffMetricPerChannel,
             idField: CHANNEL_DIMENSION,
-            metricField: MedianFirstResponseTime,
+            metricField:
+                TicketFirstHumanAgentResponseTimeMeasure.MedianFirstHumanAgentResponseTime,
         },
         [ChannelsTableColumns.MedianResponseTime]: {
             column: ChannelsTableColumns.MedianResponseTime,

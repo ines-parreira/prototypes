@@ -95,6 +95,13 @@ export const TicketMessagesEnrichedFirstResponseTimesMembers = {
     agents: TicketMessagesMember.FirstHelpdeskMessageUserId,
 }
 
+export const TicketFirstHumanAgentResponseTimeMembers = {
+    ...TicketStatsFiltersMembers,
+    agents: TicketFirstHumanAgentResponseTimeMember.FirstHumanAgentMessageUserId,
+    integrations: TicketFirstHumanAgentResponseTimeMember.Integration,
+    stores: TicketFirstHumanAgentResponseTimeMember.Store,
+}
+
 export const TicketsFirstAgentResponseTimeMembers = {
     ...TicketStatsFiltersMembers,
     agents: TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
