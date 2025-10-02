@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,6 +16,10 @@ import { RootState, StoreDispatch } from 'state/types'
 import { AccessContainer } from '../Access'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn().mockReturnValue(true),
+}))
 
 const accessSettings = fromJS({
     id: 1,
@@ -55,9 +59,56 @@ const accessSettingsGeneric = fromJS({
 })
 
 describe('<Access/>', () => {
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
+    const createMockStore = configureMockStore<
+        Partial<RootState>,
+        StoreDispatch
+    >([thunk])
+
+    // Create a complete mock state with all required data
+    const mockState = {
+        billing: fromJS({
+            products: [
+                {
+                    type: 'helpdesk',
+                    prices: [
+                        {
+                            plan_id: '0',
+                            name: 'Enterprise',
+                            custom: false,
+                            amount: 100000,
+                            cadence: 'month',
+                            currency: 'usd',
+                            extra_ticket_cost: 0.5,
+                            num_quota_tickets: 10000,
+                            integrations: 200,
+                            is_legacy: false,
+                            features: {},
+                            tier: 'Enterprise',
+                            product: 'helpdesk',
+                            price_id: 'price_enterprise',
+                            public: true,
+                        },
+                    ],
+                },
+            ],
+        }),
+        currentAccount: fromJS({
+            subscription: {
+                products: {
+                    helpdesk: '0', // Enterprise plan ID
+                },
+            },
+        }),
+        currentUser: fromJS({
+            id: 1,
+            email: 'test@example.com',
+            role: { name: 'Admin' },
+            timezone: 'America/New_York',
+            has2FaEnabled: false,
+        }),
+    }
+
+    const mockStore = () => createMockStore(mockState)
 
     it('should render properly', () => {
         const { container } = render(
@@ -135,7 +186,8 @@ describe('<Access/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should save the settings when the submit button is clicked', () => {
+    it('should save the settings when the submit button is clicked', async () => {
+        const user = userEvent.setup()
         const submitSetting = jest.fn()
         const { getByText } = render(
             <Provider store={mockStore()}>
@@ -149,7 +201,7 @@ describe('<Access/>', () => {
             </Provider>,
         )
 
-        userEvent.click(getByText('Save changes'))
+        await user.click(getByText('Save changes'))
 
         expect(submitSetting).toHaveBeenCalled()
     })

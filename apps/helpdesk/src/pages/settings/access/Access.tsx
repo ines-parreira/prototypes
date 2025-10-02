@@ -314,7 +314,6 @@ export const AccessContainer = (props: Props) => {
                                 placeholder="domain.com, mydomain.com"
                                 value={allowedDomains}
                                 onChange={setAllowedDomains}
-                                isRequired
                                 readOnly={
                                     signupMode !== SignupMode.AllowedDomains
                                 }

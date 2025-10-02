@@ -5,8 +5,11 @@ import { v4 as uuidv4 } from 'uuid'
 import { Box, Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
-import { CustomSSOProviders } from 'state/currentAccount/types'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import type { CustomSSOProviders } from 'state/currentAccount/types'
 
+import { convertLegacyPlanNameToPublicPlanName } from '../../../utils/paywalls'
 import CustomSsoProviderModal from './components/CustomSsoProviderModal'
 import ProviderItem from './components/ProviderItem'
 import { useCustomSsoProviderModalState } from './hooks'
@@ -27,7 +30,20 @@ const CustomSsoProviders = ({
     onUpdate,
     providers = {},
 }: CustomSsoProvidersProps) => {
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentPlanName = currentHelpdeskPlan
+        ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
+        : null
+
     const isCustomSSOEnabled = useFlag(FeatureFlagKey.CustomSso)
+
+    // free plan is like enterprise but off the books, meaning it's used by our partners and gorgias employees
+    const isAdvancedPlusCustomer = [
+        'advanced',
+        'enterprise',
+        'custom',
+        'free',
+    ].some((priceType) => currentPlanName?.toLowerCase().includes(priceType))
 
     const createProvider = (providerData: CustomSSOProviderData) => {
         const newProviderId = uuidv4()
@@ -134,7 +150,7 @@ const CustomSsoProviders = ({
                 />
             </Box>
 
-            {isCustomSSOEnabled && (
+            {isCustomSSOEnabled && isAdvancedPlusCustomer && (
                 <Button
                     className={classNames({
                         [css.addProviderButton]: providerEntries.length > 0,
