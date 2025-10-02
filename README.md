@@ -6,46 +6,49 @@ It's built using ReactJS + Redux + many other smaller tools.
 ## Table of Contents
 
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
-  - [Table of Contents](#table-of-contents)
-  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-    - [PNPM Catalogs](#pnpm-catalogs)
-  - [Development](#development)
-    - [Environment Configuration](#environment-configuration)
-      - [Initial Setup](#initial-setup)
-    - [Running the Development Server](#running-the-development-server)
-    - [Storybook](#storybook)
-      - [Story Guidelines](#story-guidelines)
-      - [Storybook Folder Structure](#storybook-folder-structure)
-    - [Design tokens](#design-tokens)
-  - [Testing](#testing)
-    - [General testing](#general-testing)
-  - [CI/CD Workflow](#cicd-workflow)
-    - [Overview](#overview)
-    - [Workflow Structure](#workflow-structure)
-    - [Quality Checks](#quality-checks)
-    - [Code Coverage](#code-coverage)
-    - [Deployment Pipeline](#deployment-pipeline)
-  - [Linting](#linting)
-    - [Running Linting](#running-linting)
-    - [Adding Linting rules](#adding-linting-rules)
-  - [Debugging tools](#debugging-tools)
-    - [ReactScan](#reactscan)
-    - [WhyDidYouRender](#whydidyourender)
-      - [How it's imported](#how-its-imported)
-      - [How to use it](#how-to-use-it)
-  - [Formatting](#formatting)
-  - [Platform](#platform)
-    - [Deprecated entries](#deprecated-entries)
-      - [Generate new snapshot](#generate-new-snapshot)
-      - [Deprecated entries lint check](#deprecated-entries-lint-check)
-      - [Add new deprecated entries](#add-new-deprecated-entries)
-    - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
-  - [Contributing](#contributing)
-  - [Update gorgias-chat client](#update-gorgias-chat-client)
-  - [FAQ / Troubleshooting](#faq--troubleshooting)
-    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+    - [Table of Contents](#table-of-contents)
+    - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+        - [PNPM Catalogs](#pnpm-catalogs)
+        - [Updating SDKs](#updating-sdks)
+        - [Release Age Configuration](#release-age-configuration)
+    - [Development](#development)
+        - [Environment Configuration](#environment-configuration)
+            - [Initial Setup](#initial-setup)
+        - [Running the Development Server](#running-the-development-server)
+        - [Running the shared worker](#running-the-shared-worker)
+        - [Storybook](#storybook)
+            - [Story Guidelines](#story-guidelines)
+            - [Storybook Folder Structure](#storybook-folder-structure)
+        - [Design tokens](#design-tokens)
+    - [Testing](#testing)
+        - [General testing](#general-testing)
+    - [CI/CD Workflow](#cicd-workflow)
+        - [Overview](#overview)
+        - [Workflow Structure](#workflow-structure)
+        - [Quality Checks](#quality-checks)
+        - [Code Coverage](#code-coverage)
+        - [Deployment Pipeline](#deployment-pipeline)
+    - [Linting](#linting)
+        - [Running Linting](#running-linting)
+        - [Adding Linting rules](#adding-linting-rules)
+    - [Debugging tools](#debugging-tools)
+        - [ReactScan](#reactscan)
+        - [WhyDidYouRender](#whydidyourender)
+            - [How it's imported](#how-its-imported)
+            - [How to use it](#how-to-use-it)
+    - [Formatting](#formatting)
+    - [Platform](#platform)
+        - [Deprecated entries](#deprecated-entries)
+            - [Generate new snapshot](#generate-new-snapshot)
+            - [Deprecated entries lint check](#deprecated-entries-lint-check)
+            - [Add new deprecated entries](#add-new-deprecated-entries)
+        - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
+    - [Contributing](#contributing)
+    - [Update gorgias-chat client](#update-gorgias-chat-client)
+    - [FAQ / Troubleshooting](#faq--troubleshooting)
+        - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -82,6 +85,19 @@ To update a package whose version is specified in a catalog, you need to update 
 
 To update the SDKs, you can use the `pnpm platform:update:sdk` command (ie. `pnpm platform:update:sdk helpdesk`)
 This will bump all the services' packages to their latest version (updating correctly both the workspace/catalogs manifest and the lockfile).
+
+### Release Age Configuration
+
+This project uses PNPM's `minimumReleaseAge` feature to ensure package stability by preventing installation of packages that are too new. The configuration is defined in `pnpm-workspace.yaml`:
+
+- **`minimumReleaseAge: 1440`**: Packages must be at least 1440 minutes (24 hours) old before they can be installed
+- **`minimumReleaseAgeExclude`**: A list of trusted packages that are exempt from the minimum release age requirement
+
+The excluded packages include all internal Gorgias packages (like `@gorgias/helpdesk-client`, `@gorgias/design-tokens`, etc.). This ensures that internal packages can be updated immediately while external packages have a 24-hour "cooling off" period to catch any critical issues before adoption.
+
+To modify this behavior, update the `minimumReleaseAge` value (in minutes) or add/remove packages from the `minimumReleaseAgeExclude` list in `pnpm-workspace.yaml`.
+
+When trying to install a package that isn't doesn't respect the `minimumReleaseAge` you will get the following error: `ERR_PNPM_NO_MATCHING_VERSION No matching version found for [...]`
 
 ## Development
 
