@@ -20,7 +20,7 @@ export enum AgentsTableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'agent_customer_satisfaction',
     MedianFirstResponseTime = 'agent_median_first_response_time',
-    HumanResponseTimeAfterAiHandoff = 'human_response_time_after_ai_handoff',
+    HumanResponseTimeAfterAiHandoff = 'agent_human_response_time_after_ai_handoff',
     MedianResponseTime = 'agent_median_response_time',
     MedianResolutionTime = 'agent_median_resolution_time',
     MessagesSent = 'agent_messages_sent',
@@ -171,7 +171,7 @@ export enum ChannelsTableColumns {
     MessagesReceived = 'channels_messages_received',
     CustomerSatisfaction = 'channels_customer_satisfaction',
     MedianResponseTime = 'channels_median_response_time',
-    HumanResponseTimeAfterAiHandoff = 'human_response_time_after_ai_handoff',
+    HumanResponseTimeAfterAiHandoff = 'channels_human_response_time_after_ai_handoff',
 }
 
 export enum ProductInsightsTableColumns {

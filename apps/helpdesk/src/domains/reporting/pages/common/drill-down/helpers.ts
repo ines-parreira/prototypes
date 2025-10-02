@@ -217,6 +217,7 @@ export const getDrillDownQuery = (
         case AgentsTableColumn.OneTouchTickets:
         case AgentsTableColumn.ZeroTouchTickets:
         case AgentsTableColumn.TicketHandleTime:
+        case AgentsTableColumn.HumanResponseTimeAfterAiHandoff:
             return queryBuilderWithAgentFilter(
                 metricData.perAgentId,
                 AgentsColumnConfig[metricData.metricName].drillDownQuery,

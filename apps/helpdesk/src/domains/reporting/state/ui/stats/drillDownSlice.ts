@@ -75,6 +75,7 @@ type PerformanceOverviewMetrics = (
 export type AgentMetricColumn =
     | AgentsTableColumn.CustomerSatisfaction
     | AgentsTableColumn.MedianFirstResponseTime
+    | AgentsTableColumn.HumanResponseTimeAfterAiHandoff
     | AgentsTableColumn.MedianResolutionTime
     | AgentsTableColumn.MedianResponseTime
     | AgentsTableColumn.MessagesSent
