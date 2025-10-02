@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 export function useIsHrtAiEnabled() {
     const isFeatureFlagEnabled = useFlag<boolean>(
@@ -9,8 +9,7 @@ export function useIsHrtAiEnabled() {
         false,
     )
 
-    const { aiAgentType } = useAiAgentTypeForAccount()
-    const isAiAgentEnabled = aiAgentType !== undefined
+    const { hasAccess } = useAiAgentAccess()
 
-    return isAiAgentEnabled && isFeatureFlagEnabled
+    return hasAccess && isFeatureFlagEnabled
 }

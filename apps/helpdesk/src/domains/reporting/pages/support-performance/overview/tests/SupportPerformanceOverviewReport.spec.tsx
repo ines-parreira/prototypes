@@ -37,7 +37,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -65,8 +65,8 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
-const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock('domains/reporting/pages/common/components/TrendCard')
 const trendCardMock = assumeMock(TrendCard)
@@ -138,8 +138,8 @@ describe('<SupportPerformanceOverview />', () => {
             isReportRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         })
-        useAiAgentTypeForAccountMock.mockReturnValue({
-            aiAgentType: 'mixed',
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
         })
         trendCardMock.mockImplementation(({ tip }) => (
@@ -198,8 +198,8 @@ describe('<SupportPerformanceOverview />', () => {
     )
 
     it("doesn't render HRT-AI if AI Agent is not enabled", () => {
-        useAiAgentTypeForAccountMock.mockReturnValue({
-            aiAgentType: undefined,
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
         })
 
