@@ -1971,6 +1971,10 @@ describe('<TicketHeader />', () => {
                 fireEvent.click(getByText(/more_vert/))
                 fireEvent.click(getByText(/Show all follow-ups/))
 
+                expect(logEvent).toHaveBeenCalledWith(
+                    SegmentEvent.SmartFollowUpsVisibilityControlClicked,
+                    { visibility: 'visible' },
+                )
                 expect(
                     ticketActions.setShouldDisplayAllFollowUps,
                 ).toHaveBeenCalledWith(true)
@@ -1996,6 +2000,10 @@ describe('<TicketHeader />', () => {
                 fireEvent.click(getByText(/more_vert/))
                 fireEvent.click(getByText(/Hide all follow-ups/))
 
+                expect(logEvent).toHaveBeenCalledWith(
+                    SegmentEvent.SmartFollowUpsVisibilityControlClicked,
+                    { visibility: 'hidden' },
+                )
                 expect(
                     ticketActions.setShouldDisplayAllFollowUps,
                 ).toHaveBeenCalledWith(false)

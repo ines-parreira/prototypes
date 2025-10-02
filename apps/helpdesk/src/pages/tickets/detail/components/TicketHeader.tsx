@@ -269,6 +269,10 @@ const TicketHeader = ({
     }
 
     const toggleFollowUps = () => {
+        logEvent(SegmentEvent.SmartFollowUpsVisibilityControlClicked, {
+            // Propagating the next visibility state after the toggle.
+            visibility: shouldDisplayAllFollowUps ? 'hidden' : 'visible',
+        })
         dispatch(setShouldDisplayAllFollowUps(!shouldDisplayAllFollowUps))
     }
 

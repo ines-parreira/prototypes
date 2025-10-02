@@ -383,6 +383,7 @@ export enum SegmentEvent {
     ShopifyRefundOrderOpen = 'shopify/refund-order/open',
     ShowMoreFieldsClicked = 'show-more-fields-clicked',
     SidebarViewsChanged = 'sidebar-views-changed',
+    SmartFollowUpsVisibilityControlClicked = 'smart-follow-ups-visibility-control-clicked',
     SnoozeButtonClicked = 'snooze-button-clicked',
     StatClicked = 'stat-clicked',
     StatAiAgentOverviewPageViewed = 'stat-ai-agent-overview-page-viewed',
