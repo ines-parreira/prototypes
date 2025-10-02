@@ -1,3 +1,5 @@
+import { TicketLanguage } from '@gorgias/helpdesk-types'
+
 export enum Language {
     Czech = 'cz',
     Danish = 'da',
@@ -116,11 +118,27 @@ export const ISO639English = ISO639.reduce((pair: string[][], code) => {
         return obj
     }, {})
 
-export const TranslationSupportedLanguagesInEnglish = ISO639.filter(
-    (code) => !code.includes('-'),
+const TranslationSupportedRecord = Object.values(TicketLanguage)
+    .filter((code) => !code.includes('-'))
+    .reduce<Record<string, string>>((record, code) => {
+        const label = IntlDisplayNames.of(code) as string
+        // If the code and the last label are identical, theirs not support by the
+        // browser IntlDisplayNames, so we don't need to add it to the list
+        if (code === label) {
+            return record
+        }
+
+        // Prevent duplicates (Akan for example)
+        record[IntlDisplayNames.of(code) as string] = code
+
+        return record
+    }, {})
+
+export const TranslationSupportedLanguagesInEnglish = Object.entries(
+    TranslationSupportedRecord,
 )
-    .reduce((pair: string[][], code) => {
-        pair.push([code, IntlDisplayNames.of(code) as string])
-        return pair
-    }, [])
-    .sort(([, a], [, b]) => a.localeCompare(b))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, code]) => ({
+        code,
+        name,
+    }))

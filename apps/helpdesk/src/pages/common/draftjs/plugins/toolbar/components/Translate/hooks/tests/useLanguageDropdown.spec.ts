@@ -5,12 +5,24 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useLanguageDropdown } from '../useLanguageDropdown'
 
 jest.mock('constants/languages', () => ({
-    ISO639English: {
-        en: 'English',
-        fr: 'French',
-        de: 'German',
-        es: 'Spanish',
-    },
+    TranslationSupportedLanguagesInEnglish: [
+        {
+            code: 'en',
+            name: 'English',
+        },
+        {
+            code: 'fr',
+            name: 'French',
+        },
+        {
+            code: 'de',
+            name: 'German',
+        },
+        {
+            code: 'es',
+            name: 'Spanish',
+        },
+    ],
 }))
 
 jest.mock('hooks/useAppSelector')

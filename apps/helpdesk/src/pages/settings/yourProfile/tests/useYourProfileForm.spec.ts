@@ -395,7 +395,7 @@ describe('useYourProfileForm', () => {
                 result.current.handleProficientLanguagesChange(newOptions)
             })
 
-            expect(result.current.proficientLanguagesOptions.length).toBe(55)
+            expect(result.current.proficientLanguagesOptions.length).toBe(181)
         })
     })
 
@@ -473,7 +473,7 @@ describe('useYourProfileForm', () => {
                 languagePreferences: mockLanguagePreferences,
             })
 
-            expect(result.current.proficientLanguagesOptions.length).toBe(55)
+            expect(result.current.proficientLanguagesOptions.length).toBe(181)
 
             expect(result.current.proficientLanguagesOptions).toContainEqual({
                 label: 'English',

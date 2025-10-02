@@ -59,7 +59,7 @@ const timezoneToOptionMap = new global.Map(
 )
 
 const translationLanguageOptions = TranslationSupportedLanguagesInEnglish.map(
-    ([code, name]) => ({
+    ({ code, name }) => ({
         icon: undefined,
         value: code,
         name: name,
@@ -67,7 +67,7 @@ const translationLanguageOptions = TranslationSupportedLanguagesInEnglish.map(
 )
 
 const allProficientLanguagesOptions =
-    TranslationSupportedLanguagesInEnglish.map(([code, name]) => ({
+    TranslationSupportedLanguagesInEnglish.map(({ code, name }) => ({
         value: code,
         label: name,
     })) as Option[]

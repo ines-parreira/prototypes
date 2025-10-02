@@ -124,7 +124,7 @@ export function useYourProfileForm({
 
     const proficientLanguagesOptions = useMemo(() => {
         const allOptions = TranslationSupportedLanguagesInEnglish.map(
-            ([code, name]) => ({
+            ({ code, name }) => ({
                 label: name,
                 value: code,
             }),

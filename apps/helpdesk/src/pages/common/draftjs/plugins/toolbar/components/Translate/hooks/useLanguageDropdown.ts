@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { ISO639English } from 'constants/languages'
+import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
 import { getTicket } from 'state/ticket/selectors'
 
@@ -23,24 +23,19 @@ export function useLanguageDropdown() {
         setIsOpen((prev) => !prev)
     }, [])
 
-    const options = useMemo(
-        () =>
-            Object.entries(ISO639English).map(([code, name]) => ({
-                code,
-                name,
-            })),
-        [],
-    )
-
     const detectedLanguage = useMemo(
-        () => options.find(({ code }) => code === ticket?.language),
-        [ticket, options],
+        () =>
+            TranslationSupportedLanguagesInEnglish.find(
+                ({ code }) => code === ticket?.language,
+            ),
+        [ticket],
     )
 
     const filteredLanguages = useMemo(() => {
-        const optionsWithoutDetectedLanguage = options.filter(
-            ({ code }) => code !== detectedLanguage?.code,
-        )
+        const optionsWithoutDetectedLanguage =
+            TranslationSupportedLanguagesInEnglish.filter(
+                ({ code }) => code !== detectedLanguage?.code,
+            )
 
         if (!searchTerm.trim()) {
             return optionsWithoutDetectedLanguage
@@ -50,7 +45,7 @@ export function useLanguageDropdown() {
         return optionsWithoutDetectedLanguage.filter(({ name }) =>
             name.toLowerCase().includes(searchLower),
         )
-    }, [searchTerm, options, detectedLanguage])
+    }, [searchTerm, detectedLanguage])
 
     return {
         isOpen,
