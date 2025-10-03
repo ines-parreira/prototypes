@@ -46,6 +46,7 @@ import { SupportPerformanceTicketInsights } from 'domains/reporting/pages/ticket
 import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
 import VoiceAgents from 'domains/reporting/pages/voice/pages/VoiceAgents'
 import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import App from 'pages/App'
@@ -54,7 +55,6 @@ import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useCon
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { STATS_ROUTES } from 'routes/constants'
-import { getHasAutomate } from 'state/billing/selectors'
 import { currentAccountHasFeature } from 'state/currentAccount/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 
@@ -82,12 +82,11 @@ function HelpCenterStatsRoutes({ match: { path } }: RouteComponentProps) {
 export const StatsRoutes = () => {
     const location = useLocation()
     const { path } = useRouteMatch()
+    const { hasAccess } = useAiAgentAccess()
 
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics),
     )
-
-    const hasAutomate = useAppSelector(getHasAutomate)
 
     useEffect(logPageChange, [location.pathname])
 
@@ -287,7 +286,7 @@ export const StatsRoutes = () => {
                     />
                 </ProtectedRoute>
 
-                {hasAutomate && (
+                {hasAccess && (
                     <ProtectedRoute
                         path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA}`}
                     >

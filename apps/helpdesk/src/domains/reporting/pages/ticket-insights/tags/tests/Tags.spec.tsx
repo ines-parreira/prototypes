@@ -33,11 +33,15 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('core/flags')
 const useFlagsMock = assumeMock(useFlag)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper',
@@ -81,6 +85,10 @@ describe('<Tags>', () => {
     } as RootState
 
     beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         allUsedTagsTableChartMock.mockImplementation(componentMock)
         TagsTrendChartMock.mockImplementation(componentMock)
         TopUsedTagsChartMock.mockImplementation(componentMock)

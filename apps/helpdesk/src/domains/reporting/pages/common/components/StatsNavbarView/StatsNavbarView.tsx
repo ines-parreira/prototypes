@@ -11,15 +11,13 @@ import { StatsNavSectionItem } from 'domains/reporting/pages/common/components/S
 import { useStatsNavbarSections } from 'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections'
 import { DashboardsNavbarBlock } from 'domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { ConvertStatsNavbar } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar'
 import { STATS_ROUTES } from 'routes/constants'
-import {
-    currentAccountHasProduct,
-    getHasAutomate,
-} from 'state/billing/selectors'
+import { currentAccountHasProduct } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
@@ -33,15 +31,15 @@ export function StatsNavbarView() {
     const hasVoiceFeature = useAppSelector(
         currentAccountHasProduct(ProductType.Voice),
     )
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isNewSatisfactionReportEnabled = useFlag(
         FeatureFlagKey.NewSatisfactionReport,
     )
 
     const isAutoQANavLinkAvailable = useMemo(
-        () => isTeamLeadOrAdmin && hasAutomate,
-        [hasAutomate, isTeamLeadOrAdmin],
+        () => isTeamLeadOrAdmin && hasAccess,
+        [hasAccess, isTeamLeadOrAdmin],
     )
 
     return (

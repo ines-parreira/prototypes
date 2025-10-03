@@ -59,11 +59,11 @@ import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
 import { customFieldsMockResponse } from 'fixtures/customField'
 import { tags } from 'fixtures/tag'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { getHasAutomate } from 'state/billing/selectors'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -84,8 +84,8 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('domains/reporting/hooks/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
 
-jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
-const getHasAutomateMock = assumeMock(getHasAutomate)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
@@ -158,6 +158,10 @@ describe('FiltersPanel without data', () => {
             isError: false,
             isLoading: false,
         } as any)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
     it('should render the panel without filters', () => {
         const { container } = renderWithStore(<FiltersPanel />, defaultState)
@@ -224,7 +228,10 @@ describe('FiltersPanel', () => {
             tagIds: someTags.map((tag) => String(tag.id)),
             tagsState: tagState,
         })
-        getHasAutomateMock.mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         useVoiceQueueSearchMock.mockReturnValue({
             handleVoiceQueueSearch: jest.fn() as any,
             onLoad: jest.fn(),
@@ -905,7 +912,7 @@ describe('FiltersPanel', () => {
         )
     })
 
-    describe('hasAutomate behavior', () => {
+    describe('AI Agent access behavior', () => {
         const autoQAFilters = [...AUTO_QA_FILTER_KEYS]
         const nonAutoQAFilters = [
             FilterKey.Agents,
@@ -914,7 +921,7 @@ describe('FiltersPanel', () => {
             FilterKey.Score,
         ]
 
-        it('should show auto-qa filters when hasAutomate is true', () => {
+        it('should show auto-qa filters when user has AI Agent access', () => {
             renderWithStore(
                 <FiltersPanel
                     persistentFilters={[]}
@@ -935,8 +942,11 @@ describe('FiltersPanel', () => {
             })
         })
 
-        it('should hide auto-qa filters when hasAutomate is false', () => {
-            getHasAutomateMock.mockReturnValue(false)
+        it('should hide auto-qa filters when user does not have AI Agent access', () => {
+            useAiAgentAccessMock.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
             renderWithStore(
                 <FiltersPanel
                     persistentFilters={[]}
@@ -966,21 +976,18 @@ describe('FiltersPanel', () => {
             })
         })
 
-        it('should not affect persistent filters even when hasAutomate is false', () => {
-            const state = {
-                ...defaultState,
-                billing: fromJS({
-                    ...billingState,
-                    hasAutomate: false,
-                }),
-            }
+        it('should not affect persistent filters even when user does not have AI Agent access', () => {
+            useAiAgentAccessMock.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
 
             renderWithStore(
                 <FiltersPanel
                     persistentFilters={autoQAFilters}
                     optionalFilters={nonAutoQAFilters}
                 />,
-                state,
+                defaultState,
             )
 
             autoQAFilters.forEach((filter) => {

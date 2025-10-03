@@ -30,6 +30,7 @@ import {
     qualityManagementSlice,
 } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -37,6 +38,9 @@ const componentMock = () => <div />
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
@@ -112,6 +116,10 @@ describe('<Satisfaction>', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         SatisfactionScoreTrendCardMock.mockImplementation(componentMock)
         ResponseRateTrendCardMock.mockImplementation(componentMock)
         SurveysSentTrendCardMock.mockImplementation(componentMock)

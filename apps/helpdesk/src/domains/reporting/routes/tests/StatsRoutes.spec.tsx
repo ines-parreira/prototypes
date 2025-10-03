@@ -47,6 +47,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -103,6 +104,9 @@ const defaultState = {
 
 jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -233,6 +237,10 @@ jest.mock('pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware', () => ({
 describe('StatsRoutes', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         ChannelsReportMock.mockImplementation(() => <div />)
         ServiceLevelAgreementsMock.mockImplementation(() => <div />)
         AutoQAMock.mockImplementation(() => <div />)
@@ -391,6 +399,11 @@ describe('StatsRoutes', () => {
     it.each([UserRole.Agent, UserRole.Admin])(
         'should render AutoQA page',
         (role) => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: true,
+                isLoading: false,
+            })
+
             const state = {
                 currentUser: fromJS({
                     role: { name: role },

@@ -6,7 +6,7 @@ import { useFlag } from 'core/flags'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
-import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
@@ -24,13 +24,13 @@ jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
     useCanUseAiSalesAgent: jest.fn(),
 }))
 
-jest.mock('hooks/aiAgent/useCanUseAiAgent', () => ({
-    useCanUseAiAgent: jest.fn(),
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
 }))
 
 const mockUseFlag = assumeMock(useFlag)
 const mockUseCanUseAiSalesAgent = assumeMock(useCanUseAiSalesAgent)
-const mockUseCanUseAiAgent = assumeMock(useCanUseAiAgent)
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -50,23 +50,17 @@ describe('<AutomateStatsNavbar />', () => {
         })
         mockUseFlag.mockImplementation(() => false)
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
-            isError: false,
         })
     })
 
     it('should render with upgrade icon when automate is not enabled', () => {
         mockUseAppSelector.mockImplementation(() => false)
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
-            isError: false,
         })
         const { getByText, getByRole } = renderWithRouter(
             <Navigation.Root>
@@ -91,12 +85,9 @@ describe('<AutomateStatsNavbar />', () => {
         })
 
         mockUseAppSelector.mockImplementation(() => true)
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
         const { getAllByRole, getByRole } = renderWithRouter(
             <Navigation.Root>
@@ -137,12 +128,9 @@ describe('<AutomateStatsNavbar />', () => {
             return false
         })
 
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
             isLoading: false,
-            isError: false,
         })
 
         const { queryByText, getByRole } = renderWithRouter(
@@ -169,12 +157,9 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -192,7 +177,6 @@ describe('<AutomateStatsNavbar />', () => {
             'href',
             '/app/stats/ai-sales-agent/overview',
         )
-        // Verify that the upgrade icon is NOT present for normal links
         expect(link?.querySelector('i.material-icons')).not.toBeInTheDocument()
     })
 
@@ -209,12 +193,9 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -232,7 +213,6 @@ describe('<AutomateStatsNavbar />', () => {
             'href',
             '/app/stats/ai-sales-agent/overview',
         )
-        // Verify that the upgrade icon is NOT present for normal links
         expect(link?.querySelector('i.material-icons')).not.toBeInTheDocument()
     })
 
@@ -249,12 +229,9 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: true,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -272,7 +249,6 @@ describe('<AutomateStatsNavbar />', () => {
             'href',
             '/app/stats/ai-sales-agent/overview',
         )
-        // Verify that the upgrade icon is NOT present for normal links
         const upgradeIcon = link?.querySelector('i.material-icons')
         expect(upgradeIcon).toBeNull()
     })
@@ -291,12 +267,9 @@ describe('<AutomateStatsNavbar />', () => {
             return undefined
         })
 
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -314,7 +287,6 @@ describe('<AutomateStatsNavbar />', () => {
             'href',
             '/app/stats/ai-sales-agent/overview',
         )
-        // Verify that the upgrade icon is NOT present for normal links
         expect(link?.querySelector('i.material-icons')).not.toBeInTheDocument()
     })
 
@@ -334,12 +306,9 @@ describe('<AutomateStatsNavbar />', () => {
         })
 
         mockUseCanUseAiSalesAgent.mockReturnValue(false)
-        mockUseCanUseAiAgent.mockReturnValue({
-            storeIntegration: undefined,
-            isCurrentStoreDuringTrial: false,
-            hasAnyActiveTrial: false,
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
             isLoading: false,
-            isError: false,
         })
 
         const { getByText, getByRole } = renderWithRouter(
@@ -353,7 +322,6 @@ describe('<AutomateStatsNavbar />', () => {
         const linkElement = getByText(LINK_AI_SALES_AGENT_TEXT)
         const link = linkElement.closest('a')
         expect(link).toBeInTheDocument()
-        // Check for the upgrade icon which is characteristic of the paywall link
         expect(link?.querySelector('i.material-icons')).toHaveTextContent(
             'arrow_circle_up',
         )

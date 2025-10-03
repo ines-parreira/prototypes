@@ -11,9 +11,9 @@ import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/comp
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import { AutoQAReportConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import { SupportPerformanceSatisfactionReportConfig } from 'domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { BASE_VOICE_OF_CUSTOMER_PATH } from 'routes/constants'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
@@ -38,11 +38,11 @@ export const useReportRestrictions = () => {
     )
 
     const user = useAppSelector(getCurrentUser)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isAutoQANavLinkAvailable = useMemo(
-        () => isTeamLeadOrAdmin && hasAutomate,
-        [hasAutomate, isTeamLeadOrAdmin],
+        () => isTeamLeadOrAdmin && hasAccess,
+        [hasAccess, isTeamLeadOrAdmin],
     )
     const reportRestrictionsMap: RestrictionsMap = useMemo(
         () => ({

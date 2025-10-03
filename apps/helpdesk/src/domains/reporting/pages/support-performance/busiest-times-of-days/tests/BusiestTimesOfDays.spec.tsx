@@ -31,6 +31,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -66,6 +67,8 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const componentMock = () => <div />
 
@@ -78,6 +81,10 @@ describe('BusiestTimesOfDays page', () => {
     } as RootState
 
     beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(

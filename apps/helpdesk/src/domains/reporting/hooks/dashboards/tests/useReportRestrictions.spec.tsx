@@ -14,11 +14,15 @@ import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-manage
 import { AutoQAChart } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import { automationSubscriptionProductPrices } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const mockStore = configureMockStore<RootState>([])
 
@@ -32,6 +36,13 @@ describe('useReportRestrictions', () => {
             },
         }),
     } as RootState
+
+    beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+    })
 
     it('should allow unknown Chart', () => {
         const unknownChartId = 'unknownChartId'

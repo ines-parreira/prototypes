@@ -20,6 +20,7 @@ import {
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
     SERVICE_LEVEL_OPTIONAL_FILTERS,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -59,6 +60,8 @@ jest.mock('domains/reporting/pages/sla/components/DownloadSLAsData')
 const DownloadSLAsDataMock = assumeMock(DownloadSLAsData)
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
@@ -101,6 +104,10 @@ const createInitialState = (hasAutomate: boolean) =>
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         AchievedAndBreachedTicketsChartMock.mockImplementation(() => <div />)
         AchievementRateTrendCardMock.mockImplementation(() => <div />)
         BreachedTicketsRateTrendCardMock.mockImplementation(() => <div />)

@@ -25,6 +25,7 @@ import {
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -74,6 +75,8 @@ jest.mock(
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 describe('ChannelsReport', () => {
     const defaultState = {
@@ -85,6 +88,10 @@ describe('ChannelsReport', () => {
 
     beforeEach(() => {
         ChartsActionMenuMock.mockReturnValue((() => <div />) as any)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
     })
 
     it('should render channels report component', () => {

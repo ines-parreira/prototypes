@@ -41,8 +41,7 @@ import {
     selectDropdownTextFields,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getCleanStatsFiltersWithLogicalOperators } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import { getHasAutomate } from 'state/billing/selectors'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState } from 'state/types'
 
 export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
@@ -212,12 +211,12 @@ export const FiltersPanelComponent = ({
     filterComponentMap,
     shouldHideFilters,
 }: FiltersPanelProps) => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const optionalFilters = useMemo(() => {
         if (shouldHideFilters) return []
 
         let filters = [...initialOptionalFilters]
-        if (!hasAutomate) {
+        if (!hasAccess) {
             filters = filters.filter(
                 (filter) =>
                     !AUTO_QA_FILTER_KEYS.find(
@@ -227,7 +226,7 @@ export const FiltersPanelComponent = ({
         }
 
         return filters
-    }, [initialOptionalFilters, shouldHideFilters, hasAutomate])
+    }, [hasAccess, initialOptionalFilters, shouldHideFilters])
 
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>(
         getActiveFilters(optionalFilters, cleanStatsFilters),

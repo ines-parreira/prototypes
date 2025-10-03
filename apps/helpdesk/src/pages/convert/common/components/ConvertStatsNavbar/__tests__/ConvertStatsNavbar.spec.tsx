@@ -15,6 +15,7 @@ import {
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import * as aiAgentAccessHook from 'hooks/aiAgent/useAiAgentAccess'
 import { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { AccountFeature } from 'state/currentAccount/types'
@@ -63,6 +64,12 @@ describe('ConvertStatsNavbar', () => {
             convertSubscriberHook,
             'useIsConvertSubscriber',
         ).mockImplementation(() => false)
+        jest.spyOn(aiAgentAccessHook, 'useAiAgentAccess').mockImplementation(
+            () => ({
+                hasAccess: false,
+                isLoading: false,
+            }),
+        )
     })
 
     it('should render regular links for Convert subscriber and Pro plan', () => {

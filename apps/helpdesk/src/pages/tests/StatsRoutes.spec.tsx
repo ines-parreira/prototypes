@@ -20,12 +20,16 @@ import { VOICE_OVERVIEW_PAGE_TITLE } from 'domains/reporting/pages/voice/constan
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import * as billingFixtures from 'fixtures/billing'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 jest.mock(
     'pages/App',
@@ -105,6 +109,13 @@ describe('<StatsRoutes/>', () => {
         onMenuToggle: jest.fn(),
         onNavBarShortCutToggle: jest.fn(),
     }
+
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
 
     const renderStatsRoutes = () => {
         return renderWithRouter(
