@@ -214,16 +214,13 @@ export const AiAgentOverview = () => {
                     )}
                 </>
             )}
-
             <KpiSection
                 isOnNewPlan={isOnNewPlan}
                 showActivationModal={showActivationModal}
                 showEarlyAccessModal={showEarlyAccessModal}
                 shopName={shopName}
             />
-
             <AiAgentTaskSection shopName={shopName} shopType={shopType} />
-
             {hasResourceSection && <ResourcesSection />}
             <ThankYouModal
                 isOpen={isOpen}

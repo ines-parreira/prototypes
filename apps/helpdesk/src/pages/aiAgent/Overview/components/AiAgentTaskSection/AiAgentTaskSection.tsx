@@ -4,6 +4,7 @@ import { useFlag } from 'core/flags'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 
 import { PendingTasksSectionConnected } from '../PendingTasksSection/PendingTasksSectionConnected'
+import { PostOnboardingTasksSection } from '../PostOnboardingTasksSection/PostOnboardingTasksSection'
 
 interface AiAgentTaskSectionProps {
     shopName: string
@@ -40,7 +41,7 @@ export const AiAgentTaskSection = ({
     }
 
     if (aiAgentPostOnboardingStepsEnabled && !isAiAgentLiveModeEnabled) {
-        return <>Skeleton for AI Agent Post Onboarding Steps</>
+        return <PostOnboardingTasksSection />
     }
 
     if (aiAgentPostStoreInstallationStepsEnabled) {

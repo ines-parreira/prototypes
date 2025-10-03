@@ -19,6 +19,8 @@ type CommonProps = {
 type HeaderActionsProps = CommonProps & {
     onClose: () => void
     closeButtonId: string
+    customCloseButtonIcon?: string
+    customTooltipText?: string
 }
 
 const Header = ({ children, className, ...props }: CommonProps) => (
@@ -32,23 +34,27 @@ const HeaderActions = ({
     className,
     onClose,
     closeButtonId,
+    customCloseButtonIcon,
+    customTooltipText,
     ...props
 }: HeaderActionsProps) => (
     <div className={classNames(css['header-actions'], className)} {...props}>
         {children}
         <IconButton
             id={closeButtonId}
-            icon="keyboard_tab"
+            icon={customCloseButtonIcon || 'keyboard_tab'}
             onClick={onClose}
             fillStyle="ghost"
             intent="secondary"
             aria-label="close edit drawer"
         />
         <Tooltip placement="bottom-end" target={closeButtonId}>
-            <div>
-                <span>Close side panel</span>
-                <ShortcutKey color="dark">esc</ShortcutKey>
-            </div>
+            {customTooltipText ?? (
+                <div>
+                    <span>Close side panel</span>
+                    <ShortcutKey color="dark">esc</ShortcutKey>
+                </div>
+            )}
         </Tooltip>
     </div>
 )
@@ -105,6 +111,7 @@ const Drawer = ({
     const [isVisible, setIsVisible] = useState(open)
 
     useEffect(() => {
+        // oxlint-disable-next-line no-unused-expressions
         portalRootId && setPortalRoot(document.getElementById(portalRootId))
     }, [portalRootId])
 

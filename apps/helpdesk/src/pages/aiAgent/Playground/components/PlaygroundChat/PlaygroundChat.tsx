@@ -17,6 +17,7 @@ import {
     PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentOnboardingNotification } from '../../../hooks/useAiAgentOnboardingNotification'
@@ -46,6 +47,7 @@ type Props = {
     accountData: AccountConfigurationWithHttpIntegration
     currentUserFirstName?: string
     arePlaygroundActionsAllowed?: boolean
+    onNewConversationRef?: (fn: () => void) => void
 }
 
 export const PlaygroundChat = ({
@@ -53,6 +55,7 @@ export const PlaygroundChat = ({
     accountData,
     currentUserFirstName,
     arePlaygroundActionsAllowed,
+    onNewConversationRef,
 }: Props) => {
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
@@ -209,6 +212,10 @@ export const PlaygroundChat = ({
 
         onFormValuesChange('message', '')
 
+        document.dispatchEvent(
+            new CustomEvent(MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT),
+        )
+
         if (isAdmin && isAiAgentOnboardingNotificationEnabled) {
             void handleOnSaveTestBeforeActivation()
         }
@@ -241,6 +248,13 @@ export const PlaygroundChat = ({
     useEffectOnce(() => {
         onTestPageViewed()
     })
+
+    // Pass the onNewConversation function to the parent via ref
+    useEffect(() => {
+        if (onNewConversationRef) {
+            onNewConversationRef(handleNewConversation)
+        }
+    }, [onNewConversationRef, handleNewConversation])
 
     return (
         <div className={css.container}>

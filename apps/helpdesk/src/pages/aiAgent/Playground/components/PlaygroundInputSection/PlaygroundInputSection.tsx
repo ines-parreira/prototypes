@@ -344,6 +344,7 @@ export const PlaygroundInputSection = ({
                     leadingIcon="refresh"
                     onClick={onReset}
                     isDisabled={!hasMessageBeenSent}
+                    className="resetButton"
                 >
                     Reset
                 </Button>

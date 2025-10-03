@@ -1,5 +1,9 @@
+import { useId } from 'react'
+
 import { FROALA_KEY } from 'config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
+
+// Add this import
 
 import { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
@@ -8,10 +12,10 @@ import { PlaygroundPredefinedMessages } from '../PlaygroundPredefinedMessages/Pl
 
 import css from './PlaygroundEditor.less'
 
-const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
+const TOOLBAR_CONTAINER_BASE_ID = 'froalaToolbarContainer'
 
 // cf https://froala.com/wysiwyg-editor/docs/options
-const config = {
+const getConfig = (toolbarContainerId: string) => ({
     key: FROALA_KEY,
     attribution: false, // Remove copyrights
     toolbarSticky: false,
@@ -28,8 +32,8 @@ const config = {
         'formatOLSimple',
         'emoticons',
     ],
-    toolbarContainer: `#${TOOLBAR_CONTAINER_ID}`,
-}
+    toolbarContainer: `#${toolbarContainerId}`,
+})
 
 type Props = {
     value: string
@@ -48,6 +52,9 @@ export const PlaygroundEditor = ({
     customActions,
     enablePredefinedMessages,
 }: Props) => {
+    const uniqueId = useId()
+    const toolbarContainerId = `${TOOLBAR_CONTAINER_BASE_ID}-${uniqueId.replace(/:/g, '')}`
+
     const onMessageSelect = (message: PlaygroundTemplateMessage) => {
         onMessageChange(message.content)
         onSubjectChange(message.title)
@@ -62,7 +69,7 @@ export const PlaygroundEditor = ({
                 model={value}
                 tag="textarea"
                 config={{
-                    ...config,
+                    ...getConfig(toolbarContainerId),
                     placeholderText: placeholder,
                 }}
                 onModelChange={onMessageChange}
@@ -77,7 +84,7 @@ export const PlaygroundEditor = ({
                     onMessageSelect={onMessageSelect}
                 />
             )}
-            <div id={TOOLBAR_CONTAINER_ID} />
+            <div id={toolbarContainerId} />
         </div>
     )
 }

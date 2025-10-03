@@ -3,8 +3,10 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
+
 import { DeploySection } from '../DeploySection'
-import { PostOnboardingTask } from '../types'
+import { PostOnboardingStepMetadata } from '../types'
 
 jest.mock(
     'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle',
@@ -20,8 +22,8 @@ jest.mock(
 )
 
 describe('DeploySection', () => {
-    const mockTask: PostOnboardingTask = {
-        stepName: 'DEPLOY',
+    const mockStepMetadata: PostOnboardingStepMetadata = {
+        stepName: StepName.DEPLOY,
         stepTitle: 'Deploy AI Agent',
         stepDescription: 'This is a test description for deployment',
     }
@@ -29,17 +31,19 @@ describe('DeploySection', () => {
     it('renders the component with correct description', () => {
         render(
             <MemoryRouter>
-                <DeploySection task={mockTask} />
+                <DeploySection stepMetadata={mockStepMetadata} />
             </MemoryRouter>,
         )
 
-        expect(screen.getByText(mockTask.stepDescription)).toBeInTheDocument()
+        expect(
+            screen.getByText(mockStepMetadata.stepDescription),
+        ).toBeInTheDocument()
     })
 
     it('renders the Email channel toggle with correct props', () => {
         render(
             <MemoryRouter>
-                <DeploySection task={mockTask} />
+                <DeploySection stepMetadata={mockStepMetadata} />
             </MemoryRouter>,
         )
 
@@ -51,7 +55,7 @@ describe('DeploySection', () => {
     it('renders the Chat channel toggle with correct props', () => {
         render(
             <MemoryRouter>
-                <DeploySection task={mockTask} />
+                <DeploySection stepMetadata={mockStepMetadata} />
             </MemoryRouter>,
         )
 

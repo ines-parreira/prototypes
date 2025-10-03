@@ -4,18 +4,18 @@ import { Text } from '@gorgias/axiom'
 
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
 
-import { PostOnboardingTask } from './types'
+import { PostOnboardingStepMetadata } from './types'
 
 import css from './DeploySection.less'
 
 type Props = {
-    task: PostOnboardingTask
+    stepMetadata: PostOnboardingStepMetadata
 }
-export const DeploySection = ({ task }: Props) => {
+export const DeploySection = ({ stepMetadata }: Props) => {
     return (
         <div className={css.container}>
             <Text size="md" variant="regular">
-                {task.stepDescription}
+                {stepMetadata.stepDescription}
             </Text>
 
             <div className={css.channelsToggles}>

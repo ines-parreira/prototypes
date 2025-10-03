@@ -9,14 +9,14 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
-import { PostOnboardingTask } from './types'
+import { PostOnboardingStepMetadata } from './types'
 
 import css from './TrainSection.less'
 
 type Props = {
-    task: PostOnboardingTask
+    stepMetadata: PostOnboardingStepMetadata
 }
-export const TrainSection = ({ task }: Props) => {
+export const TrainSection = ({ stepMetadata }: Props) => {
     const dropdownButtonRef = useRef<HTMLDivElement>(null)
     const toggleButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -24,7 +24,7 @@ export const TrainSection = ({ task }: Props) => {
         <div className={css.container}>
             <div className={css.leftContent}>
                 <Text size="md" variant="regular">
-                    {task.stepDescription}
+                    {stepMetadata.stepDescription}
                 </Text>
 
                 <DropdownButton
@@ -58,7 +58,7 @@ export const TrainSection = ({ task }: Props) => {
 
             <div className={css.rightContent}>
                 <img
-                    src={task.stepImage}
+                    src={stepMetadata.stepImage}
                     alt="AI Agent training"
                     className={css.image}
                 />

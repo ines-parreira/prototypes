@@ -3,8 +3,54 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { mockPostStoreInstallationStep } from 'pages/aiAgent/fixtures/post-store-installation-steps.fixture'
+
 import { PostOnboardingTasksSection } from '../PostOnboardingTasksSection'
-import { POST_ONBOARDING_TASKS } from '../utils'
+
+jest.mock('react-router-dom', () => ({
+    useParams: () => ({
+        shopName: 'test-shop',
+        shopType: 'shopify',
+    }),
+}))
+
+jest.mock('../../../hooks/usePostOnboardingTasksSection', () => ({
+    usePostOnboardingTasksSection: jest.fn(() => ({
+        isLoading: false,
+        isError: false,
+        postOnboardingSteps: mockPostStoreInstallationStep,
+        step: (stepName: StepName) => ({
+            stepName,
+            stepStartedDatetime: null,
+            stepCompletedDatetime: null,
+            stepDismissedDatetime: null,
+        }),
+        isStepCompleted: (stepName: StepName) => stepName === StepName.TRAIN,
+        completedStepsCount: 1,
+        updateStep: jest.fn(),
+        createPostOnboardingStep: jest.fn(),
+        updatePostStoreInstallation: jest.fn(),
+    })),
+}))
+
+jest.mock('../TrainSection', () => ({
+    TrainSection: ({ stepMetadata }: { stepMetadata: any }) => (
+        <div data-testid="train-section">{stepMetadata.stepTitle}</div>
+    ),
+}))
+
+jest.mock('../TestSection', () => ({
+    TestSection: ({ stepMetadata }: { stepMetadata: any }) => (
+        <div data-testid="test-section">{stepMetadata.stepTitle}</div>
+    ),
+}))
+
+jest.mock('../DeploySection', () => ({
+    DeploySection: ({ stepMetadata }: { stepMetadata: any }) => (
+        <div data-testid="deploy-section">{stepMetadata.stepTitle}</div>
+    ),
+}))
 
 async function clickAccordionHeader(
     user: ReturnType<typeof userEvent.setup>,
@@ -20,27 +66,38 @@ async function clickAccordionHeader(
     })
 }
 
-jest.mock('../TrainSection', () => ({
-    TrainSection: ({ task }: any) => (
-        <div data-testid="train-section">{task.stepTitle}</div>
-    ),
-}))
-
-jest.mock('../TestSection', () => ({
-    TestSection: ({ task }: any) => (
-        <div data-testid="test-section">{task.stepTitle}</div>
-    ),
-}))
-
-jest.mock('../DeploySection', () => ({
-    DeploySection: ({ task }: any) => (
-        <div data-testid="deploy-section">{task.stepTitle}</div>
-    ),
-}))
-
 describe('PostOnboardingTasksSection', () => {
-    it('renders the correct section component based on task type', async () => {
+    beforeEach(() => {
         jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
+    it('renders the component with header and progress', () => {
+        render(<PostOnboardingTasksSection />)
+
+        expect(
+            screen.getByText('Get started with AI Agent'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('1 / 3 steps')).toBeInTheDocument()
+    })
+
+    it('displays completion status indicators correctly', () => {
+        render(<PostOnboardingTasksSection />)
+
+        // Check for completed step icon
+        expect(
+            screen.getByRole('img', { name: 'circle-check' }),
+        ).toBeInTheDocument()
+
+        // Check for incomplete step icons
+        const circleIcons = screen.getAllByRole('img', { name: 'shape-circle' })
+        expect(circleIcons.length).toBe(2)
+    })
+
+    it('renders the correct section components when expanded', async () => {
         const user = userEvent.setup({
             advanceTimers: jest.advanceTimersByTime,
         })
@@ -58,18 +115,5 @@ describe('PostOnboardingTasksSection', () => {
         // Deploy section
         await clickAccordionHeader(user, 'Deploy AI Agent')
         expect(screen.getByTestId('deploy-section')).toBeInTheDocument()
-
-        jest.useRealTimers()
-    })
-
-    it('renders all task items from POST_ONBOARDING_TASKS', () => {
-        render(<PostOnboardingTasksSection />)
-
-        Object.values(POST_ONBOARDING_TASKS).forEach((task) => {
-            const titleElements = screen.getAllByText(task.stepTitle)
-            expect(
-                titleElements.some((el) => el.closest('.stepHeader')),
-            ).toBeTruthy()
-        })
     })
 })

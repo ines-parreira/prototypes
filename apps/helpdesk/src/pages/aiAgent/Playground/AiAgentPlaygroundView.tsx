@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { isAxiosError } from 'axios'
 import { Redirect } from 'react-router-dom'
@@ -20,6 +20,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
+import { REFRESH_AI_AGENT_PLAYGROUND_EVENT } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
 import { PlaygroundChat } from './components/PlaygroundChat/PlaygroundChat'
@@ -40,6 +41,9 @@ export const AiAgentPlaygroundView = ({
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
 
+    // Reference to the PlaygroundChat's onNewConversation function
+    const resetConversationRef = useRef<() => void>()
+
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -50,6 +54,25 @@ export const AiAgentPlaygroundView = ({
         storeConfigurationNotInitialized,
         setStoreConfigurationNotInitialized,
     ] = useState(false)
+
+    // Listen for the custom refresh event
+    useEffect(() => {
+        const handleRefreshEvent = () => {
+            resetConversationRef.current?.()
+        }
+
+        document.addEventListener(
+            REFRESH_AI_AGENT_PLAYGROUND_EVENT,
+            handleRefreshEvent,
+        )
+
+        return () => {
+            document.removeEventListener(
+                REFRESH_AI_AGENT_PLAYGROUND_EVENT,
+                handleRefreshEvent,
+            )
+        }
+    }, [])
 
     const {
         error: storeFetchError,
@@ -172,6 +195,9 @@ export const AiAgentPlaygroundView = ({
                     }
                     currentUserFirstName={currentUserFirstName}
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
+                    onNewConversationRef={(fn) => {
+                        resetConversationRef.current = fn
+                    }}
                 />
             ) : null}
         </CheckPlaygroundPrerequisites>
