@@ -16,7 +16,7 @@
         border-bottom-style: solid;
 
         &.critical {
-            background-color: var(--accessory-red-1);
+            background-color: var(--accessory-red-1); // legacy
             border-bottom-color: var(--accessory-red-3);
         }
 
@@ -73,6 +73,10 @@
 
 .axiom :local {
     .AlertBanner {
+        &.critical {
+            background-color: var(--surface-error-primary);
+        }
+
         &.info {
             background: var(--surface-neutral-primary);
         }

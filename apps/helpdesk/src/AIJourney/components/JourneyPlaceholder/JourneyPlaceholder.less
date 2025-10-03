@@ -56,7 +56,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -74,5 +74,9 @@
 .axiom :local {
     .journeyPlaceholder {
         border: 1px solid var(--border-neutral-default);
+    }
+
+    .calendarClock {
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -8,12 +8,14 @@
 :root {
     :global(.light),
     :global(.dark) {
-        --navbar-link-hover-background-color: var(--neutral-grey-2);
+        --navbar-link-hover-background-color: var(--neutral-grey-2); // legacy
         --navbar-link-hover-text: var(--navigation-text-item);
         --navbar-chat-ticket-new: var(--neutral-grey-6);
 
         --navbar-block-toggle-active-color: var(--navigation-text-item);
-        --navbar-block-toggle-active-background-color: var(--neutral-grey-3);
+        --navbar-block-toggle-active-background-color: var(
+            --neutral-grey-3
+        ); // legacy
         --navbar-block-toggle-hover-background-color: unset;
         --navbar-block-toggle-hover-color: var(--neutral-grey-6);
 
@@ -121,4 +123,14 @@
     */
     --TEMP_neutral5: hsl(0, 0%, 9%);
     --TEMP_shopifyBadgeColor: #5abf2a;
+}
+
+.axiom {
+    .light,
+    .dark {
+        --navbar-link-hover-background-color: var(--surface-neutral-tertiary);
+        --navbar-block-toggle-active-background-color: var(
+            --surface-neutral-tertiary
+        );
+    }
 }

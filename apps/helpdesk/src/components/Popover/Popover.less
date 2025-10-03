@@ -7,7 +7,7 @@
         flex-direction: column;
         gap: var(--layout-spacing-s);
         max-width: 420px;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-s);
         z-index: 3;
         filter: drop-shadow(1px 1px 4px rgba(22, 22, 22, 0.1));
@@ -29,6 +29,8 @@
 
 .axiom :local {
     .popover {
+        background: var(--elevation-neutral-default);
+
         &.dark {
             border: 1px solid var(--border-neutral-default);
         }

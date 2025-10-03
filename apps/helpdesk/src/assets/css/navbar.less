@@ -68,7 +68,7 @@
 
         &:global.active,
         &:global:active {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
             color: var(--neutral-grey-0);
 
             :local .item-count {
@@ -148,6 +148,15 @@
                     color: var(--navigation-title-item);
                 }
             }
+        }
+    }
+}
+
+.axiom :local {
+    .link {
+        &:global.active,
+        &:global:active {
+            background-color: var(--navigation-selected) !important;
         }
     }
 }

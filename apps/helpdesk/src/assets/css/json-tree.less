@@ -3,7 +3,7 @@
 .json-tree {
     padding: 15px;
     border-radius: 3px;
-    background: var(--neutral-grey-1);
+    background: var(--neutral-grey-1); // legacy
     text-align: left;
     font-family: monospace;
     font-size: 9pt;
@@ -32,4 +32,8 @@
     .null-value {
         color: #caae1e;
     }
+}
+
+.axiom .json-tree {
+    background: var(--surface-neutral-secondary);
 }

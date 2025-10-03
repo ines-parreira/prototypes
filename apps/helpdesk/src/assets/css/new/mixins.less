@@ -33,7 +33,7 @@
 
     &.disabled,
     &:disabled {
-        background-color: var(--neutral-grey-1) !important;
+        background-color: var(--neutral-grey-1) !important; // legacy
         box-shadow: none !important;
         border-color: var(--neutral-grey-3) !important; // legacy
         color: var(--neutral-grey-3) !important;
@@ -107,6 +107,7 @@
     .button-variant(@color; @bg; @border; @hoverBg; @hoverBorder; @activeBg; @activeBorder) {
         &.disabled,
         &:disabled {
+            background-color: var(--surface-neutral-secondary) !important;
             border-color: var(--border-neutral-default) !important;
         }
     }

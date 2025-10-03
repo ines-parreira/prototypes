@@ -23,17 +23,17 @@
         border-radius: var(--layout-spacing-s) 0 0 var(--layout-spacing-s);
         border: 1px solid var(--neutral-grey-3); // legacy
         border-right: none;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         outline: initial;
 
         padding: var(--layout-spacing-s);
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
 
         &:disabled {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
         &--invalid {
             border: 1px solid var(--feedback-error-3);
@@ -48,7 +48,7 @@
         border-radius: 0 var(--layout-spacing-s) var(--layout-spacing-s) 0;
         border: 1px solid var(--neutral-grey-3); // legacy
         border-left: none;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         color: var(--neutral-grey-5);
     }
 }
@@ -56,9 +56,19 @@
 .axiom :local {
     .percentageInput {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+        }
+
+        &:disabled {
+            background-color: var(--surface-neutral-secondary);
+        }
     }
 
     .percentageDecorator {
         border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-tertiary);
     }
 }

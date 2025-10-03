@@ -9,7 +9,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         display: inline-flex;
         height: fit-content;
         align-items: center;
@@ -21,7 +21,7 @@
         cursor: pointer;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -47,7 +47,7 @@
         position: absolute;
         display: flex;
         flex-direction: column;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         border-radius: var(--layout-spacing-s);
         border: 1px solid var(--neutral-grey-2); // legacy
         list-style: none;
@@ -100,9 +100,15 @@
 .axiom :local {
     .productDropdownSelect {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+        }
     }
 
     .productDropdownOptions {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
     }
 }

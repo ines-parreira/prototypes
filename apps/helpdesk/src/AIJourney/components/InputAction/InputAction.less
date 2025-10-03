@@ -14,10 +14,10 @@
 
         border-radius: var(--layout-spacing-s);
         border: 1px solid var(--neutral-grey-3); // legacy
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
     .input {
@@ -55,13 +55,13 @@
             filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
         &--sending {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             color: var(--neutral-grey-6);
             filter: opacity(0.5);
         }
 
         &--disabled {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             color: var(--neutral-grey-6);
             filter: opacity(0.5);
         }
@@ -123,5 +123,20 @@
 .axiom :local {
     .inputActionContainer {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+        }
+    }
+
+    .action {
+        &--sending {
+            background-color: var(--surface-neutral-tertiary);
+        }
+
+        &--disabled {
+            background-color: var(--surface-neutral-tertiary);
+        }
     }
 }

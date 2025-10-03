@@ -1,5 +1,5 @@
 input[readonly] {
-    background: var(--neutral-grey-2) !important;
+    background: var(--neutral-grey-2) !important; // legacy
 }
 
 .label.thin {
@@ -211,6 +211,10 @@ i.icon.action {
 }
 
 .axiom {
+    input[readonly] {
+        background: var(--surface-neutral-tertiary) !important;
+    }
+
     .page-header {
         border-bottom: 1px solid var(--border-neutral-default);
     }

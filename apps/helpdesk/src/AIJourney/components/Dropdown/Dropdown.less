@@ -9,7 +9,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         display: inline-flex;
         height: 40px;
         align-items: center;
@@ -21,7 +21,7 @@
         border: 1px solid var(--neutral-grey-3); // legacy
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -40,7 +40,7 @@
         flex-direction: column;
         border-radius: var(--layout-spacing-s);
         border: 1px solid var(--neutral-grey-3); // legacy
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         backdrop-filter: blur(4px);
         padding: 0px;
         list-style: none;
@@ -107,7 +107,7 @@
         cursor: default;
 
         &:hover {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
         }
     }
 }
@@ -115,9 +115,21 @@
 .axiom :local {
     .dropdownSelect {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+        }
     }
 
     .dropdownOptions {
         border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .dropdownOption {
+        &:hover {
+            background: var(--surface-neutral-tertiary);
+        }
     }
 }

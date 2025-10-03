@@ -1,7 +1,7 @@
 .form-control {
     border: 1px solid var(--neutral-grey-3); // legacy
     border-radius: 3px;
-    background-color: var(--neutral-grey-0);
+    background-color: var(--neutral-grey-0); // legacy
     color: var(--neutral-grey-6);
 
     &:focus {
@@ -9,7 +9,7 @@
     }
 
     &:focus {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         box-shadow: 0 0 0 0.2rem
             hsla(
                 var(--main-primary-h),
@@ -21,7 +21,7 @@
 
     &:disabled,
     &[readonly] {
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
     }
 
     &::placeholder {
@@ -41,16 +41,27 @@
 }
 
 .input-group-text {
-    background-color: var(--neutral-grey-1);
+    background-color: var(--neutral-grey-1); // legacy
     border-color: var(--neutral-grey-3); // legacy
 }
 
 .axiom {
     .form-control {
         border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+
+        &:focus {
+            background-color: var(--elevation-neutral-default);
+        }
+
+        &:disabled,
+        &[readonly] {
+            background-color: var(--surface-neutral-tertiary);
+        }
     }
 
     .input-group-text {
         border-color: var(--border-neutral-default);
+        background-color: var(--surface-neutral-secondary);
     }
 }

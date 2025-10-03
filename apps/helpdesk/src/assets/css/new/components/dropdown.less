@@ -13,7 +13,7 @@
     box-shadow: 0 2px 3px rgba(22, 22, 22, 0.2);
     border-color: var(--neutral-grey-3); // legacy
     color: var(--neutral-grey-6);
-    background-color: var(--neutral-grey-0);
+    background-color: var(--neutral-grey-0); // legacy
 
     > div {
         display: block;
@@ -40,7 +40,7 @@
     &:hover,
     &:active,
     &:focus {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         color: var(--neutral-grey-6);
     }
 }
@@ -78,6 +78,15 @@
 .axiom {
     .dropdown-menu {
         border-color: var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .dropdown-item {
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: var(--hover-default);
+        }
     }
 
     .dropdown-divider {
