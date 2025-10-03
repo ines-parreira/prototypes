@@ -24,6 +24,7 @@ export const IGNORED_ERRORS = [
     'UnknownError (31000): An unknown error has occurred. See error details for more information.', // https://linear.app/gorgias/issue/PHO-546/unknownerror-unknownerror-31000-an-unknown-error-has-occurred-see
     'TransportError (31009): No transport available to send or receive messages', // https://linear.app/gorgias/issue/PHO-405/transporterror-transporterror-31009-no-transport-available-to-send-or
     'ConnectionError (31005): A connection error occurred during the call', // https://linear.app/gorgias/issue/PHO-404/connectionerror-connectionerror-31005-a-connection-error-occurred
+    /Failed to execute 'removeChild' on 'Node'/, // https://gorgias.sentry.io/issues/6702468115 - Sentry error related to react 18 migration - noop
 ]
 export const DENY_URLS = [
     // Chrome extensions
