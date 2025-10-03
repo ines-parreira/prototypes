@@ -21,6 +21,7 @@ import {
 import {
     BillingState,
     Cadence,
+    ProductType,
     ProductUsages,
     SubscriptionStatus,
     SubscriptionSummary,
@@ -84,6 +85,25 @@ export const storeWithActiveSubscriptionWithConvert = {
     billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
 }
 
+const defaultProductUsage = {
+    data: {
+        extra_tickets_cost_in_cents: 0,
+        num_tickets: 0,
+        num_extra_tickets: 0,
+    },
+    meta: {
+        subscription_start_datetime: moment.utc().toISOString(),
+        subscription_end_datetime: moment.utc().add(1, 'month').toISOString(),
+    },
+}
+
+export const currentProductsUsageWithPhone = {
+    [ProductType.Helpdesk]: defaultProductUsage,
+    [ProductType.Convert]: defaultProductUsage,
+    [ProductType.SMS]: defaultProductUsage,
+    [ProductType.Voice]: defaultProductUsage,
+}
+
 export const storeWithActiveSubscriptionWithPhone = {
     currentAccount: fromJS({
         ...account,
@@ -97,7 +117,11 @@ export const storeWithActiveSubscriptionWithPhone = {
             },
         },
     }),
-    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
+    billing: fromJS({
+        invoices: [],
+        products,
+        currentProductsUsage: currentProductsUsageWithPhone,
+    }),
 }
 
 export const storeWithNewlyActiveSubscriptionWithPhone = {
@@ -115,7 +139,11 @@ export const storeWithNewlyActiveSubscriptionWithPhone = {
             status: SubscriptionStatus.ACTIVE,
         },
     }),
-    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
+    billing: fromJS({
+        invoices: [],
+        products,
+        currentProductsUsage: currentProductsUsageWithPhone,
+    }),
 }
 
 export const usages: ProductUsages = {

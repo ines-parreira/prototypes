@@ -172,43 +172,55 @@ const BillingStartView = () => {
             })
         }
 
-        if (voiceBannerInstanceId && smsBannerInstanceId) {
-            if (isCurrentSubscriptionNew) {
-                setVoiceBanner({
-                    description: 'Get started with your Voice plan',
-                    type: AlertType.Info,
-                })
+        if (voiceBannerInstanceId) {
+            if (currentUsage?.voice) {
+                if (isCurrentSubscriptionNew) {
+                    setVoiceBanner({
+                        description: 'Get started with your Voice plan',
+                        type: AlertType.Info,
+                    })
 
-                addBanner({
-                    instanceId: voiceBannerInstanceId,
-                    category: BannerCategories.BILLING,
-                    type: AlertBannerTypes.Info,
-                    message: 'Your Voice subscription has been activated!',
-                    CTA: {
-                        type: 'external',
-                        href: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
-                        text: 'Set Up Voice',
-                    },
-                })
+                    addBanner({
+                        instanceId: voiceBannerInstanceId,
+                        category: BannerCategories.BILLING,
+                        type: AlertBannerTypes.Info,
+                        message: 'Your Voice subscription has been activated!',
+                        CTA: {
+                            type: 'external',
+                            href: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
+                            text: 'Set Up Voice',
+                        },
+                    })
+                } else {
+                    removeBanner(
+                        BannerCategories.BILLING,
+                        voiceBannerInstanceId,
+                    )
+                }
+            }
+        }
+        if (smsBannerInstanceId) {
+            if (currentUsage?.sms) {
+                if (isCurrentSubscriptionNew) {
+                    setSMSBanner({
+                        description: 'Get started with your SMS plan',
+                        type: AlertType.Info,
+                    })
 
-                setSMSBanner({
-                    description: 'Get started with your SMS plan',
-                    type: AlertType.Info,
-                })
-
-                addBanner({
-                    instanceId: smsBannerInstanceId,
-                    category: BannerCategories.BILLING,
-                    type: AlertBannerTypes.Info,
-                    message: 'Your SMS subscription has been activated!',
-                    CTA: {
-                        type: 'external',
-                        href: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
-                        text: 'Set Up SMS',
-                    },
-                })
-            } else {
-                removeBanner(BannerCategories.BILLING, voiceBannerInstanceId)
+                    addBanner({
+                        instanceId: smsBannerInstanceId,
+                        category: BannerCategories.BILLING,
+                        type: AlertBannerTypes.Info,
+                        message: 'Your SMS subscription has been activated!',
+                        CTA: {
+                            type: 'external',
+                            href: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
+                            text: 'Set Up SMS',
+                        },
+                    })
+                } else {
+                    removeBanner(BannerCategories.BILLING, smsBannerInstanceId)
+                }
             }
         }
     }, [
