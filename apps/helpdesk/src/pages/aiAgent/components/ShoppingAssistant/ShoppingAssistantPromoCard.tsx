@@ -4,6 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { TrialSharedModals } from 'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
@@ -32,6 +33,7 @@ interface ShoppingAssistantPromoCardProps {
 export const ShoppingAssistantPromoCard: React.FC<
     ShoppingAssistantPromoCardProps
 > = ({ className }) => {
+    const isAccountDeactivated = useIsAccountDeactivated()
     const allShopifyIntegrations = useAppSelector(
         getShopifyIntegrationsSortedByName,
     )
@@ -57,6 +59,7 @@ export const ShoppingAssistantPromoCard: React.FC<
 
     const { isOnboarded } = trialAccess
     if (
+        isAccountDeactivated ||
         isShoppingAssitantDeactivationEnforced ||
         isLoading ||
         !promoContent ||

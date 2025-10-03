@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -28,6 +29,9 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
+jest.mock('hooks/useIsAccountDeactivated', () => ({
+    useIsAccountDeactivated: jest.fn(() => true),
+}))
 jest.mock(
     'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals',
     () => ({
@@ -53,6 +57,10 @@ const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseAppSelector = useAppSelector as jest.MockedFunction<
     typeof useAppSelector
 >
+const mockUseIsAccountDeactivated =
+    useIsAccountDeactivated as jest.MockedFunction<
+        typeof useIsAccountDeactivated
+    >
 
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()
@@ -72,6 +80,7 @@ const mockTrialPromoCard = (
         }
     }> = {},
 ) => {
+    mockUseIsAccountDeactivated.mockReturnValue(false)
     const defaultMock = {
         trialAccess: mockTrialAccess,
         promoCardContent: null,
@@ -125,6 +134,8 @@ describe('ShoppingAssistantPromoCard', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         localStorage.clear()
+
+        mockUseIsAccountDeactivated.mockImplementation(() => true)
 
         const mockAccount = {
             get: jest.fn((key: string) => {
@@ -254,6 +265,18 @@ describe('ShoppingAssistantPromoCard', () => {
             mockTrialPromoCard({
                 promoCardContent: null,
             })
+
+            const { container } = renderComponent()
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should return null / hide component when account is deactivated', () => {
+            mockTrialPromoCard({
+                promoCardContent: basePromoContent,
+            })
+
+            mockUseIsAccountDeactivated.mockReturnValue(true)
 
             const { container } = renderComponent()
 
