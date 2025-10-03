@@ -45,20 +45,20 @@ function AddStepMenuContent({
                 label={'Route to'}
                 onClick={() => addNode(VoiceFlowNodeType.Enqueue)}
             />
+            <AddStepMenuItem
+                icon={
+                    <StepCardIcon
+                        backgroundColor="coral"
+                        name="arrow-chevron-right-duo"
+                    />
+                }
+                label={'Forward to'}
+                onClick={() =>
+                    addNode(VoiceFlowNodeType.ForwardToExternalNumber)
+                }
+            />
             {canAddFinalNode && (
                 <>
-                    <AddStepMenuItem
-                        icon={
-                            <StepCardIcon
-                                backgroundColor="coral"
-                                name="arrow-chevron-right-duo"
-                            />
-                        }
-                        label={'Forward to'}
-                        onClick={() =>
-                            addNode(VoiceFlowNodeType.ForwardToExternalNumber)
-                        }
-                    />
                     <AddStepMenuItem
                         icon={
                             <StepCardIcon

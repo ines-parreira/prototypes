@@ -1253,7 +1253,7 @@ describe('utils', () => {
                 name: 'Forward to',
                 step_type: VoiceFlowNodeType.ForwardToExternalNumber,
                 external_number: '',
-                next_step_id: null,
+                next_step_id: 'testing-id',
             })
             expect(nodeData?.id).toBeDefined()
         })

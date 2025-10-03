@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { useWatch } from 'react-hook-form'
 
-import { Banner } from '@gorgias/axiom'
 import { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
@@ -52,10 +51,6 @@ export function ForwardToNode(props: ForwardToNodeProps) {
                 errors={errors}
                 {...props}
             >
-                <Banner type="info">
-                    Forwarding is a final step, you cannot add any other steps
-                    after.
-                </Banner>
                 <FormField
                     name={`steps.${id}.external_number`}
                     field={PhoneSelectField}

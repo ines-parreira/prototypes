@@ -53,11 +53,6 @@ describe('ForwardToNode', () => {
             renderComponent()
 
             expect(screen.getAllByText('Forward to')).toHaveLength(2)
-            expect(
-                screen.getByText(
-                    'Forwarding is a final step, you cannot add any other steps after.',
-                ),
-            ).toBeInTheDocument()
             expect(screen.getByText('Phone number')).toBeInTheDocument()
             expect(screen.getByText('External Number')).toBeInTheDocument()
         })

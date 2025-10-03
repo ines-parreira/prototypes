@@ -84,9 +84,9 @@ describe('AddStepMenuContent', () => {
             expect(screen.getByText('Play message')).toBeInTheDocument()
             expect(screen.getByText('IVR Menu')).toBeInTheDocument()
             expect(screen.getByText('Route to')).toBeInTheDocument()
+            expect(screen.queryByText('Forward to')).toBeInTheDocument()
             expect(screen.queryByText('Send to SMS')).toBeNull()
             expect(screen.queryByText('Send to voicemail')).toBeNull()
-            expect(screen.queryByText('Forward to')).toBeNull()
         })
 
         it('should render final node options when target points to EndCall', () => {
@@ -167,6 +167,44 @@ describe('AddStepMenuContent', () => {
                             text_to_speech_content: '',
                         },
                         next_step_id: 'source-node',
+                    },
+                    position: {
+                        x: 0,
+                        y: 0,
+                    },
+                },
+                mockTargetNode,
+            ])
+        })
+    })
+
+    it('should handle adding a Forward to node', async () => {
+        renderComponent()
+
+        const forwardToButton = screen.getByText('Forward to')
+        act(() => {
+            userEvent.click(forwardToButton)
+        })
+
+        await waitFor(() => {
+            expect(mockSetNodes).toHaveBeenCalledWith([
+                mockInitialNode,
+                {
+                    ...mockSourceNode,
+                    data: {
+                        ...mockSourceNode.data,
+                        next_step_id: 'new-node-id',
+                    },
+                },
+                {
+                    id: 'new-node-id',
+                    type: 'forward_to_external_number',
+                    data: {
+                        id: 'new-node-id',
+                        name: 'Forward to',
+                        step_type: 'forward_to_external_number',
+                        external_number: '',
+                        next_step_id: 'end_call',
                     },
                     position: {
                         x: 0,

@@ -558,7 +558,7 @@ export const generateNodeData = (
                 name: 'Forward to',
                 step_type: VoiceFlowNodeType.ForwardToExternalNumber,
                 external_number: '',
-                next_step_id: null,
+                next_step_id: next_step_id,
             }
         default:
             return null
@@ -674,6 +674,7 @@ export const linkFormStep = (
                 ),
             }
         case VoiceFlowNodeType.PlayMessage:
+        case VoiceFlowNodeType.ForwardToExternalNumber:
             return {
                 ...formStep,
                 next_step_id: nextStepId,
