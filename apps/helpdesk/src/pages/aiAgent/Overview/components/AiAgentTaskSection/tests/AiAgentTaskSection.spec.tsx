@@ -24,6 +24,13 @@ jest.mock('../../PendingTasksSection/PendingTasksSectionConnected', () => ({
     ),
 }))
 
+jest.mock('../../SetupTasksSection/SetupTaskSection', () => ({
+    SetupTaskSection: () => (
+        <div data-testid="mocked-setup-tasks">
+            Skeleton for AI Agent Post Store Installation Steps
+        </div>
+    ),
+}))
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseAiAgentOverviewModeEnabled =
     useAiAgentOverviewModeEnabled as jest.MockedFunction<

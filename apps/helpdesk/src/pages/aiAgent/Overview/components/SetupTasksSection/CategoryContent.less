@@ -1,0 +1,27 @@
+@import '~@gorgias/axiom/tokens/typography.css';
+
+:local {
+    .groupContent {
+        width: 100%;
+    }
+
+    .accordionItem {
+        border: none;
+        box-shadow: none;
+
+        &:hover {
+            border: none;
+            box-shadow: none;
+        }
+
+        .stepTitleContainer {
+            display: flex;
+            align-items: center;
+            color: var(--content-neutral-default);
+
+            .stepTitle {
+                margin-left: var(--layout-spacing-xs);
+            }
+        }
+    }
+}

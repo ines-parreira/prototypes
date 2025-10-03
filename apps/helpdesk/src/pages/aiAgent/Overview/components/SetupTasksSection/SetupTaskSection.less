@@ -1,0 +1,35 @@
+@import '~@gorgias/axiom/tokens/typography.css';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: var(--layout-spacing-m);
+
+        border-radius: 12px;
+        border: 1px solid var(--border-neutral-default);
+        box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.04);
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .progress {
+        display: flex;
+        align-items: center;
+        font-size: var(--font-size-xs);
+        color: var(--text-neutral-secondary);
+        gap: var(--layout-spacing-xxs);
+        margin-bottom: var(--layout-spacing-m);
+    }
+
+    .tasksSection {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--xl, 32px);
+        align-self: stretch;
+    }
+}

@@ -5,6 +5,7 @@ import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useA
 
 import { PendingTasksSectionConnected } from '../PendingTasksSection/PendingTasksSectionConnected'
 import { PostOnboardingTasksSection } from '../PostOnboardingTasksSection/PostOnboardingTasksSection'
+import { SetupTaskSection } from '../SetupTasksSection/SetupTaskSection'
 
 interface AiAgentTaskSectionProps {
     shopName: string
@@ -45,7 +46,7 @@ export const AiAgentTaskSection = ({
     }
 
     if (aiAgentPostStoreInstallationStepsEnabled) {
-        return <>Skeleton for AI Agent Post Store Installation Steps</>
+        return <SetupTaskSection />
     }
 
     // default to existing Task section for backward compatibility - it'll be removed when the new mode is fully enabled
