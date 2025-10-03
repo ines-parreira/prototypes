@@ -11,6 +11,7 @@ import {
     validateBody,
     validateEmailList,
     validateSendEmail,
+    validateSetCustomerCustomFieldValue,
     validateSetCustomFieldValue,
     validateSubject,
     validateTags,
@@ -226,5 +227,31 @@ describe('isValidActionKey', () => {
             expect(isValidActionKey(action)).toBeTruthy()
         })
         expect(isValidActionKey('notify')).toBeTruthy()
+    })
+})
+
+describe('validateSetCustomerCustomFieldValue', () => {
+    it('should validate customer field value', () => {
+        const valid = [
+            { value: 'hoy', customer_field_id: 1 },
+            { value: 10, customer_field_id: 1 },
+            { value: true, customer_field_id: 1 },
+        ]
+        valid.forEach((input) => {
+            expect(validateSetCustomerCustomFieldValue(input)).toBeFalsy()
+        })
+    })
+
+    it('should return errors and not validate customer field value', () => {
+        const invalid = [
+            {},
+            { value: 'hoy' },
+            { value: 'hoy', customer_field_id: 0 },
+            { customer_field_id: 1 },
+            { customer_field_id: 1, value: '' },
+        ]
+        invalid.forEach((input) => {
+            expect(validateSetCustomerCustomFieldValue(input)).toBeTruthy()
+        })
     })
 })

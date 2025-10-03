@@ -353,6 +353,37 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     />
                                 </div>
                             )
+                        case 'customer_field-select':
+                            return null
+                        case 'customer_field-input':
+                            if (!actionArgs.get('customer_field_id')) {
+                                return null
+                            }
+                            return (
+                                <div
+                                    key={key}
+                                    className="d-flex align-items-center"
+                                >
+                                    <CustomFieldSelect
+                                        value={actionArgs.get(
+                                            'customer_field_id',
+                                        )}
+                                        className={css.customFieldSelect}
+                                        viewMode
+                                    />
+                                    <CustomFieldIdInput
+                                        onChange={(value) =>
+                                            this.setValue(key, value!)
+                                        }
+                                        customFieldId={actionArgs.get(
+                                            'customer_field_id',
+                                        )}
+                                        value={value}
+                                        className={css.customFieldInput}
+                                        isRequired={false}
+                                    />
+                                </div>
+                            )
                         default:
                             return (
                                 <div key={key}>

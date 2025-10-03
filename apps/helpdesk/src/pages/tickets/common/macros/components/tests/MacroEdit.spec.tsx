@@ -48,6 +48,18 @@ jest.mock(
         ),
 )
 
+jest.mock('../actions/SetCustomFieldValueAction', () => () => (
+    <div data-testid="set-custom-field-value-action" />
+))
+
+jest.mock('../actions/SetStatusAction', () => () => (
+    <div data-testid="set-status-action" />
+))
+
+jest.mock('../actions/SetPriorityAction', () => () => (
+    <div data-testid="set-priority-action" />
+))
+
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
@@ -536,5 +548,75 @@ describe('MacroEdit component', () => {
         expect(
             screen.queryByText(/Add shopify action/i),
         ).not.toBeInTheDocument()
+    })
+
+    it('should render customer field action with proper title when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        const customerFieldAction = {
+            name: MacroActionName.SetCustomerCustomFieldValue,
+            arguments: {
+                customer_field_id: 1,
+                value: 'VIP Customer',
+            },
+        }
+        renderComponent({ actions: fromJS([customerFieldAction]) })
+
+        expect(screen.getAllByText('Set customer field')).toHaveLength(2)
+    })
+
+    it('should not render customer field action when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        const customerFieldAction = {
+            name: MacroActionName.SetCustomerCustomFieldValue,
+            arguments: {
+                customer_field_id: 1,
+                value: 'VIP Customer',
+            },
+        }
+        renderComponent({ actions: fromJS([customerFieldAction]) })
+
+        expect(screen.queryByText('Set customer field')).not.toBeInTheDocument()
+    })
+
+    it('should allow multiple customer field actions when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        const actionsWithMultipleCustomerFields = [
+            {
+                name: MacroActionName.SetCustomerCustomFieldValue,
+                arguments: {
+                    customer_field_id: 1,
+                    value: 'VIP Customer',
+                },
+            },
+            {
+                name: MacroActionName.SetCustomerCustomFieldValue,
+                arguments: {
+                    customer_field_id: 2,
+                    value: 'Premium Customer',
+                },
+            },
+        ]
+
+        renderComponent({ actions: fromJS(actionsWithMultipleCustomerFields) })
+
+        expect(screen.getAllByText('Set customer field')).toHaveLength(3)
+    })
+
+    it('should show customer field action in dropdown when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        renderComponent()
+
+        fireEvent.click(screen.getByText(new RegExp('Add action', 'i')))
+
+        expect(screen.getByText('Set customer field')).toBeInTheDocument()
+    })
+
+    it('should not show customer field action in dropdown when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        renderComponent()
+
+        fireEvent.click(screen.getByText(new RegExp('Add action', 'i')))
+
+        expect(screen.queryByText('Set customer field')).not.toBeInTheDocument()
     })
 })

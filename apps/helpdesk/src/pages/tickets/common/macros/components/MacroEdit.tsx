@@ -67,6 +67,9 @@ export const MacroEdit = ({
     const isMacroForwardByEmailEnabled = useFlag(
         FeatureFlagKey.MacroForwardByEmail,
     )
+    const isCustomerFieldsExposureEnabled = useFlag(
+        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
+    )
 
     const extractText = useCallback(() => {
         const action: Map<any, any> = actions?.find(
@@ -179,8 +182,10 @@ export const MacroEdit = ({
     const renderNewActionMenu = useCallback(
         ({
             isMacroForwardByEmailEnabled,
+            isCustomerFieldsExposureEnabled,
         }: {
             isMacroForwardByEmailEnabled: boolean
+            isCustomerFieldsExposureEnabled: boolean
         }) => {
             const ticketActions = ACTION_TEMPLATES.filter(
                 (template) =>
@@ -188,14 +193,19 @@ export const MacroEdit = ({
             )
                 .filter(
                     ({ name }) =>
-                        isMacroForwardByEmailEnabled ||
-                        name !== MacroActionName.ForwardByEmail,
+                        (isMacroForwardByEmailEnabled ||
+                            name !== MacroActionName.ForwardByEmail) &&
+                        (isCustomerFieldsExposureEnabled ||
+                            name !==
+                                MacroActionName.SetCustomerCustomFieldValue),
                 )
                 // remove actions that have already been used
-                // except for SetCustomFieldValue which is allowed multiple times
+                // except for SetCustomFieldValue and SetCustomerCustomFieldValue which are allowed multiple times
                 .filter(
                     (action) =>
                         action.name === MacroActionName.SetCustomFieldValue ||
+                        action.name ===
+                            MacroActionName.SetCustomerCustomFieldValue ||
                         !actions?.find(
                             (usedActions: Map<any, any>) =>
                                 usedActions.get('name') === action.name,
@@ -443,6 +453,20 @@ export const MacroEdit = ({
                         ),
                     }
                     break
+                case MacroActionName.SetCustomerCustomFieldValue:
+                    config = {
+                        title: 'Set customer field',
+                        content: (
+                            <SetCustomFieldValueAction
+                                index={index}
+                                action={action}
+                                actions={actions}
+                                updateActionArgs={updateActionArguments}
+                                objectType="Customer"
+                            />
+                        ),
+                    }
+                    break
                 case MacroActionName.SetPriority:
                     config = {
                         title: 'Set priority',
@@ -555,9 +579,12 @@ export const MacroEdit = ({
                 {actions
                     ?.filter(
                         (action: Map<any, any>) =>
-                            isMacroForwardByEmailEnabled ||
-                            action.get('name') !==
-                                MacroActionName.ForwardByEmail,
+                            (isMacroForwardByEmailEnabled ||
+                                action.get('name') !==
+                                    MacroActionName.ForwardByEmail) &&
+                            (isCustomerFieldsExposureEnabled ||
+                                action.get('name') !==
+                                    MacroActionName.SetCustomerCustomFieldValue),
                     )
                     .map(
                         (action: Map<any, any>, index) =>
@@ -574,6 +601,7 @@ export const MacroEdit = ({
                         </DropdownToggle>
                         {renderNewActionMenu({
                             isMacroForwardByEmailEnabled,
+                            isCustomerFieldsExposureEnabled,
                         })}
                     </UncontrolledButtonDropdown>
 

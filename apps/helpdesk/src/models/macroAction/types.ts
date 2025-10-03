@@ -22,6 +22,7 @@ export enum MacroActionName {
     RemoveTags = 'removeTags',
     SetAssignee = 'setAssignee',
     SetCustomFieldValue = 'setCustomFieldValue',
+    SetCustomerCustomFieldValue = 'setCustomerCustomFieldValue',
     SetPriority = 'setPriority',
     SetResponseText = 'setResponseText',
     SetStatus = 'setStatus',
@@ -70,6 +71,7 @@ export type MacroAction = {
         bcc?: string
         from?: string
         custom_field_id?: number
+        customer_field_id?: number
         value?: number | string | boolean
     }
     description?: string

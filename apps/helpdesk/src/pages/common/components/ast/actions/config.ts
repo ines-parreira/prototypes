@@ -69,6 +69,18 @@ export function validateSetCustomFieldValue(values: {
     }
 }
 
+export function validateSetCustomerCustomFieldValue(values: {
+    customer_field_id?: number
+    value?: number | string | boolean
+}) {
+    if (!values.customer_field_id) {
+        return 'Field must be selected'
+    }
+    if (isCustomFieldValueEmpty(values.value)) {
+        return 'Value must be set'
+    }
+}
+
 export function validateAssignAgent(values: { assignee_user?: string | null }) {
     if (values.assignee_user === '' || values.assignee_user === undefined) {
         return 'Agent must be selected'
@@ -122,6 +134,7 @@ type ValidateFn =
     | typeof validateTags
     | typeof validateSubject
     | typeof validateSetCustomFieldValue
+    | typeof validateSetCustomerCustomFieldValue
     | typeof validateApplyMacro
     | typeof validateAssignAgent
     | typeof validateAssignTeam
@@ -151,6 +164,7 @@ export type Argument = {
     snooze_timedelta: Pick<Properties, 'widget'>
     priority: Pick<Properties, 'widget'>
     custom_field_id: Pick<Properties, 'widget'>
+    customer_field_id: Pick<Properties, 'widget'>
     value: Pick<Properties, 'widget'>
 }
 
@@ -316,6 +330,19 @@ export const actionsConfig: { [key in ActionType | 'notify']: ActionConfig } = {
             },
         },
         validate: validateSetCustomFieldValue,
+    },
+    setCustomerCustomFieldValue: {
+        compact: true,
+        name: 'Set customer field',
+        args: {
+            customer_field_id: {
+                widget: 'customer_field-select',
+            },
+            value: {
+                widget: 'customer_field-input',
+            },
+        },
+        validate: validateSetCustomerCustomFieldValue,
     },
     snoozeTicket: {
         compact: true,

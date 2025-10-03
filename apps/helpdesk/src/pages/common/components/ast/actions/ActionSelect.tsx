@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { List, Map } from 'immutable'
 import {
     DropdownItem,
@@ -6,6 +7,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
+import { useFlag } from 'core/flags'
 import { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
@@ -23,6 +25,10 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
         actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }
 
+    const isCustomerFieldsExposureEnabled = useFlag(
+        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
+    )
+
     const label = isValidActionKey(value)
         ? actionsConfig[value]?.name
         : 'Select action'
@@ -34,6 +40,12 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
             </DropdownToggle>
             <DropdownMenu>
                 {Object.entries(actionsConfig).map(([action, config], i) => {
+                    if (
+                        !isCustomerFieldsExposureEnabled &&
+                        action === 'setCustomerCustomFieldValue'
+                    ) {
+                        return null
+                    }
                     return config?.type === 'system' &&
                         !(rule.get('type') === 'system') ? null : (
                         <DropdownItem

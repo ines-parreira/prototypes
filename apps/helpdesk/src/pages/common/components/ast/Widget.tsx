@@ -763,15 +763,22 @@ const Widget = ({
                 />
             )
         case 'custom_field-select':
+        case 'customer_field-select':
             return (
                 <CustomFieldSelect
                     {...widget}
                     className={className}
                     value={widget.value}
                     onChange={handleChange}
+                    objectType={
+                        widget.type === 'custom_field-select'
+                            ? 'Ticket'
+                            : 'Customer'
+                    }
                 />
             )
-        case 'custom_field-input': {
+        case 'custom_field-input':
+        case 'customer_field-input': {
             const isConditionalCustomField =
                 leftsiblings.includes('custom_fields')
             // Try to get custom field ID from properties first (for action-based custom fields)

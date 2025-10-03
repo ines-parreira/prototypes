@@ -93,4 +93,57 @@ describe('<ActionSelect />', () => {
             'UPDATE',
         )
     })
+
+    it('should include customer field action in available actions when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        render(<ActionSelect {...commonProps} />)
+
+        fireEvent.click(screen.getByText('Select action'))
+
+        expect(
+            screen.getByRole('menuitem', {
+                name: 'Set customer field',
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not include customer field action when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        render(<ActionSelect {...commonProps} />)
+
+        fireEvent.click(screen.getByText('Select action'))
+
+        expect(
+            screen.queryByRole('menuitem', {
+                name: 'Set customer field',
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should have proper configuration for customer field action', () => {
+        expect(actionsConfig.setCustomerCustomFieldValue).toBeDefined()
+        expect(actionsConfig.setCustomerCustomFieldValue.name).toBe(
+            'Set customer field',
+        )
+        expect(actionsConfig.setCustomerCustomFieldValue.compact).toBe(true)
+        expect(actionsConfig.setCustomerCustomFieldValue.args).toBeDefined()
+        expect(
+            actionsConfig.setCustomerCustomFieldValue.args?.customer_field_id,
+        ).toBeDefined()
+        expect(
+            actionsConfig.setCustomerCustomFieldValue.args?.value,
+        ).toBeDefined()
+        expect(actionsConfig.setCustomerCustomFieldValue.validate).toBeDefined()
+    })
+
+    it('should have proper widget configuration for customer field action', () => {
+        const customerFieldConfig = actionsConfig.setCustomerCustomFieldValue
+
+        expect(customerFieldConfig.args?.customer_field_id?.widget).toBe(
+            'customer_field-select',
+        )
+        expect(customerFieldConfig.args?.value?.widget).toBe(
+            'customer_field-input',
+        )
+    })
 })

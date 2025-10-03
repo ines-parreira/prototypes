@@ -182,6 +182,7 @@ export enum FeatureFlagKey {
     StandaloneHandoverCapabilities = 'linear.project_standalone-handover-capabilities',
     SurfaceOpportunities = 'linear.project_proactively-surface-opportunities.enable-new-opportunities',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
+    TicketCustomerFieldsInRulesAndMacros = 'ticket-customer-fields-in-rules-and-macros',
     TicketCustomFieldsInRuleConditions = 'ticket-custom-fields-in-rule-conditions',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',

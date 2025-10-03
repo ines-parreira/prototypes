@@ -14,6 +14,7 @@ import { IntegrationsPreview } from './IntegrationsPreview'
 import { InternalNotePreview } from './InternalNotePreview'
 import { ResponseTextPreview } from './ResponseTextPreview'
 import { SetAssigneePreview } from './SetAssigneePreview'
+import { SetCustomerCustomFieldValuesPreview } from './SetCustomerCustomFieldValuesPreview'
 import { SetCustomFieldValuesPreview } from './SetCustomFieldValuesPreview'
 import { SetPriorityPreview } from './SetPriorityPreview'
 import { SetStatusPreview } from './SetStatusPreview'
@@ -91,6 +92,7 @@ export const Preview = ({
                 isMacroResponseCcBccEnabled={isMacroResponseCcBccEnabled}
             />
             <SetCustomFieldValuesPreview actions={actions} />
+            <SetCustomerCustomFieldValuesPreview actions={actions} />
         </div>
     )
 }

@@ -1,5 +1,7 @@
 import { ComponentProps, useEffect, useMemo } from 'react'
 
+import { ObjectType } from '@gorgias/helpdesk-types'
+
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -15,6 +17,7 @@ type Props = Pick<
     idsAlreadySet?: number[]
     viewMode?: boolean
     showManagedFields?: boolean
+    objectType?: ObjectType
 }
 
 /**
@@ -24,11 +27,12 @@ const CustomFieldSelect = ({
     onChange,
     viewMode,
     showManagedFields = false,
+    objectType = 'Ticket',
     ...props
 }: Props) => {
     const customFields = useCustomFieldDefinitions({
         archived: false,
-        object_type: 'Ticket',
+        object_type: objectType,
     })
 
     const activeCustomFields = useMemo(() => {

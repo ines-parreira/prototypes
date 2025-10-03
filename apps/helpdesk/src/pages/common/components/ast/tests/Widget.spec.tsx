@@ -10,10 +10,15 @@ import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
-import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import {
+    customerInputFieldDefinition,
+    ticketDropdownFieldDefinition,
+} from 'fixtures/customField'
 import _schemas from 'fixtures/openapi.json'
 import { humanizeChannel } from 'state/ticket/utils'
 import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLanguageDisplayName } from 'utils'
 
 import Widget from '../Widget'
@@ -38,6 +43,10 @@ const defaultState = {
 
 const useGetCustomFieldByIdMock = assumeMock(useGetCustomFieldById)
 jest.mock('../widget/useGetCustomFieldById')
+const queryClient = mockQueryClient()
+
+jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
+const useCustomFieldDefinitionMock = jest.mocked(useCustomFieldDefinition)
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -483,6 +492,71 @@ describe('<Widget />', () => {
                 },
             ],
         })
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should render customer field input when customer field ID is present', () => {
+        useCustomFieldDefinitionMock.mockReturnValue({
+            data: customerInputFieldDefinition,
+        } as ReturnType<typeof useCustomFieldDefinition>)
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        const value = 'test customer field value'
+        const customerFieldId = customerInputFieldDefinition.id
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <Widget
+                        {...commonProps}
+                        rule={rule}
+                        config={{ widget: 'customer_field-input' }}
+                        leftsiblings={fromJS([
+                            'actions',
+                            'setCustomerCustomFieldValue',
+                            'value',
+                        ])}
+                        value={value}
+                        properties={[
+                            {
+                                key: { name: 'Input field' },
+                                value: { value: customerFieldId },
+                            },
+                        ]}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByDisplayValue(value)).toBeInTheDocument()
+    })
+
+    it('should return null when customer field input has no customer field ID', () => {
+        const rule = fromJS({
+            code_ast: astCodeEq,
+        })
+        const { container } = render(
+            <Provider store={mockStore(defaultState)}>
+                <Widget
+                    {...commonProps}
+                    rule={rule}
+                    config={{ widget: 'customer_field-input' }}
+                    leftsiblings={fromJS([
+                        'actions',
+                        'setCustomerCustomFieldValue',
+                        'value',
+                    ])}
+                    properties={[
+                        {
+                            key: { name: 'customer_field_id' },
+                            value: { value: null },
+                        },
+                    ]}
+                />
+            </Provider>,
+        )
 
         expect(container.firstChild).toBeNull()
     })

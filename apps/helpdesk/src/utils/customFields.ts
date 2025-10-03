@@ -61,3 +61,30 @@ export function mergeFieldsStateWithMacroValues({
 
     return ticketFieldsWithMacro
 }
+
+export function mergeCustomerFieldsStateWithMacroValues({
+    fieldsState,
+    appliedMacro,
+}: {
+    fieldsState: CustomFields
+    appliedMacro: Macro
+}) {
+    const customerFieldsWithMacro: CustomFields = { ...fieldsState }
+
+    ;(appliedMacro.actions as MacroAction[])?.forEach((action) => {
+        if (
+            action.name === MacroActionName.SetCustomerCustomFieldValue &&
+            action.arguments.value !== ''
+        ) {
+            const customerFieldId = action.arguments.customer_field_id
+            if (customerFieldId) {
+                customerFieldsWithMacro[customerFieldId] = {
+                    ...fieldsState[customerFieldId],
+                    value: action.arguments.value,
+                }
+            }
+        }
+    })
+
+    return customerFieldsWithMacro
+}

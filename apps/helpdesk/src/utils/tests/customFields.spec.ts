@@ -2,10 +2,15 @@ import { Macro } from '@gorgias/helpdesk-queries'
 import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { ticketInputFieldDefinition } from 'fixtures/customField'
-import { macroFixture, setCustomFieldValueAction } from 'fixtures/macro'
+import {
+    macroFixture,
+    setCustomerCustomFieldValueAction,
+    setCustomFieldValueAction,
+} from 'fixtures/macro'
 
 import {
     getInvalidTicketFieldIds,
+    mergeCustomerFieldsStateWithMacroValues,
     mergeFieldsStateWithMacroValues,
 } from '../customFields'
 
@@ -27,6 +32,7 @@ describe('getInvalidTicketFieldIds', () => {
             }),
         ).toEqual([])
     })
+
     it('should return an array of invalid field ids', () => {
         const fieldsState = {
             1: { id: 1, value: 'ok' },
@@ -78,6 +84,149 @@ describe('mergeFieldsStateWithMacroValues', () => {
         ).toEqual({
             1: { id: 1, value: setCustomFieldValueAction.arguments.value },
             2: { id: 2, value: 'ok' },
+        })
+    })
+})
+
+describe('mergeCustomerFieldsStateWithMacroValues', () => {
+    it('should merge customer field values from macro actions', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'old customer value' },
+            2: { id: 2, value: 'unchanged customer value' },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [setCustomerCustomFieldValueAction],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1].value).toBe('Customer field value')
+        expect(result[2].value).toBe('unchanged customer value')
+    })
+
+    it('should handle empty actions', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'old customer value' },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1].value).toBe('old customer value')
+    })
+
+    it('should handle actions without value', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'old customer value' },
+        }
+
+        const actionWithoutValue = {
+            ...setCustomerCustomFieldValueAction,
+            arguments: {
+                ...setCustomerCustomFieldValueAction.arguments,
+                value: '',
+            },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [actionWithoutValue],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1].value).toBe('old customer value')
+    })
+
+    it('should handle actions without customer_field_id', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'old customer value' },
+        }
+
+        const actionWithoutFieldId = {
+            ...setCustomerCustomFieldValueAction,
+            arguments: {
+                ...setCustomerCustomFieldValueAction.arguments,
+                customer_field_id: undefined,
+            },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [actionWithoutFieldId],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1].value).toBe('old customer value')
+    })
+
+    it('should create new customer field entries when absent in state', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'existing customer value' },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [
+                setCustomerCustomFieldValueAction,
+                {
+                    ...setCustomerCustomFieldValueAction,
+                    arguments: {
+                        ...setCustomerCustomFieldValueAction.arguments,
+                        customer_field_id: 2,
+                        value: 'New customer value',
+                    },
+                },
+            ],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1].value).toBe('Customer field value')
+        expect(result[2].value).toBe('New customer value')
+    })
+
+    it('should preserve other properties on existing customer fields', () => {
+        const fieldsState = {
+            1: { id: 1, value: 'original', dirty: false },
+        }
+
+        const appliedMacro = {
+            ...macroFixture,
+            actions: [setCustomerCustomFieldValueAction],
+        }
+
+        const result = mergeCustomerFieldsStateWithMacroValues({
+            fieldsState,
+            appliedMacro,
+        })
+
+        expect(result[1]).toEqual({
+            id: 1,
+            dirty: false,
+            value: 'Customer field value',
         })
     })
 })

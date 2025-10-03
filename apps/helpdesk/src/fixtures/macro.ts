@@ -259,6 +259,16 @@ export const setCustomFieldValueAction: MacroAction = {
     },
 }
 
+export const setCustomerCustomFieldValueAction: MacroAction = {
+    name: MacroActionName.SetCustomerCustomFieldValue,
+    type: MacroActionType.User,
+    title: 'Set customer field',
+    arguments: {
+        customer_field_id: 1,
+        value: 'Customer field value',
+    },
+}
+
 export const setAssigneeAction: MacroAction = {
     name: MacroActionName.SetAssignee,
     type: MacroActionType.User,

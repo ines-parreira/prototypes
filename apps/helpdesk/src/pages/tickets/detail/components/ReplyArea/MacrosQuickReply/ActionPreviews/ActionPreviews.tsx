@@ -32,6 +32,7 @@ type AvailableActions =
     | MacroActionName.ExcludeFromAutoMerge
     | MacroActionName.ExcludeFromCSAT
     | MacroActionName.SetCustomFieldValue
+    | MacroActionName.SetCustomerCustomFieldValue
     | MacroActionName.SetPriority
 
 const ACTION_COMPONENT_MAPPER: Record<
@@ -50,6 +51,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.ExcludeFromAutoMerge]: SimpleActionPreview,
     [MacroActionName.ExcludeFromCSAT]: SimpleActionPreview,
     [MacroActionName.SetCustomFieldValue]: SimpleActionPreview,
+    [MacroActionName.SetCustomerCustomFieldValue]: SimpleActionPreview,
     [MacroActionName.SetPriority]: SimpleActionPreview,
 }
 

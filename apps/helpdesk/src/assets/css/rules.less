@@ -349,6 +349,39 @@ pre {
                     }
                 }
             }
+
+            &.customer-field-input--text > div {
+                height: 26px;
+                border-radius: 15px;
+
+                & > input {
+                    font-size: 12px;
+                    padding: 3px 8px;
+                }
+            }
+
+            &.customer-field-input--number {
+                height: 26px;
+                border-radius: 15px 8px 8px 15px;
+
+                & > span {
+                    height: 24px;
+
+                    i {
+                        font-size: 13px;
+                    }
+                }
+            }
+
+            &.customer-field-input--dropdown > span {
+                .rule-select-mixin;
+                & > span {
+                    padding: 0;
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
         }
     }
 }

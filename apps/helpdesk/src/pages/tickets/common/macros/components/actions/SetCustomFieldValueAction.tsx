@@ -2,6 +2,8 @@ import { useCallback, useMemo } from 'react'
 
 import { fromJS, List, Map } from 'immutable'
 
+import { ObjectType } from '@gorgias/helpdesk-types'
+
 import { CustomFieldValue } from 'custom-fields/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
@@ -13,6 +15,7 @@ type Props = {
     actions: List<Map<string, any>> | null
     index: number
     updateActionArgs: (index: number, args: Map<string, any>) => void
+    objectType?: ObjectType
 }
 
 const SetCustomFieldValueAction = ({
@@ -20,6 +23,7 @@ const SetCustomFieldValueAction = ({
     actions,
     index,
     updateActionArgs,
+    objectType = 'Ticket',
 }: Props) => {
     const args = (action.get('arguments') as Map<string, any>).toJS()
     const customFieldId = action.getIn(['arguments', 'custom_field_id'], '')
@@ -60,6 +64,7 @@ const SetCustomFieldValueAction = ({
                 value={customFieldId}
                 idsAlreadySet={idsAlreadySet}
                 required
+                objectType={objectType}
             />
             {customFieldId && (
                 <CustomFieldIdInput

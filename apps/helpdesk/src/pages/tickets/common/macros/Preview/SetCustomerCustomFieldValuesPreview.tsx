@@ -9,13 +9,13 @@ import { CustomFieldName } from './CustomFieldName'
 
 import css from './Preview.less'
 
-export const SetCustomFieldValuesPreview = ({
+export const SetCustomerCustomFieldValuesPreview = ({
     actions,
 }: {
     actions?: MacroAction[]
 }) => {
     const SCFActions = actions?.filter(
-        (action) => action.name === MacroActionName.SetCustomFieldValue,
+        (action) => action.name === MacroActionName.SetCustomerCustomFieldValue,
     )
 
     if (!SCFActions?.length) return null

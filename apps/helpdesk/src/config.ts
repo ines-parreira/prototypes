@@ -1685,6 +1685,34 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
             },
         },
     },
+    {
+        execution: ActionTemplateExecution.Back,
+        name: MacroActionName.SetCustomerCustomFieldValue,
+        title: 'Set customer field',
+        icon: 'person',
+        arguments: {
+            customer_field_id: {
+                label: 'Field',
+                default: '',
+                editable: false,
+                required: false,
+                display_order: 1,
+                input: {
+                    type: 'customer_field-select',
+                },
+            },
+            value: {
+                label: 'Value',
+                default: '',
+                editable: true,
+                required: false,
+                display_order: 2,
+                input: {
+                    type: 'customer_field-input',
+                },
+            },
+        },
+    },
 ]
 
 export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(

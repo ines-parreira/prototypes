@@ -96,6 +96,11 @@ const SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
     value: '',
 }
 
+const SET_CUSTOMER_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
+    customer_field_id: '',
+    value: '',
+}
+
 const SET_PRIORITY_ACTION_DEFAULT = {
     priority: 'normal',
 }
@@ -115,6 +120,7 @@ export const ACTION_DEFAULT_STATE = {
     addInternalNote: ADD_INTERNAL_NOTE_ACTION_DEFAULT,
     snoozeTicket: SNOOZE_ACTION_DEFAULT,
     setCustomFieldValue: SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
+    setCustomerCustomFieldValue: SET_CUSTOMER_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
     setPriority: SET_PRIORITY_ACTION_DEFAULT,
 }
 
