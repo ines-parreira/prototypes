@@ -6,7 +6,7 @@ import {
 } from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
-import { ItemSelectionDrawer } from './ItemSelectionDrawer'
+import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const VendorRecommendationRuleCard = ({
@@ -124,7 +124,6 @@ export const VendorRecommendationRuleCard = ({
                         cursor: null,
                     })
                 }}
-                ruleType="vendor"
                 onDelete={(deletedVendor: string) =>
                     onUpsert(
                         vendors.filter((vendor) => vendor !== deletedVendor),
@@ -133,13 +132,12 @@ export const VendorRecommendationRuleCard = ({
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 isOpen={allVendorsDrawerConfig.isOpen}
                 isLoading={allVendors.isLoading}
                 hasImages={false}
                 title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="vendors"
-                ruleType="vendor"
                 selectedItemIds={vendors}
                 onClose={() =>
                     setAllVendorsDrawerConfig((old) => ({
@@ -178,14 +176,13 @@ export const VendorRecommendationRuleCard = ({
                 }}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 isOpen={vendorProductsDrawerConfig.isOpen}
                 isLoading={vendorProducts.isLoading}
                 hasImages={true}
                 title={`Products within vendor: ${vendorProductsDrawerConfig.vendor}`}
                 type={type}
                 itemLabelPlural="products"
-                ruleType="product"
                 selectedItemIds={[]}
                 onClose={() =>
                     setVendorProductsDrawerConfig((old) => ({
@@ -221,10 +218,9 @@ export const VendorRecommendationRuleCard = ({
                 }}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="vendors"
-                ruleType="vendor"
                 items={paginatedSelectedVendors.paginatedItems}
                 selectedItemIds={vendors}
                 isOpen={isSeeAllDrawerOpen}

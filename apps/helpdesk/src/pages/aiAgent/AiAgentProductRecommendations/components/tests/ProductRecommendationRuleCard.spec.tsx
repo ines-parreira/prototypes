@@ -18,8 +18,8 @@ jest.mock(
     }),
 )
 
-jest.mock('../ItemSelectionDrawer', () => ({
-    ItemSelectionDrawer: ({ isOpen, onClose, onSubmit, title }: any) => {
+jest.mock('../ItemDrawer', () => ({
+    ItemDrawer: ({ isOpen, onClose, onSubmit, title }: any) => {
         if (!isOpen) return null
         return (
             <div data-testid="item-selection-drawer">

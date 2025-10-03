@@ -12,8 +12,8 @@ jest.mock('../../hooks/usePaginatedItems', () => ({
     usePaginatedItems: jest.fn(),
 }))
 
-jest.mock('../ItemSelectionDrawer', () => ({
-    ItemSelectionDrawer: ({
+jest.mock('../ItemDrawer', () => ({
+    ItemDrawer: ({
         isOpen,
         onClose,
         onSubmit,

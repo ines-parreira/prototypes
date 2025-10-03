@@ -4,7 +4,7 @@ import { Product } from 'constants/integrations/types/shopify'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
-import { ItemSelectionDrawer } from './ItemSelectionDrawer'
+import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const ProductRecommendationRuleCard = ({
@@ -121,16 +121,14 @@ export const ProductRecommendationRuleCard = ({
                     )
                 }
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
-                ruleType="product"
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 isOpen={isDrawerOpen}
                 isLoading={isLoadingAllProducts}
                 hasImages={true}
                 title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="products"
-                ruleType="product"
                 selectedItemIds={productIds}
                 type={type}
                 onClose={() => setIsDrawerOpen(false)}
@@ -145,10 +143,9 @@ export const ProductRecommendationRuleCard = ({
                 onSearch={setSearchTerm}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="products"
-                ruleType="product"
                 items={mapProducts(productRules)}
                 selectedItemIds={productIds}
                 isOpen={isSeeAllDrawerOpen}

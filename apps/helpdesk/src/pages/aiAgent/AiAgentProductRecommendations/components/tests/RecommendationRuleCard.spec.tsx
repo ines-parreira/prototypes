@@ -2,8 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import * as productRecommendationErrors from '../../types/productRecommendationErrors'
-import * as formatConflictMessageModule from '../../utils/formatConflictMessage'
 import { RecommendationRuleCard } from '../RecommendationRuleCard'
 
 const mockOnAddButtonClick = jest.fn()
@@ -92,7 +90,6 @@ const renderComponent = (
                 items={items}
                 onDelete={mockOnDelete}
                 onSeeAllClick={mockOnSeeAllClick}
-                ruleType="product"
                 onShowProducts={
                     hasOnShowProducts ? mockOnShowProducts : undefined
                 }
@@ -105,10 +102,6 @@ describe('RecommendationRuleCard', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockOnDelete.mockResolvedValue(undefined)
-        jest.spyOn(
-            productRecommendationErrors,
-            'isProductRecommendationConflictError',
-        ).mockReturnValue(false)
     })
 
     it('should render the component correctly', () => {
@@ -385,60 +378,6 @@ describe('RecommendationRuleCard', () => {
         expect(thunkCalls.length).toBeGreaterThan(0)
     })
 
-    it('should handle conflict errors with formatted message', async () => {
-        const conflictError = {
-            response: {
-                data: {
-                    error: {
-                        code: 'CONFLICT',
-                        details: { conflicts: ['Product A', 'Product B'] },
-                    },
-                },
-            },
-        }
-
-        jest.spyOn(
-            productRecommendationErrors,
-            'isProductRecommendationConflictError',
-        ).mockReturnValue(true)
-        jest.spyOn(
-            formatConflictMessageModule,
-            'formatConflictMessage',
-        ).mockReturnValue('Products A and B are already in another rule')
-
-        mockOnDelete.mockRejectedValue(conflictError)
-
-        const screen = renderComponent({
-            items: [
-                { id: '1', title: 'Product 1' },
-                { id: '2', title: 'Product 2' },
-            ],
-        })
-
-        const removeButton = screen.getAllByRole('button', {
-            name: 'Remove product',
-        })[0]
-
-        await act(async () => {
-            fireEvent.click(removeButton)
-            await new Promise((resolve) => setTimeout(resolve, 0))
-        })
-
-        await waitFor(() => {
-            expect(mockOnDelete).toHaveBeenCalledWith('1')
-            expect(mockDispatch).toHaveBeenCalled()
-        })
-
-        expect(
-            formatConflictMessageModule.formatConflictMessage,
-        ).toHaveBeenCalledWith(conflictError.response.data, 'product')
-
-        const thunkCalls = mockDispatch.mock.calls.filter(
-            (call: any[]) => typeof call[0] === 'function',
-        )
-        expect(thunkCalls.length).toBeGreaterThan(0)
-    })
-
     it('should reset deletingItemId after successful deletion', async () => {
         const screen = renderComponent({
             items: [
@@ -598,7 +537,6 @@ describe('RecommendationRuleCard', () => {
                     ]}
                     onDelete={mockOnDelete}
                     onSeeAllClick={mockOnSeeAllClick}
-                    ruleType="product"
                 />
             </Provider>,
         )

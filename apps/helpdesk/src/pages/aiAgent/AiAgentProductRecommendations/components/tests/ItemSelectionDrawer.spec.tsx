@@ -1,12 +1,9 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
-import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { ProductRecommendationRuleType } from '../../types'
-import type { ProductRecommendationConflictError } from '../../types/productRecommendationErrors'
-import { ItemSelectionDrawer } from '../ItemSelectionDrawer'
+import { ItemDrawer } from '../ItemDrawer'
 
 const mockChatContainer = document.createElement('div')
 mockChatContainer.id = 'gorgias-chat-container'
@@ -43,7 +40,6 @@ const renderComponent = (
         title?: string
         selectedItemIds?: string[]
         itemLabelPlural?: string
-        ruleType?: ProductRecommendationRuleType
         items?: Array<{
             id: string
             title: string
@@ -63,7 +59,6 @@ const renderComponent = (
         title = 'Select products',
         selectedItemIds = [],
         itemLabelPlural = 'products',
-        ruleType = 'product',
         items = [
             {
                 id: '1',
@@ -87,14 +82,13 @@ const renderComponent = (
     } = options
 
     return render(
-        <ItemSelectionDrawer
+        <ItemDrawer
             isOpen={isOpen}
             isLoading={isLoading}
             hasImages={hasImages}
             title={title}
             selectedItemIds={selectedItemIds}
             itemLabelPlural={itemLabelPlural}
-            ruleType={ruleType}
             items={items}
             pagination={{
                 hasNextPage: hasNextPage,
@@ -110,7 +104,7 @@ const renderComponent = (
     )
 }
 
-describe('ItemSelectionDrawer', () => {
+describe('ItemDrawer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
@@ -316,113 +310,6 @@ describe('ItemSelectionDrawer', () => {
         await waitFor(() =>
             expect(dispatchMock).toHaveBeenCalledWith({
                 message: 'Failed to save product recommendations.',
-                status: NotificationStatus.Error,
-            }),
-        )
-    })
-
-    it('should show formatted conflict error message when conflict occurs', async () => {
-        const conflictData: ProductRecommendationConflictError = {
-            productConflicts: [
-                {
-                    productId: '123',
-                    productName: 'Conflicting Product',
-                    conflicts: [
-                        {
-                            type: 'tag',
-                            action: 'promoted',
-                            items: [{ target: 'sale' }],
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const conflictError = new AxiosError(
-            'Conflict',
-            '409',
-            undefined,
-            undefined,
-            {
-                status: 409,
-                data: conflictData,
-            } as any,
-        )
-
-        mockOnSubmit.mockRejectedValue(conflictError)
-
-        const screen = renderComponent({ ruleType: 'product' })
-
-        fireEvent.click(screen.getByText('Test product 4'))
-        fireEvent.click(screen.getByText('Save Changes'))
-
-        expect(mockOnSubmit).toHaveBeenCalledWith(['4'])
-
-        await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(0))
-
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenCalledWith({
-                message:
-                    'Conflict found: Conflicting Product is already promoted (via tag "sale")',
-                status: NotificationStatus.Error,
-            }),
-        )
-    })
-
-    it('should show formatted conflict error message for vendor rule conflicts', async () => {
-        const conflictData: ProductRecommendationConflictError = {
-            productConflicts: [
-                {
-                    productId: '456',
-                    productName: 'Product A',
-                    conflicts: [
-                        {
-                            type: 'product',
-                            action: 'excluded',
-                            items: [{ target: '456' }],
-                        },
-                    ],
-                },
-                {
-                    productId: '789',
-                    productName: 'Product B',
-                    conflicts: [
-                        {
-                            type: 'tag',
-                            action: 'promoted',
-                            items: [{ target: 'featured' }],
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const conflictError = new AxiosError(
-            'Conflict',
-            '409',
-            undefined,
-            undefined,
-            {
-                status: 409,
-                data: conflictData,
-            } as any,
-        )
-
-        mockOnSubmit.mockRejectedValue(conflictError)
-
-        const screen = renderComponent({ ruleType: 'vendor' })
-
-        fireEvent.click(screen.getByText('Test product 4'))
-        fireEvent.click(screen.getByText('Save Changes'))
-
-        expect(mockOnSubmit).toHaveBeenCalledWith(['4'])
-
-        await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(0))
-
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenCalledWith({
-                message:
-                    'Some products with this vendor are already excluded: Product A is already excluded (via product rule), Product B is already promoted (via tag "featured")',
                 status: NotificationStatus.Error,
             }),
         )

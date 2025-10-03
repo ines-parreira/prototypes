@@ -6,7 +6,7 @@ import {
 } from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
-import { ItemSelectionDrawer } from './ItemSelectionDrawer'
+import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const TagRecommendationRuleCard = ({
@@ -127,16 +127,14 @@ export const TagRecommendationRuleCard = ({
                     onUpsert(tags.filter((tag) => tag !== deletedTag))
                 }
                 onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
-                ruleType="tag"
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 isOpen={allTagsDrawerConfig.isOpen}
                 isLoading={allTags.isLoading}
                 hasImages={false}
                 title={typeMap[type].selectionDrawerTitle}
                 itemLabelPlural="tags"
-                ruleType="tag"
                 selectedItemIds={tags}
                 onClose={() =>
                     setAllTagsDrawerConfig((old) => ({ ...old, isOpen: false }))
@@ -170,14 +168,13 @@ export const TagRecommendationRuleCard = ({
                 }}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 isOpen={tagProductsDrawerConfig.isOpen}
                 isLoading={tagProducts.isLoading}
                 hasImages={true}
                 title={`Products within tag: ${tagProductsDrawerConfig.tag}`}
                 type={type}
                 itemLabelPlural="products"
-                ruleType="product"
                 selectedItemIds={[]}
                 onClose={() =>
                     setTagProductsDrawerConfig((old) => ({
@@ -211,10 +208,9 @@ export const TagRecommendationRuleCard = ({
                 }}
             />
 
-            <ItemSelectionDrawer
+            <ItemDrawer
                 title={typeMap[type].selectedDrawerTitle}
                 itemLabelPlural="tags"
-                ruleType="tag"
                 items={paginatedSelectedTags.paginatedItems}
                 selectedItemIds={tags}
                 isOpen={isSeeAllDrawerOpen}

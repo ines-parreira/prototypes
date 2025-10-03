@@ -13,9 +13,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { ProductRecommendationRuleType } from '../types'
-import { isProductRecommendationConflictError } from '../types/productRecommendationErrors'
-import { formatConflictMessage } from '../utils/formatConflictMessage'
 import { DraftBadge } from './DraftBadge'
 
 import css from './RecommendationRuleCard.less'
@@ -36,7 +33,6 @@ export const RecommendationRuleCard = ({
     onShowProducts,
     onDelete,
     onSeeAllClick,
-    ruleType,
 }: {
     title: string
     description: string
@@ -61,7 +57,6 @@ export const RecommendationRuleCard = ({
         img?: string
         status?: string
     }>
-    ruleType: ProductRecommendationRuleType
     onShowProducts?: (id: string) => void
     onDelete: (id: string) => Promise<void>
     onSeeAllClick: () => void
@@ -82,22 +77,10 @@ export const RecommendationRuleCard = ({
             try {
                 setDeletingItemId(itemId)
                 await onDelete(itemId)
-            } catch (error) {
-                let errorMessage = 'Failed to save product recommendations.'
-
-                if (
-                    isProductRecommendationConflictError(error) &&
-                    error.response
-                ) {
-                    errorMessage = formatConflictMessage(
-                        error.response.data,
-                        ruleType,
-                    )
-                }
-
+            } catch {
                 void dispatch(
                     notify({
-                        message: errorMessage,
+                        message: 'Failed to save product recommendations.',
                         status: NotificationStatus.Error,
                     }),
                 )
@@ -105,7 +88,7 @@ export const RecommendationRuleCard = ({
                 setDeletingItemId(null)
             }
         },
-        [onDelete, ruleType, dispatch],
+        [onDelete, dispatch],
     )
 
     return (
