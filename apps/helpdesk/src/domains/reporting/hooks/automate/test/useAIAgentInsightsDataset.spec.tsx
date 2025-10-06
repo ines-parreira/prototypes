@@ -43,6 +43,7 @@ import {
     IntentMetrics,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()
@@ -58,6 +59,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 
 jest.mock('pages/aiAgent/hooks/useIsSingleStore')
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
@@ -68,6 +70,7 @@ const getTicketChannelsStoreIntegrationsMock = assumeMock(
     useGetTicketChannelsStoreIntegrations,
 )
 const useIsSingleStoreMock = assumeMock(useIsSingleStore)
+const useAiAgentTicketNoHandoverMock = assumeMock(useAiAgentTicketNoHandover)
 
 describe('useAiAgentInsightsDataset', () => {
     const statsFilters: StatsFilters = {
@@ -110,28 +113,18 @@ describe('useAiAgentInsightsDataset', () => {
                 isFetching: false,
                 isError: false,
             } as any)
+            useAiAgentTicketNoHandoverMock.mockReturnValue({
+                data: {
+                    'TicketCustomFieldsEnriched.ticketCount': {
+                        value: 1000,
+                        prevValue: 0,
+                    },
+                },
+                isFetching: true,
+                isError: false,
+            } as any)
+
             useMultipleMetricsTrendsMock
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedInteractionsDataMultiStore
-                    data: {
-                        'AutomatedTickets.count': {
-                            value: 1000,
-                            prevValue: 0,
-                        },
-                    },
-                    isFetching: true,
-                } as any)
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedInteractionsDataSingleStore
-                    data: {
-                        'AutomationDataset.automatedInteractions': {
-                            value: 0,
-                            prevValue: 0,
-                        },
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
                 .mockReturnValueOnce({
                     // aiAgentTicketsData
                     data: {
@@ -212,29 +205,18 @@ describe('useAiAgentInsightsDataset', () => {
                 isFetching: false,
                 isError: false,
             } as any)
+            useAiAgentTicketNoHandoverMock.mockReturnValue({
+                data: {
+                    'TicketCustomFieldsEnriched.ticketCount': {
+                        value: 1000,
+                        prevValue: 0,
+                    },
+                },
+                isFetching: false,
+                isError: false,
+            } as any)
+
             useMultipleMetricsTrendsMock
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedInteractionsDataMultiStore
-                    data: {
-                        'AutomatedTickets.count': {
-                            value: 0,
-                            prevValue: 0,
-                        },
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedInteractionsDataSingleStore
-                    data: {
-                        'AutomationDataset.automatedInteractions': {
-                            value: 1000,
-                            prevValue: 0,
-                        },
-                    },
-                    isFetching: false,
-                    isError: false,
-                } as any)
                 .mockReturnValueOnce({
                     // aiAgentTicketsData
                     data: {

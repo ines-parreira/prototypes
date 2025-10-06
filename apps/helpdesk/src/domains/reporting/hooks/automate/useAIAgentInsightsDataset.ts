@@ -1,8 +1,6 @@
 import { useMemo } from 'react'
 
 import {
-    useAiAgentAutomatedInteractionsCountTrends,
-    useAiAgentAutomatedTicketsCountTrends,
     useAIAgentResourcePerTicket,
     useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
     useAiAgentTickets,
@@ -26,8 +24,6 @@ import {
 } from 'domains/reporting/hooks/automate/utils'
 import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import { AutomatedTicketsMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
-import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -51,12 +47,12 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { OrderDirection } from 'models/api/types'
-import useIsSingleStore from 'pages/aiAgent/hooks/useIsSingleStore'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     IntentMetrics,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 
 export const useAIAgentMetrics = (
     filters: StatsFilters,
@@ -84,24 +80,11 @@ export const useAIAgentMetrics = (
         [aiAgentUserId, filters],
     )
 
-    const isSingleStore = useIsSingleStore()
-
-    const aiAgentAutomatedInteractionsDataForMultiStore =
-        useAiAgentAutomatedTicketsCountTrends({
-            filters,
-            timezone,
-            outcomeFieldId: outcomeCustomFieldId,
-            intentFieldId: intentCustomFieldId,
-            integrationIds,
-            enabled: !isSingleStore,
-        })
-
-    const aiAgentAutomatedInteractionsDataForSingleStore =
-        useAiAgentAutomatedInteractionsCountTrends({
-            filters: statsFiltersWithAiAgent,
-            timezone,
-            enabled: isSingleStore,
-        })
+    const aiAgentNoHandoverData = useAiAgentTicketNoHandover(
+        statsFiltersWithAiAgent,
+        timezone,
+        integrationIds,
+    )
     const aiAgentTicketsData = useMultipleMetricsTrends(
         aiAgentTouchedTicketTotalCountQueryFactory({
             filters,
@@ -160,13 +143,10 @@ export const useAIAgentMetrics = (
 
     const aiAgentTickets = aiAgentTicketsData.data?.[TicketMeasure.TicketCount]
 
-    const aiAgentAutomatedInteractions = isSingleStore
-        ? aiAgentAutomatedInteractionsDataForSingleStore.data?.[
-              AutomationDatasetMeasure.AutomatedInteractions
-          ]
-        : aiAgentAutomatedInteractionsDataForMultiStore.data?.[
-              AutomatedTicketsMeasure.NumAutomatedTickets
-          ]
+    const aiAgentAutomatedInteractions =
+        aiAgentNoHandoverData.data?.[
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+        ]
 
     const aiAgentCustomerSatisfaction =
         customerSatisfactionAiAgentData.data?.[
@@ -176,12 +156,9 @@ export const useAIAgentMetrics = (
     const allTickets = allCreatedTickets.data?.[TicketMeasure.TicketCount]
 
     const isAiAgentAutomatedInteractionsFetching =
-        aiAgentAutomatedInteractionsDataForSingleStore.isFetching ||
-        aiAgentAutomatedInteractionsDataForMultiStore.isFetching
+        aiAgentNoHandoverData.isFetching
 
-    const isAiAgentAutomatedInteractionsError =
-        aiAgentAutomatedInteractionsDataForSingleStore.isError ||
-        aiAgentAutomatedInteractionsDataForMultiStore.isError
+    const isAiAgentAutomatedInteractionsError = aiAgentNoHandoverData.isError
 
     return {
         coverageTrend: getAiAgentCoverageRate({
