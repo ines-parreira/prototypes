@@ -83,7 +83,16 @@ describe('<Test />', () => {
 
         mockUseJourneyContext.mockImplementation(() => ({
             journey: null,
-            journeyData: null,
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
             currentIntegration: { id: 1, name: 'shopify-store' },
             shopName: 'shopify-store',
             isLoading: false,

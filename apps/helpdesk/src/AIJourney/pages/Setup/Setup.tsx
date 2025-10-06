@@ -13,7 +13,6 @@ import { useCreateNewJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
-import { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -86,8 +85,7 @@ export const Setup = () => {
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
         useState<string>(abandonedCartJourney?.message_instructions || '')
     const [isImageEnabled, setIsImageEnabled] = useState(
-        (journeyParams as CartAbandonedJourneyConfigurationApiDTO)
-            ?.include_image || false,
+        journeyParams?.include_image || false,
     )
 
     useEffect(() => {
@@ -103,13 +101,7 @@ export const Setup = () => {
             setDiscountCodeThreshold(
                 journeyParams.discount_code_message_threshold ?? 1,
             )
-            setIsImageEnabled(
-                (
-                    journeyParams as CartAbandonedJourneyConfigurationApiDTO & {
-                        include_image?: boolean
-                    }
-                ).include_image || false,
-            )
+            setIsImageEnabled(journeyParams.include_image || false)
         }
     }, [journeyParams, currentPhoneNumber])
 

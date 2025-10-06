@@ -138,6 +138,8 @@ export const Test = () => {
                     <PlaygroundPreview
                         content={playgroundMessages}
                         isGeneratingMessages={isGeneratingMessages}
+                        includeImage={journeyParams?.include_image}
+                        selectedProductImage={selectedProduct?.image}
                     />
                 </div>
             </motion.div>

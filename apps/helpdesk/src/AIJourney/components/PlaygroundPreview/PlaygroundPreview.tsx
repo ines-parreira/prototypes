@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 import { highlightFakeLinks } from 'AIJourney/utils/highlightFakeLinks/highlightFakeLinks'
+import { Image } from 'constants/integrations/types/shopify'
 
 import { GeneratingMessage } from '../GeneratingMessage/GeneratingMessage'
 import { PlaygroundPreviewHeader } from '../PlaygroundPreviewHeader/PlaygroundPreviewHeader'
@@ -9,14 +10,20 @@ import css from './PlaygroundPreview.less'
 
 type PlaygroundPreviewProps = {
     content?: string[]
-    isGeneratingMessages: boolean
+    includeImage?: boolean
+    isGeneratingMessages?: boolean
+    selectedProductImage?: Maybe<Image>
 }
 
 export const PlaygroundPreview = ({
     content,
+    includeImage = false,
     isGeneratingMessages = false,
+    selectedProductImage,
 }: PlaygroundPreviewProps) => {
     const previewBodyRef = useRef<HTMLDivElement>(null)
+
+    const shouldIncludeImage = includeImage && !!selectedProductImage?.src
 
     useEffect(() => {
         if (previewBodyRef.current) {
@@ -49,6 +56,17 @@ export const PlaygroundPreview = ({
                                 : `${index * 24} hours later`}
                         </span>
                         <div className={css.messageBubble}>
+                            {index === 0 && shouldIncludeImage && (
+                                <div className={css.attachedImage}>
+                                    <img
+                                        src={selectedProductImage.src}
+                                        alt={
+                                            selectedProductImage.alt ??
+                                            'selected-product-image'
+                                        }
+                                    />
+                                </div>
+                            )}
                             {highlightFakeLinks(message, css.fakeLink)}
                         </div>
                     </div>
