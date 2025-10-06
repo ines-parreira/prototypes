@@ -190,10 +190,12 @@ export const METRIC_NAMES = {
         'help-center-unique-search-with-no-result',
 
     // Satisfaction
-    SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION:
-        'satisfaction-average-csat-score-per-dimension',
-    SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_TIME_SERIES:
-        'satisfaction-average-csat-score-per-dimension-time-series',
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES:
+        'satisfaction-average-csat-score-per-agent-time-series',
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES:
+        'satisfaction-average-csat-score-per-channel-time-series',
+    SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES:
+        'satisfaction-average-csat-score-per-integration-time-series',
     SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_DRILL_DOWN:
         'satisfaction-average-csat-score-per-dimension-drill-down',
     SATISFACTION_AVERAGE_SCORE: 'satisfaction-average-score',

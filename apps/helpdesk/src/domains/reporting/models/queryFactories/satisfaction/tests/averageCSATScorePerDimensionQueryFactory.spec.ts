@@ -6,10 +6,7 @@ import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import {
-    averageCSATScorePerDimensionDrillDownQueryFactory,
-    averageCSATScorePerDimensionQueryFactory,
-} from 'domains/reporting/models/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { averageCSATScorePerDimensionDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
@@ -20,82 +17,6 @@ import {
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-
-describe('averageCSATScorePerDimensionQueryFactory', () => {
-    const periodStart = moment()
-    const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
-        period: {
-            end_datetime: periodEnd.toISOString(),
-            start_datetime: periodStart.toISOString(),
-        },
-    }
-    const timezone = 'someTimeZone'
-    const sorting = OrderDirection.Desc
-
-    const dimension = {
-        label: 'Channel',
-        value: TicketDimension.Channel,
-    }
-
-    it('should produce the query', () => {
-        const query = averageCSATScorePerDimensionQueryFactory(
-            dimension.value,
-            statsFilters,
-            timezone,
-        )
-
-        expect(query).toEqual({
-            metricName:
-                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
-            measures: [
-                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
-            ],
-            dimensions: [TicketDimension.Channel],
-            segments: [],
-            filters: [
-                ...NotSpamNorTrashedTicketsFilter,
-                ...statsFiltersToReportingFilters(
-                    TicketStatsFiltersMembers,
-                    statsFilters,
-                ),
-            ],
-            timezone,
-        })
-    })
-
-    it('should produce the query with sorting', () => {
-        const query = averageCSATScorePerDimensionQueryFactory(
-            dimension.value,
-            statsFilters,
-            timezone,
-            sorting,
-        )
-
-        expect(query).toEqual({
-            metricName:
-                METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
-            measures: [
-                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
-            ],
-            dimensions: [TicketDimension.Channel],
-            segments: [],
-            filters: [
-                ...NotSpamNorTrashedTicketsFilter,
-                ...statsFiltersToReportingFilters(
-                    TicketStatsFiltersMembers,
-                    statsFilters,
-                ),
-            ],
-            timezone,
-            order: [
-                [TicketSatisfactionSurveyMeasure.ScoredSurveysCount, sorting],
-            ],
-        })
-    })
-})
 
 describe('averageCSATScorePerDimensionDrillDownQueryFactory', () => {
     const periodStart = moment()

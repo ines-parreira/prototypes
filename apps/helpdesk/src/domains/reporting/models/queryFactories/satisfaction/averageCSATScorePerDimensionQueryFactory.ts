@@ -1,6 +1,7 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -22,13 +23,12 @@ import {
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
-export const averageCSATScorePerDimensionQueryFactory = (
+const averageCSATScorePerDimensionQueryFactory = (
     dimension: string,
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    metricName: METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION,
+): Omit<ReportingQuery<HelpdeskMessageCubeWithJoins>, 'metricName'> => ({
     measures: [
         TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         TicketSatisfactionSurveyMeasure.ScoredSurveysCount,
@@ -49,8 +49,20 @@ export const averageCSATScorePerDimensionQueryFactory = (
         : {}),
 })
 
+const integrationToMetricName = {
+    [TicketDimension.AssigneeUserId]:
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
+    [TicketDimension.Channel]:
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
+    [TicketMessagesDimension.Integration]:
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
+}
+
 export const averageCSATScorePerDimensionTimeSeriesFactory = (
-    dimension: string,
+    dimension:
+        | TicketDimension.AssigneeUserId
+        | TicketDimension.Channel
+        | TicketMessagesDimension.Integration,
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
@@ -62,8 +74,7 @@ export const averageCSATScorePerDimensionTimeSeriesFactory = (
         timezone,
         sorting,
     ),
-    metricName:
-        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_DIMENSION_TIME_SERIES,
+    metricName: integrationToMetricName[dimension],
     timeDimensions: [
         {
             dimension: TicketSatisfactionSurveyDimension.SurveySentDatetime,

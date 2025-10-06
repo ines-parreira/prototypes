@@ -9,7 +9,6 @@ import {
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
 } from 'domains/reporting/hooks/automate/timeSeries'
-import { useAverageCSATScorePerDimensionTimeSeries } from 'domains/reporting/hooks/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -22,7 +21,6 @@ import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/timeseries'
-import { averageCSATScorePerDimensionTimeSeriesFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
@@ -107,37 +105,6 @@ describe('Automate V2 time series', () => {
                     granularity,
                 ),
             ])
-        })
-    })
-
-    describe('useAverageCSATScorePerDimensionTimeSeries', () => {
-        it('should pass the query to the useTimeSeriesHook', () => {
-            const dimension = 'some-dimension'
-            renderHook(
-                ({ statsFilters, timezone, granularity }) =>
-                    useAverageCSATScorePerDimensionTimeSeries(
-                        dimension,
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    ),
-                {
-                    initialProps: {
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    },
-                },
-            )
-
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
-                averageCSATScorePerDimensionTimeSeriesFactory(
-                    dimension,
-                    statsFilters,
-                    timezone,
-                    granularity,
-                ),
-            )
         })
     })
 

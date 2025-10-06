@@ -30,6 +30,7 @@ export const useAverageCSATPerAssigneeTimeseries = (
         timezone,
         TicketDimension.AssigneeUserId,
     )
+
 export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
@@ -84,6 +85,7 @@ export const useAverageCSATPerChannelTimeseries = (
         timezone,
         TicketDimension.Channel,
     )
+
 export const fetchAverageCSATPerChannelTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
@@ -137,6 +139,7 @@ export const useAverageCSATPerIntegrationTimeseries = (
         timezone,
         TicketMessagesDimension.Integration,
     )
+
 export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
@@ -181,36 +184,23 @@ export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
     }
 }
 
-export const useAverageCSATScorePerDimensionTimeSeries = (
-    dimension: string,
+const useAverageCSATPerDimensionTimeSeries = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
-    sorting?: OrderDirection,
+    dimension:
+        | TicketDimension.AssigneeUserId
+        | TicketDimension.Channel
+        | TicketMessagesDimension.Integration,
 ) => {
+    const { granularity } = useStatsFilters()
+
     return useTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
             dimension,
             filters,
             timezone,
             granularity,
-            sorting,
+            OrderDirection.Desc,
         ),
-    )
-}
-
-export const useAverageCSATPerDimensionTimeSeries = (
-    filters: StatsFilters,
-    timezone: string,
-    dimension: TicketDimension | TicketMessagesDimension,
-) => {
-    const { granularity } = useStatsFilters()
-
-    return useAverageCSATScorePerDimensionTimeSeries(
-        dimension,
-        filters,
-        timezone,
-        granularity,
-        OrderDirection.Desc,
     )
 }
