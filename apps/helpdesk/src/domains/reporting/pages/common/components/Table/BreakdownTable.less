@@ -258,3 +258,43 @@
         padding-bottom: var(--layout-spacing-xs);
     }
 }
+
+.axiom :local {
+    .table {
+        .header,
+        thead {
+            .sticky,
+            th,
+            td {
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+
+        tr {
+            th,
+            td {
+                &.sticky,
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+
+                &.highlight {
+                    &:first-child {
+                        background-color: var(--surface-neutral-secondary);
+                    }
+                }
+            }
+        }
+
+        tbody tr {
+            &:hover {
+                background-color: var(--surface-neutral-secondary);
+
+                & > td.sticky,
+                & > td:first-child {
+                    background-color: var(--surface-neutral-secondary);
+                }
+            }
+        }
+    }
+}

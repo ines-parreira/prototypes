@@ -4,7 +4,7 @@
 :local {
     .wrapper {
         &:hover {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             border-radius: var(--layout-spacing-xxs);
         }
         > label {
@@ -28,6 +28,14 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        &:hover {
+            background: var(--hover-default);
         }
     }
 }

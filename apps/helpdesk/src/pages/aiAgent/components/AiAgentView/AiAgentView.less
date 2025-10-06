@@ -11,7 +11,7 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .spinner {
@@ -28,5 +28,11 @@
         overflow-y: auto;
         display: flex;
         flex-direction: column;
+    }
+}
+
+.axiom :local {
+    .pageHeaderContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

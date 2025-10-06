@@ -5,7 +5,7 @@
         justify-content: space-between;
         gap: var(--layout-spacing-m);
         padding: 0 var(--layout-spacing-m);
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
         padding: var(--layout-spacing-l) 64px;
     }
 
@@ -38,5 +38,11 @@
         line-height: 20px;
         font-weight: 400;
         color: var(--neutral-grey-5);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-neutral-primary);
     }
 }

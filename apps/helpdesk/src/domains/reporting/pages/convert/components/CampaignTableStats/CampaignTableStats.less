@@ -153,3 +153,23 @@
         margin-bottom: var(--layout-spacing-xs);
     }
 }
+
+.axiom :local {
+    .table {
+        .header {
+            th {
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+            }
+        }
+
+        tr {
+            td {
+                &:first-child {
+                    background-color: var(--elevation-neutral-default);
+                }
+            }
+        }
+    }
+}

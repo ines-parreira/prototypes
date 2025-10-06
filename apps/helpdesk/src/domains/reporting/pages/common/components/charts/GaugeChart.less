@@ -18,7 +18,7 @@
 
     .tooltip {
         :global .tooltip-inner {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             border: 1px solid var(--neutral-grey-1); // legacy
             color: var(--indigo);
             font-size: 14px;
@@ -37,7 +37,7 @@
             position: absolute;
             top: -1px;
             border-color: var(--neutral-grey-0) transparent transparent
-                transparent;
+                transparent; // legacy
             border-style: solid;
         }
     }
@@ -60,11 +60,17 @@
 .axiom :local {
     .tooltip {
         :global .tooltip-inner {
+            background-color: var(--elevation-neutral-default);
             border: 1px solid var(--border-neutral-default);
         }
 
         :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
             border-top-color: var(--border-neutral-default) !important;
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
+            border-color: var(--elevation-neutral-default) transparent
+                transparent transparent;
         }
     }
 }

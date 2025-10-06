@@ -11,13 +11,13 @@
         height: var(--layout-spacing-m);
         border-radius: var(--layout-spacing-xxs);
         border: 1px solid var(--neutral-grey-3); // legacy
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         transition: all 0.2s linear;
         cursor: pointer;
 
         &:hover,
         &.active {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
 
         i {
@@ -78,7 +78,7 @@
         justify-content: space-between;
         align-items: center;
         border-top: 1px solid var(--neutral-grey-3); // legacy
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .dropdownFooterSave {
@@ -120,10 +120,17 @@
 .axiom :local {
     .dropdownToggle {
         border: 1px solid var(--border-neutral-default);
+        background-color: var(--surface-neutral-tertiary);
+
+        &:hover,
+        &.active {
+            background-color: var(--surface-neutral-secondary);
+        }
     }
 
     .dropdownFooter {
         border-top: 1px solid var(--border-neutral-default);
+        background-color: var(--surface-neutral-tertiary);
     }
 
     .separator {

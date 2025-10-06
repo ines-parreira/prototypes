@@ -26,7 +26,7 @@
         border-radius: (@iconSize / 2);
         border: 1px solid var(--neutral-grey-0); // legacy
         color: var(--neutral-grey-0);
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
 
         :global {
             .material-icons,
@@ -61,7 +61,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 4px;
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
     }
 
     .systemIcon {
@@ -73,5 +73,10 @@
 .axiom :local {
     .subIcon {
         border-color: var(--border-neutral-default);
+        background-color: var(--static-additional-blue);
+    }
+
+    .systemIconWrapper {
+        background-color: var(--static-additional-blue);
     }
 }

@@ -21,7 +21,7 @@
         justify-content: space-between;
 
         &:hover {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
         }
 
         .selection {
@@ -35,7 +35,19 @@
         }
 
         &.isSelected {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .subcategory {
+        &:hover {
+            background: var(--hover-default);
+        }
+
+        &.isSelected {
+            background: var(--surface-neutral-tertiary);
         }
     }
 }

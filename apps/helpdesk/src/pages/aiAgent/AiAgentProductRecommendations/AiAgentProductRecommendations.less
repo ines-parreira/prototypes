@@ -12,7 +12,7 @@
     .card {
         border: 1px solid #ececec;
         border-radius: 12px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         transition: ease-in-out 0.2s;
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
         display: flex;
@@ -47,5 +47,11 @@
         height: 128px;
         min-height: 128px;
         border-radius: 8px;
+    }
+}
+
+.axiom :local {
+    .card {
+        background-color: var(--elevation-neutral-default);
     }
 }

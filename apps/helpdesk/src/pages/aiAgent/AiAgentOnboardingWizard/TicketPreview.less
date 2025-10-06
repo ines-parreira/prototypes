@@ -4,7 +4,7 @@
     .ticketPreview {
         .body-regular();
         padding: var(--layout-spacing-m);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 0 0 4px 4px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
         width: 428px;
@@ -28,7 +28,7 @@
         .avatar {
             .caption-semibold();
             color: var(--neutral-grey-4);
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         .header {
@@ -139,6 +139,28 @@
             justify-content: flex-end;
             flex: 1;
             gap: var(--layout-spacing-xxs);
+        }
+    }
+}
+
+.axiom :local {
+    .ticketPreview {
+        background-color: var(--elevation-neutral-default);
+
+        .avatar {
+            background-color: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .tovPreview {
+        background-color: var(--elevation-neutral-default);
+
+        .message {
+            background-color: var(--surface-neutral-tertiary);
+        }
+
+        .aiMessage {
+            background-color: var(--surface-brand-secondary);
         }
     }
 }

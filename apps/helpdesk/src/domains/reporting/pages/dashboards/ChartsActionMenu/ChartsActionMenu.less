@@ -6,7 +6,7 @@
         color: var(--neutral-grey-6);
         .body-regular();
         :hover {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
         }
     }
 
@@ -35,13 +35,13 @@
     .addToDashboardAction {
         .body-medium();
         &:hover:not(.disabled) {
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
         }
         position: sticky;
         text-transform: capitalize;
         justify-content: center;
         inset: 0;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         border: 1px solid var(--neutral-grey-3); // legacy
         color: var(--main-primary);
         height: 40px;
@@ -54,7 +54,7 @@
     .disableAddToDashboardAction {
         color: var(--neutral-grey-3);
         &:hover:not(.disabled) {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             cursor: not-allowed;
         }
         i {
@@ -87,7 +87,24 @@
 }
 
 .axiom :local {
+    .wrapper {
+        :hover {
+            background: var(--hover-default);
+        }
+    }
+
     .addToDashboardAction {
         border-color: var(--border-neutral-default);
+        background: var(--surface-neutral-tertiary);
+
+        &:hover:not(.disabled) {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
+    .disableAddToDashboardAction {
+        &:hover:not(.disabled) {
+            background: var(--surface-neutral-tertiary);
+        }
     }
 }
