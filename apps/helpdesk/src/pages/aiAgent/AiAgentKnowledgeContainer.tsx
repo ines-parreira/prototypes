@@ -134,7 +134,10 @@ export const AiAgentKnowledgeContainer = () => {
         helpCenterType: 'guidance',
     })
 
-    const { data: storesDomainIngestionLogs } = useStoresDomainIngestionLogs({
+    const {
+        data: storesDomainIngestionLogs,
+        isLoading: isStoresDomainIngestionLogsLoading,
+    } = useStoresDomainIngestionLogs({
         storeNames: [shopName],
     })
 
@@ -205,6 +208,10 @@ export const AiAgentKnowledgeContainer = () => {
 
     // Deactivate AI Agent in some situations
     useEffect(() => {
+        if (isStoresDomainIngestionLogsLoading) {
+            return
+        }
+
         if (
             hasExternalFiles === false &&
             publicUrls.length === 0 &&
@@ -224,6 +231,7 @@ export const AiAgentKnowledgeContainer = () => {
         storeConfiguration?.helpCenterId,
         storesDomainIngestionLogs,
         shopName,
+        isStoresDomainIngestionLogsLoading,
     ])
 
     const handleOpenHelpCenter = () => {

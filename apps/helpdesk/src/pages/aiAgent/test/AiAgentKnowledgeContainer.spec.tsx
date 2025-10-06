@@ -52,6 +52,7 @@ import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
+import { useStoresDomainIngestionLogs } from '../hooks/useStoresDomainIngestionLogs'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
@@ -73,12 +74,10 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation', () => ({
     })),
 }))
 
-jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs', () => ({
-    useStoresDomainIngestionLogs: () => ({
-        isLoading: false,
-        data: undefined,
-    }),
-}))
+jest.mock('pages/aiAgent/hooks/useStoresDomainIngestionLogs')
+const mockUseStoresDomainIngestionLogs = assumeMock(
+    useStoresDomainIngestionLogs,
+)
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
@@ -183,12 +182,16 @@ const renderComponent = ({
     noStoreConfiguration = false,
     isAiAgentScrapeStoreDomainEnabled = false,
     helpCenterId = 1,
+    storesDomainIngestionLogs = undefined,
+    isStoresDomainIngestionLogsLoading = false,
 }: {
     isStoreConfigLoading?: boolean
     isLoadingHelpCenters?: boolean
     noStoreConfiguration?: boolean
     isAiAgentScrapeStoreDomainEnabled?: boolean
     helpCenterId?: number | null
+    storesDomainIngestionLogs?: any
+    isStoresDomainIngestionLogsLoading?: boolean
 } = {}) => {
     mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
         storeConfiguration: noStoreConfiguration
@@ -288,6 +291,11 @@ const renderComponent = ({
     mockUsePollStoreDomainIngestionLog.mockReturnValue({
         ingestionLogStatus: IngestionLogStatus.Successful,
         syncIsPending: false,
+    })
+
+    mockUseStoresDomainIngestionLogs.mockReturnValue({
+        isLoading: isStoresDomainIngestionLogsLoading,
+        data: storesDomainIngestionLogs,
     })
 
     mockUseFlag.mockImplementation((key) =>
@@ -422,7 +430,10 @@ describe('AiAgentKnowledgeContainer', () => {
     it('should deactivate the AI Agent when there is no knowledge source connected', () => {
         jest.useFakeTimers().setSystemTime(new Date('2024-10-16'))
 
-        renderComponent({ helpCenterId: null })
+        renderComponent({
+            helpCenterId: null,
+            storesDomainIngestionLogs: { 'test-store': [] },
+        })
 
         const deleteButtons = screen.getAllByLabelText('Delete public URL')
         fireEvent.click(deleteButtons[0])
@@ -489,5 +500,24 @@ describe('AiAgentKnowledgeContainer', () => {
             '_blank',
             'noopener noreferrer',
         )
+    })
+
+    it('should not deactivate AI Agent when storesDomainIngestionLogs is still loading', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-10-16'))
+
+        renderComponent({
+            helpCenterId: null,
+            isStoresDomainIngestionLogsLoading: true,
+        })
+
+        const deleteButtons = screen.getAllByLabelText('Delete public URL')
+        fireEvent.click(deleteButtons[0])
+        fireEvent.click(screen.getByText('Delete'))
+        fireEvent.click(deleteButtons[1])
+        fireEvent.click(screen.getByText('Delete'))
+
+        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+
+        jest.useRealTimers()
     })
 })
