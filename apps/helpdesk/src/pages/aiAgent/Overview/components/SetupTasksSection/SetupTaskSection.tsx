@@ -3,99 +3,43 @@ import { useState } from 'react'
 import { Heading, Text } from '@gorgias/axiom'
 
 import loadingStaticIcon from 'assets/img/ai-agent/loading.svg'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
 
 import { CategoryContent } from './CategoryContent'
 import { CategoryList } from './CategoryList'
-import {
-    CreateAnActionBody,
-    EnableAIAgentOnChatBody,
-    EnableAIAgentOnEmailBody,
-    EnableAskAnythingBody,
-    EnableSuggestedProductsBody,
-    EnableTriggerOnSearchBody,
-    MonitorAiAgentBody,
-    UpdateShopifyPermissionsBody,
-    VerifyEmailDomainBody,
-} from './SetupTaskBodies'
-import { TasksCategory, TasksConfigByCategory } from './types'
+import { useGetSetupTasksConfigByCategory } from './hooks/useGetSetupTasksConfigByCategory'
+import { TaskConfig, TasksCategoryKey } from './types'
 
 import css from './SetupTaskSection.less'
 
-const TaskNames = {
-    VerifyEmailDomain: 'Verify your email domain',
-    UpdateShopifyPermissions: 'Update Shopify permissions',
-    CreateAnAction: 'Create an Action',
-    MonitorAiAgent: 'Monitor AI Agent interactions',
-    EnableTriggerOnSearch: `Enable 'Trigger on Search'`,
-    EnableSuggestedProducts: `Enable 'Suggested product questions'`,
-    EnableAskAnything: `Enable 'Ask anything input'`,
-    EnableAIAgentOnChat: 'Enable AI Agent on chat',
-    EnableAIAgentOnEmail: 'Enable AI Agent on email',
-}
+export const SetupTaskSection = ({
+    shopName,
+    shopType,
+}: {
+    shopName: string
+    shopType: string
+}) => {
+    const accountId = useAppSelector(getCurrentAccountId)
 
-const tasksConfigByCategory: TasksConfigByCategory = {
-    [TasksCategory.Essential]: [
-        {
-            name: TaskNames.VerifyEmailDomain,
-            isCompleted: true,
-            body: <VerifyEmailDomainBody />,
-        },
-        {
-            name: TaskNames.UpdateShopifyPermissions,
-            isCompleted: true,
-            body: <UpdateShopifyPermissionsBody />,
-        },
-    ],
-    [TasksCategory.Customize]: [
-        {
-            name: TaskNames.EnableTriggerOnSearch,
-            isCompleted: false,
-            body: <EnableTriggerOnSearchBody />,
-        },
-        {
-            name: TaskNames.EnableSuggestedProducts,
-            isCompleted: false,
-            body: <EnableSuggestedProductsBody />,
-        },
-        {
-            name: TaskNames.EnableAskAnything,
-            isCompleted: false,
-            body: <EnableAskAnythingBody />,
-        },
-    ],
-    [TasksCategory.Train]: [
-        {
-            name: TaskNames.CreateAnAction,
-            isCompleted: false,
-            body: <CreateAnActionBody />,
-        },
-        {
-            name: TaskNames.MonitorAiAgent,
-            isCompleted: false,
-            body: <MonitorAiAgentBody />,
-        },
-    ],
-    [TasksCategory.Deploy]: [
-        {
-            name: TaskNames.EnableAIAgentOnChat,
-            isCompleted: false,
-            body: <EnableAIAgentOnChatBody />,
-        },
-        {
-            name: TaskNames.EnableAIAgentOnEmail,
-            isCompleted: false,
-            body: <EnableAIAgentOnEmailBody />,
-        },
-    ],
-}
+    const { tasksConfigByCategory, isLoading, completionPercentage } =
+        useGetSetupTasksConfigByCategory({
+            accountId,
+            shopName,
+            shopType,
+        })
 
-export const SetupTaskSection = () => {
-    const [selectedCategory, setSelectedCategory] = useState<TasksCategory>(
-        TasksCategory.Essential,
-    )
-    const categories = Object.keys(tasksConfigByCategory) as TasksCategory[]
+    const categories = Object.keys(tasksConfigByCategory) as TasksCategoryKey[]
+    const [selectedCategory, setSelectedCategory] =
+        useState<TasksCategoryKey | null>(categories[0] || null)
 
-    const selectedCategoryTasks = tasksConfigByCategory[selectedCategory]
+    const selectedCategoryTasks: TaskConfig[] = selectedCategory
+        ? tasksConfigByCategory[selectedCategory] || []
+        : []
+
+    if (isLoading || categories.length === 0) {
+        return null
+    }
 
     return (
         <div className={css.container}>
@@ -108,7 +52,7 @@ export const SetupTaskSection = () => {
                         width="16px"
                     />
                     <Text size="sm" variant="bold">
-                        20% complete
+                        {completionPercentage}% complete
                     </Text>
                 </div>
             </div>

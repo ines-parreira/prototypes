@@ -46,7 +46,7 @@ export const AiAgentTaskSection = ({
     }
 
     if (aiAgentPostStoreInstallationStepsEnabled) {
-        return <SetupTaskSection />
+        return <SetupTaskSection shopName={shopName} shopType={shopType} />
     }
 
     // default to existing Task section for backward compatibility - it'll be removed when the new mode is fully enabled

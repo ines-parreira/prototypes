@@ -5,6 +5,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
+import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { runRuleEngine } from './ruleEngine'
@@ -31,12 +32,14 @@ type Args = {
     storeName: string
     storeType: string
     refetchOnWindowFocus?: boolean
+    additionalScope?: AiAgentType
 }
 export const usePendingTasksRuleEngine = ({
     accountDomain,
     storeName,
     storeType,
     refetchOnWindowFocus = true,
+    additionalScope,
 }: Args) => {
     const { routes } = useAiAgentNavigation({ shopName: storeName })
 
@@ -222,6 +225,7 @@ export const usePendingTasksRuleEngine = ({
             {
                 aiAgentRoutes: routes,
             },
+            additionalScope,
         )
     }, [
         isReady,
@@ -244,6 +248,7 @@ export const usePendingTasksRuleEngine = ({
         isStandaloneMerchant,
         routes,
         isTriggerOnSearchDisabled,
+        additionalScope,
     ])
 
     if (shouldFakeTasks) {

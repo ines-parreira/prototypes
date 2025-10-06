@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
 
-import { TasksCategory, TasksConfigByCategory } from './types'
+import { TasksCategory, TasksCategoryKey, TasksConfigByCategory } from './types'
 
 import css from './CategoryList.less'
 
@@ -13,12 +13,14 @@ export const CategoryList = ({
     tasksConfigByCategory,
 }: {
     categories: TasksCategory[]
-    selectedCategory: TasksCategory
+    selectedCategory?: TasksCategoryKey | null
     onSelectCategory: (category: TasksCategory) => void
-    tasksConfigByCategory: TasksConfigByCategory
+    tasksConfigByCategory?: Partial<TasksConfigByCategory> | null
 }) => {
     const isCategoryCompleted = (category: TasksCategory) => {
-        return tasksConfigByCategory[category].every((task) => task.isCompleted)
+        return tasksConfigByCategory?.[category]?.every(
+            (task) => task.isCompleted,
+        )
     }
 
     return (

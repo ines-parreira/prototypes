@@ -5,40 +5,46 @@ import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 
-import { Task } from './types'
+import { TaskConfig } from './types'
 
 import css from './CategoryContent.less'
 
 export const CategoryContent = ({
     selectedCategoryTasks,
 }: {
-    selectedCategoryTasks: Task[]
+    selectedCategoryTasks: TaskConfig[]
 }) => {
     return (
         <div className={css.groupContent}>
             <Accordion className={css.stepsAccordion}>
-                {selectedCategoryTasks.map((task) => (
-                    <AccordionItem
-                        key={task.name}
-                        id={task.name}
-                        highlightOnExpand={false}
-                        className={css.accordionItem}
-                    >
-                        <AccordionHeader className={css.stepTitleContainer}>
-                            {task.isCompleted ? (
-                                <Icon size="md" name="circle-check" />
-                            ) : (
-                                <Icon name="shape-circle" size="md" />
-                            )}
-                            <div className={css.stepTitle}>
-                                <Text size="md" variant="bold">
-                                    {task.name}
-                                </Text>
-                            </div>
-                        </AccordionHeader>
-                        <AccordionBody>{task.body}</AccordionBody>
-                    </AccordionItem>
-                ))}
+                {selectedCategoryTasks.map((task) => {
+                    const BodyComponent = task.body
+
+                    return (
+                        <AccordionItem
+                            key={task.stepName}
+                            id={task.stepName}
+                            highlightOnExpand={false}
+                            className={css.accordionItem}
+                        >
+                            <AccordionHeader className={css.stepTitleContainer}>
+                                {task.isCompleted ? (
+                                    <Icon size="md" name="circle-check" />
+                                ) : (
+                                    <Icon name="shape-circle" size="md" />
+                                )}
+                                <div className={css.stepTitle}>
+                                    <Text size="md" variant="bold">
+                                        {task.displayName}
+                                    </Text>
+                                </div>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <BodyComponent />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )
+                })}
             </Accordion>
         </div>
     )

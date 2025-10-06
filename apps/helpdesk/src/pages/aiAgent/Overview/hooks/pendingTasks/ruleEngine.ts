@@ -135,24 +135,36 @@ const tasksPerAiAgentType: Record<
         new SetYourActionsLiveTask(data, routes),
         new GiveFeedbackAIAgentTask(data, routes),
     ],
+    overview: (data: RuleEngineData, routes: RuleEngineRoutes) => [
+        new VerifyYourEmailDomainTask(data, routes),
+        new UpdateShopifyPermissionsTask(data, routes),
+        new EnableTriggerOnSearchTask(data, routes),
+        new EnableSuggestedProductQuestionsTask(data, routes),
+        new EnableAskAnythingInputTask(data, routes),
+        new CreateAnActionTask(data, routes),
+        new GiveFeedbackAIAgentTask(data, routes),
+        new EnableAIAgentOnChatTask(data, routes),
+        new EnableAIAgentOnEmailTask(data, routes),
+    ],
 }
 
 export const runRuleEngine = (
     data: RuleEngineData,
     routes: RuleEngineRoutes,
+    additionalScope?: AiAgentType,
 ) => {
-    const aiAgentType = getAiAgentTypeFromScopes(
-        data.aiAgentStoreConfiguration.scopes,
-    )
+    const aiAgentType = additionalScope
+        ? additionalScope
+        : getAiAgentTypeFromScopes(data.aiAgentStoreConfiguration.scopes)
 
     const tasks = aiAgentType
         ? tasksPerAiAgentType[aiAgentType](data, routes).filter(
-              (task) => task.available,
+              (task: Task) => task.available,
           )
         : []
 
-    const completedTasks = tasks.filter((task) => !task.display)
-    const pendingTasks = tasks.filter((task) => task.display)
+    const completedTasks = tasks.filter((task: Task) => !task.display)
+    const pendingTasks = tasks.filter((task: Task) => task.display)
 
     return {
         completedTasks,

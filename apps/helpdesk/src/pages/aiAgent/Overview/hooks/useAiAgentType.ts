@@ -6,7 +6,7 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-export type AiAgentType = 'sales' | 'support' | 'mixed'
+export type AiAgentType = 'sales' | 'support' | 'mixed' | 'overview'
 export const getAiAgentTypeFromScopes = (
     scopes?: AiAgentScope[],
 ): AiAgentType | undefined => {

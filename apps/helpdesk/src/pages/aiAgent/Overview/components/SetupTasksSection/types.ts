@@ -1,3 +1,5 @@
+import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
+
 export enum TasksCategory {
     Essential = 'Essential',
     Customize = 'Customize',
@@ -5,12 +7,21 @@ export enum TasksCategory {
     Deploy = 'Deploy',
 }
 
-export type Task = {
-    name: string
+export type TaskConfig = {
+    stepName: StepName
+    displayName: string
     isCompleted: boolean
-    body: React.ReactNode
+    body: React.ComponentType
+}
+
+export type TaskConfigTemplate = {
+    stepName: StepName
+    displayName: string
+    bodyComponent: React.ComponentType
 }
 
 export type TasksConfigByCategory = {
-    [key in TasksCategory]: Task[]
+    [key in TasksCategory]: TaskConfig[]
 }
+
+export type TasksCategoryKey = keyof TasksConfigByCategory
