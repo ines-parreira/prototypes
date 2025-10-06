@@ -12,8 +12,11 @@ import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { AppContextProvider } from 'pages/AppContext'
+import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { closePanels, openPanel } from 'state/layout/actions'
 import { getCurrentOpenedPanel } from 'state/layout/selectors'
@@ -64,6 +67,8 @@ const App = ({
         dispatch(changeTicketMessage({ message: undefined }))
     }
 
+    const { isCollapsibleColumnOpen } = useCollapsibleColumn()
+
     return (
         <div id="app-root" className={css.app}>
             {showGlobalNav && <GlobalNavigation />}
@@ -81,7 +86,9 @@ const App = ({
             ) : null}
 
             <div
-                className={cn('d-flex flex-grow-1 flex-column', css.container)}
+                className={cn('d-flex flex-grow-1 flex-column', css.container, {
+                    [css.withCollapsibleColumn]: isCollapsibleColumnOpen,
+                })}
             >
                 <div
                     className={cn('d-flex flex-grow-1', css.contentInfobar)}
@@ -124,6 +131,8 @@ const App = ({
                 </div>
             </div>
 
+            <CollapsibleColumn />
+
             <div
                 className={cn(css.backdrop, {
                     [css.hidden]: !hasOpenedPanel,
@@ -134,4 +143,12 @@ const App = ({
     )
 }
 
-export default memo(App, _isEqual)
+const AppWrapper = (props: Props) => {
+    return (
+        <AppContextProvider>
+            <App {...props} />
+        </AppContextProvider>
+    )
+}
+
+export default memo(AppWrapper, _isEqual)
