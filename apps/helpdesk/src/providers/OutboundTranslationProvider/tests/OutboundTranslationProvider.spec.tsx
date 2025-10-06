@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { ContentState } from 'draft-js'
+import { ContentState, EditorState } from 'draft-js'
 
 import { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
@@ -124,8 +124,18 @@ describe('OutboundTranslationProvider', () => {
             onEventListener = onEvent
         })
 
+        const mockGetEditorState = jest
+            .fn()
+            .mockReturnValue(EditorState.createEmpty())
+        const mockSetEditorState = jest.fn()
+
         const { result } = renderHook(() => useOutboundTranslationContext(), {
             wrapper,
+        })
+
+        result.current.registerEditorMethods({
+            getEditorState: mockGetEditorState,
+            setEditorState: mockSetEditorState,
         })
 
         act(() => {
@@ -149,6 +159,7 @@ describe('OutboundTranslationProvider', () => {
         expect(mockSetTranslationState).toHaveBeenCalledWith({
             translatedContentState: expect.any(ContentState),
         })
+        expect(mockSetEditorState).toHaveBeenCalledWith(expect.any(EditorState))
     })
 
     it('handles translation failed event', async () => {

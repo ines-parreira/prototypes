@@ -104,10 +104,9 @@ export function useOutboundTranslation(
             dispatch(clearTranslationState())
 
             const currentEditorState = getEditorState()
-            const newEditorState = EditorState.push(
-                currentEditorState,
+            const newEditorState = EditorState.createWithContent(
                 originalContent,
-                'insert-characters',
+                currentEditorState.getDecorator(),
             )
             setEditorState(newEditorState)
         }

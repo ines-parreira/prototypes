@@ -191,10 +191,9 @@ export const OutboundTranslationProvider = ({
 
                 if (getEditorStateRef.current && setEditorStateRef.current) {
                     const currentEditorState = getEditorStateRef.current?.()
-                    const newEditorState = EditorState.push(
-                        currentEditorState,
+                    const newEditorState = EditorState.createWithContent(
                         translatedContentState,
-                        'insert-characters',
+                        currentEditorState.getDecorator(),
                     )
                     setEditorStateRef.current?.(newEditorState)
                 }
