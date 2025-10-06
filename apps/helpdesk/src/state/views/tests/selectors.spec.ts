@@ -921,5 +921,9 @@ describe('selectors', () => {
         it('should return null when no count matches the view', () => {
             expect(selectors.getViewCount('1234')(state)).toEqual(null)
         })
+
+        it('should return null when viewId is null', () => {
+            expect(selectors.getViewCount(null)(state)).toEqual(null)
+        })
     })
 })

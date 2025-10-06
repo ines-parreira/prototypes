@@ -396,10 +396,12 @@ export const makeGetView =
     (state: RootState) => (id: string, configName?: Maybe<EntityType>) =>
         getView(id, configName)(state)
 
-export const getViewCount = (viewId: string | number) =>
+export const getViewCount = (viewId: string | number | null) =>
     createSelector(getViewsState, (state) => {
         const counts = state.get('counts', fromJS({})) as Map<any, any>
-        return counts.get(viewId.toString(), null) as number | null
+        return viewId
+            ? (counts.get(viewId.toString(), null) as number | null)
+            : null
     })
 
 export const makeGetViewCount =
