@@ -17,7 +17,7 @@ onlyBuiltDependencies:
   - '@swc/core'
   - 'esbuild'
 
-minimumReleaseAge: 1440
+minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - '@gorgias/analytics-ui-kit'
   - '@gorgias/axiom'
