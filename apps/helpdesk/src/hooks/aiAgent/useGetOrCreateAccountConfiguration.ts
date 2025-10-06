@@ -20,23 +20,37 @@ export function useGetOrCreateAccountConfiguration(
         accountDomain: string
         storeNames: string[]
     },
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getAccountConfiguration>>
-    >,
+    overrides?: UseQueryOptions<Awaited<
+        ReturnType<typeof getAccountConfiguration>
+    > | null>,
 ) {
     const dispatch = useAppDispatch()
 
     const { accountId, accountDomain, storeNames } = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
-        queryFn: async () => {
+        queryFn: async (): Promise<Awaited<
+            ReturnType<typeof getAccountConfiguration>
+        > | null> => {
             try {
                 return await getAccountConfiguration(accountDomain)
             } catch (error) {
-                if (
-                    !axios.isAxiosError(error) ||
-                    error.response?.status !== 404
-                ) {
+                if (!axios.isAxiosError(error)) {
+                    throw error
+                }
+
+                if (error.response?.status === 403) {
+                    void dispatch(
+                        notify({
+                            message:
+                                'An error occurred while loading the AI Agent, please contact support.',
+                            status: NotificationStatus.Error,
+                        }),
+                    )
+                    return null
+                }
+
+                if (error.response?.status !== 404) {
                     throw error
                 }
 

@@ -437,33 +437,51 @@ export const useGetOnboardingNotificationState = (
 
 export const useGetOrCreateOnboardingNotificationState = (
     params: GetOnboardingNotificationStateParams,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getOnboardingNotificationState>>
-    >,
+    overrides?: UseQueryOptions<Awaited<
+        ReturnType<typeof getOnboardingNotificationState>
+    > | null>,
 ) => {
     const { accountDomain, storeName } = params
 
     return useQuery({
         queryKey: onboardingNotificationStateKeys.detail(params),
-        queryFn: async () => {
-            const fetchData = await getOnboardingNotificationState(
-                accountDomain,
-                storeName,
-            )
-
-            if (!fetchData?.data.onboardingNotificationState && !!storeName) {
-                const createdData = await createOnboardingNotificationState(
+        queryFn: async (): Promise<Awaited<
+            ReturnType<typeof getOnboardingNotificationState>
+        > | null> => {
+            try {
+                const fetchData = await getOnboardingNotificationState(
                     accountDomain,
                     storeName,
-                    {
-                        shopName: storeName,
-                    },
                 )
 
-                return createdData
-            }
+                if (
+                    !fetchData.data.onboardingNotificationState &&
+                    !!storeName
+                ) {
+                    const createdData = await createOnboardingNotificationState(
+                        accountDomain,
+                        storeName,
+                        {
+                            shopName: storeName,
+                        },
+                    )
 
-            return fetchData
+                    return createdData
+                }
+
+                return fetchData
+            } catch (error) {
+                // If we get a 403 error, the account is out of sync
+                // Don't attempt to create a new resource, just return null
+                if (
+                    error instanceof AxiosError &&
+                    error.response?.status === 403
+                ) {
+                    return null
+                }
+                // For any other error, let it throw so React Query can handle retries
+                throw error
+            }
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

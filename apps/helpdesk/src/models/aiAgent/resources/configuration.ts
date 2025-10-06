@@ -106,9 +106,9 @@ export const getStoresConfigurations = async (
         return res.data
     } catch (e) {
         const status = (e as AxiosError)?.response?.status
-        if (status === 404) {
+        if (status === 404 || status === 403) {
             console.warn(
-                `[getStoresConfigurations] 404 for ${accountDomain} — returning fallback`,
+                `[getStoresConfigurations] ${status} for ${accountDomain} — returning fallback`,
             )
             return { storeConfigurations: [] }
         }
