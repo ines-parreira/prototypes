@@ -54,10 +54,15 @@ export const useGeneratePlaygroundMessage = ({
         })
 
     const isPollingRef = useRef(isPolling)
+    const playgroundMessagesLengthRef = useRef(playgroundMessages?.length ?? 0)
 
     useEffect(() => {
         isPollingRef.current = isPolling
     }, [isPolling])
+
+    useEffect(() => {
+        playgroundMessagesLengthRef.current = playgroundMessages?.length ?? 0
+    }, [playgroundMessages?.length])
 
     useEffect(() => {
         if (testSessionLogs?.status === 'finished') {
@@ -159,17 +164,12 @@ export const useGeneratePlaygroundMessage = ({
                 },
             }
 
-            for (
-                let followUp = 0;
-                followUp < totalMessagesToBeGenerated;
-                followUp++
+            while (
+                playgroundMessagesLengthRef.current < totalMessagesToBeGenerated
             ) {
                 const attemptOptions = {
                     ...options,
-                    settings: {
-                        ...options.settings,
-                        maxFollowUpMessages: followUp,
-                    },
+                    followUpAttempt: playgroundMessagesLengthRef.current,
                 }
                 await triggerAIJourney.mutateAsync([attemptOptions])
                 await startPolling()
