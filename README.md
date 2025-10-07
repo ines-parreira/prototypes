@@ -90,7 +90,7 @@ This will bump all the services' packages to their latest version (updating corr
 
 This project uses PNPM's `minimumReleaseAge` feature to ensure package stability by preventing installation of packages that are too new. The configuration is defined in `pnpm-workspace.yaml`:
 
-- **`minimumReleaseAge: 1440`**: Packages must be at least 1440 minutes (24 hours) old before they can be installed
+- **`minimumReleaseAge: 4320`**: Packages must be at least 4320 minutes (72 hours) old before they can be installed
 - **`minimumReleaseAgeExclude`**: A list of trusted packages that are exempt from the minimum release age requirement
 
 The excluded packages include all internal Gorgias packages (like `@gorgias/helpdesk-client`, `@gorgias/design-tokens`, etc.). This ensures that internal packages can be updated immediately while external packages have a 24-hour "cooling off" period to catch any critical issues before adoption.
