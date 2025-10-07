@@ -13,6 +13,9 @@ catalogs:
     '@gorgias/axiom':
       specifier: 0.54.1
       version: 0.54.1
+    '@gorgias/design-tokens':
+      specifier: 0.10.7
+      version: 0.10.7
   copy-to-clipboard:
     copy-to-clipboard:
       specifier: 3.3.1
@@ -31,6 +34,13 @@ catalogs:
     lodash:
       specifier: 4.17.21
       version: 4.17.21
+  moment:
+    moment:
+      specifier: 2.29.4
+      version: 2.29.4
+    moment-timezone:
+      specifier: 0.5.39
+      version: 0.5.39
   oxlint:
     oxlint:
       specifier: ^1
@@ -132,6 +142,13 @@ catalogs:
     '@gorgias/knowledge-service-validators':
       specifier: ^0.2.34
       version: 0.2.34
+  styles:
+    '@types/classnames':
+      specifier: 2.2.10
+      version: 2.2.10
+    classnames:
+      specifier: 2.2.6
+      version: 2.2.6
   test:
     '@jest/expect':
       specifier: 29.7.0
@@ -319,6 +336,9 @@ importers:
       '@formatjs/intl-pluralrules':
         specifier: 3.4.7
         version: 3.4.7
+      '@gorgias/analytics-ui-kit':
+        specifier: catalog:analytics-ui-kit
+        version: 0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -335,8 +355,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.27(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
-        specifier: ^0.10.5
-        version: 0.10.5
+        specifier: catalog:axiom
+        version: 0.10.7
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.2
@@ -470,7 +490,7 @@ importers:
         specifier: 4.1.1
         version: 4.1.1
       classnames:
-        specifier: 2.2.6
+        specifier: catalog:styles
         version: 2.2.6
       clipboard:
         specifier: 2.0.8
@@ -629,10 +649,10 @@ importers:
         specifier: 5.0.0
         version: 5.0.0
       moment:
-        specifier: 2.29.4
+        specifier: catalog:moment
         version: 2.29.4
       moment-timezone:
-        specifier: 0.5.39
+        specifier: catalog:moment
         version: 0.5.39
       mousetrap:
         specifier: ^1.6.5
@@ -821,9 +841,6 @@ importers:
       '@codecov/webpack-plugin':
         specifier: ^0.0.1-beta.6
         version: 0.0.1-beta.6(webpack@5.97.1(@swc/core@1.12.1(@swc/helpers@0.5.17))(esbuild@0.25.2))
-      '@gorgias/analytics-ui-kit':
-        specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/config':
         specifier: ^0.2.4
         version: 0.2.4(@babel/core@7.27.4)(@babel/eslint-parser@7.23.10(@babel/core@7.27.4)(eslint@8.1.0))(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.1))(eslint-plugin-import@2.25.2(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint@8.1.0))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)
@@ -954,7 +971,7 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       '@types/classnames':
-        specifier: 2.2.10
+        specifier: catalog:styles
         version: 2.2.10
       '@types/d3-flextree':
         specifier: 2.1.4
@@ -1354,20 +1371,13 @@ importers:
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.0)(tsx@4.20.3)(yaml@2.8.0)
 
   packages/ai-agent:
-    dependencies:
-      '@gorgias/analytics-ui-kit':
-        specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+    devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
-        specifier: 0.10.5
-        version: 0.10.5
-      classnames:
-        specifier: 2.2.6
-        version: 2.2.6
-    devDependencies:
+        specifier: catalog:axiom
+        version: 0.10.7
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1387,7 +1397,7 @@ importers:
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
       '@types/classnames':
-        specifier: 2.2.10
+        specifier: catalog:styles
         version: 2.2.10
       '@types/react':
         specifier: catalog:react
@@ -1398,6 +1408,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.0)(tsx@4.20.3)(yaml@2.8.0))
+      classnames:
+        specifier: catalog:styles
+        version: 2.2.6
       oxlint:
         specifier: catalog:oxlint
         version: 1.11.2
@@ -1633,25 +1646,16 @@ importers:
 
   packages/reporting:
     dependencies:
-      '@gorgias/analytics-ui-kit':
-        specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.54.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
-      '@gorgias/design-tokens':
-        specifier: 0.10.5
-        version: 0.10.5
-      classnames:
-        specifier: 2.2.6
-        version: 2.2.6
-      moment:
-        specifier: 2.29.4
-        version: 2.29.4
-      moment-timezone:
-        specifier: 0.5.39
-        version: 0.5.39
     devDependencies:
+      '@gorgias/analytics-ui-kit':
+        specifier: catalog:analytics-ui-kit
+        version: 0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+      '@gorgias/design-tokens':
+        specifier: catalog:axiom
+        version: 0.10.7
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1677,7 +1681,7 @@ importers:
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
       '@types/classnames':
-        specifier: 2.2.10
+        specifier: catalog:styles
         version: 2.2.10
       '@types/jest':
         specifier: catalog:test
@@ -1691,6 +1695,15 @@ importers:
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.0)(tsx@4.20.3)(yaml@2.8.0))
+      classnames:
+        specifier: catalog:styles
+        version: 2.2.6
+      moment:
+        specifier: catalog:moment
+        version: 2.29.4
+      moment-timezone:
+        specifier: catalog:moment
+        version: 0.5.39
       oxlint:
         specifier: catalog:oxlint
         version: 1.11.2
@@ -3209,9 +3222,6 @@ packages:
 
   '@gorgias/convert-types@0.4.5':
     resolution: {integrity: sha512-nAV2eeFhXI7gdcohGj9UmuFJ6+gFgr8M3gFnlM8yD9XSnmeeYZ7InJQ+mjUEK7ydEjp3mLb/Z4zeC84Tc7gUqA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.5/3d928c35a984f18816b0c05c42597a223a9401af}
-
-  '@gorgias/design-tokens@0.10.5':
-    resolution: {integrity: sha512-qx8g0V81tVGQYJNhpNwbo+XpdMU/QUUfb2EukKjzKeTE9elPYKuZj0LrWErax2MibAeSh5ngOl/5mPtbcHpAgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.5/f9bd803a287ca6ae26e6c47b2234e67fbc0f8242}
 
   '@gorgias/design-tokens@0.10.7':
     resolution: {integrity: sha512-sFXY69SdAZQeTk4SaFBTbXWZ43lL45O2k90APYb0LhRBX5ApiQmpv0VeS7R7Fsb6LxVL79gUW9vPJLjSvPjcgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.7/2e21cae01577d5c462d91a68c4669064922056ec}
@@ -14882,9 +14892,9 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.10.5)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
+  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
     dependencies:
-      '@gorgias/design-tokens': 0.10.5
+      '@gorgias/design-tokens': 0.10.7
       classnames: 2.2.6
       core-js: 3.42.0
       react: 18.2.0
@@ -14961,8 +14971,6 @@ snapshots:
   '@gorgias/convert-spec@0.2.20': {}
 
   '@gorgias/convert-types@0.4.5': {}
-
-  '@gorgias/design-tokens@0.10.5': {}
 
   '@gorgias/design-tokens@0.10.7': {}
 
@@ -25764,7 +25772,7 @@ snapshots:
   react-select@1.0.0-beta14(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       blacklist: 1.1.4
-      classnames: 2.2.6
+      classnames: 2.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-input-autosize: 1.2.0(react@18.2.0)
@@ -25777,7 +25785,7 @@ snapshots:
 
   react-slick@0.28.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      classnames: 2.2.6
+      classnames: 2.5.1
       enquire.js: 2.1.6
       json2mq: 0.2.0
       lodash.debounce: 4.0.8
@@ -25860,7 +25868,7 @@ snapshots:
   reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.27.6
-      classnames: 2.2.6
+      classnames: 2.5.1
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)

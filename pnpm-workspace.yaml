@@ -60,6 +60,7 @@ minimumReleaseAgeExclude:
 catalogs:
   axiom:
     '@gorgias/axiom': '0.54.1'
+    '@gorgias/design-tokens': '0.10.7'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.14'
   rest-api-sdk:
@@ -136,3 +137,9 @@ catalogs:
   feature-flags:
     'launchdarkly-js-client-sdk': '^3.3.0'
     'launchdarkly-react-client-sdk': '^3.3.2'
+  styles:
+    'classnames': '2.2.6'
+    '@types/classnames': '2.2.10'
+  moment:
+    'moment': '2.29.4'
+    'moment-timezone': '0.5.39'
