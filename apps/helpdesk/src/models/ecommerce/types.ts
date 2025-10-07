@@ -20,3 +20,30 @@ export type Product = {
         }
     }
 }
+
+export type ProductCollection = {
+    id: string
+    account_id: number
+    deleted_datetime: string | null
+    created_datetime: string
+    updated_datetime: string
+    data: {
+        legacyResourceId: string
+        title: string
+        handle: string
+        updatedAt: string
+        descriptionHtml: string
+        sortOrder: string
+        templateSuffix: string | null
+        id: string
+    }
+    source_type: string
+    integration_id: number
+    external_id: string
+    relationships: Record<string, unknown>
+    version: string
+    schema_version: string
+    indexed_data_fields: {
+        product_external_ids: string[]
+    }
+}

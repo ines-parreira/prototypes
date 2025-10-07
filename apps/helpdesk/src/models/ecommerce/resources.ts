@@ -3,7 +3,7 @@ import { ApiPaginationParams } from 'models/api/types'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import { LookupValue, Product } from './types'
+import { LookupValue, Product, ProductCollection } from './types'
 
 const client = createClient()
 client.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -55,5 +55,27 @@ export const fetchEcommerceProducts = async (
         params: {
             integration_id: integrationId,
             ...params,
+        },
+    })
+
+export const fetchEcommerceProductCollections = async (
+    integrationId: number,
+    params: ApiPaginationParams & {
+        external_ids?: string[]
+    } = {},
+) =>
+    await client.get<{
+        data: ProductCollection[]
+        metadata: {
+            next_cursor: string | null
+            prev_cursor: string | null
+        }
+    }>(`/api/ecommerce/product_collection/shopify`, {
+        params: {
+            ...params,
+            integration_id: integrationId,
+        },
+        paramsSerializer: {
+            indexes: null,
         },
     })

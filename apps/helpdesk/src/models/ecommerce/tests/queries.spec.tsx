@@ -8,6 +8,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import {
     useGetEcommerceItemByExternalId,
     useGetEcommerceLookupValues,
+    useGetEcommerceProductCollections,
     useGetEcommerceProducts,
 } from '../queries'
 import * as resources from '../resources'
@@ -16,6 +17,7 @@ import {
     mockEcommerceItem,
     mockEcommerceProductTags,
     mockEcommerceVendors,
+    mockProductCollections,
 } from './mocks'
 
 const fetchEcommerceItemByExternalId = jest.spyOn(
@@ -29,6 +31,10 @@ const fetchEcommerceLookupValues = jest.spyOn(
 )
 
 const fetchEcommerceProducts = jest.spyOn(resources, 'fetchEcommerceProducts')
+const fetchEcommerceProductCollections = jest.spyOn(
+    resources,
+    'fetchEcommerceProductCollections',
+)
 
 const queryClient = mockQueryClient()
 
@@ -255,6 +261,70 @@ describe('Ecommerce Queries', () => {
 
             expect(result.current.isLoading).toBe(true)
             expect(fetchEcommerceProducts).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetEcommerceProductCollections', () => {
+        it('should fetch ecommerce product collections', async () => {
+            fetchEcommerceProductCollections.mockResolvedValueOnce({
+                data: {
+                    data: mockProductCollections,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () => useGetEcommerceProductCollections(123),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(result.current.data).toEqual({
+                data: mockProductCollections,
+                metadata: {
+                    next_cursor: 'next-cursor',
+                    prev_cursor: 'prev-cursor',
+                },
+            })
+            expect(fetchEcommerceProductCollections).toHaveBeenCalledWith(
+                123,
+                {},
+            )
+        })
+
+        it('should not call the api function when enabled false', () => {
+            fetchEcommerceProductCollections.mockResolvedValueOnce({
+                data: {
+                    data: mockProductCollections,
+                    metadata: {
+                        next_cursor: 'next-cursor',
+                        prev_cursor: 'prev-cursor',
+                    },
+                },
+            } as AxiosResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useGetEcommerceProductCollections(
+                        123,
+                        {},
+                        { enabled: false },
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.isLoading).toBe(true)
+            expect(fetchEcommerceProductCollections).toHaveBeenCalledTimes(0)
         })
     })
 })

@@ -11,6 +11,7 @@ import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetEcommerceLookupValues,
+    useGetEcommerceProductCollections,
     useGetEcommerceProducts,
 } from 'models/ecommerce/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
@@ -19,8 +20,9 @@ import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainCo
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentProductRecommendationsPromote } from '../AiAgentProductRecommendationsPromote'
+import usePaginatedProductCollectionsByIds from '../hooks/usePaginatedProductCollectionsByIds'
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
-import { allProducts, allTags, allVendors } from './data'
+import { allCollections, allProducts, allTags, allVendors } from './data'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
 
@@ -43,6 +45,10 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
 jest.mock('../hooks/usePaginatedProductsByIds')
 const mockUsePaginatedProductsByIds = usePaginatedProductsByIds as jest.Mock
 
+jest.mock('../hooks/usePaginatedProductCollectionsByIds')
+const mockUsePaginatedProductCollectionsByIds =
+    usePaginatedProductCollectionsByIds as jest.Mock
+
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
 )
@@ -52,6 +58,8 @@ const mockUsePaginatedProductIntegration =
 jest.mock('models/ecommerce/queries')
 const mockUseGetEcommerceLookupValues = useGetEcommerceLookupValues as jest.Mock
 const mockUseGetEcommerceProducts = useGetEcommerceProducts as jest.Mock
+const mockUseGetEcommerceProductCollections =
+    useGetEcommerceProductCollections as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -67,6 +75,11 @@ const mockUseGetRulesProductRecommendation =
 jest.mock('models/knowledgeService/mutations')
 const mockUseUpsertRulesProductRecommendation =
     useUpsertRulesProductRecommendation as jest.Mock
+
+jest.mock('core/flags')
+const mockUseFlag = jest.fn()
+mockUseFlag.mockReturnValue(true)
+require('core/flags').useFlag = mockUseFlag
 
 const mockUpsertRulesProductRecommendation = jest.fn()
 
@@ -101,11 +114,17 @@ const defaultVendorRules = {
     ],
 }
 
+const defaultCollectionRules = {
+    type: 'collection',
+    items: [{ target: '9' }, { target: '16' }, { target: '21' }],
+}
+
 const renderComponent = (
     options: {
         selectedProducts?: number[]
         selectedTags?: string[]
         selectedVendors?: string[]
+        selectedCollections?: number[]
         integrationId?: number | null
         isLoadingRules?: boolean
         isFetchingRules?: boolean
@@ -118,6 +137,9 @@ const renderComponent = (
         ),
         selectedTags = defaultTagRules.items.map((item) => item.target),
         selectedVendors = defaultVendorRules.items.map((item) => item.target),
+        selectedCollections = defaultCollectionRules.items.map((item) =>
+            Number(item.target),
+        ),
         integrationId = 123,
         isLoadingRules = false,
         isFetchingRules = false,
@@ -142,6 +164,14 @@ const renderComponent = (
             {
                 type: 'vendor',
                 items: selectedVendors.map((vendor) => ({ target: vendor })),
+            },
+            {
+                type: 'collection',
+                items: allCollections.flatMap((collection) =>
+                    selectedCollections.includes(collection.id)
+                        ? [{ target: collection.id.toString() }]
+                        : [],
+                ),
             },
         ],
     }
@@ -187,6 +217,37 @@ const renderComponent = (
         },
     )
 
+    mockUsePaginatedProductCollectionsByIds.mockImplementation(
+        ({ collectionIds, enabled }) => {
+            const filteredCollections = enabled
+                ? allCollections.flatMap((collection) => {
+                      if (!collectionIds.includes(collection.id.toString()))
+                          return []
+                      return [
+                          {
+                              id: collection.id.toString(),
+                              title: collection.title,
+                          },
+                      ]
+                  })
+                : []
+
+            return {
+                allCollections: filteredCollections,
+                collections: filteredCollections,
+                isLoading: false,
+                isError: false,
+                currentPage: 1,
+                totalPages: Math.ceil(filteredCollections.length / 25),
+                fetchPage: jest.fn(),
+                hasNextPage: filteredCollections.length > 25,
+                hasPrevPage: false,
+                searchTerm: '',
+                setSearchTerm: jest.fn(),
+            }
+        },
+    )
+
     mockUseGetRulesProductRecommendation.mockReturnValue({
         data: rules,
         isLoading: isLoadingRules,
@@ -222,6 +283,22 @@ const renderComponent = (
     mockUseGetEcommerceProducts.mockReturnValue({
         data: {
             data: [],
+            metadata: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+        isLoading: false,
+    })
+
+    mockUseGetEcommerceProductCollections.mockReturnValue({
+        data: {
+            data: allCollections.map((collection) => ({
+                external_id: collection.id.toString(),
+                data: {
+                    title: collection.title,
+                },
+            })),
             metadata: {
                 next_cursor: null,
                 prev_cursor: null,
@@ -293,6 +370,17 @@ describe('AiAgentProductRecommendationsPromote', () => {
             1,
         )
         expect(queryAllByTextAccessible(screen, 'Salomon')).toHaveLength(0)
+
+        expect(
+            queryAllByTextAccessible(screen, 'Promote collections'),
+        ).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, '3 collections')).toHaveLength(
+            1,
+        )
+
+        expect(queryAllByTextAccessible(screen, 'Volleyball')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'New arrivals')).toHaveLength(1)
+        expect(queryAllByTextAccessible(screen, 'New season')).toHaveLength(1)
     })
 
     it('should update products correctly', () => {
@@ -327,6 +415,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultTagRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'product',
                         items: [
@@ -379,6 +468,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultTagRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'product',
                         items: [
@@ -409,6 +499,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultTagRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'product',
                         items: [
@@ -455,6 +546,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'tag',
                         items: [
@@ -503,6 +595,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'tag',
                         items: [
@@ -532,6 +625,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultVendorRules,
+                    defaultCollectionRules,
                     {
                         type: 'tag',
                         items: [
@@ -582,6 +676,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultTagRules,
+                    defaultCollectionRules,
                     {
                         type: 'vendor',
                         items: [
@@ -634,6 +729,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultTagRules,
+                    defaultCollectionRules,
                     {
                         type: 'vendor',
                         items: [
@@ -665,6 +761,7 @@ describe('AiAgentProductRecommendationsPromote', () => {
                 rules: [
                     defaultProductRules,
                     defaultTagRules,
+                    defaultCollectionRules,
                     {
                         type: 'vendor',
                         items: [
@@ -672,6 +769,129 @@ describe('AiAgentProductRecommendationsPromote', () => {
                             { target: 'New Balance' },
                             { target: 'Spalding' },
                             { target: 'Salomon' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update collections correctly', () => {
+        const screen = renderComponent()
+
+        const addButton = queryAllByTextAccessible(
+            screen,
+            'Select collections',
+        )[0]
+        fireEvent.click(addButton)
+
+        // Remove product
+        const collection1 = queryAllByTextAccessible(screen, 'New arrivals')[1]
+        fireEvent.click(collection1)
+
+        // Add product
+        const collection2 = queryAllByTextAccessible(screen, 'Golf')[0]
+        fireEvent.click(collection2)
+
+        // Add product
+        const collection3 = queryAllByTextAccessible(screen, 'Clearance')[0]
+        fireEvent.click(collection3)
+
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    defaultVendorRules,
+                    {
+                        type: 'collection',
+                        items: [
+                            { target: '9' },
+                            { target: '21' },
+                            { target: '4' },
+                            { target: '19' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should update products through see all drawer correctly', () => {
+        const screen = renderComponent({
+            selectedCollections: [2, 3, 11, 18, 26, 28],
+        })
+
+        const seeAllButton = queryAllByTextAccessible(
+            screen,
+            'See All Promoted Collections',
+        )[0]
+        fireEvent.click(seeAllButton)
+
+        const collection1 = queryAllByTextAccessible(screen, 'Football')[1]
+        fireEvent.click(collection1)
+
+        const collection2 = queryAllByTextAccessible(screen, 'Walking shoes')[0]
+        fireEvent.click(collection2)
+
+        const submitButton = queryAllByTextAccessible(screen, 'Save Changes')[0]
+        fireEvent.click(submitButton)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    defaultVendorRules,
+                    {
+                        type: 'collection',
+                        items: [
+                            { target: '2' },
+                            { target: '11' },
+                            { target: '18' },
+                            { target: '26' },
+                        ],
+                    },
+                ],
+            },
+        })
+    })
+
+    it('should remove collections correctly', () => {
+        const screen = renderComponent({
+            selectedCollections: [5, 9, 13, 21, 22],
+        })
+
+        const button = screen.getAllByRole('button', {
+            name: 'Remove collection',
+        })[2]
+        fireEvent.click(button)
+
+        expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
+            integrationId: 123,
+            data: {
+                gorgiasDomain: 'my-domain',
+                recommendationAction: 'promoted',
+                rules: [
+                    defaultProductRules,
+                    defaultTagRules,
+                    defaultVendorRules,
+                    {
+                        type: 'collection',
+                        items: [
+                            { target: '5' },
+                            { target: '9' },
+                            { target: '21' },
+                            { target: '22' },
                         ],
                     },
                 ],

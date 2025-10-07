@@ -1,7 +1,9 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Link, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
@@ -11,6 +13,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCT_RECOMMENDATIONS, SALES } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import { CollectionRecommendationRuleCard } from './components/CollectionRecommendationRuleCard'
 import { DoNotRecommendTagBanner } from './components/DoNotRecommendTagBanner'
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
@@ -28,6 +31,10 @@ export const AiAgentProductRecommendationsExclude = () => {
     const gorgiasDomain = currentAccount.get('domain')
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
     const { routes } = useAiAgentNavigation({ shopName })
+
+    const collectionRulesEnabled = useFlag(
+        FeatureFlagKey.AiAgentProductRecommendationsCollectionRules,
+    )
 
     const {
         data: productRecommendationRules,
@@ -59,6 +66,13 @@ export const AiAgentProductRecommendationsExclude = () => {
     const excludedVendors =
         productRecommendationRules?.excluded.flatMap((rule) =>
             rule.type === 'vendor' ? rule.items.map((item) => item.target) : [],
+        ) || []
+
+    const excludedCollections =
+        productRecommendationRules?.excluded.flatMap((rule) =>
+            rule.type === 'collection'
+                ? rule.items.map((item) => item.target)
+                : [],
         ) || []
 
     const handleUpsert = async (
@@ -129,6 +143,20 @@ export const AiAgentProductRecommendationsExclude = () => {
                 isUpserting={isUpserting}
                 onUpsert={(vendors) => handleUpsert(vendors, 'vendor')}
             />
+
+            {collectionRulesEnabled && (
+                <CollectionRecommendationRuleCard
+                    type="exclude"
+                    integrationId={integrationId}
+                    collections={excludedCollections}
+                    isLoadingRules={isLoadingRules}
+                    isFetchingRules={isFetchingRules}
+                    isUpserting={isUpserting}
+                    onUpsert={(collections) =>
+                        handleUpsert(collections, 'collection')
+                    }
+                />
+            )}
         </AiAgentLayout>
     )
 }

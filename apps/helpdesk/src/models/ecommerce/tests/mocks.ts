@@ -146,3 +146,91 @@ export const mockEcommerceVendors = [
         value: 'Under Armour',
     },
 ]
+
+export const mockProductCollections = [
+    {
+        id: '0198a3cf-0db0-7716-9adb-collection-1',
+        account_id: 456,
+        deleted_datetime: null,
+        created_datetime: '2025-08-13T14:21:52.432000+00:00',
+        updated_datetime: '2025-08-13T14:21:52.432000+00:00',
+        data: {
+            legacyResourceId: '72811020400',
+            title: 'Summer Collection',
+            handle: 'summer-collection',
+            updatedAt: '2025-07-29T13:22:50Z',
+            descriptionHtml:
+                '<meta charset="utf-8"><span>Discover our summer collection</span>',
+            sortOrder: 'BEST_SELLING',
+            templateSuffix: null,
+            id: 'gid://shopify/Collection/72811020400',
+        },
+        source_type: 'shopify',
+        integration_id: 123,
+        external_id: '72811020400',
+        relationships: {},
+        version: '2025-07-29T13:22:50+00:00',
+        schema_version: '2024-10',
+        indexed_data_fields: {
+            product_external_ids: ['1351151419504', '1351146897520'],
+        },
+    },
+    {
+        id: '0198a3cf-0db0-7716-9adb-collection-2',
+        account_id: 456,
+        deleted_datetime: null,
+        created_datetime: '2025-08-13T14:21:52.432000+00:00',
+        updated_datetime: '2025-08-13T14:21:52.432000+00:00',
+        data: {
+            legacyResourceId: '72811020401',
+            title: 'Winter Sports',
+            handle: 'winter-sports',
+            updatedAt: '2025-07-29T13:22:50Z',
+            descriptionHtml:
+                '<meta charset="utf-8"><span>Winter sports gear and apparel</span>',
+            sortOrder: 'BEST_SELLING',
+            templateSuffix: null,
+            id: 'gid://shopify/Collection/72811020401',
+        },
+        source_type: 'shopify',
+        integration_id: 123,
+        external_id: '72811020401',
+        relationships: {},
+        version: '2025-07-29T13:22:50+00:00',
+        schema_version: '2024-10',
+        indexed_data_fields: {
+            product_external_ids: ['1351151419505', '1351146897521'],
+        },
+    },
+    {
+        id: '0198a3cf-0db0-7716-9adb-collection-3',
+        account_id: 456,
+        deleted_datetime: null,
+        created_datetime: '2025-08-13T14:21:52.432000+00:00',
+        updated_datetime: '2025-08-13T14:21:52.432000+00:00',
+        data: {
+            legacyResourceId: '72811020402',
+            title: 'New Arrivals',
+            handle: 'new-arrivals',
+            updatedAt: '2025-07-29T13:22:50Z',
+            descriptionHtml:
+                '<meta charset="utf-8"><span>Check out our latest products</span>',
+            sortOrder: 'CREATED_AT',
+            templateSuffix: null,
+            id: 'gid://shopify/Collection/72811020402',
+        },
+        source_type: 'shopify',
+        integration_id: 123,
+        external_id: '72811020402',
+        relationships: {},
+        version: '2025-07-29T13:22:50+00:00',
+        schema_version: '2024-10',
+        indexed_data_fields: {
+            product_external_ids: [
+                '1351151419506',
+                '1351146897522',
+                '1351153680496',
+            ],
+        },
+    },
+]

@@ -14,6 +14,7 @@ export enum FeatureFlagKey {
     AiAgentAssistant = 'ai-agent-assistant',
     /** @deprecated Fully evaluated to `true` */
     AiAgentChat = 'ai-agent-for-chat',
+    AiAgentProductRecommendationsCollectionRules = 'linear.project_give-merchants-control-over-products-recommended-by-the-shopping-a.collection-rules',
     AiAgentCustomLanguage = 'ai-agent-custom-language',
     AiAgentExtendedToneOfVoiceLimit = 'ai-agent-extended-tone-of-voice-limit',
     /** @deprecated Fully evaluated to `true` */

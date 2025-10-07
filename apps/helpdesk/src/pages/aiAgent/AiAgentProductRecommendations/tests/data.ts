@@ -132,3 +132,66 @@ export const allVendors = [
     created_datetime: '2025-07-23T20:04:11.512000+00:00',
     value: vendor,
 }))
+
+export const allCollections = [
+    {
+        id: 1,
+        title: 'Tennis',
+    },
+    { id: 2, title: 'Running' },
+    {
+        id: 3,
+        title: 'Football',
+    },
+    { id: 4, title: 'Golf' },
+    { id: 5, title: 'Basketball' },
+    { id: 6, title: 'Soccer' },
+    {
+        id: 7,
+        title: 'Hockey',
+    },
+    { id: 8, title: 'Baseball' },
+    {
+        id: 9,
+        title: 'Volleyball',
+    },
+    { id: 10, title: 'Softball' },
+    {
+        id: 11,
+        title: 'Summer Sale',
+    },
+    { id: 12, title: 'CrossFit' },
+    {
+        id: 13,
+        title: 'Winter Sale',
+    },
+    { id: 14, title: 'Swimwear' },
+    { id: 15, title: 'Big discount' },
+    { id: 16, title: 'New arrivals' },
+    {
+        id: 17,
+        title: 'Best sellers',
+    },
+    { id: 18, title: 'Sale' },
+    { id: 19, title: 'Clearance' },
+    { id: 20, title: 'Free shipping' },
+    { id: 21, title: 'New season' },
+    { id: 22, title: 'Back to school' },
+    { id: 23, title: 'Big sizes' },
+    {
+        id: 24,
+        title: 'Men’s clothing',
+    },
+    { id: 25, title: 'Women’s clothing' },
+    { id: 26, title: 'Kids clothing' },
+    { id: 27, title: 'Running shoes' },
+    {
+        id: 28,
+        title: 'Walking shoes',
+    },
+    { id: 29, title: 'Sandals' },
+    {
+        id: 30,
+        title: 'Boots',
+    },
+]
