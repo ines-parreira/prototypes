@@ -27,6 +27,7 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
     onOpenWizard: jest.fn(),
     onOpenSubscribeModal: jest.fn(),
     onOpenTrialUpgradeModal: jest.fn(),
+    onOpenUpgradePlanModal: jest.fn(),
     onOpenTrialRequestModal: jest.fn(),
     onCloseTrialRequestModal: jest.fn(),
     onCloseTrialFinishSetupModal: jest.fn(),
@@ -336,23 +337,26 @@ describe('useAiAgentCtas', () => {
         expect(trialFinishSetupModalComponent.props.someModalProp).toBe('test')
     })
 
-    it('returns TryTrial and SubscribeNow for Has Automate plan Admin (Case 7)', () => {
+    it('returns TryTrial and Upgrade Now for Has Automate plan Admin (Case 7)', () => {
         const onOpenTrialUpgradeModal = jest.fn()
+        const onOpenUpgradePlanModal = jest.fn()
         const props = createDefaultProps({
             hasAutomate: true,
             canSeeTrial: true,
             isAdmin: true,
             onOpenTrialUpgradeModal,
+            onOpenUpgradePlanModal,
         })
 
         const { result } = renderHook(() => useAiAgentCtas(props))
 
         const ctas = result.current.ctas as any
         const tryTrialButton = ctas.props.children[0]
-        const subscribeNowButton = ctas.props.children[1]
+        const upgradeNowWrapper = ctas.props.children[1]
+        const upgradeNowButton = upgradeNowWrapper.props.children
 
         expect(tryTrialButton.props.children).toBe('Try for 14 days')
-        expect(subscribeNowButton.props.children).toBe('Subscribe now')
+        expect(upgradeNowButton.props.children).toBe('Upgrade Now')
         expect(result.current.afterCtas).toBeUndefined()
 
         // click try trial button to test events on primary CTA
@@ -364,9 +368,9 @@ describe('useAiAgentCtas', () => {
             TrialType.ShoppingAssistant,
         )
 
-        // click subscribe now button to test events on secondary CTA
-        subscribeNowButton.props.onClick()
+        upgradeNowButton.props.onClick()
 
+        expect(onOpenUpgradePlanModal).toHaveBeenCalledWith(false)
         expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
             TrialEventType.UpgradePlan,
             TrialType.ShoppingAssistant,

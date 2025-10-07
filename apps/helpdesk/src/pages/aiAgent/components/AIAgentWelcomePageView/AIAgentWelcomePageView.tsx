@@ -327,6 +327,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         onOpenSubscribeModal: () => setIsAutomationModalOpened(true),
         onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,
         onOpenTrialRequestModal: trialFlow.openTrialRequestModal,
+        onOpenUpgradePlanModal: trialFlow.openUpgradePlanModal,
         onCloseTrialRequestModal: trialFlow.closeTrialRequestModal,
         onCloseTrialFinishSetupModal: trialFlow.closeTrialFinishSetupModal,
         isNotifyAdminDisabled,

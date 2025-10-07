@@ -28,6 +28,7 @@ export type AiAgentCtasParams = {
     onOpenSubscribeModal: () => void
     onOpenTrialUpgradeModal: () => void
     onOpenTrialRequestModal: () => void
+    onOpenUpgradePlanModal: (isInTrial: boolean) => void
     onCloseTrialRequestModal: () => void
     onCloseTrialFinishSetupModal: () => void
     isNotifyAdminDisabled: boolean
@@ -61,6 +62,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         onOpenWizard,
         onOpenSubscribeModal,
         onOpenTrialUpgradeModal,
+        onOpenUpgradePlanModal,
         onOpenTrialRequestModal,
         onCloseTrialRequestModal,
         onCloseTrialFinishSetupModal,
@@ -73,6 +75,28 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         window.open(EXTERNAL_URLS.BOOK_DEMO_PAYWALL, '_blank')
     }, [])
 
+    const UpgradeNowSecondary = useMemo(
+        () => (
+            <>
+                <Button
+                    className={css.learnMoreButton}
+                    fillStyle="ghost"
+                    onClick={() => {
+                        logInTrialEventFromPaywall(
+                            TrialEventType.UpgradePlan,
+                            hasAutomate
+                                ? TrialType.ShoppingAssistant
+                                : TrialType.AiAgent,
+                        )
+                        onOpenUpgradePlanModal(false)
+                    }}
+                >
+                    Upgrade Now
+                </Button>
+            </>
+        ),
+        [onOpenUpgradePlanModal, hasAutomate],
+    )
     const SetupAIAgentButton = useMemo(
         () => (
             <>
@@ -332,7 +356,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 ctas: (
                     <>
                         {TryTrial}
-                        {SubscribeNowLink}
+                        {UpgradeNowSecondary}
                     </>
                 ),
             }
@@ -367,6 +391,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         SubscribeNowLink,
         BookDemoComponent,
         StartAIAgentOnly,
+        UpgradeNowSecondary,
     ])
 
     return { ctas, modals, afterCtas }
