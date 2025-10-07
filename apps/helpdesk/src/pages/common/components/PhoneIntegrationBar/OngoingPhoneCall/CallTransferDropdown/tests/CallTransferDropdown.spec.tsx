@@ -1,7 +1,5 @@
 import { ComponentProps, createRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -13,7 +11,6 @@ import { Provider } from 'react-redux'
 import { mockTransferCallHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import CallTransferDropdown from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { notify } from 'state/notifications/actions'
@@ -161,11 +158,6 @@ const queryClient = new QueryClient({
     },
 })
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const useFlagMock = assumeMock(useFlag)
-
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
     const onTransferInitiated = jest.fn()
@@ -198,15 +190,6 @@ describe('CallTransferDropdown', () => {
         server.use(mockTransferCall.handler)
         mockNotify.mockReturnValue(jest.fn())
         jest.clearAllMocks()
-
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                return true
-            }
-            if (flag === FeatureFlagKey.TransferCallToQueue) {
-                return true
-            }
-        })
     })
 
     afterEach(() => {
@@ -797,102 +780,6 @@ describe('CallTransferDropdown', () => {
                 expect(body.receiver_type).toBe('queue')
                 expect(body.receiver_id).toBe(1)
             })
-        })
-    })
-
-    describe('transfer to queue FF disabled', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                    return true
-                }
-                if (flag === FeatureFlagKey.TransferCallToQueue) {
-                    return false
-                }
-                return false
-            })
-        })
-
-        it('does not show Queues toggle button when TransferCallToQueue feature flag is disabled', () => {
-            renderComponent()
-
-            expect(
-                screen.getByRole('radio', { name: /agents/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByRole('radio', { name: /queues/i }),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.getByRole('radio', { name: /external/i }),
-            ).toBeInTheDocument()
-        })
-    })
-
-    describe('transfer to external number FF off', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                    return false
-                }
-                return false
-            })
-        })
-
-        it('does not show alert banner when transfer fails', async () => {
-            const user = userEvent.setup()
-            const failedTransferHandler = mockTransferCallHandler(async () =>
-                HttpResponse.json(
-                    { error: { msg: 'Transfer failed' } } as any,
-                    {
-                        status: 400,
-                        headers: { 'Content-Type': 'application/json' },
-                    },
-                ),
-            )
-            server.use(failedTransferHandler.handler)
-
-            renderComponent()
-
-            const selectAgent = screen.getByLabelText(/select agent 1/i)
-            await act(() => user.click(selectAgent))
-
-            const transferButton = screen.getByRole('button', {
-                name: /transfer call/i,
-            })
-            await act(() => user.click(transferButton))
-
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Warning,
-                    message: 'Transfer failed',
-                })
-            })
-
-            expect(
-                screen.queryByText('Transfer unsuccessful. Please try again.'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('does not show toggle buttons when FF is off', () => {
-            renderComponent()
-
-            expect(
-                screen.queryByRole('radio', { name: /agents/i }),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('radio', { name: /external/i }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('shows agent transfer content by default when FF is off', () => {
-            renderComponent()
-
-            expect(
-                screen.getByTestId('agent-transfer-content'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByTestId('external-transfer-content'),
-            ).not.toBeInTheDocument()
         })
     })
 })

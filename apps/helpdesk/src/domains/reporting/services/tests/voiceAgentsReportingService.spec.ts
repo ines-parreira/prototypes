@@ -225,7 +225,6 @@ describe('voiceAgentsReportingService', () => {
                 mockReportData,
                 mockSummaryData,
                 fileName,
-                true,
             )
 
             expect(result).toEqual({
@@ -247,46 +246,6 @@ describe('voiceAgentsReportingService', () => {
                 ['Team average', '5', '4', '1', '1.5', '0.5', '2', '120'],
                 [agents[0].name, '5', '4', '1', '2', '1', '2', '150'],
                 [agents[1].name, '3', '2', '1', '1', '0', '2', '90'],
-            ])
-
-            createCsvMock.mockRestore()
-        })
-
-        it('should create report without transferred calls column when new transfer FF is disabled', () => {
-            const createCsvMock = jest.spyOn(files, 'createCsv')
-            createCsvMock.mockReturnValue(fakeReport)
-
-            const fileName = getCsvFileNameWithDates(
-                period,
-                VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
-            )
-
-            const result = createReport(
-                [agents[0], agents[1]],
-                mockReportData,
-                mockSummaryData,
-                fileName,
-                false,
-            )
-
-            expect(result).toEqual({
-                files: { [fileName]: fakeReport },
-                fileName,
-            })
-
-            expect(createCsvMock).toHaveBeenCalledWith([
-                [
-                    'Agent',
-                    'Total calls',
-                    'Inbound answered',
-                    'Inbound missed',
-                    'Inbound declined',
-                    'Outbound',
-                    'Average talk time',
-                ],
-                ['Team average', '5', '4', '1.5', '0.5', '2', '120'],
-                [agents[0].name, '5', '4', '2', '1', '2', '150'],
-                [agents[1].name, '3', '2', '1', '0', '2', '90'],
             ])
 
             createCsvMock.mockRestore()
@@ -322,7 +281,7 @@ describe('voiceAgentsReportingService', () => {
                 VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
             )
 
-            const { result } = renderHook(() => useVoiceAgentsReportData(true))
+            const { result } = renderHook(() => useVoiceAgentsReportData())
 
             expect(result.current).toEqual({
                 files: { [fileName]: fakeReport },
@@ -348,46 +307,6 @@ describe('voiceAgentsReportingService', () => {
             createCsvMock.mockRestore()
         })
 
-        it('should fetch and format data without transferred calls when new transfer FF is disabled', () => {
-            const createCsvMock = jest.spyOn(files, 'createCsv')
-            createCsvMock.mockReturnValue(fakeReport)
-
-            const fileName = getCsvFileNameWithDates(
-                period,
-                VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
-            )
-
-            const { result } = renderHook(() => useVoiceAgentsReportData(false))
-
-            expect(result.current).toEqual({
-                files: { [fileName]: fakeReport },
-                fileName,
-                isLoading: false,
-            })
-
-            expect(createCsvMock).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.arrayContaining([
-                        'Agent',
-                        'Total calls',
-                        'Inbound answered',
-                        'Inbound missed',
-                        'Inbound declined',
-                        'Outbound',
-                        'Average talk time',
-                    ]),
-                ]),
-            )
-
-            expect(createCsvMock).toHaveBeenCalledWith(
-                expect.not.arrayContaining([
-                    expect.arrayContaining(['Inbound transferred']),
-                ]),
-            )
-
-            createCsvMock.mockRestore()
-        })
-
         it('should show loading when metrics are loading', () => {
             useVoiceAgentsMetricsMock.mockReturnValue({
                 reportData: mockReportData,
@@ -395,7 +314,7 @@ describe('voiceAgentsReportingService', () => {
                 period,
             })
 
-            const { result } = renderHook(() => useVoiceAgentsReportData(true))
+            const { result } = renderHook(() => useVoiceAgentsReportData())
 
             expect(result.current.isLoading).toBe(true)
         })
@@ -407,7 +326,7 @@ describe('voiceAgentsReportingService', () => {
                 period,
             })
 
-            const { result } = renderHook(() => useVoiceAgentsReportData(true))
+            const { result } = renderHook(() => useVoiceAgentsReportData())
 
             expect(result.current.isLoading).toBe(true)
         })

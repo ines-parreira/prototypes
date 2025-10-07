@@ -180,7 +180,6 @@ export const createReport = (
     data: VoiceAgentsPerformanceReportData,
     summaryData: VoiceAgentsPerformanceReportData<Metric>,
     fileName: string,
-    isTransferToExternalNumberEnabled: boolean = false,
 ) => {
     const {
         totalCallsMetric,
@@ -192,134 +191,67 @@ export const createReport = (
         averageTalkTimeMetric,
     } = data
 
-    const voiceAgentsMetricData = isTransferToExternalNumberEnabled
-        ? [
-              [
-                  'Agent',
-                  'Total calls',
-                  'Inbound answered',
-                  'Inbound transferred',
-                  'Inbound missed',
-                  'Inbound declined',
-                  'Outbound',
-                  'Average talk time',
-              ],
-              [
-                  'Team average',
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.totalCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.answeredCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.transferredInboundCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.missedCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.declinedCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.outboundCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      summaryData.averageTalkTimeMetric.data?.value,
-                  ),
-              ],
-              ...agents.map((agent) => {
-                  return [
-                      agent.name,
-                      getTotalCallsMetric(agent.id, totalCallsMetric),
-                      getAnsweredCallsMetric(agent.id, answeredCallsMetric),
-                      getTransferredInboundCallsMetric(
-                          agent.id,
-                          transferredInboundCallsMetric,
-                      ),
-                      getMissedCallsMetric(agent.id, missedCallsMetric),
-                      getDeclinedCallsMetric(agent.id, declinedCallsMetric),
-                      getOutboundCallsMetric(agent.id, outboundCallsMetric),
-                      getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
-                  ]
-              }),
-          ]
-        : [
-              [
-                  'Agent',
-                  'Total calls',
-                  'Inbound answered',
-                  'Inbound missed',
-                  'Inbound declined',
-                  'Outbound',
-                  'Average talk time',
-              ],
-              [
-                  'Team average',
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.totalCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.answeredCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.missedCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.declinedCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      getMetricAverage(
-                          summaryData.outboundCallsMetric,
-                          agents.length,
-                      ),
-                  ),
-                  formatMetric.decimal(
-                      summaryData.averageTalkTimeMetric.data?.value,
-                  ),
-              ],
-              ...agents.map((agent) => {
-                  return [
-                      agent.name,
-                      getTotalCallsMetric(agent.id, totalCallsMetric),
-                      getAnsweredCallsMetric(agent.id, answeredCallsMetric),
-                      getMissedCallsMetric(agent.id, missedCallsMetric),
-                      getDeclinedCallsMetric(agent.id, declinedCallsMetric),
-                      getOutboundCallsMetric(agent.id, outboundCallsMetric),
-                      getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
-                  ]
-              }),
-          ]
+    const voiceAgentsMetricData = [
+        [
+            'Agent',
+            'Total calls',
+            'Inbound answered',
+            'Inbound transferred',
+            'Inbound missed',
+            'Inbound declined',
+            'Outbound',
+            'Average talk time',
+        ],
+        [
+            'Team average',
+            formatMetric.decimal(
+                getMetricAverage(summaryData.totalCallsMetric, agents.length),
+            ),
+            formatMetric.decimal(
+                getMetricAverage(
+                    summaryData.answeredCallsMetric,
+                    agents.length,
+                ),
+            ),
+            formatMetric.decimal(
+                getMetricAverage(
+                    summaryData.transferredInboundCallsMetric,
+                    agents.length,
+                ),
+            ),
+            formatMetric.decimal(
+                getMetricAverage(summaryData.missedCallsMetric, agents.length),
+            ),
+            formatMetric.decimal(
+                getMetricAverage(
+                    summaryData.declinedCallsMetric,
+                    agents.length,
+                ),
+            ),
+            formatMetric.decimal(
+                getMetricAverage(
+                    summaryData.outboundCallsMetric,
+                    agents.length,
+                ),
+            ),
+            formatMetric.decimal(summaryData.averageTalkTimeMetric.data?.value),
+        ],
+        ...agents.map((agent) => {
+            return [
+                agent.name,
+                getTotalCallsMetric(agent.id, totalCallsMetric),
+                getAnsweredCallsMetric(agent.id, answeredCallsMetric),
+                getTransferredInboundCallsMetric(
+                    agent.id,
+                    transferredInboundCallsMetric,
+                ),
+                getMissedCallsMetric(agent.id, missedCallsMetric),
+                getDeclinedCallsMetric(agent.id, declinedCallsMetric),
+                getOutboundCallsMetric(agent.id, outboundCallsMetric),
+                getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
+            ]
+        }),
+    ]
 
     return {
         files: {
@@ -329,9 +261,7 @@ export const createReport = (
     }
 }
 
-export const useVoiceAgentsReportData = (
-    isTransferToExternalNumberEnabled: boolean,
-) => {
+export const useVoiceAgentsReportData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const { reportData, isLoading, period } = useVoiceAgentsMetrics(
@@ -346,13 +276,7 @@ export const useVoiceAgentsReportData = (
         VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
     )
     return {
-        ...createReport(
-            agents,
-            reportData,
-            summaryData,
-            fileName,
-            isTransferToExternalNumberEnabled,
-        ),
+        ...createReport(agents, reportData, summaryData, fileName),
         isLoading: isLoading || summaryIsLoading,
     }
 }

@@ -1,7 +1,6 @@
 import {
     columns,
     getQuery,
-    oldColumns,
 } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTableConfig'
 import {
     useAnsweredCallsMetricPerAgent,
@@ -64,20 +63,5 @@ describe('VoiceAgentsTableConfig', () => {
             VoiceAgentsTableColumn.OutboundCalls,
             VoiceAgentsTableColumn.AverageTalkTime,
         ])
-    })
-
-    describe('with new transfer FF off', () => {
-        it('should have columns in the correct order', () => {
-            const columnIds = oldColumns.map((c) => c.id)
-            expect(columnIds).toEqual([
-                VoiceAgentsTableColumn.AgentName,
-                VoiceAgentsTableColumn.TotalCalls,
-                VoiceAgentsTableColumn.InboundAnsweredCalls,
-                VoiceAgentsTableColumn.InboundMissedCalls,
-                VoiceAgentsTableColumn.InboundDeclinedCalls,
-                VoiceAgentsTableColumn.OutboundCalls,
-                VoiceAgentsTableColumn.AverageTalkTime,
-            ])
-        })
     })
 })

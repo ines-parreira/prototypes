@@ -92,7 +92,6 @@ describe('AgentCallTransferDropdownContent', () => {
                     <AgentCallTransferDropdownContent
                         setSelectedAgentId={setSelectedAgentId}
                         clearErrors={clearErrors}
-                        showNewVersion={true}
                         {...props}
                     />
                 </Dropdown>
@@ -229,33 +228,6 @@ describe('AgentCallTransferDropdownContent', () => {
             )
             expect(url.searchParams.get('available_first')).toBe('true')
         })
-    })
-
-    it('does not pass available_first parameter when showNewVersion is false', async () => {
-        const waitForListUsersRequest = mockListUsers.waitForRequest(server)
-
-        renderComponent({ showNewVersion: false })
-
-        await waitForListUsersRequest(async (request) => {
-            const url = new URL(request.url)
-            expect(url.searchParams.has('available_first')).toBe(false)
-        })
-    })
-
-    it('does not show grouped headers when showNewVersion is false', () => {
-        mockMergeAgentData.mockReturnValue([
-            { id: 1, name: 'Agent 1', status: 'online' },
-            { id: 2, name: 'Agent 2', status: 'online' },
-            { id: 3, name: 'Agent 3', status: 'online' },
-            { id: 4, name: 'Agent 4', status: 'offline' },
-        ])
-        const { getByText, queryByText } = renderComponent({
-            showNewVersion: false,
-        })
-
-        expect(getByText('Agents')).toBeInTheDocument()
-        expect(queryByText('Available')).not.toBeInTheDocument()
-        expect(queryByText('Unavailable')).not.toBeInTheDocument()
     })
 
     it('clears errors when clicking on dropdown body', async () => {

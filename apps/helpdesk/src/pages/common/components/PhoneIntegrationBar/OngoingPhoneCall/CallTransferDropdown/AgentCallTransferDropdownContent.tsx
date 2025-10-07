@@ -24,19 +24,17 @@ import css from './CallTransferDropdown.less'
 type Props = {
     setSelectedAgentId: (agentId: number) => void
     clearErrors?: () => void
-    showNewVersion?: boolean
 }
 
 const AgentCallTransferDropdownContent = ({
     setSelectedAgentId,
     clearErrors,
-    showNewVersion = false,
 }: Props) => {
     const { data: agentsDataWithStatus } = useListUsers(
         {
             limit: 100,
             relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
-            available_first: showNewVersion ? true : undefined,
+            available_first: true,
         },
         {
             http: {
@@ -66,45 +64,31 @@ const AgentCallTransferDropdownContent = ({
         <>
             <DropdownSearch />
             <DropdownBody className={css.dropdownBody} onClick={clearErrors}>
-                {showNewVersion ? (
-                    <>
-                        <DropdownSection
-                            title={`Available (${availableAgents.length})`}
-                            alwaysRender
-                        >
-                            {availableAgents.map((agent) => (
-                                <AgentDropdownItem
-                                    key={`agent-${agent.id}`}
-                                    agent={agent}
-                                    onSelect={setSelectedAgentId}
-                                />
-                            ))}
-                        </DropdownSection>
-                        <DropdownSection
-                            title={`Unavailable (${unavailableAgents.length})`}
-                            alwaysRender
-                        >
-                            {unavailableAgents.map((agent) => (
-                                <AgentDropdownItem
-                                    key={`agent-${agent.id}`}
-                                    agent={agent}
-                                    onSelect={setSelectedAgentId}
-                                    isDisabled
-                                />
-                            ))}
-                        </DropdownSection>
-                    </>
-                ) : (
-                    <DropdownSection title="Agents">
-                        {mergedAgentData.map((agent) => (
-                            <AgentDropdownItem
-                                key={`agent-${agent.id}`}
-                                agent={agent}
-                                onSelect={setSelectedAgentId}
-                            />
-                        ))}
-                    </DropdownSection>
-                )}
+                <DropdownSection
+                    title={`Available (${availableAgents.length})`}
+                    alwaysRender
+                >
+                    {availableAgents.map((agent) => (
+                        <AgentDropdownItem
+                            key={`agent-${agent.id}`}
+                            agent={agent}
+                            onSelect={setSelectedAgentId}
+                        />
+                    ))}
+                </DropdownSection>
+                <DropdownSection
+                    title={`Unavailable (${unavailableAgents.length})`}
+                    alwaysRender
+                >
+                    {unavailableAgents.map((agent) => (
+                        <AgentDropdownItem
+                            key={`agent-${agent.id}`}
+                            agent={agent}
+                            onSelect={setSelectedAgentId}
+                            isDisabled
+                        />
+                    ))}
+                </DropdownSection>
             </DropdownBody>
         </>
     )

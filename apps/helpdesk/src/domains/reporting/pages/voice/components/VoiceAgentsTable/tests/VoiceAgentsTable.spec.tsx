@@ -1,10 +1,8 @@
 import { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
@@ -65,9 +63,6 @@ const isSortingMetricLoadingMock = assumeMock(isSortingMetricLoading)
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
-
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsCellContent',
 )
@@ -110,17 +105,12 @@ describe('VoiceCallTable', () => {
             <div>{title}</div>
         ))
         useStatsFiltersMock.mockReturnValue(statsFiltersWithTimeZone)
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                return true
-            }
-        })
     })
 
     const renderComponent = (store: any = {}) =>
         renderWithStore(<VoiceAgentsTable />, store)
 
-    it('should render table with all cells when feature flag is enabled', () => {
+    it('should render table with all cells', () => {
         const { getByText, getAllByText } = renderComponent()
 
         expect(getByText('Agent')).toBeInTheDocument()
@@ -138,34 +128,6 @@ describe('VoiceCallTable', () => {
 
         expect(getByText('Bob Smith')).toBeInTheDocument()
         expect(getAllByText('AgentsCellContentMock')).toHaveLength(7)
-
-        expect(getByText(currentPage)).toBeInTheDocument()
-    })
-
-    it('should render table without transferred calls column when feature flag is disabled', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                return false
-            }
-        })
-
-        const { getByText, queryByText, getAllByText } = renderComponent()
-
-        expect(getByText('Agent')).toBeInTheDocument()
-        expect(getByText('Total calls')).toBeInTheDocument()
-        expect(getByText('Inbound Answered')).toBeInTheDocument()
-        expect(queryByText('Inbound Transferred')).not.toBeInTheDocument()
-        expect(getByText('Inbound Missed')).toBeInTheDocument()
-        expect(getByText('Inbound Declined')).toBeInTheDocument()
-        expect(getByText('Outbound')).toBeInTheDocument()
-        expect(getByText('Avg. Talk Time')).toBeInTheDocument()
-
-        expect(getByText('Average')).toBeInTheDocument()
-        expect(getAllByText('TeamAverageCallsCountCell')).toHaveLength(5)
-        expect(getByText('TeamAverageTalkTimeCell')).toBeInTheDocument()
-
-        expect(getByText('Bob Smith')).toBeInTheDocument()
-        expect(getAllByText('AgentsCellContentMock')).toHaveLength(6)
 
         expect(getByText(currentPage)).toBeInTheDocument()
     })
@@ -244,32 +206,6 @@ describe('VoiceCallTable', () => {
                 hint: {
                     title: 'Average time agent spent talking to customers',
                 },
-            }),
-            {},
-        )
-    })
-
-    it('should not render transferred calls tooltip when feature flag is disabled', async () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.TransferCallToExternalNumber) {
-                return false
-            }
-        })
-        renderComponent()
-
-        expect(AgentsHeaderCellContentMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: 'Total calls',
-                hint: {
-                    title: 'Total number of calls that rung an agent, including calls that the agent missed or declined.',
-                },
-            }),
-            {},
-        )
-
-        expect(AgentsHeaderCellContentMock).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: 'Inbound Transferred',
             }),
             {},
         )

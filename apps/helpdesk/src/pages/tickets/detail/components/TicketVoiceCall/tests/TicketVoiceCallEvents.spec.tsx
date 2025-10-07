@@ -45,19 +45,6 @@ jest.mock('models/voiceCall/processEvents', () => ({
     hasFlowEndEvent: (...args: any[]) => hasFlowEndEventMock(...args),
 }))
 
-jest.mock(
-    '../DEPRECATED_TicketVoiceCallEvents',
-    () =>
-        ({ callId, terminationStatus }: any) => {
-            return (
-                <div>
-                    DEPRECATED_TicketVoiceCallEvents - callId: {callId},
-                    terminationStatus: {terminationStatus || 'undefined'}
-                </div>
-            )
-        },
-)
-
 describe('TicketVoiceCallEvents', () => {
     afterEach(() => {
         cleanup()
@@ -67,9 +54,6 @@ describe('TicketVoiceCallEvents', () => {
     beforeEach(() => {
         hasFlowEndEventMock.mockReturnValue(false)
         useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
-            if (key === FeatureFlagKey.TransferCallToExternalNumber) {
-                return true
-            }
             if (key === FeatureFlagKey.ExtendedCallFlows) {
                 return false
             }
@@ -153,9 +137,6 @@ describe('TicketVoiceCallEvents', () => {
 
     it('should render flow end message when ExtendedCallFlows is enabled and hasFlowEndEvent returns true', () => {
         useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
-            if (key === FeatureFlagKey.TransferCallToExternalNumber) {
-                return true
-            }
             if (key === FeatureFlagKey.ExtendedCallFlows) {
                 return true
             }
@@ -304,57 +285,5 @@ describe('TicketVoiceCallEvents', () => {
 
         expect(screen.getByText('2025-01-01T10:00:00Z')).toBeInTheDocument()
         expect(screen.getByText('2025-01-01T10:05:00Z')).toBeInTheDocument()
-    })
-
-    describe('with TransferCallToExternalNumber FF disabled', () => {
-        beforeEach(() => {
-            useFlagSpy.mockImplementation((key: FeatureFlagKey) => {
-                if (key === FeatureFlagKey.TransferCallToExternalNumber) {
-                    return false
-                }
-                return false
-            })
-        })
-
-        it('should render DEPRECATED_TicketVoiceCallEvents', () => {
-            const { container } = render(
-                <TicketVoiceCallEvents
-                    callId={123}
-                    terminationStatus={VoiceCallTerminationStatus.Answered}
-                />,
-            )
-
-            expect(container).toHaveTextContent(
-                'DEPRECATED_TicketVoiceCallEvents - callId: 123',
-            )
-            expect(container).toHaveTextContent(
-                `terminationStatus: ${VoiceCallTerminationStatus.Answered}`,
-            )
-        })
-
-        it('should pass correct props to DEPRECATED_TicketVoiceCallEvents', () => {
-            const { container } = render(
-                <TicketVoiceCallEvents
-                    callId={456}
-                    terminationStatus={VoiceCallTerminationStatus.Abandoned}
-                />,
-            )
-
-            expect(container).toHaveTextContent(
-                'DEPRECATED_TicketVoiceCallEvents - callId: 456',
-            )
-            expect(container).toHaveTextContent(
-                `terminationStatus: ${VoiceCallTerminationStatus.Abandoned}`,
-            )
-        })
-
-        it('should render DEPRECATED_TicketVoiceCallEvents without terminationStatus', () => {
-            const { container } = render(<TicketVoiceCallEvents callId={789} />)
-
-            expect(container).toHaveTextContent(
-                'DEPRECATED_TicketVoiceCallEvents - callId: 789',
-            )
-            expect(container).toHaveTextContent('terminationStatus: undefined')
-        })
     })
 })

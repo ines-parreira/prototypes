@@ -15,7 +15,6 @@ import {
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import DEPRECATED_TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/DEPRECATED_TicketVoiceCallEvents'
 
 import Timeline from './Timeline'
 import TimelineItem from './TimelineItem'
@@ -28,31 +27,6 @@ type TicketVoiceCallEventsProps = {
 }
 
 const TicketVoiceCallEvents = ({
-    callId,
-    terminationStatus,
-}: TicketVoiceCallEventsProps) => {
-    const isTransferToExternalNumberEnabled = useFlag(
-        FeatureFlagKey.TransferCallToExternalNumber,
-    )
-
-    if (!isTransferToExternalNumberEnabled) {
-        return (
-            <DEPRECATED_TicketVoiceCallEvents
-                callId={callId}
-                terminationStatus={terminationStatus}
-            />
-        )
-    }
-
-    return (
-        <NewTicketVoiceCallEvents
-            callId={callId}
-            terminationStatus={terminationStatus}
-        />
-    )
-}
-
-const NewTicketVoiceCallEvents = ({
     callId,
     terminationStatus,
 }: TicketVoiceCallEventsProps) => {

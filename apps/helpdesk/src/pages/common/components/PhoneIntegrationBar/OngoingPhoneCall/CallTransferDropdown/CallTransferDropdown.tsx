@@ -1,6 +1,5 @@
 import { ComponentProps, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
@@ -10,7 +9,6 @@ import {
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { getCallSid } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { UserSearchResult } from 'models/search/types'
@@ -51,11 +49,6 @@ const CallTransferDropdown = ({
     call,
     integrationPhoneNumberId,
 }: Props) => {
-    const isTransferToExternalNumberEnabled = useFlag(
-        FeatureFlagKey.TransferCallToExternalNumber,
-    )
-    const isTransferToQueueEnabled = useFlag(FeatureFlagKey.TransferCallToQueue)
-
     const [selectedTransferType, setSelectedTransferType] =
         useState<TransferType>(TransferType.Agent)
     const [selectedTarget, setSelectedTarget] = useState<TransferTarget | null>(
@@ -208,34 +201,29 @@ const CallTransferDropdown = ({
             className={css.container}
             value={getSelectedDropdownValue()}
         >
-            {isTransferToExternalNumberEnabled && (
-                <div className={css.toggleContainer}>
-                    <ToggleButton.Wrapper
-                        type={ToggleButton.Type.Label}
-                        value={selectedTransferType}
-                        onChange={handleSelectedTransferTypeChange}
-                        size="small"
-                        className={css.toggleButtonWrapper}
-                    >
-                        <ToggleButton.Option value={TransferType.Agent}>
-                            Agents
-                        </ToggleButton.Option>
-                        {isTransferToQueueEnabled && (
-                            <ToggleButton.Option value={TransferType.Queue}>
-                                Queues
-                            </ToggleButton.Option>
-                        )}
-                        <ToggleButton.Option value={TransferType.External}>
-                            External
-                        </ToggleButton.Option>
-                    </ToggleButton.Wrapper>
-                </div>
-            )}
+            <div className={css.toggleContainer}>
+                <ToggleButton.Wrapper
+                    type={ToggleButton.Type.Label}
+                    value={selectedTransferType}
+                    onChange={handleSelectedTransferTypeChange}
+                    size="small"
+                    className={css.toggleButtonWrapper}
+                >
+                    <ToggleButton.Option value={TransferType.Agent}>
+                        Agents
+                    </ToggleButton.Option>
+                    <ToggleButton.Option value={TransferType.Queue}>
+                        Queues
+                    </ToggleButton.Option>
+                    <ToggleButton.Option value={TransferType.External}>
+                        External
+                    </ToggleButton.Option>
+                </ToggleButton.Wrapper>
+            </div>
             {selectedTransferType === TransferType.Agent && (
                 <AgentCallTransferDropdownContent
                     setSelectedAgentId={handleSelectedAgentIdChange}
                     clearErrors={() => setAlertBannerData(null)}
-                    showNewVersion={isTransferToExternalNumberEnabled}
                 />
             )}
             {selectedTransferType === TransferType.Queue && (
@@ -259,13 +247,11 @@ const CallTransferDropdown = ({
                 />
             )}
             <div className={css.dropdownFooter}>
-                {isTransferToExternalNumberEnabled && (
-                    <DropdownAlertBanner
-                        data={alertBannerData}
-                        onClear={clearAlertBannerData}
-                        autoDismiss
-                    />
-                )}
+                <DropdownAlertBanner
+                    data={alertBannerData}
+                    onClear={clearAlertBannerData}
+                    autoDismiss
+                />
                 <Button
                     className={css.cta}
                     isDisabled={!isTransferEnabled}

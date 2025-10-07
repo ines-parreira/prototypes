@@ -72,47 +72,6 @@ export type VoiceAgentsTableColumnConfig = {
     justifyContent?: 'left' | 'right' | 'center'
 }
 
-export const oldColumns: VoiceAgentsTableColumnConfig[] = [
-    {
-        title: 'Agent',
-        justifyContent: 'left',
-        id: VoiceAgentsTableColumn.AgentName,
-    },
-    {
-        title: 'Total calls',
-        tooltip:
-            'Total number of calls that rung an agent, including calls that the agent missed or declined.',
-        id: VoiceAgentsTableColumn.TotalCalls,
-        metricName: VoiceAgentsMetric.AgentTotalCalls,
-    },
-    {
-        title: 'Inbound Answered',
-        id: VoiceAgentsTableColumn.InboundAnsweredCalls,
-        metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
-    },
-    {
-        title: 'Inbound Missed',
-        id: VoiceAgentsTableColumn.InboundMissedCalls,
-        metricName: VoiceAgentsMetric.AgentInboundMissedCalls,
-    },
-    {
-        title: 'Inbound Declined',
-        id: VoiceAgentsTableColumn.InboundDeclinedCalls,
-    },
-    {
-        title: 'Outbound',
-        id: VoiceAgentsTableColumn.OutboundCalls,
-        metricName: VoiceAgentsMetric.AgentOutboundCalls,
-    },
-    {
-        title: 'Avg. Talk Time',
-        tooltip: 'Average time agent spent talking to customers',
-        id: VoiceAgentsTableColumn.AverageTalkTime,
-        metricName: VoiceAgentsMetric.AgentAverageTalkTime,
-        metricFormat: 'duration',
-    },
-]
-
 export const columns: VoiceAgentsTableColumnConfig[] = [
     {
         title: 'Agent',
