@@ -5,10 +5,15 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     postEnrichedReporting,
     postReporting,
+    postReportingV2,
+    postReportingV2Query,
     QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
     REPORTING_ENDPOINT,
     REPORTING_ENRICHED_ENDPOINT,
+    REPORTING_STATS_ENDPOINT,
+    REPORTING_STATS_QUERY_ENDPOINT,
 } from 'domains/reporting/models/resources'
+import { QueryFor, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     EnrichmentFields,
     ReportingQuery,
@@ -42,6 +47,10 @@ describe('Reporting resources', () => {
     beforeEach(() => {
         mockedAPIClient.reset()
         mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
+        mockedAPIClient.onPost(REPORTING_STATS_ENDPOINT).reply(200, resFixture)
+        mockedAPIClient
+            .onPost(REPORTING_STATS_QUERY_ENDPOINT)
+            .reply(200, resFixture)
         mockedAPIClient
             .onPost(REPORTING_ENRICHED_ENDPOINT)
             .reply(200, resFixture)
@@ -127,6 +136,157 @@ describe('Reporting resources', () => {
                     context: {
                         query: JSON.stringify([query]),
                         metricName: METRIC_NAMES.TEST_METRIC,
+                    },
+                },
+            })
+        })
+    })
+
+    describe('postReportingV2', () => {
+        const query: QueryFor<ScopeMeta> = {
+            dimensions: [],
+            measures: [],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        it('should resolve with the data on success', async () => {
+            const res = await postReportingV2<[number]>(query)
+
+            expect(res.data.data).toEqual([1])
+            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
+        })
+
+        it('should reject with an error on success', async () => {
+            const statusCode = 503
+            mockedAPIClient.onPost(REPORTING_STATS_ENDPOINT).reply(statusCode)
+
+            const request = postReportingV2<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(`Request failed with status code ${statusCode}`),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_STATS_ENDPOINT)
+                .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
+
+            const request = postReportingV2<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_STATS_ENDPOINT)
+                .reply(
+                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
+                )
+
+            const request = postReportingV2<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should report 4xx errors with query details', async () => {
+            mockedAPIClient.onPost(REPORTING_STATS_ENDPOINT).reply(400)
+
+            const error = new Error('Request failed with status code 400')
+            const request = postReportingV2<[number]>(query)
+
+            const { metricName, ...restOfQuery } = query
+            await expect(request).rejects.toEqual(error)
+            expect(reportErrorMock).toHaveBeenCalledWith(error, {
+                extra: {
+                    context: {
+                        query: JSON.stringify(restOfQuery),
+                        metricName: metricName,
+                    },
+                },
+            })
+        })
+    })
+
+    describe('postReportingV2Query', () => {
+        const query: QueryFor<ScopeMeta> = {
+            dimensions: [],
+            measures: [],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        it('should resolve with the data on success', async () => {
+            const res = await postReportingV2Query<[number]>(query)
+
+            expect(res.data.data).toEqual([1])
+        })
+
+        it('should reject with an error on success', async () => {
+            const statusCode = 503
+            mockedAPIClient
+                .onPost(REPORTING_STATS_QUERY_ENDPOINT)
+                .reply(statusCode)
+
+            const request = postReportingV2Query<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(`Request failed with status code ${statusCode}`),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_STATS_QUERY_ENDPOINT)
+                .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
+
+            const request = postReportingV2Query<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_STATS_QUERY_ENDPOINT)
+                .reply(
+                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
+                )
+
+            const request = postReportingV2Query<[number]>(query)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should report 4xx errors with query details', async () => {
+            mockedAPIClient.onPost(REPORTING_STATS_QUERY_ENDPOINT).reply(400)
+
+            const error = new Error('Request failed with status code 400')
+            const request = postReportingV2Query<[number]>(query)
+
+            const { metricName, ...restOfQuery } = query
+            await expect(request).rejects.toEqual(error)
+            expect(reportErrorMock).toHaveBeenCalledWith(error, {
+                extra: {
+                    context: {
+                        query: JSON.stringify(restOfQuery),
+                        metricName: metricName,
                     },
                 },
             })

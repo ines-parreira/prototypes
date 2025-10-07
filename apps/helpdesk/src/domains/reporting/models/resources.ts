@@ -1,5 +1,6 @@
 import { isAxiosError } from 'axios'
 
+import { QueryFor, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     Cube,
     EnrichmentFields,
@@ -11,6 +12,8 @@ import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
+export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'
+export const REPORTING_STATS_QUERY_ENDPOINT = '/api/reporting/stats/query'
 export const REPORTING_ENRICHED_ENDPOINT = '/api/reporting-enriched'
 export const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
 
@@ -19,6 +22,13 @@ type APIReportingQuery = Omit<ReportingQuery, 'metricName'>
 type ReportingQueryParams = {
     query: APIReportingQuery[]
     metric_name: string
+}
+
+type APIReportingV2Query = Omit<QueryFor<ScopeMeta>, 'metricName'>
+
+type ReportingV2QueryParams = {
+    query: APIReportingV2Query
+    metric_name?: string
 }
 
 type ReportingEnrichedQueryParams = {
@@ -74,6 +84,14 @@ const post =
         })
     }
 
+const postV2 =
+    (path: string) =>
+    async <TData>(payload: ReportingV2QueryParams) => {
+        return await client.post<ReportingResponse<TData>>(path, payload, {
+            validateStatus,
+        })
+    }
+
 const enrichedPost =
     (path: string) =>
     async <TData>(payload: ReportingEnrichedQueryParams) => {
@@ -82,6 +100,9 @@ const enrichedPost =
         })
     }
 
+/**
+ * @deprecated Use postReportingV2 instead
+ */
 export const postReporting = <TData, TCube extends Cube = Cube>(
     queries: ReportingParams<TCube>,
 ) => {
@@ -93,6 +114,33 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
         getReportQueryErrorHandler({
             query: JSON.stringify(queries),
             metricName,
+        }),
+    )
+}
+
+export const postReportingV2 = <TData>(query: QueryFor<ScopeMeta>) => {
+    const { metricName, ...baseQuery } = query
+
+    return postV2(REPORTING_STATS_ENDPOINT)<TData>({
+        query: baseQuery,
+        metric_name: metricName!,
+    }).catch(
+        getReportQueryErrorHandler({
+            query: JSON.stringify(baseQuery),
+            metricName: metricName!,
+        }),
+    )
+}
+
+export const postReportingV2Query = <TData>(query: QueryFor<ScopeMeta>) => {
+    const { metricName, ...baseQuery } = query
+
+    return postV2(REPORTING_STATS_QUERY_ENDPOINT)<TData>({
+        query: baseQuery,
+    }).catch(
+        getReportQueryErrorHandler({
+            query: JSON.stringify(baseQuery),
+            metricName: metricName!,
         }),
     )
 }

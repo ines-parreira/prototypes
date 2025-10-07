@@ -6,6 +6,9 @@ import {
     ReportingStatsOperatorsEnum,
 } from '@gorgias/helpdesk-types'
 
+// oxlint-disable-next-line no-unused-vars
+import { MetricName } from 'domains/reporting/hooks/metricNames'
+
 type StandardFilter = {
     member: string
     operator: ReportingStatsOperatorsEnum
@@ -50,11 +53,11 @@ type OptionalFilters<TFilterMembers extends readonly string[]> = {
 }[number]
 
 export type ScopeMeta = {
+    metricName?: MetricName
     measures?: readonly string[]
     dimensions?: readonly string[]
     timeDimensions?: readonly string[]
     filters?: readonly string[]
-    // TODO: required_filters?: readonly FilterKey[]
     order?: readonly string[]
 }
 
@@ -67,6 +70,8 @@ export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
 >
 
 export type QueryFor<TScopeMeta extends ScopeMeta> = {
+    metricName?: TScopeMeta['metricName']
+
     measures?: readonly Values<TScopeMeta['measures']>[]
 
     dimensions?: readonly Values<TScopeMeta['dimensions']>[]
