@@ -111,8 +111,7 @@ const SHOPPING_ASSISTANT_TRIAL_FEATURES: TrialFeature[] = [
     {
         icon: 'notifications_none',
         title: 'Day 7',
-        description:
-            'Mid-trial reminder: optimize your conversion strategies and explore advanced shopping features.',
+        description: 'We’ll remind you when you’re halfway through your trial.',
     },
     {
         icon: 'star_outline',
