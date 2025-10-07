@@ -1,22 +1,12 @@
+import { basicMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { AutomatePlan } from 'models/billing/types'
 
 import { getCollapsedSectionName } from '../utils'
 
 describe('getCollapsedSectionName', () => {
     const createAutomatePlan = (generation?: number): AutomatePlan => ({
-        product: 'automation' as any,
-        num_quota_tickets: 100,
-        amount: 50,
-        currency: 'USD',
-        custom: false,
-        extra_ticket_cost: 1,
-        plan_id: 'test-plan',
-        cadence: 'month' as any,
-        name: 'Test Plan',
-        price_id: 'price_test',
-        public: true,
+        ...basicMonthlyAutomationPlan,
         generation,
-        features: {} as any,
     })
 
     describe('when store has or had a trial', () => {
