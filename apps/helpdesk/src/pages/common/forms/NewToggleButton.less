@@ -5,12 +5,20 @@
 
     .toggleButton {
         --toggleButtonWidth: 34px;
+        --toggleButtonHeight: 20px;
         --knobSize: 13px;
         --knobPaddingX: 3px;
 
+        &.small {
+            --toggleButtonWidth: 28px;
+            --toggleButtonHeight: 16px;
+            --knobSize: 11px;
+            --knobPaddingX: 2px;
+        }
+
         position: relative;
         width: var(--toggleButtonWidth);
-        height: 20px;
+        height: var(--toggleButtonHeight);
         border-radius: 100px;
         background-color: var(--neutral-grey-5);
         cursor: pointer;

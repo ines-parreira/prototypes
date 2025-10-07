@@ -1,17 +1,11 @@
-import React, { useState } from 'react'
-
-import classNames from 'classnames'
+import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { LocaleCode } from 'models/helpCenter/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
 import { getCategoriesById } from 'state/entities/helpCenter/categories'
 
-import useCategoriesOptions, {
-    NO_CATEGORY_OPTION,
-} from './hooks/useCategoriesOptions'
-
-import css from './ArticleCategorySelect.less'
+import useCategoriesOptions from './hooks/useCategoriesOptions'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
@@ -28,43 +22,26 @@ const ArticleCategorySelect = ({
 }: ArticleCategorySelectProps): JSX.Element => {
     const options = useCategoriesOptions({ locale })
     const categoriesById = useAppSelector(getCategoriesById)
-    const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
 
-    const selectOption = categoryId === null ? NO_CATEGORY_OPTION : categoryId
+    const categoryTitlesById = useMemo(() => {
+        const titlesById: Record<string, string> = {}
 
-    const handleOnSearchChange = (text: string) => {
-        setSelectFieldClassName(text ? css.filteredCategories : '')
-    }
+        for (const [id, category] of Object.entries(categoriesById)) {
+            if (category.translation?.title) {
+                titlesById[id] = category.translation.title
+            }
+        }
+
+        return titlesById
+    }, [categoriesById])
 
     return (
-        <SelectField
-            allowCustomValue
-            fullWidth
-            disabled={isDisabled}
-            value={
-                selectOption && categoriesById[selectOption]
-                    ? categoriesById[selectOption].translation?.title
-                    : '- No Category -'
-            }
-            onChange={(value) => {
-                if (!onChange) {
-                    return
-                }
-                if (value === NO_CATEGORY_OPTION) {
-                    onChange(null)
-                } else if (typeof value === 'number') {
-                    onChange(value)
-                }
-            }}
-            onSearchChange={handleOnSearchChange}
+        <ArticleCategorySelectField
+            categoryId={categoryId}
+            categoryTitlesById={categoryTitlesById}
             options={options}
-            dropdownMenuClassName={classNames(
-                css.categoryDropdown,
-                selectFieldClassName,
-            )}
-            className={classNames(css.select, {
-                [css.noCategory]: categoryId === null,
-            })}
+            onChange={onChange}
+            isDisabled={isDisabled}
         />
     )
 }

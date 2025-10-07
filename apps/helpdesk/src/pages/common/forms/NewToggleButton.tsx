@@ -12,6 +12,7 @@ type Props = {
     isDisabled?: boolean
     stopPropagation?: boolean
     name?: string
+    size?: 'small' | 'medium'
 }
 // TODO: To rename to a proper name
 const InnerNewToggleButton = (
@@ -23,6 +24,7 @@ const InnerNewToggleButton = (
         stopPropagation,
         color,
         name,
+        size,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -49,10 +51,14 @@ const InnerNewToggleButton = (
         () =>
             cn(
                 css.toggleButton,
-                { [css.checked]: checked, [css.disabled]: isDisabled },
+                {
+                    [css.checked]: checked,
+                    [css.disabled]: isDisabled,
+                    [css.small]: size === 'small',
+                },
                 className,
             ),
-        [checked, className, isDisabled],
+        [checked, className, isDisabled, size],
     )
 
     return (
@@ -73,7 +79,7 @@ const InnerNewToggleButton = (
                 name={name}
             />
             <div className={css.knob}>
-                <i className="material-icons">check</i>
+                {size !== 'small' && <i className="material-icons">check</i>}
             </div>
         </div>
     )

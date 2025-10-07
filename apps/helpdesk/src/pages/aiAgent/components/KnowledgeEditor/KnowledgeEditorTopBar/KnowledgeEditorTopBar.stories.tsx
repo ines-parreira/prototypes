@@ -8,7 +8,7 @@ import { KnowledgeEditorTopBarHelpCenterArticlesControls } from './KnowledgeEdit
 import { KnowledgeEditorTopBarSnippetControls } from './KnowledgeEditorTopBarSnippetControls'
 
 const meta: Meta<typeof KnowledgeEditorTopBar> = {
-    title: 'AI Agent/Knowledge/KnowledgeEditorTopBar',
+    title: 'AI Agent/Knowledge/KnowledgeEditor/KnowledgeEditorTopBar',
     component: KnowledgeEditorTopBar,
     argTypes: {
         onClickPrevious: { control: 'object' },

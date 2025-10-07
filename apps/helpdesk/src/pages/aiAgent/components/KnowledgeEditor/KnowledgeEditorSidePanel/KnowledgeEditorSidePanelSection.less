@@ -1,0 +1,76 @@
+@import (reference) '~css/typography';
+
+:local {
+    .section {
+        display: flex;
+        width: 300px;
+        padding: var(--spacing-md);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .header {
+        display: flex;
+        height: 24px;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
+        padding: 0;
+        padding-right: 8px;
+    }
+
+    .headerWithSubtitle {
+        height: 35px;
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+
+        .body-semibold();
+    }
+
+    .subtitle {
+        color: var(--content-neutral-tertiary);
+
+        .caption-regular();
+
+        font-size: 10px;
+        line-height: 14px;
+    }
+
+    .titleAndSubtitle {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1px;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .bottomLink {
+        margin-top: var(--spacing-sm);
+        display: flex;
+        justify-content: flex-end;
+
+        a {
+            height: 22px;
+            padding: 0 6px 0 8px;
+            display: flex;
+            justify-content: end;
+            width: fit-content;
+            align-items: center;
+            gap: var(--spacing-xxxs);
+            color: var(--content-neutral-default);
+            .caption-semibold();
+        }
+    }
+
+    .disabledBottomLink {
+        opacity: 0.5;
+        cursor: default;
+    }
+}

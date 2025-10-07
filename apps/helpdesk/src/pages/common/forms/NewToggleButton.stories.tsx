@@ -18,3 +18,8 @@ export const NewToggleButtonDefault: Story = {
     render: (args) => <NewToggleButton {...args} />,
     args: {},
 }
+
+export const NewToggleButtonSmall: Story = {
+    render: (args) => <NewToggleButton {...args} size="small" />,
+    args: {},
+}

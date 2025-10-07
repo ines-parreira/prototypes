@@ -1,0 +1,51 @@
+@import (reference) '~css/typography';
+@import '~css/new/mixins';
+
+:local {
+    .knowledgeType {
+        display: flex;
+        gap: var(--spacing-xxxs);
+    }
+
+    .urlField {
+        display: flex;
+        flex-direction: row;
+        gap: var(--spacing-xxxs);
+
+        align-items: center;
+        gap: var(--spacing-xxxs);
+    }
+
+    .urlLink {
+        display: flex;
+        flex-direction: row;
+        color: var(--content-neutral-default);
+
+        &:hover {
+            border-radius: var(--spacing-xxxs);
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .urlText {
+        .line-clamp(1);
+        word-break: break-all;
+
+        .body-link();
+        font-size: 12px;
+        font-weight: 400;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+    }
+
+    .copyButton {
+        cursor: pointer;
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+
+        .caption-regular();
+    }
+}
