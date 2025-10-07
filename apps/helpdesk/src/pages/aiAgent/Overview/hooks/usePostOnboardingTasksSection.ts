@@ -170,6 +170,16 @@ export const usePostOnboardingTasksSection = ({
         ).length
     }, [postOnboardingSteps])
 
+    const firstUncompletedStepName = useMemo(() => {
+        if (!postOnboardingSteps) return null
+
+        const uncompletedStep = postOnboardingSteps.stepsConfiguration.find(
+            (step) => !step.stepCompletedDatetime,
+        )
+
+        return uncompletedStep?.stepName ?? null
+    }, [postOnboardingSteps])
+
     return {
         isLoading,
         isError,
@@ -177,6 +187,7 @@ export const usePostOnboardingTasksSection = ({
         step,
         isStepCompleted,
         completedStepsCount,
+        firstUncompletedStepName,
         updateStep,
         createPostOnboardingStep,
         updatePostStoreInstallation,

@@ -62,3 +62,14 @@ export const DEFAULT_POST_ONBOARDING_STEPS = {
     },
     completedDatetime: null,
 }
+
+const TAB_TO_STEP_NAME_MAP: Record<string, StepName> = {
+    train: StepName.TRAIN,
+    test: StepName.TEST,
+    deploy: StepName.DEPLOY,
+}
+
+export const mapTabToStepName = (tab: string | null): StepName | null => {
+    if (!tab) return null
+    return TAB_TO_STEP_NAME_MAP[tab] ?? null
+}

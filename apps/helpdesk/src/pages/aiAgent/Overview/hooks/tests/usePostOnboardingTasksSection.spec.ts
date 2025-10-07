@@ -371,5 +371,88 @@ describe('usePostOnboardingTasksSection', () => {
 
             expect(result.current.completedStepsCount).toBe(1)
         })
+
+        it('should return first uncompleted step name', () => {
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [mockPostOnboardingSteps],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result, rerender } = renderHook(() =>
+                usePostOnboardingTasksSection({
+                    shopName: mockShopName,
+                    shopType: mockShopType,
+                }),
+            )
+
+            rerender()
+
+            expect(result.current.firstUncompletedStepName).toBe(StepName.TRAIN)
+        })
+
+        it('should return null when all steps are completed', () => {
+            const allCompletedSteps = {
+                ...mockPostOnboardingSteps,
+                stepsConfiguration: [
+                    {
+                        stepName: StepName.TRAIN,
+                        stepStartedDatetime: '2023-01-01T00:00:00Z',
+                        stepCompletedDatetime: '2023-01-01T00:00:00Z',
+                        stepDismissedDatetime: null,
+                    },
+                    {
+                        stepName: StepName.TEST,
+                        stepStartedDatetime: '2023-01-01T00:00:00Z',
+                        stepCompletedDatetime: '2023-01-02T00:00:00Z',
+                        stepDismissedDatetime: null,
+                    },
+                    {
+                        stepName: StepName.DEPLOY,
+                        stepStartedDatetime: '2023-01-01T00:00:00Z',
+                        stepCompletedDatetime: '2023-01-03T00:00:00Z',
+                        stepDismissedDatetime: null,
+                    },
+                ],
+            }
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [allCompletedSteps],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result, rerender } = renderHook(() =>
+                usePostOnboardingTasksSection({
+                    shopName: mockShopName,
+                    shopType: mockShopType,
+                }),
+            )
+
+            rerender()
+
+            expect(result.current.firstUncompletedStepName).toBeNull()
+        })
+
+        it('should return null when postOnboardingSteps is null', () => {
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: null,
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePostOnboardingTasksSection({
+                    shopName: mockShopName,
+                    shopType: mockShopType,
+                }),
+            )
+
+            expect(result.current.firstUncompletedStepName).toBeNull()
+        })
     })
 })

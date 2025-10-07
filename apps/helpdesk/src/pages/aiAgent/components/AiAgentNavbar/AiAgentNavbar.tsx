@@ -3,6 +3,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { PostOnboardingUserNudges } from 'pages/aiAgent/Overview/components/PostOnboardingUserNudges/PostOnboardingUserNudges'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
@@ -40,6 +41,8 @@ export const AiAgentNavbar = () => {
                 <div className={css.stickyPromoCard}>
                     <ShoppingAssistantPromoCard className={css.promoCard} />
                 </div>
+
+                <PostOnboardingUserNudges />
             </div>
         </Navbar>
     )

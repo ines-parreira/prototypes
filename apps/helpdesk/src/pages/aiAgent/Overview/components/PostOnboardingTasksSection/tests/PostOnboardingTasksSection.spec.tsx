@@ -13,6 +13,12 @@ jest.mock('react-router-dom', () => ({
         shopName: 'test-shop',
         shopType: 'shopify',
     }),
+    useLocation: () => ({
+        pathname: '/test-path',
+        search: '',
+        hash: '',
+        state: null,
+    }),
 }))
 
 jest.mock('../../../hooks/usePostOnboardingTasksSection', () => ({
@@ -28,6 +34,7 @@ jest.mock('../../../hooks/usePostOnboardingTasksSection', () => ({
         }),
         isStepCompleted: (stepName: StepName) => stepName === StepName.TRAIN,
         completedStepsCount: 1,
+        firstUncompletedStepName: StepName.TEST,
         updateStep: jest.fn(),
         createPostOnboardingStep: jest.fn(),
         updatePostStoreInstallation: jest.fn(),

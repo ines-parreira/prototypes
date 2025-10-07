@@ -1,4 +1,6 @@
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+
+import { useLocation, useParams } from 'react-router-dom'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
@@ -13,7 +15,7 @@ import { DeploySection } from './DeploySection'
 import { TestSection } from './TestSection'
 import { TrainSection } from './TrainSection'
 import { PostOnboardingStepMetadata } from './types'
-import { POST_ONBOARDING_STEPS_METADATA } from './utils'
+import { mapTabToStepName, POST_ONBOARDING_STEPS_METADATA } from './utils'
 
 import css from './PostOnboardingTasksSection.less'
 
@@ -23,9 +25,26 @@ export const PostOnboardingTasksSection = () => {
         shopName: string
         shopType: string
     }>()
+    const location = useLocation<{ openTab?: string }>()
 
-    const { step, completedStepsCount, isStepCompleted, updateStep } =
-        usePostOnboardingTasksSection({ shopName, shopType })
+    const {
+        step,
+        completedStepsCount,
+        isStepCompleted,
+        updateStep,
+        firstUncompletedStepName,
+    } = usePostOnboardingTasksSection({ shopName, shopType })
+
+    const [expandedStep, setExpandedStep] = useState<string | null>(
+        firstUncompletedStepName,
+    )
+
+    useEffect(() => {
+        const stepFromState = location.state?.openTab
+            ? mapTabToStepName(location.state.openTab)
+            : null
+        setExpandedStep(stepFromState ?? firstUncompletedStepName)
+    }, [location.state, firstUncompletedStepName])
 
     return (
         <div className={css.container}>
@@ -39,7 +58,11 @@ export const PostOnboardingTasksSection = () => {
                 </div>
             </div>
 
-            <Accordion className={css.stepsAccordion}>
+            <Accordion
+                className={css.stepsAccordion}
+                expandedItem={expandedStep}
+                onChange={setExpandedStep}
+            >
                 {stepsMetadata.map(
                     (stepMetadata: PostOnboardingStepMetadata) => (
                         <AccordionItem
