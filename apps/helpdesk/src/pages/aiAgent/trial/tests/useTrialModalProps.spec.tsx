@@ -2976,7 +2976,7 @@ describe('useTrialModalProps', () => {
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
                     ).toBe(
-                        'With the upgrade, your plan will increase by $10/month.',
+                        `With the upgrade, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
 
@@ -3001,7 +3001,7 @@ describe('useTrialModalProps', () => {
                     expect(
                         result.current.trialEndingModal.secondaryDescription,
                     ).toBe(
-                        'Typical results achieved by merchants. After upgrading, your plan will increase by $10/month.',
+                        `Typical results achieved by merchants. After upgrading, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
             })
@@ -3075,7 +3075,7 @@ describe('useTrialModalProps', () => {
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe(
-                        'After your trial, your plan will increase by $10/month.',
+                        `After your trial, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
 
@@ -3100,7 +3100,7 @@ describe('useTrialModalProps', () => {
                     expect(
                         result.current.trialEndedModal.secondaryDescription,
                     ).toBe(
-                        'Typical results achieved by merchants. After upgrading, your plan will increase by $10/month.',
+                        `Typical results achieved by merchants. After upgrading, your plan will increase by $10/${Cadence.Month}.`,
                     )
                 })
             })
