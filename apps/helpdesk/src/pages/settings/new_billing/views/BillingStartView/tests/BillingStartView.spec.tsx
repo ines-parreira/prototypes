@@ -262,7 +262,7 @@ describe('BillingStartView', () => {
             resetLDMocks()
         })
 
-        it('should allow phone user to change billing frequency from monthly to yearly', () => {
+        it('should allow phone user to change billing frequency', () => {
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
