@@ -15,6 +15,7 @@ import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTa
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
 import { MetricFetch } from 'domains/reporting/hooks/useMetric'
 import { MetricWithDecileFetch } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
@@ -54,6 +55,7 @@ export const useTables = (
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )
 
+    const shouldIncludeBots = useShouldIncludeBots()
     const [tagTicketTimeReference] = useTicketTimeReference(Entity.Tag)
     const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
         Entity.TicketField,
@@ -134,6 +136,7 @@ export const useTables = (
             aiAgentUserId,
             campaignsReportContext,
             tagResultsSelection,
+            shouldIncludeBots,
         }),
         [
             agents,
@@ -155,6 +158,7 @@ export const useTables = (
             integrations,
             aiAgentUserId,
             tagResultsSelection,
+            shouldIncludeBots,
         ],
     )
 

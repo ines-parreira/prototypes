@@ -93,7 +93,8 @@ describe('useChannelsReportMetrics', () => {
 
     const expectedMetrics: ReturnType<typeof useChannelsReportMetrics> = {
         channels,
-        files: saveReport(channels, reportData, columnsOrder, fileName).files,
+        files: saveReport(channels, reportData, columnsOrder, true, fileName)
+            .files,
         fileName,
         reportData,
         isLoading: false,
@@ -168,6 +169,7 @@ describe('useChannelsReportMetrics', () => {
                 channels: [],
                 channelColumnsOrder: [],
                 isReportingAverageResponseTimeEnabled: false,
+                shouldIncludeBots: true,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
@@ -201,6 +203,7 @@ describe('useChannelsReportMetrics', () => {
                 channels: [],
                 channelColumnsOrder: [],
                 isReportingAverageResponseTimeEnabled: false,
+                shouldIncludeBots: true,
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,

@@ -22,6 +22,7 @@ import {
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMeasure } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import { TicketsFirstAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import {
     formatMetricValue,
@@ -55,7 +56,6 @@ type ReportDataMap = Record<
 >
 
 const TicketCount = TicketMeasure.TicketCount
-const MedianFirstResponseTime = TicketMessagesMeasure.MedianFirstResponseTime
 const MedianResponseTime =
     TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime
 const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
@@ -105,6 +105,7 @@ export const saveReport = (
     channels: Channel[],
     data: ChannelsReportData | null,
     columnsOrder: ChannelsTableColumns[],
+    shouldIncludeBots: boolean,
     fileName: string,
 ) => {
     if (data === null) {
@@ -112,6 +113,10 @@ export const saveReport = (
             files: {},
         }
     }
+
+    const frtMetricField = shouldIncludeBots
+        ? TicketMessagesMeasure.MedianFirstResponseTime
+        : TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
 
     const visibleChannels = nonEmptyChannels(channels, data)
 
@@ -132,10 +137,10 @@ export const saveReport = (
             column: ChannelsTableColumns.FirstResponseTime,
             metricData: data.medianFirstResponseTimeMetricPerChannel,
             idField: CHANNEL_DIMENSION,
-            metricField: MedianFirstResponseTime,
+            metricField: frtMetricField,
         },
         [ChannelsTableColumns.HumanResponseTimeAfterAiHandoff]: {
-            column: ChannelsTableColumns.FirstResponseTime,
+            column: ChannelsTableColumns.HumanResponseTimeAfterAiHandoff,
             metricData: data.humanTimeAfterAiHandoffMetricPerChannel,
             idField: CHANNEL_DIMENSION,
             metricField:
