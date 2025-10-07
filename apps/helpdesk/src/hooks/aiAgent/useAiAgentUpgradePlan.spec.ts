@@ -1,133 +1,68 @@
 import { renderHook } from '@repo/testing'
 
-import { useGetAiAgentUpgradePlan } from 'models/aiAgent/queries'
+import { useAiAgentGeneration6Plan } from 'models/billing/queries'
 import { Cadence, Plan, ProductType } from 'models/billing/types'
-import { getAvailablePlansMapByPlanId } from 'state/billing/selectors'
 
 import { useAiAgentUpgradePlan } from './useAiAgentUpgradePlan'
 
-jest.mock('models/aiAgent/queries')
-jest.mock('state/billing/selectors')
-jest.mock('hooks/useAppSelector', () => (selector: Function) => selector())
+jest.mock('models/billing/queries')
 
-const mockUseGetAiAgentUpgradePlan = jest.mocked(useGetAiAgentUpgradePlan)
-const mockGetAvailablePlansMapByPlanId = jest.mocked(
-    getAvailablePlansMapByPlanId,
-)
+const mockUseAiAgentGeneration6Plan = jest.mocked(useAiAgentGeneration6Plan)
 
 describe('useAiAgentUpgradePlan', () => {
-    const accountDomain = 'test-domain'
-    const mockPlanId = 'plan-123'
-    const mockPlanData: Plan = {
-        product: ProductType.Automation,
-        num_quota_tickets: 1000,
-        amount: 99,
-        currency: 'USD',
-        custom: false,
-        extra_ticket_cost: 0,
-        plan_id: mockPlanId,
-        cadence: Cadence.Month,
-        name: 'AI Agent Plan',
-        price_id: 'price_123',
-        public: true,
-    }
-
     beforeEach(() => {
         jest.resetAllMocks()
     })
 
-    it('should return loading false when query is loading but no data', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
+    it('should return null and initial loading true when query is loading', () => {
+        mockUseAiAgentGeneration6Plan.mockReturnValue({
             data: undefined,
-            isLoading: true,
+            isInitialLoading: true,
             isError: false,
             error: null,
         } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
 
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
+        const { result } = renderHook(() => useAiAgentUpgradePlan())
 
-        expect(result.current).toEqual({
-            data: null,
-            isLoading: false,
-        })
+        expect(result.current).toEqual({ data: null, isLoading: true })
     })
 
-    it('should return null data when no upgrade plan ID is available', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: {},
-            isLoading: false,
+    it('should return null when API returns null', () => {
+        mockUseAiAgentGeneration6Plan.mockReturnValue({
+            data: null,
+            isInitialLoading: false,
             isError: false,
             error: null,
         } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
 
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
+        const { result } = renderHook(() => useAiAgentUpgradePlan())
 
-        expect(result.current).toEqual({
-            data: null,
-            isLoading: false,
-        })
+        expect(result.current).toEqual({ data: null, isLoading: false })
     })
 
-    it('should return null data when upgrade plan ID is undefined', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: { aiAgentUpgradePlanId: undefined },
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
-
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
-
-        expect(result.current).toEqual({
-            data: null,
-            isLoading: false,
-        })
-    })
-
-    it('should return null data when plan is not found in plans map', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: { aiAgentUpgradePlanId: mockPlanId },
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
-
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
-
-        expect(result.current).toEqual({
-            data: null,
-            isLoading: false,
-        })
-    })
-
-    it('should return transformed plan data when plan is found', () => {
-        const plansMap = {
-            [mockPlanId]: mockPlanData,
+    it('should return plan when API returns { plan: Plan }', () => {
+        const mockPlanData: Plan = {
+            product: ProductType.Automation,
+            num_quota_tickets: 1000,
+            amount: 99,
+            currency: 'USD',
+            custom: false,
+            extra_ticket_cost: 0,
+            plan_id: 'plan-123',
+            cadence: Cadence.Month,
+            name: 'AI Agent Plan',
+            price_id: 'price_123',
+            public: true,
         }
 
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: { aiAgentUpgradePlanId: mockPlanId },
-            isLoading: false,
+        mockUseAiAgentGeneration6Plan.mockReturnValue({
+            data: { plan: mockPlanData },
+            isInitialLoading: false,
             isError: false,
             error: null,
         } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue(plansMap)
 
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
+        const { result } = renderHook(() => useAiAgentUpgradePlan())
 
         expect(result.current).toEqual({
             data: mockPlanData,
@@ -135,99 +70,31 @@ describe('useAiAgentUpgradePlan', () => {
         })
     })
 
-    it('should pass through loading state correctly when plan exists', () => {
-        const plansMap = {
-            [mockPlanId]: mockPlanData,
-        }
-
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: { aiAgentUpgradePlanId: mockPlanId },
-            isLoading: true,
+    it('should pass through initial loading state', () => {
+        mockUseAiAgentGeneration6Plan.mockReturnValue({
+            data: null,
+            isInitialLoading: true,
             isError: false,
             error: null,
         } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue(plansMap)
 
-        const { result } = renderHook(() =>
-            useAiAgentUpgradePlan(accountDomain),
-        )
+        const { result } = renderHook(() => useAiAgentUpgradePlan())
 
-        expect(result.current).toEqual({
-            data: mockPlanData,
-            isLoading: true,
-        })
+        expect(result.current).toEqual({ data: null, isLoading: true })
     })
 
-    it('should call useGetAiAgentUpgradePlan with correct parameters when enabled', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
+    it('should respect enabled flag', () => {
+        mockUseAiAgentGeneration6Plan.mockReturnValue({
             data: undefined,
             isLoading: false,
             isError: false,
             error: null,
         } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
 
-        renderHook(() => useAiAgentUpgradePlan(accountDomain, true))
+        renderHook(() => useAiAgentUpgradePlan(false))
 
-        expect(mockUseGetAiAgentUpgradePlan).toHaveBeenCalledWith(
-            accountDomain,
-            {
-                enabled: true,
-            },
-        )
-    })
-
-    it('should call useGetAiAgentUpgradePlan with enabled=false when accountDomain is empty', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
-
-        renderHook(() => useAiAgentUpgradePlan('', true))
-
-        expect(mockUseGetAiAgentUpgradePlan).toHaveBeenCalledWith('', {
+        expect(mockUseAiAgentGeneration6Plan).toHaveBeenCalledWith({
             enabled: false,
         })
-    })
-
-    it('should call useGetAiAgentUpgradePlan with enabled=false when disabled explicitly', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
-
-        renderHook(() => useAiAgentUpgradePlan(accountDomain, false))
-
-        expect(mockUseGetAiAgentUpgradePlan).toHaveBeenCalledWith(
-            accountDomain,
-            {
-                enabled: false,
-            },
-        )
-    })
-
-    it('should default to enabled=true when enabled parameter is not provided', () => {
-        mockUseGetAiAgentUpgradePlan.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
-        mockGetAvailablePlansMapByPlanId.mockReturnValue({})
-
-        renderHook(() => useAiAgentUpgradePlan(accountDomain))
-
-        expect(mockUseGetAiAgentUpgradePlan).toHaveBeenCalledWith(
-            accountDomain,
-            {
-                enabled: true,
-            },
-        )
     })
 })

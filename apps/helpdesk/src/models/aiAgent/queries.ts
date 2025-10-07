@@ -17,7 +17,6 @@ import {
     createWelcomePageAcknowledged,
     getAccountConfiguration,
     getAiAgentStoreHandoverConfigurations,
-    getAiAgentUpgradePlan,
     getOnboardingNotificationState,
     getStoreConfiguration,
     getStoresConfigurations,
@@ -794,28 +793,5 @@ export const useUpgradeSalesSubscriptionMutation = (
 
             overrides?.onSuccess?.(...args)
         },
-    })
-}
-
-// AI Agent Upgrade Plan endpoints
-export const aiAgentUpgradePlanKeys = {
-    all: () => ['aiAgentUpgradePlan'] as const,
-    detail: (accountDomain: string) =>
-        [...aiAgentUpgradePlanKeys.all(), accountDomain] as const,
-}
-
-export const useGetAiAgentUpgradePlan = (
-    accountDomain: string,
-    overrides?: UseQueryOptions<
-        Awaited<ReturnType<typeof getAiAgentUpgradePlan>>
-    >,
-) => {
-    return useQuery({
-        queryKey: aiAgentUpgradePlanKeys.detail(accountDomain),
-        queryFn: () => getAiAgentUpgradePlan(accountDomain),
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
-        enabled: !!accountDomain && (overrides?.enabled ?? true),
-        ...overrides,
     })
 }

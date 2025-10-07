@@ -45,10 +45,8 @@ export const useEarlyAccessModalState = ({
     hasActivationEnabled: boolean
     autoDisplayDisabled?: boolean
 }) => {
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
     const { data: upgradePlanData, isLoading: upgradePlanLoading } =
-        useAiAgentUpgradePlan(accountDomain, hasActivationEnabled)
+        useAiAgentUpgradePlan(hasActivationEnabled)
     const billingState = useBillingState({ enabled: hasActivationEnabled })
 
     const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)

@@ -22,7 +22,6 @@ import {
 import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { toPercentage } from 'pages/aiAgent/trial/utils/utils'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export type UseTrialEndingModalProps = {
@@ -44,9 +43,7 @@ export const useTrialEndingModal = ({
     storeName,
 }: UseTrialEndingModalProps): UseTrialEndingModalReturn => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const { data: upgradePlanData } = useAiAgentUpgradePlan()
     const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
     const automationRateValue = automationRate?.value ?? 0
     const { isAdminUser } = trialAccess

@@ -175,7 +175,7 @@ export const SalesPaywallMiddleware =
                 canStartTrialFromFeatureFlag,
         })
         const { data: upgradePlanData, isLoading: upgradePlanDataLoading } =
-            useAiAgentUpgradePlan(accountDomain)
+            useAiAgentUpgradePlan()
         const displayNotifyAdminButton =
             canNotifyAdmin &&
             !displayTrialButton &&

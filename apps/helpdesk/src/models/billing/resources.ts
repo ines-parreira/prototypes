@@ -3,6 +3,7 @@ import {
     BillingState,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
+    Plan,
     SubscriptionCycle,
 } from 'models/billing/types'
 import {
@@ -77,3 +78,10 @@ export const updateBillingContact = (
         '/api/billing/contact/',
         billingContact,
     )
+
+export async function getAiAgentGeneration6Plan() {
+    const res = await client.get<{ plan: Plan } | null>(
+        '/api/billing/ai-agent-generation-6',
+    )
+    return res.data
+}

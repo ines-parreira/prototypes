@@ -3,6 +3,7 @@ import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { MutationOverrides } from '../../types/query'
 import {
     extendTrial,
+    getAiAgentGeneration6Plan,
     getBillingContact,
     getBillingState,
     getCouponsForSales,
@@ -81,5 +82,22 @@ export const useUpdateBillingContact = (
 ) =>
     useMutation({
         mutationFn: (params) => updateBillingContact(...params),
+        ...overrides,
+    })
+
+export const aiAgentGen6PlanQuery = {
+    queryKey: ['aiAgentGeneration6Plan'] as const,
+    queryFn: getAiAgentGeneration6Plan,
+}
+
+export type UseAiAgentGeneration6Plan = Awaited<
+    ReturnType<typeof getAiAgentGeneration6Plan>
+>
+
+export const useAiAgentGeneration6Plan = (
+    overrides?: UseQueryOptions<UseAiAgentGeneration6Plan>,
+) =>
+    useQuery({
+        ...aiAgentGen6PlanQuery,
         ...overrides,
     })

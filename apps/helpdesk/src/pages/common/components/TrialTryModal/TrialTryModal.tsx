@@ -238,7 +238,7 @@ const TrialTryModal = ({
         useGetTrials(accountDomain)
 
     const { data: upgradePlanData, isLoading: upgradePlanDataLoading } =
-        useAiAgentUpgradePlan(accountDomain)
+        useAiAgentUpgradePlan()
 
     const hasAnyOptedInTrial = !!trials?.some(
         (trial) => hasTrialOptedIn(trial) && !hasTrialExpired(trial),

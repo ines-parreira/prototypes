@@ -223,10 +223,7 @@ type PlanDetails = {
 }
 
 const usePlanDetails = (): PlanDetails => {
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
-
-    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const { data: upgradePlanData } = useAiAgentUpgradePlan()
 
     const upgradePlanAmount = upgradePlanData
         ? formatAmount(upgradePlanData.amount / 100, upgradePlanData.currency)
@@ -696,7 +693,7 @@ const useTrialStartedBanner = (
         isUpgradePlanLoading,
     ])
 
-    const upgradePlanData = useAiAgentUpgradePlan(accountDomain)
+    const upgradePlanData = useAiAgentUpgradePlan()
     const primaryAction = useMemo(() => {
         if (canBookDemo) {
             return {
@@ -799,13 +796,11 @@ const useTrialEndedModal = (
     trialAccess: TrialAccess,
 ): TrialModalProps['trialEndedModal'] => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
     const { gmvInfluenced, gmvInfluencedRate, automationRate } = trialMetrics
     const automationRateValue = automationRate?.value ?? 0
     const { isAdminUser } = trialAccess
 
-    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const { data: upgradePlanData } = useAiAgentUpgradePlan()
     const earlyAccessPlanPrice = (upgradePlanData?.amount ?? 0) / 100
     const billingState = useBillingState()
     const currentPlan = billingState?.data?.current_plans?.automate
@@ -951,7 +946,7 @@ const useTrialManageModal = (
     const { upgradePlanAsync, isLoading: isUpgradePlanLoading } =
         useUpgradePlan()
 
-    const { data: upgradePlanData } = useAiAgentUpgradePlan(accountDomain)
+    const { data: upgradePlanData } = useAiAgentUpgradePlan()
 
     const {
         isManageTrialModalOpen,

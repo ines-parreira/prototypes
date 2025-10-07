@@ -1,42 +1,22 @@
-import useAppSelector from 'hooks/useAppSelector'
-import { useGetAiAgentUpgradePlan } from 'models/aiAgent/queries'
-import { getAvailablePlansMapByPlanId } from 'state/billing/selectors'
+import { useAiAgentGeneration6Plan } from 'models/billing/queries'
 
 /**
  * Hook to get AI Agent upgrade plan data from backend
- * @param accountDomain - The account domain to fetch the upgrade plan for
  * @param enabled - Whether the query should be enabled (default: true)
  * @returns Object with upgrade plan data and loading state
  */
-const useAiAgentUpgradePlan = (
-    accountDomain: string,
-    enabled: boolean = true,
-) => {
-    const plansMap = useAppSelector(getAvailablePlansMapByPlanId)
-
-    const aiAgentUpgradePlanQuery = useGetAiAgentUpgradePlan(accountDomain, {
-        enabled: enabled && !!accountDomain,
+const useAiAgentUpgradePlan = (enabled: boolean = true) => {
+    const { data, isInitialLoading } = useAiAgentGeneration6Plan({
+        enabled,
     })
 
-    const { aiAgentUpgradePlanId } = aiAgentUpgradePlanQuery.data ?? {}
-
-    if (!aiAgentUpgradePlanId) {
-        return {
-            data: null,
-            isLoading: false,
-        }
-    }
-    const upgradePlanData = plansMap[aiAgentUpgradePlanId || '']
-    if (!upgradePlanData) {
-        return {
-            data: null,
-            isLoading: aiAgentUpgradePlanQuery.isLoading,
-        }
+    if (!data) {
+        return { data: null, isLoading: isInitialLoading }
     }
 
     return {
-        data: upgradePlanData,
-        isLoading: aiAgentUpgradePlanQuery.isLoading,
+        data: data.plan,
+        isLoading: isInitialLoading,
     }
 }
 
