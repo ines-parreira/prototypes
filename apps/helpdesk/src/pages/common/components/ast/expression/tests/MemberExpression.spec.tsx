@@ -3,6 +3,7 @@ import { ComponentProps } from 'react'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Expression } from 'estree'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -21,6 +22,7 @@ import {
 import { rule } from 'fixtures/rule'
 import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
 import { IdentifierCategoryKey } from 'models/rule/types'
+import { generateExpression } from 'models/rule/utils'
 import { RootState } from 'state/types'
 
 import { MemberExpression } from '../MemberExpression'
@@ -551,6 +553,107 @@ describe('<MemberExpression/>', () => {
         ).mock.calls
 
         expect(actionCalls).toHaveLength(0)
+    })
+
+    it('should preselect the matching custom field from the AST path without updating the AST', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const modifyCodeAST = jest.fn()
+        const customFieldExpression = generateExpression([
+            'value',
+            ticketInputFieldDefinition.id.toString(),
+            'custom_fields',
+            'ticket',
+        ])
+
+        renderComponent({
+            actions: {
+                ...minProps.actions,
+                modifyCodeAST,
+            },
+            object: customFieldExpression.object as Expression,
+            property: customFieldExpression.property,
+        })
+
+        await waitFor(() => {
+            expect(screen.getAllByText('Input field').length).toBeGreaterThan(0)
+        })
+
+        expect(modifyCodeAST).not.toHaveBeenCalled()
+    })
+
+    it('should select the first active custom field when the AST path lacks a custom field id', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const modifyCodeAST = jest.fn()
+        const customFieldExpression = generateExpression([
+            'value',
+            'custom_fields',
+            'ticket',
+        ])
+
+        renderComponent({
+            actions: {
+                ...minProps.actions,
+                modifyCodeAST,
+            },
+            object: customFieldExpression.object as Expression,
+            property: customFieldExpression.property,
+        })
+
+        const actionCall = await waitFor(() => {
+            expect(modifyCodeAST).toHaveBeenCalledTimes(1)
+            return modifyCodeAST.mock.calls[0]
+        })
+        expect(actionCall[0]).toEqualImmutable(minProps.parent)
+        expect(actionCall[2]).toBe('UPDATE')
+        expect(actionCall[1]).toEqualImmutable(
+            fromJS(
+                generateExpression([
+                    'value',
+                    ticketInputFieldDefinition.id.toString(),
+                    'custom_fields',
+                    'ticket',
+                ]),
+            ),
+        )
+        expect(actionCall[4]).toBeDefined()
+    })
+
+    it('should select the first active custom field when the id in the AST path is not found', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const modifyCodeAST = jest.fn()
+        const customFieldExpression = generateExpression([
+            'value',
+            '999999',
+            'custom_fields',
+            'ticket',
+        ])
+
+        renderComponent({
+            actions: {
+                ...minProps.actions,
+                modifyCodeAST,
+            },
+            object: customFieldExpression.object as Expression,
+            property: customFieldExpression.property,
+        })
+
+        const actionCall = await waitFor(() => {
+            expect(modifyCodeAST).toHaveBeenCalledTimes(1)
+            return modifyCodeAST.mock.calls[0]
+        })
+        expect(actionCall[0]).toEqualImmutable(minProps.parent)
+        expect(actionCall[2]).toBe('UPDATE')
+        expect(actionCall[1]).toEqualImmutable(
+            fromJS(
+                generateExpression([
+                    'value',
+                    ticketInputFieldDefinition.id.toString(),
+                    'custom_fields',
+                    'ticket',
+                ]),
+            ),
+        )
+        expect(actionCall[4]).toBeDefined()
     })
 
     it('should call handleSelectCustomField when clicking on custom field option', async () => {

@@ -28,6 +28,7 @@ import { ObjectExpressionPropertyKey, RuleOperation } from 'state/rules/types'
 import { getIconFromUrl } from 'utils'
 
 import { getFieldSchemaDefinitionKey } from '../../ViewTable/Filters/utils'
+import { getSyntaxTreeLeaves } from '../utils'
 import RuleSelect from '../widget/RuleSelect'
 
 import css from './MemberExpression.less'
@@ -43,12 +44,38 @@ export function MemberExpression({
     parent: List<any>
     property: ObjectExpressionPropertyKey
 }) {
+    const syntaxTreeLeaves = useMemo(() => {
+        return getSyntaxTreeLeaves(object)
+    }, [object])
+
+    const hasCustomFieldInTree = useMemo(() => {
+        if (!syntaxTreeLeaves) {
+            return false
+        }
+
+        return syntaxTreeLeaves.includes('custom_fields')
+    }, [syntaxTreeLeaves])
+
+    const customFieldIdFromTree = useMemo(() => {
+        if (!hasCustomFieldInTree) {
+            return null
+        }
+
+        const customFieldId = syntaxTreeLeaves?.get(-1)
+        if (!customFieldId || Number.isNaN(Number(customFieldId))) {
+            return null
+        }
+
+        return Number(customFieldId)
+    }, [syntaxTreeLeaves, hasCustomFieldInTree])
+
     const hasIntegrationType = useAppSelector(makeHasIntegrationOfTypes)
     const hasAutomate = useAppSelector(getHasAutomate)
     const [selectedCategory, setSelectedCategory] =
         useState<IdentifierCategoryKey | null>(null)
-    const [showCustomFieldSelection, setShowCustomFieldSelection] =
-        useState(false)
+    const [showCustomFieldSelection, setShowCustomFieldSelection] = useState(
+        () => hasCustomFieldInTree,
+    )
     const [selectedCustomField, setSelectedCustomField] =
         useState<CustomField | null>(null)
 
@@ -66,7 +93,7 @@ export function MemberExpression({
             .find((element) =>
                 jointValuePath.includes(element.value),
             ) as IdentifierElement
-    }, [property, object])
+    }, [object, property])
 
     // Fetch available custom fields
     const {
@@ -163,10 +190,24 @@ export function MemberExpression({
             isFetched &&
             activeCustomFields.length > 0
         ) {
+            if (customFieldIdFromTree) {
+                const matchingField = activeCustomFields.find(
+                    (field) => field.id === customFieldIdFromTree,
+                )
+                if (matchingField) {
+                    // if the custom field is found, set it as the selected custom field
+                    // we should not call handleSelectCustomField here because we don't want to update the AST.
+                    setSelectedCustomField(matchingField)
+                    return
+                }
+            }
+
+            // if the custom field is not found, set the first custom field as the selected custom field
             handleSelectCustomField(activeCustomFields[0])
         }
     }, [
         activeCustomFields,
+        customFieldIdFromTree,
         handleSelectCustomField,
         isFetched,
         selectedCustomField,
