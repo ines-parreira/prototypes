@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useParams } from 'react-router-dom'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { Button, Icon, LoadingSpinner, NewButton, Text } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 import { getContext } from 'state/widgets/selectors'
@@ -25,7 +27,95 @@ const ForumIcon = () => (
     <span className={`material-icons ${css.mr} ${css.forumIcon}`}>forum</span>
 )
 
+const getTicketCountText = (
+    ticketCount: number,
+    openTicketCount: number,
+    snoozedTicketCount: number,
+    hasNoTickets: boolean,
+    hasNoHistory: boolean,
+    showToggle: boolean,
+): string => {
+    if (hasNoTickets && !showToggle)
+        return "This customer doesn't have any tickets yet."
+    if (showToggle && hasNoHistory) return 'No other tickets'
+    if (ticketCount === 0) return 'No other tickets'
+
+    let text = `${ticketCount} ticket${ticketCount > 1 ? 's' : ''}`
+    if (openTicketCount > 0) {
+        text += `, ${openTicketCount} open`
+    }
+    if (snoozedTicketCount > 0) {
+        text += `, ${snoozedTicketCount} snoozed`
+    }
+    return text
+}
+
+const TimelineFieldButton = ({
+    isPrimary,
+    isOpen,
+    isDisabled,
+    onClick,
+    ticketCount,
+    openTicketCount,
+    snoozedTicketCount,
+    hasNoTickets,
+    hasNoHistory,
+    showToggle,
+    hasUIVisionMS1,
+}: {
+    isPrimary: boolean
+    isOpen: boolean
+    isDisabled: boolean
+    onClick: () => void
+    ticketCount: number
+    openTicketCount: number
+    snoozedTicketCount: number
+    hasNoTickets: boolean
+    hasNoHistory: boolean
+    showToggle: boolean
+    hasUIVisionMS1: boolean
+}) => {
+    return (
+        <div className={css.fieldContainer}>
+            {hasUIVisionMS1 ? (
+                <NewButton
+                    leadingIcon="history"
+                    variant={isPrimary ? 'primary' : 'secondary'}
+                    onClick={onClick}
+                    size="sm"
+                    isDisabled={isDisabled}
+                >
+                    <span>{isOpen ? 'Close' : 'Open'} timeline</span>
+                </NewButton>
+            ) : (
+                <Button
+                    leadingIcon="history"
+                    intent={isPrimary ? 'primary' : 'secondary'}
+                    onClick={onClick}
+                    size="small"
+                    isDisabled={isDisabled}
+                >
+                    <span>{isOpen ? 'Close' : 'Open'} timeline</span>
+                </Button>
+            )}
+            <Text size="sm">
+                <span className={isDisabled ? css.fieldContentDisabled : ''}>
+                    {getTicketCountText(
+                        ticketCount,
+                        openTicketCount,
+                        snoozedTicketCount,
+                        hasNoTickets,
+                        hasNoHistory,
+                        showToggle,
+                    )}
+                </span>
+            </Text>
+        </div>
+    )
+}
+
 export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const {
         isOpen,
         openTimeline,
@@ -73,21 +163,53 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
         )
     }
 
-    let textContent: React.ReactNode = (
-        <>
-            {ticketCount} ticket{ticketCount > 1 ? 's' : ''}
-            {openTicketCount > 0 && <>, {openTicketCount} open</>}
-            {snoozedTicketCount > 0 && <>, {snoozedTicketCount} snoozed</>}
-        </>
+    const textContent = getTicketCountText(
+        ticketCount,
+        openTicketCount,
+        snoozedTicketCount,
+        hasNoTickets,
+        hasNoHistory,
+        showToggle,
     )
-    if (hasNoTickets)
-        textContent = 'This customer doesn’t have any tickets yet.'
-    if (showToggle && hasNoHistory) textContent = 'No other tickets'
 
     const handleToggleTimeline = () => {
         if (isAnotherTimelineOpen) return openTimeline(shopperId)
         if (isOpen) return closeTimeline()
         openTimeline(shopperId)
+    }
+
+    if (hasUIVisionMS1) {
+        const isPrimary = showButtonAsPrimary(tickets, activeTicketId)
+        const isDisabled = hasNoHistory
+
+        return (
+            <div className={css.timelineWidget}>
+                {showToggle ? (
+                    <TimelineFieldButton
+                        isPrimary={isPrimary}
+                        isOpen={isOpen}
+                        isDisabled={isDisabled}
+                        onClick={handleToggleTimeline}
+                        ticketCount={ticketCount}
+                        openTicketCount={openTicketCount}
+                        snoozedTicketCount={snoozedTicketCount}
+                        hasNoTickets={hasNoTickets}
+                        hasNoHistory={hasNoHistory}
+                        showToggle={showToggle}
+                        hasUIVisionMS1={hasUIVisionMS1}
+                    />
+                ) : (
+                    <div className={css.fieldContainer}>
+                        <div className={css.fieldButton}>
+                            <Icon name="comm-chat-conversation" />
+                        </div>
+                        <div className={css.fieldContent}>
+                            <span>{textContent}</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
     }
 
     return (
