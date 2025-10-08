@@ -2,14 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import {
-    AutomatePlan,
-    Cadence,
-    ConvertPlan,
-    HelpdeskPlan,
-    ProductType,
-    SMSOrVoicePlan,
-} from 'models/billing/types'
+import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import { Cadence, Plan, ProductType } from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -24,6 +18,7 @@ import SummaryItem from '../../components/SummaryItem/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
 import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
+import { SelectedPlans } from '../BillingProcessView/BillingProcessView'
 
 import css from './BillingFrequencyView.less'
 
@@ -34,6 +29,10 @@ type BillingFrequencyViewProps = {
     isTrialing: boolean
     isCurrentSubscriptionCanceled: boolean
 }
+
+export type PlanByProductType = { [key in ProductType]: Plan | undefined }
+export type PlansByProductType = { [key in ProductType]: Plan[] }
+export type PlanByProductTypeByCadence = { [key in Cadence]: PlanByProductType }
 
 const BillingFrequencyView = ({
     dispatchBillingError,
@@ -65,100 +64,69 @@ const BillingFrequencyView = ({
         dispatchBillingError,
     })
 
-    const isPaymentEnabled = !!useIsPaymentEnabled()
-
-    const [showAlert, setShowAlert] = useState(true)
-    const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
-
     const {
+        currentPlans,
+        availablePlans,
+        allPlansByProductTypeByCadence,
         disabledCadences,
-        helpdeskPlansForAllCadences,
-        automatePlansForAllCadences,
-        voicePlansForAllCadences,
-        smsPlansForAllCadences,
-        convertPlansForAllCadences,
     } = useMemo(() => {
-        const disabledCadences = new Set<Cadence>()
-        const helpdeskPlansForAllCadences: Partial<
-            Record<Cadence, HelpdeskPlan>
-        > = {
-            [cadence]: currentHelpdeskPlan,
-        }
-        const automatePlansForAllCadences: Partial<
-            Record<Cadence, AutomatePlan>
-        > = {
-            [cadence]: currentAutomatePlan,
-        }
-        const voicePlansForAllCadences: Partial<
-            Record<Cadence, SMSOrVoicePlan>
-        > = {
-            [cadence]: currentVoicePlan,
-        }
-        const smsPlansForAllCadences: Partial<Record<Cadence, SMSOrVoicePlan>> =
-            {
-                [cadence]: currentSmsPlan,
-            }
-        const convertPlansForAllCadences: Partial<
-            Record<Cadence, ConvertPlan>
-        > = {
-            [cadence]: currentConvertPlan,
+        const currentPlans: PlanByProductType = {
+            [ProductType.Helpdesk]: currentHelpdeskPlan,
+            [ProductType.Automation]: currentAutomatePlan,
+            [ProductType.Voice]: currentVoicePlan,
+            [ProductType.SMS]: currentSmsPlan,
+            [ProductType.Convert]: currentConvertPlan,
         }
 
-        const otherCadences = Object.values(Cadence).filter(
-            (otherCadence) => otherCadence !== cadence,
+        const availablePlans: PlansByProductType = {
+            [ProductType.Helpdesk]: helpdeskAvailablePlans,
+            [ProductType.Automation]: automateAvailablePlans,
+            [ProductType.Voice]: voiceAvailablePlans,
+            [ProductType.SMS]: smsAvailablePlans,
+            [ProductType.Convert]: convertAvailablePlans,
+        }
+
+        const allPlansByProductTypeByCadence = ObjectFromEnum<
+            typeof Cadence,
+            PlanByProductTypeByCadence
+        >(Cadence, (otherCadence: Cadence) =>
+            ObjectFromEnum<typeof ProductType, PlanByProductType>(
+                ProductType,
+                (productType: ProductType) =>
+                    otherCadence === cadence
+                        ? currentPlans[productType]
+                        : getCorrespondingPlanAtCadence({
+                              availablePlans: availablePlans[productType],
+                              cadence: otherCadence,
+                              currentPlan: currentPlans[productType],
+                          }),
+            ),
         )
 
-        otherCadences.forEach((otherCadence) => {
-            const helpdeskPlan = getCorrespondingPlanAtCadence({
-                availablePlans: helpdeskAvailablePlans,
-                cadence: otherCadence,
-                currentPlan: currentHelpdeskPlan,
-            })
-            const automatePlan = getCorrespondingPlanAtCadence({
-                availablePlans: automateAvailablePlans,
-                cadence: otherCadence,
-                currentPlan: currentAutomatePlan,
-            })
-            const voicePlan = getCorrespondingPlanAtCadence({
-                availablePlans: voiceAvailablePlans,
-                cadence: otherCadence,
-                currentPlan: currentVoicePlan,
-            })
-            const smsPlan = getCorrespondingPlanAtCadence({
-                availablePlans: smsAvailablePlans,
-                cadence: otherCadence,
-                currentPlan: currentSmsPlan,
-            })
-            const convertPlan = getCorrespondingPlanAtCadence({
-                availablePlans: convertAvailablePlans,
-                cadence: otherCadence,
-                currentPlan: currentConvertPlan,
-            })
-
-            if (
-                helpdeskPlan === undefined ||
-                automatePlan === undefined ||
-                voicePlan === undefined ||
-                smsPlan === undefined ||
-                convertPlan === undefined
-            ) {
-                disabledCadences.add(otherCadence)
-            } else {
-                helpdeskPlansForAllCadences[otherCadence] = helpdeskPlan
-                automatePlansForAllCadences[otherCadence] = automatePlan
-                voicePlansForAllCadences[otherCadence] = voicePlan
-                smsPlansForAllCadences[otherCadence] = smsPlan
-                convertPlansForAllCadences[otherCadence] = convertPlan
-            }
-        })
+        const disabledCadences = new Set<Cadence>(
+            Object.values(Cadence)
+                .filter((otherCadence) => otherCadence !== cadence)
+                .filter((otherCadence: Cadence) =>
+                    Object.values(ProductType)
+                        .map(
+                            (productType: ProductType) =>
+                                allPlansByProductTypeByCadence[otherCadence][
+                                    productType
+                                ],
+                        )
+                        .reduce(
+                            (isMissing: boolean, plan) =>
+                                isMissing || plan === undefined,
+                            false,
+                        ),
+                ),
+        )
 
         return {
+            currentPlans,
+            availablePlans,
+            allPlansByProductTypeByCadence,
             disabledCadences,
-            helpdeskPlansForAllCadences,
-            automatePlansForAllCadences,
-            voicePlansForAllCadences,
-            smsPlansForAllCadences,
-            convertPlansForAllCadences,
         }
     }, [
         cadence,
@@ -174,43 +142,31 @@ const BillingFrequencyView = ({
         convertAvailablePlans,
     ])
 
+    const isPaymentEnabled = !!useIsPaymentEnabled()
+
+    const [showAlert, setShowAlert] = useState(true)
+    const [selectedCadence, setSelectedCadence] = useState<Cadence>(cadence)
+
     const onFrequencySelect = useCallback(
         (selectedCadence: Cadence) => {
             setSelectedCadence(selectedCadence)
 
-            setSelectedPlans((prev) => ({
+            setSelectedPlans((prev: SelectedPlans) => ({
                 ...prev,
-                [ProductType.Helpdesk]: {
-                    ...prev[ProductType.Helpdesk],
-                    plan: helpdeskPlansForAllCadences[selectedCadence],
-                },
-                [ProductType.Automation]: {
-                    ...prev[ProductType.Automation],
-                    plan: automatePlansForAllCadences[selectedCadence],
-                },
-                [ProductType.Voice]: {
-                    ...prev[ProductType.Voice],
-                    plan: voicePlansForAllCadences[selectedCadence],
-                },
-                [ProductType.SMS]: {
-                    ...prev[ProductType.SMS],
-                    plan: smsPlansForAllCadences[selectedCadence],
-                },
-                [ProductType.Convert]: {
-                    ...prev[ProductType.Convert],
-                    plan: convertPlansForAllCadences[selectedCadence],
-                },
+                ...ObjectFromEnum<typeof ProductType, SelectedPlans>(
+                    ProductType,
+                    <K extends ProductType>(
+                        productType: K,
+                    ): SelectedPlans[K] => ({
+                        ...prev[productType],
+                        plan: allPlansByProductTypeByCadence[selectedCadence][
+                            productType
+                        ],
+                    }),
+                ),
             }))
         },
-        [
-            helpdeskPlansForAllCadences,
-            automatePlansForAllCadences,
-            voicePlansForAllCadences,
-            smsPlansForAllCadences,
-            convertPlansForAllCadences,
-            setSelectedCadence,
-            setSelectedPlans,
-        ],
+        [allPlansByProductTypeByCadence, setSelectedCadence, setSelectedPlans],
     )
 
     // redirect to the main page if yearly frequency is selected or subscription is canceled
@@ -251,46 +207,19 @@ const BillingFrequencyView = ({
                             <div>PRODUCT</div>
                             <div>PRICE</div>
                         </div>
-                        <SummaryItem
-                            productType={ProductType.Helpdesk}
-                            cadence={selectedCadence}
-                            currentPlan={currentHelpdeskPlan}
-                            availablePlans={helpdeskAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            isFrequencyChanged={true}
-                        />
-                        <SummaryItem
-                            productType={ProductType.Automation}
-                            cadence={selectedCadence}
-                            currentPlan={currentAutomatePlan}
-                            availablePlans={automateAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            isFrequencyChanged={true}
-                        />
-                        <SummaryItem
-                            productType={ProductType.Voice}
-                            cadence={selectedCadence}
-                            currentPlan={currentVoicePlan}
-                            availablePlans={voiceAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            isFrequencyChanged={true}
-                        />
-                        <SummaryItem
-                            productType={ProductType.SMS}
-                            cadence={selectedCadence}
-                            currentPlan={currentSmsPlan}
-                            availablePlans={smsAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            isFrequencyChanged={true}
-                        />
-                        <SummaryItem
-                            productType={ProductType.Convert}
-                            cadence={selectedCadence}
-                            currentPlan={currentConvertPlan}
-                            availablePlans={convertAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            isFrequencyChanged={true}
-                        />
+                        {Object.values(ProductType).map(
+                            (productType: ProductType) => (
+                                <SummaryItem
+                                    key={productType}
+                                    productType={productType}
+                                    cadence={selectedCadence}
+                                    currentPlan={currentPlans[productType]}
+                                    availablePlans={availablePlans[productType]}
+                                    selectedPlans={selectedPlans}
+                                    isFrequencyChanged={true}
+                                />
+                            ),
+                        )}
                         <SummaryTotal
                             selectedPlans={selectedPlans}
                             totalProductAmount={totalProductAmount}

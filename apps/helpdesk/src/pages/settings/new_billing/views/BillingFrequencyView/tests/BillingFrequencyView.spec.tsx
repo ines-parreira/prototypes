@@ -5,6 +5,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -36,7 +37,10 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import BillingFrequencyView from '../BillingFrequencyView'
+import BillingFrequencyView, {
+    PlanByProductType,
+    PlansByProductType,
+} from '../BillingFrequencyView'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
@@ -98,6 +102,20 @@ describe('BillingFrequencyView', () => {
     const cadenceValues = Object.values(Cadence)
     const productTypeValues = Object.values(ProductType)
 
+    it('assumes correctly the order of product type enum', () => {
+        // This test exists only to validate the assumption of ordering of ProductType
+        // if this test fails, then the BillingFrequencyView component is going to
+        // render the product types in a new order - That may be fine, but we should
+        // have this test to ensure we make that decision consciously
+        expect(productTypeValues).toEqual([
+            ProductType.Helpdesk,
+            ProductType.Automation,
+            ProductType.Voice,
+            ProductType.SMS,
+            ProductType.Convert,
+        ])
+    })
+
     it('should render', () => {
         renderBillingFrequencyView()
 
@@ -114,17 +132,9 @@ describe('BillingFrequencyView', () => {
             screen.getByRole('link', { name: /See Plans Details/i }),
         ).toBeInTheDocument()
         for (const cadence of cadenceValues) {
-            // The component used wraps a radio input inside a div with forced aria labels
-            // this means getByRole finds multiple, so we need to filter these down to what
-            // we are really looking for - i.e. the radio component
-            const components = screen.getAllByRole('radio', {
-                name: getCadenceName(cadence),
-            })
-            const inputElement = components.find(
-                (el) => el.getAttribute('type') === 'radio',
-            )
-            expect(inputElement).toBeInTheDocument()
-            expect(inputElement).toHaveAttribute('type', 'radio')
+            const radioButton = getRadioButton(cadence)
+            expect(radioButton).toBeInTheDocument()
+            expect(radioButton).toHaveAttribute('type', 'radio')
         }
         expect(
             screen.getByRole('heading', { name: 'Summary' }),
@@ -147,26 +157,26 @@ describe('BillingFrequencyView', () => {
                 [ProductType.SMS]: voiceProduct.prices,
                 [ProductType.Convert]: convertProduct.prices,
             }
-            const originalPlans: { [key in ProductType]?: Plan } =
-                Object.fromEntries(
-                    productTypeValues.map((productType) => [
-                        productType,
-                        availablePlans[productType].find(
-                            (plan: Plan) => plan.cadence === originalCadence,
-                        ),
-                    ]),
-                )
-            const newPlans: { [key in ProductType]?: Plan } =
-                Object.fromEntries(
-                    productTypeValues.map((productType) => [
-                        productType,
-                        getCorrespondingPlanAtCadence({
-                            availablePlans: availablePlans[productType],
-                            currentPlan: originalPlans[productType],
-                            cadence: newCadence,
-                        }),
-                    ]),
-                )
+
+            const originalPlans: PlanByProductType = ObjectFromEnum<
+                typeof ProductType,
+                PlanByProductType
+            >(ProductType, (productType: ProductType) =>
+                availablePlans[productType].find(
+                    (plan: Plan) => plan.cadence === originalCadence,
+                ),
+            )
+
+            const newPlans: PlanByProductType = ObjectFromEnum<
+                typeof ProductType,
+                PlanByProductType
+            >(ProductType, (productType: ProductType) =>
+                getCorrespondingPlanAtCadence({
+                    availablePlans: availablePlans[productType],
+                    currentPlan: originalPlans[productType],
+                    cadence: newCadence,
+                }),
+            )
 
             // If any of these are undefined, the test is misconfigured
             // because we don't have a corresponding plan for the product
@@ -176,7 +186,7 @@ describe('BillingFrequencyView', () => {
             }
 
             const originalPrice = Object.values(originalPlans)
-                .map((plan: Plan) => plan.amount)
+                .map((plan: Plan | undefined) => plan?.amount ?? 0)
                 .reduce((a: number, b: number) => a + b, 0)
             const originalPriceFormatted = formatAmount(
                 originalPrice / 100,
@@ -184,7 +194,7 @@ describe('BillingFrequencyView', () => {
             )
 
             const newPrice = Object.values(newPlans)
-                .map((plan: Plan) => plan.amount)
+                .map((plan: Plan | undefined) => plan?.amount ?? 0)
                 .reduce((a: number, b: number) => a + b, 0)
             const newPriceFormatted = formatAmount(
                 newPrice / 100,
@@ -258,22 +268,22 @@ describe('BillingFrequencyView', () => {
             newCadence: Cadence,
             productType: ProductType,
         ) => {
-            const availablePlans: { [key in ProductType]: Plan[] } = {
+            const availablePlans: PlansByProductType = {
                 [ProductType.Helpdesk]: helpdeskProduct.prices,
                 [ProductType.Automation]: automationProduct.prices,
                 [ProductType.Voice]: smsProduct.prices,
                 [ProductType.SMS]: voiceProduct.prices,
                 [ProductType.Convert]: convertProduct.prices,
             }
-            const originalPlans: { [key in ProductType]?: Plan } =
-                Object.fromEntries(
-                    productTypeValues.map((productType) => [
-                        productType,
-                        availablePlans[productType].find(
-                            (plan: Plan) => plan.cadence === originalCadence,
-                        ),
-                    ]),
-                )
+
+            const originalPlans: PlanByProductType = ObjectFromEnum<
+                typeof ProductType,
+                PlanByProductType
+            >(ProductType, (productType: ProductType) =>
+                availablePlans[productType].find(
+                    (plan: Plan) => plan.cadence === originalCadence,
+                ),
+            )
 
             // If any of these are undefined, the test is misconfigured
             // because we don't have a corresponding plan for the product
