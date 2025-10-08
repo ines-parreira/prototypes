@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { LEGACY_STEPS_NAMES, STEPS_NAMES } from 'AIJourney/constants'
+import { STEPS_NAMES } from 'AIJourney/constants'
 import {
     Activation,
     AiJourneyOnboarding,
@@ -47,28 +47,6 @@ function AiJourneyBaseRoutes() {
                 exact
                 render={() => <LandingPage />}
             />
-            {/* Legacy Onboarding Steps */}
-            <Route
-                path={`${path}/:shopName/conversation-setup`}
-                exact
-                render={() => (
-                    <AiJourneyOnboarding
-                        step={LEGACY_STEPS_NAMES.CONVERSATION_SETUP}
-                        stepComponent={<Setup />}
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/:shopName/activation`}
-                exact
-                render={() => (
-                    <AiJourneyOnboarding
-                        step={LEGACY_STEPS_NAMES.ACTIVATION}
-                        stepComponent={<Activation />}
-                    />
-                )}
-            />
-            {/* Legacy Onboarding Steps */}
             <Route
                 path={`${path}/:shopName/setup`}
                 exact

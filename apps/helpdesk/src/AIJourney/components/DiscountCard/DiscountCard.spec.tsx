@@ -45,13 +45,11 @@ describe('<DiscountCard />', () => {
         ).toBeInTheDocument()
     })
 
-    it('has correct link to conversation-setup page', async () => {
+    it('has correct link to setup page', async () => {
         renderDiscountCard()
 
         const link = screen.getByRole('link', { name: 'here' })
-        expect(link.getAttribute('to')).toBe(
-            '/app/ai-journey/test-store/conversation-setup',
-        )
+        expect(link.getAttribute('to')).toBe('/app/ai-journey/test-store/setup')
     })
 
     it('renders max discount when discount is enabled', () => {

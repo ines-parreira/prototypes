@@ -233,7 +233,7 @@ describe('<Activation />', () => {
         )
     })
 
-    it('should redirect from conversation setup to landing page on return', async () => {
+    it('should redirect from setup to landing page on return', async () => {
         // Uses default mock from beforeEach
 
         renderWithRouter(
@@ -255,7 +255,7 @@ describe('<Activation />', () => {
         expect(returnButton).toBeEnabled()
         expect(returnButton).toHaveAttribute(
             'href',
-            '/app/ai-journey/shopify-store/conversation-setup',
+            '/app/ai-journey/shopify-store/test',
         )
     })
 

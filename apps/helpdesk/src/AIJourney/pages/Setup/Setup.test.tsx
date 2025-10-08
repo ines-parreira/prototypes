@@ -77,15 +77,6 @@ jest.mock('./fields', () => ({
             </button>
         </div>
     ),
-    JourneyMessageInstructionsField: ({ onChange, value }: any) => (
-        <div data-testid="instructions-field">
-            <textarea
-                data-testid="instructions-input"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-            />
-        </div>
-    ),
     EnableImageField: ({ onChange, isEnabled }: any) => (
         <div data-testid="image-field">
             <button onClick={onChange} data-testid="image-toggle">
@@ -153,7 +144,6 @@ const mockJourneyContext = {
     journey: {
         id: 'journey-123',
         state: 'active',
-        message_instructions: 'Test instructions',
     },
     journeyData: {
         configuration: {
@@ -233,12 +223,8 @@ describe('Setup', () => {
         // Default feature flags
         mockUseFlag.mockImplementation((flag: string) => {
             switch (flag) {
-                case FeatureFlagKey.AiJourneyCustomInstructions:
-                    return true
                 case FeatureFlagKey.AiJourneySmsImagesEnabled:
                     return true
-                case FeatureFlagKey.AiJourneyPlaygroundEnabled:
-                    return false
                 default:
                     return false
             }
@@ -269,33 +255,21 @@ describe('Setup', () => {
             expect(screen.getByTestId('messages-field')).toBeInTheDocument()
             expect(screen.getByTestId('image-field')).toBeInTheDocument()
             expect(screen.getByTestId('discount-field')).toBeInTheDocument()
-            expect(screen.getByTestId('instructions-field')).toBeInTheDocument()
             expect(screen.getByTestId('continue-button')).toBeInTheDocument()
             expect(screen.getByTestId('cancel-button')).toBeInTheDocument()
         })
 
         it('should not render image field when feature flag is disabled', () => {
             mockUseFlag.mockImplementation((flag: string) => {
-                return flag === FeatureFlagKey.AiJourneyCustomInstructions
+                switch (flag) {
+                    case FeatureFlagKey.AiJourneySmsImagesEnabled:
+                        return false
+                }
             })
 
             renderSetup()
 
             expect(screen.queryByTestId('image-field')).not.toBeInTheDocument()
-            expect(screen.getByTestId('instructions-field')).toBeInTheDocument()
-        })
-
-        it('should not render instructions field when feature flag is disabled', () => {
-            mockUseFlag.mockImplementation((flag: string) => {
-                return flag === FeatureFlagKey.AiJourneySmsImagesEnabled
-            })
-
-            renderSetup()
-
-            expect(screen.getByTestId('image-field')).toBeInTheDocument()
-            expect(
-                screen.queryByTestId('instructions-field'),
-            ).not.toBeInTheDocument()
         })
 
         it('should render loading spinner when journey data is loading', () => {
@@ -433,31 +407,8 @@ describe('Setup', () => {
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledWith({
                     journeyState: 'active',
-                    journeyMessageInstructions: 'Test instructions',
                 })
             })
-
-            expect(history.location.pathname).toBe(
-                '/app/ai-journey/test-shop/activation',
-            )
-        })
-
-        it('should navigate to test page when playground is enabled', async () => {
-            mockUseFlag.mockImplementation((flag: string) => {
-                switch (flag) {
-                    case FeatureFlagKey.AiJourneyPlaygroundEnabled:
-                        return true
-                    default:
-                        return true
-                }
-            })
-
-            mockHandleUpdate.mockResolvedValue({})
-
-            renderSetup()
-
-            const continueButton = screen.getByTestId('continue-button')
-            fireEvent.click(continueButton)
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
@@ -506,7 +457,6 @@ describe('Setup', () => {
                     params: {
                         store_integration_id: 100,
                         store_name: 'Test Store',
-                        message_instructions: null,
                     },
                     journeyConfigs: {
                         max_follow_up_messages: 2,
@@ -667,13 +617,6 @@ describe('Setup', () => {
                 'Discount: Off',
             )
         })
-
-        it('should update instructions when journey message instructions change', () => {
-            renderSetup()
-
-            const instructionsInput = screen.getByTestId('instructions-input')
-            expect(instructionsInput).toHaveValue('Test instructions')
-        })
     })
 
     describe('loading states', () => {
@@ -715,21 +658,6 @@ describe('Setup', () => {
             expect(screen.getByTestId('phone-number-select')).toHaveTextContent(
                 'Select Phone: None',
             )
-        })
-
-        it('should handle journey without message instructions', () => {
-            mockUseJourneyContext.mockReturnValue({
-                ...mockJourneyContext,
-                journey: {
-                    ...mockJourneyContext.journey,
-                    message_instructions: null,
-                },
-            } as any)
-
-            renderSetup()
-
-            const instructionsInput = screen.getByTestId('instructions-input')
-            expect(instructionsInput).toHaveValue('')
         })
 
         it('should set discount threshold for discount enabled without existing threshold', () => {

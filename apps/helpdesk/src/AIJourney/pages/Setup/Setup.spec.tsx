@@ -1,5 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -13,7 +11,6 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
@@ -84,9 +81,6 @@ jest.mock('hooks/useAllIntegrations', () => ({
     ],
     isLoading: false,
 })
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 describe('<Setup />', () => {
     const mockHandleUpdate = jest.fn()
@@ -429,7 +423,6 @@ describe('<Setup />', () => {
                 journey: {
                     id: 'journey-123',
                     type: 'cart_abandoned',
-                    message_instructions: 'Be friendly and professional',
                 },
                 journeyData: {
                     configuration: {
@@ -479,127 +472,7 @@ describe('<Setup />', () => {
             })
         })
 
-        it('should not display custom instructions when flag off', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
-                    return false
-                }
-            })
-
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector.name === 'getCurrentAccountState') {
-                    return fromJS(account)
-                }
-                // Return phone numbers for getNewPhoneNumbers selector
-                return mockPhoneNumbers
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                journey: {
-                    id: 'journey-123',
-                    type: 'cart_abandoned',
-                    message_instructions: 'Be friendly and professional',
-                },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 2,
-                        offer_discount: true,
-                        max_discount_percent: 15,
-                        sms_sender_number: '+1 555-123-4567',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(
-                screen.queryByPlaceholderText(
-                    '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
-                ),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should display custom instructions when flag on', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
-                    return true
-                }
-            })
-
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector.name === 'getCurrentAccountState') {
-                    return fromJS(account)
-                }
-                // Return phone numbers for getNewPhoneNumbers selector
-                return mockPhoneNumbers
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                journey: {
-                    id: 'journey-123',
-                    type: 'cart_abandoned',
-                    message_instructions: 'Be friendly and professional',
-                },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 2,
-                        offer_discount: true,
-                        max_discount_percent: 15,
-                        sms_sender_number: '+1 555-123-4567',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart_abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            const messageInstructionsTextarea = screen.getByPlaceholderText(
-                '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
-            )
-            expect(messageInstructionsTextarea).toBeInTheDocument()
-            expect(messageInstructionsTextarea).toHaveValue(
-                'Be friendly and professional',
-            )
-        })
-
         it('should display default values when journey does not exist', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomInstructions) {
-                    return true
-                }
-            })
-
             const user = userEvent.setup()
 
             mockUseAppSelector.mockImplementation((selector) => {
@@ -660,11 +533,6 @@ describe('<Setup />', () => {
             const discountSwitch = screen.getByRole('checkbox')
             expect(discountSwitch).not.toBeChecked()
 
-            const messageInstructionsTextarea = screen.getByPlaceholderText(
-                '- Start with "Hey!" - Don\'t include product descriptions - Be friendly',
-            )
-            expect(messageInstructionsTextarea).toHaveValue('')
-
             await act(async () => {
                 // Select follow-up value
                 await user.click(screen.getByRole('button', { name: '1' }))
@@ -677,12 +545,6 @@ describe('<Setup />', () => {
             await act(async () => {
                 // Add discount
                 await user.type(discountInput, '10')
-
-                // Add message instructions
-                await user.type(
-                    messageInstructionsTextarea,
-                    'Test instructions',
-                )
             })
 
             // Test phone number selection - verify dropdown shows "Select" initially (no journey exists)
@@ -721,7 +583,6 @@ describe('<Setup />', () => {
                     params: {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
-                        message_instructions: 'Test instructions',
                     },
                     journeyConfigs: {
                         discount_code_message_threshold: 1,
@@ -793,7 +654,7 @@ describe('<Setup />', () => {
             }))
         })
 
-        it('should navigate to activation page after successful journey creation', async () => {
+        it('should navigate to test page after successful journey creation', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
                 journey: undefined,
@@ -847,7 +708,6 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
-                    message_instructions: null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -861,14 +721,14 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/activation',
+                    '/app/ai-journey/shopify-store/test',
                 )
             })
 
             expect(mockMutateAsync).toHaveBeenCalledTimes(1)
         })
 
-        it('should navigate to activation page after successful journey update', async () => {
+        it('should navigate to test page after successful journey update', async () => {
             // Uses the default mock from beforeEach which has existing journey
 
             renderWithRouter(
@@ -893,7 +753,7 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/activation',
+                    '/app/ai-journey/shopify-store/test',
                 )
             })
         })
@@ -951,7 +811,6 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
-                    message_instructions: null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -1015,7 +874,6 @@ describe('<Setup />', () => {
 
             expect(mockMutateAsync).toHaveBeenCalledWith({
                 params: {
-                    message_instructions: null,
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                 },
@@ -1050,120 +908,6 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        describe('AiJourneyPlaygroundEnabled feature flag enabled', () => {
-            beforeEach(() => {
-                useFlagMock.mockImplementation((flag) => {
-                    if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
-                        return true
-                    }
-                })
-            })
-            it('should navigate to TEST page after successful journey creation', async () => {
-                // Override the default to have no existing journey
-                mockUseJourneyContext.mockReturnValue({
-                    journey: undefined,
-                    journeyData: {
-                        configuration: {
-                            max_follow_up_messages: 3,
-                            offer_discount: true,
-                            max_discount_percent: 20,
-                            sms_sender_number: '415-111-111',
-                            sms_sender_integration_id: 1,
-                            discount_code_message_threshold: 2,
-                        },
-                    },
-                    currentIntegration: { id: 1, name: 'shopify-store' },
-                    shopName: 'shopify-store',
-                    isLoading: false,
-                    journeyType: 'cart_abandoned',
-                    storeConfiguration: {
-                        monitoredSmsIntegrations: [1, 2],
-                    },
-                })
-
-                const mockMutateAsync = jest.fn()
-                mockUseCreateNewJourney.mockImplementation(() => ({
-                    mutateAsync: mockMutateAsync,
-                    isError: false,
-                    isLoading: false,
-                }))
-
-                renderWithRouter(
-                    <Provider store={mockStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <IntegrationsProvider>
-                                <Setup />
-                            </IntegrationsProvider>
-                        </QueryClientProvider>
-                    </Provider>,
-                )
-                const user = userEvent.setup()
-
-                const button = screen.getByTestId('ai-journey-button')
-                await act(async () => {
-                    await user.click(button)
-                })
-
-                await waitFor(() => {
-                    expect(mockMutateAsync).toHaveBeenCalledTimes(1)
-                })
-
-                expect(mockMutateAsync).toHaveBeenCalledWith({
-                    params: {
-                        store_integration_id: 1,
-                        store_name: 'shopify-store',
-                        message_instructions: null,
-                    },
-                    journeyConfigs: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_integration_id: 1,
-                        discount_code_message_threshold: 2,
-                        sms_sender_number: '+15551234567',
-                    },
-                })
-
-                await waitFor(() => {
-                    expect(mockHistoryPush).toHaveBeenCalledWith(
-                        '/app/ai-journey/shopify-store/test',
-                    )
-                })
-
-                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
-            })
-
-            it('should navigate to TEST page after successful journey update', async () => {
-                // Uses the default mock from beforeEach which has existing journey
-
-                renderWithRouter(
-                    <Provider store={mockStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <IntegrationsProvider>
-                                <Setup />
-                            </IntegrationsProvider>
-                        </QueryClientProvider>
-                    </Provider>,
-                )
-
-                const button = screen.getByTestId('ai-journey-button')
-                expect(button).not.toBeDisabled()
-                await act(async () => {
-                    await userEvent.click(button)
-                })
-
-                await waitFor(() => {
-                    expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
-                })
-
-                await waitFor(() => {
-                    expect(mockHistoryPush).toHaveBeenCalledWith(
-                        '/app/ai-journey/shopify-store/test',
-                    )
-                })
             })
         })
     })

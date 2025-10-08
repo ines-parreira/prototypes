@@ -1,5 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,11 +7,10 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { LEGACY_STEPS_NAMES, STEPS_NAMES } from 'AIJourney/constants'
+import { STEPS_NAMES } from 'AIJourney/constants'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
@@ -102,9 +99,6 @@ const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
     ],
     isLoading: false,
 })
-
-jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 describe('<AiJourneyOnboarding />', () => {
     const mockHandleUpdate = jest.fn()
@@ -199,55 +193,7 @@ describe('<AiJourneyOnboarding />', () => {
         }))
     })
 
-    it('should render AI onboarding page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <AiJourneyOnboarding
-                            step={LEGACY_STEPS_NAMES.CONVERSATION_SETUP}
-                            stepComponent={<Setup />}
-                        />
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(screen.getByText('Continue')).toBeInTheDocument()
-        expect(screen.getByTestId('ai-journey-button')).toBeInTheDocument()
-    })
-
-    it('should render 2 steps if AiJourneyPlaygroundEnabled flag is disabled', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
-                return false
-            }
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <AiJourneyOnboarding
-                            step={STEPS_NAMES.SETUP}
-                            stepComponent={<Setup />}
-                        />
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(screen.getByText('Setup')).toBeInTheDocument()
-        expect(screen.getByText('Test and Activate')).toBeInTheDocument()
-    })
-
-    it('should render 3 steps if AiJourneyPlaygroundEnabled flag is enabled', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
-                return true
-            }
-        })
-
+    it('should render 3 steps correctly', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>

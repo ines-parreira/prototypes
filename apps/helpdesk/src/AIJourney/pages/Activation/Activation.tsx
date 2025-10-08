@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
@@ -16,7 +15,6 @@ import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList
 import { useJourneyContext } from 'AIJourney/providers'
 import { useTestSms } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -41,10 +39,6 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
     const [testSmsNumber, setTestSmsNumber] = useLocalStorage<string>(
         TEST_SMS_NUMBER_KEY,
         '',
-    )
-
-    const isAiJourneyPlaygroundEnabled = useFlag(
-        FeatureFlagKey.AiJourneyPlaygroundEnabled,
     )
 
     const {
@@ -195,7 +189,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'conversation-setup'}`}
+                    redirectLink={`/app/ai-journey/${shopName}/test`}
                     label="Return"
                 />
                 <Button

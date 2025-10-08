@@ -41,10 +41,8 @@ export enum FeatureFlagKey {
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
-    AiJourneyCustomInstructions = 'ai-journey-custom-instructions',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
-    AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     /** @deprecated Fully evaluated to `true` */
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',

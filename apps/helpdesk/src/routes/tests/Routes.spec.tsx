@@ -989,9 +989,7 @@ describe('<Routes/>', () => {
             mockUseFlag.mockReturnValue(true)
 
             const history = createMemoryHistory({
-                initialEntries: [
-                    '/app/ai-journey/shopify-store/conversation-setup',
-                ],
+                initialEntries: ['/app/ai-journey/shopify-store/setup'],
             })
 
             render(
@@ -1018,7 +1016,7 @@ describe('<Routes/>', () => {
             mockUseFlag.mockReturnValue(true)
 
             const history = createMemoryHistory({
-                initialEntries: ['/app/ai-journey/shopify-store/activation'],
+                initialEntries: ['/app/ai-journey/shopify-store/activate'],
             })
 
             render(

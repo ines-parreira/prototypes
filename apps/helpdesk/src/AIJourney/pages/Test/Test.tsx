@@ -42,7 +42,6 @@ export const Test = () => {
 
     const { configuration: journeyParams } = journeyData || {}
 
-    // should consider first message + follow-ups
     const totalMessagesToBeGenerated = useMemo(() => {
         return (journeyParams?.max_follow_up_messages ?? 0) + 1
     }, [journeyParams?.max_follow_up_messages])

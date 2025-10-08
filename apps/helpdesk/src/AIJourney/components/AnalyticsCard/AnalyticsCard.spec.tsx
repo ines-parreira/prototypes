@@ -218,10 +218,10 @@ describe('<AnalyticsCard />', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Pause')).toBeInTheDocument()
+            expect(screen.getByText('Pause Journey')).toBeInTheDocument()
         })
 
-        const pauseButton = screen.getByText('Pause')
+        const pauseButton = screen.getByText('Pause Journey')
         await act(async () => {
             await user.click(pauseButton)
         })
@@ -269,10 +269,10 @@ describe('<AnalyticsCard />', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Activate')).toBeInTheDocument()
+            expect(screen.getByText('Activate Journey')).toBeInTheDocument()
         })
 
-        const activateButton = screen.getByText('Activate')
+        const activateButton = screen.getByText('Activate Journey')
         await act(async () => {
             await user.click(activateButton)
         })

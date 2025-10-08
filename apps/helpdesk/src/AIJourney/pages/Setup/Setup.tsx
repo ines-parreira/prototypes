@@ -19,7 +19,6 @@ import { NotificationStatus } from 'state/notifications/types'
 import {
     EnableDiscountField,
     EnableImageField,
-    JourneyMessageInstructionsField,
     MaximumDiscountField,
     MessagesToSendField,
     MessageWithDiscountCodeField,
@@ -32,13 +31,7 @@ export const Setup = () => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
-    const customInstructionEnabled = useFlag(
-        FeatureFlagKey.AiJourneyCustomInstructions,
-    )
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
-    const isAiJourneyPlaygroundEnabled = useFlag(
-        FeatureFlagKey.AiJourneyPlaygroundEnabled,
-    )
 
     const {
         journey: abandonedCartJourney,
@@ -82,8 +75,6 @@ export const Setup = () => {
     const [phoneNumberValue, setPhoneNumberValue] = useState<
         NewPhoneNumber | undefined
     >(currentPhoneNumber)
-    const [journeyMessageInstructions, setJourneyMessageInstructions] =
-        useState<string>(abandonedCartJourney?.message_instructions || '')
     const [isImageEnabled, setIsImageEnabled] = useState(
         journeyParams?.include_image || false,
     )
@@ -104,14 +95,6 @@ export const Setup = () => {
             setIsImageEnabled(journeyParams.include_image || false)
         }
     }, [journeyParams, currentPhoneNumber])
-
-    useEffect(() => {
-        if (abandonedCartJourney?.message_instructions) {
-            setJourneyMessageInstructions(
-                abandonedCartJourney.message_instructions,
-            )
-        }
-    }, [abandonedCartJourney])
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev: boolean) => !prev)
@@ -150,7 +133,6 @@ export const Setup = () => {
                 params: {
                     store_integration_id: currentIntegration.id,
                     store_name: currentIntegration.name,
-                    message_instructions: journeyMessageInstructions || null,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
@@ -199,15 +181,12 @@ export const Setup = () => {
             if (abandonedCartJourney) {
                 await handleUpdate({
                     journeyState: abandonedCartJourney.state,
-                    journeyMessageInstructions,
                 })
             } else {
                 await handleCreate()
             }
             setIsVisible(false)
-            history.push(
-                `/app/ai-journey/${shopName}/${isAiJourneyPlaygroundEnabled ? 'test' : 'activation'}`,
-            )
+            history.push(`/app/ai-journey/${shopName}/test`)
         } catch {
             return // Error handling is done in the handleUpdate and handleCreate functions
         }
@@ -270,16 +249,6 @@ export const Setup = () => {
                     value={discountCodeThreshold}
                     numberOfMessages={numberOfMessageValue}
                     onChange={setDiscountCodeThreshold}
-                />
-            )}
-
-            {customInstructionEnabled && !isAiJourneyPlaygroundEnabled && (
-                <JourneyMessageInstructionsField
-                    value={journeyMessageInstructions}
-                    onChange={setJourneyMessageInstructions}
-                    maxLength={4000}
-                    optional
-                    hideInfoContent
                 />
             )}
 

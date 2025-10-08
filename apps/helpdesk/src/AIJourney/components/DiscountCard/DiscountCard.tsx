@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import { CartAbandonedJourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
+import { STEPS_NAMES } from 'AIJourney/constants'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
@@ -52,7 +53,7 @@ export const DiscountCard = ({
                     <Link
                         role="link"
                         className={css.discountLink}
-                        to={`/app/ai-journey/${shopName}/conversation-setup`}
+                        to={`/app/ai-journey/${shopName}/${STEPS_NAMES.SETUP.toLowerCase()}`}
                     >
                         here
                     </Link>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button, PerformanceBadge } from 'AIJourney/components'
+import { STEPS_NAMES } from 'AIJourney/constants'
 import { useIntegrations } from 'AIJourney/providers'
 import { useJourneys } from 'AIJourney/queries'
 
@@ -20,7 +21,9 @@ export const LandingPage = () => {
     const handleContinue = () => {
         setIsVisible(false)
         setTimeout(() => {
-            history.push(`/app/ai-journey/${shopName}/conversation-setup`)
+            history.push(
+                `/app/ai-journey/${shopName}/${STEPS_NAMES.SETUP.toLowerCase()}`,
+            )
         }, 700)
     }
 
