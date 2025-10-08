@@ -109,7 +109,23 @@ describe('TriggerOnSearchSettings', () => {
             </Wrapper>,
         )
 
-        const toggle = screen.getByRole('switch')
-        expect(toggle).not.toBeAriaDisabled()
+        const checkbox = screen.getByRole('checkbox')
+        expect(checkbox).toBeDisabled()
+    })
+
+    it('should disable the toggle and be unchecked even if enabled in store settings', () => {
+        render(
+            <Wrapper defaultValues={{ isSalesHelpOnSearchEnabled: true }}>
+                <TriggerOnSearchSettings
+                    isGmvLoading={false}
+                    gmv={[]}
+                    isDisabled
+                />
+            </Wrapper>,
+        )
+
+        const checkbox = screen.getByRole('checkbox')
+        expect(checkbox).toBeDisabled()
+        expect(checkbox).not.toBeChecked()
     })
 })

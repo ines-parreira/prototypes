@@ -76,7 +76,9 @@ export const TriggerOnSearchSettings = ({
                         )}
 
                         <EngagementSettingsCardToggle
-                            isChecked={isSalesHelpOnSearchEnabled}
+                            isChecked={
+                                isSalesHelpOnSearchEnabled && !isDisabled
+                            }
                             onChange={handleToggle}
                             isDisabled={isDisabled}
                         />
