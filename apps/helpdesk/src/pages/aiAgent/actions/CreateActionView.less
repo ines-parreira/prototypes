@@ -14,7 +14,7 @@
         gap: var(--layout-spacing-xs);
         margin-top: var(--layout-spacing-m);
         padding: var(--layout-spacing-m) 0;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .links {
@@ -29,5 +29,11 @@
 
     .container {
         grid-template-columns: minmax(480px, 680px) 1fr !important;
+    }
+}
+
+.axiom :local {
+    .actions {
+        background: var(--elevation-neutral-default);
     }
 }

@@ -15,13 +15,13 @@
 
         .tableRow {
             height: 64px;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             &:hover {
-                background: var(--neutral-grey-1);
+                background: var(--neutral-grey-1); // legacy
             }
 
             &.summaryRow {
-                background: var(--neutral-grey-1);
+                background: var(--neutral-grey-1); // legacy
                 font-weight: 600;
             }
 
@@ -52,7 +52,7 @@
             top: 0;
             height: 64px;
             z-index: 3;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
 
             &:after {
                 content: '';
@@ -65,11 +65,11 @@
             }
 
             th {
-                background: var(--neutral-grey-0);
+                background: var(--neutral-grey-0); // legacy
 
                 &:first-child {
                     z-index: 5;
-                    background: var(--neutral-grey-0);
+                    background: var(--neutral-grey-0); // legacy
                 }
             }
         }
@@ -94,9 +94,31 @@
 
 .axiom :local {
     .table {
+        .tableRow {
+            background: var(--elevation-neutral-default);
+
+            &:hover {
+                background: var(--surface-neutral-secondary);
+            }
+
+            &.summaryRow {
+                background: var(--surface-neutral-secondary);
+            }
+        }
+
         .tableHead {
+            background: var(--elevation-neutral-default);
+
             &:after {
                 border-bottom: 1px solid var(--border-neutral-default);
+            }
+
+            th {
+                background: var(--elevation-neutral-default);
+
+                &:first-child {
+                    background: var(--elevation-neutral-default);
+                }
             }
         }
     }

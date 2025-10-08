@@ -3,7 +3,7 @@
 :local {
     .container {
         &.isSelected {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
 
         .updateCell {
@@ -26,6 +26,14 @@
         .flowChevron {
             font-size: 24px;
             color: var(--neutral-grey-6);
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        &.isSelected {
+            background: var(--surface-neutral-secondary);
         }
     }
 }

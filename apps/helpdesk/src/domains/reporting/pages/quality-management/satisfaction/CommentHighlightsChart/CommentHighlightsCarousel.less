@@ -39,7 +39,7 @@
                 :local {
                     .styledDot:before {
                         width: 20px;
-                        background: var(--neutral-grey-4);
+                        background: var(--neutral-grey-4); // legacy
                     }
                 }
             }
@@ -84,7 +84,7 @@
             border-radius: 40px;
             height: 6px;
             width: 6px;
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
             transition: all ease 200ms;
         }
 
@@ -137,7 +137,7 @@
             padding: var(--layout-spacing-s);
             border-radius: 4px;
             border: 1px solid var(--neutral-grey-2); // legacy
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
             display: flex;
             flex-direction: column;
             gap: var(--layout-spacing-xs);
@@ -149,7 +149,7 @@
         }
 
         .avatar {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             .caption-semibold();
             color: var(--neutral-grey-4);
         }
@@ -157,7 +157,28 @@
 }
 
 .axiom :local {
+    .commentHighlightCarousel {
+        :global {
+            .slick-active {
+                :local {
+                    .styledDot:before {
+                        background: var(--surface-neutral-primary);
+                    }
+                }
+            }
+        }
+
+        .styledDot:before {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
     .commentWrapper {
         border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-secondary);
+    }
+
+    .avatar {
+        background: var(--surface-neutral-tertiary);
     }
 }

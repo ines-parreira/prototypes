@@ -19,7 +19,7 @@
     }
 
     .toggleButtonDisabled {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         color: var(--neutral-grey-3);
         cursor: not-allowed;
     }
@@ -40,5 +40,9 @@
 .axiom :local {
     .toggleButton {
         border: 1px solid var(--border-neutral-default);
+    }
+
+    .toggleButtonDisabled {
+        background-color: var(--surface-neutral-secondary);
     }
 }

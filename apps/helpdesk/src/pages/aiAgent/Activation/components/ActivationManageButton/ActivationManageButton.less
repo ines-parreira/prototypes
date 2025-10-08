@@ -17,7 +17,7 @@
 
         &.bordered {
             gap: var(--layout-spacing-m);
-            border: 1px solid var(--neutral-grey-2);
+            border: 1px solid var(--neutral-grey-2); // legacy
             border-radius: 12px;
             box-shadow: 0 3px 20px 0 #0000000a;
             height: 64px;
@@ -44,7 +44,7 @@
     .separator {
         height: 24px;
         width: 1px;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
     }
 
     .label {
@@ -65,5 +65,17 @@
         align-items: center;
         font-weight: 500;
         color: var(--main-primary);
+    }
+}
+
+.axiom :local {
+    .button {
+        &.bordered {
+            border: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .separator {
+        background-color: var(--border-neutral-default);
     }
 }

@@ -1,17 +1,17 @@
 &:local {
     .wrapper {
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         border-radius: 4px;
         color: var(--neutral-grey-5);
         padding: var(--layout-spacing-s);
 
         &.success {
-            background: var(--main-primary-4);
+            background: var(--main-primary-4); // legacy
             color: var(--main-primary-0);
         }
 
         &.light-success {
-            background: var(--main-primary-0);
+            background: var(--main-primary-0); // legacy
             color: var(--main-primary-4);
         }
 
@@ -30,5 +30,19 @@
         margin-bottom: var(--layout-spacing-xs);
         align-items: center;
         display: flex;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background: var(--surface-neutral-tertiary);
+
+        &.success {
+            background: var(--surface-success-secondary);
+        }
+
+        &.light-success {
+            background: var(--surface-success-primary);
+        }
     }
 }

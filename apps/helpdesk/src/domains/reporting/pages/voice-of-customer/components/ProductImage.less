@@ -4,7 +4,7 @@
         flex-shrink: 0;
         align-items: center;
         justify-content: center;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-xs);
         overflow: hidden;
     }
@@ -13,5 +13,11 @@
         height: 100%;
         width: 100%;
         object-fit: cover;
+    }
+}
+
+.axiom :local {
+    .productImage {
+        background-color: var(--surface-neutral-tertiary);
     }
 }

@@ -48,7 +48,7 @@
                 position: sticky;
                 top: 0;
                 z-index: 3;
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
                 cursor: pointer;
             }
         }
@@ -60,7 +60,7 @@
 
         tbody {
             tr:hover {
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy
             }
         }
     }
@@ -69,5 +69,23 @@
         margin-top: var(--layout-spacing-xs);
         margin-left: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .table {
+        .header,
+        thead {
+            th,
+            td {
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+
+        tbody {
+            tr:hover {
+                background-color: var(--surface-neutral-secondary);
+            }
+        }
     }
 }

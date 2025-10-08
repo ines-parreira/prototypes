@@ -23,15 +23,15 @@
         padding-inline: 40px;
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         background-image: radial-gradient(
             ellipse at bottom,
             var(--accessory-magenta-2) -25%,
-            var(--neutral-grey-0) 65%
+            var(--neutral-grey-0) 65% // legacy
         );
         background-size: 140% 120%;
         background-position-x: center;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         .modalTitle {
             font-weight: 600;
@@ -58,10 +58,10 @@
         display: flex;
         justify-content: end;
         padding: 16px 24px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-bottom-left-radius: inherit;
         border-bottom-right-radius: inherit;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         gap: var(--layout-spacing-xs);
     }
 
@@ -70,6 +70,23 @@
         justify-content: center;
         align-items: center;
         padding: 48px 0;
+    }
+}
+
+.axiom :local {
+    .modalHeader {
+        background-color: var(--elevation-neutral-default);
+        background-image: radial-gradient(
+            ellipse at bottom,
+            var(--surface-brand-secondary) -25%,
+            var(--elevation-neutral-default) 65%
+        );
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-default);
+        border-top: 1px solid var(--border-neutral-default);
     }
 }
 
