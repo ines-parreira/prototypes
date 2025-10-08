@@ -45,6 +45,11 @@ const channelNamePrefix = (type: SelfServiceChannelType) => {
     }
 }
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const ConnectedChannelAccordionItem = ({ index, channel }: Props) => {
     return (
         <AccordionItem id={index.toString(10)}>

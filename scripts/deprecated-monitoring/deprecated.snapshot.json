@@ -1,10 +1,266 @@
 {
   "summary": {
-    "totalEntries": 45,
-    "totalUsages": 548,
-    "reportGeneratedAt": "2025-09-03T09:19:45.953Z"
+    "totalEntries": 72,
+    "totalUsages": 796,
+    "reportGeneratedAt": "2025-10-02T10:41:09.844Z"
   },
   "entries": [
+    {
+      "type": "automate-deprecation",
+      "entries": [
+        {
+          "usageCount": 2,
+          "name": "AutomateAllRecommendationsCard",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.stories.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsView.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateAllRecommendationsCard"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "AutomateAllRecommendationsPage",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsPage.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsContainer.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateAllRecommendationsPage.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateAllRecommendationsPage"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "AutomateLandingPage",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateLandingPage.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateLandingPageContainer.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateLandingPage.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateLandingPage"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "AutomateNavbarPaywallNavbarLink",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarPaywallNavbarLink.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarSectionBlock.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbarPaywallNavbarLink.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateNavbarPaywallNavbarLink"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "AutomateNavbarSectionBlock",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarSectionBlock.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarView.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbarSectionBlock.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateNavbarSectionBlock"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "ConnectedChannelAccordionBodyChat",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyChat.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+              "apps/helpdesk/src/pages/automate/connectedChannels/components/tests/ConnectedChannelAccordionBodyChat.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ConnectedChannelAccordionBodyChat"
+          ]
+        },
+        {
+          "usageCount": 2,
+          "name": "ViewTableContainer",
+          "nodeType": "ClassDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.stories.tsx",
+              "apps/helpdesk/src/pages/common/components/ViewTable/tests/ViewTable.spec.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 1,
+          "name": "AutomateAllRecommendationsTable",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsTable.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateAllRecommendationsTable"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "AutomateAllRecommendationsView",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsView.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsPage.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateAllRecommendationsView"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "AutomateNavbar",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateNavbar.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateNavbar"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "AutomateNavbarView",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarView.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/common/components/AutomateNavbar.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "AutomateNavbarView"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "ConnectedChannelAccordionBodyHelpCenter",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyHelpCenter.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ConnectedChannelAccordionBodyHelpCenter"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "ConnectedChannelAccordionBodyStandaloneContactForm",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyStandaloneContactForm.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "ConnectedChannelAccordionBodyStandaloneContactForm"
+          ]
+        },
+        {
+          "usageCount": 1,
+          "name": "FilterTopbar",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "ConnectedChannelAccordionItem",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-10-02",
+          "deprecationType": "automate-deprecation",
+          "declarationFile": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        }
+      ]
+    },
     {
       "type": "feature-component",
       "entries": [
@@ -264,7 +520,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 51,
+          "usageCount": 45,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -276,20 +532,14 @@
               "apps/helpdesk/src/Widgets/modules/Shopify/components/tests/OrderNotesField.spec.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
-              "apps/helpdesk/src/domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats.tsx",
-              "apps/helpdesk/src/domains/reporting/pages/convert/pages/CampaignsStats/__tests__/CampaignsStats.spec.tsx",
-              "apps/helpdesk/src/models/aiAgent/queries.ts",
               "apps/helpdesk/src/pages/automate/actionsPlatform/hooks/tests/useEnabledActionStepsByApp.spec.tsx",
               "apps/helpdesk/src/pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled.ts",
               "apps/helpdesk/src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/AutomateNavbar.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/AutomateNavbarSectionBlock.tsx",
               "apps/helpdesk/src/pages/automate/common/components/AutomatePaywallView.tsx",
               "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomatePaywallView.spec.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateSavingsCard.spec.tsx",
-              "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelsEmailView.tsx",
               "apps/helpdesk/src/pages/automate/orderManagement/OrderManagementView.tsx",
               "apps/helpdesk/src/pages/automate/workflows/WorkflowsView.tsx",
               "apps/helpdesk/src/pages/automate/workflows/components/LanguageSelector.tsx",
@@ -496,6 +746,404 @@
       ]
     },
     {
+      "type": "reporting-ui-kit",
+      "entries": [
+        {
+          "usageCount": 83,
+          "name": "formatMetricValue",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/AIJourney/components/AnalyticsBarChart/AnalyticsBarChart.tsx",
+              "apps/helpdesk/src/AIJourney/components/AnalyticsData/AnalyticsData.tsx",
+              "apps/helpdesk/src/AIJourney/components/DigestCard/components/Metrics/Metrics.tsx",
+              "apps/helpdesk/src/AIJourney/components/DiscountCard/DiscountCard.tsx",
+              "apps/helpdesk/src/AIJourney/pages/Performance/Performance.tsx",
+              "apps/helpdesk/src/domains/reporting/hooks/common/tests/useDistributionTrendReportData.spec.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/common/tests/useTrendReportData.spec.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/common/useDistributionTrendReportData.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/common/useTrendReportData.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/useShoutoutTopResults.ts",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/charts/__tests__/AiSalesAgentTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/charts/__tests__/SuccessRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/AIAgentAutomatedInteractionsKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/IntentCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/TrendBadge.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/tests/TrendBadge.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/drill-down/TicketDrillDownTableContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/tests/utils.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/OverviewCard/OverviewCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/ResponseRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/SatisfactionScoreTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/SurveysSentTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/tests/AchievementRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/tests/BreachedTicketsRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig.ts",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsTableAverageCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsTableTotalsCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/tests/AgentsCellContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/tests/AgentsTableSummaryCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/tests/AgentsTableTotalsCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/AccuracyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/BrandVoiceTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/CommunicationSkillsTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/EfficiencyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/InternalComplianceTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/LanguageProficiencyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/ResolutionCompletenessTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/ReviewedClosedTicketsTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/tests/BusiestTimesOfDaysCellContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/channels/ChannelsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/channels/tests/ChannelsCellContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/AllUsedTagsTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/tests/AllUsedTagsTable.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/hooks/useMetricFormat.ts",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductHeader.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ReturnMentionsMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/TicketsVolumeMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/services/agentsPerformanceReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/autoQAReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/channelsReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/satisfactionReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/tests/SatisfactionReportingService.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/services/tests/autoQAReportingService.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/services/voiceAgentsReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/voiceOverviewReportingService.ts",
+              "apps/helpdesk/src/pages/aiAgent/components/Kpi/Kpi.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/AutomatedInteractionsMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/AutomationRateMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/utils.ts",
+              "apps/helpdesk/src/pages/automate/common/components/AutomateExploreDataModal.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
+              "apps/helpdesk/src/pages/settings/billing/automate/ROICalculator/ROICalculator.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 64,
+          "name": "NOT_AVAILABLE_PLACEHOLDER",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/hooks/helpers.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/ticket-insights/tests/useTicketsDistribution.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/hooks/ticket-insights/useTicketsDistribution.ts",
+              "apps/helpdesk/src/domains/reporting/hooks/voice-of-customer/tests/helpers.spec.ts",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/IntentCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/tests/TrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/drill-down/TicketDrillDownTableContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/drill-down/tests/DrillDownTicketDetailsCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/tests/utils.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent/CampaignSalesDrillDownTableContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/tests/AverageScoreTrend.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/tests/CommentHighlightsCarousel.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/tests/AssigneeBodyCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/tests/CommentBodyCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/tests/CustomerNameBodyCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/tests/ScoredDateBodyCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig.ts",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsTableAverageCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/AgentsTableTotalsCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/tests/AgentsCellContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/tests/BusiestTimesOfDaysCellContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/channels/ChannelsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/AllUsedTagsTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/tests/CustomFieldsTicketCountDataRowContent.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/hooks/tests/useMetricFormat.spec.ts",
+              "apps/helpdesk/src/domains/reporting/pages/voice/hooks/useMetricFormat.ts",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ReturnMentionsMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/TicketsVolumeMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/tests/ReturnMentionsMetricCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/tests/TicketsVolumeMetricCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/services/agentsPerformanceReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/autoQAReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/channelsReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/satisfactionReportingService.ts",
+              "apps/helpdesk/src/domains/reporting/services/tests/agentsPerformanceReportingService.spec.ts",
+              "apps/helpdesk/src/domains/reporting/services/tests/autoQAReportingService.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/services/voiceAgentsReportingService.ts",
+              "apps/helpdesk/src/pages/aiAgent/components/Kpi/Kpi.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 34,
+          "name": "BigNumberMetric",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2025-09-15",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/components/BigNumberMetric.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/AIAgentAutomatedInteractionsKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/tests/AIAgentAutomatedInteractionsKPIChart.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/tests/AIAgentAutomationRateKPIChart.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/BigNumberMetric.stories.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/tests/BigNumberMetric.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/CampaignRevenueKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/CampaignsSalesCountKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/EngagementKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/ImpressionsKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/InfluencedRevenueShareKPIChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/PerformanceCampaignSalesKpiChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/PerformanceEngagementKpiChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/PerformanceImpressionsKpiChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/PerformanceInlfluencedRevenueShareKpiChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/charts/RevenueKpiChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/OverviewCard/OverviewCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpi.tsx",
+              "apps/helpdesk/src/pages/aiAgent/components/Kpi/Kpi.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/AutomatedInteractionsMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/AutomationRateMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/CostSavedMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/DecreaseInResolutionTimeMetric.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/TimeSavedByAgentsMetric.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "BigNumberMetric"
+          ]
+        },
+        {
+          "usageCount": 23,
+          "name": "formatMetricTrend",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-09-05",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/AIJourney/pages/Performance/Performance.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/charts/__tests__/AiSalesAgentTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/charts/__tests__/SuccessRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/TrendBadge.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/tests/utils.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/OverviewCard/tests/OverviewCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/ResponseRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/SatisfactionScoreTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/tests/SurveysSentTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/tests/AchievementRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/tests/BreachedTicketsRateTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/AccuracyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/BrandVoiceTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/CommunicationSkillsTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/EfficiencyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/InternalComplianceTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/LanguageProficiencyTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/ResolutionCompletenessTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/tests/ReviewedClosedTicketsTrendCard.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/IntentRows.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/ProductRows.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 10,
+          "name": "formatDuration",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-09-05",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/config/stats.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/TableStat/TableStat.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/tests/utils.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/SlaStatusCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/sla/components/tests/SLAStatusCell.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/services/supportPerformanceTipService.ts",
+              "apps/helpdesk/src/domains/reporting/services/tests/supportPerformanceTipService.spec.ts",
+              "apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent/PhoneEventDetailsCallRecording.tsx",
+              "apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent/PhoneEventDetailsVoicemail.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 9,
+          "name": "formatCurrency",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCell.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/TableStat/TableStat.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent/CampaignSalesDrillDownTableContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/convert/services/CampaignMetricsHelper.ts",
+              "apps/helpdesk/src/pages/aiAgent/Onboarding/components/TopProductsCard/TopProductItem/TopProductItem.tsx",
+              "apps/helpdesk/src/pages/automate/automate-metrics/CostSavedMetric.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
+              "apps/helpdesk/src/pages/settings/billing/automate/ROICalculator/ROICalculator.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 4,
+          "name": "TrendBadge",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2025-09-23",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/TrendBadge.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": [
+              "apps/helpdesk/src/domains/reporting/pages/common/components/IntentCard.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/index.ts",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/TrendBadge/tests/TrendBadge.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/components/tests/IntentCard.spec.tsx"
+            ]
+          },
+          "defaultImportNames": [
+            "TrendBadge"
+          ]
+        },
+        {
+          "usageCount": 4,
+          "name": "DEFAULT_LOCALE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/GaugeChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/self-service/SelfServiceStatsPage.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "NOT_AVAILABLE_TEXT",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/ChartTooltipContent.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/common/tests/utils.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "formatTrendAsPercent",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-09-05",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "metricToDecimal",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "metricToInteger",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        }
+      ]
+    },
+    {
       "type": "ui-component",
       "entries": [
         {
@@ -610,7 +1258,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 110,
+          "usageCount": 109,
           "name": "Alert",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-05",
@@ -679,7 +1327,6 @@
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerification.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationContent.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/Imports.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailOutboundVerification/EmailVerification.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailOutboundVerification/SingleSenderVerification/VerificationEmailSent.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",

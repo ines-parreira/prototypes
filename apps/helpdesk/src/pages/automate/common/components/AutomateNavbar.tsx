@@ -12,6 +12,11 @@ import AutomateNavbarView from './AutomateNavbarView'
 
 import css from './AutomateNavbar.less'
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)

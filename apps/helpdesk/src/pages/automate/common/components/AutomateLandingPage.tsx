@@ -10,6 +10,11 @@ import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysSt
 
 import { AutomateLandingPageTopQuestions } from './TopQuestions/AutomateLandingPageTopQuestions'
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const AutomateLandingPage = () => {
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)

@@ -110,6 +110,11 @@ type Props = {
     typeof fetchViewItems
 >
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 export const FilterTopbar = ({
     activeView,
     cancelFetchViewItemsCancellable,
@@ -176,6 +181,7 @@ export const FilterTopbar = ({
 
     useEffect(
         () => () => {
+            // oxlint-disable-next-line no-unused-expressions
             timeoutChangeFeedbackRef.current &&
                 window.clearTimeout(timeoutChangeFeedbackRef.current)
             if (shouldRedirectToSplitView) {
@@ -347,6 +353,7 @@ export const FilterTopbar = ({
     const handleClickValidation = useCallback(
         (e: MouseEvent) => {
             if (!isViewDirty) {
+                // oxlint-disable-next-line no-unused-expressions
                 timeoutChangeFeedbackRef.current &&
                     window.clearTimeout(timeoutChangeFeedbackRef.current)
                 setShowNoChangeFeedback(true)

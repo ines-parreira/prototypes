@@ -12,6 +12,11 @@ import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
 import { useHasEmailToStoreConnection } from './TopQuestions/useHasEmailToStoreConnection'
 import { useTopQuestionsFilters } from './TopQuestions/useTopQuestionsFilters'
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const AutomateAllRecommendationsPage = () => {
     const location = useLocation()
     const history = useHistory()

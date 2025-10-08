@@ -24,6 +24,11 @@ const getSectionKeyFromStoreIntegration = (
     return `${integration.type}:${getShopNameFromStoreIntegration(integration)}`
 }
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const AutomateNavbarView = () => {
     const match = useRouteMatch<{ shopType?: string; shopName: string }>({
         path: [

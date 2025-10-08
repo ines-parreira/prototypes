@@ -15,6 +15,11 @@ type Props = {
     canduId?: string
 } & NavbarLinkProps
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const AutomateNavbarPaywallNavbarLink = ({
     children,
     isNested,

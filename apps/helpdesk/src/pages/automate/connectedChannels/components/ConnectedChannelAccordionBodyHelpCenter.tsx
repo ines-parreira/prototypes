@@ -30,6 +30,11 @@ type Props = {
     channel: SelfServiceHelpCenterChannel
 }
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 const ConnectedChannelAccordionBodyHelpCenter = ({ channel }: Props) => {
     const { client } = useHelpCenterApi()
     const dispatch = useAppDispatch()

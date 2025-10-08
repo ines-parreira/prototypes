@@ -72,6 +72,11 @@ type Props = OwnProps &
         typeof fetchViewItems
     > & { flags?: FeatureFlagsMap }
 
+/**
+ * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
+ * @date 2025-10-02
+ * @type automate-deprecation
+ */
 export class ViewTableContainer extends Component<Props> {
     static defaultProps: Pick<Props, 'items' | 'type'> = {
         items: fromJS([]),
@@ -174,6 +179,7 @@ export class ViewTableContainer extends Component<Props> {
             activeViewIdSet(suggestedViewId)
         } else if (!isSearch && activeView.get('search') !== null) {
             const suggestedViewId = getViewIdToDisplay(viewType, undefined)
+            // oxlint-disable-next-line no-unused-expressions
             suggestedViewId &&
                 setViewActive(getView(suggestedViewId.toString()))
             activeViewIdSet(suggestedViewId)
