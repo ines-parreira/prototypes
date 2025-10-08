@@ -5,7 +5,7 @@
         align-items: center;
         flex: 0 0 auto;
         color: var(--neutral-grey-6);
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         border-radius: 4px;
         .icon {
             display: block;
@@ -39,5 +39,11 @@
                 }
             }
         }
+    }
+}
+
+.axiom :local {
+    .badge {
+        background-color: var(--surface-neutral-secondary);
     }
 }

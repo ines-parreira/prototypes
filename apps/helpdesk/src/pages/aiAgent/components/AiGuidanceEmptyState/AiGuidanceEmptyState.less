@@ -24,7 +24,7 @@
 
     .bannerContainer {
         padding: 0 64px;
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
         min-height: 260px;
     }
 
@@ -132,5 +132,11 @@
         .bannerContainer {
             padding: 0 16px;
         }
+    }
+}
+
+.axiom :local {
+    .bannerContainer {
+        background-color: var(--surface-brand-secondary);
     }
 }

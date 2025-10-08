@@ -10,7 +10,7 @@
     }
 
     .card {
-        border: 1px solid #ececec;
+        border: 1px solid #ececec; // legacy
         border-radius: 12px;
         background-color: var(--neutral-grey-0); // legacy
         transition: ease-in-out 0.2s;
@@ -52,6 +52,7 @@
 
 .axiom :local {
     .card {
+        border: 1px solid var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
     }
 }

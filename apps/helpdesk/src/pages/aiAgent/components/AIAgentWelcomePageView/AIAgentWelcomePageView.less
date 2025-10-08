@@ -82,14 +82,14 @@
 
             &.number {
                 .body-medium();
-                background: var(--neutral-grey-4);
+                background: var(--neutral-grey-4); // legacy
             }
 
             &.checked {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: var(--feedback-success-3);
+                background: var(--feedback-success-3); // legacy
 
                 i {
                     width: 16px;
@@ -122,5 +122,19 @@
     .exampleImg {
         max-width: 484px;
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .itemNumber {
+        .inner {
+            &.number {
+                background: var(--surface-neutral-primary);
+            }
+
+            &.checked {
+                background: var(--surface-success-primary);
+            }
+        }
     }
 }

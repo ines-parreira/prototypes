@@ -20,7 +20,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             border-radius: var(--layout-spacing-xxs);
         }
     }
@@ -66,5 +66,13 @@
     .latestSync {
         .caption-regular();
         color: var(--neutral-grey-5);
+    }
+}
+
+.axiom :local {
+    .headerAction {
+        &:hover {
+            background-color: var(--hover-default);
+        }
     }
 }

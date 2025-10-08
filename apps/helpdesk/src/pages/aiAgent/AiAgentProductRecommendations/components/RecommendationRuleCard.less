@@ -2,7 +2,7 @@
 
 :local {
     .card {
-        border: 1px solid #ececec;
+        border: 1px solid #ececec; // legacy
         border-radius: 12px;
         background-color: var(--neutral-grey-0); // legacy
         transition: ease-in-out 0.2s;
@@ -36,8 +36,8 @@
         display: flex;
         gap: var(--spacing-lg);
         align-items: center;
-        padding: var(--spacing-xs) var(--spacing-lg);
-        border-top: 1px solid var(--neutral-grey-3);
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
 
         .itemImage {
             width: 32px;
@@ -49,7 +49,7 @@
         .itemImagePlaceholder {
             width: 32px;
             height: 32px;
-            background-color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-4); // legacy
             border-radius: 3px;
         }
 
@@ -78,7 +78,7 @@
     }
 
     .seeAll {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
         gap: var(--layout-spacing-s);
         align-items: center;
@@ -94,10 +94,19 @@
 
 .axiom :local {
     .card {
+        border: 1px solid var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
     }
 
-    .itemImagePlaceholder {
-        background-color: var(--surface-neutral-primary);
+    .item {
+        border-top: 1px solid var(--border-neutral-default);
+
+        .itemImagePlaceholder {
+            background-color: var(--surface-neutral-primary);
+        }
+    }
+
+    .seeAll {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

@@ -25,9 +25,9 @@
 
     .desktopToggleRow {
         border-radius: 8px;
-        border: 1px solid #e9e9e9;
+        border: 1px solid #e9e9e9; // legacy
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
 
         padding: 24px;
         display: flex;
@@ -81,5 +81,12 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .desktopToggleRow {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
     }
 }

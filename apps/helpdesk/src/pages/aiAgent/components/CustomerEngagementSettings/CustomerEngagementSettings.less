@@ -4,7 +4,7 @@
     .container {
         width: 100%;
         max-width: 1024px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         gap: var(--layout-spacing-l);
         padding: var(--layout-spacing-m);
@@ -24,5 +24,11 @@
         & > div[data-candu-id]:not(:empty) {
             margin-bottom: var(--layout-spacing-m);
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
     }
 }

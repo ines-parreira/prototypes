@@ -15,7 +15,7 @@
         }
 
         .localBackdrop {
-            background-color: transparent;
+            background-color: transparent; // legacy
             pointer-events: auto;
 
             &.clickThrough {
@@ -26,7 +26,7 @@
         .modal {
             width: 612px;
             max-width: 70vw;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             position: absolute;
             top: 0;
             height: 100%;
@@ -61,6 +61,18 @@
             .loader {
                 position: absolute;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .modal-container {
+        .localBackdrop {
+            background-color: transparent;
+        }
+
+        .modal {
+            background-color: var(--elevation-neutral-default);
         }
     }
 }

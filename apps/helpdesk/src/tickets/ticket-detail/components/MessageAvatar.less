@@ -1,16 +1,16 @@
 :local {
     .avatar {
         flex-shrink: 0;
-        background-color: var(--main-secondary);
+        background-color: var(--main-secondary); // legacy
         color: var(--neutral-grey-0);
     }
 
     .image {
-        background-color: transparent;
+        background-color: transparent; // legacy
     }
 
     .ai {
-        background-color: var(--accessory-magenta-2);
+        background-color: var(--accessory-magenta-2); // legacy
     }
 
     .failed {
@@ -20,5 +20,19 @@
     .aiIcon {
         font-size: 24px !important;
         color: var(--accessory-magenta-3);
+    }
+}
+
+.axiom :local {
+    .avatar {
+        background-color: var(--static-additional-blue);
+    }
+
+    .image {
+        background-color: transparent;
+    }
+
+    .ai {
+        background-color: var(--surface-brand-secondary);
     }
 }

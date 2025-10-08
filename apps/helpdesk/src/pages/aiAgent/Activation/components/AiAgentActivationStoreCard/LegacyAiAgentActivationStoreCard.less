@@ -3,7 +3,7 @@
 :local {
     .storeCard {
         border-radius: 12px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         box-shadow: 0 3px 20px 0 #0000000a;
     }
 
@@ -15,7 +15,7 @@
         }
 
         &:not(:last-child) {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -114,10 +114,10 @@
     .skillSales {
         padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xs);
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
 
         &.disabled {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -130,6 +130,26 @@
             & > i {
                 font-size: 1lh;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .storeCard {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .section {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .skillSales {
+        background: var(--surface-brand-secondary);
+
+        &.disabled {
+            background: var(--surface-neutral-secondary);
         }
     }
 }

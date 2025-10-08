@@ -4,7 +4,7 @@
 :local {
     .container {
         padding: 0 64px;
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
         min-height: 260px;
     }
     .innerContainer {
@@ -166,5 +166,11 @@
         .container {
             padding: 0 16px;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-brand-secondary);
     }
 }

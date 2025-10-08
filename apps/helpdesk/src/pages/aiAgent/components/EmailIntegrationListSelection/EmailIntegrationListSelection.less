@@ -12,7 +12,7 @@
         align-items: center;
         gap: 4px;
         border-radius: 100px;
-        background: var(--accessory-blue-1);
+        background: var(--accessory-blue-1); // legacy
     }
 
     .used-email {
@@ -47,5 +47,11 @@
     .label-container {
         display: flex;
         flex-direction: column;
+    }
+}
+
+.axiom :local {
+    .badge-container {
+        background: var(--surface-brand-secondary);
     }
 }
