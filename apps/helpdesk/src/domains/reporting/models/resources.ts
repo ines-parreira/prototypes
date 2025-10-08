@@ -132,17 +132,34 @@ export const postReportingV2 = <TData>(query: QueryFor<ScopeMeta>) => {
     )
 }
 
-export const postReportingV2Query = <TData>(query: QueryFor<ScopeMeta>) => {
+export const postReportingV2Query = <TCube extends Cube = Cube>(
+    query: QueryFor<ScopeMeta>,
+    limit?: number,
+) => {
     const { metricName, ...baseQuery } = query
 
-    return postV2(REPORTING_STATS_QUERY_ENDPOINT)<TData>({
-        query: baseQuery,
-    }).catch(
-        getReportQueryErrorHandler({
-            query: JSON.stringify(baseQuery),
-            metricName: metricName!,
-        }),
-    )
+    const reportingQueryUrl = new URL(REPORTING_STATS_QUERY_ENDPOINT)
+
+    if (limit) {
+        reportingQueryUrl.searchParams.set('limit', limit.toString())
+    }
+
+    return client
+        .post<ReportingQuery<TCube>>(
+            reportingQueryUrl.toString(),
+            {
+                query: baseQuery,
+            },
+            {
+                validateStatus,
+            },
+        )
+        .catch(
+            getReportQueryErrorHandler({
+                query: JSON.stringify(baseQuery),
+                metricName: metricName!,
+            }),
+        )
 }
 
 export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(

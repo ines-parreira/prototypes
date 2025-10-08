@@ -25,6 +25,28 @@ import { reportError } from 'utils/errors'
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
 
+// Mock URL constructor to handle relative paths
+global.URL = jest.fn().mockImplementation((url: string) => {
+    const [pathname, search] = url.split('?')
+    const mockUrl: any = {
+        pathname,
+        search: search ? `?${search}` : '',
+        searchParams: new URLSearchParams(search || ''),
+        toString: (): string => mockUrl.pathname + mockUrl.search,
+    }
+
+    // Override searchParams.set to update the search property
+    const originalSet = mockUrl.searchParams.set.bind(mockUrl.searchParams)
+    mockUrl.searchParams.set = jest.fn((name: string, value: string): void => {
+        originalSet(name, value)
+        mockUrl.search = mockUrl.searchParams.toString()
+            ? `?${mockUrl.searchParams.toString()}`
+            : ''
+    })
+
+    return mockUrl
+}) as any
+
 const mockedAPIClient = new MockAdapter(client)
 
 describe('Reporting resources', () => {
@@ -43,6 +65,11 @@ describe('Reporting resources', () => {
             type: 'number',
         },
     }
+    const queryResFixture = {
+        dimensions: [],
+        measures: [],
+        filters: [],
+    }
 
     beforeEach(() => {
         mockedAPIClient.reset()
@@ -50,7 +77,7 @@ describe('Reporting resources', () => {
         mockedAPIClient.onPost(REPORTING_STATS_ENDPOINT).reply(200, resFixture)
         mockedAPIClient
             .onPost(REPORTING_STATS_QUERY_ENDPOINT)
-            .reply(200, resFixture)
+            .reply(200, queryResFixture)
         mockedAPIClient
             .onPost(REPORTING_ENRICHED_ENDPOINT)
             .reply(200, resFixture)
@@ -226,9 +253,19 @@ describe('Reporting resources', () => {
         }
 
         it('should resolve with the data on success', async () => {
-            const res = await postReportingV2Query<[number]>(query)
+            const res = await postReportingV2Query(query)
 
-            expect(res.data.data).toEqual([1])
+            expect(res.data).toEqual(queryResFixture)
+        })
+
+        it('should resolve with the data with limit on success', async () => {
+            mockedAPIClient
+                .onPost(`${REPORTING_STATS_QUERY_ENDPOINT}?limit=100`)
+                .reply(200, { ...queryResFixture, limit: 100 })
+
+            const res = await postReportingV2Query(query, 100)
+
+            expect(res.data).toEqual({ ...queryResFixture, limit: 100 })
         })
 
         it('should reject with an error on success', async () => {
@@ -237,7 +274,7 @@ describe('Reporting resources', () => {
                 .onPost(REPORTING_STATS_QUERY_ENDPOINT)
                 .reply(statusCode)
 
-            const request = postReportingV2Query<[number]>(query)
+            const request = postReportingV2Query(query)
 
             await expect(request).rejects.toEqual(
                 new Error(`Request failed with status code ${statusCode}`),
@@ -249,7 +286,7 @@ describe('Reporting resources', () => {
                 .onPost(REPORTING_STATS_QUERY_ENDPOINT)
                 .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
 
-            const request = postReportingV2Query<[number]>(query)
+            const request = postReportingV2Query(query)
 
             await expect(request).rejects.toEqual(
                 new Error(
@@ -265,7 +302,7 @@ describe('Reporting resources', () => {
                     String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
                 )
 
-            const request = postReportingV2Query<[number]>(query)
+            const request = postReportingV2Query(query)
 
             await expect(request).rejects.toEqual(
                 new Error(
@@ -278,7 +315,7 @@ describe('Reporting resources', () => {
             mockedAPIClient.onPost(REPORTING_STATS_QUERY_ENDPOINT).reply(400)
 
             const error = new Error('Request failed with status code 400')
-            const request = postReportingV2Query<[number]>(query)
+            const request = postReportingV2Query(query)
 
             const { metricName, ...restOfQuery } = query
             await expect(request).rejects.toEqual(error)

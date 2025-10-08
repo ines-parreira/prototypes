@@ -1,10 +1,13 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import {
+    compareReportingQueries,
+    createScopeFilters,
+} from 'domains/reporting/models/scopes/utils'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { ReportingQuery } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { createScopeFilters } from '../utils'
 
 describe('utils', () => {
     describe('createScopeFilters', () => {
@@ -703,6 +706,363 @@ describe('utils', () => {
                     values: [],
                 })
             })
+        })
+
+        it('should handle error in createScopeFilters', () => {
+            const scopeConfig: ScopeMeta = {
+                filters: ['invalidFilter' as any], // Invalid filter type
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                agents: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [123],
+                },
+            }
+
+            // This should not throw an error, but should skip the invalid filter
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            // Should only contain the period filters since invalidFilter is skipped
+            expect(result).toHaveLength(2) // 2 period filters only
+            expect(result).toEqual([
+                {
+                    member: 'periodStart',
+                    operator: ReportingStatsOperatorsEnum.AfterDate,
+                    values: ['2025-09-22T00:00:00Z'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: ReportingStatsOperatorsEnum.BeforeDate,
+                    values: ['2025-09-22T23:59:59Z'],
+                },
+            ])
+        })
+    })
+
+    describe('compareReportingQueries', () => {
+        const baseV1Query: ReportingQuery<any> = {
+            measures: ['tickets.count'],
+            dimensions: ['tickets.status'],
+            filters: [
+                {
+                    member: 'agents',
+                    operator: 'one-of' as any,
+                    values: ['123', '456'],
+                },
+            ],
+            metricName: 'tickets' as any,
+            timezone: 'UTC',
+        }
+
+        const baseV2Query: ReportingQuery<any> = {
+            measures: ['tickets.count'],
+            dimensions: ['tickets.status'],
+            filters: [
+                {
+                    member: 'agents',
+                    operator: 'one-of' as any,
+                    values: ['123', '456'],
+                },
+            ],
+            metricName: 'tickets' as any,
+            timezone: 'UTC',
+        }
+
+        it('should return identical queries as equal', () => {
+            const result = compareReportingQueries(baseV1Query, baseV2Query)
+
+            expect(result.areEqual).toBe(true)
+            expect(result.differences).toHaveLength(0)
+            expect(result.summary).toBe('Queries are identical')
+        })
+
+        it('should detect differences in measures', () => {
+            const v2Query = {
+                ...baseV2Query,
+                measures: ['orders.count'],
+            } as any
+            const result = compareReportingQueries(baseV1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'measures: ["tickets.count"] !== ["orders.count"]',
+            )
+        })
+
+        it('should detect differences in dimensions', () => {
+            const v2Query = {
+                ...baseV2Query,
+                dimensions: ['orders.status'],
+            } as any
+            const result = compareReportingQueries(baseV1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'dimensions: ["tickets.status"] !== ["orders.status"]',
+            )
+        })
+
+        it('should detect differences in timezone', () => {
+            const v2Query = { ...baseV2Query, timezone: 'EST' } as any
+            const result = compareReportingQueries(baseV1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain('timezone: UTC !== EST')
+        })
+
+        it('should detect differences in filters', () => {
+            const v2Query = {
+                ...baseV2Query,
+                filters: [
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['789'],
+                    },
+                ],
+            } as any
+            const result = compareReportingQueries(baseV1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'filter not found in v2: {"member":"agents","operator":"one-of","values":["123","456"]}',
+            )
+        })
+
+        it('should detect different filter lengths', () => {
+            const v1Query = {
+                ...baseV1Query,
+                filters: [
+                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    {
+                        member: 'channels',
+                        operator: 'one-of',
+                        values: ['email'],
+                    },
+                ],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                filters: [
+                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                ],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain('filters length: 2 !== 1')
+        })
+
+        it('should handle filters in different order', () => {
+            const v1Query = {
+                ...baseV1Query,
+                filters: [
+                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    {
+                        member: 'channels',
+                        operator: 'one-of',
+                        values: ['email'],
+                    },
+                ],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                filters: [
+                    {
+                        member: 'channels',
+                        operator: 'one-of',
+                        values: ['email'],
+                    },
+                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                ],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(true)
+        })
+
+        it('should detect differences in segments', () => {
+            const v1Query = { ...baseV1Query, segments: ['segment1'] }
+            const v2Query = { ...baseV2Query, segments: ['segment2'] }
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'segments: ["segment1"] !== ["segment2"]',
+            )
+        })
+
+        it('should handle empty arrays', () => {
+            const v1Query = { ...baseV1Query, measures: [], dimensions: [] }
+            const v2Query = { ...baseV2Query, measures: [], dimensions: [] }
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(true)
+        })
+
+        it('should handle undefined values', () => {
+            const v1Query = { ...baseV1Query, timezone: undefined }
+            const v2Query = { ...baseV2Query, timezone: undefined }
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(true)
+        })
+
+        it('should handle timeDimensions differences', () => {
+            const v1Query = {
+                ...baseV1Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.created_at',
+                        granularity: 'day',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                ],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.created_at',
+                        granularity: 'month',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                ],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'timeDimensions[0].granularity: day !== month',
+            )
+        })
+
+        it('should detect different timeDimensions lengths', () => {
+            const v1Query = {
+                ...baseV1Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.created_at',
+                        granularity: 'day',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                    {
+                        dimension: 'tickets.updated_at',
+                        granularity: 'month',
+                        dateRange: ['2023-01-01', '2023-12-31'],
+                    },
+                ],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.created_at',
+                        granularity: 'day',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                ],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'timeDimensions length: 2 !== 1',
+            )
+        })
+
+        it('should detect different timeDimensions dimensions', () => {
+            const v1Query = {
+                ...baseV1Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.created_at',
+                        granularity: 'day',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                ],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                timeDimensions: [
+                    {
+                        dimension: 'tickets.updated_at',
+                        granularity: 'day',
+                        dateRange: ['2023-01-01', '2023-01-31'],
+                    },
+                ],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'timeDimensions[0].dimension: tickets.created_at !== tickets.updated_at',
+            )
+        })
+
+        it('should handle order differences', () => {
+            const v1Query = {
+                ...baseV1Query,
+                order: [{ id: 'tickets.count', desc: true }],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                order: [{ id: 'tickets.count', desc: false }],
+            } as any
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences).toContain(
+                'order: [{"id":"tickets.count","desc":true}] !== [{"id":"tickets.count","desc":false}]',
+            )
+        })
+
+        it('should not compare metricName, limit, or offset', () => {
+            const v1Query = {
+                ...baseV1Query,
+                metricName: 'different-metric' as any,
+                limit: 100,
+                offset: 10,
+            }
+            const v2Query = {
+                ...baseV2Query,
+                metricName: 'another-metric' as any,
+                limit: 200,
+                offset: 20,
+            }
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            // Should be equal because metricName, limit, and offset are not compared
+            expect(result.areEqual).toBe(true)
+        })
+
+        it('should handle JSON.stringify error with circular reference', () => {
+            // Create objects with circular references
+            const circularObj1: any = { measures: ['tickets.count'] }
+            circularObj1.self = circularObj1
+
+            const circularObj2: any = { measures: ['tickets.count'] }
+            circularObj2.self = circularObj2
+
+            const v1Query = {
+                ...baseV1Query,
+                order: circularObj1,
+            } as any
+
+            const v2Query = {
+                ...baseV2Query,
+                order: circularObj2,
+            } as any
+
+            const result = compareReportingQueries(v1Query, v2Query)
+
+            expect(result.areEqual).toBe(false)
+            expect(result.differences[0]).toContain(
+                'Converting circular structure to JSON',
+            )
+            expect(result.summary).toBe('Error comparing reporting queries')
         })
     })
 })
