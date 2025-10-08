@@ -112,7 +112,7 @@ describe('prepareMessage', () => {
     })
 
     describe('BILLING_FREQUENCY_DOWNGRADE ticket purpose', () => {
-        it('should format message for monthly to yearly subscription change', () => {
+        it('should format message for subscription cadence downgrade change', () => {
             const message = 'I want to change my billing frequency'
             const ticketPurpose = TicketPurpose.BILLING_FREQUENCY_DOWNGRADE
             const helpdeskPlanName = 'Basic Plan'
