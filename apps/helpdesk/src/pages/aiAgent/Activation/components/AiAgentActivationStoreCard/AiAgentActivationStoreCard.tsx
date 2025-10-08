@@ -110,7 +110,7 @@ export const AiAgentActivationStoreCard = ({
                                     hint: 'A chat integration must be selected for this store.',
                                     action: (
                                         <Link
-                                            to={routes.settingsChannels}
+                                            to={routes.deployChat}
                                             onClick={closeModal}
                                         >
                                             <span>
@@ -175,7 +175,7 @@ export const AiAgentActivationStoreCard = ({
                                     hint: 'An email integration must be selected for this store.',
                                     action: (
                                         <Link
-                                            to={routes.settingsChannels}
+                                            to={routes.deployEmail}
                                             onClick={closeModal}
                                         >
                                             <span>

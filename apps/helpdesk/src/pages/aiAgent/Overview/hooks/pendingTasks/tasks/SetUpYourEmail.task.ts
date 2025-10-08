@@ -37,7 +37,7 @@ export class SetUpYourEmailTask extends Task {
         )
 
         return hasAvailableEmailIntegrations
-            ? routes.aiAgentRoutes.settingsChannels
+            ? routes.aiAgentRoutes.deployEmail
             : '/app/settings/channels/email/new/onboarding'
     }
 }

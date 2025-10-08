@@ -31,6 +31,6 @@ export class SelectYourChatTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return aiAgentRoutes.settingsChannels
+        return aiAgentRoutes.deployChat
     }
 }

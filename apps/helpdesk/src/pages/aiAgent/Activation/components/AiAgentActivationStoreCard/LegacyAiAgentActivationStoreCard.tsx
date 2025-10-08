@@ -182,7 +182,7 @@ export const LegacyAiAgentActivationStoreCard = ({
                             <div className={css.channelCaption}>
                                 {!!support.chat.isIntegrationMissing && (
                                     <Link
-                                        to={routes.settingsChannels}
+                                        to={routes.deployChat}
                                         onClick={closeModal}
                                     >
                                         Select Integration for Chat
@@ -269,7 +269,7 @@ export const LegacyAiAgentActivationStoreCard = ({
                             <div className={css.channelCaption}>
                                 {support.email.isIntegrationMissing ? (
                                     <Link
-                                        to={routes.settingsChannels}
+                                        to={routes.deployEmail}
                                         onClick={closeModal}
                                     >
                                         Select Integration for Email

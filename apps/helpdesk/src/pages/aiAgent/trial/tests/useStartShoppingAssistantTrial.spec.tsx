@@ -164,8 +164,8 @@ describe('useStartShoppingAssistantTrial', () => {
         useHistoryMock.mockReturnValue({ push: mockPush } as any)
         useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
         getAiAgentNavigationRoutesMock.mockReturnValue({
-            settingsChannels: '/ai-agent/store1/settings/channels',
-            knowledge: '/ai-agent/store1/knowledge',
+            deployChat: '/app/ai-agent/shopify/store1/deploy/chat',
+            knowledge: '/app/ai-agent/shopify/store1/knowledge',
         } as any)
 
         useStartSalesTrialMutation.mockReturnValue({
@@ -322,7 +322,7 @@ describe('useStartShoppingAssistantTrial', () => {
                 }),
             )
             expect(mockPush).toHaveBeenCalledWith(
-                '/ai-agent/store1/settings/channels',
+                '/app/ai-agent/shopify/store1/deploy/chat',
             )
             expect(upsertStoreConfiguration).not.toHaveBeenCalled()
         })
@@ -389,7 +389,9 @@ describe('useStartShoppingAssistantTrial', () => {
                     status: NotificationStatus.Warning,
                 }),
             )
-            expect(mockPush).toHaveBeenCalledWith('/ai-agent/store1/knowledge')
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/store1/knowledge',
+            )
             expect(upsertStoreConfiguration).not.toHaveBeenCalled()
         })
 

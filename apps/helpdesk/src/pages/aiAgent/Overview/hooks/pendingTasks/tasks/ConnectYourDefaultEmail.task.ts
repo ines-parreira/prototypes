@@ -50,6 +50,6 @@ export class ConnectYourDefaultEmailTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
-        return aiAgentRoutes.settingsChannels
+        return aiAgentRoutes.deployEmail
     }
 }

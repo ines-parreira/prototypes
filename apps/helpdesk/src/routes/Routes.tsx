@@ -675,7 +675,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Redirect
                             to={location.pathname.replace(
                                 '/settings/channels',
-                                '/deploy',
+                                '/deploy/email',
                             )}
                         />
                     )}

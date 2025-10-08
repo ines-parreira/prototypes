@@ -77,12 +77,12 @@ describe('SetUpYourEmailTask', () => {
             }),
             {
                 aiAgentRoutes: {
-                    settingsChannels: '/app/ai-agent/settings/channels',
+                    deployEmail: '/app/ai-agent/deploy/email',
                 },
             } as any,
         )
 
-        expect(task.featureUrl).toBe('/app/ai-agent/settings/channels')
+        expect(task.featureUrl).toBe('/app/ai-agent/deploy/email')
     })
 
     it('should redirect to email settings if there are no available integrations', () => {
@@ -173,11 +173,11 @@ describe('SetUpYourEmailTask', () => {
             }),
             {
                 aiAgentRoutes: {
-                    settingsChannels: '/app/ai-agent/settings/channels',
+                    deployEmail: '/app/ai-agent/deploy/email',
                 },
             } as any,
         )
 
-        expect(task.featureUrl).toBe('/app/ai-agent/settings/channels')
+        expect(task.featureUrl).toBe('/app/ai-agent/deploy/email')
     })
 })

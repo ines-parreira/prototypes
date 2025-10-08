@@ -43,6 +43,6 @@ export class EnableSalesSkill extends Task {
             const { storeName } = data.aiAgentStoreConfiguration
             return `${aiAgentRoutes.overview}?${FocusActivationModal.buildSearchParam(storeName)}`
         }
-        return aiAgentRoutes.settingsChannels
+        return aiAgentRoutes.sales
     }
 }

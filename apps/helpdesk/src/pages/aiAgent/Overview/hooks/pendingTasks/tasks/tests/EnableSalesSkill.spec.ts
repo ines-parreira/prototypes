@@ -106,7 +106,7 @@ describe('EnableSalesSkill', () => {
         beforeEach(() => {
             routes.aiAgentRoutes = {
                 overview: '/ai-agent/overview',
-                settingsChannels: '/ai-agent/settings/channels',
+                sales: '/ai-agent/sales',
             } as any
         })
 
@@ -154,7 +154,7 @@ describe('EnableSalesSkill', () => {
                 routes,
             )
 
-            expect(task.featureUrl).toBe('/ai-agent/settings/channels')
+            expect(task.featureUrl).toBe('/ai-agent/sales')
         })
     })
 })

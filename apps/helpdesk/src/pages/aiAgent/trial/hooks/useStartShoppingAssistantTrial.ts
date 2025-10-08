@@ -102,7 +102,7 @@ export const useStartShoppingAssistantTrial = ({
                             status: NotificationStatus.Warning,
                         }),
                     )
-                    history.push(routes.settingsChannels)
+                    history.push(routes.deployChat)
                 } else if (error instanceof InvalidKnowledgeError) {
                     dispatch(
                         notify({
