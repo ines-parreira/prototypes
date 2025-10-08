@@ -3,6 +3,8 @@ import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
+import { BPOPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BPOPartnerSection'
+import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/ConsultingAgencyPartnerSection'
 import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
 import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
@@ -42,6 +44,8 @@ const PaymentInformationView = ({
                 />
             </Section>
             {!shouldPayWithShopify ? <BillingInformationSection /> : null}
+            <ConsultingAgencyPartnerSection />
+            <BPOPartnerSection />
         </div>
     )
 }

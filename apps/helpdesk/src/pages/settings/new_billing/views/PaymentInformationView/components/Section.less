@@ -10,6 +10,11 @@
         padding-bottom: 16px;
     }
 
+    .infoIcon {
+        margin-left: 4px;
+        color: var(--neutral-grey-4);
+    }
+
     .card {
         display: flex;
         align-items: center;
@@ -18,5 +23,11 @@
         width: 100%;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
+    }
+
+    .cardNoBorder {
+        composes: card;
+        border: none;
+        padding: 0;
     }
 }
