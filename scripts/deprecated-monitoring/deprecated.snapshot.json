@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 72,
-    "totalUsages": 796,
-    "reportGeneratedAt": "2025-10-02T10:41:09.844Z"
+    "totalUsages": 799,
+    "reportGeneratedAt": "2025-10-08T07:30:14.285Z"
   },
   "entries": [
     {
@@ -1031,7 +1031,7 @@
           }
         },
         {
-          "usageCount": 9,
+          "usageCount": 10,
           "name": "formatCurrency",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2025-08-29",
@@ -1045,9 +1045,29 @@
               "apps/helpdesk/src/domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent/CampaignSalesDrillDownTableContent.tsx",
               "apps/helpdesk/src/domains/reporting/pages/convert/services/CampaignMetricsHelper.ts",
               "apps/helpdesk/src/pages/aiAgent/Onboarding/components/TopProductsCard/TopProductItem/TopProductItem.tsx",
+              "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleImpact.tsx",
               "apps/helpdesk/src/pages/automate/automate-metrics/CostSavedMetric.tsx",
               "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
               "apps/helpdesk/src/pages/settings/billing/automate/ROICalculator/ROICalculator.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 6,
+          "name": "DEFAULT_LOCALE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-08-29",
+          "deprecationType": "reporting-ui-kit",
+          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/GaugeChart.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
+              "apps/helpdesk/src/domains/reporting/pages/self-service/SelfServiceStatsPage.tsx",
+              "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelCommonFields.tsx",
+              "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement.tsx",
+              "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx"
             ],
             "default": []
           }
@@ -1071,23 +1091,6 @@
           "defaultImportNames": [
             "TrendBadge"
           ]
-        },
-        {
-          "usageCount": 4,
-          "name": "DEFAULT_LOCALE",
-          "nodeType": "VariableDeclaration",
-          "deprecationDate": "2025-08-29",
-          "deprecationType": "reporting-ui-kit",
-          "declarationFile": "apps/helpdesk/src/domains/reporting/pages/common/utils.tsx",
-          "usageUrls": {
-            "named": [
-              "apps/helpdesk/src/domains/reporting/pages/common/components/charts/GaugeChart.tsx",
-              "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
-              "apps/helpdesk/src/domains/reporting/pages/self-service/SelfServiceStatsPage.tsx",
-              "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx"
-            ],
-            "default": []
-          }
         },
         {
           "usageCount": 3,
