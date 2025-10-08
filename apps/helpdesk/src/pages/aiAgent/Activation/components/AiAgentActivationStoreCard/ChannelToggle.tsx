@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
+import classNames from 'classnames'
 
 import { Label, Tooltip } from '@gorgias/axiom'
 
@@ -24,8 +25,10 @@ type ChannelToggleProps = {
         content: React.ReactNode
     }
     color?: string
+    className?: string
 }
 export const ChannelToggle = ({
+    className,
     label,
     checked,
     disabled,
@@ -41,7 +44,7 @@ export const ChannelToggle = ({
     }, [warnings])
 
     return (
-        <div className={css.channel}>
+        <div className={classNames(css.channel, className)}>
             <div className={css.channelToggle}>
                 <Label className={css.label}>
                     <NewToggleButton

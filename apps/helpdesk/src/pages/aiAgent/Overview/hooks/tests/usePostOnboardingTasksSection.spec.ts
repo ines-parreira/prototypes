@@ -6,17 +6,21 @@ import {
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { mockPostStoreInstallationStep } from 'pages/aiAgent/fixtures/post-store-installation-steps.fixture'
 
-import { DEFAULT_POST_ONBOARDING_STEPS } from '../../components/PostOnboardingTasksSection/utils'
 import { usePostOnboardingTasksSection } from '../usePostOnboardingTasksSection'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
 
 const mockUseAppSelector = jest.fn()
 const mockUseGetPostStoreInstallationStepsPure = jest.fn()
-const mockUseCreatePostStoreInstallationStepPure = jest.fn()
 const mockUseUpdatePostStoreInstallationStepPure = jest.fn()
 const mockUseUpdateStepConfigurationPure = jest.fn()
+const mockInvalidateQueries = jest.fn()
+const mockUseQueryClient = jest.fn()
 
 jest.requireMock('hooks/useAppSelector').default = mockUseAppSelector
 jest.requireMock(
@@ -25,15 +29,12 @@ jest.requireMock(
     mockUseGetPostStoreInstallationStepsPure
 jest.requireMock(
     'models/aiAgentPostStoreInstallationSteps/queries',
-).useCreatePostStoreInstallationStepPure =
-    mockUseCreatePostStoreInstallationStepPure
-jest.requireMock(
-    'models/aiAgentPostStoreInstallationSteps/queries',
 ).useUpdatePostStoreInstallationStepPure =
     mockUseUpdatePostStoreInstallationStepPure
 jest.requireMock(
     'models/aiAgentPostStoreInstallationSteps/queries',
 ).useUpdateStepConfigurationPure = mockUseUpdateStepConfigurationPure
+jest.requireMock('@tanstack/react-query').useQueryClient = mockUseQueryClient
 
 const mockAccountId = mockPostStoreInstallationStep.accountId
 const mockShopName = mockPostStoreInstallationStep.shopName
@@ -63,7 +64,6 @@ const mockPostOnboardingSteps = {
     ],
 }
 
-const mockCreatePostStoreInstallationStep = jest.fn()
 const mockUpdatePostStoreInstallationStep = jest.fn()
 const mockUpdateStepConfig = jest.fn()
 
@@ -73,14 +73,14 @@ describe('usePostOnboardingTasksSection', () => {
 
         mockUseAppSelector.mockReturnValue(mockAccountId)
 
+        mockUseQueryClient.mockReturnValue({
+            invalidateQueries: mockInvalidateQueries,
+        })
+
         mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
             data: null,
             isLoading: false,
             isError: false,
-        })
-
-        mockUseCreatePostStoreInstallationStepPure.mockReturnValue({
-            mutateAsync: mockCreatePostStoreInstallationStep,
         })
 
         mockUseUpdatePostStoreInstallationStepPure.mockReturnValue({
@@ -147,36 +147,6 @@ describe('usePostOnboardingTasksSection', () => {
             )
         })
 
-        it('should handle CREATE operation', async () => {
-            mockCreatePostStoreInstallationStep.mockResolvedValue({
-                postStoreInstallationSteps: mockPostOnboardingSteps,
-            })
-
-            const { result } = renderHook(() =>
-                usePostOnboardingTasksSection({
-                    shopName: mockShopName,
-                    shopType: mockShopType,
-                }),
-            )
-
-            await act(async () => {
-                await result.current.createPostOnboardingStep()
-            })
-
-            expect(mockCreatePostStoreInstallationStep).toHaveBeenCalledWith([
-                {
-                    ...DEFAULT_POST_ONBOARDING_STEPS,
-                    accountId: mockAccountId,
-                    shopName: mockShopName,
-                    shopType: mockShopType,
-                },
-            ])
-
-            expect(result.current.postOnboardingSteps).toEqual(
-                mockPostOnboardingSteps,
-            )
-        })
-
         it('should handle UPDATE step configuration', async () => {
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
                 data: {
@@ -200,11 +170,6 @@ describe('usePostOnboardingTasksSection', () => {
                 stepCompletedDatetime: '2023-01-01T00:00:00Z',
             }
 
-            const updatedStep = {
-                ...mockPostOnboardingSteps.stepsConfiguration[0],
-                ...stepData,
-            }
-
             await act(async () => {
                 await result.current.updateStep(stepData)
             })
@@ -213,12 +178,6 @@ describe('usePostOnboardingTasksSection', () => {
                 mockPostOnboardingSteps.id,
                 stepData,
             ])
-
-            const updatedStepInState =
-                result.current.postOnboardingSteps?.stepsConfiguration.find(
-                    (step) => step.stepName === StepName.TRAIN,
-                )
-            expect(updatedStepInState).toEqual(updatedStep)
         })
 
         it('should handle UPDATE post store installation', async () => {
@@ -254,10 +213,6 @@ describe('usePostOnboardingTasksSection', () => {
                 mockPostOnboardingSteps.id,
                 updatedPostOnboardingSteps,
             ])
-
-            expect(result.current.postOnboardingSteps).toEqual(
-                updatedPostOnboardingSteps,
-            )
         })
 
         it('should update step status when not started', async () => {

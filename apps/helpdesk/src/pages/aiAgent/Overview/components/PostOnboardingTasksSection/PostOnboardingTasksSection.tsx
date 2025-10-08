@@ -32,6 +32,7 @@ export const PostOnboardingTasksSection = () => {
         completedStepsCount,
         isStepCompleted,
         updateStep,
+        markPostStoreInstallationAsCompleted,
         firstUncompletedStepName,
     } = usePostOnboardingTasksSection({ shopName, shopType })
 
@@ -95,6 +96,11 @@ export const PostOnboardingTasksSection = () => {
                                 ) : stepMetadata.stepName === 'DEPLOY' ? (
                                     <DeploySection
                                         stepMetadata={stepMetadata}
+                                        step={step(stepMetadata.stepName)!}
+                                        updateStep={updateStep}
+                                        markPostStoreInstallationAsCompleted={
+                                            markPostStoreInstallationAsCompleted
+                                        }
                                     />
                                 ) : null}
                             </AccordionBody>

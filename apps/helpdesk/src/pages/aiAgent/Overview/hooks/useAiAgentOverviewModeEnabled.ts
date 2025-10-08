@@ -1,31 +1,25 @@
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
-import {
-    getCurrentAccountId,
-    getCurrentDomain,
-} from 'state/currentAccount/selectors'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+
+import { useIsAiAgentDuringDeployment } from './useIsAiAgentDuringDeployment'
 
 export const useAiAgentOverviewModeEnabled = (
     shopName: string,
     shopType: string,
     enabled?: boolean,
 ) => {
-    const accountDomain = useAppSelector(getCurrentDomain)
+    const [isAiAgentDuringDeployment] = useIsAiAgentDuringDeployment()
+
     const currentAccountId = useAppSelector(getCurrentAccountId)
 
-    const { data: storeData, isFetching: isStoreDataLoading } =
-        useGetStoreConfigurationPure(
-            {
-                accountDomain,
-                storeName: shopName,
-            },
-            { enabled, retry: 1, refetchOnWindowFocus: false },
-        )
+    const { storeConfiguration, isLoading: isStoreDataLoading } =
+        useAiAgentStoreConfigurationContext()
 
-    const { data, isFetching: isPostStoreInstallationStepsLoading } =
+    const { data, isLoading: isPostStoreInstallationStepsLoading } =
         useGetPostStoreInstallationStepsPure(
             {
                 accountId: currentAccountId,
@@ -37,20 +31,21 @@ export const useAiAgentOverviewModeEnabled = (
 
     const isLoading = isStoreDataLoading || isPostStoreInstallationStepsLoading
 
-    if (isLoading || !enabled || !storeData) {
+    if (isLoading || !enabled || !storeConfiguration) {
         return { isAiAgentLiveModeEnabled: null, isLoading }
     }
 
-    const isAiAgentEnabled = isAiAgentEnabledForStore(
-        storeData.data?.storeConfiguration,
-    )
+    const isAiAgentEnabled = isAiAgentEnabledForStore(storeConfiguration)
+
     const postOnboardingStep = data?.postStoreInstallationSteps?.find(
         (s) => s.type === PostStoreInstallationStepType.POST_ONBOARDING,
     )
     const isPostOnboardingDone = !!postOnboardingStep?.completedDatetime
 
     return {
-        isAiAgentLiveModeEnabled: isAiAgentEnabled || isPostOnboardingDone,
+        isAiAgentLiveModeEnabled:
+            !isAiAgentDuringDeployment &&
+            (isAiAgentEnabled || isPostOnboardingDone),
         isLoading: false,
     }
 }

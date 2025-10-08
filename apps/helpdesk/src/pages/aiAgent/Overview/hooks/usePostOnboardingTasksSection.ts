@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    useCreatePostStoreInstallationStepPure,
+    postStoreInstallationStepsKeys,
     useGetPostStoreInstallationStepsPure,
     useUpdatePostStoreInstallationStepPure,
     useUpdateStepConfigurationPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import {
-    CreatePostStoreInstallationStepPayload,
     PostStoreInstallationSteps,
     PostStoreInstallationStepStatus,
     PostStoreInstallationStepType,
@@ -17,87 +18,73 @@ import {
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 
-import { DEFAULT_POST_ONBOARDING_STEPS } from '../components/PostOnboardingTasksSection/utils'
-
 type UsePostOnboardingTasksSectionProps = {
     shopName: string
     shopType: string
 }
 
+/**
+ * Exposes the Post Onboarding steps for a store and helpers to mutate them.
+ *
+ */
 export const usePostOnboardingTasksSection = ({
     shopName,
     shopType,
 }: UsePostOnboardingTasksSectionProps) => {
     const accountId = useAppSelector(getCurrentAccountId)
+    const queryClient = useQueryClient()
 
-    const [postOnboardingSteps, setPostOnboardingSteps] =
-        useState<PostStoreInstallationSteps | null>(null)
+    const queryEnabled = Boolean(accountId && shopName && shopType)
 
+    // -------------------------
+    // Query invalidation helper
+    // -------------------------
+    const onMutationSuccess = useCallback(() => {
+        void queryClient.invalidateQueries({
+            queryKey: postStoreInstallationStepsKeys.detail({
+                accountDomain: String(accountId),
+                shopName,
+            }),
+        })
+    }, [queryClient, accountId, shopName])
+
+    // -------------------------
+    // Data fetching
+    // -------------------------
     const { data, isLoading, isError } = useGetPostStoreInstallationStepsPure(
+        { accountId, shopName, shopType },
         {
-            accountId,
-            shopName,
-            shopType,
-        },
-        {
-            enabled: !!accountId && !!shopName && !!shopType,
+            enabled: queryEnabled,
             refetchOnWindowFocus: false,
         },
     )
 
-    const { mutateAsync: updateStepConfig } = useUpdateStepConfigurationPure()
-    const { mutateAsync: createPostStoreInstallationStep } =
-        useCreatePostStoreInstallationStepPure()
+    // Mutations
+    const { mutateAsync: updateStepConfig } = useUpdateStepConfigurationPure({
+        onSuccess: onMutationSuccess,
+    })
     const { mutateAsync: updatePostStoreInstallationStep } =
-        useUpdatePostStoreInstallationStepPure()
+        useUpdatePostStoreInstallationStepPure({
+            onSuccess: onMutationSuccess,
+        })
 
-    useEffect(() => {
-        if (data?.postStoreInstallationSteps) {
-            const foundStep = data.postStoreInstallationSteps.find(
-                (step) =>
-                    step.type === PostStoreInstallationStepType.POST_ONBOARDING,
-            )
+    // -------------------------
+    // Derived state from query data
+    // -------------------------
+    const postOnboardingSteps = useMemo(() => {
+        if (!data?.postStoreInstallationSteps) return null
 
-            if (foundStep) {
-                setPostOnboardingSteps(foundStep)
-            }
-        }
+        return (
+            data.postStoreInstallationSteps.find(
+                (s) => s.type === PostStoreInstallationStepType.POST_ONBOARDING,
+            ) ?? null
+        )
     }, [data])
 
-    const updateStepLocally = useCallback(
-        (
-            prev: PostStoreInstallationSteps | null,
-            stepData: UpdateStepRequest,
-        ) => {
-            if (!prev) return prev
-
-            return {
-                ...prev,
-                stepsConfiguration: prev.stepsConfiguration.map((step) =>
-                    step.stepName === stepData.stepName
-                        ? { ...step, ...stepData }
-                        : step,
-                ),
-            }
-        },
-        [],
-    )
-
-    const createPostOnboardingStep = useCallback(async () => {
-        const payload: CreatePostStoreInstallationStepPayload = {
-            ...DEFAULT_POST_ONBOARDING_STEPS,
-            accountId,
-            shopName,
-            shopType,
-        }
-
-        const response = await createPostStoreInstallationStep([payload])
-
-        if (response?.postStoreInstallationSteps) {
-            setPostOnboardingSteps(response.postStoreInstallationSteps)
-        }
-    }, [accountId, shopName, shopType, createPostStoreInstallationStep])
-
+    /**
+     * Persists a full PostStoreInstallationSteps object to the server.
+     * Query will be invalidated automatically via onSuccess callback.
+     */
     const updatePostStoreInstallation = useCallback(
         async (updateData: PostStoreInstallationSteps) => {
             if (!postOnboardingSteps) return
@@ -106,12 +93,15 @@ export const usePostOnboardingTasksSection = ({
                 postOnboardingSteps.id,
                 updateData,
             ])
-
-            setPostOnboardingSteps(updateData)
         },
         [postOnboardingSteps, updatePostStoreInstallationStep],
     )
 
+    /**
+     * Updates a single step's configuration. If the overall status is NOT_STARTED,
+     * moves it to IN_PROGRESS first to reflect activity.
+     * Query will be invalidated automatically via onSuccess callback.
+     */
     const updateStep = useCallback(
         async (stepData: UpdateStepRequest) => {
             if (!postOnboardingSteps) return
@@ -127,57 +117,59 @@ export const usePostOnboardingTasksSection = ({
             }
 
             await updateStepConfig([postOnboardingSteps.id, stepData])
-
-            setPostOnboardingSteps((prev) => updateStepLocally(prev, stepData))
         },
-        [
-            postOnboardingSteps,
-            updateStepConfig,
-            updatePostStoreInstallation,
-            updateStepLocally,
-        ],
+        [postOnboardingSteps, updateStepConfig, updatePostStoreInstallation],
     )
 
+    /**
+     * Marks the entire post-installation flow as completed.
+     * Query will be invalidated automatically via onSuccess callback.
+     */
+    const markPostStoreInstallationAsCompleted = useCallback(async () => {
+        if (!postOnboardingSteps) return
+
+        await updatePostStoreInstallation({
+            ...postOnboardingSteps,
+            status: PostStoreInstallationStepStatus.COMPLETED,
+            completedDatetime: new Date().toISOString(),
+        })
+    }, [postOnboardingSteps, updatePostStoreInstallation])
+
+    // -------------------------
+    // Selectors / Derived state
+    // -------------------------
     const isStepCompleted = useCallback(
         (stepName: StepName) => {
             if (!postOnboardingSteps) return false
-
-            const step = postOnboardingSteps.stepsConfiguration.find(
-                (step) => step.stepName === stepName,
+            const found = postOnboardingSteps.stepsConfiguration.find(
+                (s) => s.stepName === stepName,
             )
-
-            return !!step?.stepCompletedDatetime
+            return Boolean(found?.stepCompletedDatetime)
         },
         [postOnboardingSteps],
     )
 
     const step = useCallback(
-        (stepName: StepName) => {
-            const existingStep = postOnboardingSteps?.stepsConfiguration?.find(
-                (step) => step.stepName === stepName,
-            )
-
-            return existingStep
-        },
+        (stepName: StepName) =>
+            postOnboardingSteps?.stepsConfiguration?.find(
+                (s) => s.stepName === stepName,
+            ),
         [postOnboardingSteps],
     )
 
     const completedStepsCount = useMemo(() => {
         if (!postOnboardingSteps) return 0
-
-        return postOnboardingSteps.stepsConfiguration.filter(
-            (step) => !!step.stepCompletedDatetime,
+        return postOnboardingSteps.stepsConfiguration.filter((s) =>
+            Boolean(s.stepCompletedDatetime),
         ).length
     }, [postOnboardingSteps])
 
     const firstUncompletedStepName = useMemo(() => {
         if (!postOnboardingSteps) return null
-
-        const uncompletedStep = postOnboardingSteps.stepsConfiguration.find(
-            (step) => !step.stepCompletedDatetime,
+        const uncompleted = postOnboardingSteps.stepsConfiguration.find(
+            (s) => !s.stepCompletedDatetime,
         )
-
-        return uncompletedStep?.stepName ?? null
+        return uncompleted?.stepName ?? null
     }, [postOnboardingSteps])
 
     return {
@@ -189,7 +181,7 @@ export const usePostOnboardingTasksSection = ({
         completedStepsCount,
         firstUncompletedStepName,
         updateStep,
-        createPostOnboardingStep,
         updatePostStoreInstallation,
+        markPostStoreInstallationAsCompleted,
     }
 }

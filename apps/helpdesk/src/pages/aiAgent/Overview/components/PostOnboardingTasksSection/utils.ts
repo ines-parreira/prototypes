@@ -1,11 +1,18 @@
+import { isAxiosError } from 'axios'
+import _get from 'lodash/get'
+
 import {
     PostStoreInstallationStepStatus,
     PostStoreInstallationStepType,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
 import { assetsUrl } from 'utils'
 
-import { PostOnboardingStepMetadata } from './types'
+import { ChatWarningDecision, PostOnboardingStepMetadata } from './types'
 
 export const POST_ONBOARDING_STEPS_METADATA: Record<
     string,
@@ -72,4 +79,65 @@ const TAB_TO_STEP_NAME_MAP: Record<string, StepName> = {
 export const mapTabToStepName = (tab: string | null): StepName | null => {
     if (!tab) return null
     return TAB_TO_STEP_NAME_MAP[tab] ?? null
+}
+
+export const decideChatWarning = (
+    chatChannels: Array<InstallationStatusInjectedChatItem> | undefined,
+    monitoredIdsInput: string[] | undefined,
+    routes: { deployChat: string },
+): ChatWarningDecision => {
+    const chats = chatChannels ?? []
+    const monitoredIds = new Set(monitoredIdsInput ?? [])
+
+    if (chats.length === 0) {
+        return {
+            visible: true,
+            label: 'Configure a chat',
+            to: '/app/settings/channels/gorgias_chat/new/create-wizard',
+        }
+    }
+
+    if (monitoredIds.size === 0) {
+        return { visible: true, label: 'Connect a chat', to: routes.deployChat }
+    }
+
+    const selected = chats.filter((c) =>
+        monitoredIds.has(c.value.id.toString()),
+    )
+    if (selected.length < monitoredIds.size) {
+        return { visible: true, label: 'Connect a chat', to: routes.deployChat }
+    }
+
+    const uninstalled = selected.find((c) => c.value.isUninstalled)
+    if (uninstalled) {
+        return {
+            visible: true,
+            label: 'Install a chat',
+            to: `/app/settings/channels/gorgias_chat/${uninstalled.value.id}/installation`,
+        }
+    }
+
+    return { visible: false }
+}
+
+export const handleAiAgentConfigurationError = (
+    error: unknown,
+    dispatch: StoreDispatch,
+): void => {
+    if (isAxiosError(error) && _get(error, 'response.status') === 409) {
+        void dispatch(
+            notify({
+                message:
+                    'Email address or chat channel already used by AI Agent on a different store.',
+                status: NotificationStatus.Error,
+            }),
+        )
+    } else {
+        void dispatch(
+            notify({
+                message: 'Failed to save AI Agent configuration',
+                status: NotificationStatus.Error,
+            }),
+        )
+    }
 }

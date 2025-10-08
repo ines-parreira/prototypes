@@ -11,6 +11,7 @@ import { useFlag } from 'core/flags'
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { ShopifyIntegration } from 'models/integration/types'
+import { useInitializePostOnboardingSteps } from 'pages/aiAgent/Overview/hooks/useInitializePostOnboardingSteps'
 import { getHasAutomate } from 'state/billing/selectors'
 import { renderWithRouter } from 'utils/testing'
 
@@ -18,6 +19,7 @@ import { AiAgentAccountConfigurationProvider } from '../AiAgentAccountConfigurat
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 jest.mock('hooks/aiAgent/useCanUseAiAgent')
+jest.mock('pages/aiAgent/Overview/hooks/useInitializePostOnboardingSteps')
 jest.mock('pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware', () => ({
     TrialPaywallMiddleware: ({ shopName }: { shopName?: string }) => (
         <div data-testid="trial-paywall-middleware">
@@ -76,6 +78,9 @@ jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockUseCanUseAiAgent = jest.mocked(useCanUseAiAgent)
+const mockUseInitializePostOnboardingSteps = jest.mocked(
+    useInitializePostOnboardingSteps,
+)
 
 const renderComponent = () =>
     renderWithRouter(
@@ -105,6 +110,9 @@ describe('AiAgentAccountConfigurationProvider', () => {
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
         } as any)
+        mockUseInitializePostOnboardingSteps.mockReturnValue({
+            isLoading: false,
+        })
     })
 
     it('should render if automate and load successs', () => {
@@ -139,7 +147,9 @@ describe('AiAgentAccountConfigurationProvider', () => {
         mockGetHasAutomate.mockReturnValue(true)
 
         renderComponent()
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(
+            screen.getByText('We’re preparing your space...'),
+        ).toBeInTheDocument()
     })
 
     it('should redirect to "/app/automation" when error', () => {
@@ -217,7 +227,9 @@ describe('AiAgentAccountConfigurationProvider', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(
+            screen.getByText('We’re preparing your space...'),
+        ).toBeInTheDocument()
     })
 
     it('should render loader when trial check is loading', () => {
@@ -231,6 +243,21 @@ describe('AiAgentAccountConfigurationProvider', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(
+            screen.getByText('We’re preparing your space...'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render loader when post onboarding steps are loading', () => {
+        mockGetHasAutomate.mockReturnValue(true)
+        mockUseInitializePostOnboardingSteps.mockReturnValue({
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByText('We’re preparing your space...'),
+        ).toBeInTheDocument()
     })
 })
