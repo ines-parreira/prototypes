@@ -104,11 +104,14 @@ describe('BillingStartView', () => {
                 FeatureFlagKey.BillingMaintenanceMode,
             )
 
-            const maintenanceModeTitle = 'Ongoing maintenance'
-            const maintenanceModeMsg =
-                'Operation should be over in a few hours. If you have any urgent request, please contact'
-            expect(screen.queryByText(maintenanceModeTitle)).toBeInTheDocument()
-            expect(screen.queryByText(maintenanceModeMsg)).toBeInTheDocument()
+            expect(
+                screen.getByText('Billing maintenance in progress'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /We're performing a scheduled update to our billing system. This should be completed within a few hours. If you have any urgent requests, please contact our/i,
+                ),
+            ).toBeInTheDocument()
 
             expect(screen.queryByText(/Usage & Plans/i)).not.toBeInTheDocument()
 

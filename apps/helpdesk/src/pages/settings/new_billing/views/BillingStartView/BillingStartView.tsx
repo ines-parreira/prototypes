@@ -340,16 +340,18 @@ const BillingStartView = () => {
     if (useFlag(FeatureFlagKey.BillingMaintenanceMode)) {
         return (
             <div className={css.mainContainer}>
-                <h1>Ongoing maintenance</h1>
-                Operation should be over in a few hours. If you have any urgent
-                request, please contact{' '}
+                <h1>Billing maintenance in progress</h1>
+                We&apos;re performing a scheduled update to our billing system.
+                This should be completed within a few hours. If you have any
+                urgent requests, please contact our{' '}
                 <a
                     href="mailto:billing@gorgias.com"
                     rel="noopener noreferrer"
                     target="_blank"
                 >
-                    Billing Support
+                    Billing Support team
                 </a>
+                .
             </div>
         )
     }
