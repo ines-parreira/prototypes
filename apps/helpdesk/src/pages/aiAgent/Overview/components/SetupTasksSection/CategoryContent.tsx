@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import { Icon, Text } from '@gorgias/axiom'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
@@ -27,7 +29,11 @@ export const CategoryContent = ({
                             highlightOnExpand={false}
                             className={css.accordionItem}
                         >
-                            <AccordionHeader className={css.stepTitleContainer}>
+                            <AccordionHeader
+                                className={cn(css.stepTitleContainer, {
+                                    [css.completed]: task.isCompleted,
+                                })}
+                            >
                                 {task.isCompleted ? (
                                     <Icon size="md" name="circle-check" />
                                 ) : (
@@ -40,7 +46,10 @@ export const CategoryContent = ({
                                 </div>
                             </AccordionHeader>
                             <AccordionBody>
-                                <BodyComponent />
+                                <BodyComponent
+                                    featureUrl={task.featureUrl}
+                                    isCompleted={task.isCompleted}
+                                />
                             </AccordionBody>
                         </AccordionItem>
                     )

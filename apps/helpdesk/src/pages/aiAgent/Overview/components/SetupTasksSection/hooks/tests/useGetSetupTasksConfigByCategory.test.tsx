@@ -1,9 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
+import {
+    useGetPostStoreInstallationStepsPure,
+    useUpdateStepConfigurationPure,
+} from 'models/aiAgentPostStoreInstallationSteps/queries'
 import {
     PostStoreInstallationStepType,
     StepName,
@@ -23,6 +26,11 @@ const mockUseGetPostStoreInstallationStepsPure =
         typeof useGetPostStoreInstallationStepsPure
     >
 
+const mockUseUpdateStepConfigurationPure =
+    useUpdateStepConfigurationPure as jest.MockedFunction<
+        typeof useUpdateStepConfigurationPure
+    >
+
 const mockUsePendingTasksRuleEngine =
     usePendingTasksRuleEngine as jest.MockedFunction<
         typeof usePendingTasksRuleEngine
@@ -31,6 +39,7 @@ const mockUsePendingTasksRuleEngine =
 const createMockTask = (
     taskClassName: string,
     display: boolean = true,
+    isCheckedAutomatically: boolean = false,
 ): Task => {
     const mockTask = {
         display,
@@ -39,6 +48,7 @@ const createMockTask = (
         title: 'Mock Title',
         caption: 'Mock Caption',
         type: 'BASIC' as const,
+        isCheckedAutomatically,
         constructor: {
             name: taskClassName,
         },
@@ -74,6 +84,15 @@ describe('useGetSetupTasksConfigByCategory', () => {
             pendingTasks: [],
             completedTasks: [],
         })
+
+        mockUseUpdateStepConfigurationPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
     })
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -585,5 +604,286 @@ describe('useGetSetupTasksConfigByCategory', () => {
         )
 
         expect(result.current.completionPercentage).toBe(100)
+    })
+
+    describe('sync functionality', () => {
+        it('should sync task completion from rule engine to database when isCheckedAutomatically is true', async () => {
+            const mockMutateAsync = jest.fn().mockResolvedValue({})
+            mockUseUpdateStepConfigurationPure.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                mutate: jest.fn(),
+                isLoading: false,
+                isError: false,
+                isSuccess: false,
+                isIdle: true,
+            } as any)
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [
+                        {
+                            id: 'step-id-123',
+                            type: PostStoreInstallationStepType.POST_GO_LIVE,
+                            stepsConfiguration: [
+                                {
+                                    stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                                    stepCompletedDatetime: null,
+                                    stepStartedDatetime: null,
+                                    stepDismissedDatetime: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            mockUsePendingTasksRuleEngine.mockReturnValue({
+                isLoading: false,
+                isFetched: true,
+                pendingTasks: [],
+                completedTasks: [
+                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                ],
+            })
+
+            renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
+                wrapper,
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledWith([
+                    'step-id-123',
+                    {
+                        stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                        stepCompletedDatetime: expect.any(String),
+                    },
+                ])
+            })
+        })
+
+        it('should not sync when isCheckedAutomatically is false', async () => {
+            const mockMutateAsync = jest.fn().mockResolvedValue({})
+            mockUseUpdateStepConfigurationPure.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                mutate: jest.fn(),
+                isLoading: false,
+                isError: false,
+                isSuccess: false,
+                isIdle: true,
+            } as any)
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [
+                        {
+                            id: 'step-id-123',
+                            type: PostStoreInstallationStepType.POST_GO_LIVE,
+                            stepsConfiguration: [
+                                {
+                                    stepName: StepName.CREATE_AN_ACTION,
+                                    stepCompletedDatetime: null,
+                                    stepStartedDatetime: null,
+                                    stepDismissedDatetime: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            mockUsePendingTasksRuleEngine.mockReturnValue({
+                isLoading: false,
+                isFetched: true,
+                pendingTasks: [],
+                completedTasks: [
+                    createMockTask('CreateAnActionTask', false, false),
+                ],
+            })
+
+            renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
+                wrapper,
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should not sync when database and rule engine are already in sync', async () => {
+            const mockMutateAsync = jest.fn().mockResolvedValue({})
+            mockUseUpdateStepConfigurationPure.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                mutate: jest.fn(),
+                isLoading: false,
+                isError: false,
+                isSuccess: false,
+                isIdle: true,
+            } as any)
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [
+                        {
+                            id: 'step-id-123',
+                            type: PostStoreInstallationStepType.POST_GO_LIVE,
+                            stepsConfiguration: [
+                                {
+                                    stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                                    stepCompletedDatetime:
+                                        '2024-01-01T00:00:00Z',
+                                    stepStartedDatetime: null,
+                                    stepDismissedDatetime: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            mockUsePendingTasksRuleEngine.mockReturnValue({
+                isLoading: false,
+                isFetched: true,
+                pendingTasks: [],
+                completedTasks: [
+                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                ],
+            })
+
+            renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
+                wrapper,
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should sync task uncompleted status from rule engine to database', async () => {
+            const mockMutateAsync = jest.fn().mockResolvedValue({})
+            mockUseUpdateStepConfigurationPure.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                mutate: jest.fn(),
+                isLoading: false,
+                isError: false,
+                isSuccess: false,
+                isIdle: true,
+            } as any)
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [
+                        {
+                            id: 'step-id-123',
+                            type: PostStoreInstallationStepType.POST_GO_LIVE,
+                            stepsConfiguration: [
+                                {
+                                    stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                                    stepCompletedDatetime:
+                                        '2024-01-01T00:00:00Z',
+                                    stepStartedDatetime: null,
+                                    stepDismissedDatetime: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            mockUsePendingTasksRuleEngine.mockReturnValue({
+                isLoading: false,
+                isFetched: true,
+                pendingTasks: [
+                    createMockTask('VerifyYourEmailDomainTask', true, true),
+                ],
+                completedTasks: [],
+            })
+
+            renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
+                wrapper,
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledWith([
+                    'step-id-123',
+                    {
+                        stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                        stepCompletedDatetime: null,
+                    },
+                ])
+            })
+        })
+
+        it('should handle sync errors gracefully', async () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+            const mockMutateAsync = jest
+                .fn()
+                .mockRejectedValue(new Error('Sync failed'))
+            mockUseUpdateStepConfigurationPure.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                mutate: jest.fn(),
+                isLoading: false,
+                isError: false,
+                isSuccess: false,
+                isIdle: true,
+            } as any)
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: {
+                    postStoreInstallationSteps: [
+                        {
+                            id: 'step-id-123',
+                            type: PostStoreInstallationStepType.POST_GO_LIVE,
+                            stepsConfiguration: [
+                                {
+                                    stepName: StepName.VERIFY_EMAIL_DOMAIN,
+                                    stepCompletedDatetime: null,
+                                    stepStartedDatetime: null,
+                                    stepDismissedDatetime: null,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                error: null,
+            } as any)
+
+            mockUsePendingTasksRuleEngine.mockReturnValue({
+                isLoading: false,
+                isFetched: true,
+                pendingTasks: [],
+                completedTasks: [
+                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useGetSetupTasksConfigByCategory(defaultParams),
+                {
+                    wrapper,
+                },
+            )
+
+            await waitFor(() => {
+                expect(consoleErrorSpy).toHaveBeenCalledWith(
+                    expect.stringContaining('Failed to sync step'),
+                    expect.any(Error),
+                )
+            })
+
+            expect(result.current.error).toBeNull()
+
+            consoleErrorSpy.mockRestore()
+        })
     })
 })

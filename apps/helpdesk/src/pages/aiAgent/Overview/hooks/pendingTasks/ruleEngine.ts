@@ -27,6 +27,7 @@ import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidanc
 import { SelectYourChatTask } from './tasks/SelectYourChat.task'
 import { SetYourActionsLiveTask } from './tasks/SetYourActionsLive.task'
 import { TestAIAgentTask } from './tasks/TestAIAgent.task'
+import { UpdateShopifyPermissionsRedirectTask } from './tasks/UpdateShopifyPermissionsRedirect.task'
 import { UpdateYourChatInstallationTask } from './tasks/UpdateYourChatInstallation.task'
 import { UpdateYourDiscountStrategyTask } from './tasks/UpdateYourDiscountStrategy.task'
 import { UploadAnExternalDocTask } from './tasks/UploadAnExternalDoc.task'
@@ -137,7 +138,7 @@ const tasksPerAiAgentType: Record<
     ],
     overview: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new VerifyYourEmailDomainTask(data, routes),
-        new UpdateShopifyPermissionsTask(data, routes),
+        new UpdateShopifyPermissionsRedirectTask(data, routes),
         new EnableTriggerOnSearchTask(data, routes),
         new EnableSuggestedProductQuestionsTask(data, routes),
         new EnableAskAnythingInputTask(data, routes),

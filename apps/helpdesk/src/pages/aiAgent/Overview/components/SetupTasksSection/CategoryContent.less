@@ -19,8 +19,16 @@
             align-items: center;
             color: var(--content-neutral-default);
 
+            &.completed {
+                opacity: 0.5;
+            }
+
             .stepTitle {
                 margin-left: var(--layout-spacing-xs);
+
+                &.completed {
+                    opacity: 0.5;
+                }
             }
         }
     }

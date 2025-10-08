@@ -4,6 +4,7 @@ export abstract class Task {
     public readonly display: boolean
     public readonly featureUrl: string
     public readonly available: boolean
+    public readonly isCheckedAutomatically: boolean
 
     protected constructor(
         public readonly title: string,
@@ -15,6 +16,9 @@ export abstract class Task {
         this.available = this.isAvailable(data)
         this.display = this.shouldBeDisplayed(data)
         this.featureUrl = this.getFeatureUrl({ data, routes })
+        this.isCheckedAutomatically = this.getIsCheckedAutomatically
+            ? this.getIsCheckedAutomatically(data)
+            : false
     }
 
     protected abstract isAvailable(data: RuleEngineData): boolean
@@ -26,4 +30,5 @@ export abstract class Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string
+    protected getIsCheckedAutomatically?(data: RuleEngineData): boolean
 }

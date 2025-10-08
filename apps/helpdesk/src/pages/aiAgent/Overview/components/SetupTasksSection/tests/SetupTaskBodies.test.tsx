@@ -1,4 +1,7 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
 import {
     CreateAnActionBody,
@@ -242,7 +245,12 @@ describe('SetupTaskBodies', () => {
         testCases.forEach(
             ({ Component, description, buttonText, hasButton }) => {
                 it(`should have consistent structure for ${Component.name}`, () => {
-                    const { container } = render(<Component />)
+                    const history = createMemoryHistory()
+                    const { container } = render(
+                        <Router history={history}>
+                            <Component />
+                        </Router>,
+                    )
 
                     const mainContainer =
                         container.querySelector('.setupTaskBodies')
@@ -267,5 +275,73 @@ describe('SetupTaskBodies', () => {
                 })
             },
         )
+    })
+
+    describe('Button navigation', () => {
+        it('should navigate to featureUrl when Verify button is clicked', async () => {
+            const history = createMemoryHistory()
+            const featureUrl = '/app/settings/channels/email/123/verification'
+
+            render(
+                <Router history={history}>
+                    <VerifyEmailDomainBody featureUrl={featureUrl} />
+                </Router>,
+            )
+
+            const button = screen.getByRole('button', { name: /verify/i })
+            await userEvent.click(button)
+
+            expect(history.location.pathname).toBe(
+                '/app/settings/channels/email/123/verification',
+            )
+        })
+
+        it('should navigate to featureUrl when Update button is clicked', async () => {
+            const history = createMemoryHistory()
+            const featureUrl = '/app/settings/shopify'
+
+            render(
+                <Router history={history}>
+                    <UpdateShopifyPermissionsBody featureUrl={featureUrl} />
+                </Router>,
+            )
+
+            const button = screen.getByRole('button', { name: /update/i })
+            await userEvent.click(button)
+
+            expect(history.location.pathname).toBe('/app/settings/shopify')
+        })
+
+        it('should navigate to featureUrl when Create button is clicked', async () => {
+            const history = createMemoryHistory()
+            const featureUrl = '/app/ai-agent/actions'
+
+            render(
+                <Router history={history}>
+                    <CreateAnActionBody featureUrl={featureUrl} />
+                </Router>,
+            )
+
+            const button = screen.getByRole('button', { name: /create/i })
+            await userEvent.click(button)
+
+            expect(history.location.pathname).toBe('/app/ai-agent/actions')
+        })
+
+        it('should not navigate when featureUrl is not provided', async () => {
+            const history = createMemoryHistory()
+            history.push('/current-page')
+
+            render(
+                <Router history={history}>
+                    <VerifyEmailDomainBody />
+                </Router>,
+            )
+
+            const button = screen.getByRole('button', { name: /verify/i })
+            await userEvent.click(button)
+
+            expect(history.location.pathname).toBe('/current-page')
+        })
     })
 })

@@ -21,12 +21,16 @@ import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pending
 import { EnableSuggestedProductQuestionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableSuggestedProductQuestions.task'
 import { EnableTriggerOnSearchTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableTriggerOnSearch.task'
 import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
-import { UpdateShopifyPermissionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
 import { VerifyYourEmailDomainTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/VerifyYourEmailDomain.task'
+
+import { UpdateShopifyPermissionsRedirectTask } from '../../hooks/pendingTasks/tasks/UpdateShopifyPermissionsRedirect.task'
 
 export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
     [VerifyYourEmailDomainTask.name, StepName.VERIFY_EMAIL_DOMAIN],
-    [UpdateShopifyPermissionsTask.name, StepName.UPDATE_SHOPIFY_PERMISSIONS],
+    [
+        UpdateShopifyPermissionsRedirectTask.name,
+        StepName.UPDATE_SHOPIFY_PERMISSIONS,
+    ],
     [EnableTriggerOnSearchTask.name, StepName.ENABLE_TRIGGER_ON_SEARCH],
     [
         EnableSuggestedProductQuestionsTask.name,

@@ -42,6 +42,12 @@ export class VerifyYourEmailDomainTask extends Task {
         data: RuleEngineData
         routes: RuleEngineRoutes
     }): string {
+        const firstUnverifiedEmailIntegration =
+            this.getFirstUnverifiedEmailIntegration(data)
+
+        if (!firstUnverifiedEmailIntegration) {
+            return '/app/settings/channels/email'
+        }
         return `/app/settings/channels/email/${this.getFirstUnverifiedEmailIntegration(data)?.id}/verification`
     }
 
@@ -53,5 +59,9 @@ export class VerifyYourEmailDomainTask extends Task {
         return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.find(
             (ei) => notVerifiedEmailIntegrationsIds.includes(ei.id),
         )
+    }
+
+    protected getIsCheckedAutomatically(): boolean {
+        return true
     }
 }
