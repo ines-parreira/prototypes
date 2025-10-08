@@ -13,21 +13,27 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
-    basicYearlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
     HELPDESK_PRODUCT_ID,
+    helpdeskProduct,
     products,
     SMS_PRODUCT_ID,
     smsPlan1,
+    smsProduct,
     starterHelpdeskPlan,
     VOICE_PRODUCT_ID,
-    voicePlan1,
+    voiceProduct,
 } from 'fixtures/productPrices'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import { Cadence, ProductType } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import {
+    Cadence,
+    HelpdeskPlan,
+    ProductType,
+    SMSOrVoicePlan,
+} from 'models/billing/types'
+import { getCadenceName, isOtherCadenceUpgrade } from 'models/billing/utils'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AlertType } from 'pages/common/components/Alert/Alert'
@@ -126,6 +132,14 @@ const store = {
 }
 
 describe('UsageAndPlansView', () => {
+    const cadenceValues = Object.values(Cadence)
+    const highestCadence = cadenceValues.reduce(
+        (otherCadence: Cadence, cadence: Cadence) =>
+            isOtherCadenceUpgrade(cadence, otherCadence)
+                ? otherCadence
+                : cadence,
+    )
+
     const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
 
     const helpdeskBanner = {
@@ -541,7 +555,15 @@ describe('UsageAndPlansView', () => {
         ).toBeInTheDocument()
     })
 
-    it('should not be possible to update plan frequency when the user is on a yearly plan', () => {
+    it('should not be possible to update plan frequency when the user is on a the highest cadence plan', () => {
+        const plan = helpdeskProduct.prices.find(
+            (plan: HelpdeskPlan) => plan.cadence === highestCadence,
+        )
+        expect(plan).toBeDefined()
+        if (plan === undefined) {
+            return
+        }
+
         const alteredStore = {
             billing: fromJS(mockedBilling),
             integrations: fromJS(mockedIntegrations),
@@ -551,7 +573,7 @@ describe('UsageAndPlansView', () => {
                     ...mockedAccount.current_subscription,
                     status: 'trialing',
                     products: {
-                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: plan.price_id,
                     },
                 },
             }),
@@ -572,38 +594,67 @@ describe('UsageAndPlansView', () => {
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
     })
 
-    it('should be possible to update plan frequency when the user is on a phone monthly plan and vetted for phone', () => {
-        const alteredStore = {
-            billing: fromJS(mockedBilling),
-            integrations: fromJS(mockedIntegrations),
-            currentAccount: fromJS({
-                ...mockedAccount,
-                current_subscription: {
-                    ...mockedAccount.current_subscription,
-                    status: 'trialing',
-                    products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
-                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
-                        [VOICE_PRODUCT_ID]: voicePlan1.price_id,
-                    },
-                },
-            }),
-        }
+    it.each(
+        cadenceValues.filter((cadence: Cadence) => cadence !== highestCadence),
+    )(
+        'should be possible to update plan frequency when the user is on a non-largest cadence phone plan and vetted for phone [cadence: %s]',
+        (cadence: Cadence) => {
+            const helpdeskPlan = helpdeskProduct.prices.find(
+                (plan: HelpdeskPlan) =>
+                    plan.cadence === cadence && plan.name !== 'Starter',
+            )
+            expect(helpdeskPlan).toBeDefined()
+            if (helpdeskPlan === undefined) {
+                return
+            }
 
-        renderWithStoreAndQueryClientAndRouter(
-            <UsageAndPlansView
-                contactBilling={jest.fn()}
-                periodEnd="2021-01-01"
-                currentUsage={mockedBilling.currentProductsUsage}
-            />,
-            alteredStore,
-        )
-        expect(screen.getByText('Update').closest('a')).toHaveAttribute(
-            'to',
-            BILLING_PAYMENT_FREQUENCY_PATH,
-        )
-    })
+            const smsPlan = smsProduct.prices.find(
+                (plan: SMSOrVoicePlan) => plan.cadence === cadence,
+            )
+            expect(smsPlan).toBeDefined()
+            if (smsPlan === undefined) {
+                return
+            }
+
+            const voicePlan = voiceProduct.prices.find(
+                (plan: SMSOrVoicePlan) => plan.cadence === cadence,
+            )
+            expect(voicePlan).toBeDefined()
+            if (voicePlan === undefined) {
+                return
+            }
+
+            const alteredStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        status: 'trialing',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: helpdeskPlan.price_id,
+                            [SMS_PRODUCT_ID]: smsPlan.price_id,
+                            [VOICE_PRODUCT_ID]: voicePlan.price_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedBilling.currentProductsUsage}
+                />,
+                alteredStore,
+            )
+            expect(screen.getByText('Update').closest('a')).toHaveAttribute(
+                'to',
+                BILLING_PAYMENT_FREQUENCY_PATH,
+            )
+        },
+    )
 
     it('should render with the Subscribe button disabled for trialing users', () => {
         const alteredBilling = {
