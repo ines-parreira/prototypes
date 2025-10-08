@@ -24,7 +24,9 @@ export const getSendToVoicemailFlow = (): CallRoutingFlow => {
     }
 }
 
-export const getRouteToQueueFlow = (queue_id: number): CallRoutingFlow => {
+export const getRouteToQueueFlow = (
+    queue_id: number | null,
+): CallRoutingFlow => {
     const voicemailUuid = uuidv4()
     const businessHoursUuid = uuidv4()
     const enqueueUuid = uuidv4()

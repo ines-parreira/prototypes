@@ -115,7 +115,7 @@ describe('useOnboardingForm', () => {
     const history = createMemoryHistory()
 
     beforeEach(() => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockReturnValue(false)
         jest.clearAllMocks()
     })
 
@@ -130,7 +130,12 @@ describe('useOnboardingForm', () => {
             ),
         })
 
-    it('should call createIntegration with correct data', async () => {
+    it('should call createIntegration with correct data when ExtendedCallFlows is enabled', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === 'extended-call-flows-ga-ready') return false
+            if (flag === 'extended-call-flows') return true
+            return false
+        })
         mockUuid.mockReturnValue('voicemail')
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },
@@ -169,7 +174,12 @@ describe('useOnboardingForm', () => {
         )
     })
 
-    it('should call createIntegration with correct data for IVR', async () => {
+    it('should call createIntegration with correct data for IVR when ExtendedCallFlows is enabled', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === 'extended-call-flows-ga-ready') return false
+            if (flag === 'extended-call-flows') return true
+            return false
+        })
         mockUuid
             .mockReturnValueOnce('business_hours')
             .mockReturnValueOnce('ivr_menu')
@@ -266,7 +276,40 @@ describe('useOnboardingForm', () => {
         )
     })
 
-    it('should call createIntegration with correct data FF off', async () => {
+    it('should call createIntegration with correct data when ExtendedCallFlowsGAReady is enabled', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === 'extended-call-flows-ga-ready') return true
+            return false
+        })
+        createIntegrationMock.mockResolvedValue({
+            data: { name: 'Test Integration' },
+        } as any)
+
+        const { result } = renderUseOnboardingForm()
+        const data: PhoneIntegration = {
+            name: 'Test Integration',
+            meta: {
+                phone_number_id: 1,
+                function: PhoneFunction.Standard,
+            },
+        } as any
+
+        await act(async () => {
+            result.current.onSubmit(data)
+        })
+
+        expect(mockNotify.success).toHaveBeenCalledWith(
+            'Test Integration successfully created.',
+        )
+        expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
+        expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
+        expect(createIntegrationMock).toHaveBeenCalledWith(
+            data as CreateIntegrationBody,
+            undefined,
+        )
+    })
+
+    it('should call createIntegration with correct data when both flags are off', async () => {
         useFlagMock.mockReturnValue(false)
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },
@@ -296,7 +339,7 @@ describe('useOnboardingForm', () => {
         )
     })
 
-    it('should call createIntegration with correct data for IVR FF off', async () => {
+    it('should call createIntegration with IVR settings when both flags are off and function is IVR', async () => {
         useFlagMock.mockReturnValue(false)
         createIntegrationMock.mockResolvedValue({
             data: { name: 'Test Integration' },

@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 
-import { Button, Label, SelectField } from '@gorgias/axiom'
 import type { SelectFieldRawOption } from '@gorgias/axiom'
+import { Button, Label, SelectField } from '@gorgias/axiom'
 import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -14,6 +16,7 @@ import { NewPhoneNumber } from 'models/phoneNumber/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
+import BusinessHoursSelectField from 'pages/settings/businessHours/BusinessHoursSelectField'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
 import VoiceIntegrationOnboardingCancelButton from './VoiceIntegrationOnboardingCancelButton'
@@ -25,6 +28,9 @@ type Props = {
 }
 
 const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
+    const useExtendedFlowsGAReady = useFlag(
+        FeatureFlagKey.ExtendedCallFlowsGAReady,
+    )
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
@@ -80,21 +86,34 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
                         onCreate={onCreateNewNumber}
                     />
                 </div>
-                <div>
-                    <FormField
-                        name={'meta.function'}
-                        label={'Function'}
-                        field={SelectField}
-                        options={[PhoneFunction.Standard, PhoneFunction.Ivr]}
-                        selectedOption={phoneFunction}
-                        optionMapper={(option: SelectFieldRawOption) => ({
-                            value:
-                                option === PhoneFunction.Standard
-                                    ? 'Standard'
-                                    : 'IVR (Interactive Voice Response)',
-                        })}
-                    />
-                </div>
+                {useExtendedFlowsGAReady ? (
+                    <div>
+                        <FormField
+                            field={BusinessHoursSelectField}
+                            name="business_hours_id"
+                            isRequired
+                        />
+                    </div>
+                ) : (
+                    <div>
+                        <FormField
+                            name={'meta.function'}
+                            label={'Function'}
+                            field={SelectField}
+                            options={[
+                                PhoneFunction.Standard,
+                                PhoneFunction.Ivr,
+                            ]}
+                            selectedOption={phoneFunction}
+                            optionMapper={(option: SelectFieldRawOption) => ({
+                                value:
+                                    option === PhoneFunction.Standard
+                                        ? 'Standard'
+                                        : 'IVR (Interactive Voice Response)',
+                            })}
+                        />
+                    </div>
+                )}
             </div>
             <div className={css.buttons}>
                 <VoiceIntegrationOnboardingCancelButton />

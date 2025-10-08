@@ -56,6 +56,9 @@ export const useOnboardingForm = () => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const useExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
+    const useExtendedCallFlowsGAReady = useFlag(
+        FeatureFlagKey.ExtendedCallFlowsGAReady,
+    )
 
     const { mutate: createIntegration } = useCreateIntegration({
         mutation: {
@@ -74,6 +77,13 @@ export const useOnboardingForm = () => {
     })
 
     const onSubmit = (data: PhoneIntegration) => {
+        if (useExtendedCallFlowsGAReady) {
+            createIntegration({
+                data: data as CreateIntegrationBody,
+            })
+            return
+        }
+
         const values = getSubmittableValues(data)
         if (useExtendedCallFlows) {
             if (values.meta.function === PhoneFunction.Standard) {

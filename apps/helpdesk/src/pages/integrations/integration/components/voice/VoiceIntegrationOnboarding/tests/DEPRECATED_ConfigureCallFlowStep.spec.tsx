@@ -9,7 +9,7 @@ import { FormField, FormSubmitButton, useFormContext } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
-import ConfigureRoutingBehaviorStep from '../ConfigureRoutingBehaviorStep'
+import DEPRECATED_ConfigureRoutingBehaviorStep from '../DEPRECATED_ConfigureRoutingBehaviorStep'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -58,7 +58,8 @@ describe('ConfigureRoutingBehaviorStep', () => {
         )
     })
 
-    const renderComponent = () => render(<ConfigureRoutingBehaviorStep />)
+    const renderComponent = () =>
+        render(<DEPRECATED_ConfigureRoutingBehaviorStep />)
 
     it('should render the component', () => {
         watchMock.mockReturnValue([

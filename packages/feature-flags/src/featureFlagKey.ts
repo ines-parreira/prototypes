@@ -106,6 +106,7 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',
     ExtendedCallFlows = 'extended-call-flows',
+    ExtendedCallFlowsGAReady = 'extended-call-flows-ga-ready',
     FakeActionPlaceholder = 'fake-action-placeholder',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',

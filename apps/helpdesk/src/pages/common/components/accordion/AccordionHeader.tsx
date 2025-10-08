@@ -10,12 +10,14 @@ export type AccordionHeaderProps = {
     action?: ReactNode
     children?: ReactNode
     className?: string
+    isExpandable?: boolean
 }
 
 const AccordionHeader = ({
     action,
     children,
     className,
+    isExpandable = true,
 }: AccordionHeaderProps) => {
     const { isExpanded, isDisabled, toggleItem } = useAccordionItemContext()
 
@@ -33,16 +35,20 @@ const AccordionHeader = ({
             >
                 {children}
             </div>
-            <div
-                className={classnames(css.toggleContainer, {
-                    [css.isDisabled]: isDisabled,
-                })}
-                onClick={toggleItem}
-            >
-                <i className="material-icons md-3">
-                    {isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-                </i>
-            </div>
+            {isExpandable && (
+                <div
+                    className={classnames(css.toggleContainer, {
+                        [css.isDisabled]: isDisabled,
+                    })}
+                    onClick={toggleItem}
+                >
+                    <i className="material-icons md-3">
+                        {isExpanded
+                            ? 'keyboard_arrow_up'
+                            : 'keyboard_arrow_down'}
+                    </i>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,5 +1,8 @@
 import { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
+import { useFlag } from 'core/flags'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
@@ -12,10 +15,14 @@ import {
     onboardingStepsLabels,
     VoiceIntegrationOnboardingStep,
 } from './constants'
+import DEPRECATED_ConfigureRoutingBehaviorStep from './DEPRECATED_ConfigureRoutingBehaviorStep'
 import VoiceIntegrationOnboardingForm from './VoiceIntegrationOnboardingForm'
 import VoiceIntegrationOnboardingUnsavedChangesPrompt from './VoiceIntegrationOnboardingUnsavedChangesPrompt'
 
 export default function VoiceIntegrationOnboarding() {
+    const useExtendedFlowsGAReady = useFlag(
+        FeatureFlagKey.ExtendedCallFlowsGAReady,
+    )
     const [hasNewPhoneNumber, setHasNewPhoneNumber] = useState(false)
 
     return (
@@ -41,7 +48,11 @@ export default function VoiceIntegrationOnboarding() {
                                 VoiceIntegrationOnboardingStep.ConfigureRoutingBehavior
                             }
                         >
-                            <ConfigureRoutingBehaviorStep />
+                            {useExtendedFlowsGAReady ? (
+                                <ConfigureRoutingBehaviorStep />
+                            ) : (
+                                <DEPRECATED_ConfigureRoutingBehaviorStep />
+                            )}
                         </WizardStep>
                         <VoiceIntegrationOnboardingUnsavedChangesPrompt
                             hasNewPhoneNumber={hasNewPhoneNumber}
