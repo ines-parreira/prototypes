@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
 
-import { SelectField } from '@gorgias/axiom'
+import { Box, SelectField } from '@gorgias/axiom'
 
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import IconLink from 'core/ui/components/IconLink'
 import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
 import { supportContentDropdownOptions } from './constants'
-import SupportContentLearnMore from './SupportContentLearnMore'
 
 import css from './EmailDomainVerificationSupportContentSidebar.less'
 
@@ -35,58 +31,18 @@ export default function EmailDomainVerificationSupportContentSidebar() {
                     data-candu-id={`email-domain-verification-support-content-${selectedOption.value || 'default'}`}
                 />
 
-                <Accordion defaultExpandedItem="support-content-accordion-item">
-                    <AccordionItem id="support-content-accordion-item">
-                        <AccordionHeader>
-                            <span className={css.accordionTitle}>
-                                Need more help?
-                            </span>
-                        </AccordionHeader>
-                        <AccordionBody>
-                            <div className={css.supportContentLinks}>
-                                {!selectedOption.value && (
-                                    <>
-                                        <SupportContentLearnMore
-                                            url={
-                                                'https://mxtoolbox.com/dmarc.aspx'
-                                            }
-                                        >
-                                            Identify Your Domain Registrar
-                                        </SupportContentLearnMore>
-                                        <SupportContentLearnMore
-                                            url={
-                                                'https://docs.gorgias.com/en-US/adding-values-to-a-domain-registrar-414708'
-                                            }
-                                        >
-                                            Adding values to a Domain Registrar
-                                        </SupportContentLearnMore>
-                                    </>
-                                )}
-                                {selectedOption.learnMoreURL && (
-                                    <SupportContentLearnMore
-                                        url={selectedOption.learnMoreURL}
-                                    >
-                                        {selectedOption.label} Support
-                                    </SupportContentLearnMore>
-                                )}
-                                <SupportContentLearnMore
-                                    url={
-                                        'https://docs.gorgias.com/en-US/email-domain-verification-101-81757'
-                                    }
-                                >
-                                    Email Domain Verification 101
-                                </SupportContentLearnMore>
-                                <SupportContentLearnMore
-                                    url={
-                                        'https://docs.gorgias.com/en-US/domain-verification-faqs-404374'
-                                    }
-                                >
-                                    Domain Verification FAQs
-                                </SupportContentLearnMore>
-                            </div>
-                        </AccordionBody>
-                    </AccordionItem>
-                </Accordion>
+                <Box gap="var(--layout-spacing-m)">
+                    <IconLink
+                        icon="menu_book"
+                        href="https://link.gorgias.com/a6c23e"
+                        content="Verify Your Email Domain"
+                    />
+                    <IconLink
+                        icon="menu_book"
+                        href="https://link.gorgias.com/7e4889"
+                        content="Domain Verification FAQs"
+                    />
+                </Box>
             </div>
         </SettingsSidebar>
     )

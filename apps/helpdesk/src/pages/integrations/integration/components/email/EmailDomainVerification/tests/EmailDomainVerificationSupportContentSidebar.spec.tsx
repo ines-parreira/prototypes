@@ -3,17 +3,14 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/axiom'
+import { Box, SelectField } from '@gorgias/axiom'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
-import SupportContentLearnMore from '../SupportContentLearnMore'
 
 jest.mock('@gorgias/axiom')
-jest.mock('../SupportContentLearnMore')
-jest.mock('../useDomainVerification')
 
-const SupportContentLearnMoreMock = assumeMock(SupportContentLearnMore)
 const SelectFieldMock = assumeMock(SelectField)
+const BoxMock = assumeMock(Box)
 
 describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>
@@ -21,9 +18,7 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
 
     beforeEach(() => {
         SelectFieldMock.mockReturnValue(<div>SelectField</div>)
-        SupportContentLearnMoreMock.mockImplementation(({ children }) => (
-            <div data-testid="supportContentLearnMore">{children}</div>
-        ))
+        BoxMock.mockImplementation(({ children }) => <div>{children}</div>)
     })
 
     it('default state - should display dropdown, dynamic content and links', () => {
@@ -36,15 +31,7 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
             ),
         ).toBeInTheDocument()
 
-        expect(
-            screen.getByText('Identify Your Domain Registrar'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText('Adding values to a Domain Registrar'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText('Email Domain Verification 101'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
         expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
     })
 
@@ -60,18 +47,13 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
         })
 
         expect(
-            screen.queryByText('Identify Your Domain Registrar'),
-        ).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('Adding values to a Domain Registrar'),
-        ).not.toBeInTheDocument()
-
-        expect(screen.getByText('GoDaddy Support')).toBeInTheDocument()
-        expect(
             container.querySelector(
                 '[data-candu-id=email-domain-verification-support-content-godaddy]',
             ),
         ).toBeInTheDocument()
+
+        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
+        expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
     })
 
     it('should display all options in the dropdown', () => {
