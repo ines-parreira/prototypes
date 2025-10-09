@@ -1,20 +1,18 @@
-import { LegacyBridgeContext } from './context'
+import { LegacyBridgeContext, LegacyBridgeContextType } from './context'
 
-type TicketsLegacyBridgeProviderProps = {
+type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     children: React.ReactNode
-    placeholderStoreUpdateFn: () => void
 }
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk
  * and the new application code in the packages/tickets.
- *
  */
 export const TicketsLegacyBridgeProvider = ({
     children,
-    placeholderStoreUpdateFn = () => 'placeholderStoreUpdateFn',
+    dispatchNotification,
 }: TicketsLegacyBridgeProviderProps) => {
     return (
-        <LegacyBridgeContext.Provider value={{ placeholderStoreUpdateFn }}>
+        <LegacyBridgeContext.Provider value={{ dispatchNotification }}>
             {children}
         </LegacyBridgeContext.Provider>
     )

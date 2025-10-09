@@ -4,11 +4,12 @@ import {
     TicketsLegacyBridgeProvider,
     useTicketsLegacyBridge,
 } from '../LegacyBridge'
+import { NotificationStatus } from '../LegacyBridge/context'
 
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
-            <TicketsLegacyBridgeProvider placeholderStoreUpdateFn={() => {}}>
+            <TicketsLegacyBridgeProvider dispatchNotification={() => {}}>
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
         )
@@ -19,16 +20,23 @@ describe('TicketsLegacyBridgeProvider', () => {
     it('should provide context value to children', () => {
         const mockFn = vi.fn()
         const TestComponent = () => {
-            const { placeholderStoreUpdateFn } = useTicketsLegacyBridge()
+            const { dispatchNotification } = useTicketsLegacyBridge()
             return (
-                <button onClick={placeholderStoreUpdateFn}>
+                <button
+                    onClick={() =>
+                        dispatchNotification({
+                            status: NotificationStatus.Success,
+                            message: 'Test message',
+                        })
+                    }
+                >
                     Trigger Function
                 </button>
             )
         }
 
         render(
-            <TicketsLegacyBridgeProvider placeholderStoreUpdateFn={mockFn}>
+            <TicketsLegacyBridgeProvider dispatchNotification={mockFn}>
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
         )
@@ -60,7 +68,7 @@ describe('useTicketsLegacyBridge', () => {
         }
 
         render(
-            <TicketsLegacyBridgeProvider placeholderStoreUpdateFn={mockFn}>
+            <TicketsLegacyBridgeProvider dispatchNotification={mockFn}>
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
         )

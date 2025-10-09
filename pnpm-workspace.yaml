@@ -59,7 +59,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.54.1'
+    '@gorgias/axiom': '0.72.0'
     '@gorgias/design-tokens': '0.10.7'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.14'
@@ -95,6 +95,12 @@ catalogs:
     '@types/react': '18.2.67'
     '@types/react-dom': '18.2.22'
     '@types/react-test-renderer': '19.1.0'
+  react-router:
+    'react-router': '5.2.0'
+    'react-router-dom': '5.2.0'
+    'react-router-dom-v5-compat': '^6.28.0'
+    '@types/react-router': '5.1.20'
+    '@types/react-router-dom': '5.3.3'
   test:
     '@jest/expect': '29.7.0'
     '@swc/core': '^1.10.11'
@@ -119,6 +125,7 @@ catalogs:
     'jsdom': '21.0.0'
     'swc_mut_cjs_exports': '^10.7.0'
     'vitest': '^3'
+    'msw': '^2.1.0'
   typescript:
     'typescript': '5.3.3'
   prettier:

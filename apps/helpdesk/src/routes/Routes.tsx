@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { History } from 'history'
 import {
     Redirect,
@@ -129,12 +130,16 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
+import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/useTicketLegacyBridgeFunctions'
 
 export default function Routes() {
+    const ticketLegacyBridgeFunctions = useTicketLegacyBridgeFunctions()
     return (
-        <Route path="/app">
-            <AppRoutes />
-        </Route>
+        <TicketsLegacyBridgeProvider {...ticketLegacyBridgeFunctions}>
+            <Route path="/app">
+                <AppRoutes />
+            </Route>
+        </TicketsLegacyBridgeProvider>
     )
 }
 
