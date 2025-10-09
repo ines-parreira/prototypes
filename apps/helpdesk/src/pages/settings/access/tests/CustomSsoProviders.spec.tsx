@@ -1,5 +1,7 @@
+import React from 'react'
+
 import { configureStore } from '@reduxjs/toolkit'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
@@ -30,6 +32,22 @@ describe('CustomSsoProviders', () => {
         },
     })
 
+    const CustomSsoProvidersWithState = (
+        props: Omit<
+            React.ComponentProps<typeof CustomSsoProviders>,
+            'showModal' | 'setShowModal'
+        >,
+    ) => {
+        const [showModal, setShowModal] = React.useState(false)
+        return (
+            <CustomSsoProviders
+                {...props}
+                showModal={showModal}
+                setShowModal={setShowModal}
+            />
+        )
+    }
+
     const defaultProps = {
         accountDomain: 'test-company',
         onUpdate: mockOnUpdate,
@@ -54,6 +72,7 @@ describe('CustomSsoProviders', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUuid.mockReturnValue('new-provider-id')
+        mockOnUpdate.mockResolvedValue(true)
         jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
         // Mock the selector to return an enterprise plan by default
         mockUseAppSelector.mockReturnValue({
@@ -67,7 +86,7 @@ describe('CustomSsoProviders', () => {
         it('renders without providers', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -82,7 +101,7 @@ describe('CustomSsoProviders', () => {
         it('renders with existing providers', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={mockProviders}
                     />
@@ -101,7 +120,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -114,7 +133,7 @@ describe('CustomSsoProviders', () => {
             jest.spyOn(flagsModule, 'useFlag').mockReturnValue(false)
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -133,7 +152,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -152,7 +171,7 @@ describe('CustomSsoProviders', () => {
 
             const { rerender } = render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
             expect(
@@ -168,7 +187,7 @@ describe('CustomSsoProviders', () => {
 
             rerender(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
             expect(
@@ -185,7 +204,7 @@ describe('CustomSsoProviders', () => {
 
             rerender(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
             expect(
@@ -203,7 +222,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -222,7 +241,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -231,7 +250,7 @@ describe('CustomSsoProviders', () => {
             ).toBeInTheDocument()
         })
 
-        it('disables add provider button when disabled prop is true', () => {
+        it('disables add provider button when isLoading prop is true', () => {
             mockUseAppSelector.mockReturnValue({
                 plan_id: '0',
                 custom: false,
@@ -240,7 +259,10 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} disabled={true} />
+                    <CustomSsoProvidersWithState
+                        {...defaultProps}
+                        isLoading={true}
+                    />
                 </Provider>,
             )
 
@@ -257,7 +279,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders {...defaultProps} />
+                        <CustomSsoProvidersWithState {...defaultProps} />
                     </Provider>,
                 )
 
@@ -276,7 +298,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders {...defaultProps} />
+                        <CustomSsoProvidersWithState {...defaultProps} />
                     </Provider>,
                 )
 
@@ -307,14 +329,16 @@ describe('CustomSsoProviders', () => {
                 })
                 await user.click(saveButton)
 
-                expect(mockOnUpdate).toHaveBeenCalledWith({
-                    'new-provider-id': {
-                        name: 'New Provider',
-                        client_id: 'new-client-id',
-                        client_secret: 'new-secret',
-                        server_metadata_url:
-                            'https://new.provider.com/.well-known/openid-configuration',
-                    },
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'new-provider-id': {
+                            name: 'New Provider',
+                            client_id: 'new-client-id',
+                            client_secret: 'new-secret',
+                            server_metadata_url:
+                                'https://new.provider.com/.well-known/openid-configuration',
+                        },
+                    })
                 })
             })
 
@@ -322,7 +346,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={{
                                 'existing-id': mockProviders['provider-1'],
@@ -358,16 +382,85 @@ describe('CustomSsoProviders', () => {
                 })
                 await user.click(saveButton)
 
-                expect(mockOnUpdate).toHaveBeenCalledWith({
-                    'existing-id': mockProviders['provider-1'],
-                    'new-provider-id': {
-                        name: 'Additional Provider',
-                        client_id: 'additional-client-id',
-                        client_secret: 'additional-secret',
-                        server_metadata_url:
-                            'https://additional.provider.com/.well-known/openid-configuration',
-                    },
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'existing-id': mockProviders['provider-1'],
+                        'new-provider-id': {
+                            name: 'Additional Provider',
+                            client_id: 'additional-client-id',
+                            client_secret: 'additional-secret',
+                            server_metadata_url:
+                                'https://additional.provider.com/.well-known/openid-configuration',
+                        },
+                    })
                 })
+            })
+
+            it('does not add provider to list when backend request fails', async () => {
+                mockOnUpdate.mockResolvedValue(false)
+                const user = userEvent.setup()
+                render(
+                    <Provider store={mockStore}>
+                        <CustomSsoProvidersWithState
+                            {...defaultProps}
+                            providers={{
+                                'existing-id': mockProviders['provider-1'],
+                            }}
+                        />
+                    </Provider>,
+                )
+
+                expect(screen.getByText('Okta SSO')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('New Provider SSO'),
+                ).not.toBeInTheDocument()
+
+                const addButton = screen.getByRole('button', {
+                    name: '+ Add provider',
+                })
+                await user.click(addButton)
+
+                await user.type(
+                    screen.getByLabelText(/provider name/i),
+                    'New Provider',
+                )
+                await user.type(
+                    screen.getByLabelText(/client id/i),
+                    'new-client-id',
+                )
+                await user.type(
+                    screen.getByLabelText(/client secret/i),
+                    'new-secret',
+                )
+                await user.type(
+                    screen.getByLabelText(/provider url/i),
+                    'https://new.provider.com',
+                )
+
+                const saveButton = screen.getByRole('button', {
+                    name: 'Add SSO Provider',
+                })
+                await user.click(saveButton)
+
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'existing-id': mockProviders['provider-1'],
+                        'new-provider-id': {
+                            name: 'New Provider',
+                            client_id: 'new-client-id',
+                            client_secret: 'new-secret',
+                            server_metadata_url:
+                                'https://new.provider.com/.well-known/openid-configuration',
+                        },
+                    })
+                })
+
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+
+                expect(screen.getByText('Okta SSO')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('New Provider SSO'),
+                ).not.toBeInTheDocument()
             })
         })
 
@@ -376,7 +469,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={mockProviders}
                         />
@@ -407,7 +500,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={mockProviders}
                         />
@@ -428,23 +521,25 @@ describe('CustomSsoProviders', () => {
                 })
                 await user.click(saveButton)
 
-                expect(mockOnUpdate).toHaveBeenCalledWith({
-                    'provider-1': {
-                        name: 'Updated Okta',
-                        client_id: 'okta-client-id',
-                        client_secret: 'okta-secret',
-                        server_metadata_url:
-                            'https://okta.example.com/.well-known/openid-configuration',
-                    },
-                    'provider-2': mockProviders['provider-2'],
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'provider-1': {
+                            name: 'Updated Okta',
+                            client_id: 'okta-client-id',
+                            client_secret: undefined,
+                            server_metadata_url:
+                                'https://okta.example.com/.well-known/openid-configuration',
+                        },
+                        'provider-2': mockProviders['provider-2'],
+                    })
                 })
             })
 
-            it('preserves existing client secret when not changed', async () => {
+            it('sends undefined client secret when not changed', async () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={mockProviders}
                         />
@@ -465,15 +560,17 @@ describe('CustomSsoProviders', () => {
                 })
                 await user.click(saveButton)
 
-                expect(mockOnUpdate).toHaveBeenCalledWith({
-                    'provider-1': {
-                        name: 'Updated Provider',
-                        client_id: 'okta-client-id',
-                        client_secret: 'okta-secret',
-                        server_metadata_url:
-                            'https://okta.example.com/.well-known/openid-configuration',
-                    },
-                    'provider-2': mockProviders['provider-2'],
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'provider-1': {
+                            name: 'Updated Provider',
+                            client_id: 'okta-client-id',
+                            client_secret: undefined,
+                            server_metadata_url:
+                                'https://okta.example.com/.well-known/openid-configuration',
+                        },
+                        'provider-2': mockProviders['provider-2'],
+                    })
                 })
             })
 
@@ -481,7 +578,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={mockProviders}
                         />
@@ -501,15 +598,17 @@ describe('CustomSsoProviders', () => {
                 })
                 await user.click(saveButton)
 
-                expect(mockOnUpdate).toHaveBeenCalledWith({
-                    'provider-1': {
-                        name: 'Okta',
-                        client_id: 'okta-client-id',
-                        client_secret: 'new-secret',
-                        server_metadata_url:
-                            'https://okta.example.com/.well-known/openid-configuration',
-                    },
-                    'provider-2': mockProviders['provider-2'],
+                await waitFor(() => {
+                    expect(mockOnUpdate).toHaveBeenCalledWith({
+                        'provider-1': {
+                            name: 'Okta',
+                            client_id: 'okta-client-id',
+                            client_secret: 'new-secret',
+                            server_metadata_url:
+                                'https://okta.example.com/.well-known/openid-configuration',
+                        },
+                        'provider-2': mockProviders['provider-2'],
+                    })
                 })
             })
         })
@@ -519,7 +618,7 @@ describe('CustomSsoProviders', () => {
                 const user = userEvent.setup()
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={mockProviders}
                         />
@@ -549,7 +648,7 @@ describe('CustomSsoProviders', () => {
                 }
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={threeProviders}
                         />
@@ -574,7 +673,7 @@ describe('CustomSsoProviders', () => {
                 }
                 render(
                     <Provider store={mockStore}>
-                        <CustomSsoProviders
+                        <CustomSsoProvidersWithState
                             {...defaultProps}
                             providers={singleProvider}
                         />
@@ -596,7 +695,7 @@ describe('CustomSsoProviders', () => {
             const user = userEvent.setup()
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -618,7 +717,7 @@ describe('CustomSsoProviders', () => {
             const user = userEvent.setup()
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -642,7 +741,7 @@ describe('CustomSsoProviders', () => {
             const user = userEvent.setup()
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         accountDomain="my-company"
                     />
@@ -662,14 +761,14 @@ describe('CustomSsoProviders', () => {
         })
     })
 
-    describe('Disabled state', () => {
-        it('disables provider items when disabled prop is true', () => {
+    describe('Loading state', () => {
+        it('disables provider items when isLoading prop is true', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={mockProviders}
-                        disabled={true}
+                        isLoading={true}
                     />
                 </Provider>,
             )
@@ -687,13 +786,13 @@ describe('CustomSsoProviders', () => {
             })
         })
 
-        it('enables provider items when disabled prop is false', () => {
+        it('enables provider items when isLoading prop is false', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={mockProviders}
-                        disabled={false}
+                        isLoading={false}
                     />
                 </Provider>,
             )
@@ -716,7 +815,10 @@ describe('CustomSsoProviders', () => {
         it('handles empty providers object', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} providers={{}} />
+                    <CustomSsoProvidersWithState
+                        {...defaultProps}
+                        providers={{}}
+                    />
                 </Provider>,
             )
 
@@ -731,7 +833,7 @@ describe('CustomSsoProviders', () => {
         it('handles undefined providers', () => {
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={undefined as any}
                     />
@@ -754,7 +856,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders {...defaultProps} />
+                    <CustomSsoProvidersWithState {...defaultProps} />
                 </Provider>,
             )
 
@@ -782,14 +884,16 @@ describe('CustomSsoProviders', () => {
             })
             await user.click(saveButton)
 
-            expect(mockOnUpdate).toHaveBeenCalledWith({
-                'first-provider-id': {
-                    name: 'First Provider',
-                    client_id: 'first-id',
-                    client_secret: 'first-secret',
-                    server_metadata_url:
-                        'https://first.com/.well-known/openid-configuration',
-                },
+            await waitFor(() => {
+                expect(mockOnUpdate).toHaveBeenCalledWith({
+                    'first-provider-id': {
+                        name: 'First Provider',
+                        client_id: 'first-id',
+                        client_secret: 'first-secret',
+                        server_metadata_url:
+                            'https://first.com/.well-known/openid-configuration',
+                    },
+                })
             })
         })
 
@@ -805,7 +909,7 @@ describe('CustomSsoProviders', () => {
 
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={incompleteProviders}
                     />
@@ -823,7 +927,7 @@ describe('CustomSsoProviders', () => {
             const user = userEvent.setup()
             render(
                 <Provider store={mockStore}>
-                    <CustomSsoProviders
+                    <CustomSsoProvidersWithState
                         {...defaultProps}
                         providers={mockProviders}
                     />

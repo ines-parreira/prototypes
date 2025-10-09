@@ -23,6 +23,7 @@ describe('CustomSsoProviderModal', () => {
         mode: 'create' as const,
         onClose: mockOnClose,
         onSave: mockOnSave,
+        isLoading: false,
     }
 
     const mockInitialData: CustomSSOProviderData = {
@@ -127,7 +128,7 @@ describe('CustomSsoProviderModal', () => {
 
             expect(providerNameField).toHaveValue('Existing Provider')
             expect(clientIdField).toHaveValue('existing-client-id')
-            expect(clientSecretField).toHaveValue('') // Empty in edit mode
+            expect(clientSecretField).toHaveValue('')
             expect(metadataUrlField).toHaveValue(
                 'https://existing.provider.com',
             )
@@ -398,7 +399,7 @@ describe('CustomSsoProviderModal', () => {
             expect(saveButton).toBeEnabled()
         })
 
-        it('sends empty client secret when not changed in edit mode', async () => {
+        it('sends undefined client secret when not changed in edit mode', async () => {
             const user = userEvent.setup()
             render(
                 <Provider store={mockStore}>
@@ -419,7 +420,7 @@ describe('CustomSsoProviderModal', () => {
 
             expect(mockOnSave).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    clientSecret: '',
+                    clientSecret: undefined,
                 }),
                 'provider-123',
             )

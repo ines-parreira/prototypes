@@ -14,7 +14,7 @@ type Props = {
     loading: boolean
     disabled: boolean
 
-    setValue: (val: boolean) => Promise<void>
+    setValue: (val: boolean) => Promise<unknown>
 }
 
 export const SsoToggleButton = (props: Props) => {

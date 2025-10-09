@@ -1,20 +1,15 @@
 import { act, renderHook } from '@testing-library/react'
 
 import type { CustomSSOProviderData, ModalMode } from '../../types'
-import {
-    useCustomSsoProviderModal,
-    useCustomSsoProviderModalState,
-} from '../useCustomSsoProviderModal'
+import { useCustomSsoProviderModal } from '../useCustomSsoProviderModal'
 
 describe('useCustomSsoProviderModal', () => {
-    const mockOnClose = jest.fn()
     const mockOnSave = jest.fn()
 
     const defaultProps = {
         initialData: null as CustomSSOProviderData | null,
         isOpen: true,
         mode: 'create' as ModalMode,
-        onClose: mockOnClose,
         onSave: mockOnSave,
         editingProviderId: null,
     }
@@ -42,7 +37,7 @@ describe('useCustomSsoProviderModal', () => {
 
                 expect(result.current.name).toBe('')
                 expect(result.current.clientId).toBe('')
-                expect(result.current.clientSecret).toBe('')
+                expect(result.current.clientSecret).toBeUndefined()
                 expect(result.current.metadataUrl).toBe('')
                 expect(result.current.isFormValid).toBe(false)
             })
@@ -58,7 +53,7 @@ describe('useCustomSsoProviderModal', () => {
 
                 expect(result.current.name).toBe('')
                 expect(result.current.clientId).toBe('')
-                expect(result.current.clientSecret).toBe('')
+                expect(result.current.clientSecret).toBeUndefined()
                 expect(result.current.metadataUrl).toBe('')
             })
         })
@@ -75,7 +70,7 @@ describe('useCustomSsoProviderModal', () => {
 
                 expect(result.current.name).toBe('Test Provider')
                 expect(result.current.clientId).toBe('test-client-id')
-                expect(result.current.clientSecret).toBe('')
+                expect(result.current.clientSecret).toBeUndefined()
                 expect(result.current.metadataUrl).toBe('https://test.okta.com')
             })
         })
@@ -142,7 +137,7 @@ describe('useCustomSsoProviderModal', () => {
                 )
 
                 act(() => {
-                    result.current.handleClientSecretChange('new-secret')
+                    result.current.setClientSecret('new-secret')
                 })
 
                 expect(result.current.clientSecret).toBe('new-secret')
@@ -157,7 +152,7 @@ describe('useCustomSsoProviderModal', () => {
                 )
 
                 act(() => {
-                    result.current.handleClientSecretChange('new-secret')
+                    result.current.setClientSecret('new-secret')
                 })
 
                 act(() => {
@@ -184,13 +179,13 @@ describe('useCustomSsoProviderModal', () => {
                 )
 
                 act(() => {
-                    result.current.handleClientSecretChange('updated-secret')
+                    result.current.setClientSecret('updated-secret')
                 })
 
                 expect(result.current.clientSecret).toBe('updated-secret')
             })
 
-            it('sends empty client secret when not changed in edit mode', () => {
+            it('sends undefined client secret when not changed in edit mode', () => {
                 const { result } = renderHook(() =>
                     useCustomSsoProviderModal({
                         ...defaultProps,
@@ -206,7 +201,7 @@ describe('useCustomSsoProviderModal', () => {
 
                 expect(mockOnSave).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        clientSecret: '',
+                        clientSecret: undefined,
                     }),
                     'provider-123',
                 )
@@ -223,7 +218,7 @@ describe('useCustomSsoProviderModal', () => {
                 )
 
                 act(() => {
-                    result.current.handleClientSecretChange('updated-secret')
+                    result.current.setClientSecret('updated-secret')
                 })
 
                 act(() => {
@@ -235,35 +230,6 @@ describe('useCustomSsoProviderModal', () => {
                         clientSecret: 'updated-secret',
                     }),
                     'provider-123',
-                )
-            })
-
-            it('tracks secret change state correctly', () => {
-                const { result } = renderHook(() =>
-                    useCustomSsoProviderModal({
-                        ...defaultProps,
-                        mode: 'edit',
-                        initialData: mockInitialData,
-                    }),
-                )
-
-                act(() => {
-                    result.current.handleClientSecretChange('new-secret')
-                })
-
-                act(() => {
-                    result.current.handleClientSecretChange('')
-                })
-
-                act(() => {
-                    result.current.handleSave()
-                })
-
-                expect(mockOnSave).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        clientSecret: '',
-                    }),
-                    null,
                 )
             })
         })
@@ -282,7 +248,7 @@ describe('useCustomSsoProviderModal', () => {
                 act(() => {
                     result.current.setName('Test Provider')
                     result.current.setClientId('client-123')
-                    result.current.handleClientSecretChange('secret-456')
+                    result.current.setClientSecret('secret-456')
                     result.current.setMetadataUrl('https://test.com')
                 })
 
@@ -320,76 +286,6 @@ describe('useCustomSsoProviderModal', () => {
                     expect.any(Object),
                     'provider-123',
                 )
-            })
-
-            it('calls onClose after saving', () => {
-                const { result } = renderHook(() =>
-                    useCustomSsoProviderModal(defaultProps),
-                )
-
-                act(() => {
-                    result.current.handleSave()
-                })
-
-                expect(mockOnClose).toHaveBeenCalledTimes(1)
-            })
-
-            it('resets form state after saving', () => {
-                const { result } = renderHook(() =>
-                    useCustomSsoProviderModal(defaultProps),
-                )
-
-                act(() => {
-                    result.current.setName('Test')
-                    result.current.setClientId('test-id')
-                    result.current.handleClientSecretChange('test-secret')
-                    result.current.setMetadataUrl('https://test.com')
-                })
-
-                act(() => {
-                    result.current.handleSave()
-                })
-
-                expect(result.current.name).toBe('')
-                expect(result.current.clientId).toBe('')
-                expect(result.current.clientSecret).toBe('')
-                expect(result.current.metadataUrl).toBe('')
-            })
-        })
-
-        describe('handleClose', () => {
-            it('calls onClose', () => {
-                const { result } = renderHook(() =>
-                    useCustomSsoProviderModal(defaultProps),
-                )
-
-                act(() => {
-                    result.current.handleClose()
-                })
-
-                expect(mockOnClose).toHaveBeenCalledTimes(1)
-            })
-
-            it('resets form state when closing', () => {
-                const { result } = renderHook(() =>
-                    useCustomSsoProviderModal(defaultProps),
-                )
-
-                act(() => {
-                    result.current.setName('Test')
-                    result.current.setClientId('test-id')
-                    result.current.handleClientSecretChange('test-secret')
-                    result.current.setMetadataUrl('https://test.com')
-                })
-
-                act(() => {
-                    result.current.handleClose()
-                })
-
-                expect(result.current.name).toBe('')
-                expect(result.current.clientId).toBe('')
-                expect(result.current.clientSecret).toBe('')
-                expect(result.current.metadataUrl).toBe('')
             })
         })
     })
@@ -483,7 +379,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl('https://test.okta.com')
             })
 
@@ -511,7 +407,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl(
                     'https://test.okta.com/.well-known/openid-configuration',
                 )
@@ -541,7 +437,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl('test.okta.com///')
             })
 
@@ -569,7 +465,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl(
                     'https://my-domain.onelogin.com/oidc/2/.well-known/openid-configuration/',
                 )
@@ -599,7 +495,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl('my-domain.okta.com')
             })
 
@@ -627,7 +523,7 @@ describe('useCustomSsoProviderModal', () => {
             act(() => {
                 result.current.setName('Test Provider')
                 result.current.setClientId('client-123')
-                result.current.handleClientSecretChange('secret-456')
+                result.current.setClientSecret('secret-456')
                 result.current.setMetadataUrl('  ')
             })
 
@@ -641,86 +537,6 @@ describe('useCustomSsoProviderModal', () => {
                 }),
                 null,
             )
-        })
-    })
-
-    describe('Client Secret Security', () => {
-        it('sanitizes client secret when opening edit modal', () => {
-            const mockProviderDataWithSecret = {
-                name: 'Test Provider',
-                clientId: 'test-client-id',
-                clientSecret: 'SENSITIVE-SECRET-FROM-BACKEND',
-                metadataUrl: 'https://test.okta.com',
-            }
-
-            const { result } = renderHook(() =>
-                useCustomSsoProviderModalState({
-                    onSave: jest.fn(),
-                }),
-            )
-
-            act(() => {
-                result.current.openEditModal(
-                    'provider-123',
-                    mockProviderDataWithSecret,
-                )
-            })
-
-            // The editingProviderData should have client secret stripped
-            expect(result.current.editingProviderData).toEqual({
-                name: 'Test Provider',
-                clientId: 'test-client-id',
-                clientSecret: '', // Should be empty, not the original secret
-                metadataUrl: 'https://test.okta.com',
-            })
-        })
-
-        it('does not leak client secret through initialData in edit mode', () => {
-            const mockProviderDataWithSecret = {
-                name: 'Test Provider',
-                clientId: 'test-client-id',
-                clientSecret: 'SENSITIVE-SECRET-FROM-BACKEND',
-                metadataUrl: 'https://test.okta.com',
-            }
-
-            const { result: modalStateResult } = renderHook(() =>
-                useCustomSsoProviderModalState({
-                    onSave: jest.fn(),
-                }),
-            )
-
-            // Open edit modal with provider data containing secret
-            act(() => {
-                modalStateResult.current.openEditModal(
-                    'provider-123',
-                    mockProviderDataWithSecret,
-                )
-            })
-
-            // Now test the main modal hook with the sanitized data
-            const { result: modalResult } = renderHook(() =>
-                useCustomSsoProviderModal({
-                    initialData: modalStateResult.current.editingProviderData,
-                    isOpen: true,
-                    mode: 'edit',
-                    onClose: jest.fn(),
-                    onSave: jest.fn(),
-                    editingProviderId: 'provider-123',
-                }),
-            )
-
-            // The client secret should be empty in the form
-            expect(modalResult.current.clientSecret).toBe('')
-
-            // Even if we try to save without changing the secret, it should send empty string
-            act(() => {
-                modalResult.current.handleSave()
-            })
-
-            // Verify that save was called with empty client secret
-            expect(
-                modalStateResult.current.editingProviderData?.clientSecret,
-            ).toBe('')
         })
     })
 
@@ -778,7 +594,7 @@ describe('useCustomSsoProviderModal', () => {
 
             expect(result.current.name).toBe('Provider Name')
             expect(result.current.clientId).toBe('client-123')
-            expect(result.current.clientSecret).toBe('')
+            expect(result.current.clientSecret).toBeUndefined()
             expect(result.current.metadataUrl).toBe('https://example.com')
         })
     })

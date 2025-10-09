@@ -19,16 +19,20 @@ import css from './CustomProviderSso.less'
 
 type CustomSsoProvidersProps = {
     accountDomain: string
-    disabled?: boolean
-    onUpdate: (providers: CustomSSOProviders) => void
+    isLoading?: boolean
+    onUpdate: (providers: CustomSSOProviders) => Promise<boolean>
     providers: CustomSSOProviders
+    showModal: boolean
+    setShowModal: (enabled: boolean) => void
 }
 
 const CustomSsoProviders = ({
     accountDomain,
-    disabled = false,
+    isLoading = false,
     onUpdate,
     providers = {},
+    showModal,
+    setShowModal,
 }: CustomSsoProvidersProps) => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentPlanName = currentHelpdeskPlan
@@ -56,25 +60,23 @@ const CustomSsoProviders = ({
                 server_metadata_url: providerData.metadataUrl,
             },
         }
-        onUpdate(newProviders)
+        return onUpdate(newProviders)
     }
 
     const updateProvider = (
         providerId: string,
         providerData: CustomSSOProviderData,
     ) => {
-        const existingProvider = providers[providerId]
         const newProviders = {
             ...providers,
             [providerId]: {
                 name: providerData.name,
                 client_id: providerData.clientId,
-                client_secret:
-                    providerData.clientSecret || existingProvider.client_secret,
+                client_secret: providerData.clientSecret,
                 server_metadata_url: providerData.metadataUrl,
             },
         }
-        onUpdate(newProviders)
+        return onUpdate(newProviders)
     }
 
     const handleSaveProvider = (
@@ -82,22 +84,21 @@ const CustomSsoProviders = ({
         providerId?: string | null,
     ) => {
         if (providerId) {
-            updateProvider(providerId, providerData)
-        } else {
-            createProvider(providerData)
+            return updateProvider(providerId, providerData)
         }
+        return createProvider(providerData)
     }
 
     const {
-        showModal,
         modalMode,
         editingProviderId,
         editingProviderData,
         openCreateModal,
         openEditModal,
-        closeModal,
         handleSaveProvider: handleModalSave,
     } = useCustomSsoProviderModalState({
+        showModal: showModal,
+        setShowModal: setShowModal,
         onSave: handleSaveProvider,
     })
 
@@ -106,7 +107,6 @@ const CustomSsoProviders = ({
         const providerData = {
             name: provider.name,
             clientId: provider.client_id,
-            clientSecret: provider.client_secret,
             metadataUrl: provider.server_metadata_url,
         }
         openEditModal(providerId, providerData)
@@ -115,6 +115,10 @@ const CustomSsoProviders = ({
     const handleDeleteProvider = (providerId: string) => {
         const { [providerId]: __deleted, ...remainingProviders } = providers
         onUpdate(remainingProviders)
+    }
+
+    const hideModal = () => {
+        setShowModal(false)
     }
 
     const providerEntries = Object.entries(providers || {})
@@ -129,7 +133,7 @@ const CustomSsoProviders = ({
                 <Box flexDirection="column">
                     {providerEntries.map(([providerId, provider]) => (
                         <ProviderItem
-                            disabled={disabled}
+                            disabled={isLoading}
                             key={providerId}
                             onDelete={handleDeleteProvider}
                             onEdit={handleEditProvider}
@@ -145,8 +149,9 @@ const CustomSsoProviders = ({
                     initialData={editingProviderData}
                     isOpen={showModal}
                     mode={modalMode}
-                    onClose={closeModal}
+                    onClose={hideModal}
                     onSave={handleModalSave}
+                    isLoading={isLoading}
                 />
             </Box>
 
@@ -157,7 +162,7 @@ const CustomSsoProviders = ({
                     })}
                     fillStyle="fill"
                     intent="secondary"
-                    isDisabled={disabled}
+                    isDisabled={!showModal && isLoading}
                     onClick={openCreateModal}
                     size="small"
                 >

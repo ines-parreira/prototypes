@@ -11,24 +11,27 @@ const validateProviderName = (name: string) => {
 }
 
 const validateProviderUrl = (url: string) => {
-    if (!url.trim()) {
+    url = url.trim()
+    if (!url) {
         return 'Provider URL is required'
     }
 
-    const trimmedUrl = url.trim()
+    // add `https://` prefix if missing
+    if (!url.startsWith('https://')) {
+        url = `https://${url}`
+    }
 
-    // Try to validate as-is first (for full URLs)
+    // should have top-level domain (local urls are not valid)
+    if (!url.match(/\w+\.\w+/)) {
+        return 'Please enter a valid URL or domain'
+    }
+
+    // validate URL
     try {
-        new URL(trimmedUrl)
+        new URL(url)
         return null
     } catch {
-        // If that fails, try adding https:// prefix (for domain-only URLs)
-        try {
-            new URL(`https://${trimmedUrl}`)
-            return null
-        } catch {
-            return 'Please enter a valid URL or domain'
-        }
+        return 'Please enter a valid URL or domain'
     }
 }
 
@@ -68,7 +71,7 @@ export const useAccessManagementForm = ({
         () => ({
             providerName: validateProviderName(providerName),
             clientId: validateClientId(clientId),
-            clientSecret: validateClientSecret(clientSecret, mode),
+            clientSecret: validateClientSecret(clientSecret || '', mode),
             metadataUrl: validateProviderUrl(metadataUrl),
         }),
         [providerName, clientId, clientSecret, mode, metadataUrl],

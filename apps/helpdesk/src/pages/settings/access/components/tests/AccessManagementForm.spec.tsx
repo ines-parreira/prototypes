@@ -9,7 +9,7 @@ describe('AccessManagementForm', () => {
     const mockSetName = jest.fn()
     const mockSetClientId = jest.fn()
     const mockSetMetadataUrl = jest.fn()
-    const mockHandleClientSecretChange = jest.fn()
+    const mockSetClientSecret = jest.fn()
     const mockOnValidationChange = jest.fn()
 
     // Create a minimal mock store for Redux Provider
@@ -23,7 +23,7 @@ describe('AccessManagementForm', () => {
         callbackUrl: 'https://test-domain.gorgias.com/idp/sso/oidc/callback',
         clientId: 'test-client-id',
         clientSecret: 'test-secret',
-        handleClientSecretChange: mockHandleClientSecretChange,
+        setClientSecret: mockSetClientSecret,
         metadataUrl: 'https://test.okta.com',
         mode: 'create' as const,
         providerName: 'Test Provider',
@@ -214,7 +214,7 @@ describe('AccessManagementForm', () => {
 
                 expect(mockSetName).toHaveBeenCalled()
                 expect(mockSetClientId).toHaveBeenCalled()
-                expect(mockHandleClientSecretChange).toHaveBeenCalled()
+                expect(mockSetClientSecret).toHaveBeenCalled()
                 expect(mockSetMetadataUrl).toHaveBeenCalled()
             })
 

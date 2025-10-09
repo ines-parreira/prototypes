@@ -38,31 +38,27 @@ export const useCustomSsoProviderModal = ({
     initialData,
     isOpen,
     mode,
-    onClose,
     onSave,
     editingProviderId,
 }: UseCustomSsoProviderModalProps) => {
     const [name, setName] = useState('')
     const [clientId, setClientId] = useState('')
-    const [clientSecret, setClientSecret] = useState('')
+    const [clientSecret, setClientSecret] = useState<string | undefined>()
     const [metadataUrl, setMetadataUrl] = useState('')
-    const [hasClientSecretChanged, setHasClientSecretChanged] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
 
     // Reset form when modal opens/closes or mode/data changes
     useEffect(() => {
-        const isEditWithData = mode === 'edit' && initialData
-        const nameValue = isEditWithData ? initialData.name : ''
-        const clientIdValue = isEditWithData ? initialData.clientId : ''
-        const clientSecretValue = ''
-        const metadataUrlValue = isEditWithData ? initialData.metadataUrl : ''
-        const hasSecretChangedValue = false
-
-        setName(nameValue)
-        setClientId(clientIdValue)
-        setClientSecret(clientSecretValue)
-        setMetadataUrl(metadataUrlValue)
-        setHasClientSecretChanged(hasSecretChangedValue)
+        setClientSecret(undefined)
+        if (mode === 'edit' && initialData) {
+            setName(initialData.name)
+            setClientId(initialData.clientId)
+            setMetadataUrl(initialData.metadataUrl)
+        } else {
+            setName('')
+            setClientId('')
+            setMetadataUrl('')
+        }
     }, [mode, initialData, isOpen])
 
     const handleSave = () => {
@@ -73,28 +69,10 @@ export const useCustomSsoProviderModal = ({
             name,
             clientId,
             metadataUrl: formattedMetadataUrl,
-            clientSecret:
-                mode === 'edit' && !hasClientSecretChanged ? '' : clientSecret,
+            clientSecret: clientSecret,
         }
 
         onSave(providerData, editingProviderId)
-        handleClose()
-    }
-
-    const handleClose = () => {
-        setName('')
-        setClientId('')
-        setClientSecret('')
-        setMetadataUrl('')
-        setHasClientSecretChanged(false)
-        onClose()
-    }
-
-    const handleClientSecretChange = (value: string) => {
-        setClientSecret(value)
-        if (mode === 'edit') {
-            setHasClientSecretChanged(value !== '')
-        }
     }
 
     return {
@@ -109,19 +87,18 @@ export const useCustomSsoProviderModal = ({
         setName,
         setClientId,
         setMetadataUrl,
-        handleClientSecretChange,
+        setClientSecret,
         setIsFormValid,
 
         // Modal handlers
         handleSave,
-        handleClose,
     }
 }
 
 export const useCustomSsoProviderModalState = ({
+    setShowModal,
     onSave,
 }: UseCustomSsoProviderModalStateProps) => {
-    const [showModal, setShowModal] = useState(false)
     const [modalMode, setModalMode] = useState<ModalMode>('create')
     const [editingProviderId, setEditingProviderId] = useState<string | null>(
         null,
@@ -141,31 +118,23 @@ export const useCustomSsoProviderModalState = ({
         providerData: CustomSSOProviderData,
     ) => {
         setEditingProviderId(providerId)
-        setEditingProviderData({
-            ...providerData,
-            clientSecret: '',
-        })
+        setEditingProviderData(providerData)
         setModalMode('edit')
         setShowModal(true)
     }
 
-    const closeModal = () => {
-        setShowModal(false)
-        setEditingProviderId(null)
-        setEditingProviderData(null)
-    }
-
-    const handleSaveProvider = (
+    const handleSaveProvider = async (
         providerData: CustomSSOProviderData,
         providerId?: string | null,
     ) => {
-        onSave(providerData, providerId)
-        closeModal()
+        const success = await onSave(providerData, providerId)
+        if (success) {
+            setShowModal(false)
+        }
     }
 
     return {
         // Modal state
-        showModal,
         modalMode,
         editingProviderId,
         editingProviderData,
@@ -173,7 +142,6 @@ export const useCustomSsoProviderModalState = ({
         // Modal actions
         openCreateModal,
         openEditModal,
-        closeModal,
         handleSaveProvider,
     }
 }

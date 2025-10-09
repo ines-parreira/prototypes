@@ -12,8 +12,7 @@ import css from '../CustomProviderSso.less'
 type AccessManagementFormProps = {
     callbackUrl: string
     clientId: string
-    clientSecret: string
-    handleClientSecretChange: (value: string) => void
+    clientSecret?: string
     metadataUrl: string
     mode: ModalMode
     onValidationChange?: (isValid: boolean) => void
@@ -21,13 +20,14 @@ type AccessManagementFormProps = {
     setClientId: (value: string) => void
     setMetadataUrl: (value: string) => void
     setName: (value: string) => void
+    setClientSecret: (value: string) => void
 }
 
 export const AccessManagementForm = ({
     callbackUrl,
     clientId,
     clientSecret,
-    handleClientSecretChange,
+    setClientSecret,
     metadataUrl,
     mode,
     onValidationChange,
@@ -131,7 +131,7 @@ export const AccessManagementForm = ({
                         isRequired={mode === 'create'}
                         label="Client secret"
                         onBlur={() => markFieldAsTouched('clientSecret')}
-                        onChange={handleClientSecretChange}
+                        onChange={setClientSecret}
                         placeholder={
                             mode === 'edit'
                                 ? '••••••••'

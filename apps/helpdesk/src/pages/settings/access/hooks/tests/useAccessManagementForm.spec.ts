@@ -135,21 +135,22 @@ describe('useAccessManagementForm', () => {
                     null,
                     true,
                 ],
-                ['https://my-domain.onelogin.com/oidc/2', null, true],
-                ['http://localhost:8080/auth', null, true],
+                [
+                    'http://localhost:8080/auth',
+                    'Please enter a valid URL or domain',
+                    false,
+                ],
                 ['https://auth.example.com/oauth2/default', null, true],
-                ['ftp://example.com', null, true],
                 ['https://example.com:8080', null, true],
-                ['https://example.com/path', null, true],
                 ['//example.com', null, true], // Valid - protocol-relative URL
-                ['example.com', null, true], // Now valid - domain without protocol
-                ['test.okta.com', null, true], // Now valid - domain without protocol
-                ['my-domain.onelogin.com', null, true], // Now valid - domain without protocol
-                ['subdomain.example.com', null, true], // Now valid - domain without protocol
-                ['localhost:8080', null, true], // Now valid - localhost with port
-                ['192.168.1.1', null, true], // Now valid - IP address
-                ['192.168.1.1:8080', null, true], // Now valid - IP with port
-                ['invalid..domain', null, true], // Valid according to URL constructor
+                ['example.com', null, true],
+                ['subdomain.example.com', null, true],
+                ['localhost:8080', 'Please enter a valid URL or domain', false],
+                [
+                    'invalid..domain',
+                    'Please enter a valid URL or domain',
+                    false,
+                ],
                 [
                     'space in domain.com',
                     'Please enter a valid URL or domain',

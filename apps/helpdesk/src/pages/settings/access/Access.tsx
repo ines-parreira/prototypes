@@ -15,6 +15,7 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import { submitSetting } from 'state/currentAccount/actions'
+import { UPDATE_ACCOUNT_SETTING } from 'state/currentAccount/constants'
 import {
     getAccessSettings,
     getTwoFAEnforcedDatetime,
@@ -75,6 +76,15 @@ function validateDomains(domains: string): string {
         .join('\n')
 }
 
+function hasDispatchResultType(value: unknown): value is { type: string } {
+    return (
+        value !== null &&
+        typeof value === 'object' &&
+        'type' in value &&
+        typeof value.type === 'string'
+    )
+}
+
 export const AccessContainer = (props: Props) => {
     const { accountDomain, accessSettings, submitSetting } = props
 
@@ -102,8 +112,7 @@ export const AccessContainer = (props: Props) => {
     const [allowedDomains, setAllowedDomains] = useState(
         allowedDomainsSetting.join('\n'),
     )
-    const [customSsoProvidersState, setCustomSsoProvidersState] =
-        useState<CustomSSOProviders>(customSsoProviders)
+    const [showCustomSSOModal, setShowCustomSSOModal] = useState(false)
 
     const domainError =
         validateDomains(allowedDomains) ||
@@ -125,11 +134,11 @@ export const AccessContainer = (props: Props) => {
                 google_sso_enabled: googleSsoEnabled,
                 office365_sso_enabled: office365SsoEnabled,
                 two_fa_enforced_datetime: twoFAEnforcedDatetime,
-                custom_sso_providers: customSsoProvidersState,
+                custom_sso_providers: customSsoProviders,
             }
 
             setIsLoading(loadingKey)
-            await submitSetting(
+            const result = await submitSetting(
                 {
                     id: accessSettings.get('id'),
                     type: AccountSettingType.Access,
@@ -138,6 +147,10 @@ export const AccessContainer = (props: Props) => {
                 notification,
             )
             setIsLoading(undefined)
+            const success =
+                hasDispatchResultType(result) &&
+                result.type === UPDATE_ACCOUNT_SETTING
+            return success
         },
         [
             allowedDomains,
@@ -147,7 +160,7 @@ export const AccessContainer = (props: Props) => {
             googleSsoEnabled,
             office365SsoEnabled,
             twoFAEnforcedDatetime,
-            customSsoProvidersState,
+            customSsoProviders,
         ],
     )
 
@@ -204,7 +217,6 @@ export const AccessContainer = (props: Props) => {
 
     const handleCustomSsoProvidersUpdate = useCallback(
         (providers: CustomSSOProviders) => {
-            setCustomSsoProvidersState(providers)
             return saveSettings(
                 LoadingKey.CustomSSO,
                 {
@@ -246,6 +258,7 @@ export const AccessContainer = (props: Props) => {
                                 value={googleSsoEnabled}
                                 loading={isLoading === LoadingKey.GoogleSSO}
                                 disabled={
+                                    !showCustomSSOModal &&
                                     !!isLoading &&
                                     isLoading !== LoadingKey.GoogleSSO
                                 }
@@ -259,6 +272,7 @@ export const AccessContainer = (props: Props) => {
                             value={office365SsoEnabled}
                             loading={isLoading === LoadingKey.Office365SSO}
                             disabled={
+                                !showCustomSSOModal &&
                                 !!isLoading &&
                                 isLoading !== LoadingKey.Office365SSO
                             }
@@ -266,10 +280,12 @@ export const AccessContainer = (props: Props) => {
                         />
 
                         <CustomSsoProviders
-                            providers={customSsoProvidersState}
+                            providers={customSsoProviders}
                             accountDomain={accountDomain}
                             onUpdate={handleCustomSsoProvidersUpdate}
-                            disabled={!!isLoading}
+                            isLoading={!!isLoading}
+                            showModal={showCustomSSOModal}
+                            setShowModal={setShowCustomSSOModal}
                         />
 
                         <h4 className="mt-5 mb-2">Auto-join helpdesk</h4>
@@ -324,6 +340,7 @@ export const AccessContainer = (props: Props) => {
                             twoFAEnforcedDatetime={twoFAEnforcedDatetime}
                             loading={isLoading === LoadingKey.TwoFAEnforcement}
                             disabled={
+                                !showCustomSSOModal &&
                                 !!isLoading &&
                                 isLoading !== LoadingKey.TwoFAEnforcement
                             }
@@ -338,7 +355,7 @@ export const AccessContainer = (props: Props) => {
                                     isLoading === LoadingKey.Settings,
                             })}
                             disabled={
-                                !!isLoading ||
+                                (!showCustomSSOModal && !!isLoading) ||
                                 (signupMode === SignupMode.AllowedDomains &&
                                     !!domainError)
                             }

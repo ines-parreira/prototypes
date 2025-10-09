@@ -4,7 +4,6 @@ export type UseCustomSsoProviderModalProps = {
     initialData?: CustomSSOProviderData | null
     isOpen: boolean
     mode: ModalMode
-    onClose: () => void
     onSave: (
         providerData: CustomSSOProviderData,
         providerId?: string | null,
@@ -13,15 +12,17 @@ export type UseCustomSsoProviderModalProps = {
 }
 
 export type UseCustomSsoProviderModalStateProps = {
+    showModal: boolean
+    setShowModal: (enabled: boolean) => void
     onSave: (
         providerData: CustomSSOProviderData,
         providerId?: string | null,
-    ) => void
+    ) => Promise<boolean>
 }
 
 export type UseAccessManagementFormProps = {
     clientId: string
-    clientSecret: string
+    clientSecret?: string
     metadataUrl: string
     mode: ModalMode
     onValidationChange?: (isValid: boolean) => void

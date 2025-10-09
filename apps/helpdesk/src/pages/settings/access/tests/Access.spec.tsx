@@ -188,7 +188,9 @@ describe('<Access/>', () => {
 
     it('should save the settings when the submit button is clicked', async () => {
         const user = userEvent.setup()
-        const submitSetting = jest.fn()
+        const submitSetting = jest.fn().mockResolvedValue({
+            type: 'UPDATE_ACCOUNT_SETTING',
+        })
         const { getByText } = render(
             <Provider store={mockStore()}>
                 <AccessContainer

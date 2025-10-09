@@ -180,7 +180,7 @@ export type AccountViewsOrderingSettingData = {
 export interface CustomSSOProvider {
     name: string
     client_id: string
-    client_secret: string
+    client_secret?: string
     server_metadata_url: string
 }
 

@@ -30,6 +30,7 @@ type CustomSsoProviderModalProps = {
         providerData: CustomSSOProviderData,
         providerId?: string | null,
     ) => void
+    isLoading: boolean
 }
 
 const CustomSsoProviderModal = ({
@@ -40,6 +41,7 @@ const CustomSsoProviderModal = ({
     mode,
     onClose,
     onSave,
+    isLoading,
 }: CustomSsoProviderModalProps) => {
     const {
         name,
@@ -50,15 +52,13 @@ const CustomSsoProviderModal = ({
         setName,
         setClientId,
         setMetadataUrl,
-        handleClientSecretChange,
+        setClientSecret,
         setIsFormValid,
         handleSave,
-        handleClose,
     } = useCustomSsoProviderModal({
         initialData,
         isOpen,
         mode,
-        onClose,
         onSave,
         editingProviderId,
     })
@@ -66,7 +66,7 @@ const CustomSsoProviderModal = ({
     const callbackUrl = `https://${accountDomain}.gorgias.com/idp/sso/oidc/callback`
 
     return (
-        <Modal isOpen={isOpen} onClose={handleClose} size="large">
+        <Modal isOpen={isOpen} onClose={onClose} size="large">
             <ModalHeader
                 title={
                     mode === 'create'
@@ -81,7 +81,7 @@ const CustomSsoProviderModal = ({
                     callbackUrl={callbackUrl}
                     clientId={clientId}
                     clientSecret={clientSecret}
-                    handleClientSecretChange={handleClientSecretChange}
+                    setClientSecret={setClientSecret}
                     metadataUrl={metadataUrl}
                     mode={mode}
                     onValidationChange={setIsFormValid}
@@ -96,14 +96,16 @@ const CustomSsoProviderModal = ({
                 <Box>
                     <Button
                         intent="secondary"
-                        onClick={handleClose}
+                        onClick={onClose}
                         style={{ marginRight: '16px' }}
+                        isDisabled={isLoading}
                     >
                         Cancel
                     </Button>
                     <Button
                         intent="primary"
                         isDisabled={!isFormValid}
+                        isLoading={isLoading}
                         onClick={handleSave}
                     >
                         {mode === 'create'
