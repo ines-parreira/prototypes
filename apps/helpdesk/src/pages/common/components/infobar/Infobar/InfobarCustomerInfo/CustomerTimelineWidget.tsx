@@ -79,7 +79,7 @@ const TimelineFieldButton = ({
         <div className={css.fieldContainer}>
             {hasUIVisionMS1 ? (
                 <NewButton
-                    leadingIcon="history"
+                    leadingSlot="history"
                     variant={isPrimary ? 'primary' : 'secondary'}
                     onClick={onClick}
                     size="sm"

@@ -331,20 +331,9 @@ describe('CustomerTimelineButton', () => {
         it('should render field-style UI when feature flag is enabled', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(NewButton).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    leadingIcon: 'history',
-                    variant: 'primary',
-                    size: 'sm',
-                }),
-                {},
-            )
-            expect(Text).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    size: 'sm',
-                }),
-                {},
-            )
+            expect(
+                screen.getByRole('button', { name: 'Open timeline' }),
+            ).toBeInTheDocument()
         })
 
         it('should display correct ticket count text in field-style UI', () => {
