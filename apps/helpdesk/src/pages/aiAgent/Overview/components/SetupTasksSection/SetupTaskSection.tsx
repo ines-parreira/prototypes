@@ -22,7 +22,7 @@ export const SetupTaskSection = ({
 }) => {
     const accountId = useAppSelector(getCurrentAccountId)
 
-    const { tasksConfigByCategory, isLoading, completionPercentage } =
+    const { tasksConfigByCategory, completionPercentage, postGoLiveStepId } =
         useGetSetupTasksConfigByCategory({
             accountId,
             shopName,
@@ -31,13 +31,25 @@ export const SetupTaskSection = ({
 
     const categories = Object.keys(tasksConfigByCategory) as TasksCategoryKey[]
     const [selectedCategory, setSelectedCategory] =
-        useState<TasksCategoryKey | null>(categories[0] || null)
+        useState<TasksCategoryKey | null>(null)
+
+    const defaultCategory =
+        categories.find((category) => {
+            const categoryTasks = tasksConfigByCategory[category] || []
+            return categoryTasks.some((task) => !task.isCompleted)
+        }) ||
+        categories[categories.length - 1] ||
+        null
+
+    if (defaultCategory !== null && selectedCategory === null) {
+        setSelectedCategory(defaultCategory)
+    }
 
     const selectedCategoryTasks: TaskConfig[] = selectedCategory
         ? tasksConfigByCategory[selectedCategory] || []
         : []
 
-    if (isLoading || categories.length === 0) {
+    if (categories.length === 0) {
         return null
     }
 
@@ -65,6 +77,8 @@ export const SetupTaskSection = ({
                 />
                 <CategoryContent
                     selectedCategoryTasks={selectedCategoryTasks}
+                    shopName={shopName}
+                    postGoLiveStepId={postGoLiveStepId}
                 />
             </div>
         </div>

@@ -1,29 +1,17 @@
-import { useEffect, useMemo, useRef } from 'react'
-
-import { useQueryClient } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
+import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
-    postStoreInstallationStepsKeys,
-    useGetPostStoreInstallationStepsPure,
-    useUpdateStepConfigurationPure,
-} from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
-    PostStoreInstallationStepType,
-    StepName,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
-import {
-    RULE_ENGINE_TASK_TO_STEP_NAME,
-    TASK_CONFIG_TEMPLATES,
-} from 'pages/aiAgent/Overview/components/SetupTasksSection/config'
-import {
-    TaskConfig,
     TasksCategory,
     TasksConfigByCategory,
 } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
+
+import { createRuleEngineTaskMap, createStepMapper } from '../utils/utils'
+import { useSyncStepConfiguration } from './useSyncStepConfiguration'
 
 interface UseGetSetupTasksConfigByCategoryParams {
     accountId: number
@@ -31,15 +19,20 @@ interface UseGetSetupTasksConfigByCategoryParams {
     shopType: string
 }
 
+interface UseGetSetupTasksConfigByCategoryReturn {
+    tasksConfigByCategory: Partial<TasksConfigByCategory>
+    completionPercentage: number
+    isLoading: boolean
+    postGoLiveStepId: string | undefined
+    error: unknown
+}
+
 export const useGetSetupTasksConfigByCategory = ({
     accountId,
     shopName,
     shopType,
-}: UseGetSetupTasksConfigByCategoryParams) => {
+}: UseGetSetupTasksConfigByCategoryParams): UseGetSetupTasksConfigByCategoryReturn => {
     const accountDomain = useAppSelector(getCurrentDomain)
-    const queryClient = useQueryClient()
-    const isSyncingRef = useRef(false)
-    const syncedStepsRef = useRef<Set<string>>(new Set())
 
     const {
         data,
@@ -68,9 +61,6 @@ export const useGetSetupTasksConfigByCategory = ({
         additionalScope: 'overview',
     })
 
-    const { mutateAsync: updateStepConfiguration } =
-        useUpdateStepConfigurationPure()
-
     const postGoLiveStep = useMemo(
         () =>
             data?.postStoreInstallationSteps?.find(
@@ -80,122 +70,25 @@ export const useGetSetupTasksConfigByCategory = ({
         [data],
     )
 
-    useEffect(() => {
-        if (!postGoLiveStep || isRuleEngineLoading || isSyncingRef.current) {
-            return
-        }
-
-        const allRuleEngineTasks = [...pendingTasks, ...completedTasks]
-        const ruleEngineTaskMap = new Map<StepName, Task>(
-            allRuleEngineTasks
-                .map((task) => {
-                    const stepName = RULE_ENGINE_TASK_TO_STEP_NAME.get(
-                        task.constructor.name,
-                    )
-                    return [stepName, task] as const
-                })
-                .filter(
-                    (entry): entry is [StepName, Task] =>
-                        entry[0] !== undefined,
-                ),
-        )
-
-        const syncTasks = async () => {
-            isSyncingRef.current = true
-            let hasChanges = false
-
-            for (const dbStep of postGoLiveStep.stepsConfiguration) {
-                const ruleEngineTask = ruleEngineTaskMap.get(dbStep.stepName)
-
-                if (!ruleEngineTask) {
-                    continue
-                }
-
-                if (!ruleEngineTask.isCheckedAutomatically) {
-                    continue
-                }
-
-                const isCompletedInRuleEngine = !ruleEngineTask.display
-                const isCompletedInDb = !!dbStep.stepCompletedDatetime
-
-                const syncKey = `${dbStep.stepName}-${isCompletedInRuleEngine}`
-                if (syncedStepsRef.current.has(syncKey)) {
-                    continue
-                }
-
-                if (isCompletedInRuleEngine !== isCompletedInDb) {
-                    try {
-                        await updateStepConfiguration([
-                            postGoLiveStep.id,
-                            {
-                                stepName: dbStep.stepName,
-                                stepCompletedDatetime: isCompletedInRuleEngine
-                                    ? new Date().toISOString()
-                                    : null,
-                            },
-                        ])
-
-                        syncedStepsRef.current.add(syncKey)
-                        hasChanges = true
-                    } catch (error) {
-                        console.error(
-                            `Failed to sync step ${dbStep.stepName}:`,
-                            error,
-                        )
-                    }
-                }
-            }
-
-            if (hasChanges) {
-                await queryClient.invalidateQueries({
-                    queryKey: postStoreInstallationStepsKeys.detail({
-                        accountDomain: String(accountId),
-                        shopName,
-                    }),
-                })
-            }
-
-            isSyncingRef.current = false
-        }
-
-        syncTasks()
-    }, [
+    useSyncStepConfiguration({
         postGoLiveStep,
         pendingTasks,
         completedTasks,
         isRuleEngineLoading,
-        updateStepConfiguration,
-        queryClient,
         accountId,
         shopName,
-    ])
+    })
 
     const tasksConfigByCategory: Partial<TasksConfigByCategory> =
         useMemo(() => {
-            if (!postGoLiveStep) {
+            if (!postGoLiveStep?.stepsConfiguration?.length) {
                 return {}
             }
 
             const postGoLiveSteps = postGoLiveStep.stepsConfiguration
-
-            if (postGoLiveSteps.length === 0) {
-                return {}
-            }
-
-            const allRuleEngineTasks = [...pendingTasks, ...completedTasks]
-
-            const ruleEngineTaskMap = new Map<StepName, Task>(
-                allRuleEngineTasks
-                    .map((task) => {
-                        const stepName = RULE_ENGINE_TASK_TO_STEP_NAME.get(
-                            task.constructor.name,
-                        )
-                        return [stepName, task] as const
-                    })
-                    .filter(
-                        (entry): entry is [StepName, Task] =>
-                            entry[0] !== undefined,
-                    ),
+            const ruleEngineTaskMap = createRuleEngineTaskMap(
+                pendingTasks,
+                completedTasks,
             )
 
             const stepNamesFromDb = new Set(
@@ -209,28 +102,11 @@ export const useGetSetupTasksConfigByCategory = ({
                 ]),
             )
 
-            const mapStepsForCategory = (
-                category: TasksCategory,
-            ): TaskConfig[] => {
-                return TASK_CONFIG_TEMPLATES[category]
-                    .filter((template) =>
-                        stepNamesFromDb.has(template.stepName),
-                    )
-                    .map((template) => {
-                        const ruleEngineTask = ruleEngineTaskMap.get(
-                            template.stepName,
-                        )
-                        return {
-                            stepName: template.stepName,
-                            displayName: template.displayName,
-                            isCompleted:
-                                stepCompletionMap.get(template.stepName) ??
-                                false,
-                            body: template.bodyComponent,
-                            featureUrl: ruleEngineTask?.featureUrl,
-                        }
-                    })
-            }
+            const mapStepsForCategory = createStepMapper(
+                stepNamesFromDb,
+                stepCompletionMap,
+                ruleEngineTaskMap,
+            )
 
             return Object.fromEntries(
                 Object.values(TasksCategory)
@@ -257,6 +133,7 @@ export const useGetSetupTasksConfigByCategory = ({
         tasksConfigByCategory,
         completionPercentage,
         isLoading: isDbLoading || isRuleEngineLoading,
+        postGoLiveStepId: postGoLiveStep?.id,
         error,
     }
 }

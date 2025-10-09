@@ -29,4 +29,8 @@ export class CreateAnActionTask extends Task {
     }): string {
         return aiAgentRoutes.actions
     }
+
+    protected getIsCheckedAutomatically(): boolean {
+        return true
+    }
 }

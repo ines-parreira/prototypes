@@ -64,25 +64,22 @@ describe('SetupTaskSection', () => {
         expect(screen.getByText('Deploy')).toBeInTheDocument()
     })
 
-    it('should show Essential category tasks by default', () => {
+    it('should show first incomplete category tasks by default', () => {
         renderComponent()
 
-        expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
         expect(
-            screen.getByText('Update Shopify permissions'),
+            screen.getByText(/Enable.*Trigger on Search/),
         ).toBeInTheDocument()
     })
 
     it('should switch category when clicking on a different tab', () => {
         renderComponent()
 
-        fireEvent.click(screen.getByText('Customize'))
+        fireEvent.click(screen.getByText('Essential'))
 
+        expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
         expect(
-            screen.getByText(/Enable.*Trigger on Search/),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByText('Verify your email domain'),
+            screen.queryByText(/Enable.*Trigger on Search/),
         ).not.toBeInTheDocument()
     })
 
@@ -114,6 +111,8 @@ describe('SetupTaskSection', () => {
     it('should show completed icon for completed tasks', () => {
         renderComponent()
 
+        fireEvent.click(screen.getByText('Essential'))
+
         const verifyEmailTask = screen.getByText('Verify your email domain')
         const updateShopifyTask = screen.getByText('Update Shopify permissions')
 
@@ -127,6 +126,8 @@ describe('SetupTaskSection', () => {
 
     it('should expand accordion item and show task body when clicked', async () => {
         renderComponent()
+
+        fireEvent.click(screen.getByText('Essential'))
 
         const verifyEmailTask = screen.getByText('Verify your email domain')
 
@@ -169,29 +170,29 @@ describe('SetupTaskSection', () => {
     it('should apply selected class to the currently selected category', () => {
         renderComponent()
 
-        let essentialTab = screen.getByText('Essential').parentElement
-        expect(essentialTab?.className).toMatch(/selected/)
+        let customizeTab = screen.getByText('Customize').parentElement
+        expect(customizeTab?.className).toMatch(/selected/)
 
         fireEvent.click(screen.getByText('Train'))
 
         const trainTab = screen.getByText('Train').parentElement
         expect(trainTab?.className).toMatch(/selected/)
 
-        essentialTab = screen.getByText('Essential').parentElement
-        expect(essentialTab?.className).not.toMatch(/selected/)
+        customizeTab = screen.getByText('Customize').parentElement
+        expect(customizeTab?.className).not.toMatch(/selected/)
     })
 
     it('should handle multiple category switches correctly', () => {
         renderComponent()
 
-        expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
-
-        fireEvent.click(screen.getByText('Customize'))
         expect(
             screen.getByText(/Enable.*Trigger on Search/),
         ).toBeInTheDocument()
+
+        fireEvent.click(screen.getByText('Essential'))
+        expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
         expect(
-            screen.queryByText('Verify your email domain'),
+            screen.queryByText(/Enable.*Trigger on Search/),
         ).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Train'))
@@ -216,6 +217,7 @@ describe('SetupTaskSection', () => {
             tasksConfigByCategory: {},
             completionPercentage: 0,
             isLoading: true,
+            postGoLiveStepId: undefined,
             error: null,
         })
 
@@ -229,6 +231,7 @@ describe('SetupTaskSection', () => {
             tasksConfigByCategory: {},
             completionPercentage: 0,
             isLoading: false,
+            postGoLiveStepId: undefined,
             error: null,
         })
 

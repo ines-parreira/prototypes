@@ -23,6 +23,7 @@ import { EnableSuggestedProductQuestionsTask } from './tasks/EnableSuggestedProd
 import { EnableTriggerOnSearchTask } from './tasks/EnableTriggerOnSearch.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
+import { ReviewAIAgentInteractionsTask } from './tasks/ReviewAIAgentInteractions.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
 import { SelectYourChatTask } from './tasks/SelectYourChat.task'
 import { SetYourActionsLiveTask } from './tasks/SetYourActionsLive.task'
@@ -58,6 +59,7 @@ export type RuleEngineData = {
     chatIntegrationsStatus?: ChatIntegrationsStatusData
     selfServiceChatChannels: SelfServiceChatChannel[]
     ticketView?: TicketViewData
+    ticketToReviewViewData?: TicketViewData
     pageInteractions: PageInteractionsData | null
     isActivationEnabled: boolean
     isAiShoppingAssistantEnabled: boolean
@@ -139,11 +141,11 @@ const tasksPerAiAgentType: Record<
     overview: (data: RuleEngineData, routes: RuleEngineRoutes) => [
         new VerifyYourEmailDomainTask(data, routes),
         new UpdateShopifyPermissionsRedirectTask(data, routes),
+        new CreateAnActionTask(data, routes),
+        new ReviewAIAgentInteractionsTask(data, routes),
         new EnableTriggerOnSearchTask(data, routes),
         new EnableSuggestedProductQuestionsTask(data, routes),
         new EnableAskAnythingInputTask(data, routes),
-        new CreateAnActionTask(data, routes),
-        new GiveFeedbackAIAgentTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
     ],

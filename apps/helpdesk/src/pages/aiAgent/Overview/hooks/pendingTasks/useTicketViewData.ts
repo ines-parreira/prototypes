@@ -7,10 +7,12 @@ export const useTicketViewData = ({
     accountDomain,
     refetchOnWindowFocus = true,
     retries = true,
+    viewType = 'Close',
 }: {
     accountDomain: string
     refetchOnWindowFocus?: boolean
     retries?: boolean
+    viewType?: string
 }): { isLoading: boolean; data?: TicketViewData } => {
     const [viewId, setViewId] = useState<number | undefined>(undefined)
     const [ticketId, setTicketId] = useState<number | undefined>(undefined)
@@ -29,12 +31,13 @@ export const useTicketViewData = ({
         }
 
         setViewId(
-            accountConfigurationData.data.accountConfiguration.views?.['Close']
+            accountConfigurationData.data.accountConfiguration.views?.[viewType]
                 ?.id,
         )
     }, [
         accountConfigurationDataStatus,
         accountConfigurationData?.data.accountConfiguration,
+        viewType,
     ])
 
     const { data: getViewTicketUpdateData, status: getViewTicketUpdateStatus } =

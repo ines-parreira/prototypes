@@ -116,6 +116,16 @@ export const usePendingTasksRuleEngine = ({
             retries: false,
         })
 
+    const {
+        isLoading: ticketToReviewViewDataIsLoading,
+        data: ticketToReviewViewData,
+    } = useTicketViewData({
+        accountDomain,
+        refetchOnWindowFocus,
+        retries: false,
+        viewType: 'To review',
+    })
+
     const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
     const alreadyUsedEmailIntegrationsIds =
@@ -168,7 +178,8 @@ export const usePendingTasksRuleEngine = ({
         chatIntegrationsStatusDataIsLoading ||
         ticketViewDataIsLoading ||
         pageInteractionsDataIsLoading ||
-        isStoresKnowledgeStatusDataLoading
+        isStoresKnowledgeStatusDataLoading ||
+        ticketToReviewViewDataIsLoading
 
     const isFetched =
         aiAgentStoreConfigurationIsFetched &&
@@ -213,6 +224,7 @@ export const usePendingTasksRuleEngine = ({
                 shopifyIntegration: shopifyPermissionsData,
                 chatIntegrationsStatus: chatIntegrationsStatusData,
                 ticketView: ticketViewData,
+                ticketToReviewViewData: ticketToReviewViewData,
                 pageInteractions: pageInteractionsData,
                 isActivationEnabled,
                 isAiShoppingAssistantEnabled,
@@ -239,6 +251,7 @@ export const usePendingTasksRuleEngine = ({
         shopifyPermissionsData,
         chatIntegrationsStatusData,
         ticketViewData,
+        ticketToReviewViewData,
         pageInteractionsData,
         isActivationEnabled,
         isAiShoppingAssistantEnabled,

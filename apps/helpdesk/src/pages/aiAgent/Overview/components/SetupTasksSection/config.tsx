@@ -20,10 +20,9 @@ import { EnableAIAgentOnEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTa
 import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAskAnythingInput.task'
 import { EnableSuggestedProductQuestionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableSuggestedProductQuestions.task'
 import { EnableTriggerOnSearchTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableTriggerOnSearch.task'
-import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
+import { ReviewAIAgentInteractionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/ReviewAIAgentInteractions.task'
+import { UpdateShopifyPermissionsRedirectTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissionsRedirect.task'
 import { VerifyYourEmailDomainTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/VerifyYourEmailDomain.task'
-
-import { UpdateShopifyPermissionsRedirectTask } from '../../hooks/pendingTasks/tasks/UpdateShopifyPermissionsRedirect.task'
 
 export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
     [VerifyYourEmailDomainTask.name, StepName.VERIFY_EMAIL_DOMAIN],
@@ -38,7 +37,7 @@ export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
     ],
     [EnableAskAnythingInputTask.name, StepName.ENABLE_ASK_ANYTHING],
     [CreateAnActionTask.name, StepName.CREATE_AN_ACTION],
-    [GiveFeedbackAIAgentTask.name, StepName.REVIEW_AI_AGENT_INTERACTIONS],
+    [ReviewAIAgentInteractionsTask.name, StepName.REVIEW_AI_AGENT_INTERACTIONS],
     [EnableAIAgentOnChatTask.name, StepName.ENABLE_AI_AGENT_ON_CHAT],
     [EnableAIAgentOnEmailTask.name, StepName.ENABLE_AI_AGENT_ON_EMAIL],
 ])
