@@ -58,6 +58,7 @@ export function TicketHeader({ ticket, additionalActions }: Props) {
             </div>
             <TicketFields
                 fieldValues={ticket.custom_fields}
+                ticket={ticket}
                 isMultiline
                 isBold
             />

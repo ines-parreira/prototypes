@@ -105,6 +105,7 @@ describe('TicketCard', () => {
         expect(TicketFields).toHaveBeenCalledWith(
             {
                 fieldValues: ticket.custom_fields,
+                ticket: ticket,
                 className: expect.any(String),
             },
             {},

@@ -142,6 +142,7 @@ describe('TicketHeader', () => {
         expect(TicketFields).toHaveBeenCalledWith(
             {
                 fieldValues: ticket.custom_fields,
+                ticket: ticket,
                 isMultiline: true,
                 isBold: true,
             },

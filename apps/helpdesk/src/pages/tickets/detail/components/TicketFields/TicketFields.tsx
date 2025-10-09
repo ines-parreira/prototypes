@@ -4,11 +4,11 @@ import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
-import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
+import { isFieldVisible } from 'custom-fields/helpers/isFieldVisible'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
@@ -28,18 +28,6 @@ import css from './TicketFields.less'
 
 const MIN_HEIGHT = 24
 const MAX_HEIGHT = 500
-
-const isFieldVisible = (
-    fieldDefinition: CustomField,
-    conditionalRequirementType?: ExpressionFieldType,
-): boolean => {
-    return (
-        (fieldDefinition.required === false &&
-            fieldDefinition.requirement_type !== RequirementType.Conditional) ||
-        (fieldDefinition.requirement_type === RequirementType.Conditional &&
-            conditionalRequirementType === ExpressionFieldType.Visible)
-    )
-}
 
 function TicketFields() {
     const dispatch = useAppDispatch()

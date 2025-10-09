@@ -48,6 +48,7 @@ export default function TicketCard({
                 </div>
                 <TicketFields
                     fieldValues={ticket.custom_fields}
+                    ticket={ticket}
                     className={css.ticketFields}
                 />
                 <div className={css.meta}>
