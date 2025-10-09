@@ -56,14 +56,27 @@ export const KnowledgeEditorSidePanelSection = ({
                                     css.disabledBottomLink,
                             )}
                         >
-                            <a
-                                href={bottomLink.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {bottomLink.text}{' '}
-                                <Icon name="external-link" size={IconSize.Sm} />
-                            </a>
+                            {bottomLink.url ? (
+                                <a
+                                    href={bottomLink.url || '#'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {bottomLink.text}{' '}
+                                    <Icon
+                                        name="external-link"
+                                        size={IconSize.Sm}
+                                    />
+                                </a>
+                            ) : (
+                                <span>
+                                    {bottomLink.text}{' '}
+                                    <Icon
+                                        name="external-link"
+                                        size={IconSize.Sm}
+                                    />
+                                </span>
+                            )}
                         </div>
                     )}
                 </Accordion.ItemContent>

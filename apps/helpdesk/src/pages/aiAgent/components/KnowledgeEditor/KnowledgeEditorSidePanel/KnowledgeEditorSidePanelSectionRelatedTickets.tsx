@@ -1,27 +1,30 @@
 import { useMemo } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { Icon, IconSize } from '@gorgias/axiom'
 
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
-import { KnowledgeEditorSidePanelFieldDescription } from '../KnowledgeEditorSidePanelCommonFields'
+import { KnowledgeEditorSidePanelFieldDescription } from './KnowledgeEditorSidePanelCommonFields'
 
-import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets.less'
+import css from './KnowledgeEditorSidePanelSectionRelatedTickets.less'
 
 type Ticket = {
     title: string
     content: string
     lastUpdatedDatetime: Date
+    url: string
 }
 
-type Props = {
+export type Props = {
     tickets?: Ticket[]
     relatedTicketsUrl?: string
     sectionId: string
 }
 
-export const KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets = ({
+export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
     sectionId,
     tickets,
     relatedTicketsUrl,
@@ -51,8 +54,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets = ({
                 <div className={css.container}>
                     <KnowledgeEditorSidePanelFieldDescription description="Tickets where AI Agent used this knowledge" />
                     <div className={css.ticketsList}>
-                        {latest3Tickets.map((ticket) => (
-                            <TicketCard key={ticket.title} ticket={ticket} />
+                        {latest3Tickets.map((ticket, index) => (
+                            <TicketCard key={index} ticket={ticket} />
                         ))}
                     </div>
                 </div>
@@ -73,20 +76,22 @@ const Title = ({ tickets }: Pick<Props, 'tickets'>) => (
 )
 
 const TicketCard = ({ ticket }: { ticket: Ticket }) => (
-    <div className={css.ticketCard}>
-        <div className={css.ticketCardHeader}>
-            <div className={css.ticketCardTitle}>
-                <span className={css.ticketCardIcon}>
-                    <Icon name="comm-mail" size={IconSize.Sm} />
-                </span>
-                {ticket.title}
+    <Link to={ticket.url} target="_blank" rel="noopener noreferrer">
+        <div className={css.ticketCard}>
+            <div className={css.ticketCardHeader}>
+                <div className={css.ticketCardTitle}>
+                    <span className={css.ticketCardIcon}>
+                        <Icon name="comm-mail" size={IconSize.Sm} />
+                    </span>
+                    {ticket.title}
+                </div>
+                <div className={css.ticketCardLastUpdatedDatetime}>
+                    <RelativeTime
+                        datetime={ticket.lastUpdatedDatetime.toISOString()}
+                    />
+                </div>
             </div>
-            <div className={css.ticketCardLastUpdatedDatetime}>
-                <RelativeTime
-                    datetime={ticket.lastUpdatedDatetime.toISOString()}
-                />
-            </div>
+            <div className={css.ticketCardContent}>{ticket.content}</div>
         </div>
-        <div className={css.ticketCardContent}>{ticket.content}</div>
-    </div>
+    </Link>
 )

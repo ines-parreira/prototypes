@@ -1,0 +1,54 @@
+@import (reference) '~css/typography';
+@import '~css/new/mixins';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .title {
+        display: flex;
+        height: 20px;
+        align-items: center;
+        gap: 4px;
+
+        color: var(--content-neutral-secondary);
+
+        .caption-regular();
+
+        cursor: pointer;
+    }
+
+    .arrow {
+        &[data-state='open'] {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        &[data-state='closed'] {
+            transform: rotate(0deg);
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+
+    .url {
+        color: var(--content-neutral-default);
+
+        .line-clamp(1);
+        word-break: break-all;
+
+        .body-link();
+        font-size: 12px;
+        font-weight: 400;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+
+        &:hover {
+            border-radius: var(--spacing-xxxs);
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+    }
+}

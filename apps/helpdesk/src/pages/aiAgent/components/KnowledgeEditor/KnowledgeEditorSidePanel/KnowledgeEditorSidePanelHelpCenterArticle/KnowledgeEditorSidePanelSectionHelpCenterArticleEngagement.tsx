@@ -6,7 +6,7 @@ import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSid
 
 import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement.less'
 
-type Props = {
+export type Props = {
     views?: number
     rating?: number // 0.0 to 1.0
     reactions?: {

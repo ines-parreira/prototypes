@@ -40,10 +40,12 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     checked,
     className,
     tooltip,
+    onChange,
 }: {
     checked: boolean
     className?: string
     tooltip?: string
+    onChange?: (value: boolean) => void
 }) => {
     const id = useId()
 
@@ -53,8 +55,8 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                 <NewToggleButton
                     color="var(--surface-inverted-default)"
                     checked={checked}
-                    isDisabled
-                    onChange={() => {}}
+                    isDisabled={!onChange}
+                    onChange={onChange ?? (() => {})}
                     size="small"
                     className={className}
                 />
@@ -82,7 +84,7 @@ export const KnowledgeEditorSidePanelFieldDateField = ({
     date?: Date
 }) => <span>{date ? formatDate(date) : '-'}</span>
 
-export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url: string }) => {
+export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
     const [, copyToClipboard] = useCopyToClipboard()
     const textId = _uniqueId(`copy-text`)
 
@@ -90,11 +92,11 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url: string }) => {
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
         e.stopPropagation()
-        copyToClipboard(url)
+        copyToClipboard(url ?? '')
         selectText(textId)
     }
 
-    return (
+    return url ? (
         <span className={css.urlField}>
             <a
                 href={url}
@@ -102,15 +104,41 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url: string }) => {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                <Icon name="external-link" size={IconSize.Sm} />
-
-                <span className={css.urlText}>{url} </span>
+                {url}
             </a>
 
             <span onClick={handleCopyCode} className={css.copyButton}>
-                <Icon name="copy" size={IconSize.Sm} />
+                <Icon name="copy" size={IconSize.Xs} />
             </span>
         </span>
+    ) : (
+        '-'
+    )
+}
+
+export const KnowledgeEditorSidePanelFieldSourceDocument = ({
+    sourceDocument,
+}: {
+    sourceDocument: string
+}) => {
+    const id = useId()
+
+    return (
+        <a
+            href={sourceDocument}
+            className={css.documentField}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <span className={css.documentFieldText}>{sourceDocument}</span>
+
+            <span id={`tooltip_${id}`}>
+                <Icon name="download" size={IconSize.Xs} />
+            </span>
+            <Tooltip target={`tooltip_${id}`} placement="top">
+                Click to download
+            </Tooltip>
+        </a>
     )
 }
 

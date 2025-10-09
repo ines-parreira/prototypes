@@ -3,13 +3,13 @@ import { formatCurrency } from 'domains/reporting/pages/common/utils'
 import {
     KnowledgeEditorSidePanelFieldDescription,
     KnowledgeEditorSidePanelFieldPercentage,
-} from '../KnowledgeEditorSidePanelCommonFields'
-import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
-import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
+} from './KnowledgeEditorSidePanelCommonFields'
+import { KnowledgeEditorSidePanelSection } from './KnowledgeEditorSidePanelSection'
+import { KnowledgeEditorSidePanelTwoColumnsContent } from './KnowledgeEditorSidePanelTwoColumnsContent'
 
-import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact.less'
+import css from './KnowledgeEditorSidePanelSectionImpact.less'
 
-type Props = {
+export type Props = {
     successRate?: number // 0.0 to 1.0
     csat?: number
     gmvInfluenced?: {
@@ -19,7 +19,7 @@ type Props = {
     sectionId: string
 }
 
-export const KnowledgeEditorSidePanelSectionHelpCenterArticleImpact = ({
+export const KnowledgeEditorSidePanelSectionImpact = ({
     successRate,
     csat,
     gmvInfluenced,
@@ -48,6 +48,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleImpact = ({
                             ? formatCurrency(
                                   gmvInfluenced.value,
                                   gmvInfluenced.currency,
+                                  { notation: 'compact' },
                               )
                             : '-',
                     ],

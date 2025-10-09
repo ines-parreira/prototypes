@@ -12,7 +12,6 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                     createdDatetime={new Date('2025-06-17')}
                     lastUpdatedDatetime={new Date('2025-06-17')}
                     articleUrl="https://caitlynminimalist.com/products/duo-baguette-birthstone-ring"
-                    articleId="12345"
                     sectionId="details"
                 />
             </KnowledgeEditorSidePanel>,
@@ -25,7 +24,6 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
             ),
         ).toBeInTheDocument()
-        expect(screen.getByText('12345')).toBeInTheDocument()
     })
 
     it('renders draft', () => {

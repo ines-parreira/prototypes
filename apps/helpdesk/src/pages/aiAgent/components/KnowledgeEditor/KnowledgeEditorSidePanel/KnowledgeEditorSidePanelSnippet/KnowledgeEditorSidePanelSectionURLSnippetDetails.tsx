@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
     KnowledgeEditorSidePanelFieldDateField,
@@ -9,18 +7,20 @@ import {
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
 
-import commonCss from '../KnowledgeEditorSidePanelCommonFields.less'
-import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails.less'
+import css from '../KnowledgeEditorSidePanelCommonFields.less'
 
 export type Props = {
-    isPublished?: boolean
-    createdDatetime?: Date
-    lastUpdatedDatetime?: Date
-    articleUrl?: string
+    aiAgentStatus: {
+        value: boolean
+        onChange: (value: boolean) => void
+    }
+    createdDatetime: Date
+    lastUpdatedDatetime: Date
+    url: string
     sectionId: string
 }
 
-export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
+export const KnowledgeEditorSidePanelSectionURLSnippetDetails = (
     props: Props,
 ) => (
     <KnowledgeEditorSidePanelSection
@@ -33,37 +33,16 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
                     'Type',
                     <KnowledgeEditorSidePanelFieldKnowledgeType
                         key="type"
-                        type="help-center-article"
+                        type="url-snippet"
                     />,
-                ],
-                [
-                    'Status',
-                    props.isPublished !== undefined ? (
-                        <span
-                            key="status"
-                            className={classNames(
-                                css.articleStatusBadge,
-                                commonCss.extraLeftMargin,
-                                props.isPublished && css.published,
-                            )}
-                        >
-                            {props.isPublished ? 'Published' : 'Draft'}
-                        </span>
-                    ) : (
-                        '-'
-                    ),
                 ],
                 [
                     'In use by AI Agent',
                     <KnowledgeEditorSidePanelFieldAIAgentStatus
                         key="ai-agent-status"
-                        checked={props.isPublished ?? false}
-                        className={commonCss.extraLeftMargin}
-                        tooltip={
-                            props.isPublished
-                                ? 'Published articles are always available for AI Agent.'
-                                : 'Articles become available for AI Agent when published.'
-                        }
+                        checked={props.aiAgentStatus.value}
+                        className={css.extraLeftMargin}
+                        onChange={props.aiAgentStatus.onChange}
                     />,
                 ],
                 [
@@ -81,10 +60,10 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
                     />,
                 ],
                 [
-                    'Article URL',
+                    'Source URL',
                     <KnowledgeEditorSidePanelFieldURL
-                        url={props.articleUrl}
-                        key="article-url"
+                        url={props.url}
+                        key="source-url"
                     />,
                 ],
             ]}

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -38,9 +38,19 @@ describe('KnowledgeEditorSidePanelFieldKnowledgeType', () => {
 
 describe('KnowledgeEditorSidePanelFieldAIAgentStatus', () => {
     it('renders enabled', () => {
-        render(<KnowledgeEditorSidePanelFieldAIAgentStatus checked={true} />)
+        const onChange = jest.fn()
+
+        render(
+            <KnowledgeEditorSidePanelFieldAIAgentStatus
+                checked={true}
+                onChange={onChange}
+            />,
+        )
         expect(screen.getByRole('switch')).toBeInTheDocument()
         expect(screen.getByRole('switch')).toBeChecked()
+
+        fireEvent.click(screen.getByRole('switch'))
+        expect(onChange).toHaveBeenCalledWith(false)
     })
     it('renders disabled', () => {
         render(<KnowledgeEditorSidePanelFieldAIAgentStatus checked={false} />)

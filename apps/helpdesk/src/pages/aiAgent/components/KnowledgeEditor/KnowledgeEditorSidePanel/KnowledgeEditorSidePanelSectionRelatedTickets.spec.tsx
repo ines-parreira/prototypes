@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
 
-import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
-import { KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets } from './KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets'
+import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
+import { KnowledgeEditorSidePanelSectionRelatedTickets } from './KnowledgeEditorSidePanelSectionRelatedTickets'
 
-describe('KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets', () => {
+describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
     it('renders', () => {
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
@@ -11,23 +11,26 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets', () =>
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleRelatedTickets
+                <KnowledgeEditorSidePanelSectionRelatedTickets
                     tickets={[
                         {
                             title: 'Still waiting on my order?',
                             content:
                                 'I have a problem with my order, it arrived broken and doesn’t turn on.',
                             lastUpdatedDatetime: oneHourAgo,
+                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                         },
                         {
                             title: 'How to cancel my order?',
                             content: 'I want to cancel my order.',
                             lastUpdatedDatetime: oneHourAgo,
+                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                         },
                         {
                             title: 'How to track my order?',
                             content: 'I want to track my order.',
                             lastUpdatedDatetime: oneHourAgo,
+                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                         },
                     ]}
                     relatedTicketsUrl="https://gorgias.gorgias.com/app/views"
