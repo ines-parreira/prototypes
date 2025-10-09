@@ -14,6 +14,10 @@ const meta = {
         children: {
             description: 'AddStepMenuItem components',
         },
+        isDisabled: {
+            control: 'boolean',
+            description: 'Whether the button is disabled',
+        },
     },
 } satisfies Meta<typeof AddStepButton>
 
@@ -98,6 +102,28 @@ export const MixedContent: Story = {
             <AddStepMenuItem
                 label="Option 2"
                 onClick={() => action('Option 2 clicked')()}
+            />
+        </AddStepButton>
+    ),
+}
+
+export const Disabled: Story = {
+    args: {
+        isDisabled: true,
+    },
+    render: (args) => (
+        <AddStepButton {...args}>
+            <AddStepMenuItem
+                label="Add Step"
+                onClick={() => action('Add Step clicked')()}
+            />
+            <AddStepMenuItem
+                label="Add Condition"
+                onClick={() => action('Add Condition clicked')()}
+            />
+            <AddStepMenuItem
+                label="Add Action"
+                onClick={() => action('Add Action clicked')()}
             />
         </AddStepButton>
     ),

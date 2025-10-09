@@ -6,10 +6,12 @@ import AddStepMenuContent from './AddStepMenuContent'
 import { useVoiceFlow } from './useVoiceFlow'
 import { canAddNewStepOnEdge } from './utils'
 
-type Props = Omit<ComponentProps<typeof CustomEdge>, 'children'>
+type Props = Omit<ComponentProps<typeof CustomEdge>, 'children'> & {
+    isDisabled?: boolean
+}
 
 export function VoiceFlowEdge(props: Props) {
-    const { source, target } = props
+    const { source, target, isDisabled } = props
     const { getNode } = useVoiceFlow()
 
     const isButtonEdge = useMemo(() => {
@@ -24,10 +26,14 @@ export function VoiceFlowEdge(props: Props) {
     }, [getNode, source, target])
 
     return (
-        <CustomEdge {...props}>
+        <CustomEdge {...props} isDisabled={isDisabled}>
             {isButtonEdge && (
                 <AddStepMenuContent source={source} target={target} />
             )}
         </CustomEdge>
     )
+}
+
+export function VoiceFlowPreviewEdge(props: Props) {
+    return <VoiceFlowEdge {...props} isDisabled={true} />
 }

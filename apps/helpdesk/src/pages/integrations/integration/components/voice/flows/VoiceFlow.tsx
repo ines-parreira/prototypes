@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { Controls } from '@xyflow/react'
+
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import {
@@ -29,7 +31,7 @@ import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
 import { VoiceFlowNode } from './types'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
-import { VoiceFlowEdge } from './VoiceFlowEdge'
+import { VoiceFlowEdge, VoiceFlowPreviewEdge } from './VoiceFlowEdge'
 import VoiceFlowProvider from './VoiceFlowProvider'
 
 const nodeTypes = {
@@ -52,11 +54,16 @@ const edgeTypes = {
     default: VoiceFlowEdge,
 }
 
-type VoiceFlowProps = {
-    flow: CallRoutingFlow
+const previewEdgeType = {
+    default: VoiceFlowPreviewEdge,
 }
 
-export function VoiceFlow({ flow }: VoiceFlowProps) {
+type VoiceFlowProps = {
+    flow: CallRoutingFlow
+    preview?: boolean
+}
+
+export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
     const computeEdges = useCallback(
         (nodes: VoiceFlowNode[]) => createFlowGraph(nodes, getNextNodes).edges,
         [],
@@ -78,13 +85,21 @@ export function VoiceFlow({ flow }: VoiceFlowProps) {
                 nodes={nodes}
                 edges={edges}
                 nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
+                edgeTypes={preview ? previewEdgeType : edgeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onlyRenderVisibleElements={false}
+                nodesDraggable={!preview}
+                nodesConnectable={!preview}
+                elementsSelectable={!preview}
+                edgesFocusable={!preview}
             >
                 <Background />
-                <CustomControls />
+                {preview ? (
+                    <Controls position={'top-left'} showInteractive={false} />
+                ) : (
+                    <CustomControls />
+                )}
             </Flow>
         </VoiceFlowProvider>
     )

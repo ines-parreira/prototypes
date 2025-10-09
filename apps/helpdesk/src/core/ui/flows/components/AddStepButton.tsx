@@ -7,10 +7,11 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import css from './AddStepButton.less'
 
 export type AddButtonProps = {
+    isDisabled?: boolean
     children?: React.ReactNode
 }
 
-export function AddStepButton({ children }: AddButtonProps) {
+export function AddStepButton({ children, isDisabled }: AddButtonProps) {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -32,6 +33,7 @@ export function AddStepButton({ children }: AddButtonProps) {
                 aria-label="Add"
                 type="button"
                 onClick={handleButtonClick}
+                disabled={isDisabled}
             >
                 <i className="material-icons">add</i>
             </button>

@@ -9,6 +9,7 @@ import { AddStepButton } from './AddStepButton'
 
 type Props = EdgeProps & {
     children?: React.ReactNode
+    isDisabled?: boolean
 }
 
 const HANDLE_OFFSET = 3
@@ -25,6 +26,7 @@ export function CustomEdge({
     markerEnd,
     children,
     style,
+    isDisabled,
 }: Props) {
     const [edgePath] = getSmoothStepPath({
         sourceX,
@@ -53,7 +55,11 @@ export function CustomEdge({
                         transform: `translate(-50%, -50%) translate(${sourceX}px,${sourceY + CHILDREN_OFFSET}px)`,
                     }}
                 >
-                    {children && <AddStepButton>{children}</AddStepButton>}
+                    {children && (
+                        <AddStepButton isDisabled={isDisabled}>
+                            {children}
+                        </AddStepButton>
+                    )}
                 </div>
             </EdgeLabelRenderer>
         </>

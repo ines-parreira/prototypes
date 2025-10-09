@@ -159,4 +159,55 @@ describe('AddStepButton', () => {
             expect(screen.getByText('Option 1')).toBeInTheDocument()
         })
     })
+
+    it('should be enabled when isDisabled is false', () => {
+        render(
+            <AddStepButton isDisabled={false}>
+                <AddStepMenuItem label="Option 1" onClick={jest.fn()} />
+            </AddStepButton>,
+        )
+
+        const button = screen.getByRole('button', { name: /add/i })
+        expect(button).not.toBeDisabled()
+    })
+
+    it('should be disabled when isDisabled is true', () => {
+        render(
+            <AddStepButton isDisabled={true}>
+                <AddStepMenuItem label="Option 1" onClick={jest.fn()} />
+            </AddStepButton>,
+        )
+
+        const button = screen.getByRole('button', { name: /add/i })
+        expect(button).toBeDisabled()
+    })
+
+    it('should not open dropdown when clicked while disabled', async () => {
+        const user = userEvent.setup()
+        render(
+            <AddStepButton isDisabled={true}>
+                <AddStepMenuItem label="Option 1" onClick={jest.fn()} />
+            </AddStepButton>,
+        )
+
+        const button = screen.getByRole('button', { name: /add/i })
+
+        await act(async () => {
+            await user.click(button)
+        })
+
+        expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+        expect(button).not.toHaveClass('selected')
+    })
+
+    it('should be enabled by default when isDisabled is not provided', () => {
+        render(
+            <AddStepButton>
+                <AddStepMenuItem label="Option 1" onClick={jest.fn()} />
+            </AddStepButton>,
+        )
+
+        const button = screen.getByRole('button', { name: /add/i })
+        expect(button).not.toBeDisabled()
+    })
 })

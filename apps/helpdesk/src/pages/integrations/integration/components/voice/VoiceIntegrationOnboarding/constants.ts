@@ -59,3 +59,5 @@ export const VOICEMAIL_FLOW_STEP: SendToVoicemailStep = {
     allow_to_leave_voicemail: true,
     next_step_id: null,
 }
+
+export const SUCCESSFUL_ONBOARDING_PARAM = 'onboarded_id'

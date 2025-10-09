@@ -12,14 +12,14 @@ import {
     PhoneIntegration,
 } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { useFlag } from '../../../../../../../core/flags'
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
-import { VOICEMAIL_FLOW_STEP } from '../constants'
+import { SUCCESSFUL_ONBOARDING_PARAM, VOICEMAIL_FLOW_STEP } from '../constants'
 import {
     useOnboardingForm,
     validateOnboardingForm,
@@ -282,7 +282,7 @@ describe('useOnboardingForm', () => {
             return false
         })
         createIntegrationMock.mockResolvedValue({
-            data: { name: 'Test Integration' },
+            data: { id: 123, name: 'Test Integration' },
         } as any)
 
         const { result } = renderUseOnboardingForm()
@@ -298,11 +298,12 @@ describe('useOnboardingForm', () => {
             result.current.onSubmit(data)
         })
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            'Test Integration successfully created.',
-        )
+        expect(mockNotify.success).not.toHaveBeenCalled()
         expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
         expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
+        expect(history.location.search).toBe(
+            `?${SUCCESSFUL_ONBOARDING_PARAM}=123`,
+        )
         expect(createIntegrationMock).toHaveBeenCalledWith(
             data as CreateIntegrationBody,
             undefined,

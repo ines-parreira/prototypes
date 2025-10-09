@@ -57,4 +57,38 @@ describe('CustomEdge', () => {
         const pathElement = container.querySelector('path')
         expect(pathElement).toBeInTheDocument()
     })
+
+    it('should render enabled button when isDisabled is false', () => {
+        renderEdgeWithProvider(
+            <CustomEdge {...mockEdgeProps} isDisabled={false}>
+                Add step
+            </CustomEdge>,
+        )
+
+        const button = screen.getByRole('button')
+        expect(button).toBeInTheDocument()
+        expect(button).not.toBeDisabled()
+    })
+
+    it('should render disabled button when isDisabled is true', () => {
+        renderEdgeWithProvider(
+            <CustomEdge {...mockEdgeProps} isDisabled={true}>
+                Add step
+            </CustomEdge>,
+        )
+
+        const button = screen.getByRole('button')
+        expect(button).toBeInTheDocument()
+        expect(button).toBeDisabled()
+    })
+
+    it('should render enabled button by default when isDisabled is not provided', () => {
+        renderEdgeWithProvider(
+            <CustomEdge {...mockEdgeProps}>Add step</CustomEdge>,
+        )
+
+        const button = screen.getByRole('button')
+        expect(button).toBeInTheDocument()
+        expect(button).not.toBeDisabled()
+    })
 })

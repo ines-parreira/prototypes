@@ -17,6 +17,7 @@ import { DEFAULT_IVR_SETTINGS } from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
+import { SUCCESSFUL_ONBOARDING_PARAM } from './constants'
 import { getDefaultIvrFlow, getDefaultStandardFlow } from './utils'
 
 export const validateOnboardingForm = (values: PhoneIntegration) => {
@@ -63,10 +64,23 @@ export const useOnboardingForm = () => {
     const { mutate: createIntegration } = useCreateIntegration({
         mutation: {
             onSuccess: (response) => {
-                notify.success(`${response.data.name} successfully created.`)
+                let params
+                if (!useExtendedCallFlowsGAReady) {
+                    notify.success(
+                        `${response.data.name} successfully created.`,
+                    )
+                } else {
+                    params = new URLSearchParams({
+                        [SUCCESSFUL_ONBOARDING_PARAM]:
+                            response.data.id.toString(),
+                    })
+                }
 
                 dispatch(fetchIntegrations())
-                history.push(PHONE_INTEGRATION_BASE_URL)
+                history.push({
+                    pathname: PHONE_INTEGRATION_BASE_URL,
+                    search: params?.toString(),
+                })
             },
             onError: () => {
                 notify.error(

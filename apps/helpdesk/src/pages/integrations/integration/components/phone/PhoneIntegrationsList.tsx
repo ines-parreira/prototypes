@@ -28,6 +28,8 @@ import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
+import VoiceAddedSuccessModal from '../voice/VoiceIntegrationOnboarding/VoiceAddedSuccessModal'
+
 import css from './PhoneIntegrationsList.less'
 
 type Row = {
@@ -203,6 +205,7 @@ export default function PhoneIntegrationsList({
                     )}
                 </p>
             </Container>
+            <VoiceAddedSuccessModal />
         </>
     )
 }
