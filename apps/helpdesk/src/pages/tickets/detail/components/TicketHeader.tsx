@@ -299,8 +299,8 @@ const TicketHeader = ({
 
         if (smartFollowUpsEnabled) {
             const actionLabel = shouldDisplayAllFollowUps
-                ? 'Hide all follow-ups'
-                : 'Show all follow-ups'
+                ? 'Hide all quick-replies'
+                : 'Show all quick-replies'
             actions.push([actionLabel, 'assistant', toggleFollowUps])
         }
 

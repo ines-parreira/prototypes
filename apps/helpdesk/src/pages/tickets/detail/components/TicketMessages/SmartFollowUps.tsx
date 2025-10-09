@@ -70,8 +70,7 @@ export default function SmartFollowUps({
                         </Pill>
                     </div>
                     <Tooltip target={tooltipId} placement="right">
-                        Customer selected a follow-up question given by the AI
-                        Agent
+                        Customer selected a quick-reply given by the AI Agent
                     </Tooltip>
                 </>
             )}

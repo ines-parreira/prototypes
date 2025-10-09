@@ -107,7 +107,7 @@ describe('SmartFollowUps', () => {
 
         it('should render tooltip for the selected smart follow up', async () => {
             const tooltipText =
-                'Customer selected a follow-up question given by the AI Agent'
+                'Customer selected a quick-reply given by the AI Agent'
 
             renderWithStoreAndQueryClientProvider(
                 <SmartFollowUps

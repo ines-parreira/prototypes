@@ -1895,10 +1895,10 @@ describe('<TicketHeader />', () => {
 
                 fireEvent.click(getByText(/more_vert/))
                 expect(
-                    queryByText(/Show all follow-ups/),
+                    queryByText(/Show all quick-replies/),
                 ).not.toBeInTheDocument()
                 expect(
-                    queryByText(/Hide all follow-ups/),
+                    queryByText(/Hide all quick-replies/),
                 ).not.toBeInTheDocument()
             })
         })
@@ -1909,7 +1909,7 @@ describe('<TicketHeader />', () => {
                 mockUseFlagForFeature(FeatureFlagKey.SmartFollowUps, true)
             })
 
-            it('should show "Show all follow-ups" action when follow ups are hidden', () => {
+            it('should show "Show all quick-replies" action when follow ups are hidden', () => {
                 // Mock the selector to return false (follow ups hidden)
                 ;(
                     ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
@@ -1927,10 +1927,10 @@ describe('<TicketHeader />', () => {
                 )
 
                 fireEvent.click(getByText(/more_vert/))
-                expect(getByText(/Show all follow-ups/)).toBeInTheDocument()
+                expect(getByText(/Show all quick-replies/)).toBeInTheDocument()
             })
 
-            it('should show "Hide all follow-ups" action when follow ups are displayed', () => {
+            it('should show "Hide all quick-replies" action when follow ups are displayed', () => {
                 // Mock the selector to return true (follow ups displayed)
                 ;(
                     ticketSelectors.getShouldDisplayAllFollowUps as unknown as jest.Mock
@@ -1948,7 +1948,7 @@ describe('<TicketHeader />', () => {
                 )
 
                 fireEvent.click(getByText(/more_vert/))
-                expect(getByText(/Hide all follow-ups/)).toBeInTheDocument()
+                expect(getByText(/Hide all quick-replies/)).toBeInTheDocument()
             })
 
             it('should dispatch setShouldDisplayAllFollowUps with true when showing follow ups', () => {
@@ -1969,7 +1969,7 @@ describe('<TicketHeader />', () => {
                 )
 
                 fireEvent.click(getByText(/more_vert/))
-                fireEvent.click(getByText(/Show all follow-ups/))
+                fireEvent.click(getByText(/Show all quick-replies/))
 
                 expect(logEvent).toHaveBeenCalledWith(
                     SegmentEvent.SmartFollowUpsVisibilityControlClicked,
@@ -1998,7 +1998,7 @@ describe('<TicketHeader />', () => {
                 )
 
                 fireEvent.click(getByText(/more_vert/))
-                fireEvent.click(getByText(/Hide all follow-ups/))
+                fireEvent.click(getByText(/Hide all quick-replies/))
 
                 expect(logEvent).toHaveBeenCalledWith(
                     SegmentEvent.SmartFollowUpsVisibilityControlClicked,
@@ -2028,10 +2028,10 @@ describe('<TicketHeader />', () => {
                 // For new tickets without ID, the more_vert button should not be present
                 expect(queryByText(/more_vert/)).not.toBeInTheDocument()
                 expect(
-                    queryByText(/Show all follow-ups/),
+                    queryByText(/Show all quick-replies/),
                 ).not.toBeInTheDocument()
                 expect(
-                    queryByText(/Hide all follow-ups/),
+                    queryByText(/Hide all quick-replies/),
                 ).not.toBeInTheDocument()
             })
         })
