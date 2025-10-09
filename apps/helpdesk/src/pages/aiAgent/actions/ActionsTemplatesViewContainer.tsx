@@ -1,18 +1,8 @@
-import { Redirect } from 'react-router-dom'
-
-import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import ActionTemplatesView from './ActionTemplatesView'
 
 const ActionsTemplatesViewContainer = () => {
-    const hasAutomate = useAppSelector(getHasAutomate)
-
-    if (!hasAutomate) {
-        return <Redirect to="/app/automation" />
-    }
-
     return (
         <ErrorBoundary sentryTags={{ section: 'actions-templates' }}>
             <ActionTemplatesView />

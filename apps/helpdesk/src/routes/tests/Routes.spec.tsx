@@ -143,6 +143,10 @@ jest.mock('pages/aiAgent/AiAgentCustomerEngagement', () => ({
     AiAgentCustomerEngagement: () => <div>AiAgentCustomerEngagement</div>,
 }))
 
+jest.mock('pages/aiAgent/actions/ActionTemplatesView', () => () => (
+    <div>ActionTemplatesView</div>
+))
+
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
@@ -818,6 +822,22 @@ describe('<Routes/>', () => {
             )
 
             expect(mockHistory.location.pathname).toBe('/app/views')
+        })
+
+        it('should render actions templates page', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/actions/templates',
+                        ]}
+                    >
+                        <Routes />
+                    </MemoryRouter>
+                </Provider>,
+            )
+
+            expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()
         })
     })
 
