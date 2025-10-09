@@ -20,6 +20,7 @@ type Props = {
     onChange: (phoneNumber: NewPhoneNumber) => void
     onCreate?: (phoneNumber: NewPhoneNumber) => void
     integrationType?: IntegrationType.Phone | IntegrationType.Sms
+    initialValue?: Maybe<NewPhoneNumber>
 }
 
 function PhoneNumberSelectField({
@@ -27,6 +28,7 @@ function PhoneNumberSelectField({
     onChange,
     onCreate,
     integrationType,
+    initialValue,
 }: Props): JSX.Element {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
@@ -68,6 +70,11 @@ function PhoneNumberSelectField({
             )
         })
 
+    // allow selecting the current value even if it doesn't match the filters
+    const availablePhoneNumberOptions = initialValue
+        ? [initialValue, ...availableNumbers]
+        : [...availableNumbers]
+
     const options = [
         {
             value: '_new',
@@ -79,7 +86,7 @@ function PhoneNumberSelectField({
                 </SelectFieldDropdownAction>
             ),
         },
-        ...availableNumbers.map((phoneNumber) => {
+        ...availablePhoneNumberOptions.map((phoneNumber) => {
             const { name, phone_number_friendly } = phoneNumber
             const country = countryCode(phoneNumber)
             return {

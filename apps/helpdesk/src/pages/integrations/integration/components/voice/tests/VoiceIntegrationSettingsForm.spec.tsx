@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { useFlag } from 'core/flags'
 import { FormField, FormSubmitButton } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
+import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { PhoneIntegration } from 'models/integration/types'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
@@ -27,10 +28,11 @@ const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector')
 jest.mock('state/entities/phoneNumbers/selectors')
 jest.mock('../useVoiceSettingsForm')
 
+const useAppSelectorMock = assumeMock(useAppSelector)
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const useFlagMock = assumeMock(useFlag)
 
@@ -119,6 +121,10 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         getNewPhoneNumberMock.mockReturnValue((() => {
             '+1 500 500 5005'
         }) as any)
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            phone_number_friendly: '+1 (500) 500-5005',
+        })
         useFormContextMock.mockReturnValue(methodsMock)
         useDeleteVoiceIntegrationMock.mockReturnValue(
             useDeleteVoiceIntegrationReturnValue,

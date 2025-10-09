@@ -10,6 +10,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
 
 jest.mock('core/flags')
+
+const mockFormFieldProps: Record<string, any> = {}
+
 jest.mock('react-hook-form', () => ({
     useFormContext: () => ({
         setValue: jest.fn(),
@@ -18,8 +21,14 @@ jest.mock('react-hook-form', () => ({
 }))
 jest.mock('core/forms', () => ({
     FormField: ({ field: Component, name, ...props }: any) => {
+        mockFormFieldProps[name] = { field: Component, name, ...props }
         if (name === 'business_hours_id') {
             return <div data-testid="business-hours-select">Business Hours</div>
+        }
+        if (name === 'meta.phone_number_id') {
+            return (
+                <div data-testid="phone-number-select">Phone Number Select</div>
+            )
         }
         return <Component {...props} />
     },
@@ -91,5 +100,87 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
         expect(screen.getByText('Manage Phone Number')).toBeInTheDocument()
 
         expect(screen.getByTestId('business-hours-select')).toBeInTheDocument()
+    })
+
+    it('should render editable phone number select field when feature flag is disabled', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.ExtendedCallFlows) return true
+            return false
+        })
+
+        render(
+            <VoiceIntegrationSettingsFormGeneralSection
+                integration={phoneIntegration}
+            />,
+        )
+
+        expect(screen.getByTestId('phone-number-select')).toBeInTheDocument()
+    })
+
+    it('should render disabled phone number input when feature flag is enabled', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.ExtendedCallFlows) return false
+            return false
+        })
+
+        render(
+            <VoiceIntegrationSettingsFormGeneralSection
+                integration={phoneIntegration}
+            />,
+        )
+
+        const textboxes = screen.getAllByRole('textbox')
+        const phoneInput = textboxes.find((input) =>
+            input.getAttribute('value')?.includes('555'),
+        )
+        expect(phoneInput).toBeDefined()
+        expect(phoneInput).toBeDisabled()
+        expect(
+            screen.queryByTestId('phone-number-select'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should pass correct inputTransform and outputTransform to phone number field', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.ExtendedCallFlows) return true
+            return false
+        })
+
+        const mockPhoneNumbers = {
+            1: mockPhoneNumber,
+            2: { id: 2, phone_number_friendly: '+1 (555) 987-6543' },
+        }
+
+        let callCount = 0
+        useAppSelectorMock.mockImplementation(() => {
+            callCount++
+            if (callCount === 1) {
+                return mockPhoneNumber
+            }
+            return mockPhoneNumbers
+        })
+
+        render(
+            <VoiceIntegrationSettingsFormGeneralSection
+                integration={phoneIntegration}
+            />,
+        )
+
+        const phoneNumberFieldProps = mockFormFieldProps['meta.phone_number_id']
+        expect(phoneNumberFieldProps).toBeDefined()
+        expect(phoneNumberFieldProps.inputTransform).toBeDefined()
+        expect(phoneNumberFieldProps.outputTransform).toBeDefined()
+
+        expect(phoneNumberFieldProps.inputTransform(1)).toEqual(mockPhoneNumber)
+        expect(phoneNumberFieldProps.inputTransform(2)).toEqual(
+            mockPhoneNumbers[2],
+        )
+        expect(phoneNumberFieldProps.inputTransform(null)).toBeNull()
+
+        expect(phoneNumberFieldProps.outputTransform(mockPhoneNumber)).toBe(1)
+        expect(phoneNumberFieldProps.outputTransform(mockPhoneNumbers[2])).toBe(
+            2,
+        )
+        expect(phoneNumberFieldProps.outputTransform(null)).toBeUndefined()
     })
 })

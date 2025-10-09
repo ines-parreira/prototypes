@@ -113,5 +113,38 @@ describe('<PhoneNumberSelectField/>', () => {
             expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
         })
+
+        it('should include initialValue even if it has an attached integration', () => {
+            const phoneNumberWithIntegration = phoneNumbers[0]
+            const store = mockStore({
+                entities: {
+                    newPhoneNumbers: phoneNumbers
+                        .filter(
+                            (number) =>
+                                number.id !== phoneNumberWithIntegration.id,
+                        )
+                        .reduce(
+                            (acc, number) => ({
+                                ...acc,
+                                [number.id]: number,
+                            }),
+                            {},
+                        ),
+                },
+            } as RootState)
+
+            const { queryByText } = render(
+                <Provider store={store}>
+                    <PhoneNumberSelectField
+                        value={phoneNumberWithIntegration}
+                        onChange={onChange}
+                        onCreate={onCreate}
+                        integrationType={IntegrationType.Sms}
+                        initialValue={phoneNumberWithIntegration}
+                    />
+                </Provider>,
+            )
+            expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
+        })
     })
 })
