@@ -1,9 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { Link, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
@@ -17,7 +15,9 @@ import { CollectionRecommendationRuleCard } from './components/CollectionRecomme
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
+import usePaginatedProductsByIds from './hooks/usePaginatedProductsByIds'
 import { ProductRecommendationRuleType } from './types'
+import { formatProductRecommendationRules } from './utils/format-product-recommendation-rules'
 
 import css from './AiAgentProductRecommendations.less'
 
@@ -31,60 +31,51 @@ export const AiAgentProductRecommendationsPromote = () => {
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const collectionRulesEnabled = useFlag(
-        FeatureFlagKey.AiAgentProductRecommendationsCollectionRules,
-    )
-
     const {
-        data: productRecommendationRules,
+        data: rawProductRecommendationRules,
         isLoading: isLoadingRules,
         isFetching: isFetchingRules,
     } = useGetRulesProductRecommendation(integrationId!)
+
+    const productRecommendationRules = formatProductRecommendationRules(
+        rawProductRecommendationRules,
+    )
 
     const {
         mutateAsync: upsertProductRecommendationRules,
         isLoading: isUpserting,
     } = useUpsertRulesProductRecommendation(integrationId!)
 
+    const { allProducts: allExcludedProducts } = usePaginatedProductsByIds({
+        integrationId: integrationId!,
+        productIds: productRecommendationRules.exclude.productIds,
+        enabled: true,
+        fetchAll: true,
+    })
+
     if (!integrationId) {
         return <></>
     }
 
-    const promotedProductIds =
-        productRecommendationRules?.promoted.flatMap((rule) =>
-            rule.type === 'product'
-                ? rule.items.map((item) => item.target)
-                : [],
-        ) || []
+    const tagsWithExcludedProducts = allExcludedProducts
+        .map((product) => product.tags?.split(', ') ?? [])
+        .flat()
 
-    const promotedTags =
-        productRecommendationRules?.promoted.flatMap((rule) =>
-            rule.type === 'tag' ? rule.items.map((item) => item.target) : [],
-        ) || []
-
-    const promotedVendors =
-        productRecommendationRules?.promoted.flatMap((rule) =>
-            rule.type === 'vendor' ? rule.items.map((item) => item.target) : [],
-        ) || []
-
-    const promotedCollections =
-        productRecommendationRules?.promoted.flatMap((rule) =>
-            rule.type === 'collection'
-                ? rule.items.map((item) => item.target)
-                : [],
-        ) || []
+    const vendorsWithExcludedProducts = allExcludedProducts
+        .map((product) => (product.vendor ? [product.vendor] : []))
+        .flat()
 
     const handleUpsert = async (
         targets: string[],
         type: ProductRecommendationRuleType,
-    ) =>
-        upsertProductRecommendationRules({
+    ) => {
+        await upsertProductRecommendationRules({
             integrationId: integrationId,
             data: {
                 gorgiasDomain,
                 recommendationAction: 'promoted',
                 rules: [
-                    ...(productRecommendationRules?.promoted ?? []).filter(
+                    ...(rawProductRecommendationRules?.promoted ?? []).filter(
                         (rule) => rule.type !== type,
                     ),
                     {
@@ -95,26 +86,57 @@ export const AiAgentProductRecommendationsPromote = () => {
             },
         })
 
+        // Check for duplicates in the exluded rules
+        const excludedRules = rawProductRecommendationRules?.excluded.find(
+            (rule) => rule.type === type,
+        )
+        if (!excludedRules) return
+
+        const filtered = excludedRules.items.filter(
+            (item) => !targets.includes(item.target),
+        )
+        if (filtered.length !== excludedRules.items.length) {
+            await upsertProductRecommendationRules({
+                integrationId: integrationId,
+                data: {
+                    gorgiasDomain,
+                    recommendationAction: 'excluded',
+                    rules: [
+                        ...(
+                            rawProductRecommendationRules?.excluded ?? []
+                        ).filter((rule) => rule.type !== type),
+                        {
+                            type,
+                            items: filtered,
+                        },
+                    ],
+                },
+            })
+        }
+    }
+
     return (
         <AiAgentLayout
             shopName={shopName}
             title={SALES}
             className={css.container}
         >
-            <Link to={routes.productRecommendations}>
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    leadingIcon="arrow_back"
-                >
-                    Back to {PRODUCT_RECOMMENDATIONS}
-                </Button>
-            </Link>
+            <div>
+                <Link to={routes.productRecommendations}>
+                    <Button
+                        fillStyle="ghost"
+                        intent="secondary"
+                        leadingIcon="arrow_back"
+                    >
+                        Back to {PRODUCT_RECOMMENDATIONS}
+                    </Button>
+                </Link>
+            </div>
 
             <ProductRecommendationRuleCard
                 type="promote"
                 integrationId={integrationId}
-                productIds={promotedProductIds}
+                rules={productRecommendationRules}
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
@@ -124,36 +146,36 @@ export const AiAgentProductRecommendationsPromote = () => {
             <TagRecommendationRuleCard
                 type="promote"
                 integrationId={integrationId}
-                tags={promotedTags}
+                rules={productRecommendationRules}
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
                 onUpsert={(tags) => handleUpsert(tags, 'tag')}
+                tagsWithExceptions={tagsWithExcludedProducts}
             />
 
             <VendorRecommendationRuleCard
                 type="promote"
                 integrationId={integrationId}
-                vendors={promotedVendors}
+                rules={productRecommendationRules}
                 isLoadingRules={isLoadingRules}
                 isFetchingRules={isFetchingRules}
                 isUpserting={isUpserting}
                 onUpsert={(vendors) => handleUpsert(vendors, 'vendor')}
+                vendorsWithExceptions={vendorsWithExcludedProducts}
             />
 
-            {collectionRulesEnabled && (
-                <CollectionRecommendationRuleCard
-                    type="promote"
-                    integrationId={integrationId}
-                    collections={promotedCollections}
-                    isLoadingRules={isLoadingRules}
-                    isFetchingRules={isFetchingRules}
-                    isUpserting={isUpserting}
-                    onUpsert={(collections) =>
-                        handleUpsert(collections, 'collection')
-                    }
-                />
-            )}
+            <CollectionRecommendationRuleCard
+                type="promote"
+                integrationId={integrationId}
+                rules={productRecommendationRules}
+                isLoadingRules={isLoadingRules}
+                isFetchingRules={isFetchingRules}
+                isUpserting={isUpserting}
+                onUpsert={(collections) =>
+                    handleUpsert(collections, 'collection')
+                }
+            />
         </AiAgentLayout>
     )
 }

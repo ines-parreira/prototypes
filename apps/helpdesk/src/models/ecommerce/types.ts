@@ -13,6 +13,8 @@ export type Product = {
     data: {
         title: string
         status: string
+        vendor?: string
+        tags?: string[]
         featuredMedia?: {
             image?: {
                 url: string

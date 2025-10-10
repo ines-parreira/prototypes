@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import {
-    Badge,
     LegacyButton as Button,
     ColorType,
     LegacyIconButton as IconButton,
@@ -13,7 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { DraftBadge } from './DraftBadge'
+import { BadgeWithTooltip } from './BadgeWithTooltip'
 
 import css from './RecommendationRuleCard.less'
 
@@ -23,7 +22,6 @@ export const RecommendationRuleCard = ({
     isLoading,
     disableActions,
     hasImages,
-    badge,
     type,
     addButton,
     itemLabelSingular,
@@ -39,10 +37,6 @@ export const RecommendationRuleCard = ({
     isLoading: boolean
     disableActions: boolean
     hasImages: boolean
-    badge: {
-        label: string
-        type: ColorType
-    }
     type: 'promote' | 'exclude'
     addButton: {
         label: string
@@ -55,7 +49,11 @@ export const RecommendationRuleCard = ({
         id: string
         title: string
         img?: string
-        status?: string
+        badges?: Array<{
+            label: string
+            type: ColorType
+            tooltip?: string
+        }>
     }>
     onShowProducts?: (id: string) => void
     onDelete: (id: string) => Promise<void>
@@ -147,15 +145,13 @@ export const RecommendationRuleCard = ({
                             </div>
                         )}
                         <div className={css.itemTitle}>{item.title}</div>
-                        <div>
-                            {item.status === 'draft' ? (
-                                <DraftBadge type={type} variant="main-list" />
-                            ) : (
-                                <Badge type={badge.type} upperCase={false}>
-                                    {badge.label}
-                                </Badge>
-                            )}
-                        </div>
+                        {item.badges && item.badges.length > 0 && (
+                            <div className={css.badges}>
+                                {item.badges.map((badge, i) => (
+                                    <BadgeWithTooltip key={i} {...badge} />
+                                ))}
+                            </div>
+                        )}
                         <div className={css.buttons}>
                             {deletingItemId === item.id && (
                                 <div className={css.spinnerContainer}>

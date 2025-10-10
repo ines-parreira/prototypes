@@ -6,25 +6,30 @@ import {
 } from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
+import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import { getProductStatusData } from '../utils/get-product-status-data'
+import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const TagRecommendationRuleCard = ({
     type,
     integrationId,
-    tags,
+    rules,
     isLoadingRules,
     isFetchingRules,
     isUpserting,
     onUpsert,
+    tagsWithExceptions,
 }: {
     type: 'promote' | 'exclude'
     integrationId: number
-    tags: string[]
+    rules: FormattedProductRecommendationRules
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
     onUpsert: (tags: string[]) => Promise<any>
+    tagsWithExceptions: string[]
 }) => {
     const [allTagsDrawerConfig, setAllTagsDrawerConfig] = useState<{
         isOpen: boolean
@@ -69,39 +74,32 @@ export const TagRecommendationRuleCard = ({
         { enabled: tagProductsDrawerConfig.isOpen },
     )
 
-    const selectedTags = tags.map((tag) => ({
+    const selectedTags = rules[type].tags.map((tag) => ({
         id: tag,
         title: tag,
+        badges: tagsWithExceptions.includes(tag)
+            ? [
+                  {
+                      label: 'Exceptions',
+                      type: 'light-warning' as const,
+                      tooltip: `Some products are ${type === 'promote' ? 'excluded' : 'promoted'} because of conflicting rules.`,
+                  },
+              ]
+            : [],
     }))
 
     const paginatedSelectedTags = usePaginatedItems(selectedTags)
 
-    const typeMap = {
-        promote: {
-            title: 'Promote tags',
-            description: 'Choose tags to prioritize in recommendations.',
-            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
-            selectionDrawerTitle: 'Select tags to promote',
-            selectedDrawerTitle: 'All promoted tags',
-        },
-        exclude: {
-            title: 'Exclude tags',
-            description: 'Choose tags to exclude from recommendations.',
-            badge: { label: 'Excluded', type: 'light-error' as const },
-            selectionDrawerTitle: 'Select tags to exclude',
-            selectedDrawerTitle: 'All excluded tags',
-        },
-    }
+    const labels = getRuleCardLabels(type, 'tags')
 
     return (
         <div>
             <RecommendationRuleCard
-                title={typeMap[type].title}
-                description={typeMap[type].description}
+                title={labels.title}
+                description={labels.description}
                 isLoading={isLoadingRules}
                 disableActions={isFetchingRules || isUpserting}
                 hasImages={false}
-                badge={typeMap[type].badge}
                 type={type}
                 addButton={{
                     label: 'Select tags',
@@ -114,8 +112,11 @@ export const TagRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="tag"
                 itemLabelPlural="tags"
-                totalItems={tags.length}
-                items={selectedTags}
+                totalItems={rules[type].tags.length}
+                items={selectedTags.slice(0, 4).map((tag) => ({
+                    ...tag,
+                    badges: [labels.badge, ...tag.badges],
+                }))}
                 onShowProducts={(tag: string) => {
                     setTagProductsDrawerConfig({
                         isOpen: true,
@@ -124,18 +125,23 @@ export const TagRecommendationRuleCard = ({
                     })
                 }}
                 onDelete={(deletedTag: string) =>
-                    onUpsert(tags.filter((tag) => tag !== deletedTag))
+                    onUpsert(
+                        rules[type].tags.filter((tag) => tag !== deletedTag),
+                    )
                 }
-                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
+                onSeeAllClick={() => {
+                    paginatedSelectedTags.resetPagination()
+                    setIsSeeAllDrawerOpen(true)
+                }}
             />
 
             <ItemDrawer
                 isOpen={allTagsDrawerConfig.isOpen}
                 isLoading={allTags.isLoading}
                 hasImages={false}
-                title={typeMap[type].selectionDrawerTitle}
+                title={labels.selectionDrawerTitle}
                 itemLabelPlural="tags"
-                selectedItemIds={tags}
+                selectedItemIds={rules[type].tags}
                 onClose={() =>
                     setAllTagsDrawerConfig((old) => ({ ...old, isOpen: false }))
                 }
@@ -143,6 +149,23 @@ export const TagRecommendationRuleCard = ({
                 items={(allTags.data?.data || []).map((tag) => ({
                     id: tag.value,
                     title: tag.value,
+                    badges: rules[
+                        type === 'promote' ? 'exclude' : 'promote'
+                    ].tags.includes(tag.value)
+                        ? [
+                              {
+                                  label:
+                                      type === 'promote'
+                                          ? 'Excluded'
+                                          : 'Promoted',
+                                  type:
+                                      type === 'promote'
+                                          ? 'light-error'
+                                          : 'light-success',
+                                  tooltip: `Tag is currently ${type === 'promote' ? 'excluded' : 'promoted'}. Select and save changes to modify status.`,
+                              },
+                          ]
+                        : [],
                 }))}
                 pagination={{
                     hasNextPage: !!allTags.data?.metadata.next_cursor,
@@ -173,7 +196,6 @@ export const TagRecommendationRuleCard = ({
                 isLoading={tagProducts.isLoading}
                 hasImages={true}
                 title={`Products within tag: ${tagProductsDrawerConfig.tag}`}
-                type={type}
                 itemLabelPlural="products"
                 selectedItemIds={[]}
                 onClose={() =>
@@ -182,12 +204,26 @@ export const TagRecommendationRuleCard = ({
                         isOpen: false,
                     }))
                 }
-                items={(tagProducts.data?.data || []).map((product) => ({
-                    id: product.external_id,
-                    title: product.data.title,
-                    status: product.data.status,
-                    img: product.data.featuredMedia?.image?.url,
-                }))}
+                items={(tagProducts.data?.data || []).map((product) => {
+                    const data = getProductStatusData(
+                        {
+                            id: product.external_id,
+                            tags: product.data.tags,
+                            vendor: product.data.vendor,
+                            status: product.data.status,
+                        },
+                        type,
+                        rules,
+                    )
+
+                    return {
+                        id: product.external_id,
+                        title: product.data.title,
+                        description: data.description,
+                        img: product.data.featuredMedia?.image?.url,
+                        badges: data.badges,
+                    }
+                })}
                 pagination={{
                     hasNextPage: !!tagProducts.data?.metadata.next_cursor,
                     hasPrevPage: !!tagProducts.data?.metadata.prev_cursor,
@@ -209,14 +245,13 @@ export const TagRecommendationRuleCard = ({
             />
 
             <ItemDrawer
-                title={typeMap[type].selectedDrawerTitle}
+                title={labels.selectedDrawerTitle}
                 itemLabelPlural="tags"
                 items={paginatedSelectedTags.paginatedItems}
-                selectedItemIds={tags}
+                selectedItemIds={rules[type].tags}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={false}
                 hasImages={false}
-                type={type}
                 pagination={paginatedSelectedTags.pagination}
                 onShowProducts={(tag: string) => {
                     setIsSeeAllDrawerOpen(false)
@@ -226,10 +261,7 @@ export const TagRecommendationRuleCard = ({
                         cursor: null,
                     })
                 }}
-                onClose={() => {
-                    setIsSeeAllDrawerOpen(false)
-                    paginatedSelectedTags.resetPagination()
-                }}
+                onClose={() => setIsSeeAllDrawerOpen(false)}
                 onSubmit={onUpsert}
                 onSearch={paginatedSelectedTags.setSearch}
             />

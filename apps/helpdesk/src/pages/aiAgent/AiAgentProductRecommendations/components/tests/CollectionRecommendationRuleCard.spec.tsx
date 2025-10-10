@@ -81,6 +81,27 @@ const mockUseGetEcommerceProductCollections = jest.requireMock(
     'models/ecommerce/queries',
 ).useGetEcommerceProductCollections
 
+const mockProducts = [
+    {
+        id: 123,
+        title: 'Product 1',
+        image: {
+            src: 'https://example.com/image1.jpg',
+        },
+        status: 'active',
+    },
+    {
+        id: 456,
+        title: 'Product 1',
+        status: 'active',
+    },
+    {
+        id: 789,
+        title: 'Product 3',
+        status: 'draft',
+    },
+]
+
 const mockCollections = [
     {
         external_id: '1',
@@ -132,8 +153,8 @@ describe('CollectionRecommendationRuleCard', () => {
         })
 
         mockUsePaginatedProductsByIds.mockReturnValue({
-            allProducts: [],
-            products: [],
+            allProducts: mockProducts,
+            products: mockProducts,
             isLoading: false,
             isError: false,
             currentPage: 1,
@@ -172,7 +193,20 @@ describe('CollectionRecommendationRuleCard', () => {
         const defaultProps = {
             type: 'promote' as const,
             integrationId: 123,
-            collections: ['1', '4'],
+            rules: {
+                promote: {
+                    collectionIds: ['1', '4'],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+                exclude: {
+                    collectionIds: ['3'],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+            },
             isLoadingRules: false,
             isFetchingRules: false,
             isUpserting: false,
@@ -198,7 +232,23 @@ describe('CollectionRecommendationRuleCard', () => {
     })
 
     it('should render exclude type correctly', () => {
-        const { getByText } = renderComponent({ type: 'exclude' })
+        const { getByText } = renderComponent({
+            type: 'exclude',
+            rules: {
+                exclude: {
+                    collectionIds: ['1', '4'],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+                promote: {
+                    collectionIds: [],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+            },
+        })
 
         expect(getByText('Exclude collections')).toBeInTheDocument()
         expect(
@@ -323,7 +373,22 @@ describe('CollectionRecommendationRuleCard', () => {
             setSearchTerm: jest.fn(),
         })
 
-        const { getByText } = renderComponent({ collections: [] })
+        const { getByText } = renderComponent({
+            rules: {
+                promote: {
+                    collectionIds: [],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+                exclude: {
+                    collectionIds: [],
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                },
+            },
+        })
 
         expect(getByText('Total: 0')).toBeInTheDocument()
     })

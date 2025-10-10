@@ -46,11 +46,6 @@
             border-top: 1px solid var(--neutral-grey-3); // legacy
         }
 
-        &:hover {
-            background-color: var(--neutral-grey-1); // legacy
-            cursor: pointer;
-        }
-
         .itemImage {
             width: 32px;
             height: 32px;
@@ -65,10 +60,25 @@
             border-radius: 3px;
         }
 
-        .itemTitle {
+        .itemContent {
             flex-grow: 1;
-            .body-semibold();
+            display: flex;
+            flex-direction: column;
+        }
+
+        .itemTitle {
+            .body-medium();
             color: var(--neutral-grey-6);
+        }
+
+        .itemDescription {
+            .caption-regular();
+            color: var(--neutral-grey-6);
+        }
+
+        .badges {
+            display: flex;
+            gap: var(--spacing-xxxs);
         }
     }
 

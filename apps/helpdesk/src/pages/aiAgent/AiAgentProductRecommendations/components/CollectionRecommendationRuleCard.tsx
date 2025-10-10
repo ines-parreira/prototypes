@@ -4,13 +4,16 @@ import { useGetEcommerceProductCollections } from 'models/ecommerce/queries'
 
 import usePaginatedProductCollectionsByIds from '../hooks/usePaginatedProductCollectionsByIds'
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
+import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import { getProductStatusData } from '../utils/get-product-status-data'
+import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const CollectionRecommendationRuleCard = ({
     type,
     integrationId,
-    collections,
+    rules,
     isLoadingRules,
     isFetchingRules,
     isUpserting,
@@ -18,7 +21,7 @@ export const CollectionRecommendationRuleCard = ({
 }: {
     type: 'promote' | 'exclude'
     integrationId: number
-    collections: string[]
+    rules: FormattedProductRecommendationRules
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
@@ -63,36 +66,20 @@ export const CollectionRecommendationRuleCard = ({
 
     const selectedCollections = usePaginatedProductCollectionsByIds({
         integrationId,
-        collectionIds: collections,
-        enabled: collections.length > 0,
+        collectionIds: rules[type].collectionIds,
+        enabled: rules[type].collectionIds.length > 0,
     })
 
-    const typeMap = {
-        promote: {
-            title: 'Promote collections',
-            description: 'Choose collections to prioritize in recommendations.',
-            badge: { label: '★ Promoted', type: 'light-success' as const },
-            selectionDrawerTitle: 'Select collections to promote',
-            selectedDrawerTitle: 'All promoted collections',
-        },
-        exclude: {
-            title: 'Exclude collections',
-            description: 'Choose collections to exclude from recommendations.',
-            badge: { label: 'Excluded', type: 'light-error' as const },
-            selectionDrawerTitle: 'Select collections to exclude',
-            selectedDrawerTitle: 'All excluded collections',
-        },
-    }
+    const labels = getRuleCardLabels(type, 'collections')
 
     return (
         <div>
             <RecommendationRuleCard
-                title={typeMap[type].title}
-                description={typeMap[type].description}
+                title={labels.title}
+                description={labels.description}
                 isLoading={isLoadingRules}
                 disableActions={isFetchingRules || isUpserting}
                 hasImages={false}
-                badge={typeMap[type].badge}
                 type={type}
                 addButton={{
                     label: 'Select collections',
@@ -104,8 +91,13 @@ export const CollectionRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="collection"
                 itemLabelPlural="collections"
-                totalItems={collections.length}
-                items={selectedCollections.allCollections}
+                totalItems={rules[type].collectionIds.length}
+                items={selectedCollections.allCollections
+                    .slice(0, 4)
+                    .map((collection) => ({
+                        ...collection,
+                        badges: [labels.badge],
+                    }))}
                 onShowProducts={(collectionId: string) => {
                     const collection = selectedCollections.collections.find(
                         (collection) => collection.id === collectionId,
@@ -120,7 +112,7 @@ export const CollectionRecommendationRuleCard = ({
                 }}
                 onDelete={(deletedCollection: string) =>
                     onUpsert(
-                        collections.filter(
+                        rules[type].collectionIds.filter(
                             (collection) => collection !== deletedCollection,
                         ),
                     )
@@ -132,9 +124,9 @@ export const CollectionRecommendationRuleCard = ({
                 isOpen={allCollectionsDrawerConfig.isOpen}
                 isLoading={allCollections.isLoading}
                 hasImages={false}
-                title={typeMap[type].selectionDrawerTitle}
+                title={labels.selectionDrawerTitle}
                 itemLabelPlural="collections"
-                selectedItemIds={collections}
+                selectedItemIds={rules[type].collectionIds}
                 onClose={() =>
                     setAllCollectionsDrawerConfig((old) => ({
                         ...old,
@@ -145,6 +137,23 @@ export const CollectionRecommendationRuleCard = ({
                 items={(allCollections.data?.data || []).map((collection) => ({
                     id: collection.external_id,
                     title: collection.data.title,
+                    badges: rules[
+                        type === 'promote' ? 'exclude' : 'promote'
+                    ].collectionIds.includes(collection.external_id)
+                        ? [
+                              {
+                                  label:
+                                      type === 'promote'
+                                          ? 'Excluded'
+                                          : 'Promoted',
+                                  type:
+                                      type === 'promote'
+                                          ? 'light-error'
+                                          : 'light-success',
+                                  tooltip: `Collection is currently ${type === 'promote' ? 'excluded' : 'promoted'}. Select and save changes to modify status.`,
+                              },
+                          ]
+                        : [],
                 }))}
                 pagination={{
                     hasNextPage: !!allCollections.data?.metadata.next_cursor,
@@ -173,7 +182,6 @@ export const CollectionRecommendationRuleCard = ({
                 isLoading={collectionProducts.isLoading}
                 hasImages={true}
                 title={`Products within collection: ${collectionProductsDrawerConfig.collectionTitle}`}
-                type={type}
                 itemLabelPlural="products"
                 selectedItemIds={[]}
                 onClose={() =>
@@ -182,12 +190,26 @@ export const CollectionRecommendationRuleCard = ({
                         isOpen: false,
                     }))
                 }
-                items={collectionProducts.products.map((product) => ({
-                    id: product.id.toString(),
-                    title: product.title,
-                    status: product.status,
-                    img: product.image?.src,
-                }))}
+                items={collectionProducts.products.map((product) => {
+                    const data = getProductStatusData(
+                        {
+                            id: product.id.toString(),
+                            tags: product.tags?.split(', '),
+                            vendor: product.vendor,
+                            status: product.status,
+                        },
+                        type,
+                        rules,
+                    )
+
+                    return {
+                        id: product.id.toString(),
+                        title: product.title,
+                        description: data.description,
+                        img: product.image?.src,
+                        badges: data.badges,
+                    }
+                })}
                 pagination={{
                     hasNextPage: collectionProducts.hasNextPage,
                     hasPrevPage: collectionProducts.hasPrevPage,
@@ -203,14 +225,13 @@ export const CollectionRecommendationRuleCard = ({
             />
 
             <ItemDrawer
-                title={typeMap[type].selectedDrawerTitle}
+                title={labels.selectedDrawerTitle}
                 itemLabelPlural="collections"
                 items={selectedCollections.collections}
-                selectedItemIds={collections}
+                selectedItemIds={rules[type].collectionIds}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={false}
                 hasImages={false}
-                type={type}
                 pagination={{
                     hasNextPage: selectedCollections.hasNextPage,
                     hasPrevPage: selectedCollections.hasPrevPage,

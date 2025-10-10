@@ -2,6 +2,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { ColorType } from '@gorgias/axiom'
+
 import { RecommendationRuleCard } from '../RecommendationRuleCard'
 
 const mockOnAddButtonClick = jest.fn()
@@ -43,7 +45,11 @@ const renderComponent = (
             id: string
             title: string
             img?: string
-            status?: string
+            badges?: Array<{
+                label: string
+                type: ColorType
+                tooltip?: string
+            }>
         }>
     } = {},
 ) => {
@@ -56,14 +62,48 @@ const renderComponent = (
         itemLabelSingular = 'product',
         itemLabelPlural = 'products',
         items = [
-            { id: '1', title: 'Test product 1', img: 'my-image-1-url' },
-            { id: '2', title: 'Test product 2', img: 'my-image-2-url' },
-            { id: '3', title: 'Test product 3' },
-            { id: '4', title: 'Test product 4' },
-            { id: '5', title: 'Test product 5' },
-            { id: '6', title: 'Test product 6' },
-            { id: '7', title: 'Test product 7' },
-            { id: '8', title: 'Test product 8' },
+            {
+                id: '1',
+                title: 'Test product 1',
+                img: 'my-image-1-url',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '2',
+                title: 'Test product 2',
+                img: 'my-image-2-url',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '3',
+                title: 'Test product 3',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '4',
+                title: 'Test product 4',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '5',
+                title: 'Test product 5',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '6',
+                title: 'Test product 6',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '7',
+                title: 'Test product 7',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
+            {
+                id: '8',
+                title: 'Test product 8',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
         ],
         hasOnShowProducts = false,
     } = options
@@ -78,7 +118,6 @@ const renderComponent = (
                 isLoading={isLoading}
                 disableActions={disableActions}
                 hasImages={hasImages}
-                badge={{ label: 'Excluded', type: 'light-error' }}
                 type="exclude"
                 addButton={{
                     label: 'Select products',
@@ -269,13 +308,44 @@ describe('RecommendationRuleCard', () => {
         ).toHaveLength(0)
     })
 
-    it('should render draft badges for products with draft status', () => {
+    it('should render a mix of badges', () => {
         const screen = renderComponent({
             items: [
-                { id: '1', title: 'Active product', status: 'active' },
-                { id: '2', title: 'Draft product', status: 'draft' },
-                { id: '3', title: 'Another draft product', status: 'draft' },
-                { id: '4', title: 'Published product', status: 'published' },
+                {
+                    id: '1',
+                    title: 'Excluded product',
+                    badges: [{ label: 'Excluded', type: 'light-error' }],
+                },
+                {
+                    id: '2',
+                    title: 'Draft product',
+                    badges: [
+                        {
+                            label: 'Draft',
+                            type: 'light-dark',
+                            tooltip: 'Draft product',
+                        },
+                    ],
+                },
+                {
+                    id: '3',
+                    title: 'Another draft product',
+                    badges: [
+                        {
+                            label: 'Draft',
+                            type: 'light-dark',
+                            tooltip: 'Draft product',
+                        },
+                    ],
+                },
+                {
+                    id: '4',
+                    title: 'Another excluded product',
+                    badges: [
+                        { label: 'Excluded', type: 'light-error' },
+                        { label: 'Exceptions', type: 'light-warning' },
+                    ],
+                },
             ],
         })
 
@@ -285,66 +355,13 @@ describe('RecommendationRuleCard', () => {
         const excludedBadges = screen.getAllByText('Excluded')
         expect(excludedBadges).toHaveLength(2)
 
-        expect(screen.getByText('Active product')).toBeInTheDocument()
+        const exceptionsBadges = screen.getAllByText('Exceptions')
+        expect(exceptionsBadges).toHaveLength(1)
+
+        expect(screen.getByText('Excluded product')).toBeInTheDocument()
         expect(screen.getByText('Draft product')).toBeInTheDocument()
         expect(screen.getByText('Another draft product')).toBeInTheDocument()
-        expect(screen.getByText('Published product')).toBeInTheDocument()
-    })
-
-    it('should show draft badge for exclude type', () => {
-        const screen = renderComponent({
-            items: [{ id: '1', title: 'Draft product', status: 'draft' }],
-        })
-
-        const draftBadge = screen.getByText('Draft')
-        expect(draftBadge).toBeInTheDocument()
-    })
-
-    it('should show draft badge for promote type', () => {
-        const screen = renderComponent({
-            items: [{ id: '1', title: 'Draft product', status: 'draft' }],
-        })
-
-        const draftBadge = screen.getByText('Draft')
-        expect(draftBadge).toBeInTheDocument()
-    })
-
-    it('should not render draft badges for products without draft status', () => {
-        const screen = renderComponent({
-            items: [
-                { id: '1', title: 'Active product', status: 'active' },
-                { id: '2', title: 'Published product', status: 'published' },
-                { id: '3', title: 'No status product' },
-            ],
-        })
-
-        const draftBadges = screen.queryAllByText('Draft')
-        expect(draftBadges).toHaveLength(0)
-
-        const excludedBadges = screen.getAllByText('Excluded')
-        expect(excludedBadges).toHaveLength(3)
-    })
-
-    it('should handle mixed status products correctly', () => {
-        const screen = renderComponent({
-            items: [
-                { id: '1', title: 'Draft product 1', status: 'draft' },
-                { id: '2', title: 'Active product', status: 'active' },
-                { id: '3', title: 'Draft product 2', status: 'draft' },
-                { id: '4', title: 'No status product' },
-            ],
-        })
-
-        const draftBadges = screen.getAllByText('Draft')
-        expect(draftBadges).toHaveLength(2)
-
-        const excludedBadges = screen.getAllByText('Excluded')
-        expect(excludedBadges).toHaveLength(2)
-
-        expect(screen.getByText('Draft product 1')).toBeInTheDocument()
-        expect(screen.getByText('Active product')).toBeInTheDocument()
-        expect(screen.getByText('Draft product 2')).toBeInTheDocument()
-        expect(screen.getByText('No status product')).toBeInTheDocument()
+        expect(screen.getByText('Another excluded product')).toBeInTheDocument()
     })
 
     it('should handle deletion errors with generic message', async () => {
@@ -520,7 +537,6 @@ describe('RecommendationRuleCard', () => {
                     isLoading={false}
                     disableActions={false}
                     hasImages={true}
-                    badge={{ label: '★ Promoted', type: 'light-success' }}
                     type="promote"
                     addButton={{
                         label: 'Select products',

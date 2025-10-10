@@ -6,25 +6,30 @@ import {
 } from 'models/ecommerce/queries'
 
 import { usePaginatedItems } from '../hooks/usePaginatedItems'
+import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import { getProductStatusData } from '../utils/get-product-status-data'
+import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const VendorRecommendationRuleCard = ({
     type,
     integrationId,
-    vendors,
+    rules,
     isLoadingRules,
     isFetchingRules,
     isUpserting,
     onUpsert,
+    vendorsWithExceptions,
 }: {
     type: 'promote' | 'exclude'
     integrationId: number
-    vendors: string[]
+    rules: FormattedProductRecommendationRules
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
     onUpsert: (vendors: string[]) => Promise<any>
+    vendorsWithExceptions: string[]
 }) => {
     const [allVendorsDrawerConfig, setAllVendorsDrawerConfig] = useState<{
         isOpen: boolean
@@ -70,39 +75,32 @@ export const VendorRecommendationRuleCard = ({
         { enabled: vendorProductsDrawerConfig.isOpen },
     )
 
-    const selectedVendors = vendors.map((vendor) => ({
+    const selectedVendors = rules[type].vendors.map((vendor) => ({
         id: vendor,
         title: vendor,
+        badges: vendorsWithExceptions.includes(vendor)
+            ? [
+                  {
+                      label: 'Exceptions',
+                      type: 'light-warning' as const,
+                      tooltip: `Some products are ${type === 'promote' ? 'excluded' : 'promoted'} because of conflicting rules.`,
+                  },
+              ]
+            : [],
     }))
 
     const paginatedSelectedVendors = usePaginatedItems(selectedVendors)
 
-    const typeMap = {
-        promote: {
-            title: 'Promote vendors',
-            description: 'Choose vendors to prioritize in recommendations.',
-            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
-            selectionDrawerTitle: 'Select vendors to promote',
-            selectedDrawerTitle: 'All promoted vendors',
-        },
-        exclude: {
-            title: 'Exclude vendors',
-            description: 'Choose vendors to exclude from recommendations.',
-            badge: { label: 'Excluded', type: 'light-error' as const },
-            selectionDrawerTitle: 'Select vendors to exclude',
-            selectedDrawerTitle: 'All excluded vendors',
-        },
-    }
+    const labels = getRuleCardLabels(type, 'vendors')
 
     return (
         <div>
             <RecommendationRuleCard
-                title={typeMap[type].title}
-                description={typeMap[type].description}
+                title={labels.title}
+                description={labels.description}
                 isLoading={isLoadingRules}
                 disableActions={isFetchingRules || isUpserting}
                 hasImages={false}
-                badge={typeMap[type].badge}
                 type={type}
                 addButton={{
                     label: 'Select vendors',
@@ -115,8 +113,11 @@ export const VendorRecommendationRuleCard = ({
                 }}
                 itemLabelSingular="vendor"
                 itemLabelPlural="vendors"
-                totalItems={vendors.length}
-                items={selectedVendors}
+                totalItems={rules[type].vendors.length}
+                items={selectedVendors.slice(0, 4).map((vendor) => ({
+                    ...vendor,
+                    badges: [labels.badge, ...vendor.badges],
+                }))}
                 onShowProducts={(vendor: string) => {
                     setVendorProductsDrawerConfig({
                         isOpen: true,
@@ -126,19 +127,24 @@ export const VendorRecommendationRuleCard = ({
                 }}
                 onDelete={(deletedVendor: string) =>
                     onUpsert(
-                        vendors.filter((vendor) => vendor !== deletedVendor),
+                        rules[type].vendors.filter(
+                            (vendor) => vendor !== deletedVendor,
+                        ),
                     )
                 }
-                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
+                onSeeAllClick={() => {
+                    paginatedSelectedVendors.resetPagination()
+                    setIsSeeAllDrawerOpen(true)
+                }}
             />
 
             <ItemDrawer
                 isOpen={allVendorsDrawerConfig.isOpen}
                 isLoading={allVendors.isLoading}
                 hasImages={false}
-                title={typeMap[type].selectionDrawerTitle}
+                title={labels.selectionDrawerTitle}
                 itemLabelPlural="vendors"
-                selectedItemIds={vendors}
+                selectedItemIds={rules[type].vendors}
                 onClose={() =>
                     setAllVendorsDrawerConfig((old) => ({
                         ...old,
@@ -149,6 +155,23 @@ export const VendorRecommendationRuleCard = ({
                 items={(allVendors.data?.data || []).map((vendor) => ({
                     id: vendor.value,
                     title: vendor.value,
+                    badges: rules[
+                        type === 'promote' ? 'exclude' : 'promote'
+                    ].vendors.includes(vendor.value)
+                        ? [
+                              {
+                                  label:
+                                      type === 'promote'
+                                          ? 'Excluded'
+                                          : 'Promoted',
+                                  type:
+                                      type === 'promote'
+                                          ? 'light-error'
+                                          : 'light-success',
+                                  tooltip: `Vendor is currently ${type === 'promote' ? 'excluded' : 'promoted'}. Select and save changes to modify status.`,
+                              },
+                          ]
+                        : [],
                 }))}
                 pagination={{
                     hasNextPage: !!allVendors.data?.metadata.next_cursor,
@@ -181,7 +204,6 @@ export const VendorRecommendationRuleCard = ({
                 isLoading={vendorProducts.isLoading}
                 hasImages={true}
                 title={`Products within vendor: ${vendorProductsDrawerConfig.vendor}`}
-                type={type}
                 itemLabelPlural="products"
                 selectedItemIds={[]}
                 onClose={() =>
@@ -190,12 +212,26 @@ export const VendorRecommendationRuleCard = ({
                         isOpen: false,
                     }))
                 }
-                items={(vendorProducts.data?.data || []).map((product) => ({
-                    id: product.external_id,
-                    title: product.data.title,
-                    status: product.data.status,
-                    img: product.data.featuredMedia?.image?.url,
-                }))}
+                items={(vendorProducts.data?.data || []).map((product) => {
+                    const data = getProductStatusData(
+                        {
+                            id: product.external_id,
+                            tags: product.data.tags,
+                            vendor: product.data.vendor,
+                            status: product.data.status,
+                        },
+                        type,
+                        rules,
+                    )
+
+                    return {
+                        id: product.external_id,
+                        title: product.data.title,
+                        description: data.description,
+                        img: product.data.featuredMedia?.image?.url,
+                        badges: data.badges,
+                    }
+                })}
                 pagination={{
                     hasNextPage: !!vendorProducts.data?.metadata.next_cursor,
                     hasPrevPage: !!vendorProducts.data?.metadata.prev_cursor,
@@ -219,14 +255,13 @@ export const VendorRecommendationRuleCard = ({
             />
 
             <ItemDrawer
-                title={typeMap[type].selectedDrawerTitle}
+                title={labels.selectedDrawerTitle}
                 itemLabelPlural="vendors"
                 items={paginatedSelectedVendors.paginatedItems}
-                selectedItemIds={vendors}
+                selectedItemIds={rules[type].vendors}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={false}
                 hasImages={false}
-                type={type}
                 pagination={paginatedSelectedVendors.pagination}
                 onShowProducts={(vendor: string) => {
                     setIsSeeAllDrawerOpen(false)
@@ -236,10 +271,7 @@ export const VendorRecommendationRuleCard = ({
                         cursor: null,
                     })
                 }}
-                onClose={() => {
-                    setIsSeeAllDrawerOpen(false)
-                    paginatedSelectedVendors.resetPagination()
-                }}
+                onClose={() => setIsSeeAllDrawerOpen(false)}
                 onSubmit={onUpsert}
                 onSearch={paginatedSelectedVendors.setSearch}
             />

@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import {
     LegacyButton as Button,
     CheckBoxField,
+    ColorType,
     LegacyIconButton as IconButton,
     LoadingSpinner,
 } from '@gorgias/axiom'
@@ -16,7 +17,7 @@ import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { DraftBadge } from './DraftBadge'
+import { BadgeWithTooltip } from './BadgeWithTooltip'
 
 import css from './ItemDrawer.less'
 
@@ -27,7 +28,6 @@ export const ItemDrawer = ({
     title,
     selectedItemIds,
     itemLabelPlural,
-    type,
     items,
     pagination,
     onClose,
@@ -41,12 +41,16 @@ export const ItemDrawer = ({
     title: string
     selectedItemIds: string[]
     itemLabelPlural: string
-    type?: 'promote' | 'exclude'
     items: Array<{
         id: string
         title: string
+        description?: string
         img?: string
-        status?: string
+        badges?: Array<{
+            label: string
+            type: ColorType
+            tooltip?: string
+        }>
     }>
     pagination: {
         hasPrevPage: boolean
@@ -68,7 +72,13 @@ export const ItemDrawer = ({
 
     useEffect(() => {
         if (!isOpen) return
+        setLocalSearchTerm('')
         setLocalSelectedItemIds(selectedItemIds)
+
+        const id = window.requestAnimationFrame(() => {
+            itemsContainerRef.current?.scrollTo?.({ top: 0, behavior: 'auto' })
+        })
+        return () => window.cancelAnimationFrame(id)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen])
 
@@ -195,15 +205,26 @@ export const ItemDrawer = ({
                                             )}
                                         </div>
                                     )}
-                                    <div className={css.itemTitle}>
-                                        {item.title}
+                                    <div className={css.itemContent}>
+                                        <div className={css.itemTitle}>
+                                            {item.title}
+                                        </div>
+                                        {item.description && (
+                                            <div
+                                                className={css.itemDescription}
+                                            >
+                                                {item.description}
+                                            </div>
+                                        )}
                                     </div>
-                                    {item.status === 'draft' && (
-                                        <div>
-                                            <DraftBadge
-                                                type={type}
-                                                variant="selection-drawer"
-                                            />
+                                    {item.badges && item.badges.length > 0 && (
+                                        <div className={css.badges}>
+                                            {item.badges.map((badge, i) => (
+                                                <BadgeWithTooltip
+                                                    key={i}
+                                                    {...badge}
+                                                />
+                                            ))}
                                         </div>
                                     )}
                                     {onShowProducts && (

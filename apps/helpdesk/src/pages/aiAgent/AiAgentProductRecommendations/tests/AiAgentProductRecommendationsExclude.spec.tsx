@@ -76,11 +76,6 @@ jest.mock('models/knowledgeService/mutations')
 const mockUseUpsertRulesProductRecommendation =
     useUpsertRulesProductRecommendation as jest.Mock
 
-jest.mock('core/flags')
-const mockUseFlag = jest.fn()
-mockUseFlag.mockReturnValue(true)
-require('core/flags').useFlag = mockUseFlag
-
 const mockUpsertRulesProductRecommendation = jest.fn()
 
 const defaultProductRules = {
@@ -146,7 +141,17 @@ const renderComponent = (
     } = options
 
     const rules: GetProductRecommendationRules = {
-        promoted: [],
+        promoted: [
+            {
+                type: 'product',
+                items: [
+                    { target: '2' },
+                    { target: '5' },
+                    { target: '14' },
+                    { target: '15' },
+                ],
+            },
+        ],
         excluded: [
             {
                 type: 'product',

@@ -4,13 +4,15 @@ import { Product } from 'constants/integrations/types/shopify'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
+import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'
 
 export const ProductRecommendationRuleCard = ({
     type,
     integrationId,
-    productIds,
+    rules,
     isLoadingRules,
     isFetchingRules,
     isUpserting,
@@ -18,7 +20,7 @@ export const ProductRecommendationRuleCard = ({
 }: {
     type: 'promote' | 'exclude'
     integrationId: number
-    productIds: string[]
+    rules: FormattedProductRecommendationRules
     isLoadingRules: boolean
     isFetchingRules: boolean
     isUpserting: boolean
@@ -49,7 +51,7 @@ export const ProductRecommendationRuleCard = ({
         fetchPage: drawerFetchPage,
     } = usePaginatedProductsByIds({
         integrationId,
-        productIds,
+        productIds: rules[type].productIds,
         enabled: !isLoadingRules,
         fetchAll: true,
     })
@@ -70,70 +72,120 @@ export const ProductRecommendationRuleCard = ({
         enabled: !!integrationId && isEnabled,
     })
 
+    const labels = getRuleCardLabels(type, 'products')
+
     const typeMap = {
         promote: {
-            title: 'Promote products',
-            description: 'Choose products to prioritize in recommendations.',
-            badge: { label: '\u2605 Promoted', type: 'light-success' as const },
-            selectionDrawerTitle: 'Select products to promote',
-            selectedDrawerTitle: 'All promoted products',
+            draftTooltip: {
+                card: 'Draft products will be promoted only after they become Active. Until then, Shopping Assistant won’t mention this product.',
+                drawer: 'This product’s status is Draft. You can select it to be promoted, but it will only be mentioned and promoted once its status changes to Active.',
+            },
         },
         exclude: {
-            title: 'Exclude products',
-            description: 'Choose products to exclude from recommendations.',
-            badge: { label: 'Excluded', type: 'light-error' as const },
-            selectionDrawerTitle: 'Select products to exclude',
-            selectedDrawerTitle: 'All excluded products',
+            draftTooltip: {
+                card: 'This product’s status is Draft. It will automatically be excluded once its status changes to Active.',
+                drawer: 'This product’s status is Draft. You can select it to be excluded and it will automatically be excluded once its status changes to Active.',
+            },
         },
     }
 
-    const mapProducts = (products: Product[]) =>
-        products.map((product) => ({
-            id: product.id.toString(),
-            title: product.title,
-            img: product.image?.src,
-            status: product.status,
-        }))
+    const mapProduct = (product: Product, location: 'card' | 'drawer') => ({
+        id: product.id.toString(),
+        title: product.title,
+        img: product.image?.src,
+        badges:
+            product.status === 'draft'
+                ? [
+                      {
+                          label: 'Draft',
+                          type: 'light-dark' as const,
+                          tooltip: typeMap[type].draftTooltip[location],
+                      },
+                  ]
+                : [],
+    })
 
     return (
         <div>
             <RecommendationRuleCard
-                title={typeMap[type].title}
-                description={typeMap[type].description}
+                title={labels.title}
+                description={labels.description}
                 isLoading={isLoadingRules}
                 disableActions={isFetching || isUpserting}
                 hasImages={true}
-                badge={typeMap[type].badge}
                 type={type}
                 addButton={{
                     label: 'Select products',
-                    onClick: () => setIsDrawerOpen(true),
+                    onClick: () => {
+                        setSearchTerm('')
+                        setIsDrawerOpen(true)
+                    },
                 }}
                 itemLabelSingular="product"
                 itemLabelPlural="products"
-                totalItems={productIds.length}
-                items={mapProducts(allProductRules.slice(0, 5))}
+                totalItems={rules[type].productIds.length}
+                items={allProductRules.slice(0, 4).map((product) => {
+                    const mapped = mapProduct(product, 'card')
+                    return {
+                        ...mapped,
+                        badges:
+                            mapped.badges.length > 0
+                                ? mapped.badges
+                                : [labels.badge],
+                    }
+                })}
                 onDelete={(deletedProductId: string) =>
                     onUpsert(
-                        productIds.filter(
+                        rules[type].productIds.filter(
                             (productId) => productId !== deletedProductId,
                         ),
                     )
                 }
-                onSeeAllClick={() => setIsSeeAllDrawerOpen(true)}
+                onSeeAllClick={() => {
+                    drawerSetSearchTerm('')
+                    drawerFetchPage(1)
+                    setIsSeeAllDrawerOpen(true)
+                }}
             />
 
             <ItemDrawer
                 isOpen={isDrawerOpen}
                 isLoading={isLoadingAllProducts}
                 hasImages={true}
-                title={typeMap[type].selectionDrawerTitle}
+                title={labels.selectionDrawerTitle}
                 itemLabelPlural="products"
-                selectedItemIds={productIds}
-                type={type}
+                selectedItemIds={rules[type].productIds}
                 onClose={() => setIsDrawerOpen(false)}
                 onSubmit={onUpsert}
-                items={mapProducts(allProducts)}
+                items={allProducts.map((product) => {
+                    const mapped = mapProduct(product, 'drawer')
+
+                    return {
+                        ...mapped,
+                        badges:
+                            mapped.badges.length > 0
+                                ? mapped.badges
+                                : rules[
+                                        type === 'promote'
+                                            ? 'exclude'
+                                            : 'promote'
+                                    ].productIds.includes(product.id.toString())
+                                  ? [
+                                        {
+                                            label:
+                                                type === 'promote'
+                                                    ? 'Excluded'
+                                                    : 'Promoted',
+                                            type:
+                                                type === 'promote'
+                                                    ? 'light-error'
+                                                    : 'light-success',
+                                            tooltip: `Product is currently ${type === 'promote' ? 'excluded' : 'promoted'}. Select and save changes to modify status.`,
+                                        },
+                                    ]
+                                  : [],
+                    }
+                })}
                 pagination={{
                     hasNextPage,
                     hasPrevPage,
@@ -144,14 +196,15 @@ export const ProductRecommendationRuleCard = ({
             />
 
             <ItemDrawer
-                title={typeMap[type].selectedDrawerTitle}
+                title={labels.selectedDrawerTitle}
                 itemLabelPlural="products"
-                items={mapProducts(productRules)}
-                selectedItemIds={productIds}
+                items={productRules.map((product) =>
+                    mapProduct(product, 'drawer'),
+                )}
+                selectedItemIds={rules[type].productIds}
                 isOpen={isSeeAllDrawerOpen}
                 isLoading={isLoadingProductRules}
                 hasImages={true}
-                type={type}
                 pagination={{
                     hasNextPage: drawerHasNextPage,
                     hasPrevPage: drawerHasPrevPage,

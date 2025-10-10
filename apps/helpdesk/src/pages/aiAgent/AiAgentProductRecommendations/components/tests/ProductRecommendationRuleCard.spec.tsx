@@ -128,7 +128,20 @@ describe('ProductRecommendationRuleCard', () => {
         const defaultProps = {
             type: 'promote' as const,
             integrationId: 123,
-            productIds: ['1', '2'],
+            rules: {
+                promote: {
+                    productIds: ['1', '2'],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+                exclude: {
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+            },
             isLoadingRules: false,
             isFetchingRules: false,
             isUpserting: false,
@@ -154,7 +167,23 @@ describe('ProductRecommendationRuleCard', () => {
     })
 
     it('should render exclude type correctly', () => {
-        const { getByText } = renderComponent({ type: 'exclude' })
+        const { getByText } = renderComponent({
+            type: 'exclude',
+            rules: {
+                exclude: {
+                    productIds: ['1', '2'],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+                promote: {
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+            },
+        })
 
         expect(getByText('Exclude products')).toBeInTheDocument()
         expect(
@@ -262,7 +291,22 @@ describe('ProductRecommendationRuleCard', () => {
             setSearchTerm: jest.fn(),
         })
 
-        const { getByText } = renderComponent({ productIds: [] })
+        const { getByText } = renderComponent({
+            rules: {
+                promote: {
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+                exclude: {
+                    productIds: [],
+                    tags: [],
+                    vendors: [],
+                    collectionIds: [],
+                },
+            },
+        })
 
         expect(getByText('Total: 0')).toBeInTheDocument()
     })

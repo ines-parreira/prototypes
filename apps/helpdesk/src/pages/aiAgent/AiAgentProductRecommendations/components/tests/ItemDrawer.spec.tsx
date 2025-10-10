@@ -1,5 +1,7 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
+import { ColorType } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -43,7 +45,13 @@ const renderComponent = (
         items?: Array<{
             id: string
             title: string
+            description?: string
             img?: string
+            badges?: Array<{
+                label: string
+                type: ColorType
+                tooltip?: string
+            }>
         }>
         hasNextPage?: boolean
         hasPrevPage?: boolean
@@ -63,16 +71,23 @@ const renderComponent = (
             {
                 id: '1',
                 title: 'Test product 1',
+                description: 'Product is excluded because of product rule',
                 img: 'my-image-1-url',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
             },
             {
                 id: '2',
                 title: 'Test product 2',
                 img: 'my-image-2-url',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
             },
             { id: '3', title: 'Test product 3' },
             { id: '4', title: 'Test product 4' },
-            { id: '5', title: 'Test product 5' },
+            {
+                id: '5',
+                title: 'Test product 5',
+                badges: [{ label: 'Excluded', type: 'light-error' }],
+            },
             { id: '6', title: 'Test product 6' },
             { id: '7', title: 'Test product 7' },
             { id: '8', title: 'Test product 8' },
@@ -126,8 +141,14 @@ describe('ItemDrawer', () => {
         expect(screen.queryByText('Test product 8')).toBeInTheDocument()
 
         expect(
+            screen.queryByText('Product is excluded because of product rule'),
+        ).toBeInTheDocument()
+
+        expect(
             screen.getAllByRole('button', { name: 'Show products' }),
         ).toHaveLength(8)
+
+        expect(screen.getAllByText('Excluded')).toHaveLength(3)
 
         expect(screen.queryByText('No products found')).not.toBeInTheDocument()
     })
