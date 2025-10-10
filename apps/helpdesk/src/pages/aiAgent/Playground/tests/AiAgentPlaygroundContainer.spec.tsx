@@ -21,6 +21,7 @@ import {
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { notify } from 'state/notifications/actions'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -85,6 +86,15 @@ const mockUseGetAccountConfiguration = assumeMock(useGetAccountConfiguration)
 
 jest.mock('../../hooks/usePublicResources')
 const mockUsePublicResources = assumeMock(usePublicResources)
+
+jest.mock('../../hooks/useGuidanceArticles')
+const mockUseGuidanceArticles = jest.fn().mockReturnValue({
+    guidanceArticles: [],
+    isGuidanceArticleListLoading: false,
+    isFetched: true,
+})
+
+jest.mocked(useGuidanceArticles).mockImplementation(mockUseGuidanceArticles)
 
 jest.mock('../hooks/usePlaygroundMessages')
 const mockUsePlaygroundMessages = assumeMock(usePlaygroundMessages)
@@ -279,7 +289,7 @@ describe('AiAgentPlayground', () => {
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
         renderComponent()
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
+            'At least one knowledge source is required to use test mode',
         )
     })
 
@@ -368,5 +378,64 @@ describe('AiAgentPlayground', () => {
             screen.getByTestId('playground-actions-toggle'),
         ).toBeInTheDocument()
         expect(screen.getByText('Toggle Actions On')).toBeInTheDocument()
+    })
+
+    it('renders playground with guidance articles', () => {
+        mockUseGetStoreConfigurationPure.mockReturnValue({
+            data: {
+                data: {
+                    storeConfiguration: {
+                        ...storeConfiguration,
+                        guidanceHelpCenterId: 123,
+                    },
+                },
+            },
+            error: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
+
+        mockUseGuidanceArticles.mockReturnValueOnce({
+            guidanceArticles: [
+                {
+                    id: 1,
+                    title: 'Test Guidance Article',
+                    content: 'This is a test guidance article',
+                    visibility: 'PUBLIC',
+                    locale: 'en-US',
+                    lastUpdated: '2023-01-01T00:00:00.000Z',
+                    templateKey: null,
+                },
+                {
+                    id: 2,
+                    title: 'Another Guidance Article',
+                    content: 'This is another guidance article',
+                    visibility: 'PUBLIC',
+                    locale: 'en-US',
+                    lastUpdated: '2023-01-02T00:00:00.000Z',
+                    templateKey: null,
+                },
+            ],
+            isGuidanceArticleListLoading: false,
+            isFetched: true,
+        })
+
+        mockUsePlaygroundMessages.mockReturnValue({
+            messages: [],
+            isMessageSending: false,
+            onMessageSend: jest.fn(),
+            onNewConversation: jest.fn(),
+            isWaitingResponse: false,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('PlaygroundChat')).toBeInTheDocument()
+
+        expect(mockUseGuidanceArticles).toHaveBeenCalledWith(
+            123,
+            expect.objectContaining({
+                enabled: true,
+            }),
+        )
     })
 })

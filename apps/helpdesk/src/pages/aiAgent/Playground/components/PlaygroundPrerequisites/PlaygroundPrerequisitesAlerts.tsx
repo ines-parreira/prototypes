@@ -14,16 +14,11 @@ export const MissingKnowledgeSourceAlert = ({
     const { routes } = useAiAgentNavigation({ shopName })
 
     return (
-        <div role="alert">
-            <h1 className={css.title}>Test AI Agent as a customer</h1>
+        <div role="alert" className={css.missingKnowledgeContainer}>
             <Alert
                 className={css.alert}
                 icon
-                customActions={
-                    <Link to={routes.configuration('knowledge')}>
-                        Add Knowledge
-                    </Link>
-                }
+                customActions={<Link to={routes.knowledge}>Add Knowledge</Link>}
             >
                 At least <strong>one knowledge source</strong> is required to
                 use test mode.

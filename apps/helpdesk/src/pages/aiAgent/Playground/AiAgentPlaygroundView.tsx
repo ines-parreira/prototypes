@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { isAxiosError } from 'axios'
 import { Redirect } from 'react-router-dom'
@@ -23,6 +23,7 @@ import { reportError } from 'utils/errors'
 import { REFRESH_AI_AGENT_PLAYGROUND_EVENT } from '../constants'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
+import { useGuidanceArticles } from '../hooks/useGuidanceArticles'
 import { PlaygroundChat } from './components/PlaygroundChat/PlaygroundChat'
 import { CheckPlaygroundPrerequisites } from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
 import { MissingKnowledgeSourceAlert } from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
@@ -103,6 +104,21 @@ export const AiAgentPlaygroundView = ({
         shopName,
     })
 
+    const { guidanceArticles, isGuidanceArticleListLoading } =
+        useGuidanceArticles(
+            storeData?.data?.storeConfiguration?.guidanceHelpCenterId ?? 0,
+            {
+                enabled:
+                    !!storeData?.data?.storeConfiguration?.guidanceHelpCenterId,
+            },
+        )
+
+    const guidanceUsed = useMemo(() => {
+        return guidanceArticles?.filter(
+            (article) => article.visibility === 'PUBLIC',
+        )
+    }, [guidanceArticles])
+
     useEffect(() => {
         if (storeFetchError) {
             if (
@@ -131,7 +147,12 @@ export const AiAgentPlaygroundView = ({
         }
     }, [storeFetchError, dispatch, shopName, routes])
 
-    if (storeDataLoading || accountDataLoading || snippetHelpCenterLoading) {
+    if (
+        storeDataLoading ||
+        accountDataLoading ||
+        snippetHelpCenterLoading ||
+        isGuidanceArticleListLoading
+    ) {
         return (
             <div className={css.spinner}>
                 <LoadingSpinner size="big" />
@@ -185,6 +206,7 @@ export const AiAgentPlaygroundView = ({
             shopName={shopName}
             storeConfiguration={storeData?.data?.storeConfiguration}
             snippetHelpCenterId={snippetHelpCenter?.id}
+            guidanceArticlesLength={guidanceUsed?.length}
         >
             {!storeConfigurationNotInitialized && storeData ? (
                 <PlaygroundChat

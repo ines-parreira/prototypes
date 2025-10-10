@@ -1,5 +1,7 @@
 import { renderHook } from '@repo/testing'
+import { fromJS } from 'immutable'
 
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetPostStoreInstallationStepsPure,
@@ -10,6 +12,8 @@ import {
     PostStoreInstallationStepType,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { usePostOnboardingNudges } from '../usePostOnboardingNudges'
 
@@ -25,6 +29,14 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 const mockAccountId = 123
 const mockShopName = 'test-shop'
 const mockShopType = 'shopify'
+
+const createMockUser = (role: UserRole) => {
+    return fromJS({
+        role: {
+            name: role,
+        },
+    })
+}
 
 const createMockPostOnboardingStep = (overrides = {}) => {
     const now = new Date()
@@ -84,7 +96,15 @@ const setupMockGetPostStoreInstallationSteps = (
 describe('usePostOnboardingNudges', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseAppSelector.mockImplementation(() => mockAccountId)
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) {
+                return mockAccountId
+            }
+            if (selector === getCurrentUser) {
+                return createMockUser(UserRole.Agent)
+            }
+            return null
+        })
 
         setupMockGetPostStoreInstallationSteps()
 
@@ -104,6 +124,31 @@ describe('usePostOnboardingNudges', () => {
             shouldDisplayTrainNudge: false,
             shouldDisplayDeployNudge: false,
             isLoading: true,
+        })
+    })
+
+    it('should return false for both nudges for non-team lead users', () => {
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) {
+                return mockAccountId
+            }
+            if (selector === getCurrentUser) {
+                return createMockUser(UserRole.BasicAgent)
+            }
+            return null
+        })
+
+        const postOnboardingStep = createMockPostOnboardingStep()
+        setupMockGetPostStoreInstallationSteps({ postOnboardingStep })
+
+        const { result } = renderHook(() =>
+            usePostOnboardingNudges(mockShopName, mockShopType),
+        )
+
+        expect(result.current).toMatchObject({
+            shouldDisplayTrainNudge: false,
+            shouldDisplayDeployNudge: false,
+            isLoading: false,
         })
     })
 

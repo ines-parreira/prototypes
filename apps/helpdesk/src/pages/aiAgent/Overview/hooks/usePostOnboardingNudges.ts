@@ -9,6 +9,8 @@ import {
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 const INACTIVITY_THRESHOLD_DAYS = 3
 const MILLISECONDS_TO_DAYS = 1000 * 60 * 60 * 24
@@ -28,6 +30,9 @@ const DEFAULT_POST_ONBOARDING_NUDGES = {
 export const usePostOnboardingNudges = (shopName: string, shopType: string) => {
     const currentAccountId = useAppSelector(getCurrentAccountId)
 
+    const user = useAppSelector(getCurrentUser)
+    const isTeamLeadOrAdmin = isTeamLead(user)
+
     const { data, isFetching, refetch } = useGetPostStoreInstallationStepsPure(
         {
             accountId: currentAccountId,
@@ -35,7 +40,7 @@ export const usePostOnboardingNudges = (shopName: string, shopType: string) => {
             shopType,
         },
         {
-            enabled: !!shopName && !!shopType,
+            enabled: !!shopName && !!shopType && isTeamLeadOrAdmin,
             refetchOnWindowFocus: false,
         },
     )
@@ -43,7 +48,11 @@ export const usePostOnboardingNudges = (shopName: string, shopType: string) => {
     const { mutateAsync: updateNotifications } =
         useUpdateStepNotificationsPure()
 
-    if (isFetching || !data?.postStoreInstallationSteps?.length) {
+    if (
+        isFetching ||
+        !data?.postStoreInstallationSteps?.length ||
+        !isTeamLeadOrAdmin
+    ) {
         return { ...DEFAULT_POST_ONBOARDING_NUDGES, isLoading: isFetching }
     }
 

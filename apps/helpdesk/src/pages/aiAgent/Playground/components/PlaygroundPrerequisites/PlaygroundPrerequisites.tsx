@@ -14,14 +14,20 @@ export const CheckPlaygroundPrerequisites = ({
     children,
     storeConfiguration,
     snippetHelpCenterId,
+    guidanceArticlesLength = 0,
     shopName,
 }: {
     children: ReactNode
     storeConfiguration?: StoreConfiguration
     snippetHelpCenterId?: number
+    guidanceArticlesLength?: number
     shopName: string
 }) => {
-    if (!storeConfiguration || storeConfiguration.helpCenterId === null) {
+    if (
+        !storeConfiguration ||
+        (storeConfiguration.helpCenterId === null &&
+            guidanceArticlesLength === 0)
+    ) {
         if (!snippetHelpCenterId) {
             return <MissingKnowledgeSourceAlert shopName={shopName} />
         }

@@ -1,15 +1,16 @@
 :local {
+    .toggleContainer {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
     .customToggle {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-xs);
 
-        i {
-            visibility: hidden;
-        }
-
-        label {
-            gap: var(--layout-spacing-xs);
+        img {
+            display: none;
         }
     }
 

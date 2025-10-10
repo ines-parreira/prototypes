@@ -49,6 +49,7 @@ describe('ChatToggle', () => {
 
     const defaultProps = {
         isChatChannelEnabled: false,
+        isLoading: false,
         setIsChatChannelEnabled: jest.fn(),
         storeConfiguration: defaultStoreConfig,
         shopName: 'test-shop',

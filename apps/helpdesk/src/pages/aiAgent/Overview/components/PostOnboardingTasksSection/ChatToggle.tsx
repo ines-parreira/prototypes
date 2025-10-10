@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Text } from '@gorgias/axiom'
+import { LoadingSpinner, Text } from '@gorgias/axiom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
@@ -17,21 +17,24 @@ import css from './ChatToggle.less'
 
 type ChatToggleProps = {
     isChatChannelEnabled: boolean
-    setIsChatChannelEnabled: (value: boolean) => void
+    isLoading: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     shopType: string
-    onChatToggle: (storeConfiguration: StoreConfiguration) => void
     label?: string
+
+    setIsChatChannelEnabled: (value: boolean) => void
+    onChatToggle: (storeConfiguration: StoreConfiguration) => void
 }
 
 export const ChatToggle = ({
     isChatChannelEnabled,
-    setIsChatChannelEnabled,
-    onChatToggle,
-    storeConfiguration,
+    isLoading,
     shopName,
     shopType,
+    storeConfiguration,
+    setIsChatChannelEnabled,
+    onChatToggle,
     label = 'Chat',
 }: ChatToggleProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
@@ -114,18 +117,23 @@ export const ChatToggle = ({
     }
 
     return (
-        <ChannelToggle
-            className={css.customToggle}
-            color="var(--surface-inverted-default)"
-            label={label}
-            checked={isChatChannelEnabled}
-            disabled={isChatChannelDisabled}
-            onChange={handleChatToggle}
-            warnings={[renderChatWarning()]}
-            tooltip={{
-                visible: false,
-                content: '',
-            }}
-        />
+        <div className={css.toggleContainer}>
+            <ChannelToggle
+                className={css.customToggle}
+                color="var(--surface-inverted-default)"
+                label={label}
+                checked={isChatChannelEnabled}
+                disabled={isChatChannelDisabled || isLoading}
+                onChange={handleChatToggle}
+                warnings={[renderChatWarning()]}
+                tooltip={{
+                    visible: false,
+                    content: '',
+                }}
+            />
+            {isChatChannelEnabled && isLoading && (
+                <LoadingSpinner size="small" />
+            )}
+        </div>
     )
 }

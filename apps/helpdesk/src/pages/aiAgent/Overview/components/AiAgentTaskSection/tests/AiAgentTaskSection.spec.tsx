@@ -37,10 +37,20 @@ const mockUseAiAgentOverviewModeEnabled =
         typeof useAiAgentOverviewModeEnabled
     >
 
-const renderComponent = (): RenderResult => {
-    return render(
-        <AiAgentTaskSection shopName="test-shop" shopType="shopify" />,
-    )
+const renderComponent = (
+    props?: Partial<{
+        shopName: string
+        shopType: string
+        setIsAiAgentPostLive: jest.Mock
+    }>,
+): RenderResult => {
+    const defaultProps = {
+        shopName: 'test-shop',
+        shopType: 'shopify',
+        setIsAiAgentPostLive: jest.fn(),
+    }
+
+    return render(<AiAgentTaskSection {...defaultProps} {...props} />)
 }
 
 describe('AiAgentTaskSection', () => {
@@ -109,5 +119,44 @@ describe('AiAgentTaskSection', () => {
         renderComponent()
 
         expect(screen.getByTestId('pending-tasks')).toBeInTheDocument()
+    })
+
+    it('should call setIsAiAgentPostLive in useEffect with the correct value', () => {
+        const mockSetIsAiAgentPostLive = jest.fn()
+
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AiAgentPostOnboardingSteps,
+        )
+        mockUseAiAgentOverviewModeEnabled.mockReturnValue({
+            isAiAgentLiveModeEnabled: false,
+            isLoading: false,
+        })
+
+        renderComponent({ setIsAiAgentPostLive: mockSetIsAiAgentPostLive })
+
+        expect(mockSetIsAiAgentPostLive).toHaveBeenCalledWith(false)
+        mockSetIsAiAgentPostLive.mockClear()
+
+        mockUseAiAgentOverviewModeEnabled.mockReturnValue({
+            isAiAgentLiveModeEnabled: true,
+            isLoading: false,
+        })
+
+        renderComponent({ setIsAiAgentPostLive: mockSetIsAiAgentPostLive })
+
+        expect(mockSetIsAiAgentPostLive).toHaveBeenCalledWith(true)
+    })
+
+    it('should not call setIsAiAgentPostLive when loading', () => {
+        const mockSetIsAiAgentPostLive = jest.fn()
+
+        mockUseAiAgentOverviewModeEnabled.mockReturnValue({
+            isAiAgentLiveModeEnabled: null,
+            isLoading: true,
+        })
+
+        renderComponent({ setIsAiAgentPostLive: mockSetIsAiAgentPostLive })
+
+        expect(mockSetIsAiAgentPostLive).not.toHaveBeenCalled()
     })
 })

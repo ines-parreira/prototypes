@@ -4,9 +4,14 @@ import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
+import { logEvent } from 'common/segment'
+import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'
-import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import {
+    PostStoreInstallationStepStatus,
+    StepConfiguration,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
@@ -56,8 +61,8 @@ export const DeploySection = ({
 
     const didUpdateSettingsAfterAiAgentEnabledRef = useRef(false)
 
-    // oxlint-disable-next-line no-unused-vars
-    const [_, setIsAiAgentDuringDeployment] = useIsAiAgentDuringDeployment()
+    const [isAiAgentDuringDeployment, setIsAiAgentDuringDeployment] =
+        useIsAiAgentDuringDeployment()
 
     useEffect(() => {
         if (
@@ -81,6 +86,8 @@ export const DeploySection = ({
             })
             await markPostStoreInstallationAsCompleted()
             setIsAiAgentDeployed(true)
+
+            logEventsForDeploymentStep()
         } catch (error) {
             handleAiAgentConfigurationError(error, dispatch)
         }
@@ -91,15 +98,30 @@ export const DeploySection = ({
         setIsAiAgentDuringDeployment(false)
     }
 
+    const logEventsForDeploymentStep = () => {
+        logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
+            step: stepMetadata.stepName,
+            status: PostStoreInstallationStepStatus.COMPLETED,
+            shop_name: shopName,
+            shop_type: shopType,
+        })
+        logEvent(SegmentEvent.PostOnboardingTaskActionDone, {
+            step: stepMetadata.stepName,
+            action: `deployed_${isChatChannelEnabled ? 'chat' : 'email'}`,
+            shop_name: shopName,
+            shop_type: shopType,
+        })
+    }
+
     return (
         <div className={css.container}>
             <Text size="md" variant="regular">
                 {stepMetadata.stepDescription}
             </Text>
-
             <div className={css.channelsToggles}>
                 <EmailToggle
                     isEmailChannelEnabled={isEmailChannelEnabled}
+                    isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
                     onEmailToggle={updateAiAgentChannels}
                     storeConfiguration={storeConfiguration}
@@ -107,6 +129,7 @@ export const DeploySection = ({
                 />
                 <ChatToggle
                     isChatChannelEnabled={isChatChannelEnabled}
+                    isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
                     onChatToggle={updateAiAgentChannels}
                     storeConfiguration={storeConfiguration}
@@ -114,7 +137,6 @@ export const DeploySection = ({
                     shopType={shopType}
                 />
             </div>
-
             <PostOnboardingLiveModal
                 isOpen={isAiAgentDeployed}
                 channel={isChatChannelEnabled ? 'chat' : 'email'}

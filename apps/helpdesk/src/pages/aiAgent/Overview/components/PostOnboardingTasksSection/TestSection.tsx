@@ -10,7 +10,11 @@ import {
     Tooltip,
 } from '@gorgias/axiom'
 
-import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import {
+    PostStoreInstallationStepStatus,
+    StepConfiguration,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
     MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT,
     REFRESH_AI_AGENT_PLAYGROUND_EVENT,
@@ -31,7 +35,10 @@ type Props = {
 export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
     const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
     const [isStepCompleted, setIsStepCompleted] = useState(false)
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: string
+    }>()
 
     const handleOpenPlayground = () => {
         if (!step.stepStartedDatetime) {
@@ -50,12 +57,30 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
             new CustomEvent(REFRESH_AI_AGENT_PLAYGROUND_EVENT),
         )
 
+        if (isStepCompleted) {
+            logEvent(SegmentEvent.PostOnboardingTaskActionDone, {
+                step: stepMetadata.stepName,
+                action: 'executed_test',
+                shop_name: shopName,
+                shop_type: shopType,
+            })
+        }
+
         if (!step.stepCompletedDatetime && isStepCompleted) {
-            updateStep({
+            void updateStep({
                 ...step,
                 stepCompletedDatetime: new Date().toISOString(),
             })
+
+            logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
+                step: stepMetadata.stepName,
+                status: PostStoreInstallationStepStatus.COMPLETED,
+                shop_name: shopName,
+                shop_type: shopType,
+            })
         }
+
+        setIsStepCompleted(false)
     }
 
     const handleRefresh = () => {

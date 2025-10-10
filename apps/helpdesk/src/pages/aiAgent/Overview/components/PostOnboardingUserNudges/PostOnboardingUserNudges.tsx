@@ -4,11 +4,14 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button, Heading, Text } from '@gorgias/axiom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { extractShopTypeFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopTypeFromUrl'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { usePostOnboardingNudges } from '../../hooks/usePostOnboardingNudges'
 import { POST_ONBOARDING_NUDGES_METADATA } from './constants'
@@ -20,6 +23,7 @@ interface PostOnboardingUserNudgesProps {}
 export const PostOnboardingUserNudges: React.FC<
     PostOnboardingUserNudgesProps
 > = () => {
+    const user = useAppSelector(getCurrentUser)
     const location = useLocation()
     const history = useHistory()
 
@@ -42,12 +46,22 @@ export const PostOnboardingUserNudges: React.FC<
             (shouldDisplayTrainNudge || shouldDisplayDeployNudge)
         ) {
             setIsOpen(true)
+
+            logEvent(SegmentEvent.PostOnboardingTaskUserNudgeViewed, {
+                shop_name: shopName,
+                shop_type: shopType,
+                user_id: user.get('id'),
+                type: shouldDisplayTrainNudge ? 'TRAIN' : 'DEPLOY',
+            })
         }
     }, [
         isLoading,
         shouldDisplayTrainNudge,
         shouldDisplayDeployNudge,
         location.pathname,
+        shopName,
+        shopType,
+        user,
     ])
 
     const { nudgeMetadata, dismissNudge } = useMemo(() => {

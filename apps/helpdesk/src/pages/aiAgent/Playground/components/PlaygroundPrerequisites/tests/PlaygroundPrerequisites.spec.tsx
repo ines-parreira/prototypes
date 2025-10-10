@@ -47,12 +47,12 @@ describe('CheckPlaygroundPrerequisites', () => {
         renderComponent()
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
+            'At least one knowledge source is required to use test mode.Add Knowledge',
         )
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
-            '/app/ai-agent/shopify/it-shop/settings?section=knowledge',
+            '/app/ai-agent/shopify/it-shop/knowledge',
         )
     })
 
@@ -62,7 +62,7 @@ describe('CheckPlaygroundPrerequisites', () => {
         })
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
+            'At least one knowledge source is required to use test mode.Add Knowledge',
         )
     })
 
@@ -117,7 +117,7 @@ describe('CheckPlaygroundPrerequisites', () => {
         renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
+            'At least one knowledge source is required to use test mode.Add Knowledge',
         )
     })
 

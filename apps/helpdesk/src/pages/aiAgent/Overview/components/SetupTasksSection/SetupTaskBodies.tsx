@@ -177,7 +177,7 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
 export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '', shopType = '' } = props
     const dispatch = useAppDispatch()
-    const { storeConfiguration, updateStoreConfiguration } =
+    const { storeConfiguration, updateStoreConfiguration, isLoading } =
         useAiAgentStoreConfigurationContext()
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(
         !storeConfiguration?.chatChannelDeactivatedDatetime,
@@ -209,6 +209,7 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
             <div className={css.channelToggle}>
                 <ChatToggle
                     isChatChannelEnabled={isChatChannelEnabled}
+                    isLoading={isLoading}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
                     onChatToggle={handleChatToggle}
                     storeConfiguration={storeConfiguration}
@@ -224,7 +225,7 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
 export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '' } = props
     const dispatch = useAppDispatch()
-    const { storeConfiguration, updateStoreConfiguration } =
+    const { storeConfiguration, updateStoreConfiguration, isLoading } =
         useAiAgentStoreConfigurationContext()
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(
         !storeConfiguration?.emailChannelDeactivatedDatetime,
@@ -256,6 +257,7 @@ export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
             <div className={css.channelToggle}>
                 <EmailToggle
                     isEmailChannelEnabled={isEmailChannelEnabled}
+                    isLoading={isLoading}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
                     onEmailToggle={handleEmailToggle}
                     storeConfiguration={storeConfiguration}

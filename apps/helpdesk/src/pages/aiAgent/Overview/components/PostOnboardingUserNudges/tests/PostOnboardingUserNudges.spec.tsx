@@ -3,18 +3,28 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { MemoryRouter, Route, Router, Switch } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
 
 import { usePostOnboardingNudges } from '../../../hooks/usePostOnboardingNudges'
 import { PostOnboardingUserNudges } from '../PostOnboardingUserNudges'
 
 jest.mock('../../../hooks/usePostOnboardingNudges')
+jest.mock('common/segment')
+jest.mock('hooks/useAppSelector')
 
 const mockUsePostOnboardingNudges =
     usePostOnboardingNudges as jest.MockedFunction<
         typeof usePostOnboardingNudges
     >
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+const mockUseAppSelector = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
 
 describe('PostOnboardingUserNudges', () => {
     beforeEach(() => {
@@ -26,6 +36,12 @@ describe('PostOnboardingUserNudges', () => {
             dismissTrainNudge: jest.fn().mockResolvedValue(undefined),
             dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
             isLoading: false,
+        })
+
+        mockUseAppSelector.mockImplementation((__selector) => {
+            return fromJS({
+                id: 'test-user-id',
+            })
         })
     })
 
@@ -228,5 +244,81 @@ describe('PostOnboardingUserNudges', () => {
                 'woocommerce',
             )
         })
+    })
+
+    it('should log PostOnboardingTaskUserNudgeViewed event when train nudge is displayed', async () => {
+        mockUsePostOnboardingNudges.mockReturnValue({
+            shouldDisplayTrainNudge: true,
+            shouldDisplayDeployNudge: false,
+            dismissTrainNudge: jest.fn().mockResolvedValue(undefined),
+            dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+        })
+
+        renderComponent('/app/ai-agent/shopify/test-shop')
+
+        await waitFor(() => {
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PostOnboardingTaskUserNudgeViewed,
+                {
+                    shop_name: 'test-shop',
+                    shop_type: 'shopify',
+                    user_id: 'test-user-id',
+                    type: 'TRAIN',
+                },
+            )
+        })
+    })
+
+    it('should log PostOnboardingTaskUserNudgeViewed event when deploy nudge is displayed', async () => {
+        mockUsePostOnboardingNudges.mockReturnValue({
+            shouldDisplayTrainNudge: false,
+            shouldDisplayDeployNudge: true,
+            dismissTrainNudge: jest.fn().mockResolvedValue(undefined),
+            dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+        })
+
+        renderComponent('/app/ai-agent/shopify/test-shop')
+
+        await waitFor(() => {
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PostOnboardingTaskUserNudgeViewed,
+                {
+                    shop_name: 'test-shop',
+                    shop_type: 'shopify',
+                    user_id: 'test-user-id',
+                    type: 'DEPLOY',
+                },
+            )
+        })
+    })
+
+    it('should not log event when both nudges are false', () => {
+        mockUsePostOnboardingNudges.mockReturnValue({
+            shouldDisplayTrainNudge: false,
+            shouldDisplayDeployNudge: false,
+            dismissTrainNudge: jest.fn().mockResolvedValue(undefined),
+            dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not log event when loading', () => {
+        mockUsePostOnboardingNudges.mockReturnValue({
+            shouldDisplayTrainNudge: true,
+            shouldDisplayDeployNudge: false,
+            dismissTrainNudge: jest.fn().mockResolvedValue(undefined),
+            dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
+            isLoading: true,
+        })
+
+        renderComponent()
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
     })
 })

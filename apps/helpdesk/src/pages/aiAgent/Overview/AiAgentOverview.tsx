@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -39,6 +39,8 @@ export const AiAgentOverview = () => {
         shopName: string
         shopType: string
     }>()
+
+    const [isAiAgentPostLive, setIsAiAgentPostLive] = useState(false)
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -214,14 +216,23 @@ export const AiAgentOverview = () => {
                     )}
                 </>
             )}
-            <KpiSection
-                isOnNewPlan={isOnNewPlan}
-                showActivationModal={showActivationModal}
-                showEarlyAccessModal={showEarlyAccessModal}
+
+            {isAiAgentPostLive && (
+                <KpiSection
+                    isOnNewPlan={isOnNewPlan}
+                    showActivationModal={showActivationModal}
+                    showEarlyAccessModal={showEarlyAccessModal}
+                    shopName={shopName}
+                />
+            )}
+
+            <AiAgentTaskSection
                 shopName={shopName}
+                shopType={shopType}
+                setIsAiAgentPostLive={setIsAiAgentPostLive}
             />
-            <AiAgentTaskSection shopName={shopName} shopType={shopType} />
             {hasResourceSection && <ResourcesSection />}
+
             <ThankYouModal
                 isOpen={isOpen}
                 title={modalContent.title}

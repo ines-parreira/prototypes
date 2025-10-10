@@ -28,6 +28,7 @@ describe('EmailToggle', () => {
 
     const defaultProps = {
         isEmailChannelEnabled: false,
+        isLoading: false,
         setIsEmailChannelEnabled: jest.fn(),
         storeConfiguration: defaultStoreConfig,
         shopName: 'test-shop',
