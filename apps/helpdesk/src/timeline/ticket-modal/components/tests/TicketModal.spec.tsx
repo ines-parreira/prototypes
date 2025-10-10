@@ -26,7 +26,7 @@ const mockIconButtonRender = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    IconButton: React.forwardRef<HTMLButtonElement, any>((props, ref) => {
+    LegacyIconButton: React.forwardRef<HTMLButtonElement, any>((props, ref) => {
         mockIconButtonRender(props, ref)
         return (
             <button ref={ref} {...props}>

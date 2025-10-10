@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
-import { Banner, Button } from '@gorgias/axiom'
+import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

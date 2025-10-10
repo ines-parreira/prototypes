@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useMemo } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import LinkButton from 'pages/common/components/button/LinkButton'

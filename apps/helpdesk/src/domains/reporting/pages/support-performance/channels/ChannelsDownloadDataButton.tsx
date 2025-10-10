@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useChannelsReportMetrics } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'

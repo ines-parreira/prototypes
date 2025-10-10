@@ -2,7 +2,7 @@ import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import { User } from 'config/types/user'

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

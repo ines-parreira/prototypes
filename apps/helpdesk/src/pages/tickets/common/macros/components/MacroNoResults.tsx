@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'

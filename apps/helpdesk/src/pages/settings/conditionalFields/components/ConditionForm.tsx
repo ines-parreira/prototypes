@@ -1,4 +1,4 @@
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import {
     CreateCustomFieldCondition,
     CustomFieldCondition,

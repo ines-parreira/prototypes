@@ -59,12 +59,12 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         <button
           aria-disabled="false"
           aria-label="copy url"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="copy-url-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -76,12 +76,12 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         <button
           aria-disabled="false"
           aria-label="close edit modal"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="close-edit-mode-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -238,12 +238,12 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         <button
           aria-disabled="false"
           aria-label="copy url"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="copy-url-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -255,12 +255,12 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         <button
           aria-disabled="false"
           aria-label="close edit modal"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="close-edit-mode-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -347,12 +347,12 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
         <button
           aria-disabled="false"
           aria-label="copy url"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="copy-url-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -364,12 +364,12 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
         <button
           aria-disabled="false"
           aria-label="close edit modal"
-          class="ui-button-wrapper-a432 wrapper ghost medium ui-button-ghost-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost medium ui-button-ghost-cef1 ui-button-secondary-cef1"
           id="close-edit-mode-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"

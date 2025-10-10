@@ -30,17 +30,17 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
         </span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             info_outline
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Learn
           </span>
@@ -540,12 +540,12 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
           >
             <button
               aria-disabled="true"
-              class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+              class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
               id="prev-btn"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 <i
                   class="material-icons icon"
@@ -556,12 +556,12 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             </button>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
               id="next-btn"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 <i
                   class="material-icons icon"

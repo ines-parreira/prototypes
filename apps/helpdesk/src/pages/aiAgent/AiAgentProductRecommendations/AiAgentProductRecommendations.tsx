@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'

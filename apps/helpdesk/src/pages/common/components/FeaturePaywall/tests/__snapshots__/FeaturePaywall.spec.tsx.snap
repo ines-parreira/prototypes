@@ -135,11 +135,11 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                 >
                   <button
                     aria-disabled="false"
-                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+                    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
                     type="button"
                   >
                     <span
-                      class="ui-button-content-a432"
+                      class="ui-button-content-cef1"
                     >
                       <span
                         class="wrapper"
@@ -315,11 +315,11 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                 >
                   <button
                     aria-disabled="false"
-                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+                    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
                     type="button"
                   >
                     <span
-                      class="ui-button-content-a432"
+                      class="ui-button-content-cef1"
                     >
                       <span
                         class="wrapper"
@@ -483,11 +483,11 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                 >
                   <button
                     aria-disabled="false"
-                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+                    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
                     type="button"
                   >
                     <span
-                      class="ui-button-content-a432"
+                      class="ui-button-content-cef1"
                     >
                       <span
                         class="wrapper"

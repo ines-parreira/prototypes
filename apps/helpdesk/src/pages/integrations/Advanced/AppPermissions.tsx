@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { AppOAuthPermission } from 'config/oauthPermissions'
 

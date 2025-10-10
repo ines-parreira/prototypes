@@ -1,4 +1,4 @@
-import { Box, IconButton, Separator } from '@gorgias/axiom'
+import { Box, LegacyIconButton as IconButton, Separator } from '@gorgias/axiom'
 
 type CarouselNavigationProps = {
     onPrevious: VoidFunction

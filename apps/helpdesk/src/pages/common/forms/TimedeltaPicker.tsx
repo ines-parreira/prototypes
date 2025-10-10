@@ -8,7 +8,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,

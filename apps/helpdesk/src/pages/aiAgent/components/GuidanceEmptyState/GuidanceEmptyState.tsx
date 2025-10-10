@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge, Button } from '@gorgias/axiom'
+import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import { logEvent, SegmentEvent } from 'common/segment'

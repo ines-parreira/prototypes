@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { isEqual, keyBy, startCase } from 'lodash'
 import { Link } from 'react-router-dom'
 
-import { Button, Label, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'

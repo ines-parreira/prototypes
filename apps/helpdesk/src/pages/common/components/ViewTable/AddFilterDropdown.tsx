@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import Dropdown, {

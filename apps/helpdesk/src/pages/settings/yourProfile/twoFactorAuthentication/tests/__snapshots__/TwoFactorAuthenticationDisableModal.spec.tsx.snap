@@ -99,22 +99,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>
@@ -190,22 +190,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>
@@ -329,22 +329,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="true"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432 ui-button-isdisabled-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1 ui-button-isdisabled-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>
@@ -420,22 +420,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>
@@ -572,22 +572,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>
@@ -684,22 +684,22 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 mr-auto ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 mr-auto ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Cancel
                 </span>
               </button>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Foo action button text
                 </span>

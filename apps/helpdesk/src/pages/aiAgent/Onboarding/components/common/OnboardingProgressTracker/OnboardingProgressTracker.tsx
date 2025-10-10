@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { getRGB } from 'gorgias-design-system/utils'
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'

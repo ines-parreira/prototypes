@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

@@ -6,7 +6,7 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import { Form } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

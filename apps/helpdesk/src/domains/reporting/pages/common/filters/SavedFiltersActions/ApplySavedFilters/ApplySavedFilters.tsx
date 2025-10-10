@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 
 import { useToggle } from '@repo/hooks'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

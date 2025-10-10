@@ -15,7 +15,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { countryOptions } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'

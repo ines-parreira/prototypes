@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import LinkButton from 'pages/common/components/button/LinkButton'

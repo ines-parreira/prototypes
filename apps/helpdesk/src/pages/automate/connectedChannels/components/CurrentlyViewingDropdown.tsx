@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { startCase } from 'lodash'
 import { Link } from 'react-router-dom'
 
-import { Button, Label, Separator } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, Separator } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'

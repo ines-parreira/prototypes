@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useMemo, useRef } from 'react'
 
 import { useEffectOnce, useKey } from '@repo/hooks'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     AIArticleToggleOptionValue,

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import _capitalize from 'lodash/capitalize'
 import moment from 'moment/moment'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { CouponSummary, Plan } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'

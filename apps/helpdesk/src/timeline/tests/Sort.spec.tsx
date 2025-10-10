@@ -15,7 +15,7 @@ jest.mock('core/flags', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    IconButton: React.forwardRef(
+    LegacyIconButton: React.forwardRef(
         (props: any, ref: React.Ref<HTMLButtonElement>) => (
             <button {...props} ref={ref} data-testid="icon-button" />
         ),

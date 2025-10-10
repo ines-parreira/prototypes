@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 

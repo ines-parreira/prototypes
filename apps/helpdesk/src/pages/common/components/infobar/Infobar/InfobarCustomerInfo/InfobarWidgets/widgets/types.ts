@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from 'react'
 
-import type { ButtonProps } from '@gorgias/axiom'
+import type { LegacyButtonProps as ButtonProps } from '@gorgias/axiom'
 
 export type Parameter = {
     name: string

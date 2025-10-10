@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import WorkflowsFeatureList, {

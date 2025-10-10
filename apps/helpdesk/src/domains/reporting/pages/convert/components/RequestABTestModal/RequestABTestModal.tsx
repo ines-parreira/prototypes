@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import moment from 'moment'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal.less'
 import Modal from 'pages/common/components/modal/Modal'

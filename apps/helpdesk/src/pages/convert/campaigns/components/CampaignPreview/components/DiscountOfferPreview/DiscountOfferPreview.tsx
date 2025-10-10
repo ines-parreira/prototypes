@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { getContrastColor } from 'gorgias-design-system/utils'

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { Badge, Button } from '@gorgias/axiom'
+import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-types'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

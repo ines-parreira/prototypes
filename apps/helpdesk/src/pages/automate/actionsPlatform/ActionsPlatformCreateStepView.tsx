@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { ulid } from 'ulidx'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     useVisualBuilder,

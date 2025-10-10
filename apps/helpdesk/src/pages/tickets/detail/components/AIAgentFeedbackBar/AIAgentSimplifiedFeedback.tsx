@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { TicketInfobarTab } from '@repo/navigation'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Button, Separator } from '@gorgias/axiom'
+import { LegacyButton as Button, Separator } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'

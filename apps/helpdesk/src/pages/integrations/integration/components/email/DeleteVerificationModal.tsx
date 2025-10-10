@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

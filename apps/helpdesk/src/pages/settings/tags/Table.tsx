@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { List } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'

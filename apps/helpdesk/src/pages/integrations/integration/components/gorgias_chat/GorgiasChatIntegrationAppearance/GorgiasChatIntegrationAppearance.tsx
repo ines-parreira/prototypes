@@ -17,7 +17,12 @@ import {
     Label as ReactStrapLabel,
 } from 'reactstrap'
 
-import { Button, Label, ToggleField, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    ToggleField,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import {

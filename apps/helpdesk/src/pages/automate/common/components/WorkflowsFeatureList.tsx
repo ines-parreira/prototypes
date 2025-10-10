@@ -5,7 +5,7 @@ import _keyBy from 'lodash/keyBy'
 import _uniq from 'lodash/uniq'
 import { Link } from 'react-router-dom'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'

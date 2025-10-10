@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe, Stripe } from '@stripe/stripe-js'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'

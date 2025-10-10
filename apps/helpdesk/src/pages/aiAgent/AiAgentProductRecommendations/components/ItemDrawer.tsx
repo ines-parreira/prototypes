@@ -4,9 +4,9 @@ import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
 import {
-    Button,
+    LegacyButton as Button,
     CheckBoxField,
-    IconButton,
+    LegacyIconButton as IconButton,
     LoadingSpinner,
 } from '@gorgias/axiom'
 

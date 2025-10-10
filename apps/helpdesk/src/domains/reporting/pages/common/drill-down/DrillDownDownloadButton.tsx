@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'

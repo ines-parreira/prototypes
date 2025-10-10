@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import {
     useGetVoiceCallRecordingTranscription,
     VoiceCallRecordingTranscriptionSpeakersItem,

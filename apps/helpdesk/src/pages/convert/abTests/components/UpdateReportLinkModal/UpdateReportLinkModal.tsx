@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react'
 
 import isUrl from 'validator/lib/isURL'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { ABTest } from 'models/convert/abTest/types'
 import Modal from 'pages/common/components/modal/Modal'

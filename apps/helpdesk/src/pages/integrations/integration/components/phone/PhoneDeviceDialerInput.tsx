@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { CountryCode } from 'libphonenumber-js'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { UserSearchResult } from 'models/search/types'
 import IconInput from 'pages/common/forms/input/IconInput'

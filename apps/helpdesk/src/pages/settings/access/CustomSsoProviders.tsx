@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Box, Button } from '@gorgias/axiom'
+import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

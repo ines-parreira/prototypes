@@ -10,7 +10,7 @@ import React, {
 import { EditorState } from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'

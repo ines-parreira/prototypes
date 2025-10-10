@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'

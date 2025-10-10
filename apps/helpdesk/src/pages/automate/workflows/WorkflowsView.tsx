@@ -14,7 +14,7 @@ import {
 } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'

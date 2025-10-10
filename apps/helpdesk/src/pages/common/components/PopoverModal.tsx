@@ -3,7 +3,7 @@ import React, { ReactNode, RefObject, useRef, useState } from 'react'
 import classnames from 'classnames'
 import { Popover, PopoverBody, PopoverHeader, PopoverProps } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 

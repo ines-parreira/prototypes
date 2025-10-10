@@ -3,7 +3,7 @@ import React, { PureComponent, ReactNode } from 'react'
 import { Emoji } from 'emoji-mart'
 import { Card, CardBody, Collapse } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 

@@ -308,7 +308,7 @@ describe('ExternalFilesSection', () => {
         })
 
         expect(screen.getByText('Upload Files').closest('button')).toHaveClass(
-            'ui-button-isdisabled-a432',
+            'ui-button-isdisabled-cef1',
         )
     })
 

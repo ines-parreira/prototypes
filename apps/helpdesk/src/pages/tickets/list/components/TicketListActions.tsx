@@ -11,7 +11,11 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Button, ButtonGroup, IconButton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    ButtonGroup,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 import { JobType } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

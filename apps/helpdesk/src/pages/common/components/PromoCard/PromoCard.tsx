@@ -11,7 +11,10 @@ import cn from 'classnames'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 
-import { Button, IconButton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 
 import css from './PromoCard.less'
 

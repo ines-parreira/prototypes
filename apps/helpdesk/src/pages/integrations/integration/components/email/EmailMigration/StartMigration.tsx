@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'

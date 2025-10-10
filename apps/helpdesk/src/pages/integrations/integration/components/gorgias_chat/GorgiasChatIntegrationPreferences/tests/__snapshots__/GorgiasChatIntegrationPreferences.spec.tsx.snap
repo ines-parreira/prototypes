@@ -679,11 +679,11 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
             type="submit"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Save Changes
             </span>

@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react'
 
-import { Button, type ButtonSize, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    type ButtonSize,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 

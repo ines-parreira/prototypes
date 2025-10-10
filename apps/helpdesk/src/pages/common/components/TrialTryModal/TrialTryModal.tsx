@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'

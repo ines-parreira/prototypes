@@ -10,7 +10,7 @@ import classNames from 'classnames'
 import { BaseEmoji, EmojiData } from 'emoji-mart'
 import { Popover } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'

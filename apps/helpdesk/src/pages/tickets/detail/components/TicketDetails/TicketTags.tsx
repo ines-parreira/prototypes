@@ -4,7 +4,12 @@ import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Badge, BadgeIcon, Button, Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    BadgeIcon,
+    LegacyButton as Button,
+    Tooltip,
+} from '@gorgias/axiom'
 import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Badge, Button } from '@gorgias/axiom'
+import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { CampaignCreatePayload } from 'models/convert/campaign/types'

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
 import useAppDispatch from 'hooks/useAppDispatch'

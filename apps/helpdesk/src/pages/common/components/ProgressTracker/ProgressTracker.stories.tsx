@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
 

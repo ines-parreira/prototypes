@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Modal from '../../../../../common/components/modal/Modal'
 import ModalActionsFooter from '../../../../../common/components/modal/ModalActionsFooter'

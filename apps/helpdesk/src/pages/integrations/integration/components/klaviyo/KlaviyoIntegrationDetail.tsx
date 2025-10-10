@@ -14,7 +14,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,

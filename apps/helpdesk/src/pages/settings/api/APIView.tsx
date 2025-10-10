@@ -8,7 +8,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import { InputType } from 'reactstrap/es/Input'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import IconButton from 'pages/common/components/button/IconButton'

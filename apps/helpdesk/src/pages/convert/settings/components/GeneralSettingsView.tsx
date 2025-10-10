@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { CampaignSettingType } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'

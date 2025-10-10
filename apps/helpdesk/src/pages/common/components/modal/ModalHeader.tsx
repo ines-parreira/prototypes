@@ -2,7 +2,7 @@ import React, { ReactNode, useContext } from 'react'
 
 import classnames from 'classnames'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { ModalContext } from './Modal'
 

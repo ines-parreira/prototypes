@@ -2,7 +2,7 @@ import { memo } from 'react'
 
 import classnames from 'classnames'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { MAX_HEADER_LENGTH } from 'config'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

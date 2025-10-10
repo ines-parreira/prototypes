@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 import { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

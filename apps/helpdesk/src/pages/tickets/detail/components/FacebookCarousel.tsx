@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Group from 'pages/common/components/layout/Group'
 import Slider from 'utils/wrappers/Slider'

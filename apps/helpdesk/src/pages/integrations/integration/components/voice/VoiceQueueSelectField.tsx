@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Button, Label, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, Skeleton } from '@gorgias/axiom'
 import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'

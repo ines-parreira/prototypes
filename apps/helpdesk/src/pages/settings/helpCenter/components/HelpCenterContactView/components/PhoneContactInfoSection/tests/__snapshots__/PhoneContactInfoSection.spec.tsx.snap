@@ -69,11 +69,11 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
     </div>
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-a432 addPhoneNumberButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+      class="ui-button-wrapper-cef1 addPhoneNumberButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons"

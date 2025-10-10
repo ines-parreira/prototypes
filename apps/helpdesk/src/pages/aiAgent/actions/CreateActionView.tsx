@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

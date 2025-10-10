@@ -1,4 +1,4 @@
-import { Banner, Button } from '@gorgias/axiom'
+import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     IngestionLogStatus,

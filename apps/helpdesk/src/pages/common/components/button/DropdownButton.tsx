@@ -2,7 +2,7 @@ import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
 
 import classnames from 'classnames'
 
-import { Button, ButtonGroup } from '@gorgias/axiom'
+import { LegacyButton as Button, ButtonGroup } from '@gorgias/axiom'
 
 import IconButton from './IconButton'
 

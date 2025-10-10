@@ -7,7 +7,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'

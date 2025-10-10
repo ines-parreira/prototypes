@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { z } from 'zod'
 
-import { Box, Button } from '@gorgias/axiom'
+import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import { useFlag } from 'core/flags'

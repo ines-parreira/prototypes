@@ -1,6 +1,6 @@
 import { useDebouncedValue } from '@repo/hooks'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
 import InputField from 'pages/common/forms/input/InputField'

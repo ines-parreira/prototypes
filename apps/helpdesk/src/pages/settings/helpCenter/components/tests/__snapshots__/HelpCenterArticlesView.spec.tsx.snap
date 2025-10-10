@@ -42,11 +42,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <span
                     class="wrapper"
@@ -65,12 +65,12 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           <button
             aria-disabled="false"
             aria-label="help center preview"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             id="preview-help-center"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons"
@@ -166,11 +166,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 createButton ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 createButton ui-button-fill-cef1 ui-button-primary-cef1"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons-outlined mr-1"
@@ -182,11 +182,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 createButton ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 createButton ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons mr-1"
@@ -208,11 +208,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </p>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons mr-2"
@@ -259,15 +259,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <button
                 aria-disabled="false"
                 aria-label="preview category"
-                class="ui-button-wrapper-a432 ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     aria-hidden="true"
-                    class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                    class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
                   >
                     open_in_new
                   </i>
@@ -276,15 +276,15 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <button
                 aria-disabled="false"
                 aria-label="copy url"
-                class="ui-button-wrapper-a432 ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     aria-hidden="true"
-                    class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                    class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
                   >
                     share
                   </i>
@@ -293,16 +293,16 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <button
                 aria-disabled="false"
                 aria-label="close edit drawer"
-                class="ui-button-wrapper-a432 ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
                 id="close-button"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     aria-hidden="true"
-                    class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                    class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
                   >
                     keyboard_tab
                   </i>
@@ -628,17 +628,17 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               </label>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+                class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
                 >
                   content_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy URL
                 </span>
@@ -835,23 +835,23 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         >
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             data-testid="button-save"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Save
             </span>
           </button>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Discard Changes
             </span>

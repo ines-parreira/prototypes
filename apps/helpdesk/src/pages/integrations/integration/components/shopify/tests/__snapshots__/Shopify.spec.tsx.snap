@@ -259,11 +259,11 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
           >
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Connect 
                 shopify
@@ -538,29 +538,29 @@ exports[`<Shopify/> Integration should render 1`] = `
           <div>
             <button
               aria-disabled="true"
-              class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+              class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Update Connection
               </span>
             </button>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+              class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
               id="integration-deletion-confirm-button"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 delete
               </i>
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Delete App
               </span>
@@ -613,11 +613,11 @@ exports[`<Shopify/> List should render 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Connect 
             shopify

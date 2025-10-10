@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

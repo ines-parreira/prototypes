@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { List } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { Tag } from '@gorgias/helpdesk-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

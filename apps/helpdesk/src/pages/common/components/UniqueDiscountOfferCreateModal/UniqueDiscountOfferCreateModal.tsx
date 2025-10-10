@@ -18,7 +18,7 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CustomDomain as CustomDomainEntity } from 'models/helpCenter/types'

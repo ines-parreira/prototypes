@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import IconButton from 'pages/common/components/button/IconButton'

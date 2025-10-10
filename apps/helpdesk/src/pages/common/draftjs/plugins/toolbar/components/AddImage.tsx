@@ -2,7 +2,7 @@ import React, { Component, createRef, KeyboardEvent, RefObject } from 'react'
 
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'

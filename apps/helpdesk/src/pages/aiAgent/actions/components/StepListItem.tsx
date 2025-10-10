@@ -2,7 +2,7 @@ import React, { RefObject } from 'react'
 
 import classNames from 'classnames'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { ActionTemplate, App } from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'

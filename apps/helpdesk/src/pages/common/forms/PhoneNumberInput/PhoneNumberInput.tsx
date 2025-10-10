@@ -21,7 +21,7 @@ import {
 } from 'libphonenumber-js'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
 import IconButton from 'pages/common/components/button/IconButton'

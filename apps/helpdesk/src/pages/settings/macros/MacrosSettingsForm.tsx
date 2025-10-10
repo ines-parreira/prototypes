@@ -15,7 +15,7 @@ import _uniqWith from 'lodash/uniqWith'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import {
     CreateMacroBody,
     type Language,

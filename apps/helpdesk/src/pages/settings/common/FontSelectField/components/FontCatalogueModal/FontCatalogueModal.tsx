@@ -6,7 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'

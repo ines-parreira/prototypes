@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _sample from 'lodash/sample'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

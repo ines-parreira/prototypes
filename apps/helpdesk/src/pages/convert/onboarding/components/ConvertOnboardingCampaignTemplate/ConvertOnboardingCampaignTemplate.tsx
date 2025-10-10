@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {

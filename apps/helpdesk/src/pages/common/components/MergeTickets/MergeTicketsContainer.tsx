@@ -3,7 +3,7 @@ import { Component, createRef } from 'react'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import goToTicket from 'common/utils/goToTicket'

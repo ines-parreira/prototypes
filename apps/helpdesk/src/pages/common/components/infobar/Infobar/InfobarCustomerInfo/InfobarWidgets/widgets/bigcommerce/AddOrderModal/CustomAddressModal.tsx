@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { CountryCode } from 'libphonenumber-js'
 import { Form } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     BigCommerceCustomerAddress,

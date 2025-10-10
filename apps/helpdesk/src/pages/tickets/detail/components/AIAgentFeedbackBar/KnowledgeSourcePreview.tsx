@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, Tooltip } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

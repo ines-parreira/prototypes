@@ -2,7 +2,7 @@ import React from 'react'
 
 import _noop from 'lodash/noop'
 
-import { Banner, Button } from '@gorgias/axiom'
+import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AlertType } from 'pages/common/components/Alert/Alert'

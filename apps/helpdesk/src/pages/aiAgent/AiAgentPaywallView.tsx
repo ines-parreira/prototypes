@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.svg'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.svg'

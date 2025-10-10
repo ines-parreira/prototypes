@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import CollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'

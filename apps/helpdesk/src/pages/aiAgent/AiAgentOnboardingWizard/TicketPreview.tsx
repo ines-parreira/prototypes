@@ -1,6 +1,11 @@
 import classnames from 'classnames'
 
-import { Avatar, Button, Skeleton, Tooltip } from '@gorgias/axiom'
+import {
+    Avatar,
+    LegacyButton as Button,
+    Skeleton,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import {

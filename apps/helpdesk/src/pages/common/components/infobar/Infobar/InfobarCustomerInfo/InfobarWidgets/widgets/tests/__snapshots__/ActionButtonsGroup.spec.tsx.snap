@@ -10,12 +10,12 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-1"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-1-tooltip-target"
@@ -27,12 +27,12 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-2"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-2-tooltip-target"
@@ -44,12 +44,12 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-3"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-3-tooltip-target"
@@ -75,12 +75,12 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-4"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-4-tooltip-target"
@@ -92,12 +92,12 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-5"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-5-tooltip-target"
@@ -109,12 +109,12 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       id="action-button-6"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <span
           id="action-button-6-tooltip-target"
@@ -134,11 +134,11 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"

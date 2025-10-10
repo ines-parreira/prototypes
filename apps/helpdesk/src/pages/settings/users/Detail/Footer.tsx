@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 

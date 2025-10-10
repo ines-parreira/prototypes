@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { fromJS, Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

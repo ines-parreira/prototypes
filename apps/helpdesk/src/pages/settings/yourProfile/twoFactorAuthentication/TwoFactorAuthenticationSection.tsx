@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Badge, Button } from '@gorgias/axiom'
+import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { DateAndTimeFormatting } from 'constants/datetime'

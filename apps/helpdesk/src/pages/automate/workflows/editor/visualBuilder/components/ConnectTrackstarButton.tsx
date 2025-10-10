@@ -1,6 +1,6 @@
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     useCreateTrackstarLink,

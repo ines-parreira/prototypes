@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import {
     UpdateVoiceQueue,
     useGetVoiceQueue,

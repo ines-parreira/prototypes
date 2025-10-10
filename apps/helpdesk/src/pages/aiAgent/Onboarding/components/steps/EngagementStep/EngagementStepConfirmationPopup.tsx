@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV } from 'pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings'

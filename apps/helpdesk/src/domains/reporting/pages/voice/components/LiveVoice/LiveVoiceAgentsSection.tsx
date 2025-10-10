@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 import { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
 

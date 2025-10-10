@@ -8,7 +8,7 @@ import {
     useParams,
 } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

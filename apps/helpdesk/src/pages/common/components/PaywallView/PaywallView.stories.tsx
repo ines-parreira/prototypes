@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { assetsUrl } from 'utils'
 

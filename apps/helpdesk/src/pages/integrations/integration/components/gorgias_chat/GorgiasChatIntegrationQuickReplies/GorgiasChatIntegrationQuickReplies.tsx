@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import { Button, ToggleField } from '@gorgias/axiom'
+import { LegacyButton as Button, ToggleField } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,

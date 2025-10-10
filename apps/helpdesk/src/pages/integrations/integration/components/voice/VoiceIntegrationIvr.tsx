@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 import { Col, Container, Form, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'

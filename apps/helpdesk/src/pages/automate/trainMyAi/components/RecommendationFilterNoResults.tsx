@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './RecommendationFilterNoResults.less'
 

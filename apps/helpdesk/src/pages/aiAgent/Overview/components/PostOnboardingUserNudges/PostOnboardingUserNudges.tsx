@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Button, Heading, Text } from '@gorgias/axiom'
+import { LegacyButton as Button, Heading, Text } from '@gorgias/axiom'
 
 import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { extractShopTypeFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopTypeFromUrl'

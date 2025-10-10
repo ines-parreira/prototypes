@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     HelpCenter,

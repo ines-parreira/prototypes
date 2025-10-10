@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import { ulid } from 'ulidx'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

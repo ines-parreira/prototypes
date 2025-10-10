@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest.less'
 import RequestABTestModal from 'domains/reporting/pages/convert/components/RequestABTestModal'

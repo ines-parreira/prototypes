@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { OutlookIntegration } from 'models/integration/types'

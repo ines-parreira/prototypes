@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Icon, IconButton } from '@gorgias/axiom'
+import { Icon, LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { useOpportunitiesNavigation } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesNavigation'
 import { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'

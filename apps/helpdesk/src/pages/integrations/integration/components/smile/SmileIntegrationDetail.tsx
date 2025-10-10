@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'

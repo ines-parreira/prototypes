@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'

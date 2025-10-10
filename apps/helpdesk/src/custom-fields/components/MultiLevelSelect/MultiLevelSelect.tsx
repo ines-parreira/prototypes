@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
 
-import { Button, Skeleton, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'

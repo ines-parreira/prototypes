@@ -16,7 +16,11 @@ import {
     Row,
 } from 'reactstrap'
 
-import { Button, IconButton, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+    LoadingSpinner,
+} from '@gorgias/axiom'
 import { Team } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'

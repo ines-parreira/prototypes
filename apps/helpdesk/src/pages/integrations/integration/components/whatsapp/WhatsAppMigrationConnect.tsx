@@ -1,6 +1,6 @@
 import { Col, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import SettingsContent from 'pages/settings/SettingsContent'

@@ -5,7 +5,7 @@ import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { Banner, Button, Skeleton } from '@gorgias/axiom'
+import { Banner, LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { useFlag } from 'core/flags'

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import _debounce from 'lodash/debounce'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useProductsFromShopifyIntegration } from 'models/integration/queries'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'

@@ -1,6 +1,6 @@
 import { useFormState } from 'react-hook-form'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { FormSubmitButtonError } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
 

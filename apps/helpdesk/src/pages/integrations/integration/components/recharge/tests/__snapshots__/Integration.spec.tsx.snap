@@ -19,11 +19,11 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
           </label>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 installButton mb-2 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 installButton mb-2 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <img
                 alt="shopify logo"
@@ -37,11 +37,11 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
           </button>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 installButton mb-2 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 installButton mb-2 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <img
                 alt="shopify logo"
@@ -120,18 +120,18 @@ exports[`<RechargeIntegration/> render() should render an integration with a del
         <div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+            class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
             id="confirm-button-delete"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+              class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
             >
               delete
             </i>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Delete App
             </span>

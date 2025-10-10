@@ -4,7 +4,7 @@ import { useTitle } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

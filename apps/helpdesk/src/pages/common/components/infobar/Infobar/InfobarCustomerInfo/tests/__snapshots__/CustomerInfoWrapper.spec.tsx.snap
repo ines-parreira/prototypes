@@ -10,18 +10,18 @@ exports[`CustomerInfoWrapper component should only 2 children and a Show More bu
   </p>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 container ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+    class="ui-button-wrapper-cef1 container ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Show 
       more
     </span>
     <i
       aria-hidden="true"
-      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
     >
       expand_more
     </i>
@@ -45,18 +45,18 @@ exports[`CustomerInfoWrapper component should render all 4 children and a Show L
   </p>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 container ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+    class="ui-button-wrapper-cef1 container ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Show 
       less
     </span>
     <i
       aria-hidden="true"
-      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
     >
       expand_less
     </i>
@@ -74,18 +74,18 @@ exports[`CustomerInfoWrapper component should render child a and child b with th
   </p>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 container ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+    class="ui-button-wrapper-cef1 container ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Show 
       more
     </span>
     <i
       aria-hidden="true"
-      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
     >
       expand_more
     </i>

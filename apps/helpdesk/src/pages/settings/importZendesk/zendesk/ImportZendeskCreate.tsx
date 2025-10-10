@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { ZENDESK_IMPORTED_TICKETS_FOR_YEARS } from 'config'
 import { IntegrationType, ZendeskIntegration } from 'models/integration/types'

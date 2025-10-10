@@ -11,17 +11,17 @@ exports[`<MacroNoResults /> should display no macros available without search qu
   </p>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
     type="button"
   >
     <i
       aria-hidden="true"
-      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
     >
       add
     </i>
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Create a new macro
     </span>
@@ -40,17 +40,17 @@ exports[`<MacroNoResults /> should display no macros found with search query 1`]
   </p>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
     type="button"
   >
     <i
       aria-hidden="true"
-      class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
     >
       add
     </i>
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Create a new macro
     </span>

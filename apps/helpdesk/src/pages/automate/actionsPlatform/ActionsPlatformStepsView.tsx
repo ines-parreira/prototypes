@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useOrderBy from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'

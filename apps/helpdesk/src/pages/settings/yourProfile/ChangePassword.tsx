@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { connect, ConnectedProps } from 'react-redux'
 import { Form } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'

@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import { assetsUrl } from 'utils'

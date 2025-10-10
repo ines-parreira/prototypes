@@ -3,11 +3,11 @@
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 1`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <svg
-    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -37,7 +37,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     </span>
   </svg>
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -47,11 +47,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 2`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <svg
-    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -81,7 +81,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     </span>
   </svg>
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -91,11 +91,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 3`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <svg
-    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -125,7 +125,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
     </span>
   </svg>
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     I Have Saved My Codes
   </span>
@@ -135,11 +135,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 1`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -149,11 +149,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 2`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -163,11 +163,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 3`] = `
 <button
   aria-disabled="true"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     I Have Saved My Codes
   </span>
@@ -177,11 +177,11 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 1`] = `
 <button
   aria-disabled="false"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -191,11 +191,11 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 2`] = `
 <button
   aria-disabled="false"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     Continue
   </span>
@@ -205,11 +205,11 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 3`] = `
 <button
   aria-disabled="false"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     I Have Saved My Codes
   </span>

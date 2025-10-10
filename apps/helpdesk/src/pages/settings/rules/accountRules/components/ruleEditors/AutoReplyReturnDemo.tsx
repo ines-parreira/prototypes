@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
 import RichField from 'pages/common/forms/RichField/RichField'

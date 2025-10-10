@@ -9,7 +9,7 @@ import React, {
 import { AxiosError } from 'axios'
 import { dismissNotification } from 'reapop'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

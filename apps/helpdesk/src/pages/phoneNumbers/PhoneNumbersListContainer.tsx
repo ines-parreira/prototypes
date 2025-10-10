@@ -4,7 +4,7 @@ import { useAsyncFn, useCallbackRef } from '@repo/hooks'
 import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'

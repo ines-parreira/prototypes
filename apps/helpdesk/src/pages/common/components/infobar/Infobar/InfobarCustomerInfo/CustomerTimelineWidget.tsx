@@ -3,7 +3,13 @@ import { useEffect } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useParams } from 'react-router-dom'
 
-import { Button, Icon, LoadingSpinner, NewButton, Text } from '@gorgias/axiom'
+import {
+    Button,
+    Icon,
+    LegacyButton,
+    LoadingSpinner,
+    Text,
+} from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
@@ -78,7 +84,7 @@ const TimelineFieldButton = ({
     return (
         <div className={css.fieldContainer}>
             {hasUIVisionMS1 ? (
-                <NewButton
+                <Button
                     leadingSlot="history"
                     variant={isPrimary ? 'primary' : 'secondary'}
                     onClick={onClick}
@@ -86,9 +92,9 @@ const TimelineFieldButton = ({
                     isDisabled={isDisabled}
                 >
                     <span>{isOpen ? 'Close' : 'Open'} timeline</span>
-                </NewButton>
+                </Button>
             ) : (
-                <Button
+                <LegacyButton
                     leadingIcon="history"
                     intent={isPrimary ? 'primary' : 'secondary'}
                     onClick={onClick}
@@ -96,7 +102,7 @@ const TimelineFieldButton = ({
                     isDisabled={isDisabled}
                 >
                     <span>{isOpen ? 'Close' : 'Open'} timeline</span>
-                </Button>
+                </LegacyButton>
             )}
             <Text size="sm">
                 <span className={isDisabled ? css.fieldContentDisabled : ''}>
@@ -217,7 +223,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
             className={`${css.timelineWidget} ${hasNoHistory ? css.noTimeline : ''}`}
         >
             {showToggle ? (
-                <Button
+                <LegacyButton
                     className={css.mr}
                     intent={
                         showButtonAsPrimary(tickets, activeTicketId)
@@ -242,7 +248,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
                           ? 'Close'
                           : 'Open'}{' '}
                     Timeline
-                </Button>
+                </LegacyButton>
             ) : (
                 <ForumIcon />
             )}

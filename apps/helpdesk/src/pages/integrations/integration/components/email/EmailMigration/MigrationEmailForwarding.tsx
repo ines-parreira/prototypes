@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom'
 import { Col } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailMigrationInboundVerification } from 'models/integration/types'

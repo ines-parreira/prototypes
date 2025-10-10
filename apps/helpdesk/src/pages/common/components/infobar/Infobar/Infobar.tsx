@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'

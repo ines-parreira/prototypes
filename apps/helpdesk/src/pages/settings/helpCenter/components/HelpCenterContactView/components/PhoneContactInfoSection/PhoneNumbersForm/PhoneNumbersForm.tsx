@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { produce } from 'immer'
 import { FormGroup, Label } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { ContactPhoneNumber } from 'models/helpCenter/types'
 import InputField from 'pages/common/forms/input/InputField'

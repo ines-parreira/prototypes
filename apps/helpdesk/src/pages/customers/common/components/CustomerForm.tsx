@@ -11,7 +11,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

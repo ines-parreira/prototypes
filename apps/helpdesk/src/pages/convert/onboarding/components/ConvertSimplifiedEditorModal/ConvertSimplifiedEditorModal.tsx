@@ -5,7 +5,7 @@ import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Badge, BadgeIcon, Button } from '@gorgias/axiom'
+import { Badge, BadgeIcon, LegacyButton as Button } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import {

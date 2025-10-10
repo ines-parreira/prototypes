@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ButtonIconLabel from './ButtonIconLabel'
 

@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import { HelpCenter } from 'models/helpCenter/types'

@@ -3,7 +3,7 @@ import { ComponentProps, useState } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automate.png'
 import overviewStatsPaywall from 'assets/img/paywalls/screens/live-overview-statistic.png'

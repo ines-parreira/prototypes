@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import ChannelIcon from 'pages/automate/common/components/ChannelIcon'

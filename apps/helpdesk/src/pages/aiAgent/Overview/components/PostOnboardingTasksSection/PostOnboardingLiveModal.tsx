@@ -1,4 +1,10 @@
-import { Button, Heading, Icon, IconButton, Text } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Heading,
+    Icon,
+    LegacyIconButton as IconButton,
+    Text,
+} from '@gorgias/axiom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import Modal from 'pages/common/components/modal/Modal'

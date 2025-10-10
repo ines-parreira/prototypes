@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { Button, Heading, IconButton, Text, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Heading,
+    LegacyIconButton as IconButton,
+    Text,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {

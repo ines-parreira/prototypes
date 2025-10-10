@@ -9,7 +9,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Input } from 'reactstrap'
 import { InputType } from 'reactstrap/lib/Input'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'

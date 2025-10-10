@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

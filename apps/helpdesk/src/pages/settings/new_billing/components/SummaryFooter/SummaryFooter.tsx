@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'

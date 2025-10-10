@@ -5,7 +5,7 @@ import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import { Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'

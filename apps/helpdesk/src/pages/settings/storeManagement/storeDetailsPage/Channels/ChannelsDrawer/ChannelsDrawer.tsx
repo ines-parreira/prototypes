@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import { Drawer } from 'pages/common/components/Drawer'

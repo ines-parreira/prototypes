@@ -1,4 +1,4 @@
-import { Box, Button } from '@gorgias/axiom'
+import { Box, LegacyButton as Button } from '@gorgias/axiom'
 import { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { useFieldArray, useWatch } from 'core/forms'

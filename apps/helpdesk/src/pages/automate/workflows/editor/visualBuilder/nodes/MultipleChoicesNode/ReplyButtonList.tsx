@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'

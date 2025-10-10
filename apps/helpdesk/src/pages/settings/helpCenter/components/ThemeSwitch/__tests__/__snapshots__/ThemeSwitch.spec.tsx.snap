@@ -93,13 +93,13 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
         <button
           aria-disabled="false"
           aria-label="color-picker-button_accent_color"
-          class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
           data-testid="color-picker-button_accent_color"
           id="color-picker-2"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <div
               class="color"

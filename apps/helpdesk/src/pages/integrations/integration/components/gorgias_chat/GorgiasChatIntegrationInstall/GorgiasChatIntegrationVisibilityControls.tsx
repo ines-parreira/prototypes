@@ -10,7 +10,7 @@ import classNames from 'classnames'
 import { Map } from 'immutable'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     GorgiasChatInstallationVisibility,

@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { NavLink, RouteComponentProps } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { CursorDirection, OrderDirection } from 'models/api/types'
 import {

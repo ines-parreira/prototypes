@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'

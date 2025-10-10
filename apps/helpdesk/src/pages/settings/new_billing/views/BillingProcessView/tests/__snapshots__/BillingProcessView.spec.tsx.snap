@@ -101,11 +101,11 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-destructive-a432 ui-button-small-a432"
+                  class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-destructive-cef1 ui-button-small-cef1"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     Cancel auto-renewal
                   </span>
@@ -261,12 +261,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+                  class="ui-button-wrapper-cef1 addProduct ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
                   id="add-product-automation"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     <i
                       class="material-icons"
@@ -303,12 +303,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+                  class="ui-button-wrapper-cef1 addProduct ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
                   id="add-product-voice"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     <i
                       class="material-icons"
@@ -345,12 +345,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+                  class="ui-button-wrapper-cef1 addProduct ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
                   id="add-product-sms"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     <i
                       class="material-icons"
@@ -387,12 +387,12 @@ exports[`UsageAndPlansView should render 1`] = `
                 </div>
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 addProduct ui-button-ghost-a432 ui-button-primary-a432 ui-button-small-a432"
+                  class="ui-button-wrapper-cef1 addProduct ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
                   id="add-product-convert"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     <i
                       class="material-icons"
@@ -530,12 +530,12 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <button
                 aria-disabled="true"
-                class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+                class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
                 id="update-subscription"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Update Subscription
                 </span>

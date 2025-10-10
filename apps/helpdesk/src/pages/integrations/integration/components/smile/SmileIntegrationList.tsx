@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { IntegrationType } from '../../../../../models/integration/types'
 import ForwardIcon from '../../../common/components/ForwardIcon'

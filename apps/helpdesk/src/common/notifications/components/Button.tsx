@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'

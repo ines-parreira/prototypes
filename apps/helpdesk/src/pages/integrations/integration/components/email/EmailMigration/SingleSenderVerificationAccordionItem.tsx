@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     EmailMigrationOutboundVerification,

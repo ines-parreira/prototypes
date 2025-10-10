@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import { FormGroup, Label } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { useUpdateEmailIntegrationDomain } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'

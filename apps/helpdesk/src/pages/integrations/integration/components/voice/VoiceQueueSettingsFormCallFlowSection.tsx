@@ -1,6 +1,12 @@
 import { useEffect } from 'react'
 
-import { Banner, Button, Label, TextField, ToggleField } from '@gorgias/axiom'
+import {
+    Banner,
+    LegacyButton as Button,
+    Label,
+    TextField,
+    ToggleField,
+} from '@gorgias/axiom'
 import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,

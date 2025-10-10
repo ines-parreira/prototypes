@@ -4,7 +4,7 @@ import { useDismissFlag } from '@repo/hooks'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import PageHeader from 'pages/common/components/PageHeader'

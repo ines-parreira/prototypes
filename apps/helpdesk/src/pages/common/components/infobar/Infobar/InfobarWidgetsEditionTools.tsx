@@ -3,7 +3,7 @@ import { Component } from 'react'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { StoreDispatch } from 'state/types'
 import { startEditionMode, submitWidgets } from 'state/widgets/actions'

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

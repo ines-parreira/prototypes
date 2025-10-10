@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Col } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchMigrationDomains } from 'models/integration/resources/email'

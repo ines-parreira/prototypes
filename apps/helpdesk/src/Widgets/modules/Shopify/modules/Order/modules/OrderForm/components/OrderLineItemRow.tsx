@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     getOrderLineItemDiscountedPrice,

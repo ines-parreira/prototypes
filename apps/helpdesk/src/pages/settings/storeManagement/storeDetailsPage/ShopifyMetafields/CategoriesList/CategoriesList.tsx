@@ -1,4 +1,4 @@
-import { IconButton, Text } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, Text } from '@gorgias/axiom'
 
 import styles from './CategoriesList.less'
 

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { produce } from 'immer'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import {

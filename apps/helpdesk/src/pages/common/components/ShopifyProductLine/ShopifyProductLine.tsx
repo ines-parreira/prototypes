@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
-import { Badge, Button } from '@gorgias/axiom'
+import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactNode } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 

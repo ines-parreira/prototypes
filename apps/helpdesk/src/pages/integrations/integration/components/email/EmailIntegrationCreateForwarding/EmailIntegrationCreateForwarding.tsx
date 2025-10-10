@@ -14,7 +14,7 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import exchange from 'assets/img/integrations/exchange.svg'
 import groups from 'assets/img/integrations/google-groups.svg'

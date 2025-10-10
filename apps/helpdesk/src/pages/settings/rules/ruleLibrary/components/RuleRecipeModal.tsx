@@ -5,7 +5,7 @@ import _flatten from 'lodash/flatten'
 import pluralize from 'pluralize'
 import { Badge, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -1,6 +1,6 @@
 import React, { RefObject, useEffect, useMemo, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

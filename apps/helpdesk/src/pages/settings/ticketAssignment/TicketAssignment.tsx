@@ -5,7 +5,12 @@ import { List } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import { Col, Row } from 'reactstrap'
 
-import { Button, CheckBoxField, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    CheckBoxField,
+    Label,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 

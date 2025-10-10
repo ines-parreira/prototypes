@@ -3,7 +3,7 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { Button, NewButton, Text } from '@gorgias/axiom'
+import { Button, LegacyButton, Text } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -26,7 +26,7 @@ jest.mock('@gorgias/axiom', () => ({
     Button: jest.fn(({ onClick, children }) => (
         <button onClick={onClick}>{children}</button>
     )),
-    NewButton: jest.fn(({ onClick, children }) => (
+    LegacyButton: jest.fn(({ onClick, children }) => (
         <button onClick={onClick}>{children}</button>
     )),
     Text: jest.fn(({ children }) => <span>{children}</span>),
@@ -189,7 +189,7 @@ describe('CustomerTimelineButton', () => {
 
         render(<CustomerTimelineWidget {...defaultProps} />)
 
-        expect(Button).toHaveBeenCalledWith(
+        expect(LegacyButton).toHaveBeenCalledWith(
             expect.objectContaining({
                 intent: 'secondary',
             }),
@@ -216,7 +216,7 @@ describe('CustomerTimelineButton', () => {
                 shopperId: defaultProps.shopperId + 1,
             })
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(Button).toHaveBeenCalledWith(
+            expect(LegacyButton).toHaveBeenCalledWith(
                 expect.objectContaining({
                     leadingIcon: 'forum',
                 }),
@@ -295,7 +295,7 @@ describe('CustomerTimelineButton', () => {
     describe('Candu target attribute', () => {
         it('should be set to true when there is history', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(Button).toHaveBeenCalledWith(
+            expect(LegacyButton).toHaveBeenCalledWith(
                 expect.objectContaining({
                     'data-candu-trigger-timeline': true,
                 }),
@@ -309,7 +309,7 @@ describe('CustomerTimelineButton', () => {
                 tickets: [],
             })
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(Button).toHaveBeenCalledWith(
+            expect(LegacyButton).toHaveBeenCalledWith(
                 expect.objectContaining({
                     'data-candu-trigger-timeline': false,
                 }),
@@ -347,7 +347,7 @@ describe('CustomerTimelineButton', () => {
         it('should show primary button when there are multiple open tickets', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(NewButton).toHaveBeenCalledWith(
+            expect(Button).toHaveBeenCalledWith(
                 expect.objectContaining({
                     variant: 'primary',
                 }),
@@ -366,7 +366,7 @@ describe('CustomerTimelineButton', () => {
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(NewButton).toHaveBeenCalledWith(
+            expect(Button).toHaveBeenCalledWith(
                 expect.objectContaining({
                     variant: 'secondary',
                 }),
@@ -382,7 +382,7 @@ describe('CustomerTimelineButton', () => {
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(NewButton).toHaveBeenCalledWith(
+            expect(Button).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDisabled: true,
                 }),
@@ -459,8 +459,8 @@ describe('CustomerTimelineButton', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
 
             expect(Text).not.toHaveBeenCalled()
-            expect(NewButton).not.toHaveBeenCalled()
-            expect(Button).toHaveBeenCalledWith(
+            expect(Button).not.toHaveBeenCalled()
+            expect(LegacyButton).toHaveBeenCalledWith(
                 expect.objectContaining({
                     leadingIcon: 'forum',
                 }),

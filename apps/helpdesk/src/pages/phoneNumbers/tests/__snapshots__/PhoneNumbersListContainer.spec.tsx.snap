@@ -15,11 +15,11 @@ exports[`<PhoneNumberListContainer /> render() should render Candu selector with
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Phone Number
         </span>
@@ -58,11 +58,11 @@ exports[`<PhoneNumberListContainer /> render() should render with a number 1`] =
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Phone Number
         </span>

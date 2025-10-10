@@ -11,7 +11,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'

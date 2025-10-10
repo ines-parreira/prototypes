@@ -168,24 +168,24 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 actionButton mr8 ui-button-fill-cef1 ui-button-secondary-cef1"
         type="button"
       >
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
         >
           download
         </i>
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Download
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 actionButton mr8 ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 actionButton mr8 ui-button-fill-cef1 ui-button-secondary-cef1"
         data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
@@ -207,12 +207,12 @@ abcdefgh16"
       >
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
         >
           content_copy
         </i>
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Copy
         </span>
@@ -225,17 +225,17 @@ abcdefgh16"
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             print
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Print
           </span>

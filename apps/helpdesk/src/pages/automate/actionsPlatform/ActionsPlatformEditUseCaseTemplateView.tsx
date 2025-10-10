@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'

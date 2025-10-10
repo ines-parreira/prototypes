@@ -12,7 +12,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

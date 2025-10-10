@@ -53,19 +53,19 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -219,29 +219,29 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -305,19 +305,19 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -501,29 +501,29 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -587,19 +587,19 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -778,29 +778,29 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -864,19 +864,19 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -1060,29 +1060,29 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -1146,19 +1146,19 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -1361,29 +1361,29 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -1447,19 +1447,19 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -1613,29 +1613,29 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>
@@ -1699,19 +1699,19 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 copy-phone-number-button copyButton ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 copy-phone-number-button copyButton ui-button-fill-cef1 ui-button-secondary-cef1"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   file_copy
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Copy
                 </span>
@@ -1895,29 +1895,29 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           type="submit"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Save changes
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 float-right ui-button-fill-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
           id="delete-number"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             delete
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Delete number
           </span>

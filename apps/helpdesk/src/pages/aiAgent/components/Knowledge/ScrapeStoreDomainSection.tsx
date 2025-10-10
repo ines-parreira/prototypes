@@ -2,7 +2,12 @@ import React from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+    Label,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import {
     HeaderType,

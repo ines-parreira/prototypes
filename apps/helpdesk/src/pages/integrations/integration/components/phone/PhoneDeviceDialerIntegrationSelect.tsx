@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { PhoneIntegration } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

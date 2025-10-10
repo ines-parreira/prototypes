@@ -8,7 +8,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import IconButton from 'pages/common/components/button/IconButton'

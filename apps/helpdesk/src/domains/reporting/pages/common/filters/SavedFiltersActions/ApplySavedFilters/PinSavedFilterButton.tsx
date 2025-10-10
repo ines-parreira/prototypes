@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react'
 
-import { IconButton, Tooltip } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { SavedFilter } from 'domains/reporting/models/stat/types'

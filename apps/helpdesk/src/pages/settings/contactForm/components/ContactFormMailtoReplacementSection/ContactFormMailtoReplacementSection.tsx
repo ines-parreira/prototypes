@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

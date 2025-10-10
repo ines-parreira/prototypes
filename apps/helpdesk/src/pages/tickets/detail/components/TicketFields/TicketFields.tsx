@@ -3,7 +3,7 @@ import { memo, useEffect, useMemo, useState } from 'react'
 import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { getWrappedElementCount } from 'common/utils'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'

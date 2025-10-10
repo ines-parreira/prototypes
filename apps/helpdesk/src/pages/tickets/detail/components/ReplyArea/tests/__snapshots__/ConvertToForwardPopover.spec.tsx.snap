@@ -33,22 +33,22 @@ exports[`<ConvertToForwardPopover/> should render popover 1`] = `
             </p>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 button mr-2 ui-button-fill-a432 ui-button-primary-a432"
+              class="ui-button-wrapper-cef1 button mr-2 ui-button-fill-cef1 ui-button-primary-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Understood
               </span>
             </button>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Change To Forward
               </span>

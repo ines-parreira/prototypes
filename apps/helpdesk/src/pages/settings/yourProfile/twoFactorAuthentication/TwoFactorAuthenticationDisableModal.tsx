@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useState } from 'react'
 
 import { AxiosError } from 'axios'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'

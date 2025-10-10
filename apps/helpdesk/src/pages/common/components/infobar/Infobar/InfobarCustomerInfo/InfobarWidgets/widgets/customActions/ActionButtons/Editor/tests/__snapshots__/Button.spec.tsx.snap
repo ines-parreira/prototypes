@@ -3,11 +3,11 @@
 exports[`<Button/> should render with correct label 1`] = `
 <button
   aria-disabled="false"
-  class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     should render
   </span>

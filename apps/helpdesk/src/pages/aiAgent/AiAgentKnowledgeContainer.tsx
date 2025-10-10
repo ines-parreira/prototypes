@@ -5,7 +5,11 @@ import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Button, IconButton, Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+    Label,
+} from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'

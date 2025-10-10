@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import copy from 'copy-to-clipboard'
 import { isEmpty } from 'lodash'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import InputGroup from 'pages/common/forms/input/InputGroup'

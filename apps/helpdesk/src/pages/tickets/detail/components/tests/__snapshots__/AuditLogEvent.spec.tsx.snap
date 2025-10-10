@@ -872,12 +872,12 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-satisfac
       </span>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 arrow wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 arrow wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
         title="More details"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"

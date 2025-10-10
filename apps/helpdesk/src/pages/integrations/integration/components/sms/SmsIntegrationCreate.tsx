@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { fromJS } from 'immutable'
 import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

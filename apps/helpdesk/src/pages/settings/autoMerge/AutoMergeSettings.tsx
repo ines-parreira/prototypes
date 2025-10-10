@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback } from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
 import PageHeader from 'pages/common/components/PageHeader'

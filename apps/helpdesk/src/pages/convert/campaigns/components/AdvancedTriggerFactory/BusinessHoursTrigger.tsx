@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { Value } from 'pages/common/forms/SelectField/types'

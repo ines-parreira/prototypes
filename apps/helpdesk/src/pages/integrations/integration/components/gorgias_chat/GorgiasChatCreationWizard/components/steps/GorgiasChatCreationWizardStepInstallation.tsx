@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Table } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -5,7 +5,11 @@ import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Container } from 'reactstrap'
 
-import { IconButton, ShortcutKey, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    ShortcutKey,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import Loader from '../Loader/Loader'
 

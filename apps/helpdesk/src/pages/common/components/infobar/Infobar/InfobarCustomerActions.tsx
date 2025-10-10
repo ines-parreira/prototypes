@@ -1,6 +1,6 @@
 import { fromJS, Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

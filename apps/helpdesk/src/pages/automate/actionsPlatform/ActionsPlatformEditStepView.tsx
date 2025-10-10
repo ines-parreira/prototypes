@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { DraftBadge } from 'pages/automate/workflows/components/DraftBadge'
 import {

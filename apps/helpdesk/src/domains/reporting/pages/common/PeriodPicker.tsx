@@ -4,7 +4,10 @@ import moment, { Moment } from 'moment-timezone'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
-import { Button, type ButtonFillStyle } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    type LegacyButtonFillStyle as ButtonFillStyle,
+} from '@gorgias/axiom'
 
 import {
     DateTimeFormatMapper,

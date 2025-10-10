@@ -2,7 +2,12 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Badge, IconButton, Label, Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyIconButton as IconButton,
+    Label,
+    Tooltip,
+} from '@gorgias/axiom'
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'

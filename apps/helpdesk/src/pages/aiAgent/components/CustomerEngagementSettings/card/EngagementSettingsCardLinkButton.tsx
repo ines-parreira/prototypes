@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './EngagementSettingsCard.less'
 

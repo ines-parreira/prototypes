@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 import { NavLink } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'

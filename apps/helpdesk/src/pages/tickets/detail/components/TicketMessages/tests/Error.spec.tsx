@@ -362,7 +362,7 @@ describe('Error', () => {
         const retryButton = screen.getByRole('button', { name: 'Retry' })
         fireEvent.click(retryButton)
         expect(retryButton).toHaveAttribute('aria-disabled', 'true')
-        expect(retryButton).toHaveClass('ui-button-isdisabled-a432')
+        expect(retryButton).toHaveClass('ui-button-isdisabled-cef1')
 
         rerender(
             <Provider
@@ -382,7 +382,7 @@ describe('Error', () => {
 
         const updatedRetryButton = screen.getByRole('button', { name: 'Retry' })
         expect(updatedRetryButton).not.toHaveAttribute('aria-disabled', 'true')
-        expect(updatedRetryButton).not.toHaveClass('ui-button-isdisabled-a432')
+        expect(updatedRetryButton).not.toHaveClass('ui-button-isdisabled-cef1')
     })
 
     it('does not show Find out why? link when there are no error responses', () => {

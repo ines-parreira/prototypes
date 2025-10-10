@@ -3,7 +3,7 @@ import { List, Map } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
 import { Col, Container, Label, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'

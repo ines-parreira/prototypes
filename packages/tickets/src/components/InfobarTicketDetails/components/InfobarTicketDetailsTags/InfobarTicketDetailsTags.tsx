@@ -1,12 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
 import {
+    Button,
     CheckBoxField,
     Dot,
-    Icon,
     ListItem,
     MultiSelect,
-    NewButton,
     NewTag,
     OverflowList,
     OverflowListItem,
@@ -136,9 +135,11 @@ export function InfobarTicketDetailsTags({
                 <OverflowListItem index={0} className={css.listButton}>
                     <MultiSelect
                         trigger={() => (
-                            <NewButton intent="secondary" size="sm">
-                                <Icon name="add-plus" intent="regular" />
-                            </NewButton>
+                            <Button
+                                icon="add-plus"
+                                intent="secondary"
+                                size="sm"
+                            />
                         )}
                         isSearchable={true}
                         searchValue={search}

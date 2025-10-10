@@ -1,6 +1,6 @@
 import { useCopyToClipboard } from '@repo/hooks'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.less'
 

@@ -28,36 +28,36 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
           tabindex="-1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
           >
             arrow_back
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Back
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
           tabindex="-1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
           >
             add
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Add
           </span>
@@ -125,36 +125,36 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
         tabindex="-1"
         type="button"
       >
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
         >
           arrow_back
         </i>
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Back
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
         tabindex="-1"
         type="button"
       >
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
         >
           add
         </i>
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add
         </span>
@@ -222,36 +222,36 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
           tabindex="-1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
           >
             arrow_back
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Back
           </span>
         </button>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
           tabindex="-1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
           >
             add
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Add
           </span>

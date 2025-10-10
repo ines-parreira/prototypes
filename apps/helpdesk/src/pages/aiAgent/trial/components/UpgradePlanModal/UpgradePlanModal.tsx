@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 
 import { Cadence } from 'models/billing/types'
 import {

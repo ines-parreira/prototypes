@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { stringify } from 'qs'
 import { useLocation } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

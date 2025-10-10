@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { useDeleteVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'

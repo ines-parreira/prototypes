@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'

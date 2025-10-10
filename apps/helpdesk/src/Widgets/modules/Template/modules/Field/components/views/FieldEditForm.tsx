@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { LeafType } from 'models/widget/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'

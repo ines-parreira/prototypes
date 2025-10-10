@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal.less'
 import { ABTest } from 'models/convert/abTest/types'

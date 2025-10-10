@@ -1,6 +1,6 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { requestNewIntegration } from 'models/integration/resources'

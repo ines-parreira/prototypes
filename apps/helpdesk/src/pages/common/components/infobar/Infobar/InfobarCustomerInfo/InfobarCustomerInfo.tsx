@@ -5,7 +5,7 @@ import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Button, Separator } from '@gorgias/axiom'
+import { LegacyButton as Button, Separator } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -8,7 +8,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
-import { Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

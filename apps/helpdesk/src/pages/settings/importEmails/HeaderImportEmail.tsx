@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import IconLink from 'core/ui/components/IconLink'
 import PageHeader from 'pages/common/components/PageHeader'

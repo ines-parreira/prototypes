@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { useLocation, useParams } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,

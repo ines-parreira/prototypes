@@ -66,12 +66,12 @@ exports[`<CreditShopifyBillingIntegration /> should render the form 1`] = `
         <div>
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 mt16 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 mt16 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             id="shopify-credit-button"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Add credit
             </span>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { WizardContext } from 'pages/common/components/wizard/Wizard'

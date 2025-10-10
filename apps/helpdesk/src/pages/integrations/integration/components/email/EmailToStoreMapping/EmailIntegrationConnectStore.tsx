@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import { fromJS, Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

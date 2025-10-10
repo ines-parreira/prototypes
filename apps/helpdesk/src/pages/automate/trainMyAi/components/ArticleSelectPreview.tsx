@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { Paths } from '../../../../rest_api/help_center_api/client.generated'
 import ArticleSelect from './ArticleSelect'

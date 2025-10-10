@@ -10,7 +10,10 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
 
-import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    type LegacyButtonComponentProps as ButtonComponentProps,
+} from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

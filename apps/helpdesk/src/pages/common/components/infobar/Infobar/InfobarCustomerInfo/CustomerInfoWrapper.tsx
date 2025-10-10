@@ -1,6 +1,6 @@
 import React, { Children, ReactNode, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './CustomerInfoWrapper.less'
 

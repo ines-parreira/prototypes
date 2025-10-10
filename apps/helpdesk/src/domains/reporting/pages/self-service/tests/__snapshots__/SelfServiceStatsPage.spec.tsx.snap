@@ -20,17 +20,17 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
           </span>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+              class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
             >
               info_outline
             </i>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Learn
             </span>
@@ -137,23 +137,23 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
             <div>
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   calendar_today
                 </i>
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Feb 3, 2021
                 </span>
                 <i
                   aria-hidden="true"
-                  class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                  class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
                 >
                   arrow_drop_down
                 </i>
@@ -289,17 +289,17 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
         </span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             info_outline
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Learn
           </span>
@@ -406,23 +406,23 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <div>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 calendar_today
               </i>
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Feb 3, 2021
               </span>
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 arrow_drop_down
               </i>
@@ -1217,17 +1217,17 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
         </span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             info_outline
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Learn
           </span>
@@ -1334,23 +1334,23 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <div>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 calendar_today
               </i>
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Feb 3, 2021
               </span>
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 arrow_drop_down
               </i>
@@ -1465,11 +1465,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Go to article recommendation
             </span>
@@ -1527,11 +1527,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Go to Order Management
             </span>
@@ -1581,11 +1581,11 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Go to Order Management
             </span>

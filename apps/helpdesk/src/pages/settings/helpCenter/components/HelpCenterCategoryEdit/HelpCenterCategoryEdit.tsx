@@ -12,7 +12,10 @@ import {
     Label,
 } from 'reactstrap'
 
-import { Button, IconButton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

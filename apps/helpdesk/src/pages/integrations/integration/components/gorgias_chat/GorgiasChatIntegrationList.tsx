@@ -6,7 +6,7 @@ import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { getIntegrationConfig } from 'state/integrations/helpers'
 

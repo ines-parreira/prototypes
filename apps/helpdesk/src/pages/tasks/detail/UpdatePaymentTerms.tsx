@@ -3,7 +3,7 @@ import React, { ComponentProps } from 'react'
 import classnames from 'classnames'
 
 import {
-    Button,
+    LegacyButton as Button,
     SelectField,
     SelectFieldRawOption,
     Skeleton,

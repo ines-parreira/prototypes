@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import moment from 'moment'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Modal from 'pages/common/components/modal/Modal'

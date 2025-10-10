@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import {

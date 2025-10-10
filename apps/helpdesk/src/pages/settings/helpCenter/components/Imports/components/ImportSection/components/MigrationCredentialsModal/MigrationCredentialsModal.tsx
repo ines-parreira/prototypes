@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 

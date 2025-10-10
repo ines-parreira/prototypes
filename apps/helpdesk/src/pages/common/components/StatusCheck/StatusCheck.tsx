@@ -1,6 +1,6 @@
 import { Col, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Loader from '../Loader/Loader'
 

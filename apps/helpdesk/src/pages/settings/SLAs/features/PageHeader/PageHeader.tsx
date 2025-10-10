@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SectionPageHeader } from 'config/pages'
 import Header from 'pages/common/components/PageHeader'

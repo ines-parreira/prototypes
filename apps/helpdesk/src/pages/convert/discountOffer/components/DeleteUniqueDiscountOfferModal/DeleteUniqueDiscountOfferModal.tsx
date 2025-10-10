@@ -3,7 +3,7 @@ import React, { FC, MouseEvent } from 'react'
 import { List, Map } from 'immutable'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { AttachmentEnum } from 'common/types'

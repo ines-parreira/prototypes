@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Button, Text } from '@gorgias/axiom'
+import { LegacyButton as Button, Text } from '@gorgias/axiom'
 
 import NewToggleField from 'pages/common/forms/NewToggleField'
 

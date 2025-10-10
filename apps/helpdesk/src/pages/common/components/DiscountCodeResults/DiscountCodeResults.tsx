@@ -6,7 +6,7 @@ import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

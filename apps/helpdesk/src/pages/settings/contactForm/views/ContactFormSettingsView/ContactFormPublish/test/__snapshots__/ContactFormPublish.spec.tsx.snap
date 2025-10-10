@@ -111,17 +111,17 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
         </code>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-small-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
           >
             content_copy
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Copy Code
           </span>

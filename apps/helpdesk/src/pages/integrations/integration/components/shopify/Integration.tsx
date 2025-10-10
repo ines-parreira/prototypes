@@ -3,7 +3,7 @@ import { FormEvent, useCallback, useEffect, useState } from 'react'
 import { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Button, Label, ToggleField } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

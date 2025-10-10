@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'

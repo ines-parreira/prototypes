@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'

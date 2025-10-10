@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import { AxiosError } from 'axios'
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'

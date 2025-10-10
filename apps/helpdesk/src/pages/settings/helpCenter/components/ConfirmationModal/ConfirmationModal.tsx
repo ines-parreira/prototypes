@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 
 import {
-    Button,
-    type ButtonComponentProps,
+    LegacyButton as Button,
+    type LegacyButtonComponentProps as ButtonComponentProps,
     type ButtonProps,
 } from '@gorgias/axiom'
 

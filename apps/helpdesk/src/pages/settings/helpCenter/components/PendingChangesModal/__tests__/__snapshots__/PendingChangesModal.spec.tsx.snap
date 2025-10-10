@@ -60,11 +60,11 @@ exports[`<PendingChangesModal /> matches snapshot 1`] = `
               >
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 discardBtn ui-button-ghost-a432 ui-button-primary-a432"
+                  class="ui-button-wrapper-cef1 discardBtn ui-button-ghost-cef1 ui-button-primary-cef1"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     Discard Changes
                   </span>
@@ -72,22 +72,22 @@ exports[`<PendingChangesModal /> matches snapshot 1`] = `
                 <div>
                   <button
                     aria-disabled="false"
-                    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+                    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
                     type="button"
                   >
                     <span
-                      class="ui-button-content-a432"
+                      class="ui-button-content-cef1"
                     >
                       Back To Editing
                     </span>
                   </button>
                   <button
                     aria-disabled="false"
-                    class="ui-button-wrapper-a432 ml-3 confirmBtn ui-button-fill-a432 ui-button-primary-a432"
+                    class="ui-button-wrapper-cef1 ml-3 confirmBtn ui-button-fill-cef1 ui-button-primary-cef1"
                     type="button"
                   >
                     <span
-                      class="ui-button-content-a432"
+                      class="ui-button-content-cef1"
                     >
                       Save Changes
                     </span>

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useReactFlow, useViewport } from '@xyflow/react'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 export function CustomZoomInControl(): React.JSX.Element {
     const { zoom } = useViewport()

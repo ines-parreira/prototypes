@@ -9,7 +9,7 @@ import React, {
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { RecoveryCode } from 'models/twoFactorAuthentication/types'
 import settingsCss from 'pages/settings/settings.less'

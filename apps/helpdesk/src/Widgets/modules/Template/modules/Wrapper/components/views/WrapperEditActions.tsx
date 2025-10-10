@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useId } from '@repo/hooks'
 import { Popover, PopoverBody } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 

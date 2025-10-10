@@ -4,7 +4,7 @@ import { useId } from '@repo/hooks'
 import cn from 'classnames'
 import { Input, Popover, PopoverBody } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 

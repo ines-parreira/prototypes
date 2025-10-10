@@ -79,12 +79,12 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
   >
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
       title="Duplicate rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"
@@ -95,13 +95,13 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
       id="delete-rule-1"
       title="Delete rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"
@@ -193,12 +193,12 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
       title="Duplicate rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"
@@ -209,13 +209,13 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
       id="delete-rule-1"
       title="Delete rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"
@@ -317,12 +317,12 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
   >
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
       title="Duplicate rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"
@@ -333,13 +333,13 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 actionButton mr-1 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+      class="ui-button-wrapper-cef1 actionButton mr-1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
       id="delete-rule-1"
       title="Delete rule"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         <i
           class="material-icons icon"

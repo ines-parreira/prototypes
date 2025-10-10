@@ -2,7 +2,11 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, Button, IconButton } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 import { TicketSummary } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'

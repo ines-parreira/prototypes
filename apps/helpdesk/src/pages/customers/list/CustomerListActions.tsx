@@ -13,7 +13,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import shortcutManager from 'services/shortcutManager/index'

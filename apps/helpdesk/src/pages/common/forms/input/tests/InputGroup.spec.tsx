@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import NumberInput from 'pages/common/forms/input/NumberInput'
 

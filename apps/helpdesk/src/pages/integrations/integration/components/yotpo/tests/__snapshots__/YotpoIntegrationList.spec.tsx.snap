@@ -34,11 +34,11 @@ exports[`<YotpoIntegrationList/> render() should not render an integration cause
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="submit"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Yotpo account
         </span>
@@ -119,11 +119,11 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="submit"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Yotpo account
         </span>
@@ -243,11 +243,11 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="submit"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Yotpo account
         </span>
@@ -360,11 +360,11 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         type="submit"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Add Yotpo account
         </span>

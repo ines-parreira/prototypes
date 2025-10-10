@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 

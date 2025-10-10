@@ -1,4 +1,4 @@
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { Tag } from 'models/aiAgent/types'
 import { FormValues } from 'pages/aiAgent/types'

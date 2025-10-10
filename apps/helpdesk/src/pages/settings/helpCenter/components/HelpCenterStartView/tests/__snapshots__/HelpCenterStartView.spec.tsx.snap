@@ -134,11 +134,11 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 full-width ui-button-fill-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 full-width ui-button-fill-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Create Help Center
                 </span>
@@ -231,12 +231,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
       <div>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           id="add-new-help-center-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <div
               class="createNewButton"
@@ -447,12 +447,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -471,12 +471,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton chevronRight wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -560,12 +560,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -584,12 +584,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton chevronRight wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -673,12 +673,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -697,12 +697,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton chevronRight wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -786,12 +786,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Duplicate Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"
@@ -810,12 +810,12 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     >
                       <button
                         aria-disabled="false"
-                        class="ui-button-wrapper-a432 iconButton chevronRight wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+                        class="ui-button-wrapper-cef1 iconButton chevronRight wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
                         title="Open Help Center"
                         type="button"
                       >
                         <span
-                          class="ui-button-content-a432"
+                          class="ui-button-content-cef1"
                         >
                           <i
                             class="material-icons icon"

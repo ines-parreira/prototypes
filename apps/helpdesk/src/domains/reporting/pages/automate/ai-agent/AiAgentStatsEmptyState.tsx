@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyState.less'
 import { PAGE_TITLE_AI_AGENT } from 'domains/reporting/pages/self-service/constants'

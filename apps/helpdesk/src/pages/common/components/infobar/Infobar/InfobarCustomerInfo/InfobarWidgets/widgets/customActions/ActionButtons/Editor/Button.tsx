@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react'
 
-import { Button as BasicButton } from '@gorgias/axiom'
+import { LegacyButton as BasicButton } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { isSourceRecord, Source } from 'models/widget/types'

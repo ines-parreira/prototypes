@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { FailedMigrationState } from '../../../../types'
 

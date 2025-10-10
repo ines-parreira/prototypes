@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 import { useFlag } from 'core/flags'

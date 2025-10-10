@@ -3,12 +3,12 @@
 exports[`<SpotlightSearchButton /> should render a search button 1`] = `
 <button
   aria-disabled="false"
-  class="ui-button-wrapper-a432 navbarButton ui-button-ghost-a432 ui-button-primary-a432"
+  class="ui-button-wrapper-cef1 navbarButton ui-button-ghost-cef1 ui-button-primary-cef1"
   id="spotlight-button-1"
   type="button"
 >
   <span
-    class="ui-button-content-a432"
+    class="ui-button-content-cef1"
   >
     <span
       class="wrapper buttonIcon"

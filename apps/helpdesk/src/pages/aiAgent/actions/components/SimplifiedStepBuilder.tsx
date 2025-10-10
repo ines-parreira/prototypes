@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'

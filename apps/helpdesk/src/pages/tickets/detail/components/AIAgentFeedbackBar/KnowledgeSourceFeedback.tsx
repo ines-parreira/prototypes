@@ -2,7 +2,11 @@ import { MouseEvent } from 'react'
 
 import cn from 'classnames'
 
-import { IconButton, Skeleton, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    Skeleton,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'

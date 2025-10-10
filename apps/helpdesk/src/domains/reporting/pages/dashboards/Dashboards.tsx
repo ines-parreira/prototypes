@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'

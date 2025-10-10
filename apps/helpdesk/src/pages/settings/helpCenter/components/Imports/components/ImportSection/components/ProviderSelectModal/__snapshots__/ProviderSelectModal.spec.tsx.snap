@@ -32,15 +32,15 @@ exports[`<ProviderSelectModal /> should match snapshot 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>

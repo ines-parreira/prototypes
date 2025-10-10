@@ -48,12 +48,12 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
       <div>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
           id="productCardButton_helpdesk"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Manage
           </span>

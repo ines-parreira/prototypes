@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { ModalFooter, ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ModalBody from 'pages/common/components/modal/ModalBody'
 

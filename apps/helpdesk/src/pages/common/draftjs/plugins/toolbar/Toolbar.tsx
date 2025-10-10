@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'

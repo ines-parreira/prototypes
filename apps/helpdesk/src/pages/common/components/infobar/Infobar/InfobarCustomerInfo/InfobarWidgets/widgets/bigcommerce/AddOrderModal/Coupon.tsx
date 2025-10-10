@@ -2,7 +2,7 @@ import React, { useReducer, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import {
     BigCommerceCart,

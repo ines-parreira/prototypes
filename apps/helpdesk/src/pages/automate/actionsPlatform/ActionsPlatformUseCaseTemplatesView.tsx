@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useOrderBy from 'hooks/useOrderBy'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'

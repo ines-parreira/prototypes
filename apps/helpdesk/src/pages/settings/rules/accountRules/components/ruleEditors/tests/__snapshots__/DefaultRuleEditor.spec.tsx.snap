@@ -261,25 +261,25 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
         form="rule-form"
         id="rule-item-save"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Update rule
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
         id="rule-item-duplicate"
         type="submit"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Duplicate rule
         </span>
@@ -288,18 +288,18 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-destructive-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
         id="rule-item-delete"
         type="button"
       >
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
         >
           delete
         </i>
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Delete rule
         </span>

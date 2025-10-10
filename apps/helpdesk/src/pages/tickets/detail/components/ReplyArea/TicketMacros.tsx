@@ -16,7 +16,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'

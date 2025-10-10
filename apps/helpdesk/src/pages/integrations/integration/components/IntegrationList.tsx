@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Table } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { isChannel } from 'config'
 import { IntegrationType } from 'models/integration/types'

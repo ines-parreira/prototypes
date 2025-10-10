@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import {
-    IconButton,
+    LegacyIconButton as IconButton,
     SelectField,
     SelectFieldTriggerProps,
 } from '@gorgias/axiom'

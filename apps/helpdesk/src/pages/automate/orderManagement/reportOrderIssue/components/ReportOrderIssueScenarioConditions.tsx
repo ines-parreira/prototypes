@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import {

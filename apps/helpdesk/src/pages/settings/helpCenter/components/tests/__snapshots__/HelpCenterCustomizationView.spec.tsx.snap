@@ -42,11 +42,11 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-ghost-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <span
                     class="wrapper"
@@ -138,12 +138,12 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           <button
             aria-disabled="false"
             aria-label="help center preview"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             id="preview-help-center"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons"
@@ -283,11 +283,11 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 add-link ui-button-fill-a432 ui-button-secondary-a432"
+                class="ui-button-wrapper-cef1 add-link ui-button-fill-cef1 ui-button-secondary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     class="material-icons"
@@ -391,11 +391,11 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               >
                 <button
                   aria-disabled="false"
-                  class="ui-button-wrapper-a432 add-link ui-button-fill-a432 ui-button-secondary-a432"
+                  class="ui-button-wrapper-cef1 add-link ui-button-fill-cef1 ui-button-secondary-cef1"
                   type="button"
                 >
                   <span
-                    class="ui-button-content-a432"
+                    class="ui-button-content-cef1"
                   >
                     <i
                       class="material-icons"
@@ -572,22 +572,22 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
         >
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Save Changes
             </span>
           </button>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Cancel
             </span>

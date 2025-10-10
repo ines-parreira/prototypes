@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 
 import {
     Badge,
-    Button,
+    LegacyButton as Button,
     ColorType,
-    IconButton,
+    LegacyIconButton as IconButton,
     LoadingSpinner,
     Skeleton,
 } from '@gorgias/axiom'

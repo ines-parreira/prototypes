@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

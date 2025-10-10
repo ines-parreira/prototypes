@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { produce } from 'immer'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     IvrForwardCallMenuAction,

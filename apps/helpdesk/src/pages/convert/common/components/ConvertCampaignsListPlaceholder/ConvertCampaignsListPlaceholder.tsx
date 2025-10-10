@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 import { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'

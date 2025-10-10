@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ReactCountryFlag } from 'react-country-flag'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

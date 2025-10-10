@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import _uniqueId from 'lodash/uniqueId'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UpdateSubjectLinesProps } from 'models/contactForm/types'
 import CheckBox from 'pages/common/forms/CheckBox'

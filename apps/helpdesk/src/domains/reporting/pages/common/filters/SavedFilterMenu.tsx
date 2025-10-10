@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

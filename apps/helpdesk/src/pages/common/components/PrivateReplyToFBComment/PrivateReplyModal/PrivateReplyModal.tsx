@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { connect, ConnectedProps } from 'react-redux'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { triggerTicketFieldsRefreshAndInvalidation } from 'common/state'

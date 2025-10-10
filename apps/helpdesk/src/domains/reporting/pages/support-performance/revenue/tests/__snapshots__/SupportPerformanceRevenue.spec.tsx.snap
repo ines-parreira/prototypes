@@ -19,17 +19,17 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
         </span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ml-3 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 wrapper ml-3 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             info_outline
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Learn
           </span>
@@ -206,23 +206,23 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           <div>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
               type="button"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 calendar_today
               </i>
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Feb 3, 2021
               </span>
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
               >
                 arrow_drop_down
               </i>

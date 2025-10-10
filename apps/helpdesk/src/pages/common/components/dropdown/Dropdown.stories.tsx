@@ -8,7 +8,7 @@ import {
 } from '@repo/hooks'
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Dropdown, { DropdownContext } from './Dropdown'
 import DropdownBody from './DropdownBody'

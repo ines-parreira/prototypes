@@ -4,7 +4,7 @@ import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { AGENT_ROLE } from 'config/user'
 import { ViewCategory } from 'models/view/types'

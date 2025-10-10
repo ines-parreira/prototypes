@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'

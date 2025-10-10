@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import graphsImage from 'domains/reporting/assets/img/graphs.png'
 import css from 'domains/reporting/pages/ticket-insights/components/TicketInsightsBlankState.less'

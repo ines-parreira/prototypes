@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { produce } from 'immer'
 import _isEqual from 'lodash/isEqual'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
 import { logEvent, SegmentEvent } from 'common/segment'

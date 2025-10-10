@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import {
     LegacyChannelSlug,
     UpdateCustomerBodyChannelsItem,

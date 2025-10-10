@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

@@ -4,7 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Button, IconButton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

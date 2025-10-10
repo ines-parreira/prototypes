@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { Col, Row } from 'reactstrap'
 
-import { Button, IconButton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'

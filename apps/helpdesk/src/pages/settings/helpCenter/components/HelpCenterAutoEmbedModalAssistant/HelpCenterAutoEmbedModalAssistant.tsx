@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'

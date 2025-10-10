@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

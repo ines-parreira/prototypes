@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
 import { useFieldArray } from 'core/forms'

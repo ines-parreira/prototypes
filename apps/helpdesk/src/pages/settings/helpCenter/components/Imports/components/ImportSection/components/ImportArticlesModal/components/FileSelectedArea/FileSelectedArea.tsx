@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { fileIsTooBig, MAXIMUM_FILE_SIZE_MB } from '../../utils'
 

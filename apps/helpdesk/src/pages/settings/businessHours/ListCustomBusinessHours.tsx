@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 import {
     ListBusinessHoursOrderBy,
     OrderDirection,

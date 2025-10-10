@@ -9,7 +9,13 @@ import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 import { Form, FormGroup, FormText } from 'reactstrap'
 
-import { Avatar, Button, Label, SelectField, ToggleField } from '@gorgias/axiom'
+import {
+    Avatar,
+    LegacyButton as Button,
+    Label,
+    SelectField,
+    ToggleField,
+} from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 

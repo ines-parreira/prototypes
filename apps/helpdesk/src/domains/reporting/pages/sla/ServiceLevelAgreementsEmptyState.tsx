@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import icon from 'domains/reporting/assets/img/no-slas-icon.png'
 import css from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState.less'

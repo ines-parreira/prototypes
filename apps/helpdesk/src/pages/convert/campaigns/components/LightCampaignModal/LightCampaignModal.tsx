@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

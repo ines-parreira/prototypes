@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import LinkButton from 'pages/common/components/button/LinkButton'
 import { SUPPORT_EMAIL } from 'pages/integrations/integration/components/email/EmailDomainVerification/constants'

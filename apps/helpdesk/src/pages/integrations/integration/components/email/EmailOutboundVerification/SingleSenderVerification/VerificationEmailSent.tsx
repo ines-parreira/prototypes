@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'

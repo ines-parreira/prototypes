@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { FormSubmitButton, useFormContext } from 'core/forms'

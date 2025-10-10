@@ -2,7 +2,7 @@ import React, { CSSProperties, MouseEventHandler, ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 

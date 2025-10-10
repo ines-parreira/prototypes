@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 

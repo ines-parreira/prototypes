@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Button, Skeleton, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import {
     ArticleTemplateType,

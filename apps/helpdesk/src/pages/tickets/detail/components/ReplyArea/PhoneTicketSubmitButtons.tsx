@@ -10,7 +10,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'

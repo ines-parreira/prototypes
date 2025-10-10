@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

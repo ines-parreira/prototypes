@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useReactFlow } from '@xyflow/react'
 
-import { IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 export function CustomFitViewControl(): React.JSX.Element {
     const { fitView } = useReactFlow()

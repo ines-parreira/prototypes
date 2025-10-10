@@ -13,7 +13,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import { Button, ToggleField } from '@gorgias/axiom'
+import { LegacyButton as Button, ToggleField } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'

@@ -4,7 +4,7 @@ import _capitalize from 'lodash/capitalize'
 import { useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'

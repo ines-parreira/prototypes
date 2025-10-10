@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'

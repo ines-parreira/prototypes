@@ -220,12 +220,12 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
     >
       <button
         aria-disabled="true"
-        class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+        class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
         id="prev-btn"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -236,12 +236,12 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="next-btn"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"

@@ -1,4 +1,4 @@
-import { Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, CheckBoxField, Tooltip } from '@gorgias/axiom'
 import {
     IntegrationType,
     IntegrationWithBusinessHoursAndStore,

@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import outOfRecoveryCodesImage from 'assets/img/auth/out-of-recovery-codes.svg'
 import { useSearch } from 'hooks/useSearch'

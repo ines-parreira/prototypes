@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import { fromJS, Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'

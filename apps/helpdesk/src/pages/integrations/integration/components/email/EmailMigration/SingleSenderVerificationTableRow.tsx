@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { isEmpty } from 'lodash'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import { SenderInformation } from 'models/singleSenderVerification/types'

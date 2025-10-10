@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { IconButton, Label } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, Label } from '@gorgias/axiom'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

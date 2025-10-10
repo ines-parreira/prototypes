@@ -8,7 +8,7 @@ import React, {
 
 import { Map } from 'immutable'
 
-import { Button, TextField, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, TextField, Tooltip } from '@gorgias/axiom'
 import {
     useListCustomerIntegrationsWithChannelDefault,
     useScheduleShopifyCreateNewCustomerAction,

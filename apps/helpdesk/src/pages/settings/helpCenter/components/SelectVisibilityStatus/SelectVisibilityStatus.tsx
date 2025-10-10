@@ -9,7 +9,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { VisibilityStatus } from 'models/helpCenter/types'
 import { objKeys } from 'utils'

@@ -3,7 +3,10 @@ import React, { useMemo } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Button, type ButtonComponentProps } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    type LegacyButtonComponentProps as ButtonComponentProps,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEventToSend } from 'common/segment'
 import ButtonIconLabel, {

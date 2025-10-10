@@ -3,7 +3,12 @@ import React, { createRef, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { useParams } from 'react-router-dom'
 
-import { Button, IconButton, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+    Label,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'

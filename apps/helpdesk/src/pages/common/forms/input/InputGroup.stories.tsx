@@ -2,7 +2,7 @@ import { ComponentProps, useRef, useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

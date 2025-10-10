@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import moment from 'moment/moment'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     CouponSummary,

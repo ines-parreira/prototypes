@@ -160,8 +160,8 @@ describe('OptOutModal', () => {
             )
 
             const button = screen.getByRole('button', { name: 'Secondary' })
-            expect(button).toHaveClass('ui-button-ghost-a432')
-            expect(button).toHaveClass('ui-button-secondary-a432')
+            expect(button).toHaveClass('ui-button-ghost-cef1')
+            expect(button).toHaveClass('ui-button-secondary-cef1')
         })
     })
 
@@ -217,7 +217,7 @@ describe('OptOutModal', () => {
             )
 
             const button = screen.getByRole('button', { name: 'Destructive' })
-            expect(button).toHaveClass('ui-button-destructive-a432')
+            expect(button).toHaveClass('ui-button-destructive-cef1')
         })
     })
 

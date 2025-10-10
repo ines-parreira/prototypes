@@ -85,13 +85,13 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
       <span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
           id="tooltip-0"
           tabindex="0"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -205,13 +205,13 @@ exports[`<OrderLineItemRow/> render() should render with modifiers visible 1`] =
       <span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
           id="tooltip-0"
           tabindex="0"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -318,13 +318,13 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
       <span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
           id="tooltip-0"
           tabindex="0"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -431,13 +431,13 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
       <span>
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-destructive-a432"
+          class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-destructive-cef1"
           id="tooltip-0"
           tabindex="0"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"

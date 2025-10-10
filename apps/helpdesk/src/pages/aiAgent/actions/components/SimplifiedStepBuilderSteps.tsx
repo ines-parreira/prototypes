@@ -3,7 +3,7 @@ import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
 import { Node } from '@xyflow/react'
 import _isEqual from 'lodash/isEqual'
 
-import { Button, Label, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, Skeleton } from '@gorgias/axiom'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'

@@ -4,7 +4,12 @@ import { useId } from '@repo/hooks'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
-import { Button, Label, ToggleField, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    ToggleField,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'

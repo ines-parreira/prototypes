@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import {
-    Button,
+    LegacyButton as Button,
     SelectField,
     type SelectFieldTriggerProps,
 } from '@gorgias/axiom'

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import icon from 'assets/img/help-center/no-help-center-icon.png'
 import css from 'domains/reporting/pages/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState.less'

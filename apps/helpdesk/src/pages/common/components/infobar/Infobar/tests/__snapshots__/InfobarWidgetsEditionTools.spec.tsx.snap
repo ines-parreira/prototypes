@@ -6,22 +6,22 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
 >
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+    class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Save changes
     </span>
   </button>
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Cancel
     </span>
@@ -35,22 +35,22 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
 >
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
+    class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Save changes
     </span>
   </button>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
     type="button"
   >
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Cancel
     </span>
@@ -64,11 +64,11 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
 >
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+    class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
     type="button"
   >
     <svg
-      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
       height="22"
       preserveAspectRatio="xMidYMid meet"
       role="status"
@@ -98,18 +98,18 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
       </span>
     </svg>
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Save changes
     </span>
   </button>
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
     type="button"
   >
     <svg
-      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+      class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
       height="22"
       preserveAspectRatio="xMidYMid meet"
       role="status"
@@ -139,7 +139,7 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
       </span>
     </svg>
     <span
-      class="ui-button-content-a432"
+      class="ui-button-content-cef1"
     >
       Cancel
     </span>

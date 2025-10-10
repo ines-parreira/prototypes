@@ -7,7 +7,7 @@ import _isEmpty from 'lodash/isEmpty'
 import { connect, ConnectedProps } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'

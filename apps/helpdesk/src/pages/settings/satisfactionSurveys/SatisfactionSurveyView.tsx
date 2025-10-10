@@ -5,7 +5,7 @@ import { EditorState } from 'draft-js'
 import { Map } from 'immutable'
 import { Form, FormGroup, Label, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { DELAY_SURVEY_FOR } from 'config'

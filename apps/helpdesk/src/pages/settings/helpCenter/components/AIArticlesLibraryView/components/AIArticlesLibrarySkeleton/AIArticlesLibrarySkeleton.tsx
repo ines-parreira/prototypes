@@ -1,4 +1,4 @@
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import listCss from '../AIArticlesLibraryList/AIArticlesLibraryList.less'
 import previewCss from '../AIArticlesLibraryPreview/AIArticlesLibraryPreview.less'

@@ -13,7 +13,7 @@ import pluralize from 'pluralize'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'

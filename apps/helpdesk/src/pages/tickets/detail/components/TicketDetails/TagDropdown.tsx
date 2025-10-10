@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'

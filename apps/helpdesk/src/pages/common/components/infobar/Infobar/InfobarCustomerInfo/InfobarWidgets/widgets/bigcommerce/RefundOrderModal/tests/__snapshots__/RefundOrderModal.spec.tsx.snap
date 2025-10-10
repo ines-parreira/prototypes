@@ -32,15 +32,15 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -196,24 +196,24 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
         >
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Cancel
             </span>
           </button>
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Refund €0.00
             </span>
@@ -255,15 +255,15 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -287,11 +287,11 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Got it
                 </span>
@@ -337,15 +337,15 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -564,24 +564,24 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
         >
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Cancel
             </span>
           </button>
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Refund €0.00
             </span>
@@ -629,15 +629,15 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -793,24 +793,24 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
         >
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Cancel
             </span>
           </button>
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             tabindex="0"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Refund €0.00
             </span>
@@ -852,15 +852,15 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -884,11 +884,11 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   Got it
                 </span>

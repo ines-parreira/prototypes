@@ -3,8 +3,8 @@ import React, { ComponentProps, ReactNode } from 'react'
 import { Popover } from 'reactstrap'
 
 import {
-    Button,
-    type ButtonComponentProps,
+    LegacyButton as Button,
+    type LegacyButtonComponentProps as ButtonComponentProps,
     type ButtonProps,
 } from '@gorgias/axiom'
 

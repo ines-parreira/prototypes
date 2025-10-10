@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useDeleteAgent } from 'hooks/agents/useDeleteAgent'
 import Modal from 'pages/common/components/modal/Modal'

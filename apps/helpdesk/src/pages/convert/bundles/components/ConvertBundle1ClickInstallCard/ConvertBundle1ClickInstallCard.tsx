@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'

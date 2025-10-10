@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 

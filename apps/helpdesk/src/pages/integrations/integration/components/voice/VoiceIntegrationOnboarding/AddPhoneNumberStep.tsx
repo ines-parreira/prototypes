@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 
 import type { SelectFieldRawOption } from '@gorgias/axiom'
-import { Button, Label, SelectField } from '@gorgias/axiom'
+import { LegacyButton as Button, Label, SelectField } from '@gorgias/axiom'
 import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'

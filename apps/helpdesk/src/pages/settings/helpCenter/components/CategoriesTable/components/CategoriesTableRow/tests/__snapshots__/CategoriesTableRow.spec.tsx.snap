@@ -191,12 +191,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
           <button
             aria-disabled="false"
             aria-label="categorySettings"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="categorySettings-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -208,12 +208,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
           <button
             aria-disabled="false"
             aria-label="createNestedCategory"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedCategory-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -225,12 +225,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
           <button
             aria-disabled="false"
             aria-label="createNestedArticle"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedArticle-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -362,12 +362,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
           <button
             aria-disabled="false"
             aria-label="categorySettings"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="categorySettings-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -379,12 +379,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
           <button
             aria-disabled="false"
             aria-label="createNestedCategory"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedCategory-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -396,12 +396,12 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
           <button
             aria-disabled="false"
             aria-label="createNestedArticle"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedArticle-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -533,12 +533,12 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
           <button
             aria-disabled="false"
             aria-label="categorySettings"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="categorySettings-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -550,12 +550,12 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
           <button
             aria-disabled="false"
             aria-label="createNestedCategory"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedCategory-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"
@@ -567,12 +567,12 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
           <button
             aria-disabled="false"
             aria-label="createNestedArticle"
-            class="ui-button-wrapper-a432 wrapper ghost ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 wrapper ghost ui-button-ghost-cef1 ui-button-secondary-cef1"
             id="createNestedArticle-5"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 class="material-icons icon"

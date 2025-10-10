@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import RootDetails from 'pages/common/components/ProductDetail'

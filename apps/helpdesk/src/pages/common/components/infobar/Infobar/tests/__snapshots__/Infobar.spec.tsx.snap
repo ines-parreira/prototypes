@@ -53,12 +53,12 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -76,17 +76,17 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             arrow_back
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Back
           </span>
@@ -131,12 +131,12 @@ exports[`<Infobar/> should ignore other keys 1`] = `
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -182,12 +182,12 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -226,17 +226,17 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           </p>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+              class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
             >
               call_merge
             </i>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Merge
             </span>
@@ -279,12 +279,12 @@ exports[`<Infobar/> should render customer context 1`] = `
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -330,12 +330,12 @@ exports[`<Infobar/> should render loading state because the customer is being fe
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -385,12 +385,12 @@ exports[`<Infobar/> should render loading state because the search is in progres
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -440,12 +440,12 @@ exports[`<Infobar/> should render search results 1`] = `
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -463,17 +463,17 @@ exports[`<Infobar/> should render search results 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             arrow_back
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Back
           </span>
@@ -519,12 +519,12 @@ exports[`<Infobar/> should render selected customer 1`] = `
         />
         <button
           aria-disabled="true"
-          class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+          class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
           id="toggle-widgets-edition-button"
           type="button"
         >
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             <i
               class="material-icons icon"
@@ -542,17 +542,17 @@ exports[`<Infobar/> should render selected customer 1`] = `
         >
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 selectionBackButton ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 selectionBackButton ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <i
               aria-hidden="true"
-              class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+              class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
             >
               arrow_back
             </i>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Back
             </span>
@@ -598,12 +598,12 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -621,17 +621,17 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
           type="button"
         >
           <i
             aria-hidden="true"
-            class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+            class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
           >
             arrow_back
           </i>
           <span
-            class="ui-button-content-a432"
+            class="ui-button-content-cef1"
           >
             Back
           </span>
@@ -677,12 +677,12 @@ exports[`<Infobar/> should render ticket context 1`] = `
       />
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -728,12 +728,12 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
       />
       <button
         aria-disabled="true"
-        class="ui-button-wrapper-a432 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+        class="ui-button-wrapper-cef1 d-none d-md-inline-block ml-2 btn-transparent wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
         id="toggle-widgets-edition-button"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -761,22 +761,22 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     >
       <button
         aria-disabled="true"
-        class="ui-button-wrapper-a432 mr-2 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+        class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Save changes
         </span>
       </button>
       <button
         aria-disabled="true"
-        class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-isdisabled-a432"
+        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           Cancel
         </span>

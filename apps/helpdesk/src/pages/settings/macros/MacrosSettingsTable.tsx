@@ -2,7 +2,7 @@ import { ComponentProps, useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

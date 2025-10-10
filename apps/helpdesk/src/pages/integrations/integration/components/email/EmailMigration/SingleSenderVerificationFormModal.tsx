@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react'
 
 import { ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SenderInformation } from 'models/singleSenderVerification/types'
 import Modal from 'pages/common/components/modal/Modal'

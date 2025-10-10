@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Modal from 'pages/common/components/modal/Modal'

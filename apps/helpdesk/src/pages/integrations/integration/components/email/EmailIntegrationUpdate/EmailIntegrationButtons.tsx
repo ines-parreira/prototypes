@@ -2,7 +2,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import css from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.less'

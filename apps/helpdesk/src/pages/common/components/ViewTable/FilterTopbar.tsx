@@ -30,7 +30,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getConfigByName } from 'config/views'

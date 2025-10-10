@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
-import { Icon, IconButton } from '@gorgias/axiom'
+import { Icon, LegacyIconButton as IconButton } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
 import css from './TicketInfobarNavigation.less'

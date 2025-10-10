@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import type { ComponentProps } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './AIButton.less'
 

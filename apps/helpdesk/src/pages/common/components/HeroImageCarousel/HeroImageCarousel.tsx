@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import _isString from 'lodash/isString'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Slider, { SliderRef } from 'utils/wrappers/Slider'
 

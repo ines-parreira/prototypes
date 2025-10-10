@@ -1,6 +1,6 @@
 import { Progress } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SucceededMigrationState } from '../../../types'
 

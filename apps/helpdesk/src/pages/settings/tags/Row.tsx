@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 import { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 

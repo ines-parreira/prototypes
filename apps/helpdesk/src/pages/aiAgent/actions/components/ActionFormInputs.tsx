@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
-import { Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 
 import { Input } from '../types'
 import ActionFormInput from './ActionFormInput'

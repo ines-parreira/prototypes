@@ -4,7 +4,7 @@ import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { Container } from 'reactstrap'
 
-import { Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { logEvent, SegmentEvent } from 'common/segment'

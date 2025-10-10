@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { AxiosError } from 'axios'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'

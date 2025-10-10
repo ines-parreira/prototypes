@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import SectionHeader from '../../common/components/SectionHeader/SectionHeader'
 import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'

@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { CreateContactFormDto } from 'models/contactForm/types'
 import { LocaleCode } from 'models/helpCenter/types'

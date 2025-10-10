@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     BooleanSchema,

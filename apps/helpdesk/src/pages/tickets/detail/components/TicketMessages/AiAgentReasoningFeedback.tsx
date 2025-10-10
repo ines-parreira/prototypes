@@ -3,7 +3,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDebouncedCallback, useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { CheckBoxField, IconButton, Label, Tooltip } from '@gorgias/axiom'
+import {
+    CheckBoxField,
+    LegacyIconButton as IconButton,
+    Label,
+    Tooltip,
+} from '@gorgias/axiom'
 import { FindFeedbackObjectType } from '@gorgias/knowledge-service-types'
 
 import TextArea from 'gorgias-design-system/Input/TextArea'

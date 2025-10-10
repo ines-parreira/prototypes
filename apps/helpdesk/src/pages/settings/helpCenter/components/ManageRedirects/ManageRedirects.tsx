@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 

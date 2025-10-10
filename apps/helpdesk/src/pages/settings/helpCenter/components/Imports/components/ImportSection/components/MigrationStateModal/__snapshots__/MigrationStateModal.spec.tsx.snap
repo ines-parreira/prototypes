@@ -32,15 +32,15 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -515,11 +515,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
           >
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 actionsButton ui-button-fill-a432 ui-button-primary-a432"
+              class="ui-button-wrapper-cef1 actionsButton ui-button-fill-cef1 ui-button-primary-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 <i
                   class="material-icons mr-2"
@@ -531,11 +531,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
             </button>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-a432 actionsButton ui-button-fill-a432 ui-button-secondary-a432"
+              class="ui-button-wrapper-cef1 actionsButton ui-button-fill-cef1 ui-button-secondary-cef1"
               type="button"
             >
               <span
-                class="ui-button-content-a432"
+                class="ui-button-content-cef1"
               >
                 Close
               </span>
@@ -580,15 +580,15 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -656,11 +656,11 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
           />
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Start migrating
             </span>
@@ -704,15 +704,15 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -1057,11 +1057,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1091,7 +1091,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
               </span>
             </svg>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Loading
             </span>
@@ -1135,15 +1135,15 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -1301,11 +1301,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1335,7 +1335,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
               </span>
             </svg>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Loading
             </span>
@@ -1379,15 +1379,15 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -1455,11 +1455,11 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
             type="button"
           >
             <svg
-              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-f13a"
+              class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"
@@ -1489,7 +1489,7 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
               </span>
             </svg>
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Start migrating
             </span>
@@ -1533,15 +1533,15 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -1835,11 +1835,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 optionButton ui-button-fill-a432 ui-button-primary-a432"
+                class="ui-button-wrapper-cef1 optionButton ui-button-fill-cef1 ui-button-primary-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     class="material-icons mr-2"
@@ -1860,11 +1860,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-a432 optionButton ui-button-fill-a432 ui-button-destructive-a432"
+                class="ui-button-wrapper-cef1 optionButton ui-button-fill-cef1 ui-button-destructive-cef1"
                 type="button"
               >
                 <span
-                  class="ui-button-content-a432"
+                  class="ui-button-content-cef1"
                 >
                   <i
                     class="material-icons mr-2"
@@ -1883,11 +1883,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               End migration
             </span>
@@ -1931,15 +1931,15 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
           </div>
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 material-icons icon ui-iconbutton-wrapper-7e5b ui-iconbutton-medium-7e5b ui-button-ghost-a432 ui-button-secondary-a432"
+            class="ui-button-wrapper-cef1 material-icons icon ui-iconbutton-wrapper-b819 ui-iconbutton-medium-b819 ui-button-ghost-cef1 ui-button-secondary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               <i
                 aria-hidden="true"
-                class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9 material-icons"
+                class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486 material-icons"
               >
                 close
               </i>
@@ -2096,11 +2096,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
           />
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-a432 w-100 ui-button-fill-a432 ui-button-primary-a432"
+            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1"
             type="button"
           >
             <span
-              class="ui-button-content-a432"
+              class="ui-button-content-cef1"
             >
               Finish
             </span>

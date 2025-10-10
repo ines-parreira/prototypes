@@ -1,4 +1,4 @@
-import { Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { LinkEntity, LinkItem, LinkItemEventHandlers } from './LinkItem'
 

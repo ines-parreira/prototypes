@@ -11,22 +11,22 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           I am in snapshots
         </span>
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 actionButton ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           I am in snapshots too
         </span>
@@ -45,11 +45,11 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         I am in snapshots
       </span>
@@ -74,11 +74,11 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-a432 ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+      class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
       type="button"
     >
       <span
-        class="ui-button-content-a432"
+        class="ui-button-content-cef1"
       >
         I am in snapshots too
       </span>

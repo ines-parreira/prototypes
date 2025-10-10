@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import Clipboard from 'clipboard'
 import { Alert, Card, CardBody } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 import { assetsUrl } from 'utils'

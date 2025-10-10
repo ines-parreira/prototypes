@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
 import Caption from 'pages/common/forms/Caption/Caption'

@@ -3,7 +3,7 @@ import { ComponentProps, useState } from 'react'
 import { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import {
     useTransferCall,
     VoiceCallTransferType,

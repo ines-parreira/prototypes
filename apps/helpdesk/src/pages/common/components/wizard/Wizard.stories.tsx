@@ -2,7 +2,7 @@ import { ComponentProps, useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button, ButtonGroup } from '@gorgias/axiom'
+import { LegacyButton as Button, ButtonGroup } from '@gorgias/axiom'
 
 import Wizard, { WizardContext } from './Wizard'
 import WizardProgress from './WizardProgress'

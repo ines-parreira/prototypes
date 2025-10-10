@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'

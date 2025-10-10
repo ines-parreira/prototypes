@@ -12,7 +12,7 @@ import { fromJS, List, Map } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Col, Container, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 import { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -9,7 +9,7 @@ import React, {
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
-import { Button as BaseButton } from '@gorgias/axiom'
+import { LegacyButton as BaseButton } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'

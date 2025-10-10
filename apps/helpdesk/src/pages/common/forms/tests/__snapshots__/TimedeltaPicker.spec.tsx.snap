@@ -21,11 +21,11 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -36,11 +36,11 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 button wrapper small ui-button-fill-a432 ui-button-secondary-a432 ui-button-small-a432"
+        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           <i
             class="material-icons icon"
@@ -61,17 +61,17 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-a432 button ui-button-fill-a432 ui-button-secondary-a432"
+        class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
         type="button"
       >
         <span
-          class="ui-button-content-a432"
+          class="ui-button-content-cef1"
         >
           week(s) ago
         </span>
         <i
           aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-74a9 ui-buttonicon-medium-74a9"
+          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-medium-e486"
         >
           arrow_drop_down
         </i>

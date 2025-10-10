@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
-import { Button, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { GorgiasChatIntegration } from 'models/integration/types'
 import { HandoverCustomizationChatOfflineSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOfflineSettingsFields'

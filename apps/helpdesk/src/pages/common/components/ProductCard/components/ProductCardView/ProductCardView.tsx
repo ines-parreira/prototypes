@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import { getContrastColor } from 'gorgias-design-system/utils'

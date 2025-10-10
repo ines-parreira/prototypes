@@ -2,7 +2,11 @@ import { useRef } from 'react'
 
 import { useIsMounted } from '@repo/hooks'
 
-import { Button, IconButton, Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyIconButton as IconButton,
+    Label,
+} from '@gorgias/axiom'
 import {
     AccountSettingsItem,
     ListAccountSettings200DataItem,

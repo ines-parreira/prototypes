@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
