@@ -97,7 +97,6 @@ export enum FeatureFlagKey {
     ConvertPerformanceView = 'convert-performance-view',
     CustomBusinessHours = 'business-hours-by-integration',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
-    CustomSso = 'linear.CRMCHN-2927.add-custom-sso-account-settings',
     DefaultEmailAddress = 'default-email-address',
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',

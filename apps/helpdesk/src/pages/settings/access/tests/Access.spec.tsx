@@ -17,10 +17,6 @@ import { AccessContainer } from '../Access'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn().mockReturnValue(true),
-}))
-
 const accessSettings = fromJS({
     id: 1,
     type: AccountSettingType.Access,

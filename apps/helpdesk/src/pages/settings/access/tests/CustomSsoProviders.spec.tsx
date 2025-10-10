@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 
-import * as flagsModule from 'core/flags'
 import type { CustomSSOProviders } from 'state/currentAccount/types'
 
 import CustomSsoProviders from '../CustomSsoProviders'
@@ -72,8 +71,6 @@ describe('CustomSsoProviders', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUuid.mockReturnValue('new-provider-id')
-        mockOnUpdate.mockResolvedValue(true)
-        jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
         // Mock the selector to return an enterprise plan by default
         mockUseAppSelector.mockReturnValue({
             plan_id: '0',
@@ -115,9 +112,7 @@ describe('CustomSsoProviders', () => {
             expect(screen.getByText('Auth0 SSO')).toBeInTheDocument()
         })
 
-        it('renders add provider button when feature flag is enabled and user is on Enterprise plan', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
-
+        it('renders add provider button when user is on Enterprise plan', () => {
             render(
                 <Provider store={mockStore}>
                     <CustomSsoProvidersWithState {...defaultProps} />
@@ -127,23 +122,9 @@ describe('CustomSsoProviders', () => {
             expect(
                 screen.getByRole('button', { name: '+ Add provider' }),
             ).toBeInTheDocument()
-        })
-
-        it('does not render add provider button when feature flag is disabled', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(false)
-            render(
-                <Provider store={mockStore}>
-                    <CustomSsoProvidersWithState {...defaultProps} />
-                </Provider>,
-            )
-
-            expect(
-                screen.queryByRole('button', { name: '+ Add provider' }),
-            ).not.toBeInTheDocument()
         })
 
         it('does not render add provider button when user is not on Advanced+ plan', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
             mockUseAppSelector.mockReturnValue({
                 plan_id: 'pro-monthly-usd-4',
                 custom: false,
@@ -161,59 +142,7 @@ describe('CustomSsoProviders', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('renders add provider button only when both feature flag is enabled AND user is on Advanced+ plan', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
-            mockUseAppSelector.mockReturnValue({
-                plan_id: 'pro-monthly-usd-4',
-                custom: false,
-                name: 'Pro',
-            })
-
-            const { rerender } = render(
-                <Provider store={mockStore}>
-                    <CustomSsoProvidersWithState {...defaultProps} />
-                </Provider>,
-            )
-            expect(
-                screen.queryByRole('button', { name: '+ Add provider' }),
-            ).not.toBeInTheDocument()
-
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(false)
-            mockUseAppSelector.mockReturnValue({
-                plan_id: '0',
-                custom: false,
-                name: 'Enterprise',
-            })
-
-            rerender(
-                <Provider store={mockStore}>
-                    <CustomSsoProvidersWithState {...defaultProps} />
-                </Provider>,
-            )
-            expect(
-                screen.queryByRole('button', { name: '+ Add provider' }),
-            ).not.toBeInTheDocument()
-
-            // Test with both enabled
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
-            mockUseAppSelector.mockReturnValue({
-                plan_id: '0',
-                custom: false,
-                name: 'Enterprise',
-            })
-
-            rerender(
-                <Provider store={mockStore}>
-                    <CustomSsoProvidersWithState {...defaultProps} />
-                </Provider>,
-            )
-            expect(
-                screen.getByRole('button', { name: '+ Add provider' }),
-            ).toBeInTheDocument()
-        })
-
-        it('also tests custom enterprise plans are recognized', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
+        it('renders add provider button for Custom plan', () => {
             mockUseAppSelector.mockReturnValue({
                 plan_id: 'custom-monthly-usd-4-1',
                 custom: true,
@@ -232,11 +161,28 @@ describe('CustomSsoProviders', () => {
         })
 
         it('renders add provider button for Advanced plan', () => {
-            jest.spyOn(flagsModule, 'useFlag').mockReturnValue(true)
             mockUseAppSelector.mockReturnValue({
                 plan_id: 'advanced-monthly-usd-4',
                 custom: false,
                 name: 'Advanced',
+            })
+
+            render(
+                <Provider store={mockStore}>
+                    <CustomSsoProvidersWithState {...defaultProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: '+ Add provider' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders add provider button for Free plan', () => {
+            mockUseAppSelector.mockReturnValue({
+                plan_id: 'free',
+                custom: false,
+                name: 'Free',
             })
 
             render(

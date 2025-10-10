@@ -1,10 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import type { CustomSSOProviders } from 'state/currentAccount/types'
@@ -38,8 +36,6 @@ const CustomSsoProviders = ({
     const currentPlanName = currentHelpdeskPlan
         ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null
-
-    const isCustomSSOEnabled = useFlag(FeatureFlagKey.CustomSso)
 
     // free plan is like enterprise but off the books, meaning it's used by our partners and gorgias employees
     const isAdvancedPlusCustomer = [
@@ -155,7 +151,7 @@ const CustomSsoProviders = ({
                 />
             </Box>
 
-            {isCustomSSOEnabled && isAdvancedPlusCustomer && (
+            {isAdvancedPlusCustomer && (
                 <Button
                     className={classNames({
                         [css.addProviderButton]: providerEntries.length > 0,
