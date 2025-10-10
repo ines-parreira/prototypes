@@ -1,15 +1,26 @@
+import { useState } from 'react'
+
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, Text } from '@gorgias/axiom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import NewToggleField from 'pages/common/forms/NewToggleField'
+
+import { ChatToggle } from '../PostOnboardingTasksSection/ChatToggle'
+import { EmailToggle } from '../PostOnboardingTasksSection/EmailToggle'
+import { handleAiAgentConfigurationError } from '../PostOnboardingTasksSection/utils'
 
 import css from './SetupTaskBodies.less'
 
 interface SetupTaskBodyProps {
     featureUrl?: string
     isCompleted?: boolean
+    shopName?: string
+    shopType?: string
 }
 
 interface TaskBodyWithButtonConfig {
@@ -164,31 +175,94 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
 }
 
 export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
-    const handleToggle = () => {
-        // TODO: Implement toggle logic for AI agent on chat
+    const { isCompleted, shopName = '', shopType = '' } = props
+    const dispatch = useAppDispatch()
+    const { storeConfiguration, updateStoreConfiguration } =
+        useAiAgentStoreConfigurationContext()
+    const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(
+        !storeConfiguration?.chatChannelDeactivatedDatetime,
+    )
+
+    const handleChatToggle = async (
+        updatedConfig: StoreConfiguration,
+    ): Promise<void> => {
+        try {
+            await updateStoreConfiguration(updatedConfig)
+        } catch (error) {
+            handleAiAgentConfigurationError(error, dispatch)
+        }
     }
 
     return (
-        <TaskBodyWithToggle
-            {...props}
-            description="Start automating conversations on email to save time and provide faster, more personalized responses to your customers."
-            value={false}
-            onChange={handleToggle}
-        />
+        <div
+            className={cn(css.setupTaskBodies, {
+                [css.completed]: isCompleted,
+            })}
+        >
+            <div className={css.setupTaskDescription}>
+                <Text size="sm">
+                    Start automating conversations on chat to save time and
+                    provide faster, more personalized responses to your
+                    customers.
+                </Text>
+            </div>
+            <div className={css.channelToggle}>
+                <ChatToggle
+                    isChatChannelEnabled={isChatChannelEnabled}
+                    setIsChatChannelEnabled={setIsChatChannelEnabled}
+                    onChatToggle={handleChatToggle}
+                    storeConfiguration={storeConfiguration}
+                    shopName={shopName}
+                    shopType={shopType}
+                    label="Enable"
+                />
+            </div>
+        </div>
     )
 }
 
 export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
-    const handleToggle = () => {
-        // TODO: Implement toggle logic for AI agent on email
+    const { isCompleted, shopName = '' } = props
+    const dispatch = useAppDispatch()
+    const { storeConfiguration, updateStoreConfiguration } =
+        useAiAgentStoreConfigurationContext()
+    const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(
+        !storeConfiguration?.emailChannelDeactivatedDatetime,
+    )
+
+    const handleEmailToggle = async (
+        updatedConfig: StoreConfiguration,
+    ): Promise<void> => {
+        try {
+            await updateStoreConfiguration(updatedConfig)
+        } catch (error) {
+            handleAiAgentConfigurationError(error, dispatch)
+        }
     }
 
     return (
-        <TaskBodyWithToggle
-            {...props}
-            description="Start automating conversations on chat to save time and provide faster, more personalized responses to your customers."
-            value={false}
-            onChange={handleToggle}
-        />
+        <div
+            className={cn(css.setupTaskBodies, {
+                [css.completed]: isCompleted,
+            })}
+        >
+            <div className={css.setupTaskDescription}>
+                <Text size="sm">
+                    Start automating conversations on email to save time and
+                    provide faster, more personalized responses to your
+                    customers.
+                </Text>
+            </div>
+            <div className={css.channelToggle}>
+                <EmailToggle
+                    isEmailChannelEnabled={isEmailChannelEnabled}
+                    setIsEmailChannelEnabled={setIsEmailChannelEnabled}
+                    onEmailToggle={handleEmailToggle}
+                    storeConfiguration={storeConfiguration}
+                    shopName={shopName}
+                    label="Enable"
+                />
+            </div>
+        </div>
     )
 }

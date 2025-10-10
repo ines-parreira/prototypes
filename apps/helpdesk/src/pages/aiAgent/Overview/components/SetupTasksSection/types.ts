@@ -10,6 +10,8 @@ export enum TasksCategory {
 export type TaskBodyProps = {
     featureUrl?: string
     isCompleted?: boolean
+    shopName?: string
+    shopType?: string
 }
 
 export type TaskConfig = {
@@ -18,6 +20,8 @@ export type TaskConfig = {
     isCompleted: boolean
     body: React.ComponentType<TaskBodyProps>
     featureUrl?: string
+    shopName?: string
+    shopType?: string
 }
 
 export type TaskConfigTemplate = {

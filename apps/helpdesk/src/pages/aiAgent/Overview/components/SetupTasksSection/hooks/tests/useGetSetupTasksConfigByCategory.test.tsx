@@ -40,6 +40,7 @@ const createMockTask = (
     taskClassName: string,
     display: boolean = true,
     isCheckedAutomatically: boolean = false,
+    completed: boolean = false,
 ): Task => {
     const mockTask = {
         display,
@@ -49,6 +50,7 @@ const createMockTask = (
         caption: 'Mock Caption',
         type: 'BASIC' as const,
         isCheckedAutomatically,
+        completed,
         constructor: {
             name: taskClassName,
         },
@@ -644,7 +646,12 @@ describe('useGetSetupTasksConfigByCategory', () => {
                 isFetched: true,
                 pendingTasks: [],
                 completedTasks: [
-                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                    createMockTask(
+                        'VerifyYourEmailDomainTask',
+                        false,
+                        true,
+                        true,
+                    ),
                 ],
             })
 
@@ -751,7 +758,12 @@ describe('useGetSetupTasksConfigByCategory', () => {
                 isFetched: true,
                 pendingTasks: [],
                 completedTasks: [
-                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                    createMockTask(
+                        'VerifyYourEmailDomainTask',
+                        false,
+                        true,
+                        true,
+                    ),
                 ],
             })
 
@@ -761,63 +773,6 @@ describe('useGetSetupTasksConfigByCategory', () => {
 
             await waitFor(() => {
                 expect(mockMutateAsync).not.toHaveBeenCalled()
-            })
-        })
-
-        it('should sync task uncompleted status from rule engine to database', async () => {
-            const mockMutateAsync = jest.fn().mockResolvedValue({})
-            mockUseUpdateStepConfigurationPure.mockReturnValue({
-                mutateAsync: mockMutateAsync,
-                mutate: jest.fn(),
-                isLoading: false,
-                isError: false,
-                isSuccess: false,
-                isIdle: true,
-            } as any)
-
-            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
-                data: {
-                    postStoreInstallationSteps: [
-                        {
-                            id: 'step-id-123',
-                            type: PostStoreInstallationStepType.POST_GO_LIVE,
-                            stepsConfiguration: [
-                                {
-                                    stepName: StepName.VERIFY_EMAIL_DOMAIN,
-                                    stepCompletedDatetime:
-                                        '2024-01-01T00:00:00Z',
-                                    stepStartedDatetime: null,
-                                    stepDismissedDatetime: null,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                isLoading: false,
-                error: null,
-            } as any)
-
-            mockUsePendingTasksRuleEngine.mockReturnValue({
-                isLoading: false,
-                isFetched: true,
-                pendingTasks: [
-                    createMockTask('VerifyYourEmailDomainTask', true, true),
-                ],
-                completedTasks: [],
-            })
-
-            renderHook(() => useGetSetupTasksConfigByCategory(defaultParams), {
-                wrapper,
-            })
-
-            await waitFor(() => {
-                expect(mockMutateAsync).toHaveBeenCalledWith([
-                    'step-id-123',
-                    {
-                        stepName: StepName.VERIFY_EMAIL_DOMAIN,
-                        stepCompletedDatetime: null,
-                    },
-                ])
             })
         })
 
@@ -863,7 +818,12 @@ describe('useGetSetupTasksConfigByCategory', () => {
                 isFetched: true,
                 pendingTasks: [],
                 completedTasks: [
-                    createMockTask('VerifyYourEmailDomainTask', false, true),
+                    createMockTask(
+                        'VerifyYourEmailDomainTask',
+                        false,
+                        true,
+                        true,
+                    ),
                 ],
             })
 

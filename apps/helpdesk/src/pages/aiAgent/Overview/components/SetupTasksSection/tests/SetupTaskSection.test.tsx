@@ -13,6 +13,43 @@ jest.mock(
     'pages/aiAgent/Overview/components/SetupTasksSection/hooks/useGetSetupTasksConfigByCategory',
 )
 
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: () => ({
+        routes: {
+            deployEmail: '/mock/deploy-email-route',
+            deployChat: '/mock/deploy-chat-route',
+        },
+    }),
+}))
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    default: jest.fn(() => []),
+}))
+
+jest.mock(
+    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
+    () => ({
+        useFetchChatIntegrationsStatusData: jest.fn(() => ({
+            data: [],
+            isLoading: false,
+        })),
+    }),
+)
+
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: () => ({
+        storeConfiguration: {
+            monitoredEmailIntegrations: [],
+            monitoredChatIntegrations: [],
+        },
+        isLoading: false,
+        updateStoreConfiguration: jest.fn(),
+        createStoreConfiguration: jest.fn(),
+        isPendingCreateOrUpdate: false,
+    }),
+}))
+
 const mockUseGetSetupTasksConfigByCategory =
     useGetSetupTasksConfigByCategory as jest.MockedFunction<
         typeof useGetSetupTasksConfigByCategory

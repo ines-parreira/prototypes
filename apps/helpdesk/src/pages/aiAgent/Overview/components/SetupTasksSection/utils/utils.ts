@@ -27,6 +27,8 @@ export const createStepMapper = (
     stepNamesFromDb: Set<StepName>,
     stepCompletionMap: Map<StepName, boolean>,
     ruleEngineTaskMap: Map<StepName, Task>,
+    shopName: string,
+    shopType: string,
 ) => {
     return (category: TasksCategory): TaskConfig[] => {
         return TASK_CONFIG_TEMPLATES[category]
@@ -40,6 +42,8 @@ export const createStepMapper = (
                         stepCompletionMap.get(template.stepName) ?? false,
                     body: template.bodyComponent,
                     featureUrl: ruleEngineTask?.featureUrl,
+                    shopName,
+                    shopType,
                 }
             })
     }

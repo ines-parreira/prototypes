@@ -64,7 +64,7 @@ export const useSyncStepConfiguration = ({
                 continue
             }
 
-            const isCompletedInRuleEngine = !ruleEngineTask.display
+            const isCompletedInRuleEngine = ruleEngineTask.completed
             const isCompletedInDb = !!dbStep.stepCompletedDatetime
 
             const syncKey = `${dbStep.stepName}-${isCompletedInRuleEngine}`
@@ -72,7 +72,10 @@ export const useSyncStepConfiguration = ({
                 continue
             }
 
-            if (isCompletedInRuleEngine !== isCompletedInDb) {
+            if (
+                isCompletedInRuleEngine !== isCompletedInDb &&
+                !isCompletedInDb
+            ) {
                 try {
                     await updateStepConfiguration([
                         postGoLiveStep.id,

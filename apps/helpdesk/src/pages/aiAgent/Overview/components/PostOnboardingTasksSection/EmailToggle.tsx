@@ -8,7 +8,7 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import css from './DeploySection.less'
+import css from './EmailToggle.less'
 
 type EmailToggleProps = {
     isEmailChannelEnabled: boolean
@@ -16,6 +16,7 @@ type EmailToggleProps = {
     onEmailToggle: (storeConfiguration: StoreConfiguration) => void
     storeConfiguration?: StoreConfiguration
     shopName: string
+    label?: string
 }
 
 export const EmailToggle = ({
@@ -24,6 +25,7 @@ export const EmailToggle = ({
     onEmailToggle,
     storeConfiguration,
     shopName,
+    label = 'Email',
 }: EmailToggleProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -48,7 +50,7 @@ export const EmailToggle = ({
         <ChannelToggle
             className={css.customToggle}
             color="var(--surface-inverted-default)"
-            label="Email"
+            label={label}
             checked={isEmailChannelEnabled}
             disabled={isEmailChannelDisabled}
             onChange={handleEmailToggle}

@@ -77,6 +77,8 @@ export const CategoryContent = ({
                                 <BodyComponent
                                     featureUrl={task.featureUrl}
                                     isCompleted={task.isCompleted}
+                                    shopName={task.shopName}
+                                    shopType={task.shopType}
                                 />
                             </AccordionBody>
                         </AccordionItem>

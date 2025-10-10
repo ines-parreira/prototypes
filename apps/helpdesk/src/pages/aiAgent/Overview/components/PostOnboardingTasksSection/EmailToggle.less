@@ -1,0 +1,31 @@
+:local {
+    .customToggle {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+
+        i {
+            visibility: hidden;
+        }
+
+        label {
+            gap: var(--layout-spacing-xs);
+        }
+    }
+
+    .customToggleWarning {
+        color: var(--content-neutral-secondary, #5c6370);
+        display: flex;
+        padding-left: 42px;
+        width: fit-content;
+
+        &:hover {
+            color: var(--content-neutral-secondary, #5c6370);
+        }
+    }
+
+    .emailAddress {
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+    }
+}

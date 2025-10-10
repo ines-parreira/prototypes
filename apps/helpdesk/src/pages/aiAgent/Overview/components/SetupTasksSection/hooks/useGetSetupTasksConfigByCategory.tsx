@@ -106,6 +106,8 @@ export const useGetSetupTasksConfigByCategory = ({
                 stepNamesFromDb,
                 stepCompletionMap,
                 ruleEngineTaskMap,
+                shopName,
+                shopType,
             )
 
             return Object.fromEntries(
@@ -116,7 +118,7 @@ export const useGetSetupTasksConfigByCategory = ({
                     ])
                     .filter(([, tasks]) => tasks.length > 0),
             ) as Partial<TasksConfigByCategory>
-        }, [postGoLiveStep, pendingTasks, completedTasks])
+        }, [postGoLiveStep, pendingTasks, completedTasks, shopName, shopType])
 
     const completionPercentage = useMemo(() => {
         const allTasks = Object.values(tasksConfigByCategory).flat()

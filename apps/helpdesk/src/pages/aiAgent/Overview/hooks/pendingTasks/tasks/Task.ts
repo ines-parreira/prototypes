@@ -5,6 +5,7 @@ export abstract class Task {
     public readonly featureUrl: string
     public readonly available: boolean
     public readonly isCheckedAutomatically: boolean
+    public readonly completed: boolean
 
     protected constructor(
         public readonly title: string,
@@ -19,6 +20,11 @@ export abstract class Task {
         this.isCheckedAutomatically = this.getIsCheckedAutomatically
             ? this.getIsCheckedAutomatically(data)
             : false
+        this.completed = this.getIsCompleted
+            ? this.getIsCompleted
+                ? this.getIsCompleted(data)
+                : false
+            : !this.display
     }
 
     protected abstract isAvailable(data: RuleEngineData): boolean
@@ -31,4 +37,5 @@ export abstract class Task {
         routes: RuleEngineRoutes
     }): string
     protected getIsCheckedAutomatically?(data: RuleEngineData): boolean
+    protected getIsCompleted?(data: RuleEngineData): boolean
 }

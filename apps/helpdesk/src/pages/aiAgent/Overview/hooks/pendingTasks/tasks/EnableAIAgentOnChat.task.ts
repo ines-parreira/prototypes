@@ -53,4 +53,12 @@ export class EnableAIAgentOnChatTask extends Task {
     }): string {
         return aiAgentRoutes.deployChat
     }
+
+    protected getIsCheckedAutomatically(): boolean {
+        return true
+    }
+
+    protected getIsCompleted(data: RuleEngineData): boolean {
+        return !data.aiAgentStoreConfiguration.chatChannelDeactivatedDatetime
+    }
 }

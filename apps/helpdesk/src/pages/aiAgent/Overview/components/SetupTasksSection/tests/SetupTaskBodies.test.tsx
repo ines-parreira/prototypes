@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
+
+import { StoreConfiguration } from 'models/aiAgent/types'
+import AiAgentStoreConfigurationContext from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { mockStore } from 'utils/testing'
 
 import {
     CreateAnActionBody,
@@ -14,6 +19,30 @@ import {
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from '../SetupTaskBodies'
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: () => ({
+        routes: {
+            deployEmail: '/mock/deploy-email-route',
+            deployChat: '/mock/deploy-chat-route',
+        },
+    }),
+}))
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    default: jest.fn(() => []),
+}))
+
+jest.mock(
+    'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',
+    () => ({
+        useFetchChatIntegrationsStatusData: jest.fn(() => ({
+            data: [],
+            isLoading: false,
+        })),
+    }),
+)
 
 describe('SetupTaskBodies', () => {
     describe('VerifyEmailDomainBody', () => {
@@ -117,7 +146,216 @@ describe('SetupTaskBodies', () => {
 
     describe('EnableAIAgentOnChatBody', () => {
         it('should render description and toggle', () => {
-            render(<EnableAIAgentOnChatBody />)
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredChatIntegrations: [],
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnChatBody />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText(
+                    'Start automating conversations on chat to save time and provide faster, more personalized responses to your customers.',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByRole('switch')).toBeInTheDocument()
+        })
+
+        it('should initialize toggle state based on chatChannelDeactivatedDatetime', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredChatIntegrations: [],
+                chatChannelDeactivatedDatetime: null,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnChatBody
+                                shopName="test-shop"
+                                shopType="shopify"
+                            />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeChecked()
+        })
+
+        it('should initialize toggle state as off when chatChannelDeactivatedDatetime is set', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredChatIntegrations: [],
+                chatChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnChatBody
+                                shopName="test-shop"
+                                shopType="shopify"
+                            />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).not.toBeChecked()
+        })
+
+        it('should call updateStoreConfiguration when toggle is clicked', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest.fn().mockResolvedValue({})
+            const mockStoreConfiguration = {
+                monitoredChatIntegrations: [],
+                chatChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnChatBody
+                                shopName="test-shop"
+                                shopType="shopify"
+                            />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+        })
+
+        it('should handle errors when updateStoreConfiguration fails', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest
+                .fn()
+                .mockRejectedValue(new Error('Update failed'))
+            const mockStoreConfiguration = {
+                monitoredChatIntegrations: [],
+                chatChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnChatBody
+                                shopName="test-shop"
+                                shopType="shopify"
+                            />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+
+            consoleErrorSpy.mockRestore()
+        })
+    })
+
+    describe('EnableAIAgentOnEmailBody', () => {
+        it('should render description and toggle', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredEmailIntegrations: [],
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnEmailBody />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
 
             expect(
                 screen.getByText(
@@ -126,18 +364,143 @@ describe('SetupTaskBodies', () => {
             ).toBeInTheDocument()
             expect(screen.getByRole('switch')).toBeInTheDocument()
         })
-    })
 
-    describe('EnableAIAgentOnEmailBody', () => {
-        it('should render description and toggle', () => {
-            render(<EnableAIAgentOnEmailBody />)
+        it('should initialize toggle state based on emailChannelDeactivatedDatetime', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredEmailIntegrations: [],
+                emailChannelDeactivatedDatetime: null,
+            } as unknown as StoreConfiguration
 
-            expect(
-                screen.getByText(
-                    'Start automating conversations on chat to save time and provide faster, more personalized responses to your customers.',
-                ),
-            ).toBeInTheDocument()
-            expect(screen.getByRole('switch')).toBeInTheDocument()
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnEmailBody shopName="test-shop" />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeChecked()
+        })
+
+        it('should initialize toggle state as off when emailChannelDeactivatedDatetime is set', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                monitoredEmailIntegrations: [],
+                emailChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnEmailBody shopName="test-shop" />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).not.toBeChecked()
+        })
+
+        it('should call updateStoreConfiguration when toggle is clicked', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest.fn().mockResolvedValue({})
+            const mockStoreConfiguration = {
+                monitoredEmailIntegrations: [],
+                emailChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnEmailBody shopName="test-shop" />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+        })
+
+        it('should handle errors when updateStoreConfiguration fails', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest
+                .fn()
+                .mockRejectedValue(new Error('Update failed'))
+            const mockStoreConfiguration = {
+                monitoredEmailIntegrations: [],
+                emailChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+
+            render(
+                <Provider store={store}>
+                    <Router history={createMemoryHistory()}>
+                        <AiAgentStoreConfigurationContext.Provider
+                            value={mockContextValue}
+                        >
+                            <EnableAIAgentOnEmailBody shopName="test-shop" />
+                        </AiAgentStoreConfigurationContext.Provider>
+                    </Router>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+
+            consoleErrorSpy.mockRestore()
         })
     })
 
@@ -225,20 +588,6 @@ describe('SetupTaskBodies', () => {
                     'Give feedback on AI Agent interactions to improve its accuracy and response quality for future customer requests.',
                 buttonText: 'Review',
                 hasButton: true,
-            },
-            {
-                Component: EnableAIAgentOnChatBody,
-                description:
-                    'Start automating conversations on email to save time and provide faster, more personalized responses to your customers.',
-                buttonText: undefined,
-                hasButton: false,
-            },
-            {
-                Component: EnableAIAgentOnEmailBody,
-                description:
-                    'Start automating conversations on chat to save time and provide faster, more personalized responses to your customers.',
-                buttonText: undefined,
-                hasButton: false,
             },
         ]
 

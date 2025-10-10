@@ -13,7 +13,7 @@ import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServi
 import { useFetchChatIntegrationsStatusData } from '../../hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { decideChatWarning } from './utils'
 
-import css from './DeploySection.less'
+import css from './ChatToggle.less'
 
 type ChatToggleProps = {
     isChatChannelEnabled: boolean
@@ -22,6 +22,7 @@ type ChatToggleProps = {
     shopName: string
     shopType: string
     onChatToggle: (storeConfiguration: StoreConfiguration) => void
+    label?: string
 }
 
 export const ChatToggle = ({
@@ -31,6 +32,7 @@ export const ChatToggle = ({
     storeConfiguration,
     shopName,
     shopType,
+    label = 'Chat',
 }: ChatToggleProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
     const chatChannels: InstallationStatusInjectedChatItem[] =
@@ -115,7 +117,7 @@ export const ChatToggle = ({
         <ChannelToggle
             className={css.customToggle}
             color="var(--surface-inverted-default)"
-            label="Chat"
+            label={label}
             checked={isChatChannelEnabled}
             disabled={isChatChannelDisabled}
             onChange={handleChatToggle}

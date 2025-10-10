@@ -42,4 +42,12 @@ export class EnableAIAgentOnEmailTask extends Task {
     }): string {
         return aiAgentRoutes.deployEmail
     }
+
+    protected getIsCheckedAutomatically(): boolean {
+        return true
+    }
+
+    protected getIsCompleted(data: RuleEngineData): boolean {
+        return !data.aiAgentStoreConfiguration.emailChannelDeactivatedDatetime
+    }
 }
