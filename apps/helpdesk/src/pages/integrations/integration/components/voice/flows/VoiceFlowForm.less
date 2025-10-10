@@ -1,10 +1,19 @@
 :local {
+    .formContainer {
+        position: relative;
+    }
+
     .buttonsBanner {
-        padding: var(--layout-spacing-s) var(--layout-spacing-m);
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: var(--layout-spacing-s);
-        box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        display: block;
+        position: absolute;
+        top: var(--layout-spacing-m);
+        right: var(--layout-spacing-m);
+        padding: var(--layout-spacing-xs);
+        z-index: 9;
+        border-radius: 8px;
+        background: var(--elevation-neutral-mid);
+
+        /* shadow/shadow-container */
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
     }
 }

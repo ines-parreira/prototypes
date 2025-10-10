@@ -46,6 +46,7 @@ function VoiceFlowForm({
 
     return (
         <Form
+            className={css.formContainer}
             onValidSubmit={onSubmit}
             defaultValues={getDefaultValues(defaultValues)}
             resetOptions={{

@@ -42,7 +42,7 @@ function VoiceIntegrationFlowPage() {
             }}
         >
             <FlowProvider>
-                <Box width="100%" height="calc(100vh - 220px)">
+                <Box width="100%" height="calc(100vh - 160px)">
                     <VoiceFlow flow={integration.meta.flow} />
                 </Box>
             </FlowProvider>

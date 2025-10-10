@@ -89,10 +89,7 @@ export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onlyRenderVisibleElements={false}
-                nodesDraggable={!preview}
-                nodesConnectable={!preview}
                 elementsSelectable={!preview}
-                edgesFocusable={!preview}
             >
                 <Background />
                 {preview ? (

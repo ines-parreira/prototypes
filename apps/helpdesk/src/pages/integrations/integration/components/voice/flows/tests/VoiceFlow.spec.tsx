@@ -54,8 +54,6 @@ describe('VoiceFlow', () => {
 
         expect(FlowSpy).toHaveBeenCalledWith(
             expect.objectContaining({
-                nodesDraggable: true,
-                nodesConnectable: true,
                 elementsSelectable: true,
             }),
             expect.anything(),
@@ -71,8 +69,6 @@ describe('VoiceFlow', () => {
 
         expect(FlowSpy).toHaveBeenCalledWith(
             expect.objectContaining({
-                nodesDraggable: false,
-                nodesConnectable: false,
                 elementsSelectable: false,
             }),
             expect.anything(),
