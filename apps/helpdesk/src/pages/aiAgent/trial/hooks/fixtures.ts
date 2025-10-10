@@ -21,5 +21,6 @@ export const createMockTrialAccess = (overrides = {}) => ({
     isError: false,
     isInAiAgentTrial: false,
     isOnboarded: false,
+    isTrialingSubscription: false,
     ...overrides,
 })

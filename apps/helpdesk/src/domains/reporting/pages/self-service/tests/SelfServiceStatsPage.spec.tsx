@@ -37,11 +37,8 @@ import {
 import { IntegrationType } from 'models/integration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import {
-    type TrialAccess,
-    useTrialAccess,
-} from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -152,32 +149,6 @@ const mockUseTrialAccess = useTrialAccess as jest.MockedFunction<
 >
 
 const mockClient = mockQueryClient()
-
-const createMockTrialAccess = (
-    overrides: Partial<TrialAccess> = {},
-): TrialAccess => ({
-    canNotifyAdmin: false,
-    canBookDemo: false,
-    canSeeSystemBanner: false,
-    canSeeTrialCTA: false,
-    hasCurrentStoreTrialStarted: false,
-    hasAnyTrialStarted: false,
-    hasCurrentStoreTrialOptedOut: false,
-    hasAnyTrialOptedOut: false,
-    hasCurrentStoreTrialExpired: false,
-    hasAnyTrialExpired: false,
-    hasAnyTrialOptedIn: false,
-    hasCurrentStoreTrialActive: false,
-    hasAnyTrialActive: false,
-    isAdminUser: true,
-    isLoading: false,
-    isError: false,
-    trialType: TrialType.ShoppingAssistant,
-    currentAutomatePlan: undefined,
-    isInAiAgentTrial: false,
-    isOnboarded: false,
-    ...overrides,
-})
 
 const WFConfigData = [
     {

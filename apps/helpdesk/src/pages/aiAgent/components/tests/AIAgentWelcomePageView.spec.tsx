@@ -141,6 +141,18 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal',
+    () => ({
+        __esModule: true,
+        default: jest.fn(() => null),
+        UpgradePlanModal: jest.fn(() => null),
+    }),
+)
+const mockUpgradePlanModal =
+    require('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
+        .UpgradePlanModal as jest.Mock
+
 jest.mock('../ShoppingAssistant/components', () => ({
     BookDemoContainer: jest.fn(() => null),
 }))
@@ -212,6 +224,8 @@ describe('<AIAgentWelcomePageView />', () => {
         mockUseTrialModalProps.mockReturnValue({
             newTrialUpgradePlanModal: { isOpen: false },
             trialRequestModal: { isOpen: false },
+            trialFinishSetupModal: {},
+            upgradePlanModal: { isOpen: false },
         })
 
         mockExtractShopNameFromUrl.mockReturnValue(SHOP_NAME)
@@ -682,5 +696,23 @@ describe('<AIAgentWelcomePageView />', () => {
                 screen.queryByAltText('AI Agent Logo'),
             ).not.toBeInTheDocument()
         })
+    })
+
+    it('renders UpgradePlanModal when upgradePlanModal.isOpen is true and passes props', () => {
+        mockUpgradePlanModal.mockClear()
+
+        mockUseTrialModalProps.mockReturnValue({
+            newTrialUpgradePlanModal: { isOpen: false },
+            trialRequestModal: { isOpen: false },
+            trialFinishSetupModal: {},
+            upgradePlanModal: { isOpen: true, someModalProp: 'value' },
+        })
+
+        renderWithProvider()
+
+        expect(mockUpgradePlanModal).toHaveBeenCalled()
+        const passedProps = mockUpgradePlanModal.mock.calls[0][0]
+        expect(passedProps.isOpen).toBe(true)
+        expect(passedProps.someModalProp).toBe('value')
     })
 })

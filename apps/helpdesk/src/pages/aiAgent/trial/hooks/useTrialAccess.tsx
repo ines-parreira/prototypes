@@ -22,9 +22,44 @@ import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing,
+} from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
+
+/**
+ * Creates a restricted trial access object for early return scenarios.
+ * All access flags are set to false, indicating no trial access is available.
+ */
+const createRestrictedTrialAccess = (
+    trialType: TrialType,
+    currentAutomatePlan: AutomatePlan | undefined,
+    isAdminUser: boolean,
+    isTrialingSubscription: boolean,
+): TrialAccess => ({
+    canNotifyAdmin: false,
+    canBookDemo: false,
+    canSeeSystemBanner: false,
+    canSeeTrialCTA: false,
+    hasCurrentStoreTrialStarted: false,
+    hasAnyTrialStarted: false,
+    hasCurrentStoreTrialExpired: false,
+    hasAnyTrialExpired: false,
+    hasCurrentStoreTrialOptedOut: false,
+    hasAnyTrialOptedOut: false,
+    hasAnyTrialOptedIn: false,
+    hasCurrentStoreTrialActive: false,
+    hasAnyTrialActive: false,
+    isAdminUser,
+    isLoading: false,
+    trialType,
+    currentAutomatePlan,
+    isInAiAgentTrial: false,
+    isOnboarded: false,
+    isTrialingSubscription,
+})
 
 export type TrialAccess = {
     /** Whether the user can notify the admin about the trial (only for Leads) */
@@ -54,6 +89,7 @@ export type TrialAccess = {
     currentAutomatePlan: AutomatePlan | undefined
     isInAiAgentTrial: boolean
     isOnboarded: boolean | undefined
+    isTrialingSubscription: boolean
 }
 
 /**
@@ -79,6 +115,8 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const onboardingState = useAiAgentOnboardingState(currentStoreName ?? '')
+
+    const isTrialingSubscription = useAppSelector(isTrialing)
 
     const {
         data: trials,
@@ -130,31 +168,25 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentTrials =
         trialType === TrialType.AiAgent ? aiAgentTrials : salesTrials
 
+    if (isTrialingSubscription) {
+        return createRestrictedTrialAccess(
+            trialType,
+            currentAutomatePlan,
+            isAdmin(currentUser),
+            isTrialingSubscription,
+        )
+    }
+
     // Early return for USD6+ plan users
     const isOnUsd6PlusPlan =
         currentAutomatePlan?.generation && currentAutomatePlan.generation >= 6
     if (isOnUsd6PlusPlan) {
-        return {
-            canNotifyAdmin: false,
-            canBookDemo: false,
-            canSeeSystemBanner: false,
-            canSeeTrialCTA: false,
-            hasCurrentStoreTrialStarted: false,
-            hasAnyTrialStarted: false,
-            hasCurrentStoreTrialExpired: false,
-            hasAnyTrialExpired: false,
-            hasCurrentStoreTrialOptedOut: false,
-            hasAnyTrialOptedOut: false,
-            hasAnyTrialOptedIn: false,
-            hasCurrentStoreTrialActive: false,
-            hasAnyTrialActive: false,
-            isAdminUser: isAdmin(currentUser),
-            isLoading: false,
-            trialType: TrialType.ShoppingAssistant,
+        return createRestrictedTrialAccess(
+            TrialType.ShoppingAssistant,
             currentAutomatePlan,
-            isInAiAgentTrial: false,
-            isOnboarded: false,
-        }
+            isAdmin(currentUser),
+            isTrialingSubscription,
+        )
     }
     const isAdminUser = isAdmin(currentUser)
     const isTeamLeadUser = isTeamLead(currentUser)
@@ -258,5 +290,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         currentAutomatePlan,
         isInAiAgentTrial,
         isOnboarded,
+        isTrialingSubscription,
     }
 }

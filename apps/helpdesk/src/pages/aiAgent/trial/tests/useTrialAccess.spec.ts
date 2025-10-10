@@ -25,7 +25,10 @@ import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing,
+} from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { createMockTrialAccess } from '../hooks/fixtures'
@@ -169,6 +172,9 @@ describe('useTrialAccess', () => {
             if (selector === getCurrentAccountState) {
                 return mockAccount
             }
+            if (selector === isTrialing) {
+                return false
+            }
             return undefined
         })
 
@@ -233,6 +239,9 @@ describe('useTrialAccess', () => {
                 if (selector === getCurrentAccountState) {
                     return mockAccount
                 }
+                if (selector === isTrialing) {
+                    return false
+                }
                 return undefined
             })
 
@@ -243,6 +252,7 @@ describe('useTrialAccess', () => {
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
                 isAdminUser: true,
+                isTrialingSubscription: false,
             })
         })
         it('should not show trial CTA while data is loading', () => {
@@ -259,6 +269,9 @@ describe('useTrialAccess', () => {
                 }
                 if (selector === getCurrentAccountState) {
                     return mockAccount
+                }
+                if (selector === isTrialing) {
+                    return false
                 }
                 return undefined
             })
@@ -306,6 +319,7 @@ describe('useTrialAccess', () => {
                 canSeeTrialCTA: false,
                 isAdminUser: true,
                 isLoading: true,
+                isTrialingSubscription: false,
             })
         })
         it('should return correct access values for team lead user', () => {
@@ -338,6 +352,9 @@ describe('useTrialAccess', () => {
                 if (selector === getCurrentAccountState) {
                     return mockAccount
                 }
+                if (selector === isTrialing) {
+                    return false
+                }
                 return undefined
             })
         })
@@ -350,6 +367,7 @@ describe('useTrialAccess', () => {
                 canSeeSystemBanner: true, // System banner for everyone
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
                 isAdminUser: true,
+                isTrialingSubscription: false,
             })
         })
 
@@ -363,6 +381,7 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canNotifyAdmin: true, // Team lead can notify for Pro+ with feature flag
                 canSeeSystemBanner: true, // Both admins and team leads can see system banner
+                isTrialingSubscription: false,
             })
         })
     })
@@ -451,6 +470,9 @@ describe('useTrialAccess', () => {
                 }
                 if (selector === getCurrentAccountState) {
                     return mockAccount
+                }
+                if (selector === isTrialing) {
+                    return false
                 }
                 return undefined
             })
@@ -759,6 +781,61 @@ describe('useTrialAccess', () => {
             const { result } = renderUseTrialAccess('Test Store')
 
             expect(result.current.isOnboarded).toBe(undefined)
+        })
+    })
+
+    describe('when account is trialing subscription', () => {
+        beforeEach(() => {
+            // Reset to default admin user
+            mockIsAdmin.mockReturnValue(true)
+            mockIsTeamLead.mockReturnValue(false)
+
+            // Set up trialing subscription
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentUser) {
+                    return mockUser
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return { generation: 5 }
+                }
+                if (selector === getCurrentHelpdeskPlan) {
+                    return { tier: HelpdeskPlanTier.STARTER }
+                }
+                if (selector === getCurrentAccountState) {
+                    return mockAccount
+                }
+                if (selector === isTrialing) {
+                    return true
+                }
+                return undefined
+            })
+        })
+
+        it('should return restricted access regardless of the helpdesk or automate plan', () => {
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current).toEqual({
+                canNotifyAdmin: false,
+                canBookDemo: false,
+                canSeeSystemBanner: false,
+                canSeeTrialCTA: false,
+                hasCurrentStoreTrialStarted: false,
+                hasAnyTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialExpired: false,
+                hasCurrentStoreTrialOptedOut: false,
+                hasAnyTrialOptedOut: false,
+                hasAnyTrialOptedIn: false,
+                hasCurrentStoreTrialActive: false,
+                hasAnyTrialActive: false,
+                isAdminUser: true,
+                isLoading: false,
+                trialType: TrialType.ShoppingAssistant,
+                currentAutomatePlan: { generation: 5 },
+                isInAiAgentTrial: false,
+                isOnboarded: false,
+                isTrialingSubscription: true,
+            })
         })
     })
 })

@@ -25,6 +25,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -340,6 +341,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             trialFinishSetupModal: trialModalProps.trialFinishSetupModal,
         },
         isOnUpdateOnboardingWizard,
+        isTrialingSubscription: trialAccess.isTrialingSubscription,
     })
 
     const paywallFeature = useMemo(
@@ -355,6 +357,10 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             {ctas}
             {afterCtas}
             {modals}
+
+            {trialModalProps.upgradePlanModal.isOpen && (
+                <UpgradePlanModal {...trialModalProps.upgradePlanModal} />
+            )}
 
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
