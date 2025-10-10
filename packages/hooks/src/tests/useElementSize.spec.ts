@@ -1,18 +1,19 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
+import { type Mock } from 'vitest'
 
 import { useElementSize } from '../useElementSize'
 
 describe('useElementSize', () => {
-    let observe: jest.Mock
-    let unobserve: jest.Mock
+    let observe: Mock
+    let unobserve: Mock
 
     beforeAll(() => {
-        observe = jest.fn()
-        unobserve = jest.fn()
+        observe = vi.fn()
+        unobserve = vi.fn()
 
         // @ts-expect-error
-        window.ResizeObserver = jest.fn(() => ({ observe, unobserve }))
+        window.ResizeObserver = vi.fn(() => ({ observe, unobserve }))
     })
 
     it('should return the element size', () => {
@@ -22,7 +23,7 @@ describe('useElementSize', () => {
         expect(result.current).toEqual([0, 0])
         expect(observe).toHaveBeenCalledWith(element)
 
-        const [[cb]] = (ResizeObserver as jest.Mock).mock.calls as [
+        const [[cb]] = (ResizeObserver as Mock).mock.calls as [
             [(entries: ResizeObserverEntry[]) => void],
         ]
         act(() => {

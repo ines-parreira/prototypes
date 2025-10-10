@@ -1,16 +1,16 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 
 import { useNow } from '../useNow'
 
 describe('useNow', () => {
     beforeEach(() => {
-        jest.useFakeTimers()
-        jest.setSystemTime(1708689346000)
+        vi.useFakeTimers()
+        vi.setSystemTime(1708689346000)
     })
 
     afterEach(() => {
-        jest.useRealTimers()
+        vi.useRealTimers()
     })
 
     it('should return now initially', () => {
@@ -22,12 +22,12 @@ describe('useNow', () => {
         const { result } = renderHook(() => useNow())
 
         act(() => {
-            jest.advanceTimersByTime(999)
+            vi.advanceTimersByTime(999)
         })
         expect(result.current).toBe(1708689346000)
 
         act(() => {
-            jest.advanceTimersByTime(1)
+            vi.advanceTimersByTime(1)
         })
         expect(result.current).toBe(1708689347000)
     })
@@ -36,12 +36,12 @@ describe('useNow', () => {
         const { result } = renderHook(() => useNow(5000))
 
         act(() => {
-            jest.advanceTimersByTime(4999)
+            vi.advanceTimersByTime(4999)
         })
         expect(result.current).toBe(1708689346000)
 
         act(() => {
-            jest.advanceTimersByTime(1)
+            vi.advanceTimersByTime(1)
         })
         expect(result.current).toBe(1708689351000)
     })

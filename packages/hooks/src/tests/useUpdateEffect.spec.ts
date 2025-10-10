@@ -1,10 +1,10 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useUpdateEffect } from '../useUpdateEffect'
 
 describe('useUpdateEffect', () => {
     it('should run effect on update', () => {
-        const effect = jest.fn()
+        const effect = vi.fn()
 
         const { rerender } = renderHook(() => useUpdateEffect(effect))
         expect(effect).not.toHaveBeenCalled()
@@ -14,8 +14,8 @@ describe('useUpdateEffect', () => {
     })
 
     it('should run cleanup on unmount', () => {
-        const cleanup = jest.fn()
-        const effect = jest.fn().mockReturnValue(cleanup)
+        const cleanup = vi.fn()
+        const effect = vi.fn().mockReturnValue(cleanup)
         const hook = renderHook(() => useUpdateEffect(effect))
 
         hook.rerender()

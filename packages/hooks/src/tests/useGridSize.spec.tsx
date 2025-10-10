@@ -2,7 +2,7 @@ import {
     mockRequestAnimationFrame,
     renderHook,
     triggerWidthResize,
-} from '@repo/testing'
+} from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 
 import { useGridSize } from '../useGridSize'

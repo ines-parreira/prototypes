@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, render, waitFor } from '@testing-library/react'
 
 import { useCallbackRef } from '../useCallbackRef'

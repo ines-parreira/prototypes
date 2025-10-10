@@ -1,9 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import noop from 'lodash/noop'
 
 import { useDebouncedCallback } from '../useDebouncedCallback'
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 describe('useDebouncedCallback', () => {
     it('should render', () => {
@@ -49,34 +49,34 @@ describe('useDebouncedCallback', () => {
     })
 
     it('should run given callback only after specified delay since last call', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
         const { result } = renderHook(() => useDebouncedCallback(cb, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
         result.current()
 
-        jest.advanceTimersByTime(199)
+        vi.advanceTimersByTime(199)
         expect(cb).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(cb).toHaveBeenCalledTimes(1)
     })
 
     it('should pass parameters to callback', () => {
-        const cb = jest.fn(noop)
+        const cb = vi.fn(noop)
         const { result } = renderHook(() => useDebouncedCallback(cb, 200))
 
         result.current(1, 'abc')
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(cb).toHaveBeenCalledWith(1, 'abc')
     })
 
     it('should cancel previously scheduled call if parameters changed', () => {
-        const callback = jest.fn(noop)
-        const changedCallback = jest.fn(noop)
+        const callback = vi.fn(noop)
+        const changedCallback = vi.fn(noop)
 
         const { result, rerender } = renderHook(
             ({ callback }) => useDebouncedCallback(callback, 200),
@@ -84,18 +84,18 @@ describe('useDebouncedCallback', () => {
         )
 
         result.current()
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
 
         rerender({ callback: changedCallback })
         result.current()
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
 
         expect(callback).not.toHaveBeenCalled()
         expect(changedCallback).toHaveBeenCalledTimes(1)
     })
 
     it('should cancel debounce execution after component unmount', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
 
         const { result, unmount } = renderHook(() =>
             useDebouncedCallback(cb, 150, 200),
@@ -103,37 +103,37 @@ describe('useDebouncedCallback', () => {
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(149)
+        vi.advanceTimersByTime(149)
         expect(cb).not.toHaveBeenCalled()
         unmount()
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
         expect(cb).not.toHaveBeenCalled()
     })
 
     it('should force execute callback after maxWait milliseconds', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
 
         const { result } = renderHook(() => useDebouncedCallback(cb, 150, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(149)
+        vi.advanceTimersByTime(149)
         result.current()
         expect(cb).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(50)
+        vi.advanceTimersByTime(50)
         expect(cb).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(cb).toHaveBeenCalledTimes(1)
     })
 
     it('should not execute callback twice if maxWait equals delay', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
 
         const { result } = renderHook(() => useDebouncedCallback(cb, 200, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(cb).toHaveBeenCalledTimes(1)
     })
 })

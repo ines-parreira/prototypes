@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 
 import { useAsyncFn } from '../useAsyncFn'
@@ -35,7 +35,7 @@ describe('useAsyncFn', () => {
     })
 
     describe('args can be passed to the function', () => {
-        const adder: AdderFn = jest.fn((a, b) => {
+        const adder: AdderFn = vi.fn((a, b) => {
             return Promise.resolve((a || 0) + (b || 0))
         })
 

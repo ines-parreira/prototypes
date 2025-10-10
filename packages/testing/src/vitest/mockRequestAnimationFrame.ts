@@ -1,7 +1,9 @@
+import { vi } from 'vitest'
+
 export const mockRequestAnimationFrame = (getFrameId = () => Infinity) => {
     let callbacks: FrameRequestCallback[] = []
     return {
-        spy: jest
+        spy: vi
             .spyOn(window, 'requestAnimationFrame')
             .mockImplementation((callback: FrameRequestCallback) => {
                 callbacks.push(callback)

@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useSafeContext } from '../useSafeContext'
 

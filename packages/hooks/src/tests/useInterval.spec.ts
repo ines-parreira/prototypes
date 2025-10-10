@@ -1,17 +1,19 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useInterval } from '../useInterval'
 
-const callback = jest.fn()
+const callback = vi.fn()
 
-jest.useFakeTimers({ advanceTimers: true })
+vi.useFakeTimers()
 
-const setIntervalSpy = jest.spyOn(window, 'setInterval')
-const clearIntervalSpy = jest.spyOn(window, 'clearInterval')
+const setIntervalSpy = vi.spyOn(window, 'setInterval')
+const clearIntervalSpy = vi.spyOn(window, 'clearInterval')
 
 describe('useInterval', () => {
     beforeEach(() => {
-        callback.mockRestore()
+        callback.mockClear()
+        setIntervalSpy.mockClear()
+        clearIntervalSpy.mockClear()
     })
 
     it('should init hook with default delay', () => {
@@ -42,28 +44,30 @@ describe('useInterval', () => {
         renderHook(() => useInterval(callback, 200))
         expect(callback).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(199)
+        vi.advanceTimersByTime(199)
         expect(callback).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(callback).toHaveBeenCalledTimes(1)
 
-        jest.advanceTimersToNextTimer()
+        vi.advanceTimersByTime(200)
         expect(callback).toHaveBeenCalledTimes(2)
 
-        jest.advanceTimersToNextTimer(3)
+        vi.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(callback).toHaveBeenCalledTimes(5)
     })
 
     it('should clear interval on unmount', () => {
         const { unmount } = renderHook(() => useInterval(callback, 200))
-        const initialTimerCount = jest.getTimerCount()
+        const initialTimerCount = vi.getTimerCount()
         expect(clearIntervalSpy).not.toHaveBeenCalled()
 
         unmount()
 
         expect(clearIntervalSpy).toHaveBeenCalledTimes(1)
-        expect(jest.getTimerCount()).toBe(initialTimerCount - 1)
+        expect(vi.getTimerCount()).toBe(initialTimerCount - 1)
     })
 
     it('should handle new interval when delay is updated', () => {
@@ -73,15 +77,15 @@ describe('useInterval', () => {
         )
         expect(callback).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(callback).toHaveBeenCalledTimes(1)
 
         rerender({ delay: 500 })
 
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(callback).toHaveBeenCalledTimes(1)
 
-        jest.advanceTimersByTime(300)
+        vi.advanceTimersByTime(300)
         expect(callback).toHaveBeenCalledTimes(2)
     })
 
@@ -91,11 +95,11 @@ describe('useInterval', () => {
             { initialProps: { delay: 200 } },
         )
         expect(clearInterval).not.toHaveBeenCalled()
-        const initialTimerCount = jest.getTimerCount()
+        const initialTimerCount = vi.getTimerCount()
 
         rerender({ delay: 500 })
 
         expect(clearInterval).toHaveBeenCalledTimes(1)
-        expect(jest.getTimerCount()).toBe(initialTimerCount)
+        expect(vi.getTimerCount()).toBe(initialTimerCount)
     })
 })

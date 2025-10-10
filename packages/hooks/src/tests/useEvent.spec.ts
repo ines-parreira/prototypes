@@ -1,15 +1,15 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, fireEvent } from '@testing-library/react'
 
 import { useEvent } from '../useEvent'
 
 describe('useEvent', () => {
     it('should add and remove event listener', () => {
-        const listener = jest.fn()
+        const listener = vi.fn()
         const target = document.createElement('div')
 
-        jest.spyOn(target, 'addEventListener')
-        jest.spyOn(target, 'removeEventListener')
+        vi.spyOn(target, 'addEventListener')
+        vi.spyOn(target, 'removeEventListener')
 
         const { unmount } = renderHook(() =>
             useEvent('click', listener, target),
@@ -42,7 +42,7 @@ describe('useEvent', () => {
     })
 
     it('should handle default target if target is not provided', () => {
-        const listener = jest.fn()
+        const listener = vi.fn()
 
         const { unmount } = renderHook(() => useEvent('click', listener))
 
@@ -62,12 +62,12 @@ describe('useEvent', () => {
     })
 
     it('should add and remove event listener with options', () => {
-        const listener = jest.fn()
+        const listener = vi.fn()
         const target = document.createElement('div')
         const options = { capture: true, passive: true }
 
-        jest.spyOn(target, 'addEventListener')
-        jest.spyOn(target, 'removeEventListener')
+        vi.spyOn(target, 'addEventListener')
+        vi.spyOn(target, 'removeEventListener')
 
         const { unmount } = renderHook(() =>
             useEvent('click', listener, target, options),
@@ -100,15 +100,15 @@ describe('useEvent', () => {
     })
 
     it('should add and remove event listener when parameters change', () => {
-        const listener = jest.fn()
-        const otherListener = jest.fn()
+        const listener = vi.fn()
+        const otherListener = vi.fn()
         const target = document.createElement('div')
         const otherTarget = document.createElement('span')
 
-        jest.spyOn(target, 'addEventListener')
-        jest.spyOn(target, 'removeEventListener')
-        jest.spyOn(otherTarget, 'addEventListener')
-        jest.spyOn(otherTarget, 'removeEventListener')
+        vi.spyOn(target, 'addEventListener')
+        vi.spyOn(target, 'removeEventListener')
+        vi.spyOn(otherTarget, 'addEventListener')
+        vi.spyOn(otherTarget, 'removeEventListener')
 
         const getOptions = (): AddEventListenerOptions => ({
             once: false,

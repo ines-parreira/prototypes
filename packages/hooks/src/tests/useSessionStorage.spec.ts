@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 
 import { useSessionStorage } from '../useSessionStorage'
@@ -9,7 +9,7 @@ describe('useSessionStorage', () => {
     })
 
     afterEach(() => {
-        jest.restoreAllMocks()
+        vi.restoreAllMocks()
     })
 
     it('should return the initial value and a function to set the value', () => {
@@ -73,7 +73,7 @@ describe('useSessionStorage', () => {
     })
 
     it('should handle JSON parsing errors and fallback to initial value', () => {
-        jest.spyOn(JSON, 'parse').mockImplementation(() => {
+        vi.spyOn(JSON, 'parse').mockImplementation(() => {
             throw new Error('Mocked parsing error')
         })
 
@@ -85,7 +85,7 @@ describe('useSessionStorage', () => {
     })
 
     it('should handle sessionStorage errors when setting values', () => {
-        jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
             throw new Error('Mocked storage error')
         })
 

@@ -1,10 +1,10 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 
 import { useDeepEffect } from '../useDeepEffect'
 
 // Mock callback function for testing
-const mockCallback = jest.fn()
+const mockCallback = vi.fn()
 
 describe('useDeepEffect', () => {
     beforeEach(() => {

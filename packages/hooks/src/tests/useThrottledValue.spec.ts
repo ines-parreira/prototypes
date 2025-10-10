@@ -1,14 +1,18 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 
 import { useThrottledValue } from '../useThrottledValue'
 
-const mockedFn = jest.fn((value) => value as unknown)
-jest.useFakeTimers()
+const mockedFn = vi.fn((value) => value as unknown)
+vi.useFakeTimers()
 
-const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout')
+const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout')
 
 describe('useThrottledValue', () => {
+    beforeEach(() => {
+        clearTimeoutSpy.mockClear()
+    })
+
     afterEach(() => {
         mockedFn.mockClear()
     })
@@ -32,11 +36,11 @@ describe('useThrottledValue', () => {
         expect(mockedFn).toHaveBeenCalledTimes(1)
 
         hook.rerender(20)
-        jest.advanceTimersByTime(50)
+        vi.advanceTimersByTime(50)
 
         expect(hook.result.current).toBe(10)
         expect(mockedFn).toHaveBeenCalledTimes(1)
-        expect(jest.getTimerCount()).toBe(1)
+        expect(vi.getTimerCount()).toBe(1)
     })
 
     it('should update the value after the given time when arguments change', () => {
@@ -47,7 +51,7 @@ describe('useThrottledValue', () => {
 
         hook.rerender('foo')
         act(() => {
-            jest.advanceTimersByTime(100)
+            vi.advanceTimersByTime(100)
         })
 
         expect(hook.result.current).toBe('foo')
@@ -64,7 +68,7 @@ describe('useThrottledValue', () => {
         hook.unmount()
 
         expect(clearTimeoutSpy).toBeCalledTimes(1)
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
         expect(mockedFn).toHaveBeenCalledTimes(1)
     })
 })

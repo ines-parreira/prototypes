@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 import writeText from 'copy-to-clipboard'
 import noop from 'lodash/noop'
@@ -8,20 +8,24 @@ import { useCopyToClipboard } from '../useCopyToClipboard'
 const valueToRaiseMockException =
     'fake input causing exception in copy to clipboard'
 
-jest.mock('copy-to-clipboard', () =>
-    jest.fn().mockImplementation((input) => {
+vi.mock('copy-to-clipboard', () => ({
+    default: vi.fn().mockImplementation((input) => {
         if (input === valueToRaiseMockException) {
             throw new Error(input)
         }
         return true
     }),
-)
+}))
 
-const consoleErrorSpy = jest
+const consoleErrorSpy = vi
     .spyOn(global.console, 'error')
     .mockImplementation(noop)
 
 describe('useCopyToClipboard', () => {
+    beforeEach(() => {
+        vi.mocked(writeText).mockClear()
+        consoleErrorSpy.mockClear()
+    })
     it('should pass a given value to copy to clipboard and set state', () => {
         const hook = renderHook(() => useCopyToClipboard())
 

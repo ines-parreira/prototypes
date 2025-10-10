@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 import noop from 'lodash/noop'
 
@@ -33,7 +33,7 @@ describe('useMeasure', () => {
     })
 
     it('should synchronously set up ResizeObserver listener', () => {
-        const spy = jest.spyOn(window, 'ResizeObserver')
+        const spy = vi.spyOn(window, 'ResizeObserver')
 
         const { result } = renderHook(() => useMeasure())
 
@@ -48,7 +48,7 @@ describe('useMeasure', () => {
 
     it('should track rectangle of a DOM element', () => {
         let resizeListener: ResizeListener
-        jest.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
+        vi.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
             resizeListener = listener
             return resizeObserverMethods
         }) as MockedResizeObserver)
@@ -81,7 +81,7 @@ describe('useMeasure', () => {
 
     it('should track multiple updates', () => {
         let resizeListener: ResizeListener
-        jest.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
+        vi.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
             resizeListener = listener
             return resizeObserverMethods
         }) as MockedResizeObserver)
@@ -130,8 +130,8 @@ describe('useMeasure', () => {
     })
 
     it('should call .disconnect() on ResizeObserver when component unmounts', () => {
-        const disconnect = jest.fn()
-        jest.spyOn(window, 'ResizeObserver').mockImplementation((() => {
+        const disconnect = vi.fn()
+        vi.spyOn(window, 'ResizeObserver').mockImplementation((() => {
             return { observe: noop, disconnect }
         }) as MockedResizeObserver)
 

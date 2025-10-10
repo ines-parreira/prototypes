@@ -1,11 +1,11 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, fireEvent, render } from '@testing-library/react'
 
 import { useKey } from '../useKey'
 
 describe('useKey', () => {
     it('should call the provided handler when the specified key is pressed on the target element', () => {
-        const mockHandler = jest.fn()
+        const mockHandler = vi.fn()
         const { getByTestId } = render(<div data-testid="test-div" />)
         const targetDiv = getByTestId('test-div')
 
@@ -21,7 +21,7 @@ describe('useKey', () => {
     })
 
     it('should not react to the event if the key is pressed outside the target element', () => {
-        const mockHandler = jest.fn()
+        const mockHandler = vi.fn()
         const { getByTestId } = render(<div data-testid="test-div" />)
         const targetDiv = getByTestId('test-div')
 
@@ -35,7 +35,7 @@ describe('useKey', () => {
     })
 
     it('should not call the handler when a different key is pressed', () => {
-        const mockHandler = jest.fn()
+        const mockHandler = vi.fn()
         render(<div />)
 
         renderHook(() => useKey('Enter', mockHandler))
@@ -48,7 +48,7 @@ describe('useKey', () => {
     })
 
     it('should support custom key filter function', () => {
-        const mockHandler = jest.fn()
+        const mockHandler = vi.fn()
         render(<div />)
 
         const keyFilter = (event: KeyboardEvent) =>
@@ -67,7 +67,7 @@ describe('useKey', () => {
     })
 
     it('should handle changing the key dynamically', () => {
-        const mockHandler = jest.fn()
+        const mockHandler = vi.fn()
         render(<div />)
 
         const { rerender } = renderHook(

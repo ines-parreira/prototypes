@@ -1,9 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import noop from 'lodash/noop'
 
 import { useThrottledCallback } from '../useThrottledCallback'
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 describe('useThrottledCallback', () => {
     it('should render', () => {
@@ -71,7 +71,7 @@ describe('useThrottledCallback', () => {
     })
 
     it('should invoke given callback immediately', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
         const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current()
@@ -79,7 +79,7 @@ describe('useThrottledCallback', () => {
     })
 
     it('should pass parameters to callback', () => {
-        const cb = jest.fn(noop)
+        const cb = vi.fn(noop)
         const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current(1, 'abc')
@@ -87,7 +87,7 @@ describe('useThrottledCallback', () => {
     })
 
     it('should ignore consequential calls occurred within delay, but execute last call after delay is passed', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
         const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current()
@@ -95,19 +95,19 @@ describe('useThrottledCallback', () => {
         result.current()
         result.current()
         expect(cb).toHaveBeenCalledTimes(1)
-        jest.advanceTimersByTime(199)
+        vi.advanceTimersByTime(199)
         result.current()
         expect(cb).toHaveBeenCalledTimes(1)
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(cb).toHaveBeenCalledTimes(2)
         result.current()
         expect(cb).toHaveBeenCalledTimes(2)
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(cb).toHaveBeenCalledTimes(3)
     })
 
     it('should drop trailing execution if `noTrailing is set to true`', () => {
-        const cb = jest.fn()
+        const cb = vi.fn()
         const { result } = renderHook(() => useThrottledCallback(cb, 200, true))
 
         result.current()
@@ -115,16 +115,16 @@ describe('useThrottledCallback', () => {
         result.current()
         result.current()
         expect(cb).toHaveBeenCalledTimes(1)
-        jest.advanceTimersByTime(199)
+        vi.advanceTimersByTime(199)
         result.current()
         expect(cb).toHaveBeenCalledTimes(1)
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(cb).toHaveBeenCalledTimes(1)
         result.current()
         result.current()
         result.current()
         expect(cb).toHaveBeenCalledTimes(2)
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
         expect(cb).toHaveBeenCalledTimes(2)
     })
 })

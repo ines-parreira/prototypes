@@ -1,15 +1,15 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 
 import { useDimensions } from '../useDimensions'
 
-jest.spyOn(window, 'requestAnimationFrame').mockImplementation(((
+vi.spyOn(window, 'requestAnimationFrame').mockImplementation(((
     cb: () => void,
 ) => {
     cb()
 }) as any)
 
-jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
+vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
     function () {
         // @ts-ignore ts(2345)
         const { left, top, width, height } = window.getComputedStyle(this)

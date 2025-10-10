@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 
 import { useVisibilityState } from '../useVisibilityState'
@@ -60,10 +60,7 @@ describe('useVisibilityState', () => {
     })
 
     it('should clean up event listener on unmount', () => {
-        const removeEventListenerSpy = jest.spyOn(
-            document,
-            'removeEventListener',
-        )
+        const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener')
         const { unmount } = renderHook(() => useVisibilityState())
 
         unmount()

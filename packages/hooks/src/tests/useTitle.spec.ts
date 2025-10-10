@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useTitle } from '../useTitle'
 
@@ -6,7 +6,7 @@ describe('useTitle hook', () => {
     const defaultTitle = 'Gorgias'
     document.title = defaultTitle
 
-    jest.useFakeTimers()
+    vi.useFakeTimers()
 
     it('should do nothing if passed an empty value', () => {
         renderHook(() => useTitle(undefined))
@@ -18,12 +18,12 @@ describe('useTitle hook', () => {
         expect(document.title).toEqual('test')
 
         result.unmount()
-        jest.runOnlyPendingTimers()
+        vi.runOnlyPendingTimers()
         expect(document.title).toEqual(defaultTitle)
     })
 
     it('should not fallback to default title when switching from one title to another', () => {
-        jest.spyOn(global, 'clearTimeout')
+        vi.spyOn(global, 'clearTimeout')
         const { unmount } = renderHook(() => useTitle('test'))
         expect(document.title).toEqual('test')
         expect(global.clearTimeout).toHaveBeenCalledTimes(1)
@@ -32,7 +32,7 @@ describe('useTitle hook', () => {
         renderHook(() => useTitle('test'))
         expect(document.title).toEqual('test')
         expect(global.clearTimeout).toHaveBeenCalledTimes(2)
-        jest.runOnlyPendingTimers()
+        vi.runOnlyPendingTimers()
         expect(document.title).not.toEqual(defaultTitle)
     })
 })

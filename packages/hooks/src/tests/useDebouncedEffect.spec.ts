@@ -1,9 +1,9 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import noop from 'lodash/noop'
 
 import { useDebouncedEffect } from '../useDebouncedEffect'
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 // Note: more detailed tests we have in useDebouncedCallback which is being used under the hood
 describe('useDebouncedEffect', () => {
@@ -16,17 +16,17 @@ describe('useDebouncedEffect', () => {
     })
 
     it('should call effect only after delay', () => {
-        const spy = jest.fn()
+        const spy = vi.fn()
 
         renderHook(() => {
             useDebouncedEffect(spy, [], 200)
         })
         expect(spy).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(199)
+        vi.advanceTimersByTime(199)
         expect(spy).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(1)
+        vi.advanceTimersByTime(1)
         expect(spy).toHaveBeenCalledTimes(1)
     })
 })

@@ -1,17 +1,17 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useUnmount } from '../useUnmount'
 
 describe('useUnmount', () => {
     it('should not call provided callback on mount', () => {
-        const callback = jest.fn()
+        const callback = vi.fn()
         renderHook(() => useUnmount(callback))
 
         expect(callback).not.toHaveBeenCalled()
     })
 
     it('should not call provided callback on re-renders', () => {
-        const callback = jest.fn()
+        const callback = vi.fn()
         const hook = renderHook(() => useUnmount(callback))
 
         hook.rerender()
@@ -23,7 +23,7 @@ describe('useUnmount', () => {
     })
 
     it('should call provided callback on unmount', () => {
-        const callback = jest.fn()
+        const callback = vi.fn()
         const hook = renderHook(() => useUnmount(callback))
 
         hook.unmount()
@@ -32,9 +32,9 @@ describe('useUnmount', () => {
     })
 
     it('should call the last provided callback if is has been changed', () => {
-        const firstCallback = jest.fn()
-        const updatedCallback = jest.fn()
-        const lastCallback = jest.fn()
+        const firstCallback = vi.fn()
+        const updatedCallback = vi.fn()
+        const lastCallback = vi.fn()
 
         const hook = renderHook((callback) => useUnmount(callback), {
             initialProps: firstCallback,

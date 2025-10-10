@@ -2,16 +2,16 @@ import { renderHook } from '@testing-library/react'
 
 import { measureTextWidth, useTextWidth } from '../useTextWidth'
 
-const mockMeasureText = jest.fn()
-const mockGetContext = jest.fn()
-const mockGetComputedStyle = jest.fn()
+const mockMeasureText = vi.fn()
+const mockGetContext = vi.fn()
+const mockGetComputedStyle = vi.fn()
 
 Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
     value: mockGetContext,
 })
 
 const originalCreateElement = document.createElement
-document.createElement = jest.fn().mockImplementation((tagName: string) => {
+document.createElement = vi.fn().mockImplementation((tagName: string) => {
     if (tagName === 'canvas') {
         return {
             getContext: mockGetContext,
@@ -31,7 +31,7 @@ Object.defineProperty(window, 'getComputedStyle', {
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 
     // Setup default canvas context mock
     mockGetContext.mockReturnValue({

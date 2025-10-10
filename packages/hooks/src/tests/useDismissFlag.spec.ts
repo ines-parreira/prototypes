@@ -1,4 +1,4 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 
 import { useDismissFlag } from '../useDismissFlag'
@@ -16,7 +16,7 @@ describe('useDismissFlag', () => {
 
     describe('flag is dismissed using the api', () => {
         it('saves the dismiss state in localStorage', () => {
-            const lsSpy = jest.spyOn(Storage.prototype, 'setItem')
+            const lsSpy = vi.spyOn(Storage.prototype, 'setItem')
             const { result } = renderHook(() => useDismissFlag('key'))
 
             act(() => {

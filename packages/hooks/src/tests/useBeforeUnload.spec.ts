@@ -1,11 +1,11 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing/vitest'
 
 import { useBeforeUnload } from '../useBeforeUnload'
 
 describe('useBeforeUnload', () => {
     it('should add and remove event listener on mount and unmount', () => {
-        const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
-        const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
+        const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+        const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
 
         const { unmount } = renderHook(() => useBeforeUnload(true))
 
@@ -23,7 +23,7 @@ describe('useBeforeUnload', () => {
     })
 
     it('should not add event listener if enabled is false', () => {
-        const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
+        const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
 
         renderHook(() => useBeforeUnload(false))
 
@@ -37,8 +37,8 @@ describe('useBeforeUnload', () => {
         const mockMessage = 'Are you sure you want to leave?'
 
         const event = new Event('beforeunload')
-        const preventDefaultSpy = jest.spyOn(event, 'preventDefault')
-        const setReturnValueSpy = jest.spyOn(event, 'returnValue', 'set')
+        const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
+        const setReturnValueSpy = vi.spyOn(event, 'returnValue', 'set')
 
         renderHook(() => useBeforeUnload(true, mockMessage))
 
@@ -52,7 +52,7 @@ describe('useBeforeUnload', () => {
         renderHook(() => useBeforeUnload(() => false))
 
         const event = new Event('beforeunload')
-        const preventDefaultSpy = jest.spyOn(event, 'preventDefault')
+        const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
 
         window.dispatchEvent(event)
 

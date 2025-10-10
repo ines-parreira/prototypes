@@ -1,12 +1,12 @@
-import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing/vitest'
+import { act } from '@testing-library/react'
 
 import { useDelayedAsyncFn } from '../useDelayedAsyncFn'
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 describe('useDelayedAsyncFn hook', () => {
-    it('should not be loading when resolved before delay', (done) => {
+    it('should not be loading when resolved before delay', () => {
         const mockAsync = () => Promise.resolve()
         const { result } = renderHook(() =>
             useDelayedAsyncFn(mockAsync, [], 200),
@@ -16,13 +16,10 @@ describe('useDelayedAsyncFn hook', () => {
         act(() => {
             void result.current[1]()
         })
-        setImmediate(() => {
-            expect(result.current[0].loading).toBe(false)
-            done()
-        })
+        expect(result.current[0].loading).toBe(false)
     })
 
-    it('should be loading after delay', async () => {
+    it('should be loading after delay', () => {
         const mockAsync = () => new Promise(() => null)
         const { result } = renderHook(() =>
             useDelayedAsyncFn(mockAsync, [], 200),
@@ -32,13 +29,13 @@ describe('useDelayedAsyncFn hook', () => {
         act(() => {
             void result.current[1]()
         })
-        jest.runAllTimers()
-        await waitFor(() => {
-            expect(result.current[0].loading).toBe(true)
+        act(() => {
+            vi.runAllTimers()
         })
+        expect(result.current[0].loading).toBe(true)
     })
 
-    it('should not set loading to true if async call is not pending', async () => {
+    it('should not set loading to true if async call is not pending', () => {
         const mockAsync = () =>
             new Promise((resolve) => setTimeout(resolve, 100))
         const { result } = renderHook(() =>
@@ -48,12 +45,11 @@ describe('useDelayedAsyncFn hook', () => {
         expect(result.current[0].loading).toBe(false)
         act(() => {
             void result.current[1]()
-            jest.advanceTimersByTime(100)
         })
-
-        await waitFor(() => {
-            expect(result.current[0].loading).toBe(false)
+        act(() => {
+            vi.advanceTimersByTime(100)
         })
+        expect(result.current[0].loading).toBe(false)
     })
 
     it('should clear the previous timeout on a new function call', () => {
@@ -65,12 +61,12 @@ describe('useDelayedAsyncFn hook', () => {
 
         act(() => {
             void result.current[1]()
-            jest.advanceTimersByTime(50)
+            vi.advanceTimersByTime(50)
         })
         expect(result.current[0].loading).toBe(false)
         act(() => {
             void result.current[1]()
-            jest.advanceTimersByTime(50)
+            vi.advanceTimersByTime(50)
         })
         expect(result.current[0].loading).toBe(false)
     })

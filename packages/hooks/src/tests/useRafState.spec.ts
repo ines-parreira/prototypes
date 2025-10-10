@@ -1,15 +1,16 @@
-import { mockRequestAnimationFrame, renderHook } from '@repo/testing'
+import { mockRequestAnimationFrame, renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 
 import { useRafState } from '../useRafState'
 
 const rafControl = mockRequestAnimationFrame()
 
-jest.spyOn(window, 'cancelAnimationFrame')
+const cancelAnimationFrameSpy = vi.spyOn(window, 'cancelAnimationFrame')
 
 describe('useRafState', () => {
     beforeEach(() => {
         rafControl.clear()
+        cancelAnimationFrameSpy.mockClear()
     })
 
     it('should only update state after requestAnimationFrame when providing an object', () => {
@@ -61,10 +62,10 @@ describe('useRafState', () => {
     it('should cancel update state on unmount', () => {
         const { unmount } = renderHook(() => useRafState(0))
 
-        expect(cancelAnimationFrame).not.toHaveBeenCalled()
+        expect(cancelAnimationFrameSpy).not.toHaveBeenCalled()
 
         unmount()
 
-        expect(cancelAnimationFrame).toHaveBeenCalledTimes(1)
+        expect(cancelAnimationFrameSpy).toHaveBeenCalledTimes(1)
     })
 })
