@@ -11,7 +11,7 @@ export default function EmptyMetafieldsState() {
                 to use the data in customer profiles, macros, rules, flows,
                 views and advanced search.{' '}
             </Text>
-            <Button leadingIcon="add">Import</Button>
+            <Button leadingSlot="add">Import</Button>
         </div>
     )
 }
