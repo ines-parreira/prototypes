@@ -45,6 +45,7 @@ describe('ticketsRepliedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-tickets-replied',
                 scope: 'tickets-replied',
             }
 
@@ -77,6 +78,7 @@ describe('ticketsRepliedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-tickets-replied-time-series',
                 scope: 'tickets-replied',
             }
 
@@ -107,6 +109,7 @@ describe('ticketsRepliedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'asc']],
+                metricName: 'support-performance-tickets-replied-per-agent',
                 scope: 'tickets-replied',
             }
 
@@ -135,6 +138,7 @@ describe('ticketsRepliedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'desc']],
+                metricName: 'support-performance-tickets-replied-per-agent',
                 scope: 'tickets-replied',
             }
 
@@ -165,6 +169,7 @@ describe('ticketsRepliedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'asc']],
+                metricName: 'support-performance-tickets-replied-per-channel',
                 scope: 'tickets-replied',
             }
 
@@ -193,6 +198,7 @@ describe('ticketsRepliedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'desc']],
+                metricName: 'support-performance-tickets-replied-per-channel',
                 scope: 'tickets-replied',
             }
 

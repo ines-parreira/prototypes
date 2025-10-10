@@ -1,6 +1,10 @@
 import { isAxiosError } from 'axios'
 
-import { QueryFor, ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import {
+    BuiltQuery,
+    QueryFor,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import {
     Cube,
     EnrichmentFields,
@@ -10,6 +14,8 @@ import {
 } from 'domains/reporting/models/types'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
+
+import { MetricName } from '../hooks/metricNames'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
 export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'
@@ -118,7 +124,9 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
     )
 }
 
-export const postReportingV2 = <TData>(query: QueryFor<ScopeMeta>) => {
+export const postReportingV2 = <TData>(
+    query: BuiltQuery<ScopeMeta, MetricName>,
+) => {
     const { metricName, ...baseQuery } = query
 
     return postV2(REPORTING_STATS_ENDPOINT)<TData>({
@@ -133,7 +141,7 @@ export const postReportingV2 = <TData>(query: QueryFor<ScopeMeta>) => {
 }
 
 export const postReportingV2Query = <TCube extends Cube = Cube>(
-    query: QueryFor<ScopeMeta>,
+    query: BuiltQuery<ScopeMeta, MetricName>,
     limit?: number,
 ) => {
     const { metricName, ...baseQuery } = query

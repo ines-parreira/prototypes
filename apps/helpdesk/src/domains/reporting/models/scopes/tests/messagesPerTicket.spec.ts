@@ -40,6 +40,7 @@ describe('messagesPerTicketScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-messages-per-ticket',
                 scope: 'messages-per-ticket',
             }
 

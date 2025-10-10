@@ -44,6 +44,7 @@ describe('resolutionTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-median-resolution-time',
                 scope: 'resolution-time',
             }
 
@@ -71,6 +72,8 @@ describe('resolutionTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'support-performance-median-resolution-time-per-agent',
                 scope: 'resolution-time',
             }
 
@@ -98,6 +101,8 @@ describe('resolutionTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'support-performance-median-resolution-time-per-channel',
                 scope: 'resolution-time',
             }
 

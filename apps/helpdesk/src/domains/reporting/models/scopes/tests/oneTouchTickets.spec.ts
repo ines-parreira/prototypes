@@ -45,6 +45,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-one-touch-tickets',
                 scope: 'one-touch-tickets',
             }
 
@@ -72,6 +73,7 @@ describe('oneTouchTicketsScope', () => {
                     },
                 ],
                 order: [['tickets', 'desc']],
+                metricName: 'support-performance-one-touch-tickets',
                 scope: 'one-touch-tickets',
             }
 
@@ -104,6 +106,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-one-touch-tickets-time-series',
                 scope: 'one-touch-tickets',
             }
 
@@ -131,6 +134,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
             }
 
@@ -159,6 +163,7 @@ describe('oneTouchTicketsScope', () => {
                     },
                 ],
                 order: [['tickets', 'asc']],
+                metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
             }
 
@@ -186,6 +191,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-one-touch-tickets-per-channel',
                 scope: 'one-touch-tickets',
             }
 
@@ -214,6 +220,7 @@ describe('oneTouchTicketsScope', () => {
                     },
                 ],
                 order: [['tickets', 'desc']],
+                metricName: 'support-performance-one-touch-tickets-per-channel',
                 scope: 'one-touch-tickets',
             }
 

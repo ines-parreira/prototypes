@@ -1,13 +1,9 @@
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const messagesPerTicketScope = defineScope({
+    scope: MetricScope.MessagesPerTicket,
     measures: ['messagesAverage'],
     dimensions: [
         'tickets',
@@ -37,22 +33,8 @@ const scopeConfig = defineScope({
     ],
 })
 
-type MessagesSentScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const messagesPerTicketScope = initScope<MessagesSentScope, Context>().define(
-    'messages-per-ticket',
-)
-
 export const messagesPerTicketCount = messagesPerTicketScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET)
-    .defineQuery(({ ctx }) => ({
-        measures: ['messagesAverage'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET)
+    .defineQuery(() => ({
+        measures: ['messagesAverage'] as const,
     }))

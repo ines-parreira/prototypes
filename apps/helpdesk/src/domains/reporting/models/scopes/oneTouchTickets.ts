@@ -1,15 +1,11 @@
 import { z } from 'zod'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope, QueryFor } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const oneTouchTicketsScope = defineScope({
+    scope: MetricScope.OneTouchTickets,
     measures: ['ticketCount'],
     dimensions: ['tickets', 'agents', 'channels', 'integrations'],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
@@ -33,79 +29,77 @@ const scopeConfig = defineScope({
     order: ['tickets', 'createdDatetime'],
 })
 
-type OneTouchTicketsScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const oneTouchTicketsScope = initScope<OneTouchTicketsScope, Context>().define(
-    'one-touch-tickets',
-)
-
 const direction = z.enum(['asc', 'desc'])
 
 export const oneTouchTickets = oneTouchTicketsScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS)
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS)
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<OneTouchTicketsScope> = {
-            measures: ['ticketCount'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['tickets', input.sortDirection]]
+            return {
+                ...query,
+                order: [['tickets', input.sortDirection]] as const,
+            }
         }
 
         return query
     })
 
 export const oneTouchTicketsTimeseries = oneTouchTicketsScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES,
+    )
     .defineQuery(({ ctx }) => ({
-        measures: ['ticketCount'],
+        measures: ['ticketCount'] as const,
         time_dimensions: [
-            { dimension: 'closedDatetime', granularity: ctx.granularity },
+            {
+                dimension: 'closedDatetime' as const,
+                granularity: ctx.granularity,
+            },
         ],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
     }))
 
 export const oneTouchTicketsPerAgent = oneTouchTicketsScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT,
+    )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<OneTouchTicketsScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['agents'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['agents'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['tickets', input.sortDirection]]
+            return {
+                ...query,
+                order: [['tickets', input.sortDirection]] as const,
+            }
         }
 
         return query
     })
 
 export const oneTouchTicketsPerChannel = oneTouchTicketsScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL,
+    )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<OneTouchTicketsScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['channels'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['channels'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['tickets', input.sortDirection]]
+            return {
+                ...query,
+                order: [['tickets', input.sortDirection]] as const,
+            }
         }
 
         return query

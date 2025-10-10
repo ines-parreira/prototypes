@@ -40,6 +40,7 @@ describe('ticketsOpenScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-open-tickets',
                 scope: 'tickets-open',
             }
 

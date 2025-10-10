@@ -45,6 +45,7 @@ describe('ticketHandleTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'agentxp-ticket-handle-time',
                 scope: 'ticket-handle-time',
             }
 
@@ -71,6 +72,7 @@ describe('ticketHandleTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'agentxp-ticket-average-handle-time',
                 scope: 'ticket-handle-time',
             }
 
@@ -98,6 +100,7 @@ describe('ticketHandleTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'agentxp-ticket-average-handle-time-per-agent',
                 scope: 'ticket-handle-time',
             }
 
@@ -125,6 +128,8 @@ describe('ticketHandleTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'agentxp-ticket-average-handle-time-per-agent-per-channel',
                 scope: 'ticket-handle-time',
             }
 

@@ -1,13 +1,9 @@
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const ticketsOpenScope = defineScope({
+    scope: MetricScope.TicketsOpen,
     measures: ['ticketCount'],
     dimensions: ['tickets', 'agents', 'channels', 'integrations'],
     timeDimensions: ['createdDatetime'],
@@ -31,22 +27,8 @@ const scopeConfig = defineScope({
     ],
 })
 
-type TicketsOpenScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const ticketsOpenScope = initScope<TicketsOpenScope, Context>().define(
-    'tickets-open',
-)
-
 export const openTicketsCount = ticketsOpenScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS)
-    .defineQuery(({ ctx }) => ({
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS)
+    .defineQuery(() => ({
         measures: ['ticketCount'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
     }))

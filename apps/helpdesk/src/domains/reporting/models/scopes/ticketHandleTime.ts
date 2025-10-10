@@ -1,13 +1,9 @@
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const ticketHandleTimeScope = defineScope({
+    scope: MetricScope.TicketHandleTime,
     measures: ['averageHandleTime', 'handleTime'],
     dimensions: ['tickets', 'agents', 'channels', 'integrations', 'handleTime'],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
@@ -31,51 +27,30 @@ const scopeConfig = defineScope({
     order: ['tickets', 'handleTime'],
 })
 
-type TicketHandleTimeScopeMeta = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const ticketHandleTimeScope = initScope<
-    TicketHandleTimeScopeMeta,
-    Context
->().define('ticket-handle-time')
-
 export const ticketHandleTime = ticketHandleTimeScope
-    .create(METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME)
-    .defineQuery(({ ctx }) => ({
-        measures: ['handleTime'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME)
+    .defineQuery(() => ({
+        measures: ['handleTime'] as const,
     }))
 
 export const ticketAverageHandleTime = ticketHandleTimeScope
-    .create(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME)
-    .defineQuery(({ ctx }) => ({
-        measures: ['averageHandleTime'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME)
+    .defineQuery(() => ({
+        measures: ['averageHandleTime'] as const,
     }))
 
 export const ticketAverageHandleTimePerAgent = ticketHandleTimeScope
-    .create(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT)
-    .defineQuery(({ ctx }) => ({
-        measures: ['averageHandleTime'],
-        dimensions: ['agents'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT)
+    .defineQuery(() => ({
+        measures: ['averageHandleTime'] as const,
+        dimensions: ['agents'] as const,
     }))
 
 export const ticketAverageHandleTimePerChannel = ticketHandleTimeScope
-    .create(
+    .defineMetricName(
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL,
     )
-    .defineQuery(({ ctx }) => ({
-        measures: ['averageHandleTime'],
-        dimensions: ['channels'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(() => ({
+        measures: ['averageHandleTime'] as const,
+        dimensions: ['channels'] as const,
     }))

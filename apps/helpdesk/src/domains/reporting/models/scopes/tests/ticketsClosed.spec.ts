@@ -46,6 +46,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-closed-tickets',
                 scope: 'tickets-closed',
             }
 
@@ -79,6 +80,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-closed-tickets-time-series',
                 scope: 'tickets-closed',
             }
 
@@ -106,6 +108,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-closed-tickets-per-agent',
                 scope: 'tickets-closed',
             }
 
@@ -134,6 +137,7 @@ describe('ticketsClosedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'asc']],
+                metricName: 'support-performance-closed-tickets-per-agent',
                 scope: 'tickets-closed',
             }
 
@@ -161,6 +165,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-closed-tickets-per-channel',
                 scope: 'tickets-closed',
             }
 
@@ -189,6 +194,7 @@ describe('ticketsClosedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'asc']],
+                metricName: 'support-performance-closed-tickets-per-channel',
                 scope: 'tickets-closed',
             }
 

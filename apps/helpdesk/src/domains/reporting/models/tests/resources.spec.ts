@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     postEnrichedReporting,
     postReporting,
@@ -13,7 +13,7 @@ import {
     REPORTING_STATS_ENDPOINT,
     REPORTING_STATS_QUERY_ENDPOINT,
 } from 'domains/reporting/models/resources'
-import { QueryFor, ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import { BuiltQuery } from 'domains/reporting/models/scopes/scope'
 import {
     EnrichmentFields,
     ReportingQuery,
@@ -170,7 +170,8 @@ describe('Reporting resources', () => {
     })
 
     describe('postReportingV2', () => {
-        const query: QueryFor<ScopeMeta> = {
+        const query: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
             dimensions: [],
             measures: [],
             filters: [],
@@ -245,7 +246,8 @@ describe('Reporting resources', () => {
     })
 
     describe('postReportingV2Query', () => {
-        const query: QueryFor<ScopeMeta> = {
+        const query: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
             dimensions: [],
             measures: [],
             filters: [],

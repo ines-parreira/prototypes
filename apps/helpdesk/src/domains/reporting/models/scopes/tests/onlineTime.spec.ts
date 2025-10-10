@@ -43,6 +43,7 @@ describe('onlineTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'agentxp-online-time',
                 scope: 'online-time',
             }
 
@@ -70,6 +71,7 @@ describe('onlineTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'agentxp-online-time-per-agent',
                 scope: 'online-time',
             }
 

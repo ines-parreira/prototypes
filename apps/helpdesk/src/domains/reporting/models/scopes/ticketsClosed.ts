@@ -1,22 +1,12 @@
 import { z } from 'zod'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { OrderDirection } from 'models/api/types'
 
-import { defineScope, initScope, QueryFor } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const scopeConfig = defineScope({
+const ticketsClosedScope = defineScope({
+    scope: MetricScope.TicketsClosed,
     measures: ['ticketCount'],
     dimensions: ['tickets', 'agents', 'channels', 'integrations'],
     timeDimensions: ['closedDatetime', 'createdDatetime'],
@@ -36,70 +26,64 @@ const scopeConfig = defineScope({
     order: ['ticketId', 'ticketCount', 'closedDatetime', 'createdDatetime'],
 })
 
-type TicketsClosedScope = typeof scopeConfig
-
-const ticketsClosedScope = initScope<TicketsClosedScope, Context>().define(
-    'tickets-closed',
-)
-
 export const closedTicketsCount = ticketsClosedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS)
-    .defineQuery(({ ctx }) => {
-        const filters = createScopeFilters(ctx.filters, scopeConfig)
-
-        return {
-            measures: ['ticketCount'],
-            timezone: ctx.timezone,
-            filters,
-            // TODO: optional order <- Do we need it? This should only be a single number?
-        }
-    })
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS)
+    .defineQuery(() => ({
+        measures: ['ticketCount'] as const,
+    }))
 
 export const closedTicketsTimeseries = ticketsClosedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES,
+    )
     .defineQuery(({ ctx }) => ({
-        measures: ['ticketCount'],
+        measures: ['ticketCount'] as const,
         time_dimensions: [
-            { dimension: 'closedDatetime', granularity: ctx.granularity },
+            {
+                dimension: 'closedDatetime' as const,
+                granularity: ctx.granularity,
+            },
         ],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
-        order: [['closedDatetime', OrderDirection.Asc]],
+        order: [['closedDatetime', OrderDirection.Asc]] as const,
     }))
 
 const direction = z.enum(['asc', 'desc'])
 
 export const closedTicketsPerAgent = ticketsClosedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT)
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT)
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<TicketsClosedScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['agents'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['agents'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['ticketCount', input.sortDirection]]
+            return {
+                ...query,
+                order: [['ticketCount', input.sortDirection]] as const,
+            }
         }
 
         return query
     })
 
 export const closedTicketsPerChannel = ticketsClosedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL,
+    )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<TicketsClosedScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['channels'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['channels'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['ticketCount', input.sortDirection]]
+            return {
+                ...query,
+                order: [['ticketCount', input.sortDirection]] as const,
+            }
         }
 
         return query

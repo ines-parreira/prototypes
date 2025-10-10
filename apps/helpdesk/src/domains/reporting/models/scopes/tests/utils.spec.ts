@@ -1,5 +1,6 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
+import { MetricScope } from 'domains/reporting/hooks/metricNames'
 import { ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     compareReportingQueries,
@@ -20,6 +21,7 @@ describe('utils', () => {
 
         it('should create basic period filters', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: [],
             }
 
@@ -40,7 +42,9 @@ describe('utils', () => {
         })
 
         it('should handle scope config with undefined filters', () => {
-            const scopeConfig: ScopeMeta = {}
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+            }
 
             const result = createScopeFilters(basePeriodFilters, scopeConfig)
 
@@ -60,6 +64,7 @@ describe('utils', () => {
 
         it('should add agents filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['agents'],
             }
 
@@ -82,6 +87,7 @@ describe('utils', () => {
 
         it('should add channels filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['channels'],
             }
 
@@ -104,6 +110,7 @@ describe('utils', () => {
 
         it('should add integrations filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['integrations'],
             }
 
@@ -127,6 +134,7 @@ describe('utils', () => {
         describe('tags filter', () => {
             it('should add tags filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
 
@@ -156,6 +164,7 @@ describe('utils', () => {
 
             it('should add tags filter with NotOneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
 
@@ -185,6 +194,7 @@ describe('utils', () => {
 
             it('should add tags filter with default AllOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
 
@@ -216,6 +226,7 @@ describe('utils', () => {
         describe('customFields filter', () => {
             it('should add customFields filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
 
@@ -246,6 +257,7 @@ describe('utils', () => {
 
             it('should add customFields filter with NotOneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
 
@@ -278,6 +290,7 @@ describe('utils', () => {
         describe('CSAT metrics filters', () => {
             it('should add score filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['score'],
                 }
 
@@ -300,6 +313,7 @@ describe('utils', () => {
 
             it('should add communicationSkills filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['communicationSkills'],
                 }
 
@@ -322,6 +336,7 @@ describe('utils', () => {
 
             it('should add languageProficiency filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['languageProficiency'],
                 }
 
@@ -344,6 +359,7 @@ describe('utils', () => {
 
             it('should add resolutionCompleteness filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['resolutionCompleteness'],
                 }
 
@@ -366,6 +382,7 @@ describe('utils', () => {
 
             it('should add accuracy filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['accuracy'],
                 }
 
@@ -388,6 +405,7 @@ describe('utils', () => {
 
             it('should add efficiency filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['efficiency'],
                 }
 
@@ -410,6 +428,7 @@ describe('utils', () => {
 
             it('should add internalCompliance filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['internalCompliance'],
                 }
 
@@ -432,6 +451,7 @@ describe('utils', () => {
 
             it('should add brandVoice filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['brandVoice'],
                 }
 
@@ -455,6 +475,7 @@ describe('utils', () => {
 
         it('should handle multiple filters together', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['agents', 'channels', 'tags', 'score'],
             }
 
@@ -512,6 +533,7 @@ describe('utils', () => {
 
         it('should skip filters not defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['agents'], // Only agents filter is allowed
             }
 
@@ -542,6 +564,7 @@ describe('utils', () => {
 
         it('should skip filters not present in stat filters even if defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['agents', 'channels'],
             }
 
@@ -570,6 +593,7 @@ describe('utils', () => {
         describe('data type conversion', () => {
             it('should convert agent values to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['agents'],
                 }
 
@@ -592,6 +616,7 @@ describe('utils', () => {
 
             it('should convert integration values to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['integrations'],
                 }
 
@@ -614,6 +639,7 @@ describe('utils', () => {
 
             it('should convert tag values to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
 
@@ -643,6 +669,7 @@ describe('utils', () => {
 
             it('should convert custom field IDs to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
 
@@ -673,6 +700,7 @@ describe('utils', () => {
 
             it('should handle empty arrays for tags', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
 
@@ -691,6 +719,7 @@ describe('utils', () => {
 
             it('should handle empty arrays for customFields', () => {
                 const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
 
@@ -710,6 +739,7 @@ describe('utils', () => {
 
         it('should handle error in createScopeFilters', () => {
             const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
                 filters: ['invalidFilter' as any], // Invalid filter type
             }
 

@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
+import { MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import {
     AggregationWindow,
@@ -9,7 +10,7 @@ import {
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
-import { defineScope, initScope, QueryFor } from '../scope'
+import { defineScope, QueryFor } from '../scope'
 
 // Mock the utils module
 jest.mock('domains/reporting/models/scopes/utils', () => ({
@@ -53,8 +54,9 @@ describe('scope', () => {
     })
 
     describe('defineScope', () => {
-        it('should return the configuration object as-is', () => {
+        it('should return a scope class with proper config', () => {
             const config = {
+                scope: MetricScope.TicketsOpen,
                 measures: ['testMeasure'],
                 dimensions: ['testDimension'],
                 filters: ['periodStart', 'periodEnd'],
@@ -62,22 +64,23 @@ describe('scope', () => {
 
             const result = defineScope(config)
 
-            expect(result).toEqual(config)
-            expect(result).toBe(config) // Should be the exact same reference
+            expect(result.config).toEqual(config)
         })
 
         it('should work with minimal configuration', () => {
             const config = {
+                scope: MetricScope.TicketsOpen,
                 measures: ['onlineTime'],
             }
 
             const result = defineScope(config)
 
-            expect(result).toEqual(config)
+            expect(result.config).toEqual(config)
         })
 
         it('should work with full configuration', () => {
             const config = {
+                scope: MetricScope.TicketsOpen,
                 measures: ['ticketCount'],
                 dimensions: ['agents', 'channels'],
                 timeDimensions: ['createdDatetime'],
@@ -87,61 +90,37 @@ describe('scope', () => {
 
             const result = defineScope(config)
 
-            expect(result).toEqual(config)
-        })
-    })
-
-    describe('initScope', () => {
-        it('should return frozen object with define method', () => {
-            const scopeFactory = initScope()
-
-            expect(Object.isFrozen(scopeFactory)).toBe(true)
-            expect(typeof scopeFactory.define).toBe('function')
-        })
-
-        it('should create ScopeBuilder with correct name', () => {
-            const scopeFactory = initScope()
-            const scopeBuilder = scopeFactory.define('test-scope')
-
-            expect(scopeBuilder.name).toBe('test-scope')
+            expect(result.config).toEqual(config)
         })
     })
 
     describe('ScopeBuilder', () => {
-        const scopeConfig = defineScope({
+        const scope = defineScope({
+            scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
             dimensions: ['testDimension'],
             filters: ['periodStart', 'periodEnd'],
         })
 
-        const scopeBuilder = initScope<
-            typeof scopeConfig,
-            typeof mockContext
-        >().define('test-scope')
-
         describe('create', () => {
-            it('should return MetricBuilder with correct scope and metric name', () => {
-                const metricBuilder = scopeBuilder.create('test-metric')
+            it('should return MetricBuilder with correct metric name', () => {
+                const metricBuilder = scope.defineMetricName('test-metric')
 
-                expect(metricBuilder.scope).toBe('test-scope')
-                expect(metricBuilder.name).toBe('test-metric')
+                expect(metricBuilder.config.scope).toBe(MetricScope.TicketsOpen)
+                expect(metricBuilder.metricName).toBe('test-metric')
             })
         })
     })
 
     describe('MetricBuilder', () => {
-        const scopeConfig = defineScope({
+        const scope = defineScope({
+            scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
             dimensions: ['testDimension'],
             filters: ['periodStart', 'periodEnd'],
         })
 
-        const metricBuilder = initScope<
-            typeof scopeConfig,
-            typeof mockContext
-        >()
-            .define('test-scope')
-            .create('test-metric')
+        const metricBuilder = scope.defineMetricName('test-metric')
 
         describe('input', () => {
             it('should return MetricBuilderWithInput with schema', () => {
@@ -150,7 +129,6 @@ describe('scope', () => {
                 })
                 const builderWithInput = metricBuilder.defineInput(schema)
 
-                expect(builderWithInput.scope).toBe('test-scope')
                 expect(builderWithInput.name).toBe('test-metric')
             })
         })
@@ -163,26 +141,22 @@ describe('scope', () => {
                     filters: mockScopeFilters as any,
                 }))
 
-                expect(metricQuery.scope).toBe('test-scope')
                 expect(metricQuery.name).toBe('test-metric')
             })
         })
     })
 
     describe('MetricBuilderWithInput', () => {
-        const scopeConfig = defineScope({
+        const scope = defineScope({
+            scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
             dimensions: ['testDimension'],
             filters: ['periodStart', 'periodEnd'],
         })
 
         const schema = z.object({ sortDirection: z.enum(['asc', 'desc']) })
-        const builderWithInput = initScope<
-            typeof scopeConfig,
-            typeof mockContext
-        >()
-            .define('test-scope')
-            .create('test-metric')
+        const builderWithInput = scope
+            .defineMetricName('test-metric')
             .defineInput(schema)
 
         describe('query', () => {
@@ -198,14 +172,14 @@ describe('scope', () => {
                     queryFactory as any,
                 )
 
-                expect(metricQuery.scope).toBe('test-scope')
                 expect(metricQuery.name).toBe('test-metric')
             })
         })
     })
 
     describe('MetricQuery', () => {
-        const scopeConfig = defineScope({
+        const scope = defineScope({
+            scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
             dimensions: ['testDimension'],
             filters: ['periodStart', 'periodEnd'],
@@ -213,35 +187,27 @@ describe('scope', () => {
 
         describe('build without input schema', () => {
             it('should build query and return frozen result', () => {
-                const queryFactory = jest.fn(({ ctx }) => ({
+                const queryFactory = jest.fn(() => ({
                     measures: ['testMeasure'] as const,
-                    timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, scopeConfig),
                 }))
 
-                const metricQuery = initScope<
-                    typeof scopeConfig,
-                    typeof mockContext
-                >()
-                    .define('test-scope')
-                    .create('test-metric')
+                const metricQuery = scope
+
+                    .defineMetricName('test-metric')
                     .defineQuery(queryFactory)
 
                 const result = metricQuery.build(mockContext)
 
                 expect(queryFactory).toHaveBeenCalledWith({
                     ctx: mockContext,
-                    input: undefined,
+                    config: scope.config,
                 })
-                expect(mockCreateScopeFilters).toHaveBeenCalledWith(
-                    mockFilters,
-                    scopeConfig,
-                )
                 expect(result).toEqual({
                     measures: ['testMeasure'],
                     timezone: 'UTC',
                     filters: mockScopeFilters,
-                    scope: 'test-scope',
+                    metricName: 'test-metric',
+                    scope: MetricScope.TicketsOpen,
                 })
                 expect(Object.isFrozen(result)).toBe(true)
             })
@@ -252,19 +218,14 @@ describe('scope', () => {
                 const schema = z.object({
                     sortDirection: z.enum(['asc', 'desc']),
                 })
-                const queryFactory = jest.fn(({ ctx, input }) => ({
+                const queryFactory = jest.fn(({ input }) => ({
                     measures: ['testMeasure'] as const,
-                    timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, scopeConfig),
                     order: [['testMeasure', input.sortDirection]],
                 }))
 
-                const metricQuery = initScope<
-                    typeof scopeConfig,
-                    typeof mockContext
-                >()
-                    .define('test-scope')
-                    .create('test-metric')
+                const metricQuery = scope
+
+                    .defineMetricName('test-metric')
                     .defineInput(schema)
                     .defineQuery(queryFactory as any)
 
@@ -275,13 +236,15 @@ describe('scope', () => {
                 expect(queryFactory).toHaveBeenCalledWith({
                     ctx: mockContext,
                     input: { sortDirection: 'desc' },
+                    config: scope.config,
                 })
                 expect(result).toEqual({
                     measures: ['testMeasure'],
                     timezone: 'UTC',
                     filters: mockScopeFilters,
                     order: [['testMeasure', 'desc']],
-                    scope: 'test-scope',
+                    metricName: 'test-metric',
+                    scope: MetricScope.TicketsOpen,
                 })
                 expect(Object.isFrozen(result)).toBe(true)
             })
@@ -292,12 +255,9 @@ describe('scope', () => {
                 })
                 const queryFactory = jest.fn()
 
-                const metricQuery = initScope<
-                    typeof scopeConfig,
-                    typeof mockContext
-                >()
-                    .define('test-scope')
-                    .create('test-metric')
+                const metricQuery = scope
+
+                    .defineMetricName('test-metric')
                     .defineInput(schema)
                     .defineQuery(queryFactory)
 
@@ -314,64 +274,62 @@ describe('scope', () => {
 
     describe('End-to-End Integration', () => {
         it('should work like onlineTime scope example', () => {
-            const scopeConfig = defineScope({
+            const scope = defineScope({
+                scope: MetricScope.OnlineTime,
                 measures: ['onlineTime'],
                 dimensions: ['agents'],
                 filters: ['periodStart', 'periodEnd', 'agents'],
                 order: ['onlineTime'],
             })
 
-            const onlineTimeScope = initScope<
-                typeof scopeConfig,
-                typeof mockContext
-            >().define('online-time')
+            const onlineTimeScopeBuilder = scope
 
-            const onlineTime = onlineTimeScope
-                .create('agentxp-online-time')
-                .defineQuery(({ ctx }) => ({
+            const onlineTime = onlineTimeScopeBuilder
+                .defineMetricName('agentxp-online-time')
+                .defineQuery(({ ctx, config }) => ({
                     measures: ['onlineTime'],
                     timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, scopeConfig),
+                    filters: createScopeFilters(ctx.filters, config),
                 }))
 
             const result = onlineTime.build(mockContext)
 
             expect(mockCreateScopeFilters).toHaveBeenCalledWith(
                 mockFilters,
-                scopeConfig,
+                scope.config,
             )
             expect(result).toEqual({
                 measures: ['onlineTime'],
                 timezone: 'UTC',
                 filters: mockScopeFilters,
+                metricName: 'agentxp-online-time',
                 scope: 'online-time',
             })
         })
 
         it('should work like ticketsReplied scope with input validation', () => {
-            const scopeConfig = defineScope({
+            const ticketsRepliedScope = defineScope({
+                scope: MetricScope.TicketsReplied,
                 measures: ['ticketCount'],
                 dimensions: ['agents'],
                 filters: ['periodStart', 'periodEnd', 'agents'],
                 order: ['ticketId'],
             })
 
-            const ticketsRepliedScope = initScope<
-                typeof scopeConfig,
-                typeof mockContext
-            >().define('tickets-replied')
-
+            const ticketsRepliedScopeBuilder = ticketsRepliedScope
             const direction = z.enum(['asc', 'desc'])
 
-            const openTicketsCountPerAgent = ticketsRepliedScope
-                .create('support-performance-tickets-replied-per-agent')
+            const openTicketsCountPerAgent = ticketsRepliedScopeBuilder
+                .defineMetricName(
+                    'support-performance-tickets-replied-per-agent',
+                )
                 .defineInput(z.object({ sortDirection: direction }))
-                .defineQuery(({ ctx, input }) => {
-                    const query: QueryFor<typeof scopeConfig> = {
+                .defineQuery(({ ctx, input, config }) => {
+                    const query: QueryFor<typeof ticketsRepliedScope.config> = {
                         measures: ['ticketCount'],
                         dimensions: ['agents'],
                         timezone: ctx.timezone,
-                        filters: createScopeFilters(ctx.filters, scopeConfig),
+                        filters: createScopeFilters(ctx.filters, config),
                     }
 
                     if (input.sortDirection) {
@@ -391,6 +349,7 @@ describe('scope', () => {
                 timezone: 'UTC',
                 filters: mockScopeFilters,
                 order: [['ticketId', 'asc']],
+                metricName: 'support-performance-tickets-replied-per-agent',
                 scope: 'tickets-replied',
             })
         })
@@ -398,22 +357,21 @@ describe('scope', () => {
 
     describe('Edge Cases', () => {
         it('should handle empty scope configuration', () => {
-            const scopeConfig = defineScope({})
-            const scope = initScope<
-                typeof scopeConfig,
-                typeof mockContext
-            >().define('empty-scope')
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+            })
+            const scopeBuilder = scope
 
-            const metric = scope
-                .create('empty-metric')
-                .defineQuery(({ ctx }) => ({
+            const metric = scopeBuilder
+                .defineMetricName('empty-metric')
+                .defineQuery(({ ctx, config }) => ({
                     timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, scopeConfig),
+                    filters: createScopeFilters(ctx.filters, config),
                 }))
 
             const result = metric.build(mockContext)
 
-            expect(result.scope).toBe('empty-scope')
+            expect(result.metricName).toBe('empty-metric')
             expect(result.timezone).toBe('UTC')
         })
 
@@ -454,28 +412,26 @@ describe('scope', () => {
 
             mockCreateScopeFilters.mockReturnValue(complexMockFilters as any)
 
-            const scopeConfig = defineScope({
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
                 measures: ['ticketCount'],
                 filters: ['periodStart', 'periodEnd', 'agents', 'channels'],
             })
 
-            const metric = initScope<
-                typeof scopeConfig,
-                typeof complexContext
-            >()
-                .define('complex-scope')
-                .create('complex-metric')
-                .defineQuery(({ ctx }) => ({
+            const metric = scope
+
+                .defineMetricName('complex-metric')
+                .defineQuery(({ ctx, config }) => ({
                     measures: ['ticketCount'],
                     timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, scopeConfig),
+                    filters: createScopeFilters(ctx.filters, config),
                 }))
 
             const result = metric.build(complexContext)
 
             expect(mockCreateScopeFilters).toHaveBeenCalledWith(
                 complexFilters,
-                scopeConfig,
+                scope.config,
             )
             expect(result.filters).toEqual(complexMockFilters)
         })

@@ -45,6 +45,7 @@ describe('messagesSentScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-messages-sent',
                 scope: 'messages-sent',
             }
 
@@ -77,6 +78,7 @@ describe('messagesSentScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-messages-sent-time-series',
                 scope: 'messages-sent',
             }
 
@@ -107,6 +109,7 @@ describe('messagesSentScope', () => {
                     },
                 ],
                 order: [['messagesCount', 'asc']],
+                metricName: 'support-performance-messages-sent-per-agent',
                 scope: 'messages-sent',
             }
 
@@ -135,6 +138,7 @@ describe('messagesSentScope', () => {
                     },
                 ],
                 order: [['messagesCount', 'desc']],
+                metricName: 'support-performance-messages-sent-per-agent',
                 scope: 'messages-sent',
             }
 
@@ -165,6 +169,7 @@ describe('messagesSentScope', () => {
                     },
                 ],
                 order: [['messagesCount', 'asc']],
+                metricName: 'support-performance-messages-sent-per-channel',
                 scope: 'messages-sent',
             }
 
@@ -193,6 +198,7 @@ describe('messagesSentScope', () => {
                     },
                 ],
                 order: [['messagesCount', 'desc']],
+                metricName: 'support-performance-messages-sent-per-channel',
                 scope: 'messages-sent',
             }
 

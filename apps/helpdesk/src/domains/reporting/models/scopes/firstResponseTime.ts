@@ -1,15 +1,11 @@
 import { z } from 'zod'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope, QueryFor } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const firstResponseTimeScope = defineScope({
+    scope: MetricScope.FirstResponseTime,
     measures: ['medianFirstResponseTime', 'medianFirstResponseTimeInSeconds'],
     dimensions: [
         'tickets',
@@ -44,73 +40,71 @@ const scopeConfig = defineScope({
     ],
 })
 
-type FirstResponseTimeScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const firstResponseTimeScope = initScope<
-    FirstResponseTimeScope,
-    Context
->().define('first-response-time')
-
 const direction = z.enum(['asc', 'desc'])
 
 export const medianFirstResponseTime = firstResponseTimeScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
+    )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<FirstResponseTimeScope> = {
-            measures: ['medianFirstResponseTime'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['medianFirstResponseTime'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['medianFirstResponseTime', input.sortDirection]]
+            return {
+                ...query,
+                order: [
+                    ['medianFirstResponseTime', input.sortDirection],
+                ] as const,
+            }
         }
 
         return query
     })
 
 export const medianFirstResponseTimePerAgent = firstResponseTimeScope
-    .create(
+    .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
     )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<FirstResponseTimeScope> = {
-            measures: ['medianFirstResponseTime'],
-            dimensions: ['agents'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['medianFirstResponseTime'] as const,
+            dimensions: ['agents'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['medianFirstResponseTime', input.sortDirection]]
+            return {
+                ...query,
+                order: [
+                    ['medianFirstResponseTime', input.sortDirection],
+                ] as const,
+            }
         }
 
         return query
     })
 
 export const medianFirstResponseTimePerChannel = firstResponseTimeScope
-    .create(
+    .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
     )
     .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<FirstResponseTimeScope> = {
-            measures: ['medianFirstResponseTime'],
-            dimensions: ['channels'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['medianFirstResponseTime'] as const,
+            dimensions: ['channels'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['medianFirstResponseTime', input.sortDirection]]
+            return {
+                ...query,
+                order: [
+                    ['medianFirstResponseTime', input.sortDirection],
+                ] as const,
+            }
         }
 
         return query

@@ -6,8 +6,12 @@ import {
     ReportingStatsOperatorsEnum,
 } from '@gorgias/helpdesk-types'
 
-// oxlint-disable-next-line no-unused-vars
-import { MetricName } from 'domains/reporting/hooks/metricNames'
+import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    AggregationWindow,
+    StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 
 type StandardFilter = {
     member: string
@@ -53,7 +57,7 @@ type OptionalFilters<TFilterMembers extends readonly string[]> = {
 }[number]
 
 export type ScopeMeta = {
-    metricName?: MetricName
+    scope: MetricScope
     measures?: readonly string[]
     dimensions?: readonly string[]
     timeDimensions?: readonly string[]
@@ -70,8 +74,6 @@ export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
 >
 
 export type QueryFor<TScopeMeta extends ScopeMeta> = {
-    metricName?: TScopeMeta['metricName']
-
     measures?: readonly Values<TScopeMeta['measures']>[]
 
     dimensions?: readonly Values<TScopeMeta['dimensions']>[]
@@ -96,22 +98,34 @@ type Prettify<T> = {
     [K in keyof T]: T[K]
 } & {}
 
-type QueryResult<TQuery, TName> = Readonly<Prettify<TQuery & { scope: TName }>>
+export type BuiltQuery<
+    TQuery extends ScopeMeta = ScopeMeta,
+    TName = MetricName,
+> = Readonly<
+    Prettify<QueryFor<TQuery> & { metricName: TName; scope: TQuery['scope'] }>
+>
+
+type Context = {
+    timezone: string
+    filters: StatsFiltersWithLogicalOperator
+    granularity: AggregationWindow
+}
 
 class MetricQuery<
-    TScopeName extends string,
+    TMeta extends ScopeMeta,
     TMetricName extends string,
-    TQuery extends QueryFor<ScopeMeta>,
+    TQuery extends QueryFor<TMeta>,
     TSchema extends z.ZodTypeAny | undefined,
-    TContext,
+    TContext extends Context,
 > {
     constructor(
-        public readonly scope: TScopeName,
+        public readonly config: TMeta,
         public readonly name: TMetricName,
         private schema: TSchema,
         private queryFactory: (ctx: {
             input: InputOf<TSchema>
             ctx: TContext
+            config: TMeta
         }) => TQuery,
     ) {}
 
@@ -120,26 +134,41 @@ class MetricQuery<
         ...args: InputOf<TSchema> extends undefined
             ? []
             : [input: InputOf<TSchema>]
-    ): QueryResult<TQuery, TScopeName> {
+    ): BuiltQuery<TMeta, TMetricName> {
         const input = args[0] as InputOf<TSchema>
         const validated = this.schema ? this.schema.parse(input) : input
         const query = this.queryFactory({
             ctx,
             input: validated as InputOf<TSchema>,
+            config: this.config,
         })
-        return Object.freeze(Object.assign(query, { scope: this.scope }))
+        // If query factory did not override timezone, use the one from context
+        if (query.timezone === undefined) {
+            query.timezone = ctx.timezone
+        }
+        // If query factory did not define filters, use the default ones
+        if (query.filters === undefined) {
+            query.filters = createScopeFilters(ctx.filters, this.config)
+        }
+
+        // TODO add granularity if missing in time_dimensions
+        return Object.freeze(
+            Object.assign(query, {
+                metricName: this.name,
+                scope: this.config.scope,
+            }),
+        )
     }
 }
 
 class MetricBuilderWithInput<
-    TScopeName extends string,
     TMetricName extends string,
     TSchema extends z.ZodTypeAny,
     TMeta extends ScopeMeta,
-    TContext,
+    TContext extends Context,
 > {
     constructor(
-        public readonly scope: TScopeName,
+        public readonly config: TMeta,
         public readonly name: TMetricName,
         private schema: TSchema,
     ) {}
@@ -148,79 +177,70 @@ class MetricBuilderWithInput<
         queryFactory: (ctx: {
             input: z.infer<TSchema>
             ctx: TContext
+            config: TMeta
         }) => TQuery,
     ) {
-        return new MetricQuery<
-            TScopeName,
-            TMetricName,
-            TQuery,
-            TSchema,
-            TContext
-        >(this.scope, this.name, this.schema, queryFactory)
+        return new MetricQuery<TMeta, TMetricName, TQuery, TSchema, TContext>(
+            this.config,
+            this.name,
+            this.schema,
+            queryFactory,
+        )
     }
 }
 
 class MetricBuilder<
-    TScopeName extends string,
     TMetricName extends string,
     TMeta extends ScopeMeta,
-    TContext,
+    TContext extends Context,
 > {
     constructor(
-        public readonly scope: TScopeName,
-        public readonly name: TMetricName,
+        public readonly config: TMeta,
+        public readonly metricName: TMetricName,
     ) {}
 
     defineInput<TSchema extends z.ZodTypeAny>(schema: TSchema) {
         return new MetricBuilderWithInput<
-            TScopeName,
             TMetricName,
             TSchema,
             TMeta,
             TContext
-        >(this.scope, this.name, schema)
+        >(this.config, this.metricName, schema)
     }
 
     defineQuery<TQuery extends QueryFor<TMeta>>(
-        queryFactory: (ctx: { input: undefined; ctx: TContext }) => TQuery,
+        queryFactory: (ctx: {
+            input: undefined
+            ctx: TContext
+            config: TMeta
+        }) => TQuery,
     ) {
-        return new MetricQuery<
-            TScopeName,
-            TMetricName,
-            TQuery,
+        return new MetricQuery<TMeta, TMetricName, TQuery, undefined, TContext>(
+            this.config,
+            this.metricName,
             undefined,
-            TContext
-        >(this.scope, this.name, undefined, queryFactory)
+            queryFactory,
+        )
     }
 }
 
-class ScopeBuilder<
-    TScopeName extends string,
-    TMeta extends ScopeMeta,
-    TContext,
-> {
-    constructor(public readonly name: TScopeName) {}
+class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
+    constructor(public config: TMeta) {}
 
-    create<const TMetricName extends string>(metricName: TMetricName) {
-        return new MetricBuilder<TScopeName, TMetricName, TMeta, TContext>(
-            this.name,
+    defineMetricName<const TMetricName extends string>(
+        metricName: TMetricName,
+    ) {
+        return new MetricBuilder<TMetricName, TMeta, TContext>(
+            this.config,
             metricName,
         )
     }
 }
 
-// TODO: Have truly global context e.g.
-// const t = initRouter<Context>()
-// const myScope = t.scope<MyScope>().define('my-scope')
-export function initScope<TMeta extends ScopeMeta, TContext = undefined>() {
-    return Object.freeze({
-        define<const TName extends string>(name: TName) {
-            return new ScopeBuilder<TName, TMeta, TContext>(name)
-        },
-    })
-}
-
 // utils
-export function defineScope<const T extends ScopeMeta>(config: T) {
-    return config
+export function defineScope<
+    const TMeta extends ScopeMeta,
+    TContext extends Context = Context,
+>(config: TMeta) {
+    return new ScopeBuilder<TMeta, TContext>(config)
 }

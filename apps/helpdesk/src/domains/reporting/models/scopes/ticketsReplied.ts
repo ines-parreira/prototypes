@@ -1,15 +1,11 @@
 import { z } from 'zod'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope, QueryFor } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-const scopeConfig = defineScope({
+const ticketsRepliedScope = defineScope({
+    scope: MetricScope.TicketsReplied,
     measures: ['ticketCount'],
     dimensions: ['tickets', 'agents', 'channels', 'integrations'],
     timeDimensions: ['createdDatetime'],
@@ -33,70 +29,65 @@ const scopeConfig = defineScope({
     ],
 })
 
-type TicketsRepliedScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const ticketsRepliedScope = initScope<TicketsRepliedScope, Context>().define(
-    'tickets-replied',
-)
-
 export const openTicketsCount = ticketsRepliedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED)
-    .defineQuery(({ ctx }) => ({
-        measures: ['ticketCount'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED)
+    .defineQuery(() => ({
+        measures: ['ticketCount'] as const,
     }))
 
 const direction = z.enum(['asc', 'desc'])
 
 export const openTicketsTimeseries = ticketsRepliedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES,
+    )
     .defineQuery(({ ctx }) => ({
-        measures: ['ticketCount'],
+        measures: ['ticketCount'] as const,
         time_dimensions: [
-            { dimension: 'createdDatetime', granularity: ctx.granularity },
+            {
+                dimension: 'createdDatetime' as const,
+                granularity: ctx.granularity,
+            },
         ],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
     }))
 
 export const openTicketsCountPerAgent = ticketsRepliedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT,
+    )
     .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<TicketsRepliedScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['agents'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['agents'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['ticketCount', input.sortDirection]]
+            return {
+                ...query,
+                order: [['ticketCount', input.sortDirection]] as const,
+            }
         }
 
         return query
     })
 
 export const openTicketsCountPerChannel = ticketsRepliedScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL)
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL,
+    )
     .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ ctx, input }) => {
-        const query: QueryFor<TicketsRepliedScope> = {
-            measures: ['ticketCount'],
-            dimensions: ['channels'],
-            timezone: ctx.timezone,
-            filters: createScopeFilters(ctx.filters, scopeConfig),
+    .defineQuery(({ input }) => {
+        const query = {
+            measures: ['ticketCount'] as const,
+            dimensions: ['channels'] as const,
         }
 
         if (input.sortDirection) {
-            query.order = [['ticketCount', input.sortDirection]]
+            return {
+                ...query,
+                order: [['ticketCount', input.sortDirection]] as const,
+            }
         }
 
         return query

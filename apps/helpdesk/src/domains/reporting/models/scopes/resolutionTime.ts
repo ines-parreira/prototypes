@@ -1,13 +1,9 @@
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    AggregationWindow,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 
-import { defineScope, initScope } from './scope'
-import { createScopeFilters } from './utils'
+import { defineScope } from './scope'
 
-export const scopeConfig = defineScope({
+const resolutionTimeScope = defineScope({
+    scope: MetricScope.ResolutionTime,
     measures: ['medianResolutionTime'],
     dimensions: [
         'tickets',
@@ -37,43 +33,26 @@ export const scopeConfig = defineScope({
     order: ['tickets', 'medianResolutionTime'],
 })
 
-type ResolutionTimeScope = typeof scopeConfig
-
-type Context = {
-    timezone: string
-    filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
-}
-
-const resolutionTimeScope = initScope<ResolutionTimeScope, Context>().define(
-    'resolution-time',
-)
-
 export const medianResolutionTime = resolutionTimeScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME)
-    .defineQuery(({ ctx }) => ({
-        measures: ['medianResolutionTime'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
-        // TODO: Sorting?
+    .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME)
+    .defineQuery(() => ({
+        measures: ['medianResolutionTime'] as const,
     }))
 
 export const medianResolutionTimePerAgent = resolutionTimeScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT)
-    .defineQuery(({ ctx }) => ({
-        measures: ['medianResolutionTime'],
-        dimensions: ['agents'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
-        // TODO: Sorting?
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
+    )
+    .defineQuery(() => ({
+        measures: ['medianResolutionTime'] as const,
+        dimensions: ['agents'] as const,
     }))
 
 export const medianResolutionTimePerChannel = resolutionTimeScope
-    .create(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL)
-    .defineQuery(({ ctx }) => ({
-        measures: ['medianResolutionTime'],
-        dimensions: ['channels'],
-        timezone: ctx.timezone,
-        filters: createScopeFilters(ctx.filters, scopeConfig),
-        // TODO: Sorting?
+    .defineMetricName(
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL,
+    )
+    .defineQuery(() => ({
+        measures: ['medianResolutionTime'] as const,
+        dimensions: ['channels'] as const,
     }))

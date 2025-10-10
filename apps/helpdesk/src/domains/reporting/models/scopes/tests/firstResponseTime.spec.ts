@@ -44,6 +44,7 @@ describe('firstResponseTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-median-first-response-time',
                 scope: 'first-response-time',
             }
 
@@ -71,6 +72,7 @@ describe('firstResponseTimeScope', () => {
                     },
                 ],
                 order: [['medianFirstResponseTime', 'asc']],
+                metricName: 'support-performance-median-first-response-time',
                 scope: 'first-response-time',
             }
 
@@ -98,6 +100,8 @@ describe('firstResponseTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'support-performance-median-first-response-time-per-agent',
                 scope: 'first-response-time',
             }
 
@@ -126,6 +130,8 @@ describe('firstResponseTimeScope', () => {
                     },
                 ],
                 order: [['medianFirstResponseTime', 'desc']],
+                metricName:
+                    'support-performance-median-first-response-time-per-agent',
                 scope: 'first-response-time',
             }
 
@@ -153,6 +159,8 @@ describe('firstResponseTimeScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'support-performance-median-first-response-time-per-channel',
                 scope: 'first-response-time',
             }
 
@@ -181,6 +189,8 @@ describe('firstResponseTimeScope', () => {
                     },
                 ],
                 order: [['medianFirstResponseTime', 'asc']],
+                metricName:
+                    'support-performance-median-first-response-time-per-channel',
                 scope: 'first-response-time',
             }
 

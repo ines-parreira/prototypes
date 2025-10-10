@@ -45,6 +45,7 @@ describe('averageCsatScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'satisfaction-average-score',
                 scope: 'average-csat',
             }
 
@@ -72,6 +73,7 @@ describe('averageCsatScope', () => {
                     },
                 ],
                 order: [['surveyScore', 'desc']],
+                metricName: 'satisfaction-average-score',
                 scope: 'average-csat',
             }
 
@@ -105,6 +107,8 @@ describe('averageCsatScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'satisfaction-average-csat-score-per-agent-time-series',
                 scope: 'average-csat',
             }
 
@@ -139,6 +143,8 @@ describe('averageCsatScope', () => {
                     },
                 ],
                 order: [['scoredSurveysCount', 'asc']],
+                metricName:
+                    'satisfaction-average-csat-score-per-agent-time-series',
                 scope: 'average-csat',
             }
 
@@ -175,6 +181,8 @@ describe('averageCsatScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'satisfaction-average-csat-score-per-channel-time-series',
                 scope: 'average-csat',
             }
 
@@ -209,6 +217,8 @@ describe('averageCsatScope', () => {
                     },
                 ],
                 order: [['scoredSurveysCount', 'desc']],
+                metricName:
+                    'satisfaction-average-csat-score-per-channel-time-series',
                 scope: 'average-csat',
             }
 
@@ -245,6 +255,8 @@ describe('averageCsatScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName:
+                    'satisfaction-average-csat-score-per-integration-time-series',
                 scope: 'average-csat',
             }
 
@@ -282,6 +294,8 @@ describe('averageCsatScope', () => {
                     },
                 ],
                 order: [['scoredSurveysCount', 'asc']],
+                metricName:
+                    'satisfaction-average-csat-score-per-integration-time-series',
                 scope: 'average-csat',
             }
 

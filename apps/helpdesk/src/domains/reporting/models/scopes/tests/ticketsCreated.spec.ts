@@ -45,6 +45,7 @@ describe('ticketsCreatedScope', () => {
                     },
                 ],
                 timezone: 'utc',
+                metricName: 'support-performance-tickets-created',
                 scope: 'tickets-created',
             }
 
@@ -72,6 +73,7 @@ describe('ticketsCreatedScope', () => {
                 ],
                 order: [['ticketCount', 'desc']],
                 timezone: 'utc',
+                metricName: 'support-performance-tickets-created',
                 scope: 'tickets-created',
             }
 
@@ -105,6 +107,7 @@ describe('ticketsCreatedScope', () => {
                     },
                 ],
                 order: [['createdDatetime', 'asc']],
+                metricName: 'support-performance-tickets-created-time-series',
                 scope: 'tickets-created',
             }
 
@@ -132,6 +135,7 @@ describe('ticketsCreatedScope', () => {
                         values: ['2025-09-03T23:59:59'],
                     },
                 ],
+                metricName: 'support-performance-tickets-created-per-channel',
                 scope: 'tickets-created',
             }
 
@@ -160,6 +164,7 @@ describe('ticketsCreatedScope', () => {
                     },
                 ],
                 order: [['ticketCount', 'asc']],
+                metricName: 'support-performance-tickets-created-per-channel',
                 scope: 'tickets-created',
             }
 
