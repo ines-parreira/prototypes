@@ -21,53 +21,17 @@ describe('convertPartnerEnumToOptions', () => {
         expect(result[0]).toHaveProperty('label')
     })
 
-    it('should remove common TLDs from domain', () => {
+    it('should keep label same as value', () => {
         const mockEnum = {
             TEST1: 'example.com',
             TEST2: 'test.io',
-            TEST3: 'site.co',
+            TEST3: 'my-company.com',
         }
 
         const result = convertPartnerEnumToOptions(mockEnum)
 
-        expect(result[0].label).toBe('Example')
-        expect(result[1].label).toBe('Test')
-        expect(result[2].label).toBe('Site')
-    })
-
-    it('should convert hyphens and underscores to spaces', () => {
-        const mockEnum = {
-            TEST1: 'my-company.com',
-            TEST2: 'test_agency.com',
-            TEST3: 'multi-word-name.io',
-        }
-
-        const result = convertPartnerEnumToOptions(mockEnum)
-
-        expect(result[0].label).toBe('My Company')
-        expect(result[1].label).toBe('Test Agency')
-        expect(result[2].label).toBe('Multi Word Name')
-    })
-
-    it('should capitalize each word', () => {
-        const mockEnum = {
-            TEST1: 'lowercase.com',
-            TEST2: 'multiple-words.com',
-        }
-
-        const result = convertPartnerEnumToOptions(mockEnum)
-
-        expect(result[0].label).toBe('Lowercase')
-        expect(result[1].label).toBe('Multiple Words')
-    })
-
-    it('should keep domain as value', () => {
-        const mockEnum = {
-            TEST: 'example.com',
-        }
-
-        const result = convertPartnerEnumToOptions(mockEnum)
-
-        expect(result[0].value).toBe('example.com')
+        expect(result[0].label).toBe('example.com')
+        expect(result[1].label).toBe('test.io')
+        expect(result[2].label).toBe('my-company.com')
     })
 })

@@ -122,7 +122,7 @@ describe('BPOPartnerSection', () => {
             await user.click(selectTrigger)
         })
 
-        const option = await screen.findByText('Adams Acres')
+        const option = await screen.findByText('adams-acres.com')
         await act(async () => {
             await user.click(option)
         })
@@ -227,7 +227,7 @@ describe('BPOPartnerSection', () => {
             await user.click(selectTrigger)
         })
 
-        const option = await screen.findByText('Adams Acres')
+        const option = await screen.findByText('adams-acres.com')
         await act(async () => {
             await user.click(option)
         })
@@ -293,7 +293,7 @@ describe('BPOPartnerSection', () => {
 
         const selectTrigger = await screen.findByRole('combobox')
         await waitFor(() => {
-            expect(selectTrigger).toHaveTextContent('Adams Acres')
+            expect(selectTrigger).toHaveTextContent('adams-acres.com')
         })
 
         await act(async () => {
@@ -304,7 +304,7 @@ describe('BPOPartnerSection', () => {
         expect(options.length).toBeGreaterThan(1)
 
         const differentOption = options.find((opt) =>
-            opt.textContent?.includes('Academyagency'),
+            opt.textContent?.includes('academyagency.co.nz'),
         )
         if (differentOption) {
             await act(async () => {

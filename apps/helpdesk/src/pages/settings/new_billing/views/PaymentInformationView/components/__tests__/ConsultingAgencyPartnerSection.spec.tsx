@@ -122,7 +122,7 @@ describe('ConsultingAgencyPartnerSection', () => {
             await user.click(selectTrigger)
         })
 
-        const option = await screen.findByText('A Community')
+        const option = await screen.findByText('a.community')
         await act(async () => {
             await user.click(option)
         })
@@ -260,7 +260,7 @@ describe('ConsultingAgencyPartnerSection', () => {
             await user.click(selectTrigger)
         })
 
-        const option = await screen.findByText('A Community')
+        const option = await screen.findByText('a.community')
         await act(async () => {
             await user.click(option)
         })
@@ -293,7 +293,7 @@ describe('ConsultingAgencyPartnerSection', () => {
 
         const selectTrigger = await screen.findByRole('combobox')
         await waitFor(() => {
-            expect(selectTrigger).toHaveTextContent('A Community')
+            expect(selectTrigger).toHaveTextContent('a.community')
         })
 
         await act(async () => {
