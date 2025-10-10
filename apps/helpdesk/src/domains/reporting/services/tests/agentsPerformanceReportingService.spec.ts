@@ -2,6 +2,10 @@ import { User, UserRole, UserSettingType } from 'config/types/user'
 import { Metric } from 'domains/reporting/hooks/metrics'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import {
+    TicketsFirstAgentResponseTimeDimension,
+    TicketsFirstAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { TableLabels } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import {
@@ -135,10 +139,12 @@ const reportDataFactory = (
         ...baseMetrics,
     }
     const summaryData: AgentsPerformanceReportData<Metric> = {
-        ...{ ...baseMetrics, ...metricsOverride },
+        ...baseMetrics,
+        ...metricsOverride,
     }
     const totalData: AgentsPerformanceReportData<Metric> = {
-        ...{ ...baseMetrics, ...metricsOverride },
+        ...baseMetrics,
+        ...metricsOverride,
     }
 
     return { agents, data, summaryData, totalData, testName }
@@ -184,6 +190,7 @@ describe('agentsPerformanceReportingService', () => {
                 columnsOrder,
                 rowsOrder,
                 testName,
+                true,
             )
 
             expect(result).toEqual({
@@ -210,6 +217,7 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
 
         const firstAgentName = createCsvMock.mock.calls[0][0][1][0]
@@ -229,6 +237,7 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -246,6 +255,7 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -263,6 +273,7 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -284,6 +295,7 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
+                true,
             )
 
             expect(result[0]).toEqual(
@@ -310,6 +322,7 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
+                true,
             )
 
             expect(result[0]).toEqual(
@@ -336,6 +349,7 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
+                true,
             )
 
             expect(result[0]).toEqual(
@@ -386,6 +400,7 @@ describe('agentsPerformanceReportingService', () => {
                 mockSummaryData,
                 columnsOrder,
                 [AgentsTableRow.Average],
+                true,
             )
 
             expect(result[0]).toEqual(
@@ -398,6 +413,79 @@ describe('agentsPerformanceReportingService', () => {
                 mockSummaryData.onlineTimeMetric.data.value /
                     multipleAgents.length,
             ).toEqual(250)
+        })
+        // Temporary test for MedianFirstResponseTime should be removed when shouldIncludeBots is deprecated
+        it('should calculate per-agent MedianFirstResponseTime correctly when shouldIncludeBots is false', () => {
+            const mockReportData = {
+                value: 1,
+                decile: 0,
+                allData: [
+                    {
+                        [TicketDimension.AssigneeUserId]: '123',
+                        [HelpdeskMessageMeasure.TicketCount]: '100500',
+                    },
+                ],
+            }
+
+            const mockMedianFirstResponseTimeData = {
+                value: 1,
+                decile: 0,
+                allData: [
+                    {
+                        [TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId]:
+                            '123',
+                        [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
+                            '300',
+                    },
+                ],
+            }
+
+            const {
+                agents: testAgents,
+                data,
+                summaryData,
+                totalData,
+            } = reportDataFactory(
+                agents,
+                mockReportData,
+                {
+                    medianFirstResponseTimeMetric: {
+                        data: { value: 300 },
+                        isFetching: false,
+                        isError: false,
+                    },
+                },
+                'MedianFirstResponseTime with shouldIncludeBots false',
+            )
+
+            // Override the medianFirstResponseTimeMetric data to use the mock data
+            data.medianFirstResponseTimeMetric = buildQuery(
+                false,
+                mockMedianFirstResponseTimeData,
+            )
+
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.MedianFirstResponseTime,
+            ]
+            const rowsOrder: AgentsTableRow[] = []
+
+            const result = getData(
+                testAgents,
+                data,
+                summaryData,
+                totalData,
+                columnsOrder,
+                rowsOrder,
+                false,
+            )
+
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            expect(result[1][0]).toEqual(testAgents[0].name)
+            expect(result[1][1]).toBeDefined()
         })
     })
 })

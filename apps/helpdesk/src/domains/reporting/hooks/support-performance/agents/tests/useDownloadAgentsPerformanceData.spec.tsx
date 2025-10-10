@@ -186,6 +186,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
         expect(result.current).toEqual({
             ...report,
@@ -223,6 +224,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             columnsOrder,
             rowsOrder,
             fileName,
+            true,
         )
         expect(result.current).toEqual({
             ...report,
