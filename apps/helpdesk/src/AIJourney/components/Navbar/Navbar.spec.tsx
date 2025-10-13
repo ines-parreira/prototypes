@@ -1,40 +1,54 @@
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { StaticRouter, useHistory, useLocation } from 'react-router-dom'
+import { StaticRouter, useHistory } from 'react-router-dom'
 
+import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { mockStore } from 'utils/testing'
 
 import { AiJourneyNavbar } from './Navbar'
 
-jest.mock('hooks/useAppSelector')
-const mockUseAppSelector = assumeMock(useAppSelector)
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
-    useLocation: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
+    ...jest.requireActual(
+        'AIJourney/providers/JourneyProvider/JourneyProvider',
+    ),
+    useJourneyContext: jest.fn(),
+}))
+
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
 
 const mockUseHistory = jest.mocked(useHistory)
-const mockUseLocation = jest.mocked(useLocation)
-const mockUseStoreActivations = jest.mocked(useStoreActivations)
 const mockPush = jest.fn()
 const mockReplace = jest.fn()
+
+const mockUseJourneyContext =
+    require('AIJourney/providers/JourneyProvider/JourneyProvider')
+        .useJourneyContext as jest.Mock
+
+const mockUseFlag = useFlag as jest.Mock
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-journey/teststore1">
@@ -47,7 +61,11 @@ const renderNavbar = () =>
         <QueryClientProvider client={appQueryClient}>
             <Provider store={mockStore({})}>
                 <ThemeProvider>
-                    <AiJourneyNavbar />
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <AiJourneyNavbar />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
                 </ThemeProvider>
             </Provider>
         </QueryClientProvider>,
@@ -76,6 +94,26 @@ describe('<AiJourneyNavbar />', () => {
         },
     ]
 
+    const mockJourneyContext = {
+        journey: { type: 'cart_abandoned', id: 'journey-123' },
+        journeyData: {
+            configuration: {
+                max_follow_up_messages: 3,
+                offer_discount: true,
+                max_discount_percent: 20,
+                sms_sender_number: '415-111-111',
+                sms_sender_integration_id: 1,
+            },
+        },
+        currentIntegration: { id: 1, name: 'shopify-store' },
+        shopName: 'shopify-store',
+        isLoading: false,
+        journeyType: 'cart_abandoned',
+        storeConfiguration: {
+            monitoredSmsIntegrations: [1, 2],
+        },
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAppSelector.mockImplementation((selector) => {
@@ -88,18 +126,12 @@ describe('<AiJourneyNavbar />', () => {
             return []
         })
 
-        mockUseStoreActivations.mockReturnValue({
-            storeActivations: {},
-        } as ReturnType<typeof useStoreActivations>)
-
-        mockUseLocation.mockReturnValue({
-            pathname: '/app/ai-journey/teststore1',
-        } as any)
-
         mockUseHistory.mockReturnValue({
             push: mockPush,
             replace: mockReplace,
         } as any)
+
+        mockUseJourneyContext.mockReturnValue(mockJourneyContext)
     })
     it('should render ai agent navbar with first store selected', async () => {
         renderNavbar()
@@ -132,13 +164,134 @@ describe('<AiJourneyNavbar />', () => {
     })
 
     it('should redirect to first store when no shopName in URL and stores exist', async () => {
-        mockUseLocation.mockReturnValue({
-            pathname: '/app/ai-journey',
-        } as any)
-
         renderNavbar()
 
         expect(mockReplace).toHaveBeenCalledWith('/app/ai-journey/teststore1')
         expect(screen.getByText('teststore1')).toBeInTheDocument()
+    })
+
+    describe('Analytics section', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+        it('should not render analytics section when no journey exists', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: undefined,
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
+        })
+
+        it('should not render analytics section when journey exists without id', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: { type: 'cart_abandoned', id: undefined },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
+        })
+
+        it('should not render analytics section when journey is in draft state', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'draft',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
+        })
+
+        it('should not render analytics section when feature flag is disabled', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'draft',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
+        })
+
+        it('should render analytics section when journey exists and is not in draft state', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.getByText('Analytics')).toBeInTheDocument()
+        })
     })
 })

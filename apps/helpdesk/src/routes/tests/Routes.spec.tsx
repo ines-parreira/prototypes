@@ -1104,5 +1104,36 @@ describe('<Routes/>', () => {
                 ).toBeInTheDocument()
             })
         })
+
+        it('should render analytics page', async () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+            const history = createMemoryHistory({
+                initialEntries: ['/app/ai-journey/shopify-store/analytics'],
+            })
+
+            render(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={queryClient}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('AI Journey Performance'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

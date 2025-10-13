@@ -7,6 +7,7 @@ import { STEPS_NAMES } from 'AIJourney/constants'
 import {
     Activation,
     AiJourneyOnboarding,
+    Analytics,
     LandingPage,
     Performance,
     Setup,
@@ -85,6 +86,11 @@ function AiJourneyBaseRoutes() {
                             path={`${path}/:shopName/performance`}
                             exact
                             render={() => <Performance />}
+                        />
+                        <Route
+                            path={`${path}/:shopName/analytics`}
+                            exact
+                            render={() => <Analytics />}
                         />
                     </Switch>
                 </App>

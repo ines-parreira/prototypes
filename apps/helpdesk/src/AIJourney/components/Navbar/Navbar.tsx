@@ -1,49 +1,51 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink, useHistory, useParams } from 'react-router-dom'
 
+import { JourneyStatusEnum } from '@gorgias/convert-client'
+
+import { JourneyProvider, useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import css from './Navbar.less'
 
-export const AiJourneyNavbar = () => {
+const AiJourneyNavbarComponent = () => {
     const { shopName } = useParams<{ shopName: string }>()
+    const isAiJourneyAnalyticsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyAnalyticsEnabled,
+    )
+
+    const { journey: abandonedCartJourney } = useJourneyContext()
 
     const history = useHistory()
 
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
-    const { storeActivations } = useStoreActivations()
 
     const [selectedStore, setSelectedStore] = useState(shopName)
+
+    const hasJourney = useMemo(() => {
+        return !!abandonedCartJourney && !!abandonedCartJourney.id
+    }, [abandonedCartJourney])
+
+    const isJourneyDraft = useMemo(
+        () =>
+            hasJourney &&
+            abandonedCartJourney?.state === JourneyStatusEnum.Draft,
+        [abandonedCartJourney, hasJourney],
+    )
 
     const selectedStoreIntegration = useMemo(() => {
         return storeIntegrations.find(
             (store) => getShopNameFromStoreIntegration(store) === selectedStore,
         )
     }, [storeIntegrations, selectedStore])
-
-    const getStoreActivationStatus = useCallback(
-        (storeName: string) => {
-            const activation = storeActivations[storeName]
-            if (!activation) {
-                return false
-            }
-
-            return isAiAgentEnabledForStore(activation.configuration)
-        },
-        [storeActivations],
-    )
-
-    // oxlint-disable-next-line no-console
-    console.log('selectedStore', selectedStore)
 
     useEffect(() => {
         if (shopName) {
@@ -68,23 +70,16 @@ export const AiJourneyNavbar = () => {
         [storeIntegrations, history],
     )
 
-    const shouldShowActiveStatus = useCallback(
-        (integration: StoreIntegration) => {
-            return getStoreActivationStatus(
-                getShopNameFromStoreIntegration(integration),
-            )
-        },
-        [getStoreActivationStatus],
-    )
+    const shouldAccessAnalytics =
+        isAiJourneyAnalyticsEnabled && hasJourney && !isJourneyDraft
 
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
-            <Navigation.Root className={css.navigation}>
+            <Navigation.Root className={css.container}>
                 <StoreSelector
                     integrations={storeIntegrations}
                     selected={selectedStoreIntegration}
                     onChange={handleStoreChange}
-                    shouldShowActiveStatus={shouldShowActiveStatus}
                     enableDynamicHeight
                     fullWidth
                     singleStoreInline
@@ -92,13 +87,35 @@ export const AiJourneyNavbar = () => {
                     hideSelectedFromDropdown
                     applyClassicThemeOverride
                 />
-                <Navigation.SectionItem
-                    as={NavLink}
-                    to={`/app/ai-journey/${shopName}`}
-                >
-                    Overview
-                </Navigation.SectionItem>
+                <div className={css.navigationSections}>
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        to={
+                            hasJourney
+                                ? `/app/ai-journey/${shopName}/performance`
+                                : `/app/ai-journey/${shopName}`
+                        }
+                        exact
+                    >
+                        {hasJourney ? 'Overview' : 'Setup'}
+                    </Navigation.SectionItem>
+                    {shouldAccessAnalytics && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/analytics`}
+                        >
+                            Analytics
+                        </Navigation.SectionItem>
+                    )}
+                </div>
             </Navigation.Root>
         </Navbar>
     )
 }
+
+export const AiJourneyNavbar = () => (
+    <JourneyProvider journeyType="cart_abandoned">
+        <AiJourneyNavbarComponent />
+    </JourneyProvider>
+)
