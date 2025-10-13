@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -34,7 +34,7 @@ jest.mock('hooks/useAppDispatch', () => ({
     default: () => jest.fn(),
 }))
 
-jest.mock('../EmailToggle', () => ({
+jest.mock('../../AiAgentTasks/EmailToggle', () => ({
     EmailToggle: (props: any) => (
         <div data-testid="email-toggle">
             <span>Email Toggle</span>
@@ -49,7 +49,7 @@ jest.mock('../EmailToggle', () => ({
     ),
 }))
 
-jest.mock('../ChatToggle', () => ({
+jest.mock('../../AiAgentTasks/ChatToggle', () => ({
     ChatToggle: (props: any) => (
         <div data-testid="chat-toggle">
             <span>Chat Toggle</span>
@@ -64,11 +64,11 @@ jest.mock('../ChatToggle', () => ({
     ),
 }))
 
-jest.mock('../PostOnboardingLiveModal', () => ({
-    PostOnboardingLiveModal: (props: any) =>
+jest.mock('../../AiAgentTasks/SuccessModal', () => ({
+    SuccessModal: (props: any) =>
         props.isOpen ? (
             <div data-testid="live-modal">
-                <span>Modal for {props.channel}</span>
+                <span>Modal for {props.title}</span>
                 <button
                     data-testid="modal-close-button"
                     onClick={props.handleOnClose}
@@ -164,7 +164,9 @@ describe('DeploySection', () => {
         renderDeploySection()
 
         const emailToggleButton = screen.getByTestId('email-toggle-button')
-        await userEvent.click(emailToggleButton)
+        await act(async () => {
+            await userEvent.click(emailToggleButton)
+        })
 
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
             mockStoreConfiguration,
@@ -175,7 +177,9 @@ describe('DeploySection', () => {
         renderDeploySection()
 
         const chatToggleButton = screen.getByTestId('chat-toggle-button')
-        await userEvent.click(chatToggleButton)
+        await act(async () => {
+            await userEvent.click(chatToggleButton)
+        })
 
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
             mockStoreConfiguration,
@@ -188,22 +192,30 @@ describe('DeploySection', () => {
         expect(screen.queryByTestId('live-modal')).not.toBeInTheDocument()
 
         const emailToggleButton = screen.getByTestId('email-toggle-button')
-        await userEvent.click(emailToggleButton)
+        await act(async () => {
+            await userEvent.click(emailToggleButton)
+        })
 
         expect(screen.getByTestId('live-modal')).toBeInTheDocument()
-        expect(screen.getByText('Modal for email')).toBeInTheDocument()
+        expect(
+            screen.getByText(/Modal for AI Agent is now live/),
+        ).toBeInTheDocument()
     })
 
     it('closes the modal and resets state when close button is clicked', async () => {
         renderDeploySection()
 
         const emailToggleButton = screen.getByTestId('email-toggle-button')
-        await userEvent.click(emailToggleButton)
+        await act(async () => {
+            await userEvent.click(emailToggleButton)
+        })
 
         expect(screen.getByTestId('live-modal')).toBeInTheDocument()
 
         const closeButton = screen.getByTestId('modal-close-button')
-        await userEvent.click(closeButton)
+        await act(async () => {
+            await userEvent.click(closeButton)
+        })
 
         expect(screen.queryByTestId('live-modal')).not.toBeInTheDocument()
     })
@@ -212,7 +224,9 @@ describe('DeploySection', () => {
         renderDeploySection()
 
         const emailToggleButton = screen.getByTestId('email-toggle-button')
-        await userEvent.click(emailToggleButton)
+        await act(async () => {
+            await userEvent.click(emailToggleButton)
+        })
 
         expect(mockUpdateStep).toHaveBeenCalledWith({
             ...mockStep,

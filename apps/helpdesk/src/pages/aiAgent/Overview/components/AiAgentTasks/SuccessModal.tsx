@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 import {
     LegacyButton as Button,
     Heading,
@@ -11,19 +13,23 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
-import css from './PostOnboardingLiveModal.less'
+import css from './SuccessModal.less'
 
 type Props = {
     isOpen: boolean
-    channel: 'email' | 'chat'
+    title: string
+    description: string | ReactNode
+    actionLabel: string
     handleOnClose: () => void
 }
 
-export const PostOnboardingLiveModal: React.FC<Props> = ({
+export const SuccessModal = ({
     isOpen,
-    channel,
+    title,
+    description,
+    actionLabel,
     handleOnClose,
-}) => {
+}: Props) => {
     return (
         <Modal
             isOpen={isOpen}
@@ -32,7 +38,10 @@ export const PostOnboardingLiveModal: React.FC<Props> = ({
             preventCloseClickOutside
         >
             <div className={css.modalImage}>
-                <img src={modalImage} alt="AI Agent is live" />
+                <img
+                    src={modalImage}
+                    alt="Confirmation for successful action "
+                />
                 <IconButton
                     icon={<Icon name="close" />}
                     fillStyle="ghost"
@@ -43,18 +52,9 @@ export const PostOnboardingLiveModal: React.FC<Props> = ({
                 />
             </div>
             <ModalBody className={css.modalBody}>
-                <Heading size="md">
-                    {`AI Agent is now live on your ${channel}!`}
-                </Heading>
+                <Heading size="md">{title}</Heading>
                 <Text size="md" variant="regular">
-                    Your AI Agent will start to{' '}
-                    <span className={css.highlight}>
-                        automatically answer customer questions{' '}
-                    </span>
-                    on {`${channel}`}, freeing up your team to connect with
-                    customers and resolve complex tasks. Return here to review
-                    AI Agent&apos;s performance and find insights to improve
-                    over time.
+                    {description}
                 </Text>
             </ModalBody>
             <ModalFooter className={css.modalFooter}>
@@ -63,7 +63,7 @@ export const PostOnboardingLiveModal: React.FC<Props> = ({
                     fillStyle="fill"
                     onClick={handleOnClose}
                 >
-                    Got it
+                    {actionLabel}
                 </Button>
             </ModalFooter>
         </Modal>

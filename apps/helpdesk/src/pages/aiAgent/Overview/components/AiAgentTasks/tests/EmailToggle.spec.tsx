@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 
-import { EmailToggle } from '../EmailToggle'
+import { EmailToggle } from '../../AiAgentTasks/EmailToggle'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({

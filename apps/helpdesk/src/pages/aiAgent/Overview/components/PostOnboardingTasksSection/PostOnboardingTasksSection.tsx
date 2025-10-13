@@ -86,7 +86,11 @@ export const PostOnboardingTasksSection = () => {
                             </AccordionHeader>
                             <AccordionBody>
                                 {stepMetadata.stepName === 'TRAIN' ? (
-                                    <TrainSection stepMetadata={stepMetadata} />
+                                    <TrainSection
+                                        stepMetadata={stepMetadata}
+                                        step={step(stepMetadata.stepName)!}
+                                        updateStep={updateStep}
+                                    />
                                 ) : stepMetadata.stepName === 'TEST' ? (
                                     <TestSection
                                         stepMetadata={stepMetadata}

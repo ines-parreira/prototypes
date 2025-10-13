@@ -11,7 +11,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { useFetchChatIntegrationsStatusData } from '../../hooks/pendingTasks/useFetchChatIntegrationsStatusData'
-import { decideChatWarning } from './utils'
+import { decideChatWarning } from '../PostOnboardingTasksSection/utils'
 
 import css from './ChatToggle.less'
 

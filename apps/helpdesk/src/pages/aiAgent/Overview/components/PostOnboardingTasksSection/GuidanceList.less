@@ -1,0 +1,57 @@
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .guidances {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .listItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--layout-spacing-s);
+
+        border-radius: var(--layout-spacing-xs);
+        border: 1px solid var(--border-neutral-default, #ebecef);
+
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+
+        padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+
+        .actionButton {
+            padding: var(--layout-spacing-xxs);
+
+            &:hover {
+                border-radius: var(--spacing-xxxs);
+                background: var(--hover-default);
+            }
+        }
+    }
+
+    .urlLink {
+        display: flex;
+        flex-direction: row;
+        color: var(--content-neutral-default);
+        gap: var(--layout-spacing-xxs);
+        width: fit-content;
+        padding: var(--layout-spacing-xs) 12px;
+
+        &:hover {
+            color: var(--content-neutral-default);
+        }
+    }
+}

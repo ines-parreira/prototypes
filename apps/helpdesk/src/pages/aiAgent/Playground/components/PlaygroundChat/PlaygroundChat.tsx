@@ -102,6 +102,7 @@ export const PlaygroundChat = ({
         helpCenterId: storeData.helpCenterId,
         shopName: storeData.storeName,
         snippetHelpCenterId: storeData.snippetHelpCenterId,
+        guidanceHelpCenterId: storeData.guidanceHelpCenterId,
     })
 
     const { onTestPageViewed } = usePlaygroundTracking({

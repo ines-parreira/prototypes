@@ -14,6 +14,8 @@ import { assetsUrl } from 'utils'
 
 import { ChatWarningDecision, PostOnboardingStepMetadata } from './types'
 
+export const MAX_VISIBLE_GUIDANCES_TRAIN_SECTION = 5
+
 export const POST_ONBOARDING_STEPS_METADATA: Record<
     string,
     PostOnboardingStepMetadata

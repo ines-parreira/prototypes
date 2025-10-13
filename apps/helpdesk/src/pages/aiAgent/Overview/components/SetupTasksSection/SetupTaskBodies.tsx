@@ -10,8 +10,8 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import NewToggleField from 'pages/common/forms/NewToggleField'
 
-import { ChatToggle } from '../PostOnboardingTasksSection/ChatToggle'
-import { EmailToggle } from '../PostOnboardingTasksSection/EmailToggle'
+import { ChatToggle } from '../AiAgentTasks/ChatToggle'
+import { EmailToggle } from '../AiAgentTasks/EmailToggle'
 import { handleAiAgentConfigurationError } from '../PostOnboardingTasksSection/utils'
 
 import css from './SetupTaskBodies.less'

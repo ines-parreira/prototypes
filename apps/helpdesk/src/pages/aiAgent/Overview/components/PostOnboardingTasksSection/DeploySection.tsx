@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -16,9 +16,9 @@ import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { useIsAiAgentDuringDeployment } from '../../hooks/useIsAiAgentDuringDeployment'
-import { ChatToggle } from './ChatToggle'
-import { EmailToggle } from './EmailToggle'
-import { PostOnboardingLiveModal } from './PostOnboardingLiveModal'
+import { ChatToggle } from '../AiAgentTasks/ChatToggle'
+import { EmailToggle } from '../AiAgentTasks/EmailToggle'
+import { SuccessModal } from '../AiAgentTasks/SuccessModal'
 import { PostOnboardingStepMetadata } from './types'
 import { handleAiAgentConfigurationError } from './utils'
 
@@ -98,6 +98,10 @@ export const DeploySection = ({
         setIsAiAgentDuringDeployment(false)
     }
 
+    const channel = useMemo(
+        () => (isChatChannelEnabled ? 'chat' : 'email'),
+        [isChatChannelEnabled],
+    )
     const logEventsForDeploymentStep = () => {
         logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
             step: stepMetadata.stepName,
@@ -137,9 +141,23 @@ export const DeploySection = ({
                     shopType={shopType}
                 />
             </div>
-            <PostOnboardingLiveModal
+
+            <SuccessModal
                 isOpen={isAiAgentDeployed}
-                channel={isChatChannelEnabled ? 'chat' : 'email'}
+                title={`AI Agent is now live on your ${channel}!`}
+                description={
+                    <>
+                        Your AI Agent will start to{' '}
+                        <span className={css.highlight}>
+                            automatically answer customer questions{' '}
+                        </span>
+                        on {`${channel}`}, freeing up your team to connect with
+                        customers and resolve complex tasks. Return here to
+                        review AI Agent&apos;s performance and find insights to
+                        improve over time.
+                    </>
+                }
+                actionLabel="Got it"
                 handleOnClose={handleOnClose}
             />
         </div>

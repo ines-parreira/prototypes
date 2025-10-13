@@ -7,8 +7,8 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
 
+import { decideChatWarning } from '../../PostOnboardingTasksSection/utils'
 import { ChatToggle } from '../ChatToggle'
-import { decideChatWarning } from '../utils'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({
@@ -34,7 +34,7 @@ jest.mock(
     }),
 )
 
-jest.mock('../utils')
+jest.mock('../../PostOnboardingTasksSection/utils')
 const decideChatWarningMock = assumeMock(decideChatWarning)
 
 describe('ChatToggle', () => {
