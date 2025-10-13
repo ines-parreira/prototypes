@@ -25,12 +25,19 @@ import {
     VOICE_PRODUCT_ID,
     voiceProduct,
 } from 'fixtures/productPrices'
-import { Cadence, Plan, Product, ProductType } from 'models/billing/types'
+import {
+    Cadence,
+    HelpdeskPlan,
+    Plan,
+    Product,
+    ProductType,
+} from 'models/billing/types'
 import {
     getCadenceName,
     isOtherCadenceDowngrade,
     isOtherCadenceUpgrade,
 } from 'models/billing/utils'
+import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import { RootState, StoreDispatch } from 'state/types'
@@ -47,10 +54,14 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
+const mockedHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
         selectedProduct: 'helpdesk',
+    }),
+    useHistory: () => ({
+        push: mockedHistoryPush,
     }),
 }))
 
@@ -73,13 +84,18 @@ const defaultStore: DeepPartial<RootState> = {
     }),
 }
 
-const renderBillingFrequencyView = (storeOverride?: DeepPartial<RootState>) =>
+const renderBillingFrequencyView = (
+    storeOverride?: DeepPartial<RootState>,
+    isCurrentSubscriptionCanceled?: boolean,
+) =>
     renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockedStore(storeOverride ?? defaultStore)}>
                 <BillingFrequencyView
                     isTrialing={false}
-                    isCurrentSubscriptionCanceled={false}
+                    isCurrentSubscriptionCanceled={
+                        isCurrentSubscriptionCanceled ?? false
+                    }
                     periodEnd="2021-01-01"
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
@@ -142,6 +158,60 @@ describe('BillingFrequencyView', () => {
         expect(
             screen.getByRole('button', { name: 'Update Subscription' }),
         ).toBeInTheDocument()
+    })
+
+    it.each(cadenceValues)(
+        'should redirect users if there are no cadence upgrades possible [cadence: %s]',
+        (cadence: Cadence) => {
+            const plan = helpdeskProduct.prices.find(
+                (plan: HelpdeskPlan) => plan.cadence === cadence,
+            )
+            // If a plan can't be found, the test is misconfigured and can't run
+            expect(plan).toBeDefined()
+
+            const storeOverride: DeepPartial<RootState> = {
+                ...defaultStore,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: plan?.price_id,
+                        },
+                    },
+                }),
+            }
+
+            renderBillingFrequencyView(storeOverride)
+
+            const cadenceValues = Object.values(Cadence)
+            const cadenceUpgradeIsPossible =
+                cadenceValues.find((otherCadence: Cadence) =>
+                    isOtherCadenceUpgrade(cadence, otherCadence),
+                ) !== undefined
+
+            if (!cadenceUpgradeIsPossible) {
+                expect(mockedHistoryPush).toHaveBeenCalledWith(
+                    BILLING_PAYMENT_PATH,
+                )
+            } else {
+                expect(mockedHistoryPush).toHaveBeenCalledTimes(0)
+            }
+        },
+    )
+
+    it('should redirect users if their subscription is cancelled', () => {
+        const storeOverride: DeepPartial<RootState> = {
+            ...defaultStore,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: undefined,
+            }),
+        }
+
+        renderBillingFrequencyView(storeOverride, true)
+
+        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
     })
 
     const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
