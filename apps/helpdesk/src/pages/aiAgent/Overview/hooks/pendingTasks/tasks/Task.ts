@@ -6,6 +6,7 @@ export abstract class Task {
     public readonly available: boolean
     public readonly isCheckedAutomatically: boolean
     public readonly completed: boolean
+    public readonly alwaysAvailable: boolean
 
     protected constructor(
         public readonly title: string,
@@ -25,6 +26,9 @@ export abstract class Task {
                 ? this.getIsCompleted(data)
                 : false
             : !this.display
+        this.alwaysAvailable = this.isAlwaysAvailable
+            ? this.isAlwaysAvailable()
+            : false
     }
 
     protected abstract isAvailable(data: RuleEngineData): boolean
@@ -38,4 +42,5 @@ export abstract class Task {
     }): string
     protected getIsCheckedAutomatically?(data: RuleEngineData): boolean
     protected getIsCompleted?(data: RuleEngineData): boolean
+    protected isAlwaysAvailable?(): boolean
 }

@@ -33,4 +33,8 @@ export class CreateAnActionTask extends Task {
     protected getIsCheckedAutomatically(): boolean {
         return true
     }
+
+    protected isAlwaysAvailable(): boolean {
+        return true
+    }
 }

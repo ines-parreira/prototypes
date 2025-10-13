@@ -11,6 +11,7 @@ import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingT
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 
 import { createRuleEngineTaskMap, createStepMapper } from '../utils/utils'
+import { usePopulatePostGoLiveSteps } from './usePopulatePostGoLiveSteps'
 import { useSyncStepConfiguration } from './useSyncStepConfiguration'
 
 interface UseGetSetupTasksConfigByCategoryParams {
@@ -69,6 +70,16 @@ export const useGetSetupTasksConfigByCategory = ({
             ),
         [data],
     )
+
+    usePopulatePostGoLiveSteps({
+        postGoLiveStep,
+        pendingTasks,
+        completedTasks,
+        enabled: !isRuleEngineLoading && !postGoLiveStep,
+        accountId,
+        shopName,
+        shopType,
+    })
 
     useSyncStepConfiguration({
         postGoLiveStep,

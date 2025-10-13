@@ -36,4 +36,8 @@ export class ReviewAIAgentInteractionsTask extends Task {
     protected getIsCheckedAutomatically(): boolean {
         return false
     }
+
+    protected isAlwaysAvailable(): boolean {
+        return true
+    }
 }
