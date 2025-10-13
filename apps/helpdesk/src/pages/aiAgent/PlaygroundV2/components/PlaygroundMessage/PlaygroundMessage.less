@@ -1,0 +1,152 @@
+@import '~css/typography';
+
+:local {
+    .messageAnimation {
+        :global {
+            animation: slideUp 0.3s ease-in-out;
+        }
+    }
+
+    .messageContainerHover {
+        &:hover {
+            background-color: #fef9ff;
+        }
+    }
+
+    .messageContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: var(--layout-spacing-s);
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-m)
+            var(--layout-spacing-s);
+
+        .messageAvatar {
+            background-color: var(--neutral-grey-3);
+        }
+
+        .messageHeader {
+            width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: pre;
+        }
+
+        .messageSenderCommon {
+            color: var(--neutral-grey-6);
+            .body-semibold();
+        }
+
+        .messageBadge {
+            margin-left: var(--layout-spacing-xs);
+        }
+
+        .shopperTypeSender {
+            color: var(--neutral-grey-6);
+        }
+
+        .aiAgentTypeSender {
+            color: var(--ai-magenta-3);
+        }
+
+        .aiAgentInternalNoteTypeSender {
+            color: var(--main-primary);
+        }
+
+        .messageContentContainer {
+            width: 100%;
+        }
+
+        .aiAgentLoadingSkeletonContainer {
+            padding-top: var(--layout-spacing-xs);
+        }
+
+        .aiAgentLoadingSkeleton {
+            line-height: 3.5;
+        }
+
+        .messageContainer {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            gap: 8px;
+            margin-top: var(--layout-spacing-xxs);
+        }
+
+        .productCarouselContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: var(--layout-spacing-s);
+        }
+
+        .messageErrorContainer {
+            padding: var(--layout-spacing-xs);
+            border: 1px solid var(--feedback-error);
+            border-radius: 4px;
+        }
+
+        .errorMessageLink {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .messageTypeIcon {
+            margin-left: var(--layout-spacing-xs);
+            color: var(--neutral-grey-4);
+        }
+
+        .messageContent {
+            flex-grow: 1;
+        }
+
+        .aiAgentErrorIconContainer {
+            width: auto;
+        }
+
+        .aiAgentErrorIcon {
+            color: var(--feedback-error);
+        }
+
+        .avatarIcon {
+            margin-right: var(--layout-spacing-xxs);
+            color: var(--main-primary);
+        }
+
+        .aiAgentProcessingIcon {
+            width: auto;
+        }
+
+        .aiAgentProcessingIcon {
+            color: var(--ai-magenta-3);
+        }
+
+        .aiAgentProcessingStatus {
+            margin-left: var(--layout-spacing-xs);
+        }
+    }
+
+    .internalNoteContainer {
+        background-color: var(--accessory-orange-1);
+        border-left: 5px solid var(--feedback-warning-2);
+        padding-left: calc(var(--layout-spacing-m) - 5px);
+    }
+}
+
+:global {
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+.dark :local {
+    .messageContainerHover {
+        &:hover {
+            background-color: #312c33;
+        }
+    }
+}

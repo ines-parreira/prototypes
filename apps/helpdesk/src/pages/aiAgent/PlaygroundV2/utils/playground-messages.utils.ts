@@ -1,0 +1,142 @@
+import { StoreConfiguration } from 'models/aiAgent/types'
+import {
+    AiAgentMessageType,
+    AiAgentResponse,
+    CreatePlaygroundMessage,
+    isApiEligiblePlaygroundMessage,
+    MessageType,
+    PlaygroundMessage,
+    PlaygroundPromptMessage,
+    PlaygroundPromptType,
+    PlaygroundTextMessage,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
+
+import {
+    CustomerHttpIntegrationDataMock,
+    PLAYGROUND_PROMPT_CONTENT,
+} from '../../constants'
+import {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+    PlaygroundFormValues,
+} from '../components/PlaygroundChat/PlaygroundChat.types'
+import {
+    AI_AGENT_SENDER,
+    GREETING_MESSAGE_TEXT,
+} from '../components/PlaygroundMessage/PlaygroundMessage'
+
+type PlaygroundMessageMeta = {
+    ai_agent_message_type: string
+    chat_availability?: string
+}
+
+type GetPlaygroundMessageMetaInput = {
+    message: PlaygroundMessage
+    firstShopperMessage?: boolean
+    channelAvailability?: PlaygroundChannelAvailability
+}
+
+export const getPlaygroundMessageMeta = ({
+    message,
+    firstShopperMessage = false,
+    channelAvailability,
+}: GetPlaygroundMessageMetaInput): PlaygroundMessageMeta | undefined => {
+    if (firstShopperMessage) {
+        return {
+            ai_agent_message_type: AiAgentMessageType.ENTRY_CUSTOMER_MESSAGE,
+            chat_availability: channelAvailability,
+        }
+    }
+    if (message.type === MessageType.PROMPT) {
+        return {
+            ai_agent_message_type:
+                message.prompt === PlaygroundPromptType.RELEVANT_RESPONSE
+                    ? 'ai_agent_response_relevant_true'
+                    : 'ai_agent_response_relevant_false',
+        }
+    }
+
+    if (
+        message.type === MessageType.MESSAGE &&
+        message.content === GREETING_MESSAGE_TEXT
+    ) {
+        return {
+            ai_agent_message_type: AiAgentMessageType.GREETING,
+        }
+    }
+}
+
+export const mapPlaygroundMessagesToServerMessages = (
+    messages: PlaygroundMessage[],
+    channel: PlaygroundChannels,
+): CreatePlaygroundMessage[] => {
+    return messages.filter(isApiEligiblePlaygroundMessage).map((m, index) => {
+        return {
+            bodyText: m.content,
+            fromAgent: m.sender === AI_AGENT_SENDER,
+            createdDatetime: m.createdDatetime,
+            // We should annotate the first message as an entry message
+            meta: getPlaygroundMessageMeta({
+                message: m,
+                firstShopperMessage: channel === 'chat' && index === 0,
+            }),
+        }
+    })
+}
+
+export const mapPlaygroundFormValuesToMessage = (
+    formValues: PlaygroundFormValues,
+): PlaygroundTextMessage => {
+    return {
+        sender: formValues.customer.name ?? formValues.customer.email,
+        type: MessageType.MESSAGE,
+        content: formValues.message,
+        createdDatetime: new Date().toISOString(),
+    }
+}
+
+export const mapPlaygroundPromptToMessage = (
+    prompt: PlaygroundPromptType,
+    sender?: string,
+): PlaygroundPromptMessage => {
+    return {
+        sender: sender ?? CustomerHttpIntegrationDataMock.name,
+        type: MessageType.PROMPT,
+        createdDatetime: new Date().toISOString(),
+        content: PLAYGROUND_PROMPT_CONTENT[prompt],
+        prompt,
+    }
+}
+
+export const shouldDisplayActions = (aiAgentResponse: AiAgentResponse) => {
+    return (
+        aiAgentResponse.postProcessing.chatTicketMessageMeta
+            ?.ai_agent_message_type ===
+        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION
+    )
+}
+
+export const getLastShopperMessage = (
+    messages: (PlaygroundTextMessage | PlaygroundPromptMessage)[],
+): PlaygroundTextMessage | PlaygroundPromptMessage => {
+    return (
+        [...messages].reverse().find((m) => m.sender !== AI_AGENT_SENDER) ??
+        messages[messages.length - 1]
+    )
+}
+
+export const shouldAiAgentResponseDisplay = (
+    aiAgentResponse: AiAgentResponse,
+    storeData: StoreConfiguration,
+) => {
+    const isHandover =
+        aiAgentResponse.generate.output.outcome === TicketOutcome.HANDOVER
+    const isSilentHandover = storeData.silentHandover
+    const hasHtmlReply = aiAgentResponse.postProcessing.htmlReply
+
+    return (
+        aiAgentResponse.qa.output.validate_generated_message &&
+        ((isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply))
+    )
+}
