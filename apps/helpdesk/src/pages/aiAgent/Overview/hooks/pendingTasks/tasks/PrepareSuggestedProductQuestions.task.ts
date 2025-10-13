@@ -1,10 +1,9 @@
 import { AiAgentScope } from 'models/aiAgent/types'
-import { getChatActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
-export class EnableSuggestedProductQuestionsTask extends Task {
+export class PrepareSuggestedProductQuestionsTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Suggested Product Questions',
@@ -20,21 +19,10 @@ export class EnableSuggestedProductQuestionsTask extends Task {
     }
 
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        const { enabled: isChatEnabled } = getChatActivation({
-            storeConfiguration: data.aiAgentStoreConfiguration,
-            chatIntegrationStatus: data.chatIntegrationsStatus,
-            selfServiceChatChannels: data.selfServiceChatChannels,
-            helpCentersFaq: data.faqHelpCenters,
-            storeKnowledgeStatus: data.storeKnowledgeStatus,
-        })
-
         return (
-            isChatEnabled &&
-            data.isAiShoppingAssistantEnabled &&
             data.aiAgentStoreConfiguration.scopes.includes(
                 AiAgentScope.Sales,
-            ) &&
-            !data.aiAgentStoreConfiguration.isConversationStartersEnabled
+            ) && !data.aiAgentStoreConfiguration.isConversationStartersEnabled
         )
     }
 

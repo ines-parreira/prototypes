@@ -1,8 +1,8 @@
 import {
     CreateAnActionBody,
     EnableAIAgentOnChatBody,
-    EnableTriggerOnSearchBody,
     MonitorAiAgentBody,
+    PrepareTriggerOnSearchBody,
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from 'pages/aiAgent/Overview/components/SetupTasksSection/SetupTaskBodies'
@@ -28,7 +28,7 @@ export const mockSetupTasksConfigByCategory = {
                 stepName: 'ENABLE_TRIGGER_ON_SEARCH' as any,
                 displayName: `Enable 'Trigger on Search'`,
                 isCompleted: false,
-                body: EnableTriggerOnSearchBody,
+                body: PrepareTriggerOnSearchBody,
             },
         ],
         Train: [

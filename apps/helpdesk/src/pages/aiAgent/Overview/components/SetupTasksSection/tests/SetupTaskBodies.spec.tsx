@@ -13,9 +13,9 @@ import {
     EnableAIAgentOnChatBody,
     EnableAIAgentOnEmailBody,
     EnableAskAnythingBody,
-    EnableSuggestedProductsBody,
-    EnableTriggerOnSearchBody,
     MonitorAiAgentBody,
+    PrepareSuggestedProductsBody,
+    PrepareTriggerOnSearchBody,
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from '../SetupTaskBodies'
@@ -75,9 +75,30 @@ describe('SetupTaskBodies', () => {
         })
     })
 
-    describe('EnableTriggerOnSearchBody', () => {
+    describe('PrepareTriggerOnSearchBody', () => {
         it('should render description and toggle', () => {
-            render(<EnableTriggerOnSearchBody />)
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                isSalesHelpOnSearchEnabled: false,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareTriggerOnSearchBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
 
             expect(
                 screen.getByText(
@@ -86,11 +107,93 @@ describe('SetupTaskBodies', () => {
             ).toBeInTheDocument()
             expect(screen.getByRole('switch')).toBeInTheDocument()
         })
+
+        it('should initialize toggle based on isSalesHelpOnSearchEnabled', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                isSalesHelpOnSearchEnabled: true,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareTriggerOnSearchBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeChecked()
+        })
+
+        it('should call updateStoreConfiguration when toggle is clicked', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest.fn().mockResolvedValue({})
+            const mockStoreConfiguration = {
+                isSalesHelpOnSearchEnabled: false,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareTriggerOnSearchBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
+                isSalesHelpOnSearchEnabled: true,
+            })
+        })
     })
 
-    describe('EnableSuggestedProductsBody', () => {
+    describe('PrepareSuggestedProductsBody', () => {
         it('should render description and toggle', () => {
-            render(<EnableSuggestedProductsBody />)
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                isConversationStartersEnabled: false,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareSuggestedProductsBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
 
             expect(
                 screen.getByText(
@@ -99,11 +202,95 @@ describe('SetupTaskBodies', () => {
             ).toBeInTheDocument()
             expect(screen.getByRole('switch')).toBeInTheDocument()
         })
+
+        it('should initialize toggle based on isConversationStartersEnabled', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                isConversationStartersEnabled: true,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareSuggestedProductsBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeChecked()
+        })
+
+        it('should call updateStoreConfiguration when toggle is clicked', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest.fn().mockResolvedValue({})
+            const mockStoreConfiguration = {
+                isConversationStartersEnabled: false,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareSuggestedProductsBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
+                isConversationStartersEnabled: true,
+            })
+        })
     })
 
     describe('EnableAskAnythingBody', () => {
         it('should render description and toggle', () => {
-            render(<EnableAskAnythingBody />)
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                floatingChatInputConfiguration: {
+                    isEnabled: false,
+                },
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <EnableAskAnythingBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
 
             expect(
                 screen.getByText(
@@ -111,6 +298,75 @@ describe('SetupTaskBodies', () => {
                 ),
             ).toBeInTheDocument()
             expect(screen.getByRole('switch')).toBeInTheDocument()
+        })
+
+        it('should initialize toggle based on floatingChatInputConfiguration.isEnabled', () => {
+            const store = mockStore({})
+            const mockStoreConfiguration = {
+                floatingChatInputConfiguration: {
+                    isEnabled: true,
+                },
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <EnableAskAnythingBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeChecked()
+        })
+
+        it('should call updateStoreConfiguration when toggle is clicked', async () => {
+            const store = mockStore({})
+            const mockUpdateStoreConfiguration = jest.fn().mockResolvedValue({})
+            const mockStoreConfiguration = {
+                floatingChatInputConfiguration: {
+                    isEnabled: false,
+                },
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            render(
+                <Provider store={store}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <EnableAskAnythingBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('switch')
+            await userEvent.click(toggle)
+
+            expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
+                floatingChatInputConfiguration: {
+                    isDesktopOnly: false,
+                    isEnabled: true,
+                    needHelpText: '',
+                },
+            })
         })
     })
 
@@ -511,7 +767,7 @@ describe('SetupTaskBodies', () => {
                 <UpdateShopifyPermissionsBody />,
             )
             const { container: container3 } = render(
-                <EnableTriggerOnSearchBody />,
+                <PrepareTriggerOnSearchBody />,
             )
 
             expect(
@@ -555,14 +811,14 @@ describe('SetupTaskBodies', () => {
                 hasButton: true,
             },
             {
-                Component: EnableTriggerOnSearchBody,
+                Component: PrepareTriggerOnSearchBody,
                 description:
                     'Guide shoppers to right products by having AI Agent start a conversation after they use search.',
                 buttonText: undefined,
                 hasButton: false,
             },
             {
-                Component: EnableSuggestedProductsBody,
+                Component: PrepareSuggestedProductsBody,
                 description:
                     'Show dynamic, AI-generated questions on product pages to address common shopper questions. Brands that enable this feature see a significant lift in conversions.',
                 buttonText: undefined,

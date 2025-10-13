@@ -129,46 +129,88 @@ export const MonitorAiAgentBody = (props: SetupTaskBodyProps) => {
     )
 }
 
-export const EnableTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
-    const handleToggle = () => {
-        // TODO: Implement toggle logic for trigger on search
+export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
+    const { storeConfiguration, updateStoreConfiguration } =
+        useAiAgentStoreConfigurationContext()
+
+    const isSalesHelpOnSearchEnabled =
+        storeConfiguration?.isSalesHelpOnSearchEnabled ?? false
+
+    const handleToggle = async () => {
+        if (!storeConfiguration) return
+
+        await updateStoreConfiguration({
+            ...storeConfiguration,
+            isSalesHelpOnSearchEnabled: !isSalesHelpOnSearchEnabled,
+        })
     }
 
     return (
         <TaskBodyWithToggle
             {...props}
             description="Guide shoppers to right products by having AI Agent start a conversation after they use search."
-            value={false}
+            value={isSalesHelpOnSearchEnabled}
             onChange={handleToggle}
         />
     )
 }
 
-export const EnableSuggestedProductsBody = (props: SetupTaskBodyProps) => {
-    const handleToggle = () => {
-        // TODO: Implement toggle logic for suggested products
+export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
+    const { storeConfiguration, updateStoreConfiguration } =
+        useAiAgentStoreConfigurationContext()
+
+    const isConversationStartersEnabled =
+        storeConfiguration?.isConversationStartersEnabled ?? false
+
+    const handleToggle = async () => {
+        if (!storeConfiguration) return
+
+        await updateStoreConfiguration({
+            ...storeConfiguration,
+            isConversationStartersEnabled: !isConversationStartersEnabled,
+        })
     }
 
     return (
         <TaskBodyWithToggle
             {...props}
             description="Show dynamic, AI-generated questions on product pages to address common shopper questions. Brands that enable this feature see a significant lift in conversions."
-            value={false}
+            value={isConversationStartersEnabled}
             onChange={handleToggle}
         />
     )
 }
 
 export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
-    const handleToggle = () => {
-        // TODO: Implement toggle logic for ask anything
+    const { storeConfiguration, updateStoreConfiguration } =
+        useAiAgentStoreConfigurationContext()
+
+    const isAskAnythingInputEnabled =
+        storeConfiguration?.floatingChatInputConfiguration?.isEnabled ?? false
+
+    const handleToggle = async () => {
+        if (!storeConfiguration) return
+
+        const defaultFloatingChatInputConfiguration = {
+            isDesktopOnly: false,
+            isEnabled: false,
+            needHelpText: '',
+        }
+        await updateStoreConfiguration({
+            ...storeConfiguration,
+            floatingChatInputConfiguration: {
+                ...defaultFloatingChatInputConfiguration,
+                ...storeConfiguration.floatingChatInputConfiguration,
+                isEnabled: !isAskAnythingInputEnabled,
+            },
+        })
     }
 
     return (
         <TaskBodyWithToggle
             {...props}
             description="Transform your chat bubble into a persistent input bar that invites shoppers to ask questions anytime. Encourage engagement by keeping support top-of-mind while shoppers browse."
-            value={false}
+            value={isAskAnythingInputEnabled}
             onChange={handleToggle}
         />
     )

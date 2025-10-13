@@ -47,4 +47,8 @@ export class EnableAskAnythingInputTask extends Task {
     }): string {
         return aiAgentRoutes.customerEngagement
     }
+
+    protected getIsCheckedAutomatically(): boolean {
+        return true
+    }
 }

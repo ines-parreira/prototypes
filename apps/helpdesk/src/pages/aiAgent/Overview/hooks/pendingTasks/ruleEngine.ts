@@ -22,6 +22,9 @@ import { EnableSalesSkill } from './tasks/EnableSalesSkill'
 import { EnableSuggestedProductQuestionsTask } from './tasks/EnableSuggestedProductQuestions.task'
 import { EnableTriggerOnSearchTask } from './tasks/EnableTriggerOnSearch.task'
 import { InstallYourChatTask } from './tasks/InstallYourChat.task'
+import { PrepareAskAnythingInputTask } from './tasks/PrepareAskAnythingInput.task'
+import { PrepareSuggestedProductQuestionsTask } from './tasks/PrepareSuggestedProductQuestions.task'
+import { PrepareTriggerOnSearchTask } from './tasks/PrepareTriggerOnSearch.task'
 import { PublishYourFirstGuidanceTask } from './tasks/PublishYourFirstGuidance.task'
 import { ReviewAIAgentInteractionsTask } from './tasks/ReviewAIAgentInteractions.task'
 import { ReviewAIGeneratedGuidancesTask } from './tasks/ReviewAIGeneratedGuidances.task'
@@ -143,9 +146,9 @@ const tasksPerAiAgentType: Record<
         new UpdateShopifyPermissionsRedirectTask(data, routes),
         new CreateAnActionTask(data, routes),
         new ReviewAIAgentInteractionsTask(data, routes),
-        new EnableTriggerOnSearchTask(data, routes),
-        new EnableSuggestedProductQuestionsTask(data, routes),
-        new EnableAskAnythingInputTask(data, routes),
+        new PrepareTriggerOnSearchTask(data, routes),
+        new PrepareSuggestedProductQuestionsTask(data, routes),
+        new PrepareAskAnythingInputTask(data, routes),
         new EnableAIAgentOnChatTask(data, routes),
         new EnableAIAgentOnEmailTask(data, routes),
     ],

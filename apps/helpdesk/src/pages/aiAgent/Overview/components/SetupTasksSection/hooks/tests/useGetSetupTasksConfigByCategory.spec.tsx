@@ -4,6 +4,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import {
+    useCreatePostStoreInstallationStepPure,
     useGetPostStoreInstallationStepsPure,
     useUpdateStepConfigurationPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
@@ -24,6 +25,11 @@ jest.mock('pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine')
 const mockUseGetPostStoreInstallationStepsPure =
     useGetPostStoreInstallationStepsPure as jest.MockedFunction<
         typeof useGetPostStoreInstallationStepsPure
+    >
+
+const mockUseCreatePostStoreInstallationStepPure =
+    useCreatePostStoreInstallationStepPure as jest.MockedFunction<
+        typeof useCreatePostStoreInstallationStepPure
     >
 
 const mockUseUpdateStepConfigurationPure =
@@ -88,6 +94,15 @@ describe('useGetSetupTasksConfigByCategory', () => {
         })
 
         mockUseUpdateStepConfigurationPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
+
+        mockUseCreatePostStoreInstallationStepPure.mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({}),
             mutate: jest.fn(),
             isLoading: false,

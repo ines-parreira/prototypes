@@ -1,10 +1,9 @@
 import { AiAgentScope } from 'models/aiAgent/types'
-import { getChatActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
-export class EnableTriggerOnSearchTask extends Task {
+export class PrepareTriggerOnSearchTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Trigger on Search',
@@ -20,16 +19,7 @@ export class EnableTriggerOnSearchTask extends Task {
     }
 
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
-        const { enabled: isChatEnabled } = getChatActivation({
-            storeConfiguration: data.aiAgentStoreConfiguration,
-            chatIntegrationStatus: data.chatIntegrationsStatus,
-            selfServiceChatChannels: data.selfServiceChatChannels,
-            helpCentersFaq: data.faqHelpCenters,
-            storeKnowledgeStatus: data.storeKnowledgeStatus,
-        })
-
         return (
-            isChatEnabled &&
             !data.aiAgentStoreConfiguration.isSalesHelpOnSearchEnabled &&
             !data.isTriggerOnSearchDisabled &&
             data.aiAgentStoreConfiguration.scopes.includes(AiAgentScope.Sales)

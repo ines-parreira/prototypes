@@ -4,9 +4,9 @@ import {
     EnableAIAgentOnChatBody,
     EnableAIAgentOnEmailBody,
     EnableAskAnythingBody,
-    EnableSuggestedProductsBody,
-    EnableTriggerOnSearchBody,
     MonitorAiAgentBody,
+    PrepareSuggestedProductsBody,
+    PrepareTriggerOnSearchBody,
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from 'pages/aiAgent/Overview/components/SetupTasksSection/SetupTaskBodies'
@@ -17,9 +17,9 @@ import {
 import { CreateAnActionTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/CreateAnAction.task'
 import { EnableAIAgentOnChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAIAgentOnChat.task'
 import { EnableAIAgentOnEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAIAgentOnEmail.task'
-import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAskAnythingInput.task'
-import { EnableSuggestedProductQuestionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableSuggestedProductQuestions.task'
-import { EnableTriggerOnSearchTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableTriggerOnSearch.task'
+import { PrepareAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareAskAnythingInput.task'
+import { PrepareSuggestedProductQuestionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareSuggestedProductQuestions.task'
+import { PrepareTriggerOnSearchTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareTriggerOnSearch.task'
 import { ReviewAIAgentInteractionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/ReviewAIAgentInteractions.task'
 import { UpdateShopifyPermissionsRedirectTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissionsRedirect.task'
 import { VerifyYourEmailDomainTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/VerifyYourEmailDomain.task'
@@ -30,12 +30,12 @@ export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
         UpdateShopifyPermissionsRedirectTask.name,
         StepName.UPDATE_SHOPIFY_PERMISSIONS,
     ],
-    [EnableTriggerOnSearchTask.name, StepName.ENABLE_TRIGGER_ON_SEARCH],
+    [PrepareTriggerOnSearchTask.name, StepName.ENABLE_TRIGGER_ON_SEARCH],
     [
-        EnableSuggestedProductQuestionsTask.name,
+        PrepareSuggestedProductQuestionsTask.name,
         StepName.ENABLE_SUGGESTED_PRODUCTS,
     ],
-    [EnableAskAnythingInputTask.name, StepName.ENABLE_ASK_ANYTHING],
+    [PrepareAskAnythingInputTask.name, StepName.ENABLE_ASK_ANYTHING],
     [CreateAnActionTask.name, StepName.CREATE_AN_ACTION],
     [ReviewAIAgentInteractionsTask.name, StepName.REVIEW_AI_AGENT_INTERACTIONS],
     [EnableAIAgentOnChatTask.name, StepName.ENABLE_AI_AGENT_ON_CHAT],
@@ -62,12 +62,12 @@ export const TASK_CONFIG_TEMPLATES: Record<
         {
             stepName: StepName.ENABLE_TRIGGER_ON_SEARCH,
             displayName: `Enable 'Trigger on Search'`,
-            bodyComponent: EnableTriggerOnSearchBody,
+            bodyComponent: PrepareTriggerOnSearchBody,
         },
         {
             stepName: StepName.ENABLE_SUGGESTED_PRODUCTS,
             displayName: `Enable 'Suggested product questions'`,
-            bodyComponent: EnableSuggestedProductsBody,
+            bodyComponent: PrepareSuggestedProductsBody,
         },
         {
             stepName: StepName.ENABLE_ASK_ANYTHING,
