@@ -8,7 +8,7 @@ import {
     useGetCompany,
     useUpsertCompany,
 } from '@gorgias/helpdesk-queries'
-import { Partner } from '@gorgias/helpdesk-types'
+import { BPOPartner, Partner } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -34,19 +34,23 @@ export const ConsultingAgencyPartnerSection = () => {
     })
     const { mutateAsync: updateCompany } = useUpsertCompany()
 
-    const [consultingPartner, setConsultingPartner] = useState<Partner | null>(
-        null,
-    )
+    const [consultingPartner, setConsultingPartner] = useState<
+        Partner | BPOPartner | null
+    >(null)
 
     const partnerOptions = useMemo(() => {
-        const options = convertPartnerEnumToOptions(Partner)
+        const partnerOptions = convertPartnerEnumToOptions(Partner)
+        const bpoPartnerOptions = convertPartnerEnumToOptions(BPOPartner)
+        const allOptions = [...partnerOptions, ...bpoPartnerOptions].sort(
+            (a, b) => a.label.localeCompare(b.label),
+        )
         if (consultingPartner) {
             return [
                 { value: '__clear__', label: 'Clear selection' },
-                ...options,
+                ...allOptions,
             ]
         }
-        return options
+        return allOptions
     }, [consultingPartner])
 
     const selectedOption = useMemo(() => {
@@ -93,7 +97,7 @@ export const ConsultingAgencyPartnerSection = () => {
             return
         }
 
-        const value = option?.value as Partner | null
+        const value = option?.value as Partner | BPOPartner | null
         setConsultingPartner(value)
 
         try {
