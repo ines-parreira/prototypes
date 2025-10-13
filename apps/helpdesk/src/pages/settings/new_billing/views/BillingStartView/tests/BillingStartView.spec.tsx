@@ -83,6 +83,7 @@ describe('BillingStartView', () => {
         mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
         useFlagMock.mockReset()
         useFlagMock.mockReset()
+        window.USER_IMPERSONATED = null
     })
 
     describe('Billing maintenance mode is ON', () => {
@@ -126,6 +127,32 @@ describe('BillingStartView', () => {
             expect(
                 screen.queryByText(/Gorgias Internal/i),
             ).not.toBeInTheDocument()
+        })
+
+        it('should NOT show the maintenance page for impersonated users', () => {
+            window.USER_IMPERSONATED = true
+
+            let mockFeatureFlags = {
+                [FeatureFlagKey.BillingMaintenanceMode]: true,
+            } as Record<FeatureFlagKey, boolean>
+
+            useFlagMock.mockImplementation(
+                (flag: FeatureFlagKey) => mockFeatureFlags[flag],
+            )
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithConvert,
+                { route: BILLING_BASE_PATH },
+            )
+
+            expect(
+                screen.queryByText('Billing maintenance in progress'),
+            ).not.toBeInTheDocument()
+
+            expect(screen.getByText(/Usage & Plans/i)).toBeInTheDocument()
+            expect(screen.getByText(/Payment History/i)).toBeInTheDocument()
+            expect(screen.getByText(/Gorgias Internal/i)).toBeInTheDocument()
         })
     })
 

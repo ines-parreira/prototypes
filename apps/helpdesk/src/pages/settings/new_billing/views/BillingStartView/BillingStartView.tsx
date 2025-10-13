@@ -337,7 +337,10 @@ const BillingStartView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentConvertPlan, convertStatus])
 
-    if (useFlag(FeatureFlagKey.BillingMaintenanceMode)) {
+    if (
+        useFlag(FeatureFlagKey.BillingMaintenanceMode) &&
+        !window.USER_IMPERSONATED
+    ) {
         return (
             <div className={css.mainContainer}>
                 <h1>Billing maintenance in progress</h1>
