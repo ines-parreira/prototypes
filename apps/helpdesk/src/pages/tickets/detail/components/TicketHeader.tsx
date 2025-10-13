@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
-import { IconButton, Tooltip } from '@gorgias/axiom'
+import { LegacyIconButton, Tooltip } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
@@ -378,7 +378,7 @@ const TicketHeader = ({
                 <TicketSubjectLoadingState isInitialLoading={isSubjectLoading}>
                     {translationMap[ticket.get('id')]?.subject && (
                         <div className={css.translateIcon}>
-                            <IconButton
+                            <LegacyIconButton
                                 ref={translateIconRef}
                                 icon="translate"
                                 fillStyle="ghost"
