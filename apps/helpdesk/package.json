@@ -96,7 +96,7 @@
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-validators": "catalog:rest-api-sdk",
         "@gorgias/realtime": "^0.21.13",
-        "@gorgias/realtime-ably": "^0.2.2",
+        "@gorgias/realtime-ably": "^0.2.3",
         "@hookform/resolvers": "^3.10.0",
         "@knocklabs/client": "^0.16.3",
         "@knocklabs/react": "^0.7.31",
