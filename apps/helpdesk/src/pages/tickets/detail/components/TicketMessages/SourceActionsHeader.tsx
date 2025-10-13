@@ -11,11 +11,9 @@ import type { TicketMessage } from 'models/ticket/types'
 import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
 import { getIsCurrentHelpdeskLegacy } from 'state/billing/selectors'
 import * as infobarActions from 'state/infobar/actions'
-import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
-import { TranslationsDropdown } from './TranslationsDropdown/TranslationsDropdown'
 
 import css from './SourceActionsHeader.less'
 
@@ -26,10 +24,7 @@ type Props = {
 
 export default function SourceActionsHeader({ message, containerRef }: Props) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
-    const translation = useTicketMessageTranslation({
-        ticketId: message.ticket_id,
-        messageId: message.id,
-    })
+
     const dispatch = useAppDispatch()
 
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
@@ -111,8 +106,7 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
             : toggleFacebookHideComment(shouldHide)
 
     const showIntentsFeedback = !fromAgent && !collapseIntents
-    const showTranslationsDropdown =
-        hasMessagesTranslation && !!translation && message.id
+
     const showPrivateReply = showHideAction && showPrivateReplyAction
 
     return (
@@ -120,14 +114,9 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
             className={cn(css.widgets, {
                 [css.hasMessageTranslation]: hasMessagesTranslation,
                 [css.hideSourceActions]:
-                    !showIntentsFeedback &&
-                    !showTranslationsDropdown &&
-                    !showPrivateReply,
+                    !showIntentsFeedback && !showPrivateReply,
             })}
         >
-            {hasMessagesTranslation && !!translation && message.id && (
-                <TranslationsDropdown messageId={message.id} />
-            )}
             {!fromAgent && !collapseIntents && (
                 <IntentsFeedback message={message} />
             )}

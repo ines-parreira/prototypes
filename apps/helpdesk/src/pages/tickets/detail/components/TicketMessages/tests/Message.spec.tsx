@@ -129,9 +129,6 @@ jest.mock('tickets/ticket-detail/components/MessageActions', () => ({
 jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
     MessageAttachments: () => <div>Attachments</div>,
 }))
-jest.mock('tickets/ticket-detail/components/MessageMetadata', () => ({
-    MessageMetadata: () => <div>MessageMetadata</div>,
-}))
 jest.mock('../Body', () => () => <div>Body</div>)
 jest.mock('../Errors', () => () => <div>Errors</div>)
 jest.mock('../ReplyDetailsCard', () => () => <div>ReplyDetailsCard</div>)
@@ -177,7 +174,6 @@ describe('Message', () => {
     it('should render the source details if showSourceDetails is true', () => {
         render(<Message {...defaultProps} showSourceDetails />, { wrapper })
         expect(screen.getByText('SourceActionsHeader')).toBeInTheDocument()
-        expect(screen.getByText('MessageMetadata')).toBeInTheDocument()
     })
 
     it('should display an embedded reply details card if meta.replied_to is present', () => {

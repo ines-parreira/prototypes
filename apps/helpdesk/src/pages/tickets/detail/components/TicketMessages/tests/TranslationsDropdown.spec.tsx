@@ -1,5 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import {
     DisplayedContent,
@@ -8,6 +10,18 @@ import {
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
 import { TranslationsDropdown } from '../TranslationsDropdown/TranslationsDropdown'
+
+// Mock the store with Immutable.js structure
+const mockStore = {
+    getState: () => ({
+        ticket: fromJS({
+            id: 123,
+            language: 'es',
+        }),
+    }),
+    subscribe: jest.fn(),
+    dispatch: jest.fn(),
+}
 
 // Mock the useRegenerateTicketMessageTranslations hook
 const mockRegenerateTicketMessageTranslations = jest.fn()
@@ -57,11 +71,13 @@ const mockTranslationContext = {
 
 const renderWithContext = (messageId: number = mockMessageId) => {
     return render(
-        <TicketMessagesTranslationDisplayContext.Provider
-            value={mockTranslationContext}
-        >
-            <TranslationsDropdown messageId={messageId} />
-        </TicketMessagesTranslationDisplayContext.Provider>,
+        <Provider store={mockStore as any}>
+            <TicketMessagesTranslationDisplayContext.Provider
+                value={mockTranslationContext}
+            >
+                <TranslationsDropdown messageId={messageId} />
+            </TicketMessagesTranslationDisplayContext.Provider>
+        </Provider>,
     )
 }
 
@@ -82,8 +98,8 @@ describe('TranslationsDropdown', () => {
         })
         expect(toggleButton).toBeInTheDocument()
 
-        const translateIcon = screen.getByLabelText('Translate message')
-        expect(translateIcon).toBeInTheDocument()
+        const translateIcons = screen.getAllByLabelText('Translate message')
+        expect(translateIcons.length).toBeGreaterThan(0)
     })
 
     it('should open the dropdown when toggle button is clicked', async () => {
@@ -329,27 +345,11 @@ describe('TranslationsDropdown', () => {
             )
         })
 
-        it('should show "See translation" and "Re-generate translation" options when the translation is in progress', async () => {
-            const user = userEvent.setup()
+        it('should show loading spinner when translation is in progress', () => {
             renderWithContext()
 
-            const toggleButton = screen.getByRole('button', {
-                name: /translate message/i,
-            })
-            await act(async () => {
-                await user.click(toggleButton)
-            })
-
-            expect(screen.getByText('See translation')).toBeInTheDocument()
-            expect(screen.queryByText('See original')).not.toBeInTheDocument()
-            expect(
-                screen.getByText('Re-generate translation'),
-            ).toBeInTheDocument()
-
-            const regenerateButton = screen.getByRole('button', {
-                name: /re-generate translation/i,
-            })
-            expect(regenerateButton).not.toBeDisabled()
+            expect(screen.getByText('Translating...')).toBeInTheDocument()
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
         })
     })
 
@@ -385,19 +385,15 @@ describe('TranslationsDropdown', () => {
     })
 
     describe('dropdown behavior', () => {
-        it('should display tooltip with correct content', async () => {
-            const user = userEvent.setup()
+        it('should display translated from text with language name', () => {
             renderWithContext()
 
             const toggleButton = screen.getByRole('button', {
                 name: /translate message/i,
             })
-            await act(async () => {
-                await user.hover(toggleButton)
-            })
-
-            const tooltip = screen.getByText('Translations menu')
-            expect(tooltip).toBeInTheDocument()
+            expect(toggleButton).toBeInTheDocument()
+            expect(screen.getByText(/translated from/i)).toBeInTheDocument()
+            expect(screen.getByText(/spanish/i)).toBeInTheDocument()
         })
 
         it('should use the provided messageId in context calls', () => {
@@ -490,8 +486,7 @@ describe('TranslationsDropdown', () => {
             expect(regenerateButton).toBeDisabled()
         })
 
-        it('should show disabled re-generate button during loading with hasRegeneratedOnce true', async () => {
-            const user = userEvent.setup()
+        it('should show loading spinner during loading even with hasRegeneratedOnce true', () => {
             mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Original,
@@ -501,19 +496,8 @@ describe('TranslationsDropdown', () => {
             )
             renderWithContext()
 
-            const toggleButton = screen.getByRole('button', {
-                name: /translate message/i,
-            })
-            await act(async () => {
-                await user.click(toggleButton)
-            })
-
-            expect(screen.getByText('See translation')).toBeInTheDocument()
-            const regenerateButton = screen.getByRole('button', {
-                name: /re-generate translation/i,
-            })
-            expect(regenerateButton).toBeInTheDocument()
-            expect(regenerateButton).toBeDisabled()
+            expect(screen.getByText('Translating...')).toBeInTheDocument()
+            expect(screen.getByText('Loading...')).toBeInTheDocument()
         })
     })
 

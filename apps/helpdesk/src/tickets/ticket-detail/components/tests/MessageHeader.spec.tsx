@@ -7,10 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    mockGetCurrentUserHandler,
-    mockListTicketMessageTranslationsHandler,
-} from '@gorgias/helpdesk-mocks'
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -18,11 +15,6 @@ import { isForwardedMessage } from 'tickets/common/utils'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import { MessageHeader } from '../MessageHeader'
-import {
-    DisplayedContent,
-    FetchingState,
-} from '../TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from '../TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 jest.mock('core/flags')
 jest.mock('timeline/ticket-modal/hooks/useTicketModalContext')
@@ -56,40 +48,9 @@ jest.mock('tickets/ticket-detail/components/MessageMetadata', () => ({
     MessageMetadata: jest.fn(() => <span>Message Metadata</span>),
 }))
 
-jest.mock(
-    '../TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay',
-    () => ({
-        useTicketMessageTranslationDisplay: jest.fn(() => ({
-            getTicketMessageTranslationDisplay: jest.fn(() => ({
-                display: DisplayedContent.Original,
-                fetchingState: FetchingState.Idle,
-                hasRegeneratedOnce: false,
-            })),
-            setTicketMessageTranslationDisplay: jest.fn(),
-        })),
-    }),
-)
-
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/TranslationLoader',
-    () => ({
-        TranslationLoader: jest.fn(() => <span>Translation Loading...</span>),
-    }),
-)
-
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/TranslationLimit',
-    () => ({
-        TranslationLimit: jest.fn(() => <span>Unable to regenerate</span>),
-    }),
-)
-
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseTicketModalContext = jest.mocked(useTicketModalContext)
 const mockIsForwardedMessage = jest.mocked(isForwardedMessage)
-const mockUseTicketMessageTranslationDisplay = jest.mocked(
-    useTicketMessageTranslationDisplay,
-)
 
 const server = setupServer()
 const queryClient = new QueryClient({
@@ -115,13 +76,8 @@ beforeEach(() => {
     queryClient.clear()
 
     const mockGetCurrentUser = mockGetCurrentUserHandler()
-    const mockGetTicketMessageTranslations =
-        mockListTicketMessageTranslationsHandler()
 
-    server.use(
-        mockGetCurrentUser.handler,
-        mockGetTicketMessageTranslations.handler,
-    )
+    server.use(mockGetCurrentUser.handler)
 
     mockUseFlag.mockReturnValue(false)
     mockUseTicketModalContext.mockReturnValue({
@@ -129,17 +85,6 @@ beforeEach(() => {
         isInsideTicketModal: false,
     })
     mockIsForwardedMessage.mockReturnValue(false)
-    mockUseTicketMessageTranslationDisplay.mockReturnValue({
-        getTicketMessageTranslationDisplay: jest.fn(() => ({
-            display: DisplayedContent.Original,
-            fetchingState: FetchingState.Idle,
-            hasRegeneratedOnce: false,
-        })),
-        setTicketMessageTranslationDisplay: jest.fn(),
-        allMessageDisplayState: DisplayedContent.Translated,
-        setAllTicketMessagesToOriginal: jest.fn(),
-        setAllTicketMessagesToTranslated: jest.fn(),
-    })
 })
 
 afterEach(() => {
@@ -335,7 +280,7 @@ describe('MessageHeader', () => {
         })
     })
 
-    it('renders MessageMetadata in headerDetails when TicketThreadRevamp is true and MessagesTranslations is false', async () => {
+    it('renders MessageMetadata in headerDetails when TicketThreadRevamp is true', async () => {
         mockUseFlag.mockImplementation(
             (flag: string) => flag === FeatureFlagKey.TicketThreadRevamp,
         )
@@ -360,7 +305,7 @@ describe('MessageHeader', () => {
         })
     })
 
-    it('renders MessageMetadata in rightWrapper when both feature flags are disabled', async () => {
+    it('renders MessageMetadata in rightWrapper when TicketThreadRevamp is disabled', async () => {
         const message = {
             id: 'msg-133',
             ticket_id: 123,
@@ -470,248 +415,6 @@ describe('MessageHeader', () => {
         await waitFor(() => {
             const authorElement = container.querySelector('.author')
             expect(authorElement).toHaveClass('deletedMessage')
-        })
-    })
-
-    describe('MessagesTranslations feature flag enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockImplementation(
-                (flag: string) => flag === FeatureFlagKey.MessagesTranslations,
-            )
-        })
-
-        it('renders MessageMetadata in translationDetails div', async () => {
-            const message = {
-                id: 'msg-136',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            const { container } = renderComponent(
-                <MessageHeader message={message} />,
-            )
-
-            await waitFor(() => {
-                const translationDetails = container.querySelector(
-                    '.translationDetails',
-                )
-                const metadataText = screen.getByText('Message Metadata')
-                expect(translationDetails).toContainElement(metadataText)
-            })
-        })
-
-        it('shows TranslationLoader when translation is loading', async () => {
-            mockUseTicketMessageTranslationDisplay.mockReturnValue({
-                getTicketMessageTranslationDisplay: jest.fn(() => ({
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Loading,
-                    hasRegeneratedOnce: false,
-                })),
-                setTicketMessageTranslationDisplay: jest.fn(),
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            })
-
-            const message = {
-                id: 'msg-137',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Translation Loading...'),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('does not show TranslationLoader when translation is idle', async () => {
-            mockUseTicketMessageTranslationDisplay.mockReturnValue({
-                getTicketMessageTranslationDisplay: jest.fn(() => ({
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Idle,
-                    hasRegeneratedOnce: false,
-                })),
-                setTicketMessageTranslationDisplay: jest.fn(),
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            })
-
-            const message = {
-                id: 'msg-138',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Translation Loading...'),
-                ).not.toBeInTheDocument()
-            })
-        })
-
-        it('handles message without id gracefully', async () => {
-            const message = {
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Translation Loading...'),
-                ).not.toBeInTheDocument()
-                expect(screen.getByText('Message Metadata')).toBeInTheDocument()
-            })
-        })
-
-        it('shows TranslationLimit when translation fails and has been regenerated once', async () => {
-            mockUseTicketMessageTranslationDisplay.mockReturnValue({
-                getTicketMessageTranslationDisplay: jest.fn(() => ({
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Failed,
-                    hasRegeneratedOnce: true,
-                })),
-                setTicketMessageTranslationDisplay: jest.fn(),
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            })
-
-            const message = {
-                id: 'msg-139',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Unable to regenerate'),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('does not show TranslationLimit when translation fails but has not been regenerated', async () => {
-            mockUseTicketMessageTranslationDisplay.mockReturnValue({
-                getTicketMessageTranslationDisplay: jest.fn(() => ({
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Failed,
-                    hasRegeneratedOnce: false,
-                })),
-                setTicketMessageTranslationDisplay: jest.fn(),
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            })
-
-            const message = {
-                id: 'msg-141',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Unable to regenerate'),
-                ).not.toBeInTheDocument()
-            })
-        })
-
-        it('does not show TranslationLimit when translation is successful', async () => {
-            mockUseTicketMessageTranslationDisplay.mockReturnValue({
-                getTicketMessageTranslationDisplay: jest.fn(() => ({
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: true,
-                })),
-                setTicketMessageTranslationDisplay: jest.fn(),
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            })
-
-            const message = {
-                id: 'msg-142',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            renderComponent(<MessageHeader message={message} />)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Unable to regenerate'),
-                ).not.toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('Both TicketThreadRevamp and MessagesTranslations enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockImplementation(
-                (flag: string) =>
-                    flag === FeatureFlagKey.TicketThreadRevamp ||
-                    flag === FeatureFlagKey.MessagesTranslations,
-            )
-        })
-
-        it('renders MessageMetadata in translationDetails only', async () => {
-            const message = {
-                id: 'msg-140',
-                ticket_id: 123,
-                from_agent: false,
-                sender: { name: 'Customer' },
-                source: { type: 'email' },
-                created_datetime: '2023-01-01T10:00:00Z',
-            } as unknown as TicketMessage
-
-            const { container } = renderComponent(
-                <MessageHeader message={message} />,
-            )
-
-            await waitFor(() => {
-                const translationDetails = container.querySelector(
-                    '.translationDetails',
-                )
-                const headerDetails = container.querySelector('.headerDetails')
-                const metadataText = screen.getByText('Message Metadata')
-
-                expect(translationDetails).toContainElement(metadataText)
-                expect(headerDetails).not.toContainElement(metadataText)
-                expect(screen.getAllByText('Message Metadata')).toHaveLength(1)
-            })
         })
     })
 })

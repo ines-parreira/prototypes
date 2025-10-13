@@ -375,41 +375,11 @@ describe('SourceActionsHeader', () => {
     })
 
     describe('MessagesTranslations feature flag', () => {
-        it('does not render TranslationsDropdown when feature flag is disabled', () => {
+        it('does not render TranslationsDropdown', () => {
             mockUseFlag.mockReturnValue(false)
             mockUseTicketMessageTranslation.mockReturnValue(
                 ticketMessageTranslation,
             )
-            render(
-                <QueryClientProvider client={appQueryClient}>
-                    <SourceActionsHeader message={createMessage()} />
-                </QueryClientProvider>,
-            )
-
-            expect(
-                screen.queryByLabelText('Translate message'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('renders TranslationsDropdown when feature flag is enabled and message has translation', () => {
-            mockUseFlag.mockReturnValue(true)
-            mockUseTicketMessageTranslation.mockReturnValue(
-                ticketMessageTranslation,
-            )
-            render(
-                <QueryClientProvider client={appQueryClient}>
-                    <SourceActionsHeader message={createMessage()} />
-                </QueryClientProvider>,
-            )
-
-            expect(
-                screen.getByLabelText('Translate message'),
-            ).toBeInTheDocument()
-        })
-
-        it("doesn't render TranslationsDropdown when feature flag is enabled and message has no translation", () => {
-            mockUseFlag.mockReturnValue(true)
-            mockUseTicketMessageTranslation.mockReturnValue(undefined)
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <SourceActionsHeader message={createMessage()} />
@@ -586,7 +556,7 @@ describe('SourceActionsHeader', () => {
             )
         })
 
-        it('calls useTicketMessageTranslation with correct parameters', () => {
+        it('does not call useTicketMessageTranslation', () => {
             const message = createMessage({ id: 123, ticket_id: 456 })
             render(
                 <QueryClientProvider client={appQueryClient}>
@@ -594,25 +564,7 @@ describe('SourceActionsHeader', () => {
                 </QueryClientProvider>,
             )
 
-            expect(mockUseTicketMessageTranslation).toHaveBeenCalledWith({
-                ticketId: 456,
-                messageId: 123,
-            })
-        })
-
-        it('calls useTicketMessageTranslation even when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            const message = createMessage({ id: 789, ticket_id: 101 })
-            render(
-                <QueryClientProvider client={appQueryClient}>
-                    <SourceActionsHeader message={message} />
-                </QueryClientProvider>,
-            )
-
-            expect(mockUseTicketMessageTranslation).toHaveBeenCalledWith({
-                ticketId: 101,
-                messageId: 789,
-            })
+            expect(mockUseTicketMessageTranslation).not.toHaveBeenCalled()
         })
     })
 })

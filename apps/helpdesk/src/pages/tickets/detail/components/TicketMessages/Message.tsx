@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
 
+import { useFlag } from 'core/flags'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
-import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
 import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
@@ -17,6 +18,7 @@ import Body from './Body'
 import Errors from './Errors'
 import ReplyDetailsCard from './ReplyDetailsCard'
 import SourceActionsHeader from './SourceActionsHeader'
+import { TranslationsDropdown } from './TranslationsDropdown/TranslationsDropdown'
 
 import css from './Message.less'
 
@@ -37,6 +39,8 @@ export default function Message({
     isAIAgentMessage,
     messagePosition,
 }: Props) {
+    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
+
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
 
@@ -83,9 +87,6 @@ export default function Message({
                     })}
                 >
                     <SourceActionsHeader message={displayedMessage} />
-                    <MessageMetadata
-                        message={displayedMessage as TicketMessageType}
-                    />
                 </div>
             )}
             {!!displayedMessage?.meta?.replied_to && (
@@ -96,6 +97,9 @@ export default function Message({
                 hasError={hasError}
                 messagePosition={messagePosition}
             />
+            {hasMessagesTranslation && !!messageTranslations && message.id && (
+                <TranslationsDropdown messageId={message.id} />
+            )}
             <MessageAttachments
                 message={displayedMessage as TicketMessageType}
             />

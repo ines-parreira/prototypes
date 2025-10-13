@@ -1,29 +1,34 @@
 @import (reference) '~css/typography';
 
 :local {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        margin: var(--layout-spacing-xs) 0;
+    }
+
     .dropdown {
         .dropdownToggle {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
-            padding: 0;
+            font-style: normal;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 20px;
+            gap: var(--layout-spacing-xxs);
+            height: 20px;
+            padding: var(--spacing-xxxxs);
             border-radius: 4px;
-            background: var(--neutral-grey-0); // legacy
             border: none;
+            background-color: transparent;
+            color: var(--neutral-grey-5); // legacy;
 
             &:hover {
-                background: var(--neutral-grey-2); // legacy
+                background-color: var(--neutral-grey-2); // legacy
+                box-shadow: none;
             }
-        }
-
-        .dropdownTooltip {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            gap: var(--layout-spacing-xxs);
         }
 
         .menuWrapper {
@@ -31,7 +36,7 @@
             min-width: 240px;
             border-radius: 8px;
             border: 1px solid var(--neutral-grey-0);
-            background: var(--neutral-grey-0); // legacy
+            background-color: var(--neutral-grey-0); // legacy
         }
 
         .translationsList {
@@ -104,15 +109,16 @@
 .axiom :local {
     .dropdown {
         .dropdownToggle {
-            background: var(--elevation-neutral-default);
+            background-color: transparent;
+            color: var(--content-neutral-default);
 
             &:hover {
-                background: var(--hover-default);
+                background-color: var(--hover-default);
             }
         }
 
         .menuWrapper {
-            background: var(--elevation-neutral-default);
+            background-color: var(--elevation-neutral-default);
         }
 
         .translationsItem {

@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -17,18 +17,9 @@ import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
 import Source from 'pages/tickets/detail/components/TicketMessages/Source'
 import SourceActionsHeader from 'pages/tickets/detail/components/TicketMessages/SourceActionsHeader'
-import { TranslationLimit } from 'pages/tickets/detail/components/TicketMessages/TranslationLimit'
-import { TranslationLoader } from 'pages/tickets/detail/components/TicketMessages/TranslationLoader'
 import { isForwardedMessage } from 'tickets/common/utils'
-import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
-
-import {
-    DisplayedContent,
-    FetchingState,
-} from './TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from './TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import css from './MessageHeader.less'
 
@@ -52,27 +43,11 @@ export function MessageHeader({
     readonly = false,
 }: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
-    const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
-    const { getTicketMessageTranslationDisplay } =
-        useTicketMessageTranslationDisplay()
+
     const { containerRef } = useTicketModalContext()
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
     const actionsContainerRef = useRef<HTMLDivElement>(null)
-
-    const messageTranslation = useTicketMessageTranslation({
-        ticketId: message.ticket_id,
-        messageId: message.id,
-    })
-    const { fetchingState, hasRegeneratedOnce } = useMemo(() => {
-        if (!message?.id)
-            return {
-                display: DisplayedContent.Original,
-                fetchingState: FetchingState.Idle,
-                hasRegeneratedOnce: false,
-            }
-        return getTicketMessageTranslationDisplay(message.id)
-    }, [message?.id, getTicketMessageTranslationDisplay])
 
     let metaContent = (
         <Meta
@@ -135,16 +110,6 @@ export function MessageHeader({
                         <CustomerLabel customer={sender} />
                     )}
                 </div>
-                {!!messageTranslation && (
-                    <i
-                        className={classnames(
-                            'material-icons md-2',
-                            css.translateIcon,
-                        )}
-                    >
-                        translate
-                    </i>
-                )}
 
                 {message.source && (
                     <Source
@@ -157,7 +122,7 @@ export function MessageHeader({
                     />
                 )}
                 {metaContent}
-                {hasTicketThreadRevamp && !hasMessagesTranslation && (
+                {hasTicketThreadRevamp && (
                     <MessageMetadata message={message as TicketMessage} />
                 )}
             </div>
@@ -168,18 +133,7 @@ export function MessageHeader({
                         containerRef={actionsContainerRef}
                     />
                 )}
-                {hasMessagesTranslation && (
-                    <div className={css.translationDetails}>
-                        {fetchingState === FetchingState.Loading && (
-                            <TranslationLoader />
-                        )}
-                        {fetchingState === FetchingState.Failed &&
-                            hasRegeneratedOnce && <TranslationLimit />}
-
-                        <MessageMetadata message={message as TicketMessage} />
-                    </div>
-                )}
-                {!hasTicketThreadRevamp && !hasMessagesTranslation && (
+                {!hasTicketThreadRevamp && (
                     <MessageMetadata message={message as TicketMessage} />
                 )}
             </div>
