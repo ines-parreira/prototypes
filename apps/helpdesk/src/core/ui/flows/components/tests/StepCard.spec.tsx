@@ -68,7 +68,9 @@ describe('StepCard', () => {
             />,
         )
 
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('should apply error styles when errors are provided', () => {
@@ -93,7 +95,9 @@ describe('StepCard', () => {
             />,
         )
 
-        expect(screen.queryByText('warning_amber')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'octagon-warning' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should handle empty errors array', () => {
@@ -107,7 +111,90 @@ describe('StepCard', () => {
 
         const stepCard = container.firstChild as HTMLElement
         expect(stepCard).not.toHaveClass('withErrors')
-        expect(screen.queryByText('warning_amber')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'octagon-warning' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render warning icon when warnings are provided', () => {
+        render(
+            <StepCard
+                title="Test Step"
+                description="Description"
+                warnings={['Warning 1', 'Warning 2']}
+            />,
+        )
+
+        expect(
+            screen.getByRole('img', { name: 'triangle-warning' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should apply warning styles when warnings are provided', () => {
+        const { container } = render(
+            <StepCard
+                title="Test Step"
+                description="Description"
+                warnings={['Warning 1']}
+            />,
+        )
+
+        const stepCard = container.firstChild as HTMLElement
+        expect(stepCard).toHaveClass('withWarnings')
+        expect(stepCard).not.toHaveClass('withErrors')
+    })
+
+    it('should not show warning icon when no warnings', () => {
+        render(
+            <StepCard
+                title="Test Step"
+                description="Description"
+                warnings={[]}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('img', { name: 'triangle-warning' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should prioritize errors over warnings when both are provided', () => {
+        const { container } = render(
+            <StepCard
+                title="Test Step"
+                description="Description"
+                errors={['Error 1']}
+                warnings={['Warning 1']}
+            />,
+        )
+
+        const stepCard = container.firstChild as HTMLElement
+        expect(stepCard).toHaveClass('withErrors')
+        expect(stepCard).not.toHaveClass('withWarnings')
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'triangle-warning' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render with selected state and warnings', () => {
+        const { container } = render(
+            <StepCard
+                title="Test Step"
+                description="Description"
+                isSelected={true}
+                warnings={['Warning']}
+            />,
+        )
+
+        const stepCard = container.firstChild as HTMLElement
+        expect(stepCard).toHaveClass('selected')
+        expect(stepCard).toHaveClass('withWarnings')
+        expect(
+            screen.getByRole('img', { name: 'triangle-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('should use TruncateCellContent for description', () => {
@@ -266,7 +353,9 @@ describe('StepCard', () => {
         )
 
         expect(screen.getByText('test-icon')).toBeInTheDocument()
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
         expect(screen.getByTitle('Action menu')).toBeInTheDocument()
 
         const stepCard = container.firstChild as HTMLElement

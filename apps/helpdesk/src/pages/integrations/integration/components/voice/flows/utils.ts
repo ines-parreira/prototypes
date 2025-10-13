@@ -49,7 +49,6 @@ export function canAddNewStepOnEdge(
         case VoiceFlowNodeType.TimeSplitConditional:
         case VoiceFlowNodeType.SendToSMS:
         case VoiceFlowNodeType.Intermediary:
-        case VoiceFlowNodeType.ForwardToExternalNumber:
             return false
         case VoiceFlowNodeType.Enqueue:
             return target.type !== VoiceFlowNodeType.EnqueueOption

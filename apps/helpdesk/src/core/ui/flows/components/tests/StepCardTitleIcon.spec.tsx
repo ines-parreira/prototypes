@@ -1,26 +1,42 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { StepCardErrorIcon } from '../StepCardErrorIcon'
+import { StepCardTitleIcon } from '../StepCardTitleIcon'
 
-describe('StepCardErrorIcon', () => {
-    it('should render warning icon when errors are present', () => {
-        render(<StepCardErrorIcon errors={['Error 1']} />)
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+describe('StepCardTitleIcon', () => {
+    it('should render error icon by default', () => {
+        render(<StepCardTitleIcon messages={['Error 1']} />)
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should render error icon when variant is error', () => {
+        render(<StepCardTitleIcon messages={['Error 1']} variant="error" />)
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should render warning icon when variant is warning', () => {
+        render(<StepCardTitleIcon messages={['Warning 1']} variant="warning" />)
+        expect(
+            screen.getByRole('img', { name: 'triangle-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('should display custom error title in tooltip', async () => {
         const user = userEvent.setup()
         render(
-            <StepCardErrorIcon
-                errorTitle="Custom error title"
-                errors={['Error 1']}
+            <StepCardTitleIcon
+                messageTitle="Custom error title"
+                messages={['Error 1']}
             />,
         )
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -31,11 +47,11 @@ describe('StepCardErrorIcon', () => {
 
     it('should not display error title when not provided', async () => {
         const user = userEvent.setup()
-        render(<StepCardErrorIcon errors={['Error 1']} />)
+        render(<StepCardTitleIcon messages={['Error 1']} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -46,11 +62,11 @@ describe('StepCardErrorIcon', () => {
     it('should display multiple error messages in tooltip', async () => {
         const user = userEvent.setup()
         const errors = ['Error 1', 'Error 2', 'Error 3']
-        render(<StepCardErrorIcon errors={errors} />)
+        render(<StepCardTitleIcon messages={errors} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -61,8 +77,16 @@ describe('StepCardErrorIcon', () => {
     })
 
     it('should apply error icon styles', () => {
-        const { container } = render(<StepCardErrorIcon errors={['Error']} />)
+        const { container } = render(<StepCardTitleIcon messages={['Error']} />)
         const iconElement = container.querySelector('.errorIcon')
+        expect(iconElement).toBeInTheDocument()
+    })
+
+    it('should apply warning icon styles when variant is warning', () => {
+        const { container } = render(
+            <StepCardTitleIcon messages={['Warning']} variant="warning" />,
+        )
+        const iconElement = container.querySelector('.warningIcon')
         expect(iconElement).toBeInTheDocument()
     })
 
@@ -73,11 +97,11 @@ describe('StepCardErrorIcon', () => {
             'Error with <special> characters',
             'Error with & ampersand',
         ]
-        render(<StepCardErrorIcon errors={errors} />)
+        render(<StepCardTitleIcon messages={errors} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -91,11 +115,11 @@ describe('StepCardErrorIcon', () => {
         const user = userEvent.setup()
         const longError =
             'This is a very long error message that provides detailed information about what went wrong'
-        render(<StepCardErrorIcon errors={[longError]} />)
+        render(<StepCardTitleIcon messages={[longError]} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -104,7 +128,7 @@ describe('StepCardErrorIcon', () => {
     })
 
     it('should not render tooltip content when not hovering', () => {
-        render(<StepCardErrorIcon errors={['Error 1']} />)
+        render(<StepCardTitleIcon messages={['Error 1']} />)
 
         expect(
             screen.queryByText("This step hasn't been configured yet."),
@@ -114,11 +138,11 @@ describe('StepCardErrorIcon', () => {
 
     it('should hide tooltip when mouse leaves', async () => {
         const user = userEvent.setup()
-        render(<StepCardErrorIcon errors={['Error 1']} />)
+        render(<StepCardTitleIcon messages={['Error 1']} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {
@@ -126,7 +150,7 @@ describe('StepCardErrorIcon', () => {
         })
 
         await act(async () => {
-            await user.unhover(warningIcon)
+            await user.unhover(errorIcon)
         })
 
         await waitFor(() => {
@@ -137,11 +161,11 @@ describe('StepCardErrorIcon', () => {
     it('should handle empty strings in errors array', async () => {
         const user = userEvent.setup()
         const errors = ['', 'Valid error', '']
-        render(<StepCardErrorIcon errors={errors} />)
+        render(<StepCardTitleIcon messages={errors} />)
 
-        const warningIcon = screen.getByText('warning_amber')
+        const errorIcon = screen.getByRole('img', { name: 'octagon-warning' })
         await act(async () => {
-            await user.hover(warningIcon)
+            await user.hover(errorIcon)
         })
 
         await waitFor(() => {

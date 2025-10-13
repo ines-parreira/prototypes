@@ -27,6 +27,7 @@ type Props = {
     onRemove: (index?: number) => void
     isRemovable: boolean
     root?: HTMLElement
+    daysOptions?: { label: string; value: string }[]
 }
 
 export default function TimeScheduleRow({
@@ -35,6 +36,7 @@ export default function TimeScheduleRow({
     isRemovable,
     onRemove,
     root,
+    daysOptions = DAYS_OPTIONS,
 }: Props) {
     const namePrefix = useMemo(() => `${name}.${index}`, [name, index])
 
@@ -82,7 +84,7 @@ export default function TimeScheduleRow({
         }
 
         return (
-            DAYS_OPTIONS.find((daysOption) => daysOption.label === option)
+            daysOptions.find((daysOption) => daysOption.label === option)
                 ?.value ?? ''
         )
     }
@@ -98,7 +100,7 @@ export default function TimeScheduleRow({
                 <FormField
                     name={`${namePrefix}.days`}
                     field={SelectDropdownField<string>}
-                    options={DAYS_OPTIONS.map((option) => option.label)}
+                    options={daysOptions.map((option) => option.label)}
                     outputTransform={(option) =>
                         daysFieldOutputTransform(option)
                     }

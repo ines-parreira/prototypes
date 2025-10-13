@@ -2,21 +2,22 @@
 
 :local {
     .errorIcon {
-        i {
-            color: var(--feedback-error);
-            font-size: 16px;
-        }
+        color: var(--feedback-error);
+    }
+
+    .warningIcon {
+        color: var(--feedback-warning);
     }
 
     .tooltipMessage {
         display: flex;
         flex-direction: column;
 
-        .errorTitle {
+        .messageTitle {
             .caption-semibold();
         }
 
-        .errorMessage {
+        .message {
             .caption-regular();
         }
     }
@@ -24,8 +25,10 @@
 
 .axiom :local {
     .errorIcon {
-        i {
-            color: var(--content-error-primary);
-        }
+        color: var(--content-error-primary);
+    }
+
+    .warningIcon {
+        color: var(--content-warning-primary);
     }
 }

@@ -1,4 +1,5 @@
 import {
+    mockBusinessHoursConfig,
     mockBusinessHoursCreate,
     mockBusinessHoursUpdate,
 } from '@gorgias/helpdesk-mocks'
@@ -12,6 +13,7 @@ import {
     getEditCustomBusinessHoursDefaultValues,
     getIntegrationsChangeSummary,
     getUpdateBusinessHoursPayloadFromValues,
+    is24_7Schedule,
 } from '../utils'
 
 describe('utils', () => {
@@ -168,6 +170,41 @@ describe('utils', () => {
                     assign_integrations: [1, 2, 3],
                 },
             })
+        })
+    })
+
+    describe('is24_7Schedule', () => {
+        it('returns true for a 24/7 schedule', () => {
+            const schedule = mockBusinessHoursConfig({
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5,6,7',
+                        from_time: '00:00',
+                        to_time: '00:00',
+                    },
+                ],
+            })
+            expect(is24_7Schedule(schedule)).toBe(true)
+        })
+
+        it('returns false for a non-24/7 schedule', () => {
+            const schedule = mockBusinessHoursConfig({
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5',
+                        from_time: '00:00',
+                        to_time: '00:00',
+                    },
+                ],
+            })
+            expect(is24_7Schedule(schedule)).toBe(false)
+        })
+
+        it('returns false for an empty schedule', () => {
+            const schedule = mockBusinessHoursConfig({
+                business_hours: [],
+            })
+            expect(is24_7Schedule(schedule)).toBe(false)
         })
     })
 })

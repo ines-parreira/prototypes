@@ -41,7 +41,7 @@ export function ForwardToNode(props: ForwardToNodeProps) {
         <NodeWrapper {...props}>
             <VoiceStepNode
                 title="Forward to"
-                description={external_number || 'External Number'}
+                description={external_number || 'Select phone number'}
                 icon={
                     <StepCardIcon
                         backgroundColor="coral"

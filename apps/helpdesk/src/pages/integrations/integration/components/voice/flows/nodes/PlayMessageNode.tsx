@@ -22,7 +22,7 @@ export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
 
     const description =
         step?.message?.voice_message_type === 'text_to_speech'
-            ? step?.message?.text_to_speech_content || 'Message'
+            ? step?.message?.text_to_speech_content || 'Add message'
             : 'Custom recording'
 
     // Custom validation of the step

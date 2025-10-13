@@ -26,7 +26,13 @@ const meta: Meta<typeof StepCard> = {
         },
         errors: {
             control: 'object',
-            description: 'Array of error messages',
+            description:
+                'Array of error messages (takes priority over warnings)',
+        },
+        warnings: {
+            control: 'object',
+            description:
+                'Array of warning messages (shown only when no errors)',
         },
         children: {
             description: 'Children components (e.g., StepCardActionMenu)',
@@ -84,6 +90,38 @@ export const SelectedWithErrors: Story = {
             'Agent group not selected',
             'Transfer rules not defined',
         ],
+    },
+}
+
+export const WithWarnings: Story = {
+    args: {
+        title: 'Route to Queue',
+        description: 'Direct call to customer support queue',
+        warnings: [
+            'Queue may be unavailable outside business hours',
+            'High wait time expected during peak hours',
+        ],
+    },
+}
+
+export const SelectedWithWarnings: Story = {
+    args: {
+        title: 'Route to Queue',
+        description: 'Direct call to customer support queue',
+        isSelected: true,
+        warnings: [
+            'Queue may be unavailable outside business hours',
+            'High wait time expected during peak hours',
+        ],
+    },
+}
+
+export const WithErrorsAndWarnings: Story = {
+    args: {
+        title: 'Complex Step',
+        description: 'Step with both errors and warnings',
+        errors: ['Critical configuration missing'],
+        warnings: ['Performance may be degraded', 'Consider using alternative'],
     },
 }
 

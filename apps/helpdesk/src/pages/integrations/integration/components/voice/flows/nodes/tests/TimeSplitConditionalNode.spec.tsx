@@ -240,7 +240,39 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(step, mockFlow)
 
         await waitFor(() => {
-            expect(screen.getByText('warning_amber')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'octagon-warning' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should show warning icon when business hours are 24/7', async () => {
+        const mockGetBusinessHours24_7 = mockGetBusinessHoursDetailsHandler(
+            async () =>
+                HttpResponse.json({
+                    id: 123,
+                    name: 'Always On',
+                    business_hours_config: {
+                        business_hours: [
+                            {
+                                days: '1,2,3,4,5,6,7',
+                                from_time: '00:00',
+                                to_time: '00:00',
+                            },
+                        ],
+                        timezone: 'UTC',
+                    },
+                } as BusinessHoursDetails),
+        )
+
+        server.use(mockGetBusinessHours24_7.handler)
+
+        renderComponent(mockDefaultStep, mockDefaultFlowData)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
         })
     })
 })

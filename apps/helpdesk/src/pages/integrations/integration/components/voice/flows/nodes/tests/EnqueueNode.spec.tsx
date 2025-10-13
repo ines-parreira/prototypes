@@ -88,7 +88,7 @@ describe('EnqueueNode', () => {
         renderComponent(mockStep)
 
         expect(screen.getAllByText('Route to')).toHaveLength(2)
-        expect(screen.getByText('Queue')).toBeInTheDocument()
+        expect(screen.getByText('Select queue')).toBeInTheDocument()
         expect(screen.getByLabelText('arrow-routing')).toBeInTheDocument()
     })
 
@@ -98,7 +98,9 @@ describe('EnqueueNode', () => {
         } as any)
         renderComponent(mockStep)
 
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('shows callback configuration when callback requests are enabled', () => {
@@ -167,7 +169,9 @@ describe('EnqueueNode', () => {
 
         renderComponent(mockStep)
 
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('renders all form sections with correct headers', () => {

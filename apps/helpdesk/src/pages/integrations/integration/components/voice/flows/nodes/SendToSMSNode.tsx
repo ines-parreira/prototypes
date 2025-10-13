@@ -61,7 +61,7 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
             title="Send to SMS"
             description={
                 getIntegrationName(chosenSmsIntegration, phoneNumbers) ||
-                'SMS integration'
+                'Select SMS integration'
             }
             icon={
                 <StepCardIcon backgroundColor="green" name="comm-chat-dots" />

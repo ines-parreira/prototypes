@@ -61,14 +61,18 @@ describe('VoiceStepNode', () => {
         //     screen.getByText('Learn more about Call Flows'),
         // ).toBeInTheDocument()
 
-        expect(screen.queryByText('warning_amber')).toBeNull()
+        expect(
+            screen.queryByRole('img', { name: 'octagon-warning' }),
+        ).toBeNull()
     })
 
     it('renders with errors', () => {
         const errors = ['Error 1', 'Error 2']
         renderComponent({ ...defaultProps, errors })
 
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
     })
 
     it('selects card when clicked', async () => {

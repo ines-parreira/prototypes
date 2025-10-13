@@ -106,14 +106,14 @@ describe('utils', () => {
             expect(canAddNewStepOnEdge(edge, targetNode)).toBe(false)
         })
 
-        it('should return false if the edge is a forward to', () => {
+        it('should return true if the edge is a forward to', () => {
             const edge = {
                 type: VoiceFlowNodeType.ForwardToExternalNumber,
                 id: '1',
                 position: { x: 0, y: 0 },
             } as ForwardToExternalNode
 
-            expect(canAddNewStepOnEdge(edge, targetNode)).toBe(false)
+            expect(canAddNewStepOnEdge(edge, targetNode)).toBe(true)
         })
 
         it('should return true if the edge is not an IVRMenu', () => {

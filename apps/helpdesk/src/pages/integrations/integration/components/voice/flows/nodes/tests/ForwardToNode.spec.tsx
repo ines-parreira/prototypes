@@ -54,7 +54,7 @@ describe('ForwardToNode', () => {
 
             expect(screen.getAllByText('Forward to')).toHaveLength(2)
             expect(screen.getByText('Phone number')).toBeInTheDocument()
-            expect(screen.getByText('External Number')).toBeInTheDocument()
+            expect(screen.getByText('Select phone number')).toBeInTheDocument()
         })
 
         it('should render with phone number as description when provided', () => {
@@ -70,7 +70,9 @@ describe('ForwardToNode', () => {
             renderComponent()
 
             await act(async () => {
-                await user.hover(screen.getByText('warning_amber'))
+                await user.hover(
+                    screen.getByRole('img', { name: 'octagon-warning' }),
+                )
             })
 
             await waitFor(() => {
@@ -85,7 +87,9 @@ describe('ForwardToNode', () => {
             renderComponent({ external_number: '123' })
 
             await act(async () => {
-                await user.hover(screen.getByText('warning_amber'))
+                await user.hover(
+                    screen.getByRole('img', { name: 'octagon-warning' }),
+                )
             })
 
             await waitFor(() => {

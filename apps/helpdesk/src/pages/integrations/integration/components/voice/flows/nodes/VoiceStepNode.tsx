@@ -21,6 +21,7 @@ type VoiceStepNodeProps = NodeProps & {
     description: string
     icon: React.ReactNode
     errors: string[]
+    warnings?: string[]
     children: React.ReactNode
     drawerRef?: React.RefObject<HTMLDivElement>
 }
@@ -30,6 +31,7 @@ export function VoiceStepNode({
     description,
     icon,
     errors = [],
+    warnings = [],
     children,
     drawerRef,
     ...rest
@@ -68,6 +70,7 @@ export function VoiceStepNode({
                         description={description}
                         isSelected={selected}
                         errors={errors}
+                        warnings={warnings}
                     >
                         <StepCardActionMenu>
                             <StepCardActionMenuItem

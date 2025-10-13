@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
 
-import { StepCardErrorIcon } from './StepCardErrorIcon'
+import { StepCardTitleIcon } from './StepCardTitleIcon'
 
 import css from './StepCard.less'
 
@@ -12,6 +12,7 @@ type StepCardProps = {
     icon?: React.ReactNode
     isSelected?: boolean
     errors?: string[]
+    warnings?: string[]
     children?: React.ReactNode
 }
 
@@ -21,15 +22,18 @@ export function StepCard({
     icon,
     isSelected = false,
     errors = [],
+    warnings = [],
     children,
 }: StepCardProps) {
     const hasErrors = errors.length > 0
+    const hasWarnings = warnings.length > 0 && !hasErrors
 
     return (
         <div
             className={classNames(css.container, {
                 [css.selected]: isSelected,
                 [css.withErrors]: hasErrors,
+                [css.withWarnings]: hasWarnings,
             })}
         >
             {icon && <div className={css.icon}>{icon}</div>}
@@ -37,9 +41,17 @@ export function StepCard({
             <div className={css.textContent}>
                 <div className={css.title}>
                     {hasErrors && (
-                        <StepCardErrorIcon
-                            errors={errors}
-                            errorTitle={"This step hasn't been configured yet."}
+                        <StepCardTitleIcon
+                            messages={errors}
+                            messageTitle={
+                                "This step hasn't been configured yet."
+                            }
+                        />
+                    )}
+                    {hasWarnings && (
+                        <StepCardTitleIcon
+                            messages={warnings}
+                            variant="warning"
                         />
                     )}
                     <TruncateCellContent content={title} />

@@ -30,6 +30,16 @@
             border: 1.5px solid var(--feedback-error);
         }
 
+        &.withWarnings:not(.selected) {
+            border: 1.5px solid var(--feedback-warning);
+        }
+
+        &.withErrors {
+            .title {
+                color: var(--feedback-error);
+            }
+        }
+
         .icon {
             align-self: start;
         }
@@ -74,11 +84,21 @@
         }
 
         &.selected {
-            border: 1.5px solid var(--border-neutral-default);
+            border: 1.5px solid var(--navigation-border);
         }
 
         &.withErrors:not(.selected) {
             border: 1.5px solid var(--content-error-primary);
+        }
+
+        &.withWarnings:not(.selected) {
+            border: 1.5px solid var(--content-warning-primary);
+        }
+
+        &.withErrors {
+            .title {
+                color: var(--content-error-primary);
+            }
         }
     }
 }

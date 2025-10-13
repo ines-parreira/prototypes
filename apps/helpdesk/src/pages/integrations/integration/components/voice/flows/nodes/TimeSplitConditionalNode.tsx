@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
+import { Banner } from '@gorgias/axiom'
 import {
     BusinessHoursTimeframe,
     TimeSplitConditionalRuleType,
@@ -22,6 +23,7 @@ import {
     DAYS_OPTIONS,
 } from 'pages/settings/businessHours/constants'
 
+import { is24_7Schedule } from '../../../../../../settings/businessHours/utils'
 import type { TimeSplitConditionalNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { VoiceStepNode } from './VoiceStepNode'
@@ -59,10 +61,15 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const businessHoursSchedule = businessHours
         ? getBusinessHoursConfigLabel(businessHours, true)
         : ''
+    const is24_7 = schedule && is24_7Schedule(schedule)
+    const alwaysOnWarning =
+        'Your business hours are set to 24/7. All steps on the “Outside business hours” branch will be ignored.'
+
     const errors =
         step?.on_true_step_id && step?.on_false_step_id
             ? []
             : ['Branches are required and cannot point to end call']
+    const warnings = is24_7 ? [alwaysOnWarning] : []
 
     useEffect(() => {
         // If the rule type is set to custom hours, ensure the timezone is set automatically
@@ -91,10 +98,13 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
             description={`${isCustomHours ? 'Custom hours' : 'Business hours'}: ${hours}`}
             icon={<StepCardIcon backgroundColor="purple" name="clock" />}
             errors={errors}
+            warnings={warnings}
             drawerRef={ref}
             {...props}
         >
             <div className={css.tightDrawerForm}>
+                {is24_7 && <Banner type="warning">{alwaysOnWarning}</Banner>}
+
                 <FormField
                     name={`steps.${id}.rule_type`}
                     field={RadioButtonField}

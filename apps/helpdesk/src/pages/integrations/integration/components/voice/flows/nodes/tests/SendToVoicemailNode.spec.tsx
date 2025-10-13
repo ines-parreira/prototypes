@@ -112,9 +112,11 @@ describe('SendToVoicemailNode', () => {
         renderComponent(mockFlow, mockStep)
 
         // Check for warning icon which indicates errors
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
         // Check that the description shows 'Message' (default text for empty content)
-        expect(screen.getByText('Message')).toBeInTheDocument()
+        expect(screen.getByText('Add voicemail')).toBeInTheDocument()
     })
 
     it('shows error when voice recording is not selected', () => {
@@ -131,7 +133,9 @@ describe('SendToVoicemailNode', () => {
         renderComponent(mockFlow, mockStep)
 
         // Check for warning icon which indicates errors
-        expect(screen.getByText('warning_amber')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
         // Check that the description shows 'Custom recording'
         expect(screen.getAllByText('Custom recording')).toHaveLength(2)
     })

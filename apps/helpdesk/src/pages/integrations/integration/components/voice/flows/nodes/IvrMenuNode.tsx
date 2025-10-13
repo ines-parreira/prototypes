@@ -44,7 +44,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
 
     const description =
         step?.message?.voice_message_type === 'text_to_speech'
-            ? step?.message?.text_to_speech_content || 'Message'
+            ? step?.message?.text_to_speech_content || 'Add greeting message'
             : 'Custom recording'
 
     useEffect(() => {

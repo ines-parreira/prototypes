@@ -24,7 +24,7 @@ export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
 
     const description =
         step?.voicemail?.voice_message_type === 'text_to_speech'
-            ? step?.voicemail?.text_to_speech_content || 'Message'
+            ? step?.voicemail?.text_to_speech_content || 'Add voicemail'
             : 'Custom recording'
 
     // Custom validation of the step

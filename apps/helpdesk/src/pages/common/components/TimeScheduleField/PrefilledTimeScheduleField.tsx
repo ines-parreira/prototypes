@@ -4,7 +4,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
 import { useFieldArray } from 'core/forms'
-import { DEFAULT_BUSINESS_HOUR } from 'pages/settings/businessHours/constants'
+import {
+    DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
+    DEFAULT_BUSINESS_HOUR,
+} from 'pages/settings/businessHours/constants'
 
 import TimeScheduleRow from './TimeScheduleRow'
 
@@ -14,12 +17,14 @@ type Props = {
     name: string
     root?: HTMLElement
     defaultValues?: BusinessHoursTimeframe
+    daysOptions?: { label: string; value: string }[]
 }
 
 export default function PrefilledTimeScheduleField({
     name,
     root,
     defaultValues = DEFAULT_BUSINESS_HOUR,
+    daysOptions = DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
 }: Props) {
     const { fields, append, remove } = useFieldArray({
         name,
@@ -43,6 +48,7 @@ export default function PrefilledTimeScheduleField({
                         name={name}
                         isRemovable={fields.length > 1}
                         root={root}
+                        daysOptions={daysOptions}
                     />
                 ))}
             </div>

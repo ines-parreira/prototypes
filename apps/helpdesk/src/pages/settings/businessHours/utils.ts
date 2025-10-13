@@ -1,13 +1,17 @@
 import { omit } from 'lodash'
 
 import {
+    BusinessHoursConfig,
     BusinessHoursCreate,
     BusinessHoursDetails,
     BusinessHoursUpdate,
     Timezone,
 } from '@gorgias/helpdesk-types'
 
-import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from './constants'
+import {
+    DEFAULT_BUSINESS_HOURS_SCHEDULE,
+    EVERYDAY_OPTION_VALUE,
+} from './constants'
 import {
     BusinessHoursCreateFormValues,
     CustomBusinessHoursFormValues,
@@ -106,4 +110,15 @@ export const getCreateCustomBusinessHoursPayloadFromValues = (
     const newValues = omit(values, ['overrideConfirmation'])
 
     return newValues
+}
+
+export const is24_7Schedule = (
+    businessHoursConfig: BusinessHoursConfig,
+): boolean => {
+    return businessHoursConfig.business_hours.some(
+        (businessHours) =>
+            businessHours.days === EVERYDAY_OPTION_VALUE &&
+            businessHours.from_time === '00:00' &&
+            businessHours.to_time === '00:00',
+    )
 }

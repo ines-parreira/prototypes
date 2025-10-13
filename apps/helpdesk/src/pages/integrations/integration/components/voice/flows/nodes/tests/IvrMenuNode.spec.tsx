@@ -193,7 +193,7 @@ describe('IvrMenuNode', () => {
             },
         })
 
-        expect(screen.getByText('Message')).toBeInTheDocument()
+        expect(screen.getByText('Add greeting message')).toBeInTheDocument()
     })
 
     it('should add new node to flow when add option button is clicked', async () => {
@@ -296,7 +296,7 @@ describe('IvrMenuNode', () => {
             })
 
             await act(async () => {
-                await user.hover(screen.getByText('warning_amber'))
+                await user.hover(screen.getByLabelText('octagon-warning'))
             })
 
             await waitFor(() => {
@@ -325,7 +325,7 @@ describe('IvrMenuNode', () => {
             })
 
             await act(async () => {
-                await user.hover(screen.getByText('warning_amber'))
+                await user.hover(screen.getByLabelText('octagon-warning'))
             })
 
             await waitFor(() => {

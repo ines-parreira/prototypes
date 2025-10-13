@@ -92,7 +92,7 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
         <VoiceStepNode
             {...props}
             title="Route to"
-            description={queueName ?? 'Queue'}
+            description={queueName ?? 'Select queue'}
             icon={
                 <StepCardIcon backgroundColor="orange" name="arrow-routing" />
             }

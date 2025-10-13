@@ -157,9 +157,13 @@ describe('SendToSMSNode', () => {
         renderComponent(stepWithoutPhone, flowData)
 
         await waitFor(() => {
-            expect(screen.getByText('SMS integration')).toBeInTheDocument()
+            expect(
+                screen.getByText('Select SMS integration'),
+            ).toBeInTheDocument()
             // error message
-            expect(screen.getByText('warning_amber')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'octagon-warning' }),
+            ).toBeInTheDocument()
             // dropdown should show placeholder
             expect(screen.getByText('Select')).toBeInTheDocument()
         })
@@ -179,7 +183,9 @@ describe('SendToSMSNode', () => {
         renderComponent(stepWithoutContent, flowData)
 
         await waitFor(() => {
-            expect(screen.getByText('warning_amber')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'octagon-warning' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -199,7 +205,9 @@ describe('SendToSMSNode', () => {
         renderComponent(stepWithInvalidMessage, flowData)
 
         await waitFor(() => {
-            expect(screen.getByText('warning_amber')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'octagon-warning' }),
+            ).toBeInTheDocument()
         })
     })
 
