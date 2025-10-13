@@ -265,20 +265,4 @@ describe('EditableTitle', () => {
             expect(ref.current?.select).toBeDefined()
         })
     })
-
-    describe('Resizable Input', () => {
-        it('should pass isResizable prop to TextInput', () => {
-            render(<EditableTitle {...defaultProps} isResizable />)
-
-            const input = screen.getByRole('textbox')
-            expect(input).toBeInTheDocument()
-        })
-
-        it('should pass maxWidth prop to TextInput', () => {
-            render(<EditableTitle {...defaultProps} maxWidth={300} />)
-
-            const input = screen.getByRole('textbox')
-            expect(input).toBeInTheDocument()
-        })
-    })
 })

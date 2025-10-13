@@ -30,6 +30,9 @@ export type TicketMessagesTranslationDisplayContextType = {
             messageId: number
         })[],
     ) => void
+    allMessageDisplayState: ValueOf<typeof DisplayedContent>
+    setAllTicketMessagesToOriginal: () => void
+    setAllTicketMessagesToTranslated: () => void
 }
 
 export const TicketMessagesTranslationDisplayContext =
@@ -40,4 +43,7 @@ export const TicketMessagesTranslationDisplayContext =
             hasRegeneratedOnce: false,
         }),
         setTicketMessageTranslationDisplay: () => {},
+        allMessageDisplayState: DisplayedContent.Translated,
+        setAllTicketMessagesToOriginal: () => {},
+        setAllTicketMessagesToTranslated: () => {},
     })

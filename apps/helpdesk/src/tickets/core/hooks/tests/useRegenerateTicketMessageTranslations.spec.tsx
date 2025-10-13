@@ -62,6 +62,9 @@ const wrapper = ({ children }: { children: ReactNode }) => (
                     mockSetTicketMessageTranslationDisplay,
                 getTicketMessageTranslationDisplay:
                     mockGetTicketMessageTranslationDisplay,
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             }}
         >
             {children}

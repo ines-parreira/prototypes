@@ -20,6 +20,9 @@ export function TicketMessageTranslationDisplayProvider({
     ] = useState<TicketMessagesTranslationDisplay>(
         TicketMessagesTranslationDisplayMap,
     )
+    const [allMessageDisplayState, setAllMessageDisplayState] = useState<
+        ValueOf<typeof DisplayedContent>
+    >(DisplayedContent.Translated)
 
     const getTicketMessageTranslationDisplay = useCallback(
         (messageId: number) =>
@@ -48,14 +51,48 @@ export function TicketMessageTranslationDisplayProvider({
         [setTicketMessagesTranslationDisplayMap],
     )
 
+    const setAllTicketMessagesToOriginal = useCallback(() => {
+        setTicketMessagesTranslationDisplayMap((prev) => {
+            const newMap = { ...prev }
+            for (const messageId in newMap) {
+                newMap[messageId] = {
+                    ...newMap[messageId],
+                    display: DisplayedContent.Original,
+                }
+            }
+            return newMap
+        })
+        setAllMessageDisplayState(DisplayedContent.Original)
+    }, [setTicketMessagesTranslationDisplayMap])
+
+    const setAllTicketMessagesToTranslated = useCallback(() => {
+        setTicketMessagesTranslationDisplayMap((prev) => {
+            const newMap = { ...prev }
+            for (const messageId in newMap) {
+                newMap[messageId] = {
+                    ...newMap[messageId],
+                    display: DisplayedContent.Translated,
+                }
+            }
+            return newMap
+        })
+        setAllMessageDisplayState(DisplayedContent.Translated)
+    }, [setTicketMessagesTranslationDisplayMap])
+
     const value = useMemo(
         () => ({
             getTicketMessageTranslationDisplay,
             setTicketMessageTranslationDisplay,
+            setAllTicketMessagesToOriginal,
+            setAllTicketMessagesToTranslated,
+            allMessageDisplayState,
         }),
         [
             getTicketMessageTranslationDisplay,
             setTicketMessageTranslationDisplay,
+            setAllTicketMessagesToOriginal,
+            setAllTicketMessagesToTranslated,
+            allMessageDisplayState,
         ],
     )
 

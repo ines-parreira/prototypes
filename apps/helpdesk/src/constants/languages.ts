@@ -106,7 +106,9 @@ export const ISO639 = [
     'zh',
 ]
 
-const IntlDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' })
+export const IntlDisplayNames = new Intl.DisplayNames(['en'], {
+    type: 'language',
+})
 
 export const ISO639English = ISO639.reduce((pair: string[][], code) => {
     pair.push([code, IntlDisplayNames.of(code) as string])

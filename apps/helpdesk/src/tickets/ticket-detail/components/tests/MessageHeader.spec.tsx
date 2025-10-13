@@ -136,6 +136,9 @@ beforeEach(() => {
             hasRegeneratedOnce: false,
         })),
         setTicketMessageTranslationDisplay: jest.fn(),
+        allMessageDisplayState: DisplayedContent.Translated,
+        setAllTicketMessagesToOriginal: jest.fn(),
+        setAllTicketMessagesToTranslated: jest.fn(),
     })
 })
 
@@ -508,6 +511,9 @@ describe('MessageHeader', () => {
                     hasRegeneratedOnce: false,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             })
 
             const message = {
@@ -536,6 +542,9 @@ describe('MessageHeader', () => {
                     hasRegeneratedOnce: false,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             })
 
             const message = {
@@ -583,6 +592,9 @@ describe('MessageHeader', () => {
                     hasRegeneratedOnce: true,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             })
 
             const message = {
@@ -611,6 +623,9 @@ describe('MessageHeader', () => {
                     hasRegeneratedOnce: false,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             })
 
             const message = {
@@ -639,6 +654,9 @@ describe('MessageHeader', () => {
                     hasRegeneratedOnce: true,
                 })),
                 setTicketMessageTranslationDisplay: jest.fn(),
+                allMessageDisplayState: DisplayedContent.Translated,
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
             })
 
             const message = {

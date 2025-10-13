@@ -100,6 +100,9 @@ const mockGetTicketMessageTranslationDisplay = jest.fn(() => ({
 const mockContextValue = {
     getTicketMessageTranslationDisplay: mockGetTicketMessageTranslationDisplay,
     setTicketMessageTranslationDisplay: mockSetTicketMessageTranslationDisplay,
+    allMessageDisplayState: DisplayedContent.Translated,
+    setAllTicketMessagesToOriginal: jest.fn(),
+    setAllTicketMessagesToTranslated: jest.fn(),
 }
 
 // Create mock ticket messages

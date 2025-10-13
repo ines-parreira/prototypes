@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useTitle } from '@repo/hooks'
@@ -6,13 +6,14 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
-import { Tooltip } from '@gorgias/axiom'
+import { IconButton, Tooltip } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { IntlDisplayNames } from 'constants/languages'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -46,6 +47,8 @@ import {
 import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
+import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 import { hasRole } from 'utils'
 
 import Snooze from './Snooze'
@@ -81,10 +84,8 @@ const TicketHeader = ({
     ticket,
     onToggleUnread,
 }: Props) => {
-    const [isMouseOver, setIsMouseOver] = useState(false)
-    const [isFocused, setIsFocused] = useState(false)
-    const translateIconRef = useRef<HTMLDivElement>(null)
-    const titleContentRef = useRef<HTMLDivElement>(null)
+    const translateIconRef = useRef<HTMLButtonElement>(null)
+
     const [askTrashConfirmation, setAskTrashConfirmation] = useState(false)
     const [isMergeTicketModalOpen, setIsMergeTicketModalOpen] = useState(false)
     const appNode = useAppNode()
@@ -96,6 +97,11 @@ const TicketHeader = ({
     const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
     const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const smartFollowUpsEnabled = useFlag(FeatureFlagKey.SmartFollowUps)
+    const {
+        setAllTicketMessagesToOriginal,
+        setAllTicketMessagesToTranslated,
+        allMessageDisplayState,
+    } = useTicketMessageTranslationDisplay()
 
     const { primary, languagesNotToTranslateFor } =
         useCurrentUserPreferredLanguage()
@@ -341,78 +347,74 @@ const TicketHeader = ({
         updateTicketTranslatedSubject(ticket.get('id'), subject)
     }
 
-    const hasTranslation = !!translationMap[ticket.get('id')]?.subject
+    const handleTranslateAllMessages = useCallback(() => {
+        if (allMessageDisplayState === DisplayedContent.Translated) {
+            setAllTicketMessagesToOriginal()
+        } else {
+            setAllTicketMessagesToTranslated()
+        }
+    }, [
+        allMessageDisplayState,
+        setAllTicketMessagesToOriginal,
+        setAllTicketMessagesToTranslated,
+    ])
+
     const translatedSubject = translationMap[ticket.get('id')]?.subject
-    const title = translatedSubject ?? ticket.get('subject') ?? 'New ticket'
+    const title = useMemo(() => {
+        if (translatedSubject) {
+            return allMessageDisplayState === DisplayedContent.Translated
+                ? translatedSubject
+                : ticket.get('subject')
+        }
+        return ticket.get('subject') ?? 'New ticket'
+    }, [translatedSubject, allMessageDisplayState, ticket])
+
     useTitle(title)
-    const resizableEditableTitlePadding = isMouseOver || isFocused ? 27 : 20
 
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
-                <div ref={titleContentRef} className={css.titleContent}>
-                    <TicketHeaderToggle />
-                    <TicketSubjectLoadingState
-                        isInitialLoading={isSubjectLoading}
-                    >
-                        <EditableTitle
-                            className={css.editableTitleWrapper}
-                            inputClassName={css.editableTitle}
-                            title={title}
-                            placeholder="Subject"
-                            update={handleSubjectChange}
-                            focus={!ticket.get('id')}
-                            maxLength={998}
-                            onFocus={() => setIsFocused(true)}
-                            onBlur={() => setIsFocused(false)}
-                            onMouseEnter={() => setIsMouseOver(true)}
-                            onMouseLeave={() => setIsMouseOver(false)}
-                            isResizable={
-                                !!ticket.get('id') &&
-                                !!translatedSubject &&
-                                title?.length > 0
-                            }
-                            maxWidth={
-                                titleContentRef.current?.clientWidth
-                                    ? titleContentRef.current.clientWidth -
-                                      (hasTranslation
-                                          ? resizableEditableTitlePadding
-                                          : 5)
-                                    : undefined
-                            }
-                            padding={resizableEditableTitlePadding}
-                            fontSize="16px"
-                            fontWeight="600"
-                        />
-                        {translationMap[ticket.get('id')]?.subject && (
-                            <>
-                                <i
-                                    ref={translateIconRef}
-                                    className={classnames(
-                                        'material-icons md-2',
-                                        css.translateIcon,
-                                        {
-                                            [css.isInputFocused]: isFocused,
-                                            [css.isInputMousedOver]:
-                                                isMouseOver,
-                                        },
-                                    )}
-                                >
-                                    translate
-                                </i>
-                                <Tooltip
-                                    target={translateIconRef}
-                                    boundariesElement="viewport"
-                                    offset="0, 8"
-                                    placement="right"
-                                    trigger={['hover']}
-                                >
-                                    {ticket.get('subject')}
-                                </Tooltip>
-                            </>
-                        )}
-                    </TicketSubjectLoadingState>
-                </div>
+                <TicketHeaderToggle />
+                <TicketSubjectLoadingState isInitialLoading={isSubjectLoading}>
+                    {translationMap[ticket.get('id')]?.subject && (
+                        <div className={css.translateIcon}>
+                            <IconButton
+                                ref={translateIconRef}
+                                icon="translate"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="small"
+                                onClick={handleTranslateAllMessages}
+                            />
+
+                            <Tooltip
+                                target={translateIconRef}
+                                boundariesElement="viewport"
+                                offset="0, 8"
+                                placement="right"
+                                trigger={['hover']}
+                            >
+                                {allMessageDisplayState ===
+                                DisplayedContent.Translated ? (
+                                    <>{`Ticket translated from ${IntlDisplayNames.of(ticket.get('language')) as string}. Click to revert to original.`}</>
+                                ) : (
+                                    <>
+                                        {`Click to translate ticket ${primary ? `to ${IntlDisplayNames.of(primary) as string}` : ''}`.trim()}
+                                    </>
+                                )}
+                            </Tooltip>
+                        </div>
+                    )}
+                    <EditableTitle
+                        className={css.editableTitleWrapper}
+                        inputClassName={css.editableTitle}
+                        title={title}
+                        placeholder="Subject"
+                        update={handleSubjectChange}
+                        focus={!ticket.get('id')}
+                        maxLength={998}
+                    />
+                </TicketSubjectLoadingState>
 
                 <div className={css.actions}>
                     <>

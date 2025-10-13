@@ -104,6 +104,9 @@ const mockTranslationDisplayContext = {
         hasRegeneratedOnce: false,
     })),
     setTicketMessageTranslationDisplay: jest.fn(),
+    allMessageDisplayState: DisplayedContent.Translated,
+    setAllTicketMessagesToOriginal: jest.fn(),
+    setAllTicketMessagesToTranslated: jest.fn(),
 }
 
 // Test component wrapper

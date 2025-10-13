@@ -46,19 +46,6 @@ jest.mock('@repo/hooks', () => ({
     useElementSize: jest.fn().mockImplementation(() => [0, 160]),
 }))
 
-// Mock useTextWidth to avoid Canvas API issues in tests
-jest.mock('@repo/hooks', () => {
-    const actual = jest.requireActual('@repo/hooks')
-    return {
-        ...actual,
-        useTextWidth: (text: string, options: any = {}) => {
-            // Simple mock that returns a basic width calculation
-            const baseWidth = text ? text.length * 8 : 0
-            return baseWidth + (options.padding || 0)
-        },
-    }
-})
-
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
     () => () => <div>TicketAssigneeMock</div>,
@@ -165,6 +152,13 @@ const useParamsMock = useParams as jest.Mock
 jest.mock('core/flags')
 const useFlagMock = useFlag as jest.Mock
 
+jest.mock(
+    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay',
+)
+const mockUseTicketMessageTranslationDisplay = jest.requireMock(
+    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay',
+).useTicketMessageTranslationDisplay as jest.Mock
+
 // MSW server setup for translation testing
 const server = setupServer()
 
@@ -263,6 +257,15 @@ describe('<TicketHeader />', () => {
             translationMap: {},
             updateTicketTranslatedSubject: jest.fn(),
             isInitialLoading: false,
+        })
+
+        // Default mock for useTicketMessageTranslationDisplay
+        mockUseTicketMessageTranslationDisplay.mockReturnValue({
+            setAllTicketMessagesToOriginal: jest.fn(),
+            setAllTicketMessagesToTranslated: jest.fn(),
+            allMessageDisplayState: 'translated',
+            getTicketMessageTranslationDisplay: jest.fn(),
+            setTicketMessageTranslationDisplay: jest.fn(),
         })
     })
 
@@ -848,7 +851,151 @@ describe('<TicketHeader />', () => {
             })
         })
 
-        it('should show original subject in tooltip when hovering over translate icon', async () => {
+        it('should show translate button when translation is available', async () => {
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const translateButton = container.querySelector('button i')
+                expect(translateButton).toBeInTheDocument()
+                expect(translateButton?.textContent).toBe('translate')
+            })
+        })
+
+        it('should toggle to original content when clicking translate button in translated state', async () => {
+            const setAllTicketMessagesToOriginal = jest.fn()
+            const setAllTicketMessagesToTranslated = jest.fn()
+
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal,
+                setAllTicketMessagesToTranslated,
+                allMessageDisplayState: 'translated',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const translateIcon = container.querySelector('button i')
+                expect(translateIcon?.textContent).toBe('translate')
+            })
+
+            const translateButton = container.querySelector('button i')
+                ?.parentElement as HTMLElement
+            fireEvent.click(translateButton)
+
+            expect(setAllTicketMessagesToOriginal).toHaveBeenCalledTimes(1)
+            expect(setAllTicketMessagesToTranslated).not.toHaveBeenCalled()
+        })
+
+        it('should toggle to translated content when clicking translate button in original state', async () => {
+            const setAllTicketMessagesToOriginal = jest.fn()
+            const setAllTicketMessagesToTranslated = jest.fn()
+
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal,
+                setAllTicketMessagesToTranslated,
+                allMessageDisplayState: 'original',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const translateIcon = container.querySelector('button i')
+                expect(translateIcon?.textContent).toBe('translate')
+            })
+
+            const translateButton = container.querySelector('button i')
+                ?.parentElement as HTMLElement
+            fireEvent.click(translateButton)
+
+            expect(setAllTicketMessagesToTranslated).toHaveBeenCalledTimes(1)
+            expect(setAllTicketMessagesToOriginal).not.toHaveBeenCalled()
+        })
+
+        it('should display translated subject when allMessageDisplayState is translated', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
+                allMessageDisplayState: 'translated',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
             mockUseTicketsTranslatedProperties.mockReturnValue({
                 translationMap: {
                     [ticket.id]: {
@@ -876,15 +1023,152 @@ describe('<TicketHeader />', () => {
             )
 
             await waitFor(() => {
-                expect(screen.getByText('translate')).toBeInTheDocument()
+                expect(
+                    screen.getByDisplayValue('Translated Subject'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should display original subject when allMessageDisplayState is original', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
+                allMessageDisplayState: 'original',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
             })
 
-            const translateIcon = screen.getByText('translate')
-            fireEvent.mouseEnter(translateIcon)
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Original English Subject'),
+                    screen.getByDisplayValue('Original English Subject'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should show correct tooltip text when displaying translated content', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
+                allMessageDisplayState: 'translated',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const translateIcon = container.querySelector('button i')
+                expect(translateIcon?.textContent).toBe('translate')
+            })
+
+            const translateButton = container.querySelector('button i')
+                ?.parentElement as HTMLElement
+            fireEvent.mouseEnter(translateButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(/Ticket translated from Spanish/i),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should show correct tooltip text when displaying original content', async () => {
+            mockUseTicketMessageTranslationDisplay.mockReturnValue({
+                setAllTicketMessagesToOriginal: jest.fn(),
+                setAllTicketMessagesToTranslated: jest.fn(),
+                allMessageDisplayState: 'original',
+                getTicketMessageTranslationDisplay: jest.fn(),
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
+
+            mockUseTicketsTranslatedProperties.mockReturnValue({
+                translationMap: {
+                    [ticket.id]: {
+                        subject: 'Translated Subject',
+                    },
+                },
+                updateTicketTranslatedSubject: jest.fn(),
+                isInitialLoading: false,
+            })
+
+            const { container } = render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: ticketWithTranslation,
+                        })}
+                    >
+                        <TicketHeader
+                            {...minProps}
+                            ticket={ticketWithTranslation}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await waitFor(() => {
+                const translateIcon = container.querySelector('button i')
+                expect(translateIcon?.textContent).toBe('translate')
+            })
+
+            const translateButton = container.querySelector('button i')
+                ?.parentElement as HTMLElement
+            fireEvent.mouseEnter(translateButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(/Click to translate ticket to English/i),
                 ).toBeInTheDocument()
             })
         })
@@ -959,194 +1243,6 @@ describe('<TicketHeader />', () => {
 
             const input = await screen.findByRole('textbox')
             expect(input).toHaveValue('Test Ticket Subject')
-        })
-
-        it("should make EditableTitle not resizable when translation isn't available", async () => {
-            const ticketWithTranslation = fromJS({
-                ...ticket,
-                subject: 'Original Subject',
-            })
-
-            // Mock no translation available
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {},
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: ticketWithTranslation,
-                        })}
-                    >
-                        <TicketHeader
-                            {...minProps}
-                            ticket={ticketWithTranslation}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                const editableTitleInput =
-                    container.querySelector('input[type="text"]')
-                expect(editableTitleInput).toHaveAttribute(
-                    'data-resizable',
-                    'false',
-                )
-            })
-        })
-
-        it('should make EditableTitle not resizable for new tickets without ID', () => {
-            const newTicket = fromJS(_omit(ticket, 'id'))
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: newTicket,
-                        })}
-                    >
-                        <TicketHeader {...minProps} ticket={newTicket} />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            const editableTitleInput =
-                container.querySelector('input[type="text"]')
-            expect(editableTitleInput).toHaveAttribute(
-                'data-resizable',
-                'false',
-            )
-        })
-
-        it('should make EditableTitle not resizable when ticket has no translated subject', async () => {
-            const ticketWithSubject = fromJS({
-                ...ticket,
-                subject: 'Original Subject',
-            })
-
-            // Mock no translation available
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {},
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: ticketWithSubject,
-                        })}
-                    >
-                        <TicketHeader
-                            {...minProps}
-                            ticket={ticketWithSubject}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                const editableTitleInput =
-                    container.querySelector('input[type="text"]')
-                expect(editableTitleInput).toHaveAttribute(
-                    'data-resizable',
-                    'false',
-                )
-            })
-        })
-
-        it('should make EditableTitle not resizable when title is empty', async () => {
-            const ticketWithEmptySubject = fromJS({
-                ...ticket,
-                subject: '',
-            })
-
-            // Mock translation with empty subject
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {
-                    [ticket.id]: {
-                        subject: '',
-                    },
-                },
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: ticketWithEmptySubject,
-                        })}
-                    >
-                        <TicketHeader
-                            {...minProps}
-                            ticket={ticketWithEmptySubject}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                const editableTitleInput =
-                    container.querySelector('input[type="text"]')
-                expect(editableTitleInput).toHaveAttribute(
-                    'data-resizable',
-                    'false',
-                )
-            })
-        })
-
-        it('should make EditableTitle not resizable when title has zero length', async () => {
-            const ticketWithNullSubject = fromJS({
-                ...ticket,
-                subject: null,
-            })
-
-            // Mock translation with null subject
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {
-                    [ticket.id]: {
-                        subject: null,
-                    },
-                },
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: ticketWithNullSubject,
-                        })}
-                    >
-                        <TicketHeader
-                            {...minProps}
-                            ticket={ticketWithNullSubject}
-                        />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                const editableTitleInput =
-                    container.querySelector('input[type="text"]')
-                expect(editableTitleInput).toHaveAttribute(
-                    'data-resizable',
-                    'false',
-                )
-            })
         })
     })
 
@@ -1780,92 +1876,6 @@ describe('<TicketHeader />', () => {
 
             // The Snooze component is mocked, but we can test the handler directly
             expect(ticketActions.snoozeTicket).toBeDefined()
-        })
-    })
-
-    describe('Translation icon interaction states', () => {
-        beforeEach(() => {
-            mockUseFlagForFeature(FeatureFlagKey.MessagesTranslations, true)
-        })
-
-        it('should apply correct styles when hovering translate icon area', async () => {
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {
-                    [ticket.id]: {
-                        subject: 'Translated Subject',
-                    },
-                },
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: fromJS(ticket),
-                        })}
-                    >
-                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByText('translate')).toBeInTheDocument()
-            })
-
-            const editableTitle = container.querySelector('input[type="text"]')!
-            const translateIcon = screen.getByText('translate')
-
-            // Hover over the editable title
-            fireEvent.mouseEnter(editableTitle)
-
-            // Check if translate icon has hover class
-            expect(translateIcon).toHaveClass('isInputMousedOver')
-
-            fireEvent.mouseLeave(editableTitle)
-        })
-
-        it('should apply correct styles when focusing on editable title', async () => {
-            mockUseTicketsTranslatedProperties.mockReturnValue({
-                translationMap: {
-                    [ticket.id]: {
-                        subject: 'Translated Subject',
-                    },
-                },
-                updateTicketTranslatedSubject: jest.fn(),
-                isInitialLoading: false,
-            })
-
-            const { container } = render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: fromJS(ticket),
-                        })}
-                    >
-                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByText('translate')).toBeInTheDocument()
-            })
-
-            const editableTitle = container.querySelector('input[type="text"]')!
-            const translateIcon = screen.getByText('translate')
-
-            // Focus the editable title
-            fireEvent.focus(editableTitle)
-
-            // Check if translate icon has focus class
-            expect(translateIcon).toHaveClass('isInputFocused')
-
-            fireEvent.blur(editableTitle)
         })
     })
 

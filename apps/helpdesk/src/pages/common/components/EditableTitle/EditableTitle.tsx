@@ -10,13 +10,12 @@ import {
 } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
-import type { UseTextWidthOptions } from '@repo/hooks'
 import classnames from 'classnames'
 
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-type Props = UseTextWidthOptions & {
+type Props = {
     className?: string
     inputClassName?: string
     title: string
@@ -27,8 +26,6 @@ type Props = UseTextWidthOptions & {
     disabled?: boolean
     forceEditMode?: boolean
     onChange?: (value?: string) => void
-    isResizable?: boolean
-    maxWidth?: number
 } & ComponentProps<typeof TextInput>
 
 const EditableTitle = (
@@ -45,7 +42,7 @@ const EditableTitle = (
         onChange,
         onBlur: onBlurProps,
         isRequired,
-        isResizable = false,
+
         ...props
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
@@ -134,7 +131,6 @@ const EditableTitle = (
             onKeyUp={onKeyUp}
             onKeyDown={onKeyDown}
             hasError={isRequired && !value.trim().length}
-            isResizable={isResizable}
             {...props}
         />
     )

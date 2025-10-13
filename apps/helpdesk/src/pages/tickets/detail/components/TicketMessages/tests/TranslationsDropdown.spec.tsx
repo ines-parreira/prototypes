@@ -50,6 +50,9 @@ const mockDisplayTypeFailedRegeneratedOnce = {
 const mockTranslationContext = {
     getTicketMessageTranslationDisplay: jest.fn(),
     setTicketMessageTranslationDisplay: jest.fn(),
+    allMessageDisplayState: DisplayedContent.Translated,
+    setAllTicketMessagesToOriginal: jest.fn(),
+    setAllTicketMessagesToTranslated: jest.fn(),
 }
 
 const renderWithContext = (messageId: number = mockMessageId) => {
