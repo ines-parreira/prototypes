@@ -156,6 +156,6 @@ export default {
         'sspTexts.email': { maxLength: 10 },
     },
     privacyPolicyDisclaimer: {
-        'texts.privacyPolicyDisclaimer': { maxLength: 500, isRichText: true },
+        'texts.privacyPolicyDisclaimer': { maxLength: 600, isRichText: true },
     },
 }
