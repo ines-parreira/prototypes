@@ -3,7 +3,7 @@ import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 import { MetricScope } from 'domains/reporting/hooks/metricNames'
 import { ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
-    compareReportingQueries,
+    compareAndReportQueries,
     createScopeFilters,
 } from 'domains/reporting/models/scopes/utils'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
@@ -14,8 +14,8 @@ describe('utils', () => {
     describe('createScopeFilters', () => {
         const basePeriodFilters: StatsFiltersWithLogicalOperator = {
             period: {
-                start_datetime: '2025-09-22T00:00:00Z',
-                end_datetime: '2025-09-22T23:59:59Z',
+                start_datetime: '2025-09-22T00:00:00.000',
+                end_datetime: '2025-09-22T23:59:59.000',
             },
         }
 
@@ -31,12 +31,12 @@ describe('utils', () => {
                 {
                     member: 'periodStart',
                     operator: ReportingStatsOperatorsEnum.AfterDate,
-                    values: ['2025-09-22T00:00:00Z'],
+                    values: ['2025-09-22T00:00:00.000'],
                 },
                 {
                     member: 'periodEnd',
                     operator: ReportingStatsOperatorsEnum.BeforeDate,
-                    values: ['2025-09-22T23:59:59Z'],
+                    values: ['2025-09-22T23:59:59.000'],
                 },
             ])
         })
@@ -52,12 +52,12 @@ describe('utils', () => {
                 {
                     member: 'periodStart',
                     operator: ReportingStatsOperatorsEnum.AfterDate,
-                    values: ['2025-09-22T00:00:00Z'],
+                    values: ['2025-09-22T00:00:00.000'],
                 },
                 {
                     member: 'periodEnd',
                     operator: ReportingStatsOperatorsEnum.BeforeDate,
-                    values: ['2025-09-22T23:59:59Z'],
+                    values: ['2025-09-22T23:59:59.000'],
                 },
             ])
         })
@@ -711,10 +711,13 @@ describe('utils', () => {
 
                 const result = createScopeFilters(statFilters, scopeConfig)
 
-                expect(result).toContainEqual({
+                // Empty tags array should not be added to filters
+                expect(result).not.toContainEqual({
                     member: 'tags',
                     values: [],
                 })
+                // Should only contain period filters
+                expect(result).toHaveLength(2)
             })
 
             it('should handle empty arrays for customFields', () => {
@@ -730,10 +733,13 @@ describe('utils', () => {
 
                 const result = createScopeFilters(statFilters, scopeConfig)
 
-                expect(result).toContainEqual({
+                // Empty customFields array should not be added to filters
+                expect(result).not.toContainEqual({
                     member: 'customFields',
                     values: [],
                 })
+                // Should only contain period filters
+                expect(result).toHaveLength(2)
             })
         })
 
@@ -760,12 +766,12 @@ describe('utils', () => {
                 {
                     member: 'periodStart',
                     operator: ReportingStatsOperatorsEnum.AfterDate,
-                    values: ['2025-09-22T00:00:00Z'],
+                    values: ['2025-09-22T00:00:00.000'],
                 },
                 {
                     member: 'periodEnd',
                     operator: ReportingStatsOperatorsEnum.BeforeDate,
-                    values: ['2025-09-22T23:59:59Z'],
+                    values: ['2025-09-22T23:59:59.000'],
                 },
             ])
         })
@@ -801,11 +807,16 @@ describe('utils', () => {
         }
 
         it('should return identical queries as equal', () => {
-            const result = compareReportingQueries(baseV1Query, baseV2Query)
+            // The function doesn't return anything, it just logs errors if there are differences
+            // For identical queries, no error should be logged
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            expect(result.areEqual).toBe(true)
-            expect(result.differences).toHaveLength(0)
-            expect(result.summary).toBe('Queries are identical')
+            compareAndReportQueries(baseV1Query, baseV2Query)
+
+            // Should not log any errors for identical queries
+            expect(consoleSpy).not.toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect differences in measures', () => {
@@ -813,12 +824,17 @@ describe('utils', () => {
                 ...baseV2Query,
                 measures: ['orders.count'],
             } as any
-            const result = compareReportingQueries(baseV1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'measures: ["tickets.count"] !== ["orders.count"]',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(baseV1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['measures: ["tickets.count"] !== ["orders.count"]'],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect differences in dimensions', () => {
@@ -826,20 +842,32 @@ describe('utils', () => {
                 ...baseV2Query,
                 dimensions: ['orders.status'],
             } as any
-            const result = compareReportingQueries(baseV1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'dimensions: ["tickets.status"] !== ["orders.status"]',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(baseV1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['dimensions: ["tickets.status"] !== ["orders.status"]'],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect differences in timezone', () => {
             const v2Query = { ...baseV2Query, timezone: 'EST' } as any
-            const result = compareReportingQueries(baseV1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain('timezone: UTC !== EST')
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(baseV1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['timezone: UTC !== EST'],
+            )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect differences in filters', () => {
@@ -853,12 +881,19 @@ describe('utils', () => {
                     },
                 ],
             } as any
-            const result = compareReportingQueries(baseV1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'filter not found in v2: {"member":"agents","operator":"one-of","values":["123","456"]}',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(baseV1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                expect.arrayContaining([
+                    'filter not found in v2: {"member":"agents","operator":"one-of","values":["123","456"]}',
+                ]),
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect different filter lengths', () => {
@@ -879,10 +914,17 @@ describe('utils', () => {
                     { member: 'agents', operator: 'one-of', values: ['123'] },
                 ],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain('filters length: 2 !== 1')
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                expect.arrayContaining(['filters length: 2 !== 1']),
+            )
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle filters in different order', () => {
@@ -908,36 +950,59 @@ describe('utils', () => {
                     { member: 'agents', operator: 'one-of', values: ['123'] },
                 ],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(true)
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            // Should not log any errors for equivalent queries
+            expect(consoleSpy).not.toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect differences in segments', () => {
             const v1Query = { ...baseV1Query, segments: ['segment1'] }
             const v2Query = { ...baseV2Query, segments: ['segment2'] }
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'segments: ["segment1"] !== ["segment2"]',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['segments: ["segment1"] !== ["segment2"]'],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle empty arrays', () => {
             const v1Query = { ...baseV1Query, measures: [], dimensions: [] }
             const v2Query = { ...baseV2Query, measures: [], dimensions: [] }
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(true)
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            // Should not log any errors for equivalent queries
+            expect(consoleSpy).not.toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle undefined values', () => {
             const v1Query = { ...baseV1Query, timezone: undefined }
             const v2Query = { ...baseV2Query, timezone: undefined }
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(true)
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            // Should not log any errors for equivalent queries
+            expect(consoleSpy).not.toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle timeDimensions differences', () => {
@@ -961,12 +1026,17 @@ describe('utils', () => {
                     },
                 ],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'timeDimensions[0].granularity: day !== month',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['timeDimensions[0].granularity: day !== month'],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect different timeDimensions lengths', () => {
@@ -995,12 +1065,17 @@ describe('utils', () => {
                     },
                 ],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'timeDimensions length: 2 !== 1',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                ['timeDimensions length: 2 !== 1'],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should detect different timeDimensions dimensions', () => {
@@ -1024,12 +1099,19 @@ describe('utils', () => {
                     },
                 ],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'timeDimensions[0].dimension: tickets.created_at !== tickets.updated_at',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                [
+                    'timeDimensions[0].dimension: tickets.created_at !== tickets.updated_at',
+                ],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle order differences', () => {
@@ -1041,12 +1123,19 @@ describe('utils', () => {
                 ...baseV2Query,
                 order: [{ id: 'tickets.count', desc: false }],
             } as any
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences).toContain(
-                'order: [{"id":"tickets.count","desc":true}] !== [{"id":"tickets.count","desc":false}]',
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different',
+                [
+                    'order: [{"id":"tickets.count","desc":true}] !== [{"id":"tickets.count","desc":false}]',
+                ],
             )
+
+            consoleSpy.mockRestore()
         })
 
         it('should not compare metricName, limit, or offset', () => {
@@ -1062,10 +1151,15 @@ describe('utils', () => {
                 limit: 200,
                 offset: 20,
             }
-            const result = compareReportingQueries(v1Query, v2Query)
 
-            // Should be equal because metricName, limit, and offset are not compared
-            expect(result.areEqual).toBe(true)
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries(v1Query, v2Query)
+
+            // Should not log any errors because metricName, limit, and offset are not compared
+            expect(consoleSpy).not.toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
 
         it('should handle JSON.stringify error with circular reference', () => {
@@ -1086,13 +1180,14 @@ describe('utils', () => {
                 order: circularObj2,
             } as any
 
-            const result = compareReportingQueries(v1Query, v2Query)
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            expect(result.areEqual).toBe(false)
-            expect(result.differences[0]).toContain(
-                'Converting circular structure to JSON',
-            )
-            expect(result.summary).toBe('Error comparing reporting queries')
+            compareAndReportQueries(v1Query, v2Query)
+
+            // Should log error due to circular reference
+            expect(consoleSpy).toHaveBeenCalled()
+
+            consoleSpy.mockRestore()
         })
     })
 })

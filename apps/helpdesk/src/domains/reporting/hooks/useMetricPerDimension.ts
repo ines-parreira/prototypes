@@ -191,12 +191,9 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
 ): Promise<MetricWithDecile<TCube>> => {
-    return fetchPostReporting<QueryReturnType<TCube>, QueryReturnType<TCube>>(
-        [query],
-        {
-            queryFn: queryWithDeciles(query),
-        },
-    )
+    return fetchPostReporting<QueryReturnType<TCube>>([query], {
+        queryFn: queryWithDeciles(query),
+    })
         .then((res) => ({
             data: formatMetricPerDimension(res.data.data, query, dimensionId),
             isFetching: false,

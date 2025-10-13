@@ -63,6 +63,7 @@ export type ScopeMeta = {
     timeDimensions?: readonly string[]
     filters?: readonly string[]
     order?: readonly string[]
+    limit?: number
 }
 
 // TODO: expose as public interface? By default support standard filters
@@ -75,6 +76,8 @@ export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
 
 export type QueryFor<TScopeMeta extends ScopeMeta> = {
     measures?: readonly Values<TScopeMeta['measures']>[]
+
+    limit?: number
 
     dimensions?: readonly Values<TScopeMeta['dimensions']>[]
 
@@ -113,7 +116,7 @@ type Context = {
 
 class MetricQuery<
     TMeta extends ScopeMeta,
-    TMetricName extends string,
+    TMetricName extends MetricName,
     TQuery extends QueryFor<TMeta>,
     TSchema extends z.ZodTypeAny | undefined,
     TContext extends Context,
@@ -162,7 +165,7 @@ class MetricQuery<
 }
 
 class MetricBuilderWithInput<
-    TMetricName extends string,
+    TMetricName extends MetricName,
     TSchema extends z.ZodTypeAny,
     TMeta extends ScopeMeta,
     TContext extends Context,
@@ -190,7 +193,7 @@ class MetricBuilderWithInput<
 }
 
 class MetricBuilder<
-    TMetricName extends string,
+    TMetricName extends MetricName,
     TMeta extends ScopeMeta,
     TContext extends Context,
 > {
@@ -227,7 +230,7 @@ class MetricBuilder<
 class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
     constructor(public config: TMeta) {}
 
-    defineMetricName<const TMetricName extends string>(
+    defineMetricName<const TMetricName extends MetricName>(
         metricName: TMetricName,
     ) {
         return new MetricBuilder<TMetricName, TMeta, TContext>(

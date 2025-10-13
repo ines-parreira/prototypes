@@ -25,7 +25,10 @@ import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    StatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -38,8 +41,8 @@ type QueryFactory<TCube extends Cubes> = (
 
 export const getTrendFetch =
     <TCube extends Cubes>(query: QueryFactory<TCube>) =>
-    (filters: StatsFilters, timezone: string) =>
-        fetchMetricTrend(
+    (filters: StatsFiltersWithLogicalOperator, timezone: string) => {
+        return fetchMetricTrend(
             query(filters, timezone),
             query(
                 {
@@ -49,6 +52,7 @@ export const getTrendFetch =
                 timezone,
             ),
         )
+    }
 
 export const getTrendHook =
     <TCube extends Cubes>(query: QueryFactory<TCube>) =>

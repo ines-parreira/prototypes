@@ -19,11 +19,18 @@ import {
     ReportingQuery,
     ReportingResponse,
 } from 'domains/reporting/models/types'
+import { executeMetric } from 'domains/reporting/utils/executeMetric'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
+
+jest.mock('domains/reporting/utils/executeMetric', () => ({
+    executeMetric: jest.fn(),
+}))
+
+const executeMetricMock = assumeMock(executeMetric)
 
 // Mock URL constructor to handle relative paths
 global.URL = jest.fn().mockImplementation((url: string) => {
@@ -81,6 +88,7 @@ describe('Reporting resources', () => {
         mockedAPIClient
             .onPost(REPORTING_ENRICHED_ENDPOINT)
             .reply(200, resFixture)
+        executeMetricMock.mockClear()
     })
 
     describe('postEnrichedReporting', () => {
@@ -107,7 +115,6 @@ describe('Reporting resources', () => {
             const res = await postReporting<[number]>([query])
 
             expect(res.data.data).toEqual([1])
-            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
         })
 
         it('should reject with an error on success', async () => {
@@ -167,6 +174,53 @@ describe('Reporting resources', () => {
                 },
             })
         })
+
+        it('should call executeMetric with correct parameters', async () => {
+            const mockResponse = { data: [42] }
+            executeMetricMock.mockResolvedValue(mockResponse as any)
+
+            // Spy on the functions that should be called
+            const postReportingV1Spy = jest.spyOn(
+                require('domains/reporting/models/resources'),
+                'postReportingV1',
+            )
+            const postReportingV2QuerySpy = jest.spyOn(
+                require('domains/reporting/models/resources'),
+                'postReportingV2Query',
+            )
+
+            postReportingV1Spy.mockResolvedValue({ data: [100] } as any)
+            postReportingV2QuerySpy.mockResolvedValue({ data: [200] } as any)
+
+            const builtQuery: BuiltQuery = {
+                scope: MetricScope.TicketsClosed,
+                dimensions: [],
+                measures: [],
+                filters: [],
+                metricName: METRIC_NAMES.TEST_METRIC,
+            }
+
+            const result = await postReporting<[number]>([query], builtQuery)
+
+            expect(executeMetricMock).toHaveBeenCalledWith({
+                metricName: METRIC_NAMES.TEST_METRIC,
+                oldApi: expect.any(Function),
+                newQueryApi: expect.any(Function),
+                validateQuery: expect.any(Function),
+            })
+
+            const callArgs = executeMetricMock.mock.calls[0][0] as any
+            await callArgs.oldApi()
+            expect(postReportingV1Spy).toHaveBeenCalledWith([query])
+
+            await callArgs.newQueryApi()
+            expect(postReportingV2QuerySpy).toHaveBeenCalledWith(builtQuery)
+
+            expect(result).toBe(mockResponse)
+
+            postReportingV1Spy.mockRestore()
+            postReportingV2QuerySpy.mockRestore()
+        })
     })
 
     describe('postReportingV2', () => {
@@ -182,7 +236,6 @@ describe('Reporting resources', () => {
             const res = await postReportingV2<[number]>(query)
 
             expect(res.data.data).toEqual([1])
-            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
         })
 
         it('should reject with an error on success', async () => {
@@ -255,23 +308,32 @@ describe('Reporting resources', () => {
         }
 
         it('should resolve with the data on success', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(REPORTING_STATS_QUERY_ENDPOINT)
+                .reply(200, queryResFixture)
+
             const res = await postReportingV2Query(query)
 
             expect(res.data).toEqual(queryResFixture)
         })
 
         it('should resolve with the data with limit on success', async () => {
+            mockedAPIClient.reset()
             mockedAPIClient
                 .onPost(`${REPORTING_STATS_QUERY_ENDPOINT}?limit=100`)
                 .reply(200, { ...queryResFixture, limit: 100 })
 
-            const res = await postReportingV2Query(query, 100)
+            const queryWithLimit = { ...query, limit: 100 }
+            const res = await postReportingV2Query(queryWithLimit)
 
             expect(res.data).toEqual({ ...queryResFixture, limit: 100 })
         })
 
         it('should reject with an error on success', async () => {
             const statusCode = 503
+
+            mockedAPIClient.reset()
             mockedAPIClient
                 .onPost(REPORTING_STATS_QUERY_ENDPOINT)
                 .reply(statusCode)
@@ -284,6 +346,7 @@ describe('Reporting resources', () => {
         })
 
         it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            mockedAPIClient.reset()
             mockedAPIClient
                 .onPost(REPORTING_STATS_QUERY_ENDPOINT)
                 .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
@@ -298,6 +361,7 @@ describe('Reporting resources', () => {
         })
 
         it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            mockedAPIClient.reset()
             mockedAPIClient
                 .onPost(REPORTING_STATS_QUERY_ENDPOINT)
                 .reply(
@@ -314,6 +378,7 @@ describe('Reporting resources', () => {
         })
 
         it('should report 4xx errors with query details', async () => {
+            mockedAPIClient.reset()
             mockedAPIClient.onPost(REPORTING_STATS_QUERY_ENDPOINT).reply(400)
 
             const error = new Error('Request failed with status code 400')

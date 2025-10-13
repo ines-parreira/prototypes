@@ -12,8 +12,8 @@ import {
 describe('ticketHandleTimeScope', () => {
     const filters: StatsFilters = {
         period: {
-            start_datetime: '2025-09-03T00:00:00',
-            end_datetime: '2025-09-03T23:59:59',
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
         },
     }
 
@@ -37,12 +37,12 @@ describe('ticketHandleTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'agentxp-ticket-handle-time',
@@ -64,12 +64,12 @@ describe('ticketHandleTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'agentxp-ticket-average-handle-time',
@@ -92,12 +92,12 @@ describe('ticketHandleTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'agentxp-ticket-average-handle-time-per-agent',
@@ -120,12 +120,12 @@ describe('ticketHandleTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName:

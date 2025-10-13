@@ -12,6 +12,8 @@ import {
     ReportingQuery,
     ReportingTimeDimension,
 } from 'domains/reporting/models/types'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+import { reportError } from 'utils/errors'
 
 function createStandardFilter(
     member: string,
@@ -64,12 +66,12 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
         createStandardFilter(
             'periodStart',
             ReportingStatsOperatorsEnum.AfterDate,
-            [statFilters.period.start_datetime],
+            [formatReportingQueryDate(statFilters.period.start_datetime)],
         ),
         createStandardFilter(
             'periodEnd',
             ReportingStatsOperatorsEnum.BeforeDate,
-            [statFilters.period.end_datetime],
+            [formatReportingQueryDate(statFilters.period.end_datetime)],
         ),
     ]
 
@@ -79,7 +81,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
     scopeFilters.forEach((filterKey) => {
         switch (filterKey) {
             case 'agents':
-                if (statFilters.agents) {
+                if (
+                    statFilters.agents &&
+                    statFilters.agents.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'agents',
@@ -91,7 +96,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'channels':
-                if (statFilters.channels) {
+                if (
+                    statFilters.channels &&
+                    statFilters.channels.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'channels',
@@ -103,7 +111,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'integrations':
-                if (statFilters.integrations) {
+                if (
+                    statFilters.integrations &&
+                    statFilters.integrations.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'integrations',
@@ -115,7 +126,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'tags':
-                if (statFilters.tags) {
+                if (statFilters.tags && statFilters.tags.length > 0) {
                     filters.push(
                         createTagsFilter(
                             statFilters.tags.map((tag) => ({
@@ -135,7 +146,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'customFields':
-                if (statFilters.customFields) {
+                if (
+                    statFilters.customFields &&
+                    statFilters.customFields.length > 0
+                ) {
                     filters.push(
                         createCustomFieldsFilter(
                             statFilters.customFields.map((field) => ({
@@ -153,7 +167,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'score':
-                if (statFilters.score) {
+                if (statFilters.score && statFilters.score.values.length > 0) {
                     filters.push(
                         createStandardFilter(
                             'score',
@@ -165,7 +179,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'communicationSkills':
-                if (statFilters.communicationSkills) {
+                if (
+                    statFilters.communicationSkills &&
+                    statFilters.communicationSkills.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'communicationSkills',
@@ -177,7 +194,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'languageProficiency':
-                if (statFilters.languageProficiency) {
+                if (
+                    statFilters.languageProficiency &&
+                    statFilters.languageProficiency.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'languageProficiency',
@@ -189,7 +209,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'resolutionCompleteness':
-                if (statFilters.resolutionCompleteness) {
+                if (
+                    statFilters.resolutionCompleteness &&
+                    statFilters.resolutionCompleteness.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'resolutionCompleteness',
@@ -201,7 +224,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'accuracy':
-                if (statFilters.accuracy) {
+                if (
+                    statFilters.accuracy &&
+                    statFilters.accuracy.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'accuracy',
@@ -213,7 +239,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'efficiency':
-                if (statFilters.efficiency) {
+                if (
+                    statFilters.efficiency &&
+                    statFilters.efficiency.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'efficiency',
@@ -225,7 +254,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'internalCompliance':
-                if (statFilters.internalCompliance) {
+                if (
+                    statFilters.internalCompliance &&
+                    statFilters.internalCompliance.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'internalCompliance',
@@ -237,7 +269,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'brandVoice':
-                if (statFilters.brandVoice) {
+                if (
+                    statFilters.brandVoice &&
+                    statFilters.brandVoice.values.length > 0
+                ) {
                     filters.push(
                         createStandardFilter(
                             'brandVoice',
@@ -300,7 +335,6 @@ function compareFilters(
         differences.push(
             `filters length: ${v1Filters.length} !== ${v2Filters.length}`,
         )
-        return
     }
 
     for (const v1Filter of v1Filters) {
@@ -356,7 +390,7 @@ function compareTimeDimensions(
  * @param v2query - The second query to compare.
  * @returns An object containing the comparison results.
  */
-export function compareReportingQueries<TCube extends Cube = Cube>(
+export function compareAndReportQueries<TCube extends Cube = Cube>(
     v1query: ReportingQuery<TCube>,
     v2query: ReportingQuery<TCube>,
 ) {
@@ -369,20 +403,27 @@ export function compareReportingQueries<TCube extends Cube = Cube>(
             'measures',
             differences,
         )
+
         compareArrays(
             v1query.dimensions,
             [...v2query.dimensions],
             'dimensions',
             differences,
         )
+
         compareTimeDimensions(
             v1query.timeDimensions || [],
             [...(v2query.timeDimensions || [])],
             differences,
         )
+
         compareFilters(v1query.filters, v2query.filters, differences)
 
-        if (JSON.stringify(v1query.order) !== JSON.stringify(v2query.order)) {
+        // old api return undefined if order is not set and new api return empty array
+        if (
+            JSON.stringify(v1query.order || []) !==
+            JSON.stringify(v2query.order || [])
+        ) {
             differences.push(
                 `order: ${JSON.stringify(v1query.order)} !== ${JSON.stringify(v2query.order)}`,
             )
@@ -402,23 +443,26 @@ export function compareReportingQueries<TCube extends Cube = Cube>(
             differences,
         )
 
-        return {
-            areEqual: differences.length === 0,
-            differences,
-            summary:
-                differences.length === 0
-                    ? 'Queries are identical'
-                    : `Found ${differences.length} difference(s)`,
+        if (differences.length > 0) {
+            console.error(
+                'New Stats API and Legacy API queries are different',
+                differences,
+            )
+            reportError(
+                new Error('New Stats API and Legacy API queries are different'),
+                {
+                    extra: {
+                        differences,
+                        summary: `Found ${differences.length} difference(s)`,
+                    },
+                },
+            )
         }
     } catch (error: Error | unknown) {
-        console.error('compareReportingQueries error:', error)
-
-        return {
-            areEqual: false,
-            differences: [
-                error instanceof Error ? error.message : String(error),
-            ],
-            summary: 'Error comparing reporting queries',
-        }
+        reportError(error, {
+            extra: {
+                message: 'Error comparing reporting queries in New Stats API',
+            },
+        })
     }
 }

@@ -1,4 +1,4 @@
-import { isAxiosError } from 'axios'
+import { AxiosResponse, isAxiosError } from 'axios'
 
 import {
     BuiltQuery,
@@ -11,11 +11,14 @@ import {
     ReportingParams,
     ReportingQuery,
     ReportingResponse,
+    ReportingV2Response,
 } from 'domains/reporting/models/types'
+import { executeMetric } from 'domains/reporting/utils/executeMetric'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
 import { MetricName } from '../hooks/metricNames'
+import { compareAndReportQueries } from './scopes/utils'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
 export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'
@@ -106,12 +109,33 @@ const enrichedPost =
         })
     }
 
+export const postReporting = <
+    TData,
+    TCube extends Cube = Cube,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    queries: ReportingParams<TCube>,
+    query?: BuiltQuery<TMeta>,
+) => {
+    // Temporary Check until all P1 queries are defined
+    if (!query) {
+        return postReportingV1<TData, TCube>(queries)
+    }
+
+    return executeMetric<TData>({
+        metricName: queries[0].metricName,
+        oldApi: () => postReportingV1<TData, TCube>(queries),
+        newQueryApi: () => postReportingV2Query<TCube, TMeta>(query),
+        validateQuery: compareAndReportQueries,
+    })
+}
+
 /**
  * @deprecated Use postReportingV2 instead
  */
-export const postReporting = <TData, TCube extends Cube = Cube>(
+export const postReportingV1 = <TData, TCube extends Cube = Cube>(
     queries: ReportingParams<TCube>,
-) => {
+): Promise<AxiosResponse<ReportingResponse<TData>>> => {
     const { metricName, ...query } = queries[0]
     return post(REPORTING_ENDPOINT)<TData>({
         query: [query],
@@ -126,7 +150,7 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
 
 export const postReportingV2 = <TData>(
     query: BuiltQuery<ScopeMeta, MetricName>,
-) => {
+): Promise<AxiosResponse<ReportingV2Response<TData>>> => {
     const { metricName, ...baseQuery } = query
 
     return postV2(REPORTING_STATS_ENDPOINT)<TData>({
@@ -140,21 +164,21 @@ export const postReportingV2 = <TData>(
     )
 }
 
-export const postReportingV2Query = <TCube extends Cube = Cube>(
-    query: BuiltQuery<ScopeMeta, MetricName>,
-    limit?: number,
-) => {
-    const { metricName, ...baseQuery } = query
+export const postReportingV2Query = <
+    TCube extends Cube,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    query: BuiltQuery<TMeta>,
+): Promise<AxiosResponse<ReportingQuery<TCube>>> => {
+    const { metricName, limit, ...baseQuery } = query
 
-    const reportingQueryUrl = new URL(REPORTING_STATS_QUERY_ENDPOINT)
-
-    if (limit) {
-        reportingQueryUrl.searchParams.set('limit', limit.toString())
-    }
+    const searchParams = new URLSearchParams({
+        limit: limit?.toString() || '',
+    })
 
     return client
         .post<ReportingQuery<TCube>>(
-            reportingQueryUrl.toString(),
+            `${REPORTING_STATS_QUERY_ENDPOINT}${limit ? `?${searchParams.toString()}` : ''}`,
             {
                 query: baseQuery,
             },

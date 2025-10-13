@@ -11,8 +11,8 @@ import {
 describe('firstResponseTimeScope', () => {
     const filters: StatsFilters = {
         period: {
-            start_datetime: '2025-09-03T00:00:00',
-            end_datetime: '2025-09-03T23:59:59',
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
         },
     }
 
@@ -36,12 +36,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-median-first-response-time',
@@ -63,12 +63,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['medianFirstResponseTime', 'asc']],
@@ -92,12 +92,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName:
@@ -121,12 +121,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['medianFirstResponseTime', 'desc']],
@@ -151,12 +151,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName:
@@ -180,12 +180,12 @@ describe('firstResponseTimeScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['medianFirstResponseTime', 'asc']],

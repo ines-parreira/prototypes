@@ -12,8 +12,8 @@ import {
 describe('ticketsRepliedScope', () => {
     const filters: StatsFilters = {
         period: {
-            start_datetime: '2025-09-03T00:00:00',
-            end_datetime: '2025-09-03T23:59:59',
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
         },
     }
 
@@ -37,12 +37,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-tickets-replied',
@@ -70,12 +70,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-tickets-replied-time-series',
@@ -100,12 +100,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['ticketCount', 'asc']],
@@ -129,12 +129,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['ticketCount', 'desc']],
@@ -160,12 +160,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['ticketCount', 'asc']],
@@ -189,12 +189,12 @@ describe('ticketsRepliedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['ticketCount', 'desc']],

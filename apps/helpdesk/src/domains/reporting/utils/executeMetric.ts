@@ -2,9 +2,13 @@ import { AxiosResponse } from 'axios'
 
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
+import {
+    ReportingQuery,
+    ReportingResponse,
+    ReportingV2Response,
+} from 'domains/reporting/models/types'
+import { getMigrationMode, MigrationMode } from 'domains/reporting/utils/utils'
 import { reportError } from 'utils/errors'
-
-import { getMigrationMode, MigrationMode } from './utils'
 
 /**
  * Configuration for executing metrics during API migration phases.
@@ -13,19 +17,34 @@ import { getMigrationMode, MigrationMode } from './utils'
  * @template OldResponseShape - Type of the legacy API response
  * @template NextResponseShape - Type of the next API response
  */
-export interface ExecuteMetricConfig<OldResponseShape, NextResponseShape> {
+
+type OldApiResponseShape<TData> = Promise<
+    AxiosResponse<ReportingResponse<TData>>
+>
+type NewApiResponseShape<TData> = Promise<
+    AxiosResponse<ReportingV2Response<TData>>
+>
+type QueryResponseShape = Promise<AxiosResponse<ReportingQuery>>
+
+export interface ExecuteMetricConfig<TData = any> {
     /** Unique identifier for the metric, used for feature flag resolution */
-    name: MetricName
-    /** Legacy API function - required in 'off', 'shadow', and 'live' modes */
-    old?: () => Promise<AxiosResponse<OldResponseShape>>
-    /** Next API function - required in 'complete', 'shadow', and 'live' modes */
-    next?: () => Promise<AxiosResponse<NextResponseShape>>
-    /** Transforms next API response to match old API format - required in 'complete' and 'live' modes */
-    normalize?: (nextResponse: NextResponseShape) => OldResponseShape
-    /** Validates old and next responses during migration - required in 'shadow' and 'live' modes */
+    metricName: MetricName
+    oldApi?: (/*payload: ReportingParams<TCube>*/) => OldApiResponseShape<TData>
+    newApi?: (/*payload: BuiltQuery<ScopeMeta, MetricName>*/) => NewApiResponseShape<TData>
+    newQueryApi?: (/*payload: BuiltQuery<ScopeMeta, MetricName>*/) => QueryResponseShape
+    /* normalizes new response to return the old response shape */
+    normalize?: (
+        nextResponse: ReportingV2Response<TData>,
+    ) => ReportingResponse<TData>
+    /** Validates old and next responses during migration - required in 'live' mode */
     validate?: (
-        oldResponse: OldResponseShape,
-        nextResponse: NextResponseShape,
+        oldResponse: ReportingResponse<TData>,
+        nextResponse: ReportingV2Response<TData>,
+    ) => void
+    /** Validates old and next responses during migration - required in 'shadow' mode */
+    validateQuery?: (
+        oldResponseQuery: ReportingQuery,
+        newResponseQuery: ReportingQuery,
     ) => void
 }
 
@@ -34,19 +53,19 @@ export interface ExecuteMetricConfig<OldResponseShape, NextResponseShape> {
  */
 const MODE_REQUIREMENTS: Record<
     MigrationMode,
-    (keyof ExecuteMetricConfig<any, any>)[]
+    (keyof ExecuteMetricConfig<any>)[]
 > = {
-    off: ['old'],
-    complete: ['next', 'normalize'],
-    shadow: ['old', 'next', 'validate'],
-    live: ['old', 'next', 'normalize', 'validate'],
+    off: ['oldApi'],
+    shadow: ['oldApi', 'newQueryApi', 'validateQuery'],
+    live: ['oldApi', 'newApi', 'normalize', 'validate'],
+    complete: ['newApi', 'normalize'],
 } as const
 
 /**
  * Validates metric configuration for a specific migration mode
  */
-function validateMetricConfig<OldResponseShape, NextResponseShape>(
-    config: ExecuteMetricConfig<OldResponseShape, NextResponseShape>,
+function validateMetricConfig<TData>(
+    config: ExecuteMetricConfig<TData>,
     mode: MigrationMode,
 ): void {
     const requirements = MODE_REQUIREMENTS[mode]
@@ -58,7 +77,7 @@ function validateMetricConfig<OldResponseShape, NextResponseShape>(
 
     if (missing.length > 0) {
         throw new Error(
-            `Missing required functions for metric ${config.name} in ${mode} mode: ${missing.join(', ')}`,
+            `Missing required functions for metric ${config.metricName} in ${mode} mode: ${missing.join(', ')}`,
         )
     }
 }
@@ -66,26 +85,28 @@ function validateMetricConfig<OldResponseShape, NextResponseShape>(
 /**
  * Type for execution functions
  */
-type ExecutionFunction<OldResponseShape, NextResponseShape> = (
-    config: Required<ExecuteMetricConfig<OldResponseShape, NextResponseShape>>,
-) => Promise<AxiosResponse<OldResponseShape>>
+type ExecutionFunction = <TData>(
+    config: Required<ExecuteMetricConfig<TData>>,
+) => Promise<
+    AxiosResponse<ReportingResponse<TData> | ReportingV2Response<TData>>
+>
 
 /**
  * Executes only the legacy API (off mode)
  */
-async function executeOffMode<OldResponseShape, NextResponseShape>(
-    config: Required<ExecuteMetricConfig<OldResponseShape, NextResponseShape>>,
-): Promise<AxiosResponse<OldResponseShape>> {
-    return config.old()
+async function executeOffMode<TData>(
+    config: Required<ExecuteMetricConfig<TData>>,
+): OldApiResponseShape<TData> {
+    return config.oldApi()
 }
 
 /**
- * Executes only the next API with normalization (complete mode)
+ * Executes only the new API and returns the normalized response -> V1 response
  */
-async function executeCompleteMode<OldResponseShape, NextResponseShape>(
-    config: Required<ExecuteMetricConfig<OldResponseShape, NextResponseShape>>,
-): Promise<AxiosResponse<OldResponseShape>> {
-    const nextResponse = await config.next()
+async function executeCompleteMode<TData>(
+    config: Required<ExecuteMetricConfig<TData>>,
+): NewApiResponseShape<TData> {
+    const nextResponse = await config.newApi()
     return {
         ...nextResponse,
         data: config.normalize(nextResponse.data),
@@ -96,12 +117,12 @@ async function executeCompleteMode<OldResponseShape, NextResponseShape>(
  * Executes shadow mode testing where the legacy API serves production traffic
  * while the next API runs in parallel for validation without affecting users.
  */
-async function executeShadowMode<OldResponseShape, NextResponseShape>(
-    config: Required<ExecuteMetricConfig<OldResponseShape, NextResponseShape>>,
-): Promise<AxiosResponse<OldResponseShape>> {
+async function executeShadowMode<TData>(
+    config: Required<ExecuteMetricConfig<TData>>,
+): OldApiResponseShape<TData> {
     const [oldResult, nextResult] = await Promise.allSettled([
-        config.old(),
-        config.next(),
+        config.oldApi(),
+        config.newQueryApi(),
     ])
 
     if (oldResult.status === 'rejected') {
@@ -109,11 +130,11 @@ async function executeShadowMode<OldResponseShape, NextResponseShape>(
     }
 
     if (nextResult.status === 'fulfilled') {
-        config.validate(oldResult.value.data, nextResult.value.data)
+        config.validateQuery(oldResult.value.data.query, nextResult.value.data)
     } else {
         reportError(
             new Error(
-                `Next function failed in shadow mode for ${config.name}: ${nextResult.reason.message}`,
+                `Next function failed in shadow mode for ${config.metricName}: ${nextResult.reason.message}`,
             ),
         )
     }
@@ -125,12 +146,12 @@ async function executeShadowMode<OldResponseShape, NextResponseShape>(
  * Executes live migration mode where the next API serves production traffic
  * while the legacy API runs in parallel for validation and rollback safety.
  */
-async function executeLiveMode<OldResponseShape, NextResponseShape>(
-    config: Required<ExecuteMetricConfig<OldResponseShape, NextResponseShape>>,
-): Promise<AxiosResponse<OldResponseShape>> {
+async function executeLiveMode<TData>(
+    config: Required<ExecuteMetricConfig<TData>>,
+): OldApiResponseShape<TData> {
     const [oldResult, nextResult] = await Promise.allSettled([
-        config.old(),
-        config.next(),
+        config.oldApi(),
+        config.newApi(),
     ])
 
     if (nextResult.status === 'rejected') {
@@ -144,7 +165,7 @@ async function executeLiveMode<OldResponseShape, NextResponseShape>(
     } else {
         reportError(
             new Error(
-                `Old function failed in live mode for ${config.name}: ${oldResult.reason.message}`,
+                `Old function failed in live mode for ${config.metricName}: ${oldResult.reason.message}`,
             ),
         )
     }
@@ -155,17 +176,11 @@ async function executeLiveMode<OldResponseShape, NextResponseShape>(
     }
 }
 
-/**
- * Execution functions lookup table
- */
-const EXECUTION_FUNCTIONS: Record<
-    MigrationMode,
-    ExecutionFunction<any, any>
-> = {
+const EXECUTION_FUNCTIONS: Record<MigrationMode, ExecutionFunction> = {
     off: executeOffMode,
-    complete: executeCompleteMode,
     shadow: executeShadowMode,
     live: executeLiveMode,
+    complete: executeCompleteMode,
 } as const
 
 /**
@@ -181,19 +196,18 @@ const EXECUTION_FUNCTIONS: Record<
  * @returns Promise resolving to normalized response in old API format
  * @throws Error when required functions are missing for the current migration mode
  */
-export async function executeMetric<OldResponseShape, NextResponseShape>(
-    config: ExecuteMetricConfig<OldResponseShape, NextResponseShape>,
-): Promise<AxiosResponse<OldResponseShape>> {
-    const flagName = resolveMetricFlag(config.name)
+export async function executeMetric<TData>(
+    config: ExecuteMetricConfig<TData>,
+): Promise<
+    | AxiosResponse<ReportingResponse<TData>, any>
+    | AxiosResponse<ReportingV2Response<TData>, any>
+> {
+    const flagName = resolveMetricFlag(config.metricName)
     const migrationMode = await getMigrationMode(flagName)
 
     validateMetricConfig(config, migrationMode)
 
     const executionFunction = EXECUTION_FUNCTIONS[migrationMode]
 
-    return executionFunction(
-        config as Required<
-            ExecuteMetricConfig<OldResponseShape, NextResponseShape>
-        >,
-    )
+    return executionFunction(config as Required<ExecuteMetricConfig<TData>>)
 }

@@ -1,3 +1,4 @@
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     closedTicketsCount,
     closedTicketsPerAgent,
@@ -6,20 +7,22 @@ import {
 } from 'domains/reporting/models/scopes/ticketsClosed'
 import {
     AggregationWindow,
-    StatsFilters,
+    StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
 describe('ticketsClosedScope', () => {
-    const filters: StatsFilters = {
+    const filters: StatsFiltersWithLogicalOperator = {
         period: {
-            start_datetime: '2025-09-03T00:00:00',
-            end_datetime: '2025-09-03T23:59:59',
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
         },
+        agents: withDefaultLogicalOperator([123]),
     }
 
     const timezone = 'utc'
 
-    const granularity = 'day' as AggregationWindow
+    const granularity = ReportingGranularity.Day as AggregationWindow
 
     const context = {
         filters,
@@ -38,12 +41,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets',
@@ -72,12 +80,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-time-series',
@@ -100,12 +113,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-per-agent',
@@ -128,12 +146,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 order: [['ticketCount', 'asc']],
@@ -157,12 +180,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-per-channel',
@@ -185,12 +213,17 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agents',
+                        operator: 'one-of',
+                        values: ['123'],
                     },
                 ],
                 order: [['ticketCount', 'asc']],

@@ -12,8 +12,8 @@ import {
 describe('oneTouchTicketsScope', () => {
     const filters: StatsFilters = {
         period: {
-            start_datetime: '2025-09-03T00:00:00',
-            end_datetime: '2025-09-03T23:59:59',
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
         },
     }
 
@@ -37,12 +37,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-one-touch-tickets',
@@ -64,12 +64,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['tickets', 'desc']],
@@ -98,12 +98,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-one-touch-tickets-time-series',
@@ -126,12 +126,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-one-touch-tickets-per-agent',
@@ -154,12 +154,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['tickets', 'asc']],
@@ -183,12 +183,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 metricName: 'support-performance-one-touch-tickets-per-channel',
@@ -211,12 +211,12 @@ describe('oneTouchTicketsScope', () => {
                     {
                         member: 'periodStart',
                         operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00'],
+                        values: ['2025-09-03T00:00:00.000'],
                     },
                     {
                         member: 'periodEnd',
                         operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59'],
+                        values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
                 order: [['tickets', 'desc']],

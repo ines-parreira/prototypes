@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
-import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import {
     AggregationWindow,
@@ -12,7 +12,6 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 
 import { defineScope, QueryFor } from '../scope'
 
-// Mock the utils module
 jest.mock('domains/reporting/models/scopes/utils', () => ({
     createScopeFilters: jest.fn(),
 }))
@@ -363,7 +362,7 @@ describe('scope', () => {
             const scopeBuilder = scope
 
             const metric = scopeBuilder
-                .defineMetricName('empty-metric')
+                .defineMetricName('empty-metric' as MetricName)
                 .defineQuery(({ ctx, config }) => ({
                     timezone: ctx.timezone,
                     filters: createScopeFilters(ctx.filters, config),
@@ -371,7 +370,7 @@ describe('scope', () => {
 
             const result = metric.build(mockContext)
 
-            expect(result.metricName).toBe('empty-metric')
+            expect(result.metricName).toBe('empty-metric' as MetricName)
             expect(result.timezone).toBe('UTC')
         })
 
@@ -420,7 +419,7 @@ describe('scope', () => {
 
             const metric = scope
 
-                .defineMetricName('complex-metric')
+                .defineMetricName('complex-metric' as MetricName)
                 .defineQuery(({ ctx, config }) => ({
                     measures: ['ticketCount'],
                     timezone: ctx.timezone,

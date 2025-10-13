@@ -200,7 +200,10 @@ export const fetchGetTableStat = async ({
     )
     const storeTotal = fetchPostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        { select: getMetricFromCubeData, enabled: isEnabled },
+        {
+            select: getMetricFromCubeData,
+            enabled: isEnabled,
+        },
     )
 
     return Promise.all([

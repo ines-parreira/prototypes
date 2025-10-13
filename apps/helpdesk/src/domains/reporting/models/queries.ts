@@ -13,6 +13,7 @@ import {
     ReportingParams,
     ReportingQuery,
     ReportingResponse,
+    ReportingV2Response,
 } from 'domains/reporting/models/types'
 
 const stopOnError = (query: Pick<Query, 'state'>) =>
@@ -29,7 +30,7 @@ const defaultOptions = {
 } as const
 
 export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
-    ReportingResponse<TData>
+    ReportingResponse<TData> | ReportingV2Response<TData>
 >
 
 export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<TData>

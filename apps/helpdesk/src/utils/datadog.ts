@@ -99,7 +99,3 @@ export const initDatadogRum = ({
         serverVersion,
     })
 }
-
-export const logger = Object.freeze({
-    warn: datadogLogs.logger.warn,
-})

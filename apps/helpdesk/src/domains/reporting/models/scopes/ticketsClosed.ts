@@ -1,9 +1,8 @@
 import { z } from 'zod'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
-
-import { defineScope } from './scope'
 
 const ticketsClosedScope = defineScope({
     scope: MetricScope.TicketsClosed,
