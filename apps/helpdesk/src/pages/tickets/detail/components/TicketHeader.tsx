@@ -383,7 +383,7 @@ const TicketHeader = ({
                                 icon="translate"
                                 fillStyle="ghost"
                                 intent="secondary"
-                                size="small"
+                                size="medium"
                                 onClick={handleTranslateAllMessages}
                             />
 
