@@ -2672,109 +2672,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "tier": "Basic",
       },
       {
-        "amount": 60000,
-        "cadence": "year",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.4,
-        "features": {
-          "api_1st_party_rate_limit": {
-            "enabled": true,
-            "rate_limit": {
-              "interval_ms": 2000,
-              "max_burst": 40,
-            },
-          },
-          "api_3rd_party_rate_limit": {
-            "enabled": true,
-            "rate_limit": {
-              "interval_ms": 20000,
-              "max_burst": 40,
-            },
-          },
-          "auto_assignment": {
-            "enabled": true,
-          },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
-          "automation_cancellations_flow": {
-            "enabled": false,
-          },
-          "automation_managed_rules": {
-            "enabled": false,
-          },
-          "automation_report_issue_flow": {
-            "enabled": false,
-          },
-          "automation_return_flow": {
-            "enabled": false,
-          },
-          "automation_self_service_statistics": {
-            "enabled": false,
-          },
-          "automation_track_order_flow": {
-            "enabled": false,
-          },
-          "facebook_comment": {
-            "enabled": true,
-          },
-          "help_center": {
-            "enabled": true,
-          },
-          "instagram_comment": {
-            "enabled": true,
-          },
-          "instagram_dm": {
-            "enabled": true,
-          },
-          "magento_integration": {
-            "enabled": false,
-          },
-          "overview_live_statistics": {
-            "enabled": true,
-          },
-          "phone_number": {
-            "enabled": true,
-            "limit": 1,
-          },
-          "revenue_statistics": {
-            "enabled": false,
-          },
-          "satisfaction_surveys": {
-            "enabled": true,
-          },
-          "teams": {
-            "enabled": true,
-          },
-          "twitter_integration": {
-            "enabled": false,
-            "limit": 0,
-          },
-          "user_roles": {
-            "enabled": true,
-          },
-          "users_live_statistics": {
-            "enabled": false,
-          },
-          "view_sharing": {
-            "enabled": true,
-          },
-          "yotpo_integration": {
-            "enabled": true,
-          },
-        },
-        "integrations": 150,
-        "is_legacy": false,
-        "name": "Basic",
-        "num_quota_tickets": 3600,
-        "plan_id": "basic-yearly-usd-4",
-        "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
-        "product": "helpdesk",
-        "public": true,
-        "tier": "Basic",
-      },
-      {
         "amount": 36000,
         "cadence": "month",
         "currency": "usd",
@@ -2878,11 +2775,11 @@ exports[`billing selectors getProducts should return products 1`] = `
         "tier": "Pro",
       },
       {
-        "amount": 360000,
+        "amount": 60000,
         "cadence": "year",
         "currency": "usd",
         "custom": false,
-        "extra_ticket_cost": 0.36,
+        "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -2935,17 +2832,17 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
           "magento_integration": {
-            "enabled": true,
+            "enabled": false,
           },
           "overview_live_statistics": {
             "enabled": true,
           },
           "phone_number": {
             "enabled": true,
-            "limit": 3,
+            "limit": 1,
           },
           "revenue_statistics": {
-            "enabled": true,
+            "enabled": false,
           },
           "satisfaction_surveys": {
             "enabled": true,
@@ -2961,7 +2858,7 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
           "users_live_statistics": {
-            "enabled": true,
+            "enabled": false,
           },
           "view_sharing": {
             "enabled": true,
@@ -2972,13 +2869,13 @@ exports[`billing selectors getProducts should return products 1`] = `
         },
         "integrations": 150,
         "is_legacy": false,
-        "name": "Pro",
-        "num_quota_tickets": 24000,
-        "plan_id": "pro-yearly-usd-4",
-        "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+        "name": "Basic",
+        "num_quota_tickets": 3600,
+        "plan_id": "basic-yearly-usd-4",
+        "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
         "product": "helpdesk",
         "public": true,
-        "tier": "Pro",
+        "tier": "Basic",
       },
       {
         "amount": 90000,
@@ -3082,6 +2979,109 @@ exports[`billing selectors getProducts should return products 1`] = `
         "product": "helpdesk",
         "public": true,
         "tier": "Advanced",
+      },
+      {
+        "amount": 360000,
+        "cadence": "year",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.36,
+        "features": {
+          "api_1st_party_rate_limit": {
+            "enabled": true,
+            "rate_limit": {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": {
+            "enabled": true,
+            "rate_limit": {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": {
+            "enabled": true,
+          },
+          "automation_addon_overview": {
+            "enabled": false,
+          },
+          "automation_cancellations_flow": {
+            "enabled": false,
+          },
+          "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": {
+            "enabled": false,
+          },
+          "automation_return_flow": {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": {
+            "enabled": false,
+          },
+          "automation_track_order_flow": {
+            "enabled": false,
+          },
+          "facebook_comment": {
+            "enabled": true,
+          },
+          "help_center": {
+            "enabled": true,
+          },
+          "instagram_comment": {
+            "enabled": true,
+          },
+          "instagram_dm": {
+            "enabled": true,
+          },
+          "magento_integration": {
+            "enabled": true,
+          },
+          "overview_live_statistics": {
+            "enabled": true,
+          },
+          "phone_number": {
+            "enabled": true,
+            "limit": 3,
+          },
+          "revenue_statistics": {
+            "enabled": true,
+          },
+          "satisfaction_surveys": {
+            "enabled": true,
+          },
+          "teams": {
+            "enabled": true,
+          },
+          "twitter_integration": {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": {
+            "enabled": true,
+          },
+          "users_live_statistics": {
+            "enabled": true,
+          },
+          "view_sharing": {
+            "enabled": true,
+          },
+          "yotpo_integration": {
+            "enabled": true,
+          },
+        },
+        "integrations": 150,
+        "is_legacy": false,
+        "name": "Pro",
+        "num_quota_tickets": 24000,
+        "plan_id": "pro-yearly-usd-4",
+        "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+        "product": "helpdesk",
+        "public": true,
+        "tier": "Pro",
       },
       {
         "amount": 900000,
@@ -3193,39 +3193,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "id": "prod_LsHD5xmSqoFBBs",
     "prices": [
       {
-        "amount": 3001,
-        "cadence": "month",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.2,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Legacy Free Automation",
-        "num_quota_tickets": null,
-        "plan_id": "free-automation",
-        "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
-        "product": "automation",
-        "public": false,
-      },
-      {
         "amount": 3000,
         "cadence": "month",
         "currency": "usd",
@@ -3255,171 +3222,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 30,
         "plan_id": "aut-addon-basic-full-price-monthly-usd-4",
         "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
-        "product": "automation",
-        "public": true,
-      },
-      {
-        "amount": 30000,
-        "cadence": "year",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.2,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Basic",
-        "num_quota_tickets": 360,
-        "plan_id": "aut-addon-basic-full-price-yearly-usd-4",
-        "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
-        "product": "automation",
-        "public": true,
-      },
-      {
-        "amount": 18000,
-        "cadence": "month",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.18,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Pro",
-        "num_quota_tickets": 190,
-        "plan_id": "aut-addon-pro-full-price-monthly-usd-4",
-        "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
-        "product": "automation",
-        "public": true,
-      },
-      {
-        "amount": 180000,
-        "cadence": "year",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.18,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Pro",
-        "num_quota_tickets": 2280,
-        "plan_id": "aut-addon-pro-full-price-yearly-usd-4",
-        "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
-        "product": "automation",
-        "public": true,
-      },
-      {
-        "amount": 45000,
-        "cadence": "month",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.18,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Advanced",
-        "num_quota_tickets": 530,
-        "plan_id": "aut-addon-advanced-full-price-monthly-usd-4",
-        "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
-        "product": "automation",
-        "public": true,
-      },
-      {
-        "amount": 450000,
-        "cadence": "year",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.18,
-        "features": {
-          "automation_cancellations_flow": {
-            "enabled": true,
-          },
-          "automation_managed_rules": {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": {
-            "enabled": true,
-          },
-          "automation_return_flow": {
-            "enabled": true,
-          },
-          "automation_self_service_statistics": {
-            "enabled": true,
-          },
-          "automation_track_order_flow": {
-            "enabled": true,
-          },
-        },
-        "name": "Advanced",
-        "num_quota_tickets": 6360,
-        "plan_id": "aut-addon-advanced-full-price-yearly-usd-4",
-        "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
         "product": "automation",
         "public": true,
       },
@@ -3457,12 +3259,223 @@ exports[`billing selectors getProducts should return products 1`] = `
         "product": "automation",
         "public": true,
       },
+      {
+        "amount": 3001,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.2,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Legacy Free Automation",
+        "num_quota_tickets": null,
+        "plan_id": "free-automation",
+        "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
+        "product": "automation",
+        "public": false,
+      },
+      {
+        "amount": 18000,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.18,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Pro",
+        "num_quota_tickets": 190,
+        "plan_id": "aut-addon-pro-full-price-monthly-usd-4",
+        "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+        "product": "automation",
+        "public": true,
+      },
+      {
+        "amount": 30000,
+        "cadence": "year",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.2,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Basic",
+        "num_quota_tickets": 360,
+        "plan_id": "aut-addon-basic-full-price-yearly-usd-4",
+        "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+        "product": "automation",
+        "public": true,
+      },
+      {
+        "amount": 45000,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.18,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Advanced",
+        "num_quota_tickets": 530,
+        "plan_id": "aut-addon-advanced-full-price-monthly-usd-4",
+        "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+        "product": "automation",
+        "public": true,
+      },
+      {
+        "amount": 180000,
+        "cadence": "year",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.18,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Pro",
+        "num_quota_tickets": 2280,
+        "plan_id": "aut-addon-pro-full-price-yearly-usd-4",
+        "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+        "product": "automation",
+        "public": true,
+      },
+      {
+        "amount": 450000,
+        "cadence": "year",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0.18,
+        "features": {
+          "automation_cancellations_flow": {
+            "enabled": true,
+          },
+          "automation_managed_rules": {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": {
+            "enabled": true,
+          },
+          "automation_return_flow": {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": {
+            "enabled": true,
+          },
+          "automation_track_order_flow": {
+            "enabled": true,
+          },
+        },
+        "name": "Advanced",
+        "num_quota_tickets": 6360,
+        "plan_id": "aut-addon-advanced-full-price-yearly-usd-4",
+        "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+        "product": "automation",
+        "public": true,
+      },
     ],
     "type": "automation",
   },
   {
     "id": "prod_MT8Fzk7vmcT73m",
     "prices": [
+      {
+        "amount": 0,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 1.6,
+        "name": "SMS Addon Trial Monthly",
+        "num_quota_tickets": 0,
+        "plan_id": "sms-addon-00-monthly-usd-4",
+        "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
+        "product": "sms",
+        "public": true,
+      },
       {
         "amount": 90,
         "cadence": "month",
@@ -3473,19 +3486,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 150,
         "plan_id": "sms-addon-03-monthly-usd-4",
         "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
-        "product": "sms",
-        "public": true,
-      },
-      {
-        "amount": 5768,
-        "cadence": "month",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0.77,
-        "name": "SMS Addon 15000 Monthly",
-        "num_quota_tickets": 15000,
-        "plan_id": "sms-addon-12-monthly-usd-4",
-        "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
         "product": "sms",
         "public": true,
       },
@@ -3503,15 +3503,15 @@ exports[`billing selectors getProducts should return products 1`] = `
         "public": true,
       },
       {
-        "amount": 0,
+        "amount": 5768,
         "cadence": "month",
         "currency": "usd",
         "custom": false,
-        "extra_ticket_cost": 1.6,
-        "name": "SMS Addon Trial Monthly",
-        "num_quota_tickets": 0,
-        "plan_id": "sms-addon-00-monthly-usd-4",
-        "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
+        "extra_ticket_cost": 0.77,
+        "name": "SMS Addon 15000 Monthly",
+        "num_quota_tickets": 15000,
+        "plan_id": "sms-addon-12-monthly-usd-4",
+        "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
         "product": "sms",
         "public": true,
       },
@@ -3521,6 +3521,19 @@ exports[`billing selectors getProducts should return products 1`] = `
   {
     "id": "prod_MT6fyh00TCFRGZ",
     "prices": [
+      {
+        "amount": 0,
+        "cadence": "month",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 2.4,
+        "name": "Voice Addon Trial Monthly",
+        "num_quota_tickets": 0,
+        "plan_id": "voc-addon-00-monthly-usd-4",
+        "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
+        "product": "voice",
+        "public": true,
+      },
       {
         "amount": 175,
         "cadence": "month",
@@ -3557,19 +3570,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "num_quota_tickets": 300,
         "plan_id": "voice-01-yearly-usd-5",
         "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz",
-        "product": "voice",
-        "public": true,
-      },
-      {
-        "amount": 0,
-        "cadence": "month",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 2.4,
-        "name": "Voice Addon Trial Monthly",
-        "num_quota_tickets": 0,
-        "plan_id": "voc-addon-00-monthly-usd-4",
-        "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
         "product": "voice",
         "public": true,
       },
@@ -3622,6 +3622,20 @@ exports[`billing selectors getProducts should return products 1`] = `
         "tier": 2,
       },
       {
+        "amount": 36000,
+        "cadence": "year",
+        "currency": "usd",
+        "custom": false,
+        "extra_ticket_cost": 0,
+        "name": "Convert 600 Yearly",
+        "num_quota_tickets": 600,
+        "plan_id": "convert-01-yearly-usd-6",
+        "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
+        "product": "convert",
+        "public": true,
+        "tier": 1,
+      },
+      {
         "amount": 80000,
         "cadence": "month",
         "currency": "usd",
@@ -3662,20 +3676,6 @@ exports[`billing selectors getProducts should return products 1`] = `
         "product": "convert",
         "public": true,
         "tier": 5,
-      },
-      {
-        "amount": 36000,
-        "cadence": "year",
-        "currency": "usd",
-        "custom": false,
-        "extra_ticket_cost": 0,
-        "name": "Convert 600 Yearly",
-        "num_quota_tickets": 600,
-        "plan_id": "convert-01-yearly-usd-6",
-        "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
-        "product": "convert",
-        "public": true,
-        "tier": 1,
       },
     ],
     "type": "convert",

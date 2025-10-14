@@ -14,15 +14,15 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
+    convertPlan5,
     convertProduct,
     HELPDESK_PRODUCT_ID,
     helpdeskProduct,
-    monthlyConvertPlan,
-    monthlySmsPlan,
-    monthlyVoicePlan,
     SMS_PRODUCT_ID,
+    smsPlan2,
     smsProduct,
     VOICE_PRODUCT_ID,
+    voicePlan2,
     voiceProduct,
 } from 'fixtures/productPrices'
 import {
@@ -76,9 +76,9 @@ const defaultStore: DeepPartial<RootState> = {
             products: {
                 [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
-                [VOICE_PRODUCT_ID]: monthlyVoicePlan.price_id,
-                [SMS_PRODUCT_ID]: monthlySmsPlan.price_id,
-                [CONVERT_PRODUCT_ID]: monthlyConvertPlan.price_id,
+                [VOICE_PRODUCT_ID]: voicePlan2.price_id,
+                [SMS_PRODUCT_ID]: smsPlan2.price_id,
+                [CONVERT_PRODUCT_ID]: convertPlan5.price_id,
             },
         },
     }),
@@ -223,8 +223,8 @@ describe('BillingFrequencyView', () => {
             const availablePlans: { [key in ProductType]: Plan[] } = {
                 [ProductType.Helpdesk]: helpdeskProduct.prices,
                 [ProductType.Automation]: automationProduct.prices,
-                [ProductType.Voice]: smsProduct.prices,
-                [ProductType.SMS]: voiceProduct.prices,
+                [ProductType.Voice]: voiceProduct.prices,
+                [ProductType.SMS]: smsProduct.prices,
                 [ProductType.Convert]: convertProduct.prices,
             }
 

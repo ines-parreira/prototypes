@@ -566,7 +566,7 @@ export const voicePlan1: SMSOrVoicePlan = {
     extra_ticket_cost: 1.4,
 }
 
-const voicePlan2: SMSOrVoicePlan = {
+export const voicePlan2: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 1750,
@@ -594,20 +594,6 @@ export const voicePlan3: SMSOrVoicePlan = {
     extra_ticket_cost: 2.2,
 }
 
-export const monthlyVoicePlan: SMSOrVoicePlan = {
-    custom: false,
-    public: true,
-    amount: 300,
-    cadence: Cadence.Month,
-    currency: 'usd',
-    num_quota_tickets: 30,
-    plan_id: 'voice-01-monthly-usd-5',
-    name: 'Voice Addon 300 Yearly',
-    price_id: 'price_1O9TX8I9qXomtXqSR9drzVqz',
-    product: ProductType.Voice,
-    extra_ticket_cost: 2.2,
-}
-
 export const smsPlan1: SMSOrVoicePlan = {
     custom: false,
     public: true,
@@ -622,7 +608,7 @@ export const smsPlan1: SMSOrVoicePlan = {
     extra_ticket_cost: 1.2,
 }
 
-const smsPlan2: SMSOrVoicePlan = {
+export const smsPlan2: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 5768,
@@ -644,20 +630,6 @@ export const smsPlan3: SMSOrVoicePlan = {
     currency: 'usd',
     num_quota_tickets: 300,
     plan_id: 'sms-01-yearly-usd-5',
-    name: 'SMS Addon 300 Yearly',
-    price_id: 'price_1O9Vc7I9qXomtXqS4a8p3S7e',
-    product: ProductType.SMS,
-    extra_ticket_cost: 1.5,
-}
-
-export const monthlySmsPlan: SMSOrVoicePlan = {
-    custom: false,
-    public: true,
-    amount: 20,
-    cadence: Cadence.Month,
-    currency: 'usd',
-    num_quota_tickets: 30,
-    plan_id: 'sms-01-monthly-usd-5',
     name: 'SMS Addon 300 Yearly',
     price_id: 'price_1O9Vc7I9qXomtXqS4a8p3S7e',
     product: ProductType.SMS,
@@ -783,64 +755,43 @@ export const convertPlan6: ConvertPlan = {
     tier: 1,
 }
 
-export const monthlyConvertPlan: ConvertPlan = {
-    custom: false,
-    public: true,
-    amount: 3600,
-    cadence: Cadence.Month,
-    currency: 'usd',
-    num_quota_tickets: 60,
-    plan_id: 'convert-01-monthly-usd-6',
-    name: 'Convert 600 Yearly',
-    price_id: 'price_2NmZrmH2GG3UYmlxBGfOOSL1',
-    product: ProductType.Convert,
-    extra_ticket_cost: 0,
-    tier: 1,
-}
-
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
 export const AUTOMATION_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
 export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
 export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
 export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
 
-export const helpdeskProduct: Product<ProductType.Helpdesk> = {
-    id: HELPDESK_PRODUCT_ID,
-    type: ProductType.Helpdesk,
-    prices: [
-        starterHelpdeskPlan,
-        basicMonthlyHelpdeskPlan,
-        basicYearlyHelpdeskPlan,
-        proMonthlyHelpdeskPlan,
-        proYearlyHelpdeskPlan,
-        advancedMonthlyHelpdeskPlan,
-        advancedYearlyHelpdeskPlan,
-    ],
-}
+export const helpdeskAvailablePlans = [
+    starterHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
+    basicYearlyHelpdeskPlan,
+    proMonthlyHelpdeskPlan,
+    proYearlyHelpdeskPlan,
+    advancedMonthlyHelpdeskPlan,
+    advancedYearlyHelpdeskPlan,
+].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
-export const automationProduct: Product<ProductType.Automation> = {
-    id: AUTOMATION_PRODUCT_ID,
-    type: ProductType.Automation,
-    prices: [
-        legacyAutomatePlan,
-        basicMonthlyAutomationPlan,
-        basicYearlyAutomationPlan,
-        proMonthlyAutomationPlan,
-        proYearlyAutomationPlan,
-        advancedMonthlyAutomatePlan,
-        advancedYearlyAutomatePlan,
-        firstTierMonthlyAutomationPlan,
-    ],
-}
+export const automationAvailablePlans = [
+    legacyAutomatePlan,
+    basicMonthlyAutomationPlan,
+    basicYearlyAutomationPlan,
+    proMonthlyAutomationPlan,
+    proYearlyAutomationPlan,
+    advancedMonthlyAutomatePlan,
+    advancedYearlyAutomatePlan,
+    firstTierMonthlyAutomationPlan,
+].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const voiceAvailablePlans = [
     voicePlan1,
     voicePlan2,
     voicePlan3,
     voicePlan0,
-]
+].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
-export const smsAvailablePlans = [smsPlan1, smsPlan2, smsPlan3, smsPlan0]
+export const smsAvailablePlans = [smsPlan1, smsPlan2, smsPlan3, smsPlan0].sort(
+    (a, b) => a.amount - b.amount,
+) // Sort to match behaviour in redux selector
 
 export const convertAvailablePlans = [
     convertPlan0,
@@ -850,7 +801,19 @@ export const convertAvailablePlans = [
     convertPlan4,
     convertPlan5,
     convertPlan6,
-]
+].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
+
+export const helpdeskProduct: Product<ProductType.Helpdesk> = {
+    id: HELPDESK_PRODUCT_ID,
+    type: ProductType.Helpdesk,
+    prices: helpdeskAvailablePlans,
+}
+
+export const automationProduct: Product<ProductType.Automation> = {
+    id: AUTOMATION_PRODUCT_ID,
+    type: ProductType.Automation,
+    prices: automationAvailablePlans,
+}
 
 export const voiceProduct: Product<ProductType.Voice> = {
     id: VOICE_PRODUCT_ID,
