@@ -9,12 +9,9 @@ const OrderStatusBadge = ({ status }: { status: FinancialStatus }) => {
     switch (status) {
         case 'paid':
             statusLabel = status
-            color = 'light-success'
+            color = 'light-dark'
             break
         case 'pending':
-            statusLabel = status
-            color = 'light-warning'
-            break
         case 'partially_paid':
             statusLabel = status
             color = 'light-warning'

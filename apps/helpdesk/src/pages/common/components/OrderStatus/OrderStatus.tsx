@@ -28,25 +28,25 @@ type FinancialValues = Map<FinancialStatus, ColorType>
 type ReturnValues = Map<ReturnStatus, [ColorType, string]>
 
 const fulfillmentValues: FulfillmentValues = new Map([
-    [FulfillmentStatus.Fulfilled, ['light-success', 'Fulfilled']],
-    [FulfillmentStatus.Partial, ['light-grey', 'Partially fulfilled']],
-    [FulfillmentStatus.Restocked, ['light-warning', 'Restocked']],
-    [null, ['light-grey', 'Unfulfilled']],
+    [FulfillmentStatus.Fulfilled, ['light-dark', 'Fulfilled']],
+    [FulfillmentStatus.Partial, ['light-warning', 'Partially fulfilled']],
+    [FulfillmentStatus.Restocked, ['light-dark', 'Restocked']],
+    [null, ['light-dark', 'Unfulfilled']],
 ])
 
 const financialValues: FinancialValues = new Map([
-    [FinancialStatus.Pending, 'light-grey'],
-    [FinancialStatus.Authorized, 'light-grey'],
-    [FinancialStatus.PartiallyPaid, 'light-success'],
-    [FinancialStatus.Paid, 'light-success'],
+    [FinancialStatus.Pending, 'light-warning'],
+    [FinancialStatus.Authorized, 'light-dark'],
+    [FinancialStatus.PartiallyPaid, 'light-warning'],
+    [FinancialStatus.Paid, 'light-dark'],
     [FinancialStatus.PartiallyRefunded, 'light-warning'],
-    [FinancialStatus.Refunded, 'light-error'],
+    [FinancialStatus.Refunded, 'light-dark'],
     [FinancialStatus.Voided, 'light-error'],
 ])
 
 const returnedValues: ReturnValues = new Map([
     ['PartialReturn', ['light-warning', 'Partially Returned']],
-    ['FullReturn', ['light-error', 'Returned']],
+    ['FullReturn', ['light-dark', 'Returned']],
 ])
 
 export default function OrderStatus({
