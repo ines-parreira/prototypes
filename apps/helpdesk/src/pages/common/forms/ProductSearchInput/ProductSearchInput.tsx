@@ -22,7 +22,6 @@ interface Props<
     className?: string
     autoFocus?: boolean
     searchOnFocus?: boolean
-    getKey?: (item: ItemType) => string
     onVariantClicked: (item: ItemType, variant: Variant) => void
     dataMappers: {
         variantsPath: (item: ItemType) => Variant[]
@@ -44,7 +43,6 @@ export default function ProductSearchInput<
     hasError = false,
     renderResultsAppendix,
     renderResultItemProps,
-    getKey,
 }: Props<ItemType, Variant>) {
     const { integrationId } = useContext(IntegrationContext)
 
@@ -90,7 +88,6 @@ export default function ProductSearchInput<
             hasError={hasError}
             renderResultsAppendix={renderResultsAppendix}
             renderResultItemProps={renderResultItemProps}
-            getKey={getKey}
         />
     )
 }

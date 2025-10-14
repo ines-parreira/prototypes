@@ -23,6 +23,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, { SearchResultType } from 'services/gorgiasApi'
 
 import { SearchInputResultProps, SearchInputSubResultProps } from './types'
+import { getSearchResultUniqueId } from './utils'
 
 import css from './SearchInput.less'
 
@@ -51,7 +52,6 @@ export type Props<ResultType, SubResultType> = {
         disabled?: boolean
         disabledReason?: string
     }
-    getKey?: (item: ResultType) => string
 }
 
 type State<ResultType extends SearchResultType, SubResultType> = {
@@ -329,12 +329,13 @@ export default class SearchInput<
             ? results.map((result, index) => {
                   const itemProps = renderResultItemProps?.({ result })
                   const disabled = itemProps?.disabled
-                  const itemKey = this.props.getKey
-                      ? this.props.getKey(result)
-                      : `result-${result.id}`
+                  const uniqueResultId = getSearchResultUniqueId(
+                      result as unknown as { id: number; external_id?: string },
+                  )
+
                   return (
                       <DropdownItem
-                          key={itemKey}
+                          key={uniqueResultId}
                           onMouseEnter={() =>
                               this.setState({ hoveredIndex: index })
                           }
@@ -348,12 +349,12 @@ export default class SearchInput<
                           })}
                           toggle={false}
                           aria-disabled={disabled}
-                          id={`dropdown-item-${result.id}`}
+                          id={`dropdown-item-${uniqueResultId}`}
                       >
                           <Result result={result} />
                           {disabled ? (
                               <Tooltip
-                                  target={`dropdown-item-${result.id}`}
+                                  target={`dropdown-item-${uniqueResultId}`}
                                   placement="top"
                                   className={css.tooltip}
                               >
