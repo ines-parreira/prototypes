@@ -140,7 +140,7 @@ describe('usePopulatePostGoLiveSteps', () => {
             isSuccess: false,
             isError: false,
             isIdle: true,
-            isPending: false,
+            isLoading: false,
             status: 'idle',
             data: undefined,
             error: null,

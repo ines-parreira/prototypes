@@ -12,6 +12,9 @@ export type TaskBodyProps = {
     isCompleted?: boolean
     shopName?: string
     shopType?: string
+    stepName?: StepName
+    postGoLiveStepId?: string
+    stepStartedDatetime?: string | null
 }
 
 export type TaskConfig = {
@@ -22,6 +25,7 @@ export type TaskConfig = {
     featureUrl?: string
     shopName?: string
     shopType?: string
+    stepStartedDatetime?: string | null
 }
 
 export type TaskConfigTemplate = {

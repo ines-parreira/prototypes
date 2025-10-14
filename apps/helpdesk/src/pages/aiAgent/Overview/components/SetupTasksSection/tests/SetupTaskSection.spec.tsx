@@ -3,11 +3,19 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import {
+    useCreatePostStoreInstallationStepPure,
+    useUpdatePostStoreInstallationStepPure,
+    useUpdateStepConfigurationPure,
+    useUpdateStepNotificationsPure,
+} from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { useGetSetupTasksConfigByCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/hooks/useGetSetupTasksConfigByCategory'
 import { mockStore } from 'utils/testing'
 
 import { SetupTaskSection } from '../SetupTaskSection'
 import { mockSetupTasksConfigByCategory } from './fixtures/setupTasksConfigByCategory.fixture'
+
+jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
 
 jest.mock(
     'pages/aiAgent/Overview/components/SetupTasksSection/hooks/useGetSetupTasksConfigByCategory',
@@ -55,6 +63,26 @@ const mockUseGetSetupTasksConfigByCategory =
         typeof useGetSetupTasksConfigByCategory
     >
 
+const mockUseUpdatePostStoreInstallationStepPure =
+    useUpdatePostStoreInstallationStepPure as jest.MockedFunction<
+        typeof useUpdatePostStoreInstallationStepPure
+    >
+
+const mockUseCreatePostStoreInstallationStepPure =
+    useCreatePostStoreInstallationStepPure as jest.MockedFunction<
+        typeof useCreatePostStoreInstallationStepPure
+    >
+
+const mockUseUpdateStepConfigurationPure =
+    useUpdateStepConfigurationPure as jest.MockedFunction<
+        typeof useUpdateStepConfigurationPure
+    >
+
+const mockUseUpdateStepNotificationsPure =
+    useUpdateStepNotificationsPure as jest.MockedFunction<
+        typeof useUpdateStepNotificationsPure
+    >
+
 describe('SetupTaskSection', () => {
     let queryClient: QueryClient
 
@@ -70,6 +98,38 @@ describe('SetupTaskSection', () => {
         mockUseGetSetupTasksConfigByCategory.mockReturnValue(
             mockSetupTasksConfigByCategory,
         )
+        mockUseUpdatePostStoreInstallationStepPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
+        mockUseCreatePostStoreInstallationStepPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
+        mockUseUpdateStepConfigurationPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
+        mockUseUpdateStepNotificationsPure.mockReturnValue({
+            mutateAsync: jest.fn().mockResolvedValue({}),
+            mutate: jest.fn(),
+            isLoading: false,
+            isError: false,
+            isSuccess: false,
+            isIdle: true,
+        } as any)
     })
 
     const renderComponent = () => {
@@ -255,6 +315,8 @@ describe('SetupTaskSection', () => {
             completionPercentage: 0,
             isLoading: true,
             postGoLiveStepId: undefined,
+            postGoLiveStep: undefined,
+            accountId: 123,
             error: null,
         })
 
@@ -269,6 +331,8 @@ describe('SetupTaskSection', () => {
             completionPercentage: 0,
             isLoading: false,
             postGoLiveStepId: undefined,
+            postGoLiveStep: undefined,
+            accountId: 123,
             error: null,
         })
 

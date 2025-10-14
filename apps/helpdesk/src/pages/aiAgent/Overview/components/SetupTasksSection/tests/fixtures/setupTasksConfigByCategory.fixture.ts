@@ -57,5 +57,7 @@ export const mockSetupTasksConfigByCategory = {
     completionPercentage: 33,
     isLoading: false,
     postGoLiveStepId: 'mock-post-go-live-id',
+    postGoLiveStep: undefined,
+    accountId: 123,
     error: null,
 }

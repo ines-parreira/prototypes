@@ -26,6 +26,45 @@
         margin-bottom: var(--layout-spacing-m);
     }
 
+    .actionButton {
+        padding: var(--layout-spacing-xxs);
+
+        &:hover {
+            border-radius: var(--spacing-xxxs);
+            background: var(--hover-default);
+            cursor: pointer;
+        }
+    }
+
+    .list {
+        position: relative;
+    }
+
+    .listItem {
+        display: flex;
+        padding: var(--spacing-xs) var(--spacing-md);
+        align-items: center;
+        gap: var(--spacing-xs);
+        align-self: stretch;
+
+        position: absolute;
+        top: 25px;
+        right: 0;
+        width: 202px;
+
+        color: var(--content-neutral-default);
+        cursor: pointer;
+
+        border-radius: var(--spacing-xs, 8px);
+        border: 0.5px solid var(--border-neutral-default, #ebecef);
+        background: var(--elevation-neutral-high, #fff);
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+
+        &:hover {
+            background: var(--hover-default, rgba(27, 35, 50, 0.03));
+        }
+    }
+
     .tasksSection {
         display: flex;
         align-items: flex-start;

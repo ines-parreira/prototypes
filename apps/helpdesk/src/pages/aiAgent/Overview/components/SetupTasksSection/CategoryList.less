@@ -1,6 +1,12 @@
 @import '~@gorgias/axiom/tokens/typography.css';
 
 :local {
+    .groupList {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+    }
+
     .task {
         width: 142px;
         display: flex;
@@ -10,13 +16,14 @@
         align-items: center;
         gap: var(--layout-spacing-xxs);
         align-self: stretch;
-        color: var(--content-neutral-default);
+        color: var(--content-neutral-secondary);
     }
 
     .selected {
         border-radius: var(--layout-spacing-xs);
         background: var(--surface-neutral-secondary);
-        color: var(--content-neutral-secondary);
+        color: var(--content-neutral-default);
+        font-weight: var(--rnf-font-weight-semibold);
     }
 
     .completed {

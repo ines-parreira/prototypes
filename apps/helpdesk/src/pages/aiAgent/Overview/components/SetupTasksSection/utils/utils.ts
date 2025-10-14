@@ -26,6 +26,7 @@ export const createRuleEngineTaskMap = (
 export const createStepMapper = (
     stepNamesFromDb: Set<StepName>,
     stepCompletionMap: Map<StepName, boolean>,
+    stepStartedMap: Map<StepName, string | null>,
     ruleEngineTaskMap: Map<StepName, Task>,
     shopName: string,
     shopType: string,
@@ -44,7 +45,19 @@ export const createStepMapper = (
                     featureUrl: ruleEngineTask?.featureUrl,
                     shopName,
                     shopType,
+                    stepStartedDatetime:
+                        stepStartedMap.get(template.stepName) ?? null,
                 }
             })
     }
+}
+
+export const getFirstIncompleteStep = (selectedCategoryTasks: TaskConfig[]) => {
+    for (const task of selectedCategoryTasks) {
+        if (!task.isCompleted) {
+            return task.stepName
+        }
+    }
+
+    return null
 }

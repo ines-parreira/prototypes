@@ -44,10 +44,33 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/aiAgent/hooks/usePostStoreInstallationStepsMutation', () => ({
+    usePostStoreInstallationStepsMutation: jest.fn(() => ({
+        updateStepConfiguration: jest.fn(),
+        isLoading: false,
+    })),
+}))
+
 describe('SetupTaskBodies', () => {
+    const renderWithProviders = (
+        component: React.ReactElement,
+        customHistory?: ReturnType<typeof createMemoryHistory>,
+    ) => {
+        const store = mockStore({})
+        const history = customHistory || createMemoryHistory()
+        return {
+            ...render(
+                <Provider store={store}>
+                    <Router history={history}>{component}</Router>
+                </Provider>,
+            ),
+            history,
+        }
+    }
+
     describe('VerifyEmailDomainBody', () => {
         it('should render description and button', () => {
-            render(<VerifyEmailDomainBody />)
+            renderWithProviders(<VerifyEmailDomainBody />)
 
             expect(
                 screen.getByText(
@@ -62,7 +85,7 @@ describe('SetupTaskBodies', () => {
 
     describe('UpdateShopifyPermissionsBody', () => {
         it('should render description and button', () => {
-            render(<UpdateShopifyPermissionsBody />)
+            renderWithProviders(<UpdateShopifyPermissionsBody />)
 
             expect(
                 screen.getByText(
@@ -372,7 +395,7 @@ describe('SetupTaskBodies', () => {
 
     describe('CreateAnActionBody', () => {
         it('should render description and button', () => {
-            render(<CreateAnActionBody />)
+            renderWithProviders(<CreateAnActionBody />)
 
             expect(
                 screen.getByText(
@@ -387,7 +410,7 @@ describe('SetupTaskBodies', () => {
 
     describe('MonitorAiAgentBody', () => {
         it('should render description and button', () => {
-            render(<MonitorAiAgentBody />)
+            renderWithProviders(<MonitorAiAgentBody />)
 
             expect(
                 screen.getByText(
@@ -762,12 +785,32 @@ describe('SetupTaskBodies', () => {
 
     describe('Component structure', () => {
         it('should apply consistent CSS class to all task bodies', () => {
-            const { container: container1 } = render(<VerifyEmailDomainBody />)
-            const { container: container2 } = render(
+            const mockStoreConfiguration = {
+                isSalesHelpOnSearchEnabled: false,
+            } as unknown as StoreConfiguration
+
+            const mockContextValue = {
+                storeConfiguration: mockStoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            }
+
+            const { container: container1 } = renderWithProviders(
+                <VerifyEmailDomainBody />,
+            )
+            const { container: container2 } = renderWithProviders(
                 <UpdateShopifyPermissionsBody />,
             )
             const { container: container3 } = render(
-                <PrepareTriggerOnSearchBody />,
+                <Provider store={mockStore({})}>
+                    <AiAgentStoreConfigurationContext.Provider
+                        value={mockContextValue}
+                    >
+                        <PrepareTriggerOnSearchBody />
+                    </AiAgentStoreConfigurationContext.Provider>
+                </Provider>,
             )
 
             expect(
@@ -782,7 +825,7 @@ describe('SetupTaskBodies', () => {
         })
 
         it('should wrap description text in setupTaskDescription div', () => {
-            const { container } = render(<VerifyEmailDomainBody />)
+            const { container } = renderWithProviders(<VerifyEmailDomainBody />)
 
             const descriptionDiv = container.querySelector(
                 '.setupTaskDescription',
@@ -850,12 +893,33 @@ describe('SetupTaskBodies', () => {
         testCases.forEach(
             ({ Component, description, buttonText, hasButton }) => {
                 it(`should have consistent structure for ${Component.name}`, () => {
-                    const history = createMemoryHistory()
-                    const { container } = render(
-                        <Router history={history}>
-                            <Component />
-                        </Router>,
-                    )
+                    const mockStoreConfiguration = {
+                        isSalesHelpOnSearchEnabled: false,
+                        isConversationStartersEnabled: false,
+                        floatingChatInputConfiguration: {
+                            isEnabled: false,
+                        },
+                    } as unknown as StoreConfiguration
+
+                    const mockContextValue = {
+                        storeConfiguration: mockStoreConfiguration,
+                        isLoading: false,
+                        updateStoreConfiguration: jest.fn(),
+                        createStoreConfiguration: jest.fn(),
+                        isPendingCreateOrUpdate: false,
+                    }
+
+                    const { container } = hasButton
+                        ? renderWithProviders(<Component />)
+                        : render(
+                              <Provider store={mockStore({})}>
+                                  <AiAgentStoreConfigurationContext.Provider
+                                      value={mockContextValue}
+                                  >
+                                      <Component />
+                                  </AiAgentStoreConfigurationContext.Provider>
+                              </Provider>,
+                          )
 
                     const mainContainer =
                         container.querySelector('.setupTaskBodies')
@@ -884,13 +948,10 @@ describe('SetupTaskBodies', () => {
 
     describe('Button navigation', () => {
         it('should navigate to featureUrl when Verify button is clicked', async () => {
-            const history = createMemoryHistory()
             const featureUrl = '/app/settings/channels/email/123/verification'
 
-            render(
-                <Router history={history}>
-                    <VerifyEmailDomainBody featureUrl={featureUrl} />
-                </Router>,
+            const { history } = renderWithProviders(
+                <VerifyEmailDomainBody featureUrl={featureUrl} />,
             )
 
             const button = screen.getByRole('button', { name: /verify/i })
@@ -902,13 +963,10 @@ describe('SetupTaskBodies', () => {
         })
 
         it('should navigate to featureUrl when Update button is clicked', async () => {
-            const history = createMemoryHistory()
             const featureUrl = '/app/settings/shopify'
 
-            render(
-                <Router history={history}>
-                    <UpdateShopifyPermissionsBody featureUrl={featureUrl} />
-                </Router>,
+            const { history } = renderWithProviders(
+                <UpdateShopifyPermissionsBody featureUrl={featureUrl} />,
             )
 
             const button = screen.getByRole('button', { name: /update/i })
@@ -918,13 +976,10 @@ describe('SetupTaskBodies', () => {
         })
 
         it('should navigate to featureUrl when Create button is clicked', async () => {
-            const history = createMemoryHistory()
             const featureUrl = '/app/ai-agent/actions'
 
-            render(
-                <Router history={history}>
-                    <CreateAnActionBody featureUrl={featureUrl} />
-                </Router>,
+            const { history } = renderWithProviders(
+                <CreateAnActionBody featureUrl={featureUrl} />,
             )
 
             const button = screen.getByRole('button', { name: /create/i })
@@ -934,13 +989,12 @@ describe('SetupTaskBodies', () => {
         })
 
         it('should not navigate when featureUrl is not provided', async () => {
-            const history = createMemoryHistory()
-            history.push('/current-page')
+            const customHistory = createMemoryHistory()
+            customHistory.push('/current-page')
 
-            render(
-                <Router history={history}>
-                    <VerifyEmailDomainBody />
-                </Router>,
+            const { history } = renderWithProviders(
+                <VerifyEmailDomainBody />,
+                customHistory,
             )
 
             const button = screen.getByRole('button', { name: /verify/i })

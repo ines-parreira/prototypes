@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     postStoreInstallationStepsKeys,
     useUpdateStepConfigurationPure,
@@ -18,6 +19,7 @@ interface UseSyncStepConfigurationParams {
     isRuleEngineLoading: boolean
     accountId: number
     shopName: string
+    shopType: string
 }
 
 export const useSyncStepConfiguration = ({
@@ -27,6 +29,7 @@ export const useSyncStepConfiguration = ({
     isRuleEngineLoading,
     accountId,
     shopName,
+    shopType,
 }: UseSyncStepConfigurationParams): void => {
     const queryClient = useQueryClient()
     const isSyncingRef = useRef(false)
@@ -87,6 +90,12 @@ export const useSyncStepConfiguration = ({
                         },
                     ])
 
+                    logEvent(SegmentEvent.PostGoLiveTaskCompleted, {
+                        step: dbStep.stepName,
+                        shop_name: shopName,
+                        shop_type: shopType,
+                    })
+
                     syncedStepsRef.current.add(syncKey)
                 } catch (error) {
                     console.error(
@@ -98,7 +107,14 @@ export const useSyncStepConfiguration = ({
         }
 
         isSyncingRef.current = false
-    }, [postGoLiveStep, pendingTasks, completedTasks, updateStepConfiguration])
+    }, [
+        postGoLiveStep,
+        pendingTasks,
+        completedTasks,
+        updateStepConfiguration,
+        shopType,
+        shopName,
+    ])
 
     useEffect(() => {
         if (!postGoLiveStep || isRuleEngineLoading || isSyncingRef.current) {

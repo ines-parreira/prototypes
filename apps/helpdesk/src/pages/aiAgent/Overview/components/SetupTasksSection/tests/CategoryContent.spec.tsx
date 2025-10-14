@@ -69,6 +69,7 @@ describe('CategoryContent', () => {
                     selectedCategoryTasks={tasks}
                     shopName="test-shop"
                     postGoLiveStepId={postGoLiveStepId}
+                    shopType="test-type"
                 />
             </Provider>,
         )
@@ -147,6 +148,7 @@ describe('CategoryContent', () => {
                     selectedCategoryTasks={mockTasks}
                     shopName="test-shop"
                     postGoLiveStepId={undefined}
+                    shopType="shopify"
                 />
             </Provider>,
         )

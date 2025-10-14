@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
+import {
+    PostStoreInstallationSteps,
+    PostStoreInstallationStepType,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
     TasksCategory,
     TasksConfigByCategory,
@@ -25,6 +28,8 @@ interface UseGetSetupTasksConfigByCategoryReturn {
     completionPercentage: number
     isLoading: boolean
     postGoLiveStepId: string | undefined
+    postGoLiveStep: PostStoreInstallationSteps | undefined
+    accountId: number
     error: unknown
 }
 
@@ -88,6 +93,7 @@ export const useGetSetupTasksConfigByCategory = ({
         isRuleEngineLoading,
         accountId,
         shopName,
+        shopType,
     })
 
     const tasksConfigByCategory: Partial<TasksConfigByCategory> =
@@ -113,9 +119,17 @@ export const useGetSetupTasksConfigByCategory = ({
                 ]),
             )
 
+            const stepStartedMap = new Map(
+                postGoLiveSteps.map((step) => [
+                    step.stepName,
+                    step.stepStartedDatetime,
+                ]),
+            )
+
             const mapStepsForCategory = createStepMapper(
                 stepNamesFromDb,
                 stepCompletionMap,
+                stepStartedMap,
                 ruleEngineTaskMap,
                 shopName,
                 shopType,
@@ -147,6 +161,8 @@ export const useGetSetupTasksConfigByCategory = ({
         completionPercentage,
         isLoading: isDbLoading || isRuleEngineLoading,
         postGoLiveStepId: postGoLiveStep?.id,
+        postGoLiveStep,
+        accountId,
         error,
     }
 }

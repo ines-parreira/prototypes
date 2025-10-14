@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button, Text } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner, Text } from '@gorgias/axiom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { usePostStoreInstallationStepsMutation } from 'pages/aiAgent/hooks/usePostStoreInstallationStepsMutation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import NewToggleField from 'pages/common/forms/NewToggleField'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
 
 import { ChatToggle } from '../AiAgentTasks/ChatToggle'
 import { EmailToggle } from '../AiAgentTasks/EmailToggle'
@@ -21,6 +25,9 @@ interface SetupTaskBodyProps {
     isCompleted?: boolean
     shopName?: string
     shopType?: string
+    stepName?: any
+    postGoLiveStepId?: string
+    stepStartedDatetime?: string | null
 }
 
 interface TaskBodyWithButtonConfig {
@@ -33,12 +40,37 @@ const TaskBodyWithButton = ({
     isCompleted,
     description,
     buttonLabel,
+    stepName,
+    postGoLiveStepId,
+    shopName,
+    stepStartedDatetime,
+    shopType,
 }: SetupTaskBodyProps & TaskBodyWithButtonConfig) => {
     const history = useHistory()
+    const accountDomain = useAppSelector(getCurrentDomain)
+
+    const { updateStepConfiguration } = usePostStoreInstallationStepsMutation({
+        accountDomain: accountDomain,
+        shopName: shopName || '',
+    })
 
     const handleClick = () => {
+        if (postGoLiveStepId && stepName && !stepStartedDatetime) {
+            updateStepConfiguration(postGoLiveStepId, {
+                stepName,
+                stepStartedDatetime: new Date().toISOString(),
+            })
+        }
+
         if (featureUrl) {
             history.push(featureUrl)
+
+            logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+                step: stepName,
+                shop_name: shopName,
+                shop_type: shopType,
+                action: buttonLabel,
+            })
         }
     }
 
@@ -62,6 +94,8 @@ interface TaskBodyWithToggleConfig {
     description: string
     value: boolean
     onChange: () => void
+    label?: string
+    isLoading?: boolean
 }
 
 const TaskBodyWithToggle = ({
@@ -69,6 +103,8 @@ const TaskBodyWithToggle = ({
     description,
     value,
     onChange,
+    label,
+    isLoading,
 }: SetupTaskBodyProps & TaskBodyWithToggleConfig) => {
     return (
         <div
@@ -79,12 +115,16 @@ const TaskBodyWithToggle = ({
             <div className={css.setupTaskDescription}>
                 <Text size="sm">{description}</Text>
             </div>
-            <NewToggleField
-                value={value}
-                onChange={onChange}
-                className={css.toggleButton}
-                isDisabled={isCompleted}
-            />
+            <div className={css.setupTaskToggle}>
+                <NewToggleField
+                    value={value}
+                    onChange={onChange}
+                    className={css.toggleButton}
+                    isDisabled={isCompleted}
+                />
+                {label && <div className={css.toggleLabel}>{label}</div>}
+                {isLoading && <LoadingSpinner size="small" />}
+            </div>
         </div>
     )
 }
@@ -133,15 +173,32 @@ export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
+    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useAppDispatch()
+
     const isSalesHelpOnSearchEnabled =
         storeConfiguration?.isSalesHelpOnSearchEnabled ?? false
 
     const handleToggle = async () => {
         if (!storeConfiguration) return
 
-        await updateStoreConfiguration({
-            ...storeConfiguration,
-            isSalesHelpOnSearchEnabled: !isSalesHelpOnSearchEnabled,
+        try {
+            setIsLoading(true)
+            await updateStoreConfiguration({
+                ...storeConfiguration,
+                isSalesHelpOnSearchEnabled: !isSalesHelpOnSearchEnabled,
+            })
+        } catch (error) {
+            handleAiAgentConfigurationError(error, dispatch)
+        } finally {
+            setIsLoading(false)
+        }
+
+        logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+            step: props.stepName,
+            shop_name: props.shopName,
+            shop_type: props.shopType,
+            action: !isSalesHelpOnSearchEnabled ? 'on' : 'off',
         })
     }
 
@@ -151,6 +208,8 @@ export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
             description="Guide shoppers to right products by having AI Agent start a conversation after they use search."
             value={isSalesHelpOnSearchEnabled}
             onChange={handleToggle}
+            label="Turn on"
+            isLoading={isLoading}
         />
     )
 }
@@ -158,6 +217,8 @@ export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
 export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
+    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useAppDispatch()
 
     const isConversationStartersEnabled =
         storeConfiguration?.isConversationStartersEnabled ?? false
@@ -165,9 +226,23 @@ export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
     const handleToggle = async () => {
         if (!storeConfiguration) return
 
-        await updateStoreConfiguration({
-            ...storeConfiguration,
-            isConversationStartersEnabled: !isConversationStartersEnabled,
+        try {
+            setIsLoading(true)
+            await updateStoreConfiguration({
+                ...storeConfiguration,
+                isConversationStartersEnabled: !isConversationStartersEnabled,
+            })
+        } catch (error) {
+            handleAiAgentConfigurationError(error, dispatch)
+        } finally {
+            setIsLoading(false)
+        }
+
+        logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+            step: props.stepName,
+            shop_name: props.shopName,
+            shop_type: props.shopType,
+            action: !isConversationStartersEnabled ? 'on' : 'off',
         })
     }
 
@@ -177,6 +252,8 @@ export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
             description="Show dynamic, AI-generated questions on product pages to address common shopper questions. Brands that enable this feature see a significant lift in conversions."
             value={isConversationStartersEnabled}
             onChange={handleToggle}
+            label="Turn on"
+            isLoading={isLoading}
         />
     )
 }
@@ -184,6 +261,9 @@ export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
 export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
+
+    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useAppDispatch()
 
     const isAskAnythingInputEnabled =
         storeConfiguration?.floatingChatInputConfiguration?.isEnabled ?? false
@@ -196,13 +276,27 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
             isEnabled: false,
             needHelpText: '',
         }
-        await updateStoreConfiguration({
-            ...storeConfiguration,
-            floatingChatInputConfiguration: {
-                ...defaultFloatingChatInputConfiguration,
-                ...storeConfiguration.floatingChatInputConfiguration,
-                isEnabled: !isAskAnythingInputEnabled,
-            },
+        try {
+            setIsLoading(true)
+            await updateStoreConfiguration({
+                ...storeConfiguration,
+                floatingChatInputConfiguration: {
+                    ...defaultFloatingChatInputConfiguration,
+                    ...storeConfiguration.floatingChatInputConfiguration,
+                    isEnabled: !isAskAnythingInputEnabled,
+                },
+            })
+        } catch (error) {
+            handleAiAgentConfigurationError(error, dispatch)
+        } finally {
+            setIsLoading(false)
+        }
+
+        logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+            step: props.stepName,
+            shop_name: props.shopName,
+            shop_type: props.shopType,
+            action: !isAskAnythingInputEnabled ? 'on' : 'off',
         })
     }
 
@@ -212,6 +306,8 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
             description="Transform your chat bubble into a persistent input bar that invites shoppers to ask questions anytime. Encourage engagement by keeping support top-of-mind while shoppers browse."
             value={isAskAnythingInputEnabled}
             onChange={handleToggle}
+            label="Turn on"
+            isLoading={isLoading}
         />
     )
 }
@@ -219,19 +315,29 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
 export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '', shopType = '' } = props
     const dispatch = useAppDispatch()
-    const { storeConfiguration, updateStoreConfiguration, isLoading } =
+    const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(
         !storeConfiguration?.chatChannelDeactivatedDatetime,
     )
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleChatToggle = async (
         updatedConfig: StoreConfiguration,
     ): Promise<void> => {
         try {
+            setIsLoading(true)
             await updateStoreConfiguration(updatedConfig)
+            logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+                step: props.stepName,
+                shop_name: props.shopName,
+                shop_type: props.shopType,
+                action: !isChatChannelEnabled ? 'on' : 'off',
+            })
         } catch (error) {
             handleAiAgentConfigurationError(error, dispatch)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -267,19 +373,29 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
 export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '' } = props
     const dispatch = useAppDispatch()
-    const { storeConfiguration, updateStoreConfiguration, isLoading } =
+    const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(
         !storeConfiguration?.emailChannelDeactivatedDatetime,
     )
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleEmailToggle = async (
         updatedConfig: StoreConfiguration,
     ): Promise<void> => {
         try {
+            setIsLoading(true)
             await updateStoreConfiguration(updatedConfig)
+            logEvent(SegmentEvent.PostGoLiveTaskActionClicked, {
+                step: props.stepName,
+                shop_name: props.shopName,
+                shop_type: props.shopType,
+                action: !isEmailChannelEnabled ? 'on' : 'off',
+            })
         } catch (error) {
             handleAiAgentConfigurationError(error, dispatch)
+        } finally {
+            setIsLoading(false)
         }
     }
 

@@ -1,29 +1,42 @@
+import { useEffect, useState } from 'react'
+
 import cn from 'classnames'
 
 import { Icon, Text } from '@gorgias/axiom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
+import { usePostStoreInstallationStepsMutation } from 'pages/aiAgent/hooks/usePostStoreInstallationStepsMutation'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 
-import { usePostStoreInstallationStepsMutation } from '../../../hooks/usePostStoreInstallationStepsMutation'
 import { TaskConfig } from './types'
+import { getFirstIncompleteStep } from './utils/utils'
 
 import css from './CategoryContent.less'
 
 export const CategoryContent = ({
     selectedCategoryTasks,
     shopName,
+    shopType,
     postGoLiveStepId,
 }: {
     selectedCategoryTasks: TaskConfig[]
     shopName: string
+    shopType: string
     postGoLiveStepId?: string
 }) => {
     const accountDomain = useAppSelector(getCurrentDomain)
+    const [expandedStep, setExpandedStep] = useState<string | null>(
+        getFirstIncompleteStep(selectedCategoryTasks),
+    )
+
+    useEffect(() => {
+        setExpandedStep(getFirstIncompleteStep(selectedCategoryTasks))
+    }, [selectedCategoryTasks, setExpandedStep])
 
     const { updateStepConfiguration } = usePostStoreInstallationStepsMutation({
         accountDomain: accountDomain,
@@ -41,10 +54,21 @@ export const CategoryContent = ({
                 ? new Date().toISOString()
                 : null,
         })
+
+        logEvent(SegmentEvent.PostGoLiveMarkedAsCompletedManually, {
+            step: task.stepName,
+            shop_name: shopName,
+            shop_type: shopType,
+            action: newIsCompleted ? 'completed' : 'not_completed',
+        })
     }
     return (
         <div className={css.groupContent}>
-            <Accordion className={css.stepsAccordion}>
+            <Accordion
+                className={css.stepsAccordion}
+                expandedItem={expandedStep}
+                onChange={setExpandedStep}
+            >
                 {selectedCategoryTasks.map((task) => {
                     const BodyComponent = task.body
 
@@ -79,6 +103,11 @@ export const CategoryContent = ({
                                     isCompleted={task.isCompleted}
                                     shopName={task.shopName}
                                     shopType={task.shopType}
+                                    stepName={task.stepName}
+                                    postGoLiveStepId={postGoLiveStepId}
+                                    stepStartedDatetime={
+                                        task.stepStartedDatetime
+                                    }
                                 />
                             </AccordionBody>
                         </AccordionItem>
