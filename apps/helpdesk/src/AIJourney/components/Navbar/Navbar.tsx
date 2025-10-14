@@ -22,6 +22,10 @@ const AiJourneyNavbarComponent = () => {
         FeatureFlagKey.AiJourneyAnalyticsEnabled,
     )
 
+    const isAiJourneyPlaygroundEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPlaygroundEnabled,
+    )
+
     const { journey: abandonedCartJourney } = useJourneyContext()
 
     const history = useHistory()
@@ -39,6 +43,11 @@ const AiJourneyNavbarComponent = () => {
             hasJourney &&
             abandonedCartJourney?.state === JourneyStatusEnum.Draft,
         [abandonedCartJourney, hasJourney],
+    )
+
+    const hasValidJourney = useMemo(
+        () => hasJourney && !isJourneyDraft,
+        [hasJourney, isJourneyDraft],
     )
 
     const selectedStoreIntegration = useMemo(() => {
@@ -70,8 +79,10 @@ const AiJourneyNavbarComponent = () => {
         [storeIntegrations, history],
     )
 
-    const shouldAccessAnalytics =
-        isAiJourneyAnalyticsEnabled && hasJourney && !isJourneyDraft
+    const shouldAccessPlayground =
+        isAiJourneyPlaygroundEnabled && hasValidJourney
+
+    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled && hasValidJourney
 
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
@@ -99,6 +110,15 @@ const AiJourneyNavbarComponent = () => {
                     >
                         {hasJourney ? 'Overview' : 'Setup'}
                     </Navigation.SectionItem>
+                    {shouldAccessPlayground && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/playground`}
+                        >
+                            Playground
+                        </Navigation.SectionItem>
+                    )}
                     {shouldAccessAnalytics && (
                         <Navigation.SectionItem
                             as={NavLink}

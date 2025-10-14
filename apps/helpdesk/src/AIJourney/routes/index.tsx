@@ -10,6 +10,7 @@ import {
     Analytics,
     LandingPage,
     Performance,
+    Playground,
     Setup,
     Test,
 } from 'AIJourney/pages'
@@ -86,6 +87,11 @@ function AiJourneyBaseRoutes() {
                             path={`${path}/:shopName/performance`}
                             exact
                             render={() => <Performance />}
+                        />
+                        <Route
+                            path={`${path}/:shopName/playground`}
+                            exact
+                            render={() => <Playground />}
                         />
                         <Route
                             path={`${path}/:shopName/analytics`}

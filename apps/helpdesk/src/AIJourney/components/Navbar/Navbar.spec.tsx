@@ -294,4 +294,129 @@ describe('<AiJourneyNavbar />', () => {
             expect(screen.getByText('Analytics')).toBeInTheDocument()
         })
     })
+
+    describe('Playground section', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+        it('should not render playground section when no journey exists', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: undefined,
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+        })
+
+        it('should not render playground section when journey exists without id', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: { type: 'cart_abandoned', id: undefined },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+        })
+
+        it('should not render playground section when journey is in draft state', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'draft',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+        })
+
+        it('should not render playground section when feature flag is disabled', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'draft',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+        })
+
+        it('should render playground section when journey exists and is not in draft state', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journey: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.getByText('Playground')).toBeInTheDocument()
+        })
+    })
 })
