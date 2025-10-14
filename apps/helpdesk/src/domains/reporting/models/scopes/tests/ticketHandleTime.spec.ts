@@ -4,10 +4,7 @@ import {
     ticketAverageHandleTimePerChannel,
     ticketHandleTime,
 } from 'domains/reporting/models/scopes/ticketHandleTime'
-import {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('ticketHandleTimeScope', () => {
     const filters: StatsFilters = {
@@ -18,12 +15,10 @@ describe('ticketHandleTimeScope', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('ticketHandleTime', () => {

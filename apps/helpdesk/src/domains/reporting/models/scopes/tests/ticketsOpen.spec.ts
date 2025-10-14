@@ -1,8 +1,5 @@
 import { openTicketsCount } from 'domains/reporting/models/scopes/ticketsOpen'
-import {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('ticketsOpenScope', () => {
     const filters: StatsFilters = {
@@ -13,12 +10,10 @@ describe('ticketsOpenScope', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('openTicketsCount', () => {

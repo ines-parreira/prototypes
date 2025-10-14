@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import {
     averageCsatScorePerAgentTimeseries,
     averageCsatScorePerChannelTimeseries,
@@ -28,7 +30,7 @@ describe('averageCsatScope', () => {
 
     describe('averageScore', () => {
         it('creates query', () => {
-            const actual = averageScore.build(context, {})
+            const actual = averageScore.build(context)
 
             const expected = {
                 measures: ['averageSurveyScore'],
@@ -47,14 +49,21 @@ describe('averageCsatScope', () => {
                 ],
                 metricName: 'satisfaction-average-score',
                 scope: 'average-csat',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = averageScore.build(context, {
-                sortDirection: 'desc',
+            const actual = averageScore.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -75,6 +84,12 @@ describe('averageCsatScope', () => {
                 order: [['surveyScore', 'desc']],
                 metricName: 'satisfaction-average-score',
                 scope: 'average-csat',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -83,7 +98,7 @@ describe('averageCsatScope', () => {
 
     describe('averageCsatScorePerAgentTimeseries', () => {
         it('creates query', () => {
-            const actual = averageCsatScorePerAgentTimeseries.build(context, {})
+            const actual = averageCsatScorePerAgentTimeseries.build(context)
 
             const expected = {
                 measures: ['scoredSurveysCount'],
@@ -116,8 +131,9 @@ describe('averageCsatScope', () => {
         })
 
         it('applies sorting order', () => {
-            const actual = averageCsatScorePerAgentTimeseries.build(context, {
-                sortDirection: 'asc',
+            const actual = averageCsatScorePerAgentTimeseries.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -154,10 +170,7 @@ describe('averageCsatScope', () => {
 
     describe('averageCsatScorePerChannelTimeseries', () => {
         it('creates query', () => {
-            const actual = averageCsatScorePerChannelTimeseries.build(
-                context,
-                {},
-            )
+            const actual = averageCsatScorePerChannelTimeseries.build(context)
 
             const expected = {
                 measures: ['scoredSurveysCount'],
@@ -190,8 +203,9 @@ describe('averageCsatScope', () => {
         })
 
         it('applies sorting order', () => {
-            const actual = averageCsatScorePerChannelTimeseries.build(context, {
-                sortDirection: 'desc',
+            const actual = averageCsatScorePerChannelTimeseries.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -228,10 +242,8 @@ describe('averageCsatScope', () => {
 
     describe('averageCsatScorePerIntegrationTimeseries', () => {
         it('creates query', () => {
-            const actual = averageCsatScorePerIntegrationTimeseries.build(
-                context,
-                {},
-            )
+            const actual =
+                averageCsatScorePerIntegrationTimeseries.build(context)
 
             const expected = {
                 measures: ['scoredSurveysCount'],
@@ -264,12 +276,10 @@ describe('averageCsatScope', () => {
         })
 
         it('applies sorting order', () => {
-            const actual = averageCsatScorePerIntegrationTimeseries.build(
-                context,
-                {
-                    sortDirection: 'asc',
-                },
-            )
+            const actual = averageCsatScorePerIntegrationTimeseries.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
+            })
 
             const expected = {
                 measures: ['scoredSurveysCount'],

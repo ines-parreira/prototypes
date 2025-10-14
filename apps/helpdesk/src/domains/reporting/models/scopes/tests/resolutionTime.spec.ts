@@ -3,10 +3,7 @@ import {
     medianResolutionTimePerAgent,
     medianResolutionTimePerChannel,
 } from 'domains/reporting/models/scopes/resolutionTime'
-import {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('resolutionTimeScope', () => {
     const filters: StatsFilters = {
@@ -17,12 +14,10 @@ describe('resolutionTimeScope', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('medianResolutionTime', () => {

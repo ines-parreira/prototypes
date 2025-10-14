@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import {
     createdTicketsCount,
     createdTicketsPerChannel,
@@ -28,7 +30,7 @@ describe('ticketsCreatedScope', () => {
 
     describe('createdTicketsCount', () => {
         it('creates query', () => {
-            const actual = createdTicketsCount.build(context, {})
+            const actual = createdTicketsCount.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -47,14 +49,21 @@ describe('ticketsCreatedScope', () => {
                 timezone: 'utc',
                 metricName: 'support-performance-tickets-created',
                 scope: 'tickets-created',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = createdTicketsCount.build(context, {
-                sortDirection: 'desc',
+            const actual = createdTicketsCount.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -75,6 +84,12 @@ describe('ticketsCreatedScope', () => {
                 timezone: 'utc',
                 metricName: 'support-performance-tickets-created',
                 scope: 'tickets-created',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -117,7 +132,7 @@ describe('ticketsCreatedScope', () => {
 
     describe('createdTicketsPerChannel', () => {
         it('creates query', () => {
-            const actual = createdTicketsPerChannel.build(context, {})
+            const actual = createdTicketsPerChannel.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -137,14 +152,21 @@ describe('ticketsCreatedScope', () => {
                 ],
                 metricName: 'support-performance-tickets-created-per-channel',
                 scope: 'tickets-created',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = createdTicketsPerChannel.build(context, {
-                sortDirection: 'asc',
+            const actual = createdTicketsPerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -166,6 +188,12 @@ describe('ticketsCreatedScope', () => {
                 order: [['ticketCount', 'asc']],
                 metricName: 'support-performance-tickets-created-per-channel',
                 scope: 'tickets-created',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

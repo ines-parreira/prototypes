@@ -1,6 +1,4 @@
-import { z } from 'zod'
-
-import { OrderDirection, QueryGranularity } from '@gorgias/helpdesk-types'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -93,7 +91,7 @@ export type QueryFor<TScopeMeta extends ScopeMeta> = {
 
     time_dimensions?: readonly {
         dimension: Values<TScopeMeta['timeDimensions']>
-        granularity: QueryGranularity
+        granularity?: AggregationWindow
     }[]
 
     filters?: ScopeFilters<TScopeMeta>
@@ -102,10 +100,6 @@ export type QueryFor<TScopeMeta extends ScopeMeta> = {
 
     order?: [Values<TScopeMeta['order']>, OrderDirection][]
 }
-
-// util to derive the input type from schema presence
-type InputOf<TSchema extends z.ZodTypeAny | undefined> =
-    TSchema extends z.ZodTypeAny ? z.infer<TSchema> : undefined
 
 type Prettify<T> = {
     [K in keyof T]: T[K]
@@ -121,38 +115,25 @@ export type BuiltQuery<
 type Context = {
     timezone: string
     filters: StatsFiltersWithLogicalOperator
-    granularity: AggregationWindow
+    sortDirection?: OrderDirection
+    granularity?: AggregationWindow
 }
 
 class MetricQuery<
     TMeta extends ScopeMeta,
     TMetricName extends MetricName,
     TQuery extends QueryFor<TMeta>,
-    TSchema extends z.ZodTypeAny | undefined,
     TContext extends Context,
 > {
     constructor(
         public readonly config: TMeta,
         public readonly name: TMetricName,
-        private schema: TSchema,
-        private queryFactory: (ctx: {
-            input: InputOf<TSchema>
-            ctx: TContext
-            config: TMeta
-        }) => TQuery,
+        private queryFactory: (ctx: { ctx: TContext; config: TMeta }) => TQuery,
     ) {}
 
-    public build(
-        ctx: TContext,
-        ...args: InputOf<TSchema> extends undefined
-            ? []
-            : [input: InputOf<TSchema>]
-    ): BuiltQuery<TMeta, TMetricName> {
-        const input = args[0] as InputOf<TSchema>
-        const validated = this.schema ? this.schema.parse(input) : input
+    public build(ctx: TContext): BuiltQuery<TMeta, TMetricName> {
         const query = this.queryFactory({
             ctx,
-            input: validated as InputOf<TSchema>,
             config: this.config,
         })
         // If query factory did not override timezone, use the one from context
@@ -163,41 +144,27 @@ class MetricQuery<
         if (query.filters === undefined) {
             query.filters = createScopeFilters(ctx.filters, this.config)
         }
+        // If query factory did not define granularity, use the one from context
+        if (
+            query.time_dimensions === undefined &&
+            this.config.timeDimensions &&
+            ctx.granularity
+        ) {
+            query.time_dimensions = [
+                {
+                    dimension: this.config.timeDimensions[0] as Values<
+                        TMeta['timeDimensions']
+                    >,
+                    granularity: ctx.granularity,
+                },
+            ]
+        }
 
-        // TODO add granularity if missing in time_dimensions
         return Object.freeze(
             Object.assign(query, {
                 metricName: this.name,
                 scope: this.config.scope,
             }),
-        )
-    }
-}
-
-class MetricBuilderWithInput<
-    TMetricName extends MetricName,
-    TSchema extends z.ZodTypeAny,
-    TMeta extends ScopeMeta,
-    TContext extends Context,
-> {
-    constructor(
-        public readonly config: TMeta,
-        public readonly name: TMetricName,
-        private schema: TSchema,
-    ) {}
-
-    defineQuery<TQuery extends QueryFor<TMeta>>(
-        queryFactory: (ctx: {
-            input: z.infer<TSchema>
-            ctx: TContext
-            config: TMeta
-        }) => TQuery,
-    ) {
-        return new MetricQuery<TMeta, TMetricName, TQuery, TSchema, TContext>(
-            this.config,
-            this.name,
-            this.schema,
-            queryFactory,
         )
     }
 }
@@ -212,26 +179,12 @@ class MetricBuilder<
         public readonly metricName: TMetricName,
     ) {}
 
-    defineInput<TSchema extends z.ZodTypeAny>(schema: TSchema) {
-        return new MetricBuilderWithInput<
-            TMetricName,
-            TSchema,
-            TMeta,
-            TContext
-        >(this.config, this.metricName, schema)
-    }
-
     defineQuery<TQuery extends QueryFor<TMeta>>(
-        queryFactory: (ctx: {
-            input: undefined
-            ctx: TContext
-            config: TMeta
-        }) => TQuery,
+        queryFactory: (ctx: { ctx: TContext; config: TMeta }) => TQuery,
     ) {
-        return new MetricQuery<TMeta, TMetricName, TQuery, undefined, TContext>(
+        return new MetricQuery<TMeta, TMetricName, TQuery, TContext>(
             this.config,
             this.metricName,
-            undefined,
             queryFactory,
         )
     }
@@ -250,7 +203,6 @@ class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
     }
 }
 
-// utils
 export function defineScope<
     const TMeta extends ScopeMeta,
     TContext extends Context = Context,

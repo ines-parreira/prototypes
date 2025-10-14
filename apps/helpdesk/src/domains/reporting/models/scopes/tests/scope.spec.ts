@@ -1,6 +1,7 @@
-import { z } from 'zod'
-
-import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
+import {
+    OrderDirection,
+    ReportingStatsOperatorsEnum,
+} from '@gorgias/helpdesk-types'
 
 import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -121,17 +122,6 @@ describe('scope', () => {
 
         const metricBuilder = scope.defineMetricName('test-metric')
 
-        describe('input', () => {
-            it('should return MetricBuilderWithInput with schema', () => {
-                const schema = z.object({
-                    sortDirection: z.enum(['asc', 'desc']),
-                })
-                const builderWithInput = metricBuilder.defineInput(schema)
-
-                expect(builderWithInput.name).toBe('test-metric')
-            })
-        })
-
         describe('query', () => {
             it('should create MetricQuery without input validation', () => {
                 const metricQuery = metricBuilder.defineQuery(({ ctx }) => ({
@@ -153,10 +143,7 @@ describe('scope', () => {
             filters: ['periodStart', 'periodEnd'],
         })
 
-        const schema = z.object({ sortDirection: z.enum(['asc', 'desc']) })
-        const builderWithInput = scope
-            .defineMetricName('test-metric')
-            .defineInput(schema)
+        const builderWithInput = scope.defineMetricName('test-metric')
 
         describe('query', () => {
             it('should create MetricQuery with input validation', () => {
@@ -212,62 +199,37 @@ describe('scope', () => {
             })
         })
 
-        describe('build with input schema', () => {
-            it('should validate input and build query', () => {
-                const schema = z.object({
-                    sortDirection: z.enum(['asc', 'desc']),
-                })
-                const queryFactory = jest.fn(({ input }) => ({
-                    measures: ['testMeasure'] as const,
-                    order: [['testMeasure', input.sortDirection]],
-                }))
+        it('build with sortDirection', () => {
+            const queryFactory = jest.fn(({ ctx }) => ({
+                measures: ['testMeasure'] as const,
+                order: [['testMeasure', ctx.sortDirection]],
+            }))
 
-                const metricQuery = scope
+            const metricQuery = scope
+                .defineMetricName('test-metric')
+                .defineQuery(queryFactory as any)
 
-                    .defineMetricName('test-metric')
-                    .defineInput(schema)
-                    .defineQuery(queryFactory as any)
-
-                const result = metricQuery.build(mockContext, {
-                    sortDirection: 'desc',
-                })
-
-                expect(queryFactory).toHaveBeenCalledWith({
-                    ctx: mockContext,
-                    input: { sortDirection: 'desc' },
-                    config: scope.config,
-                })
-                expect(result).toEqual({
-                    measures: ['testMeasure'],
-                    timezone: 'UTC',
-                    filters: mockScopeFilters,
-                    order: [['testMeasure', 'desc']],
-                    metricName: 'test-metric',
-                    scope: MetricScope.TicketsOpen,
-                })
-                expect(Object.isFrozen(result)).toBe(true)
+            const result = metricQuery.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Desc,
             })
 
-            it('should throw when schema validation fails', () => {
-                const schema = z.object({
-                    sortDirection: z.enum(['asc', 'desc']),
-                })
-                const queryFactory = jest.fn()
-
-                const metricQuery = scope
-
-                    .defineMetricName('test-metric')
-                    .defineInput(schema)
-                    .defineQuery(queryFactory)
-
-                expect(() => {
-                    metricQuery.build(mockContext, {
-                        sortDirection: 'invalid',
-                    } as any)
-                }).toThrow()
-
-                expect(queryFactory).not.toHaveBeenCalled()
+            expect(queryFactory).toHaveBeenCalledWith({
+                ctx: {
+                    ...mockContext,
+                    sortDirection: OrderDirection.Desc,
+                },
+                config: scope.config,
             })
+            expect(result).toEqual({
+                measures: ['testMeasure'],
+                timezone: 'UTC',
+                filters: mockScopeFilters,
+                order: [['testMeasure', 'desc']],
+                metricName: 'test-metric',
+                scope: MetricScope.TicketsOpen,
+            })
+            expect(Object.isFrozen(result)).toBe(true)
         })
     })
 
@@ -316,14 +278,12 @@ describe('scope', () => {
             })
 
             const ticketsRepliedScopeBuilder = ticketsRepliedScope
-            const direction = z.enum(['asc', 'desc'])
 
             const openTicketsCountPerAgent = ticketsRepliedScopeBuilder
                 .defineMetricName(
                     'support-performance-tickets-replied-per-agent',
                 )
-                .defineInput(z.object({ sortDirection: direction }))
-                .defineQuery(({ ctx, input, config }) => {
+                .defineQuery(({ ctx, config }) => {
                     const query: QueryFor<typeof ticketsRepliedScope.config> = {
                         measures: ['ticketCount'],
                         dimensions: ['agents'],
@@ -331,15 +291,16 @@ describe('scope', () => {
                         filters: createScopeFilters(ctx.filters, config),
                     }
 
-                    if (input.sortDirection) {
-                        query.order = [['ticketId', input.sortDirection]]
+                    if (ctx.sortDirection) {
+                        query.order = [['ticketId', ctx.sortDirection]]
                     }
 
                     return query
                 })
 
-            const result = openTicketsCountPerAgent.build(mockContext, {
-                sortDirection: 'asc',
+            const result = openTicketsCountPerAgent.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Asc,
             })
 
             expect(result).toEqual({

@@ -1,13 +1,14 @@
 import {
-    openTicketsCount,
-    openTicketsCountPerAgent,
-    openTicketsCountPerChannel,
-    openTicketsTimeseries,
+    ticketsRepliedCount,
+    ticketsRepliedCountPerAgent,
+    ticketsRepliedCountPerChannel,
+    ticketsRepliedTimeseries,
 } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
+import { OrderDirection } from 'models/api/types'
 
 describe('ticketsRepliedScope', () => {
     const filters: StatsFilters = {
@@ -24,11 +25,12 @@ describe('ticketsRepliedScope', () => {
         filters,
         timezone,
         granularity,
+        sortDirection: OrderDirection.Asc,
     }
 
-    describe('openTicketsCount', () => {
+    describe('ticketsRepliedCount', () => {
         it('creates query', () => {
-            const actual = openTicketsCount.build(context)
+            const actual = ticketsRepliedCount.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -47,15 +49,21 @@ describe('ticketsRepliedScope', () => {
                 ],
                 metricName: 'support-performance-tickets-replied',
                 scope: 'tickets-replied',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
     })
 
-    describe('openTicketsTimeseries', () => {
+    describe('ticketsRepliedTimeseries', () => {
         it('creates query', () => {
-            const actual = openTicketsTimeseries.build(context)
+            const actual = ticketsRepliedTimeseries.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -86,10 +94,11 @@ describe('ticketsRepliedScope', () => {
         })
     })
 
-    describe('openTicketsCountPerAgent', () => {
+    describe('ticketsRepliedCountPerAgent', () => {
         it('creates query', () => {
-            const actual = openTicketsCountPerAgent.build(context, {
-                sortDirection: 'asc',
+            const actual = ticketsRepliedCountPerAgent.build({
+                ...context,
+                granularity: undefined,
             })
 
             const expected = {
@@ -117,8 +126,9 @@ describe('ticketsRepliedScope', () => {
         })
 
         it('applies sorting order', () => {
-            const actual = openTicketsCountPerAgent.build(context, {
-                sortDirection: 'desc',
+            const actual = ticketsRepliedCountPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -140,17 +150,21 @@ describe('ticketsRepliedScope', () => {
                 order: [['ticketCount', 'desc']],
                 metricName: 'support-performance-tickets-replied-per-agent',
                 scope: 'tickets-replied',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
     })
 
-    describe('openTicketsCountPerChannel', () => {
+    describe('ticketsRepliedCountPerChannel', () => {
         it('creates query', () => {
-            const actual = openTicketsCountPerChannel.build(context, {
-                sortDirection: 'asc',
-            })
+            const actual = ticketsRepliedCountPerChannel.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -171,35 +185,12 @@ describe('ticketsRepliedScope', () => {
                 order: [['ticketCount', 'asc']],
                 metricName: 'support-performance-tickets-replied-per-channel',
                 scope: 'tickets-replied',
-            }
-
-            expect(actual).toEqual(expected)
-        })
-
-        it('applies sorting order', () => {
-            const actual = openTicketsCountPerChannel.build(context, {
-                sortDirection: 'desc',
-            })
-
-            const expected = {
-                measures: ['ticketCount'],
-                dimensions: ['channels'],
-                timezone: 'utc',
-                filters: [
+                time_dimensions: [
                     {
-                        member: 'periodStart',
-                        operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00.000'],
-                    },
-                    {
-                        member: 'periodEnd',
-                        operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59.000'],
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
                     },
                 ],
-                order: [['ticketCount', 'desc']],
-                metricName: 'support-performance-tickets-replied-per-channel',
-                scope: 'tickets-replied',
             }
 
             expect(actual).toEqual(expected)

@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import {
     sentMessagesCount,
     sentMessagesPerAgent,
@@ -47,6 +49,12 @@ describe('messagesSentScope', () => {
                 ],
                 metricName: 'support-performance-messages-sent',
                 scope: 'messages-sent',
+                time_dimensions: [
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -88,8 +96,9 @@ describe('messagesSentScope', () => {
 
     describe('sentMessagesPerAgent', () => {
         it('creates query', () => {
-            const actual = sentMessagesPerAgent.build(context, {
-                sortDirection: 'asc',
+            const actual = sentMessagesPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -111,14 +120,21 @@ describe('messagesSentScope', () => {
                 order: [['messagesCount', 'asc']],
                 metricName: 'support-performance-messages-sent-per-agent',
                 scope: 'messages-sent',
+                time_dimensions: [
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = sentMessagesPerAgent.build(context, {
-                sortDirection: 'desc',
+            const actual = sentMessagesPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -140,6 +156,12 @@ describe('messagesSentScope', () => {
                 order: [['messagesCount', 'desc']],
                 metricName: 'support-performance-messages-sent-per-agent',
                 scope: 'messages-sent',
+                time_dimensions: [
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -148,8 +170,9 @@ describe('messagesSentScope', () => {
 
     describe('sentMessagesPerChannel', () => {
         it('creates query', () => {
-            const actual = sentMessagesPerChannel.build(context, {
-                sortDirection: 'asc',
+            const actual = sentMessagesPerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -171,14 +194,21 @@ describe('messagesSentScope', () => {
                 order: [['messagesCount', 'asc']],
                 metricName: 'support-performance-messages-sent-per-channel',
                 scope: 'messages-sent',
+                time_dimensions: [
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = sentMessagesPerChannel.build(context, {
-                sortDirection: 'desc',
+            const actual = sentMessagesPerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -200,6 +230,12 @@ describe('messagesSentScope', () => {
                 order: [['messagesCount', 'desc']],
                 metricName: 'support-performance-messages-sent-per-channel',
                 scope: 'messages-sent',
+                time_dimensions: [
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

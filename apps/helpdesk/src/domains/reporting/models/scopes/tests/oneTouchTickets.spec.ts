@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import {
     oneTouchTickets,
     oneTouchTicketsPerAgent,
@@ -28,7 +30,7 @@ describe('oneTouchTicketsScope', () => {
 
     describe('oneTouchTickets', () => {
         it('creates query', () => {
-            const actual = oneTouchTickets.build(context, {})
+            const actual = oneTouchTickets.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -47,14 +49,21 @@ describe('oneTouchTicketsScope', () => {
                 ],
                 metricName: 'support-performance-one-touch-tickets',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = oneTouchTickets.build(context, {
-                sortDirection: 'desc',
+            const actual = oneTouchTickets.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -75,6 +84,12 @@ describe('oneTouchTicketsScope', () => {
                 order: [['tickets', 'desc']],
                 metricName: 'support-performance-one-touch-tickets',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -116,7 +131,7 @@ describe('oneTouchTicketsScope', () => {
 
     describe('oneTouchTicketsPerAgent', () => {
         it('creates query', () => {
-            const actual = oneTouchTicketsPerAgent.build(context, {})
+            const actual = oneTouchTicketsPerAgent.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -136,14 +151,21 @@ describe('oneTouchTicketsScope', () => {
                 ],
                 metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = oneTouchTicketsPerAgent.build(context, {
-                sortDirection: 'asc',
+            const actual = oneTouchTicketsPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -165,6 +187,12 @@ describe('oneTouchTicketsScope', () => {
                 order: [['tickets', 'asc']],
                 metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -173,7 +201,7 @@ describe('oneTouchTicketsScope', () => {
 
     describe('oneTouchTicketsPerChannel', () => {
         it('creates query', () => {
-            const actual = oneTouchTicketsPerChannel.build(context, {})
+            const actual = oneTouchTicketsPerChannel.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -193,14 +221,21 @@ describe('oneTouchTicketsScope', () => {
                 ],
                 metricName: 'support-performance-one-touch-tickets-per-channel',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = oneTouchTicketsPerChannel.build(context, {
-                sortDirection: 'desc',
+            const actual = oneTouchTicketsPerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -222,6 +257,12 @@ describe('oneTouchTicketsScope', () => {
                 order: [['tickets', 'desc']],
                 metricName: 'support-performance-one-touch-tickets-per-channel',
                 scope: 'one-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

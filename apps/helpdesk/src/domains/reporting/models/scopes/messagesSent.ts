@@ -1,5 +1,3 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 
@@ -48,21 +46,18 @@ export const sentMessagesTimeseries = messagesSentScope
         ],
     }))
 
-const direction = z.enum(['asc', 'desc'])
-
 export const sentMessagesPerAgent = messagesSentScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT)
-    .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['messagesCount'] as const,
             dimensions: ['agents'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['messagesCount', input.sortDirection]] as const,
+                order: [['messagesCount', ctx.sortDirection]] as const,
             }
         }
 
@@ -73,17 +68,16 @@ export const sentMessagesPerChannel = messagesSentScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_CHANNEL,
     )
-    .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['messagesCount'] as const,
             dimensions: ['channels'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['messagesCount', input.sortDirection]] as const,
+                order: [['messagesCount', ctx.sortDirection]] as const,
             }
         }
 

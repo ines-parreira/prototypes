@@ -1,8 +1,5 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const averageCsatScope = defineScope({
     scope: MetricScope.AverageCsat,
@@ -35,20 +32,17 @@ const averageCsatScope = defineScope({
     order: ['tickets', 'createdDatetime', 'surveyScore', 'scoredSurveysCount'],
 })
 
-const direction = z.enum(['asc', 'desc'])
-
 export const averageScore = averageCsatScope
     .defineMetricName(METRIC_NAMES.SATISFACTION_AVERAGE_SCORE)
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['averageSurveyScore'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['surveyScore', input.sortDirection]] as const,
+                order: [['surveyScore', ctx.sortDirection]] as const,
             }
         }
 
@@ -59,8 +53,7 @@ export const averageCsatScorePerAgentTimeseries = averageCsatScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
             dimensions: ['agents'] as const,
@@ -72,10 +65,10 @@ export const averageCsatScorePerAgentTimeseries = averageCsatScope
             ],
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['scoredSurveysCount', input.sortDirection]] as const,
+                order: [['scoredSurveysCount', ctx.sortDirection]] as const,
             }
         }
 
@@ -86,8 +79,7 @@ export const averageCsatScorePerChannelTimeseries = averageCsatScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
             dimensions: ['channels'] as const,
@@ -99,10 +91,10 @@ export const averageCsatScorePerChannelTimeseries = averageCsatScope
             ],
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['scoredSurveysCount', input.sortDirection]] as const,
+                order: [['scoredSurveysCount', ctx.sortDirection]] as const,
             }
         }
 
@@ -113,8 +105,7 @@ export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ ctx, input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
             dimensions: ['integrations'] as const,
@@ -126,10 +117,10 @@ export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
             ],
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['scoredSurveysCount', input.sortDirection]] as const,
+                order: [['scoredSurveysCount', ctx.sortDirection]] as const,
             }
         }
 

@@ -1,8 +1,5 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const ticketsRepliedScope = defineScope({
     scope: MetricScope.TicketsReplied,
@@ -29,15 +26,13 @@ const ticketsRepliedScope = defineScope({
     ],
 })
 
-export const openTicketsCount = ticketsRepliedScope
+export const ticketsRepliedCount = ticketsRepliedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED)
     .defineQuery(() => ({
         measures: ['ticketCount'] as const,
     }))
 
-const direction = z.enum(['asc', 'desc'])
-
-export const openTicketsTimeseries = ticketsRepliedScope
+export const ticketsRepliedTimeseries = ticketsRepliedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES,
     )
@@ -45,48 +40,46 @@ export const openTicketsTimeseries = ticketsRepliedScope
         measures: ['ticketCount'] as const,
         time_dimensions: [
             {
-                dimension: 'createdDatetime' as const,
+                dimension: 'createdDatetime',
                 granularity: ctx.granularity,
             },
         ],
     }))
 
-export const openTicketsCountPerAgent = ticketsRepliedScope
+export const ticketsRepliedCountPerAgent = ticketsRepliedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_AGENT,
     )
-    .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agents'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['ticketCount', input.sortDirection]] as const,
+                order: [['ticketCount', ctx.sortDirection]],
             }
         }
 
         return query
     })
 
-export const openTicketsCountPerChannel = ticketsRepliedScope
+export const ticketsRepliedCountPerChannel = ticketsRepliedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL,
     )
-    .defineInput(z.object({ sortDirection: direction }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['channels'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['ticketCount', input.sortDirection]] as const,
+                order: [['ticketCount', ctx.sortDirection]],
             }
         }
 

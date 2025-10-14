@@ -1,5 +1,3 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
@@ -46,21 +44,18 @@ export const closedTicketsTimeseries = ticketsClosedScope
         order: [['closedDatetime', OrderDirection.Asc]] as const,
     }))
 
-const direction = z.enum(['asc', 'desc'])
-
 export const closedTicketsPerAgent = ticketsClosedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT)
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agents'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['ticketCount', input.sortDirection]] as const,
+                order: [['ticketCount', ctx.sortDirection]] as const,
             }
         }
 
@@ -71,17 +66,16 @@ export const closedTicketsPerChannel = ticketsClosedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_CHANNEL,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['channels'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['ticketCount', input.sortDirection]] as const,
+                order: [['ticketCount', ctx.sortDirection]] as const,
             }
         }
 

@@ -42,6 +42,12 @@ describe('messagesPerTicketScope', () => {
                 ],
                 metricName: 'support-performance-messages-per-ticket',
                 scope: 'messages-per-ticket',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

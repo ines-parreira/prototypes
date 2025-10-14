@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     closedTicketsCount,
@@ -35,6 +37,12 @@ describe('ticketsClosedScope', () => {
             const actual = closedTicketsCount.build(context)
 
             const expected = {
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
                 measures: ['ticketCount'],
                 timezone: 'utc',
                 filters: [
@@ -103,7 +111,7 @@ describe('ticketsClosedScope', () => {
 
     describe('closedTicketsPerAgent', () => {
         it('creates query', () => {
-            const actual = closedTicketsPerAgent.build(context, {})
+            const actual = closedTicketsPerAgent.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -128,14 +136,21 @@ describe('ticketsClosedScope', () => {
                 ],
                 metricName: 'support-performance-closed-tickets-per-agent',
                 scope: 'tickets-closed',
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = closedTicketsPerAgent.build(context, {
-                sortDirection: 'asc',
+            const actual = closedTicketsPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -162,6 +177,12 @@ describe('ticketsClosedScope', () => {
                 order: [['ticketCount', 'asc']],
                 metricName: 'support-performance-closed-tickets-per-agent',
                 scope: 'tickets-closed',
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -170,7 +191,7 @@ describe('ticketsClosedScope', () => {
 
     describe('closedTicketsPerChannel', () => {
         it('creates query', () => {
-            const actual = closedTicketsPerChannel.build(context, {})
+            const actual = closedTicketsPerChannel.build(context)
 
             const expected = {
                 measures: ['ticketCount'],
@@ -195,14 +216,21 @@ describe('ticketsClosedScope', () => {
                 ],
                 metricName: 'support-performance-closed-tickets-per-channel',
                 scope: 'tickets-closed',
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = closedTicketsPerChannel.build(context, {
-                sortDirection: 'asc',
+            const actual = closedTicketsPerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -226,9 +254,15 @@ describe('ticketsClosedScope', () => {
                         values: ['123'],
                     },
                 ],
-                order: [['ticketCount', 'asc']],
+                order: [['ticketCount', 'desc']],
                 metricName: 'support-performance-closed-tickets-per-channel',
                 scope: 'tickets-closed',
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

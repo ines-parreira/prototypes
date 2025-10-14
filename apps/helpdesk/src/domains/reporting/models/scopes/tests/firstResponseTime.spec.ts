@@ -1,3 +1,5 @@
+import { OrderDirection } from '@gorgias/helpdesk-types'
+
 import {
     medianFirstResponseTime,
     medianFirstResponseTimePerAgent,
@@ -27,7 +29,7 @@ describe('firstResponseTimeScope', () => {
 
     describe('medianFirstResponseTime', () => {
         it('creates query', () => {
-            const actual = medianFirstResponseTime.build(context, {})
+            const actual = medianFirstResponseTime.build(context)
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
@@ -46,14 +48,21 @@ describe('firstResponseTimeScope', () => {
                 ],
                 metricName: 'support-performance-median-first-response-time',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = medianFirstResponseTime.build(context, {
-                sortDirection: 'asc',
+            const actual = medianFirstResponseTime.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -74,6 +83,12 @@ describe('firstResponseTimeScope', () => {
                 order: [['medianFirstResponseTime', 'asc']],
                 metricName: 'support-performance-median-first-response-time',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -82,7 +97,7 @@ describe('firstResponseTimeScope', () => {
 
     describe('medianFirstResponseTimePerAgent', () => {
         it('creates query', () => {
-            const actual = medianFirstResponseTimePerAgent.build(context, {})
+            const actual = medianFirstResponseTimePerAgent.build(context)
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
@@ -103,14 +118,21 @@ describe('firstResponseTimeScope', () => {
                 metricName:
                     'support-performance-median-first-response-time-per-agent',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = medianFirstResponseTimePerAgent.build(context, {
-                sortDirection: 'desc',
+            const actual = medianFirstResponseTimePerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
             })
 
             const expected = {
@@ -133,6 +155,12 @@ describe('firstResponseTimeScope', () => {
                 metricName:
                     'support-performance-median-first-response-time-per-agent',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
@@ -141,7 +169,7 @@ describe('firstResponseTimeScope', () => {
 
     describe('medianFirstResponseTimePerChannel', () => {
         it('creates query', () => {
-            const actual = medianFirstResponseTimePerChannel.build(context, {})
+            const actual = medianFirstResponseTimePerChannel.build(context)
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
@@ -162,14 +190,21 @@ describe('firstResponseTimeScope', () => {
                 metricName:
                     'support-performance-median-first-response-time-per-channel',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)
         })
 
         it('applies sorting order', () => {
-            const actual = medianFirstResponseTimePerChannel.build(context, {
-                sortDirection: 'asc',
+            const actual = medianFirstResponseTimePerChannel.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
             })
 
             const expected = {
@@ -192,6 +227,12 @@ describe('firstResponseTimeScope', () => {
                 metricName:
                     'support-performance-median-first-response-time-per-channel',
                 scope: 'first-response-time',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
             }
 
             expect(actual).toEqual(expected)

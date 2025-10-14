@@ -1,8 +1,5 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const firstResponseTimeScope = defineScope({
     scope: MetricScope.FirstResponseTime,
@@ -40,23 +37,20 @@ const firstResponseTimeScope = defineScope({
     ],
 })
 
-const direction = z.enum(['asc', 'desc'])
-
 export const medianFirstResponseTime = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['medianFirstResponseTime'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
                 order: [
-                    ['medianFirstResponseTime', input.sortDirection],
+                    ['medianFirstResponseTime', ctx.sortDirection],
                 ] as const,
             }
         }
@@ -68,18 +62,17 @@ export const medianFirstResponseTimePerAgent = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['medianFirstResponseTime'] as const,
             dimensions: ['agents'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
                 order: [
-                    ['medianFirstResponseTime', input.sortDirection],
+                    ['medianFirstResponseTime', ctx.sortDirection],
                 ] as const,
             }
         }
@@ -91,18 +84,17 @@ export const medianFirstResponseTimePerChannel = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['medianFirstResponseTime'] as const,
             dimensions: ['channels'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
                 order: [
-                    ['medianFirstResponseTime', input.sortDirection],
+                    ['medianFirstResponseTime', ctx.sortDirection],
                 ] as const,
             }
         }

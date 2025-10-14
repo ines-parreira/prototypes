@@ -1,8 +1,5 @@
-import { z } from 'zod'
-
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const oneTouchTicketsScope = defineScope({
     scope: MetricScope.OneTouchTickets,
@@ -29,20 +26,17 @@ const oneTouchTicketsScope = defineScope({
     order: ['tickets', 'createdDatetime'],
 })
 
-const direction = z.enum(['asc', 'desc'])
-
 export const oneTouchTickets = oneTouchTicketsScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS)
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', input.sortDirection]] as const,
+                order: [['tickets', ctx.sortDirection]] as const,
             }
         }
 
@@ -67,17 +61,16 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_AGENT,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agents'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', input.sortDirection]] as const,
+                order: [['tickets', ctx.sortDirection]] as const,
             }
         }
 
@@ -88,17 +81,16 @@ export const oneTouchTicketsPerChannel = oneTouchTicketsScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL,
     )
-    .defineInput(z.object({ sortDirection: direction.optional() }))
-    .defineQuery(({ input }) => {
+    .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['channels'] as const,
         }
 
-        if (input.sortDirection) {
+        if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', input.sortDirection]] as const,
+                order: [['tickets', ctx.sortDirection]] as const,
             }
         }
 

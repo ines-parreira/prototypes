@@ -1,6 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const ticketHandleTimeScope = defineScope({
     scope: MetricScope.TicketHandleTime,
