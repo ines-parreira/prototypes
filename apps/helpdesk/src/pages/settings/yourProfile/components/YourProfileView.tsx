@@ -444,7 +444,7 @@ export function YourProfileView({
                                         css.headings,
                                     )}
                                 >
-                                    Conversation settings
+                                    Translation settings
                                 </h3>
                                 <div className={settingsCss.subsection}>
                                     <FormGroup

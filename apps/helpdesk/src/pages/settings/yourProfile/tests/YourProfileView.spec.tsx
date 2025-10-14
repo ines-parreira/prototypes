@@ -490,8 +490,8 @@ describe('Your profile page', () => {
         })
     })
 
-    describe('Conversation settings section', () => {
-        it('should not display the conversation settings section when the feature flag is disabled', async () => {
+    describe('Translation settings section', () => {
+        it('should not display the translation settings section when the feature flag is disabled', async () => {
             mockUseFlag.mockImplementation(() => false)
 
             const { getByText, queryByText } = renderComponent()
@@ -500,9 +500,9 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            expect(queryByText('Conversation settings')).not.toBeInTheDocument()
+            expect(queryByText('Translation settings')).not.toBeInTheDocument()
         })
-        it('should display the conversation settings without the user primary language when he has none', async () => {
+        it('should display the translation settings without the user primary language when he has none', async () => {
             mockUseFlag.mockImplementation(() => true)
             const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
                 HttpResponse.json({
@@ -522,7 +522,7 @@ describe('Your profile page', () => {
                 getByText('Default translation language'),
             ).toBeInTheDocument()
         })
-        it('should display the conversation settings with the user primary language when he has one', async () => {
+        it('should display the translation settings with the user primary language when he has one', async () => {
             mockUseFlag.mockImplementation(() => true)
 
             const { getByText } = renderComponent()
@@ -536,7 +536,7 @@ describe('Your profile page', () => {
             ).toBeInTheDocument()
         })
 
-        it('should display the conversation settings with the user proficient languages when he has some', async () => {
+        it('should display the translation settings with the user proficient languages when he has some', async () => {
             mockUseFlag.mockImplementation(() => true)
             const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
                 HttpResponse.json({
@@ -571,7 +571,7 @@ describe('Your profile page', () => {
             expect(englishElements.length).toBeGreaterThan(0)
             expect(frenchElements.length).toBeGreaterThan(0)
         })
-        it('should allow the user to update the Conversation settings', async () => {
+        it('should allow the user to update the Translation settings', async () => {
             const user = userEvent.setup()
             mockUseFlag.mockImplementation(() => true)
             const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
