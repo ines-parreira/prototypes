@@ -805,18 +805,19 @@ describe('utils', () => {
             metricName: 'tickets' as any,
             timezone: 'UTC',
         }
+        // The function doesn't return anything, it just logs errors if there are differences
+        // For identical queries, no error should be logged
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+        afterAll(() => {
+            consoleSpy.mockRestore()
+        })
 
         it('should return identical queries as equal', () => {
-            // The function doesn't return anything, it just logs errors if there are differences
-            // For identical queries, no error should be logged
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
-
             compareAndReportQueries(baseV1Query, baseV2Query)
 
             // Should not log any errors for identical queries
             expect(consoleSpy).not.toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect differences in measures', () => {
@@ -833,8 +834,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['measures: ["tickets.count"] !== ["orders.count"]'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect differences in dimensions', () => {
@@ -851,8 +850,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['dimensions: ["tickets.status"] !== ["orders.status"]'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect differences in timezone', () => {
@@ -866,8 +863,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['timezone: UTC !== EST'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect differences in filters', () => {
@@ -889,11 +884,9 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different',
                 expect.arrayContaining([
-                    'filter not found in v2: {"member":"agents","operator":"one-of","values":["123","456"]}',
+                    'V1 filter not found in V2: {"member":"agents","operator":"one-of","values":["123","456"]}',
                 ]),
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect different filter lengths', () => {
@@ -921,10 +914,8 @@ describe('utils', () => {
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different',
-                expect.arrayContaining(['filters length: 2 !== 1']),
+                expect.arrayContaining(['filters length: V1 2 !== V2 1']),
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle filters in different order', () => {
@@ -957,8 +948,6 @@ describe('utils', () => {
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect differences in segments', () => {
@@ -973,8 +962,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['segments: ["segment1"] !== ["segment2"]'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle empty arrays', () => {
@@ -987,8 +974,6 @@ describe('utils', () => {
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle undefined values', () => {
@@ -1001,8 +986,6 @@ describe('utils', () => {
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle timeDimensions differences', () => {
@@ -1035,8 +1018,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['timeDimensions[0].granularity: day !== month'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect different timeDimensions lengths', () => {
@@ -1074,8 +1055,6 @@ describe('utils', () => {
                 'New Stats API and Legacy API queries are different',
                 ['timeDimensions length: 2 !== 1'],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should detect different timeDimensions dimensions', () => {
@@ -1110,8 +1089,6 @@ describe('utils', () => {
                     'timeDimensions[0].dimension: tickets.created_at !== tickets.updated_at',
                 ],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle order differences', () => {
@@ -1134,8 +1111,6 @@ describe('utils', () => {
                     'order: [{"id":"tickets.count","desc":true}] !== [{"id":"tickets.count","desc":false}]',
                 ],
             )
-
-            consoleSpy.mockRestore()
         })
 
         it('should not compare metricName, limit, or offset', () => {
@@ -1158,8 +1133,6 @@ describe('utils', () => {
 
             // Should not log any errors because metricName, limit, and offset are not compared
             expect(consoleSpy).not.toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
 
         it('should handle JSON.stringify error with circular reference', () => {
@@ -1186,8 +1159,6 @@ describe('utils', () => {
 
             // Should log error due to circular reference
             expect(consoleSpy).toHaveBeenCalled()
-
-            consoleSpy.mockRestore()
         })
     })
 })

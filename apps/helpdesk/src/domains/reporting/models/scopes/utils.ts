@@ -1,25 +1,46 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
+import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import {
+    CustomFieldsFilter,
+    DateFilter,
     FilterGroup,
     ScopeFilters,
     ScopeMeta,
+    StandardFilter,
+    TagsFilter,
 } from 'domains/reporting/models/scopes/scope'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     Cube,
     ReportingFilter,
+    ReportingFilterOperator,
     ReportingQuery,
     ReportingTimeDimension,
 } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
 
+function createDateFilter(
+    member: string,
+    operator:
+        | ReportingFilterOperator.AfterDate
+        | ReportingFilterOperator.BeforeDate,
+    values: string[],
+): DateFilter {
+    return {
+        member,
+        operator,
+        values,
+    }
+}
+
 function createStandardFilter(
     member: string,
-    operator: ReportingStatsOperatorsEnum,
+    operator: LogicalOperatorEnum,
     values: string[],
-): FilterGroup {
+): StandardFilter {
     return {
         member,
         operator,
@@ -30,10 +51,10 @@ function createStandardFilter(
 // TODO: pass member
 function createTagsFilter(
     tags: Array<{
-        operator: 'one-of' | 'not-one-of' | 'all-of'
+        operator: LogicalOperatorEnum
         values: string[]
     }>,
-): FilterGroup {
+): TagsFilter {
     return {
         member: 'tags',
         values: tags,
@@ -44,10 +65,10 @@ function createTagsFilter(
 function createCustomFieldsFilter(
     customFields: Array<{
         custom_field_id: string
-        operator: 'one-of' | 'not-one-of'
+        operator: LogicalOperatorEnum.ONE_OF | LogicalOperatorEnum.NOT_ONE_OF
         values: string[]
     }>,
-): FilterGroup {
+): CustomFieldsFilter {
     return {
         member: 'customFields',
         values: customFields,
@@ -63,16 +84,12 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
     scopeConfig: TMeta,
 ): ScopeFilters<TMeta> {
     const filters: FilterGroup[] = [
-        createStandardFilter(
-            'periodStart',
-            ReportingStatsOperatorsEnum.AfterDate,
-            [formatReportingQueryDate(statFilters.period.start_datetime)],
-        ),
-        createStandardFilter(
-            'periodEnd',
-            ReportingStatsOperatorsEnum.BeforeDate,
-            [formatReportingQueryDate(statFilters.period.end_datetime)],
-        ),
+        createDateFilter('periodStart', ReportingFilterOperator.AfterDate, [
+            formatReportingQueryDate(statFilters.period.start_datetime),
+        ]),
+        createDateFilter('periodEnd', ReportingFilterOperator.BeforeDate, [
+            formatReportingQueryDate(statFilters.period.end_datetime),
+        ]),
     ]
 
     // Only process filters that are defined in the scope configuration
@@ -81,10 +98,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
     scopeFilters.forEach((filterKey) => {
         switch (filterKey) {
             case 'agents':
-                if (
-                    statFilters.agents &&
-                    statFilters.agents.values.length > 0
-                ) {
+                if (statFilters.agents && hasFilter(statFilters.agents)) {
                     filters.push(
                         createStandardFilter(
                             'agents',
@@ -96,10 +110,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'channels':
-                if (
-                    statFilters.channels &&
-                    statFilters.channels.values.length > 0
-                ) {
+                if (statFilters.channels && hasFilter(statFilters.channels)) {
                     filters.push(
                         createStandardFilter(
                             'channels',
@@ -113,7 +124,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'integrations':
                 if (
                     statFilters.integrations &&
-                    statFilters.integrations.values.length > 0
+                    hasFilter(statFilters.integrations)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -126,18 +137,18 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'tags':
-                if (statFilters.tags && statFilters.tags.length > 0) {
+                if (statFilters.tags && hasFilter(statFilters.tags)) {
                     filters.push(
                         createTagsFilter(
                             statFilters.tags.map((tag) => ({
                                 operator:
                                     tag.operator ===
                                     ReportingStatsOperatorsEnum.OneOf
-                                        ? 'one-of'
+                                        ? LogicalOperatorEnum.ONE_OF
                                         : tag.operator ===
                                             ReportingStatsOperatorsEnum.NotOneOf
-                                          ? 'not-one-of'
-                                          : 'all-of',
+                                          ? LogicalOperatorEnum.NOT_ONE_OF
+                                          : LogicalOperatorEnum.ALL_OF,
                                 values: tag.values.map(String),
                             })),
                         ),
@@ -148,7 +159,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'customFields':
                 if (
                     statFilters.customFields &&
-                    statFilters.customFields.length > 0
+                    hasFilter(statFilters.customFields)
                 ) {
                     filters.push(
                         createCustomFieldsFilter(
@@ -157,8 +168,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                                 operator:
                                     field.operator ===
                                     ReportingStatsOperatorsEnum.OneOf
-                                        ? 'one-of'
-                                        : 'not-one-of',
+                                        ? LogicalOperatorEnum.ONE_OF
+                                        : LogicalOperatorEnum.NOT_ONE_OF,
                                 values: field.values,
                             })),
                         ),
@@ -167,7 +178,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'score':
-                if (statFilters.score && statFilters.score.values.length > 0) {
+                if (statFilters.score && hasFilter(statFilters.score)) {
                     filters.push(
                         createStandardFilter(
                             'score',
@@ -181,7 +192,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'communicationSkills':
                 if (
                     statFilters.communicationSkills &&
-                    statFilters.communicationSkills.values.length > 0
+                    hasFilter(statFilters.communicationSkills)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -196,7 +207,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'languageProficiency':
                 if (
                     statFilters.languageProficiency &&
-                    statFilters.languageProficiency.values.length > 0
+                    hasFilter(statFilters.languageProficiency)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -211,7 +222,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'resolutionCompleteness':
                 if (
                     statFilters.resolutionCompleteness &&
-                    statFilters.resolutionCompleteness.values.length > 0
+                    hasFilter(statFilters.resolutionCompleteness)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -224,10 +235,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'accuracy':
-                if (
-                    statFilters.accuracy &&
-                    statFilters.accuracy.values.length > 0
-                ) {
+                if (statFilters.accuracy && hasFilter(statFilters.accuracy)) {
                     filters.push(
                         createStandardFilter(
                             'accuracy',
@@ -241,7 +249,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'efficiency':
                 if (
                     statFilters.efficiency &&
-                    statFilters.efficiency.values.length > 0
+                    hasFilter(statFilters.efficiency)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -256,7 +264,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'internalCompliance':
                 if (
                     statFilters.internalCompliance &&
-                    statFilters.internalCompliance.values.length > 0
+                    hasFilter(statFilters.internalCompliance)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -271,7 +279,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'brandVoice':
                 if (
                     statFilters.brandVoice &&
-                    statFilters.brandVoice.values.length > 0
+                    hasFilter(statFilters.brandVoice)
                 ) {
                     filters.push(
                         createStandardFilter(
@@ -333,14 +341,14 @@ function compareFilters(
 ) {
     if (v1Filters.length !== v2Filters.length) {
         differences.push(
-            `filters length: ${v1Filters.length} !== ${v2Filters.length}`,
+            `filters length: V1 ${v1Filters.length} !== V2 ${v2Filters.length}`,
         )
     }
 
     for (const v1Filter of v1Filters) {
         if (!findMatchingFilter(v1Filter, v2Filters)) {
             differences.push(
-                `filter not found in v2: ${JSON.stringify(v1Filter)}`,
+                `V1 filter not found in V2: ${JSON.stringify(v1Filter)}`,
             )
         }
     }
@@ -348,7 +356,7 @@ function compareFilters(
     for (const v2Filter of v2Filters) {
         if (!findMatchingFilter(v2Filter, v1Filters)) {
             differences.push(
-                `filter not found in v1: ${JSON.stringify(v2Filter)}`,
+                `V2 filter not found in V1: ${JSON.stringify(v2Filter)}`,
             )
         }
     }

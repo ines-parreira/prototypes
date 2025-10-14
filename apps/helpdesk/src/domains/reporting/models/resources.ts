@@ -114,18 +114,18 @@ export const postReporting = <
     TCube extends Cube = Cube,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    queries: ReportingParams<TCube>,
-    query?: BuiltQuery<TMeta>,
+    oldQuery: ReportingParams<TCube>,
+    newQuery?: BuiltQuery<TMeta>,
 ) => {
     // Temporary Check until all P1 queries are defined
-    if (!query) {
-        return postReportingV1<TData, TCube>(queries)
+    if (!newQuery) {
+        return postReportingV1<TData, TCube>(oldQuery)
     }
 
     return executeMetric<TData>({
-        metricName: queries[0].metricName,
-        oldApi: () => postReportingV1<TData, TCube>(queries),
-        newQueryApi: () => postReportingV2Query<TCube, TMeta>(query),
+        metricName: oldQuery[0].metricName,
+        oldApi: () => postReportingV1<TData, TCube>(oldQuery),
+        newQueryApi: () => postReportingV2Query<TCube, TMeta>(newQuery),
         validateQuery: compareAndReportQueries,
     })
 }

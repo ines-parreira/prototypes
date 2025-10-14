@@ -1,10 +1,6 @@
 import { z } from 'zod'
 
-import {
-    OrderDirection,
-    QueryGranularity,
-    ReportingStatsOperatorsEnum,
-} from '@gorgias/helpdesk-types'
+import { OrderDirection, QueryGranularity } from '@gorgias/helpdesk-types'
 
 import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -12,31 +8,45 @@ import {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
-type StandardFilter = {
+export type DateFilter = {
     member: string
-    operator: ReportingStatsOperatorsEnum
+    operator:
+        | ReportingFilterOperator.AfterDate
+        | ReportingFilterOperator.BeforeDate
     values: string[]
 }
 
-type CustomFieldsFilter = {
+export type StandardFilter = {
+    member: string
+    operator: LogicalOperatorEnum
+    values: string[]
+}
+
+export type CustomFieldsFilter = {
     member: string
     values: Array<{
         custom_field_id: string
-        operator: 'one-of' | 'not-one-of'
+        operator: LogicalOperatorEnum.ONE_OF | LogicalOperatorEnum.NOT_ONE_OF
         values: string[]
     }>
 }
 
-type TagsFilter = {
+export type TagsFilter = {
     member: string
     values: Array<{
-        operator: 'one-of' | 'not-one-of' | 'all-of'
+        operator: LogicalOperatorEnum
         values: string[]
     }>
 }
 
-export type FilterGroup = StandardFilter | CustomFieldsFilter | TagsFilter
+export type FilterGroup =
+    | StandardFilter
+    | CustomFieldsFilter
+    | TagsFilter
+    | DateFilter
 
 type Values<T> = T extends readonly (infer U)[] ? U : never
 
