@@ -58,33 +58,33 @@ export const TASK_CONFIG_TEMPLATES: Record<
             bodyComponent: UpdateShopifyPermissionsBody,
         },
     ],
-    [TasksCategory.Customize]: [
-        {
-            stepName: StepName.ENABLE_TRIGGER_ON_SEARCH,
-            displayName: `Enable 'Trigger on Search'`,
-            bodyComponent: PrepareTriggerOnSearchBody,
-        },
-        {
-            stepName: StepName.ENABLE_SUGGESTED_PRODUCTS,
-            displayName: `Enable 'Suggested product questions'`,
-            bodyComponent: PrepareSuggestedProductsBody,
-        },
-        {
-            stepName: StepName.ENABLE_ASK_ANYTHING,
-            displayName: `Enable 'Ask anything input'`,
-            bodyComponent: EnableAskAnythingBody,
-        },
-    ],
     [TasksCategory.Train]: [
+        {
+            stepName: StepName.REVIEW_AI_AGENT_INTERACTIONS,
+            displayName: 'Review AI Agent interactions',
+            bodyComponent: MonitorAiAgentBody,
+        },
         {
             stepName: StepName.CREATE_AN_ACTION,
             displayName: 'Create an Action',
             bodyComponent: CreateAnActionBody,
         },
+    ],
+    [TasksCategory.Customize]: [
         {
-            stepName: StepName.REVIEW_AI_AGENT_INTERACTIONS,
-            displayName: 'Review AI Agent interactions',
-            bodyComponent: MonitorAiAgentBody,
+            stepName: StepName.ENABLE_TRIGGER_ON_SEARCH,
+            displayName: `Turn on 'Trigger on search' to boost conversion by 25%`,
+            bodyComponent: PrepareTriggerOnSearchBody,
+        },
+        {
+            stepName: StepName.ENABLE_SUGGESTED_PRODUCTS,
+            displayName: `Turn on 'Suggested product questions'  to reduce buying friction`,
+            bodyComponent: PrepareSuggestedProductsBody,
+        },
+        {
+            stepName: StepName.ENABLE_ASK_ANYTHING,
+            displayName: `Turn on 'Ask anything' to reduce shopper drop-off`,
+            bodyComponent: EnableAskAnythingBody,
         },
     ],
     [TasksCategory.Deploy]: [

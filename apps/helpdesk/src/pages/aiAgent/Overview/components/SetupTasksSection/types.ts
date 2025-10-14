@@ -2,8 +2,8 @@ import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 
 export enum TasksCategory {
     Essential = 'Essential',
-    Customize = 'Customize',
     Train = 'Train',
+    Customize = 'Customize',
     Deploy = 'Deploy',
 }
 
