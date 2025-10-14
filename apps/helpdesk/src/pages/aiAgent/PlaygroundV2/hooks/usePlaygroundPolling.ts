@@ -50,7 +50,7 @@ export const usePlaygroundPolling = ({
         return () => {
             stopPolling()
         }
-    }, [])
+    }, [stopPolling])
 
     useEffect(() => {
         if (error) {

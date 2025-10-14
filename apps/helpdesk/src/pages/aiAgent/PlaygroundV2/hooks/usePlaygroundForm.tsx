@@ -6,7 +6,9 @@ import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
-import { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundFormValues } from '../types'
+
+export type { PlaygroundFormValues }
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',
@@ -87,7 +89,7 @@ export const usePlaygroundForm = ({
             key: Key,
             value: PlaygroundFormValues[Key],
         ) => {
-            setFormValues((preFormValues) => ({
+            setFormValues((preFormValues: PlaygroundFormValues) => ({
                 ...preFormValues,
                 [key]: value,
             }))

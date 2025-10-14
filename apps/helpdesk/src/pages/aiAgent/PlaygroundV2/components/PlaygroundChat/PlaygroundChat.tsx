@@ -53,7 +53,6 @@ type Props = {
 export const PlaygroundChat = ({
     storeData,
     accountData,
-    currentUserFirstName,
     arePlaygroundActionsAllowed,
     onNewConversationRef,
 }: Props) => {
@@ -80,7 +79,6 @@ export const PlaygroundChat = ({
         httpIntegrationId: httpIntegrationId || accountData.httpIntegration?.id,
         gorgiasDomain: accountData.gorgiasDomain,
         accountId: accountData.accountId,
-        currentUserFirstName,
         channel,
         channelIntegrationId:
             channel === 'chat'

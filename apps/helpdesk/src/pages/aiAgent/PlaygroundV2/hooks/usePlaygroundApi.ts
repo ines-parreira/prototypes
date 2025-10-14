@@ -11,12 +11,12 @@ import {
 import { reportError } from 'utils/errors'
 
 import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
+import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
-} from '../components/PlaygroundChat/PlaygroundChat.types'
-import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
-import { PlaygroundCustomer } from '../types'
+    PlaygroundCustomer,
+} from '../types'
 import {
     getLastShopperMessage,
     getPlaygroundMessageMeta,

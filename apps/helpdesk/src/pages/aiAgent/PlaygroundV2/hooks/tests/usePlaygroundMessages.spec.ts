@@ -48,7 +48,6 @@ const defaultParams = {
     gorgiasDomain: 'acme',
     accountId: 1,
     httpIntegrationId: 1,
-    currentUserFirstName: 'Acme',
     channel: 'email' as const,
     channelIntegrationId: 123,
 }

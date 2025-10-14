@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
@@ -15,15 +15,15 @@ import {
 import { reportError } from 'utils/errors'
 
 import {
-    PlaygroundChannelAvailability,
-    PlaygroundChannels,
-} from '../components/PlaygroundChat/PlaygroundChat.types'
-import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE_TEXT,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import { PlaygroundCustomer } from '../types'
+import {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+    PlaygroundCustomer,
+} from '../types'
 import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,
@@ -56,11 +56,10 @@ export const usePlaygroundMessages = ({
     baseUrl,
     arePlaygroundActionsAllowed,
 }: {
-    storeData: StoreConfiguration
+    storeData?: StoreConfiguration
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
-    currentUserFirstName?: string
     channel: PlaygroundChannels
     channelIntegrationId?: number
     channelAvailability?: PlaygroundChannelAvailability
@@ -69,9 +68,8 @@ export const usePlaygroundMessages = ({
 }) => {
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
+        false,
     )
-    const initialMessages: PlaygroundMessage[] = useMemo(() => [], [])
-
     const { testSessionId, createTestSession } = useTestSession(baseUrl, {
         areActionsAllowedToExecute: arePlaygroundActionsAllowed ?? false,
     })
@@ -92,24 +90,18 @@ export const usePlaygroundMessages = ({
             baseUrl,
         })
 
-    const [messages, setMessages] =
-        useState<PlaygroundMessage[]>(initialMessages)
+    const [messages, setMessages] = useState<PlaygroundMessage[]>([])
 
     const processedLogIds = useRef(new Set<string>())
 
     const [isWaitingResponse, setIsWaitingResponse] = useState(false)
 
-    useEffect(() => {
-        setMessages(initialMessages)
-        setIsWaitingResponse(false)
-    }, [initialMessages])
-
     const onNewConversation = useCallback(() => {
         abortCurrentRequest()
         stopPolling()
-        setMessages(initialMessages)
+        setMessages([])
         setIsWaitingResponse(false)
-    }, [initialMessages, abortCurrentRequest, stopPolling])
+    }, [abortCurrentRequest, stopPolling])
 
     const processMessages = useCallback(
         async (
@@ -119,6 +111,7 @@ export const usePlaygroundMessages = ({
                 subject,
             }: { customer: PlaygroundCustomer; subject?: string },
         ) => {
+            if (!storeData) return null
             try {
                 const response = await submitMessage({
                     messages: newMessages,

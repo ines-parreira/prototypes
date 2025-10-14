@@ -2,11 +2,11 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 
-interface usePlaygroundTrackingProps {
+type UsePlaygroundTrackingProps = {
     shopName: string
 }
 
-interface PlaygroundTrackingCallbacks {
+type PlaygroundTrackingCallbacks = {
     onTestPageViewed: () => void
     onTestMessageSent: ({
         channel,
@@ -19,7 +19,7 @@ interface PlaygroundTrackingCallbacks {
 
 export const usePlaygroundTracking = ({
     shopName,
-}: usePlaygroundTrackingProps): PlaygroundTrackingCallbacks => {
+}: UsePlaygroundTrackingProps): PlaygroundTrackingCallbacks => {
     const eventContext = useMemo(() => ({ shopName }), [shopName])
 
     const onTestPageViewed = useCallback(() => {
