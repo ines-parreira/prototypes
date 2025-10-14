@@ -1,3 +1,5 @@
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
@@ -379,6 +381,7 @@ export type TriggerAIJourneyPayload = {
     followUpAttempt: number
     storeName: string
     storeType: string
+    journeyType: JourneyTypeEnum
     ticketId: string
     marketingId: string
     createdAt: string

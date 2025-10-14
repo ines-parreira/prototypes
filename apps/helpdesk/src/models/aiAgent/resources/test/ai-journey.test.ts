@@ -1,3 +1,5 @@
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { TriggerAIJourneyPayload, TriggerAIJourneyResponse } from '../../types'
 import {
     createContextAndTriggerAIJourney,
@@ -22,6 +24,7 @@ describe('AI Journey Resource', () => {
                 followUpAttempt: 0,
                 storeName: 'artemisathletix',
                 storeType: 'shopify',
+                journeyType: JourneyTypeEnum.CartAbandoned,
                 ticketId: '1756199485200',
                 marketingId: 'marketing-1756199485200',
                 createdAt: new Date().toISOString(),
@@ -93,6 +96,7 @@ describe('AI Journey Resource', () => {
                 storeIntegrationId: 33858,
                 storeName: 'artemisathletix',
                 storeType: 'shopify',
+                journeyType: JourneyTypeEnum.CartAbandoned,
                 journeyId: '01JZAPAD606K1JSKNHC8KVA4BD',
                 journeyMessageInstructions: 'Test instructions',
                 followUpAttempt: 1,
@@ -144,6 +148,7 @@ describe('AI Journey Resource', () => {
                     followUpAttempt: 1,
                     storeName: 'artemisathletix',
                     storeType: 'shopify',
+                    journeyType: JourneyTypeEnum.CartAbandoned,
                     ticketId: '1234567',
                     marketingId: expect.stringMatching(/^marketing-\d+$/),
                     createdAt: expect.any(String),
@@ -194,6 +199,7 @@ describe('AI Journey Resource', () => {
                 accountId: 6069,
                 storeIntegrationId: 33858,
                 storeName: 'artemisathletix',
+                journeyType: JourneyTypeEnum.CartAbandoned,
                 settings: {
                     maxFollowUpMessages: null,
                     smsSenderNumber: null,
@@ -224,6 +230,7 @@ describe('AI Journey Resource', () => {
                     journeyId: null,
                     followUpAttempt: 0,
                     storeType: 'shopify',
+                    journeyType: JourneyTypeEnum.CartAbandoned,
                     journeyMessageInstructions: null,
                     cart: expect.objectContaining({
                         lineItems: [

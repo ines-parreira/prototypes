@@ -131,6 +131,7 @@ export const useGeneratePlaygroundMessage = ({
                 storeIntegrationId: currentIntegration.id,
                 storeName: currentIntegration.name,
                 storeType: 'shopify',
+                journeyType: abandonedCartJourney.type,
                 journeyId: abandonedCartJourney.id,
                 journeyMessageInstructions: journeyMessageInstructions,
                 followUpAttempt: 0,

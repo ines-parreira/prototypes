@@ -1,3 +1,5 @@
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { TriggerAIJourneyPayload, TriggerAIJourneyResponse } from '../types'
 import { apiClient } from './message-processing'
 
@@ -7,6 +9,7 @@ type CreateAIJourneyPlaygroundOptions = {
     storeIntegrationId: number
     storeName: string
     storeType?: string
+    journeyType: JourneyTypeEnum
 
     // Optional fields with defaults
     journeyId?: string | null
@@ -65,6 +68,7 @@ const createAIJourneyPlaygroundPayload = (
         journeyParticipationId: null,
         storeIntegrationId: options.storeIntegrationId,
         followUpAttempt: options.followUpAttempt ?? 0,
+        journeyType: options.journeyType,
         storeName: options.storeName,
         storeType: options.storeType ?? 'shopify',
         ticketId: '1234567',
