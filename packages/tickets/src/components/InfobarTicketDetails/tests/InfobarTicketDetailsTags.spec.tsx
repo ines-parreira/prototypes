@@ -114,6 +114,11 @@ describe('InfobarTicketDetailsTags', () => {
         )!
     }
 
+    const getCloseButtons = () =>
+        screen.queryAllByRole('button', {
+            name: 'Remove tag',
+        })
+
     describe('Initial rendering', () => {
         it('should render the component with add button', async () => {
             render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
@@ -321,16 +326,27 @@ describe('InfobarTicketDetailsTags', () => {
             )
 
             await waitFor(() => {
+                expect(getAddButton()).toBeInTheDocument()
+            })
+
+            await waitFor(() => {
                 expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
             })
 
-            const closeButtons = screen.getAllByRole('button').filter((btn) => {
-                const svg = btn.querySelector('svg[aria-label="close"]')
-                return svg !== null
+            // In JSDOM, OverflowList hides all tags by default due to layout calculations
+            // Click "Show more" button to reveal hidden tags
+            const showMoreButton = screen.queryByLabelText(/show.*more/i)
+            if (showMoreButton) {
+                await user.click(showMoreButton)
+            }
+
+            // Wait for close buttons to appear after expanding
+            await waitFor(() => {
+                const buttons = getCloseButtons()
+                expect(buttons.length).toBeGreaterThan(0)
             })
 
-            expect(closeButtons.length).toBeGreaterThan(0)
-
+            const closeButtons = getCloseButtons()
             await user.click(closeButtons[0])
 
             await waitForUpdateTicketRequest(async (request) => {
@@ -384,32 +400,37 @@ describe('InfobarTicketDetailsTags', () => {
             )
 
             await waitFor(() => {
+                expect(getAddButton()).toBeInTheDocument()
+            })
+
+            await waitFor(() => {
                 const bugTags = screen.getAllByText('Bug')
                 expect(bugTags.length).toBeGreaterThan(0)
             })
 
-            const closeButtons = screen.getAllByRole('button').filter((btn) => {
-                const svg = btn.querySelector('svg[aria-label="close"]')
-                return svg !== null
+            // In JSDOM, OverflowList hides all tags by default due to layout calculations
+            // Click "Show more" button to reveal hidden tags
+            const showMoreButton = screen.queryByLabelText(/show.*more/i)
+            if (showMoreButton) {
+                await user.click(showMoreButton)
+            }
+
+            // Wait for close buttons to appear after expanding
+            await waitFor(() => {
+                const buttons = getCloseButtons()
+                expect(buttons.length).toBeGreaterThan(0)
             })
 
+            const closeButtons = getCloseButtons()
             await user.click(closeButtons[0])
 
             await waitFor(() => {
-                const remainingCloseButtons = screen
-                    .getAllByRole('button')
-                    .filter((btn) => {
-                        const svg = btn.querySelector('svg[aria-label="close"]')
-                        return svg !== null
-                    })
+                const remainingCloseButtons = getCloseButtons()
                 expect(remainingCloseButtons).toHaveLength(1)
             })
 
             const updatedCloseButtons = await waitFor(() => {
-                const buttons = screen.getAllByRole('button').filter((btn) => {
-                    const svg = btn.querySelector('svg[aria-label="close"]')
-                    return svg !== null
-                })
+                const buttons = getCloseButtons()
                 expect(buttons).toHaveLength(1)
                 return buttons
             })
@@ -417,12 +438,7 @@ describe('InfobarTicketDetailsTags', () => {
             await user.click(updatedCloseButtons[0])
 
             await waitFor(() => {
-                const allCloseButtons = screen
-                    .queryAllByRole('button')
-                    .filter((btn) => {
-                        const svg = btn.querySelector('svg[aria-label="close"]')
-                        return svg !== null
-                    })
+                const allCloseButtons = getCloseButtons()
                 expect(allCloseButtons).toHaveLength(0)
             })
         }, 10000)
@@ -704,10 +720,7 @@ describe('InfobarTicketDetailsTags', () => {
                 expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
             })
 
-            const closeButtons = screen.getAllByRole('button').filter((btn) => {
-                const svg = btn.querySelector('svg[aria-label="close"]')
-                return svg !== null
-            })
+            const closeButtons = getCloseButtons()
 
             await user.click(closeButtons[0])
 

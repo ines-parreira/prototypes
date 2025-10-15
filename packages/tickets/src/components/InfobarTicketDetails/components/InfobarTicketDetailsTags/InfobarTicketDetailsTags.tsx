@@ -131,11 +131,12 @@ export function InfobarTicketDetailsTags({
 
     return (
         <div className={css.container}>
-            <OverflowList nonExpandedLineCount={2}>
-                <OverflowListItem index={0} className={css.listButton}>
+            <OverflowList gap="xxxs" nonExpandedLineCount={2}>
+                <OverflowListItem index={0}>
                     <MultiSelect
                         trigger={() => (
                             <Button
+                                slot="button"
                                 icon="add-plus"
                                 intent="secondary"
                                 size="sm"
@@ -164,13 +165,10 @@ export function InfobarTicketDetailsTags({
                     </MultiSelect>
                 </OverflowListItem>
                 {ticket?.data.tags.map((tag, index) => (
-                    <OverflowListItem
-                        key={tag.id}
-                        index={index + 1}
-                        className={css.listItem}
-                    >
+                    <OverflowListItem key={tag.id} index={index + 1}>
                         <NewTag
                             onClose={() => handleCloseTag(tag)}
+                            aria-label="Remove tag"
                             {...(tag.decoration?.color && {
                                 leadingSlot: (
                                     <Dot color={tag.decoration?.color} />
