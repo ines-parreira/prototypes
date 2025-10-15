@@ -3,7 +3,7 @@ name: Deprecation Monitoring
 on:
   schedule:
     # Run every Friday at 1pm UTC
-    - cron: '0 13 * * 5'
+    - cron: "0 13 * * 5"
   workflow_dispatch: # Allow manual triggering
 
 permissions:
@@ -15,7 +15,7 @@ jobs:
     runs-on: gh-actions-small-runner-set
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,14 +25,14 @@ jobs:
       - name: Install node
         uses: gorgias/reusable-actions/.github/actions/setup-node@main
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Set GitHub Packages auth token
         shell: bash
         run: |
           echo '@gorgias:registry=https://npm.pkg.github.com/' >> .npmrc
           echo '//npm.pkg.github.com/:_authToken=${{ secrets.GH_READ_PACKAGES_TOKEN }}' >> .npmrc
-  
+
       - name: Install dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
@@ -60,18 +60,18 @@ jobs:
         name: Setup git
         if: steps.check-changes.outputs.changed == 'true'
         run: |
-            git config --global --add safe.directory $(pwd)
-            git config --global user.name "gorgias-bot-frontend"
-            git config --global user.email "engineering-sre+frontend@gorgias.com"
+          git config --global --add safe.directory $(pwd)
+          git config --global user.name "gorgias-bot-frontend"
+          git config --global user.email "engineering-sre+frontend@gorgias.com"
 
       - name: Commit and push changes
         if: steps.check-changes.outputs.changed == 'true'
         shell: bash
         run: |
-            git checkout -b update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
-            git add scripts/deprecated-monitoring/deprecated.snapshot.json
-            git commit -m "chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}"
-            git push --force --set-upstream origin update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
+          git checkout -b update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
+          git add scripts/deprecated-monitoring/deprecated.snapshot.json
+          git commit -m "chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}"
+          git push --force --set-upstream origin update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
 
       - name: Open PR
         if: steps.check-changes.outputs.changed == 'true'
@@ -81,7 +81,8 @@ jobs:
           repo: ${{ github.repository }}
           base: main
           head: update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
-          title: 'chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}'
+          title: "chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}"
+          reviewers: "nicolastoulemont"
           body: |
             ### Changes
 
