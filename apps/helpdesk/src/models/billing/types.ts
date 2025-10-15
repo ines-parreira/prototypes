@@ -5,6 +5,7 @@ import {
 
 export enum Cadence {
     Month = 'month',
+    Quarter = 'quarter',
     Year = 'year',
 }
 

@@ -259,6 +259,109 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "integrations": 150,
           },
           Immutable.Map {
+            "tier": "Basic",
+            "num_quota_tickets": 300,
+            "public": true,
+            "name": "Basic",
+            "product": "helpdesk",
+            "currency": "usd",
+            "plan_id": "basic-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.4,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD-2",
+            "amount": 6000,
+            "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 1,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": false,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
             "tier": "Pro",
             "num_quota_tickets": 2000,
             "public": true,
@@ -270,6 +373,109 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+            "amount": 36000,
+            "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 3,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "tier": "Pro",
+            "num_quota_tickets": 2000,
+            "public": true,
+            "name": "Pro",
+            "product": "helpdesk",
+            "currency": "usd",
+            "plan_id": "pro-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.36,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU-2",
             "amount": 36000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -476,6 +682,109 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.36,
             "cadence": "month",
             "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+            "amount": 90000,
+            "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": true,
+                "limit": 2,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 10,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "tier": "Advanced",
+            "num_quota_tickets": 5000,
+            "public": true,
+            "name": "Advanced",
+            "product": "helpdesk",
+            "currency": "usd",
+            "plan_id": "advanced-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.36,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K-2",
             "amount": 90000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -913,6 +1222,72 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             },
           },
           Immutable.Map {
+            "num_quota_tickets": 190,
+            "public": true,
+            "name": "Pro",
+            "product": "automation",
+            "currency": "usd",
+            "plan_id": "aut-addon-pro-full-price-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.18,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P-2",
+            "amount": 18000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+          },
+          Immutable.Map {
+            "num_quota_tickets": 360,
+            "public": true,
+            "name": "Basic",
+            "product": "automation",
+            "currency": "usd",
+            "plan_id": "aut-addon-basic-full-price-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.2,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl-2",
+            "amount": 30000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+          },
+          Immutable.Map {
             "num_quota_tickets": 360,
             "public": true,
             "name": "Basic",
@@ -956,6 +1331,39 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "extra_ticket_cost": 0.18,
             "cadence": "month",
             "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+            "amount": 45000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+          },
+          Immutable.Map {
+            "num_quota_tickets": 530,
+            "public": true,
+            "name": "Advanced",
+            "product": "automation",
+            "currency": "usd",
+            "plan_id": "aut-addon-advanced-full-price-quarterly-usd-4",
+            "custom": false,
+            "extra_ticket_cost": 0.18,
+            "cadence": "quarter",
+            "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL-2",
             "amount": 45000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1079,6 +1487,19 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           Immutable.Map {
             "num_quota_tickets": 300,
             "public": true,
+            "name": "SMS Addon 300 Quarterly",
+            "product": "sms",
+            "currency": "usd",
+            "plan_id": "sms-01-quarterly-usd-5",
+            "custom": false,
+            "extra_ticket_cost": 1.5,
+            "cadence": "quarter",
+            "price_id": "price_1O9Vc7I9qXomtXqS4a8p3S7e",
+            "amount": 200,
+          },
+          Immutable.Map {
+            "num_quota_tickets": 300,
+            "public": true,
             "name": "SMS Addon 300 Yearly",
             "product": "sms",
             "currency": "usd",
@@ -1150,6 +1571,19 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
           Immutable.Map {
             "num_quota_tickets": 300,
             "public": true,
+            "name": "Voice Addon 300 Quarterly",
+            "product": "voice",
+            "currency": "usd",
+            "plan_id": "voice-01-quarterly-usd-5",
+            "custom": false,
+            "extra_ticket_cost": 2.2,
+            "cadence": "quarter",
+            "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz-2",
+            "amount": 3000,
+          },
+          Immutable.Map {
+            "num_quota_tickets": 300,
+            "public": true,
             "name": "Voice Addon 300 Yearly",
             "product": "voice",
             "currency": "usd",
@@ -1207,6 +1641,20 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "month",
             "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
             "amount": 25000,
+          },
+          Immutable.Map {
+            "tier": 1,
+            "num_quota_tickets": 600,
+            "public": true,
+            "name": "Convert 600 Quarterly",
+            "product": "convert",
+            "currency": "usd",
+            "plan_id": "convert-01-quarterly-usd-6",
+            "custom": false,
+            "extra_ticket_cost": 0,
+            "cadence": "quarter",
+            "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1-2",
+            "amount": 36000,
           },
           Immutable.Map {
             "tier": 1,

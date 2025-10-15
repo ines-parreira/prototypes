@@ -222,6 +222,8 @@ export function getCadenceName(cadence: Cadence): string {
     switch (cadence) {
         case Cadence.Month:
             return 'Monthly'
+        case Cadence.Quarter:
+            return 'Quarterly'
         case Cadence.Year:
             return 'Yearly'
         default:
@@ -241,6 +243,8 @@ export function getCadenceMonths(cadence: Cadence): number {
     switch (cadence) {
         case Cadence.Month:
             return 1
+        case Cadence.Quarter:
+            return 3
         case Cadence.Year:
             return 12
         default:

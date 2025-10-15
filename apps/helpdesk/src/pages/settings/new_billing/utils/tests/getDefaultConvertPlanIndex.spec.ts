@@ -13,8 +13,8 @@ describe('getDefaultConvertPlanIndex', () => {
         [convertAvailablePlans, Cadence.Month, 'Basic', 1],
         [convertAvailablePlans, Cadence.Month, 'Pro', 1],
         [convertAvailablePlans, Cadence.Month, 'Advanced', 2],
-        [convertAvailablePlans, Cadence.Month, 'Custom', 4],
-        [convertAvailablePlans, Cadence.Year, 'Starter', 3],
+        [convertAvailablePlans, Cadence.Month, 'Custom', 5],
+        [convertAvailablePlans, Cadence.Year, 'Starter', 4],
         [convertAvailablePlans, Cadence.Year, 'Advanced', -1],
     ])(
         "should return the correct default convert price index ( '%s',  '%s',  '%s')",

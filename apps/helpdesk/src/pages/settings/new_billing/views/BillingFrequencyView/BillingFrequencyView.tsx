@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import { useFlag } from 'core/flags'
 import { Cadence, Plan, ProductType } from 'models/billing/types'
+import { isOtherCadenceUpgrade } from 'models/billing/utils'
 import Alert from 'pages/common/components/Alert/Alert'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -169,12 +172,32 @@ const BillingFrequencyView = ({
         [allPlansByProductTypeByCadence, setSelectedCadence, setSelectedPlans],
     )
 
-    // redirect to the main page if yearly frequency is selected or subscription is canceled
+    // redirect to the main page if no upgrades are possible or subscription is canceled
+    const canUseQuarterlyBilling =
+        useFlag(FeatureFlagKey.BillingQuarterlyFrequency) ||
+        cadence === Cadence.Quarter
+
     useEffect(() => {
-        if (cadence === Cadence.Year || isCurrentSubscriptionCanceled) {
+        const cadenceValues = Object.values(Cadence).filter(
+            (cadence: Cadence) =>
+                cadence !== Cadence.Quarter || canUseQuarterlyBilling,
+        )
+        const cadenceUpgradeIsPossible =
+            cadenceValues.find(
+                (otherCadence: Cadence) =>
+                    (cadence !== Cadence.Quarter || canUseQuarterlyBilling) &&
+                    isOtherCadenceUpgrade(cadence, otherCadence),
+            ) !== undefined
+
+        if (!cadenceUpgradeIsPossible || isCurrentSubscriptionCanceled) {
             history.push(BILLING_PAYMENT_PATH)
         }
-    }, [cadence, isCurrentSubscriptionCanceled, history])
+    }, [
+        cadence,
+        canUseQuarterlyBilling,
+        isCurrentSubscriptionCanceled,
+        history,
+    ])
 
     return (
         <div className={css.container}>

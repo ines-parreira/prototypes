@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -6,6 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -48,6 +50,12 @@ import BillingFrequencyView, {
     PlanByProductType,
     PlansByProductType,
 } from '../BillingFrequencyView'
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
+const useFlagMock = useFlag as jest.Mock
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
@@ -118,6 +126,19 @@ describe('BillingFrequencyView', () => {
     const cadenceValues = Object.values(Cadence)
     const productTypeValues = Object.values(ProductType)
 
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        // Default to testing with all features enabled
+        let mockFeatureFlags = {
+            [FeatureFlagKey.BillingQuarterlyFrequency]: true,
+        } as Record<FeatureFlagKey, boolean>
+
+        useFlagMock.mockImplementation(
+            (flag: FeatureFlagKey) => mockFeatureFlags[flag],
+        )
+    })
+
     it('assumes correctly the order of product type enum', () => {
         // This test exists only to validate the assumption of ordering of ProductType
         // if this test fails, then the BillingFrequencyView component is going to
@@ -160,9 +181,22 @@ describe('BillingFrequencyView', () => {
         ).toBeInTheDocument()
     })
 
-    it.each(cadenceValues)(
-        'should redirect users if there are no cadence upgrades possible [cadence: %s]',
-        (cadence: Cadence) => {
+    const cadenceBooleanCartesianProduct = cadenceValues.flatMap((a) =>
+        [true, false].map((b): [Cadence, boolean] => [a, b]),
+    )
+    it.each(cadenceBooleanCartesianProduct)(
+        'should redirect users if there are no cadence upgrades possible [cadence: %s, enabled: %s]',
+        (cadence: Cadence, enabled: boolean) => {
+            let mockFeatureFlags = {
+                [FeatureFlagKey.BillingQuarterlyFrequency]: enabled,
+            } as Record<FeatureFlagKey, boolean>
+
+            // Reset to override the default in beforeEach
+            useFlagMock.mockClear()
+            useFlagMock.mockImplementation(
+                (flag: FeatureFlagKey) => mockFeatureFlags[flag],
+            )
+
             const plan = helpdeskProduct.prices.find(
                 (plan: HelpdeskPlan) => plan.cadence === cadence,
             )
@@ -184,10 +218,20 @@ describe('BillingFrequencyView', () => {
 
             renderBillingFrequencyView(storeOverride)
 
-            const cadenceValues = Object.values(Cadence)
+            const canUseQuarterlyBilling =
+                enabled || cadence === Cadence.Quarter
+
+            const cadenceValues = Object.values(Cadence).filter(
+                (cadence: Cadence) =>
+                    cadence !== Cadence.Quarter || canUseQuarterlyBilling,
+            )
+
             const cadenceUpgradeIsPossible =
-                cadenceValues.find((otherCadence: Cadence) =>
-                    isOtherCadenceUpgrade(cadence, otherCadence),
+                cadenceValues.find(
+                    (otherCadence: Cadence) =>
+                        (cadence !== Cadence.Quarter ||
+                            canUseQuarterlyBilling) &&
+                        isOtherCadenceUpgrade(cadence, otherCadence),
                 ) !== undefined
 
             if (!cadenceUpgradeIsPossible) {

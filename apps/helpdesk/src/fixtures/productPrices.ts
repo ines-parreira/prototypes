@@ -215,6 +215,24 @@ export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
     tier: HelpdeskPlanTier.BASIC,
 }
 
+export const basicQuarterlyHelpdeskPlan: HelpdeskPlan = {
+    custom: false,
+    amount: 6000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    extra_ticket_cost: 0.4,
+    features: basicHelpdeskPlanFeatures,
+    num_quota_tickets: 300,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'basic-quarterly-usd-4',
+    name: 'Basic',
+    product: ProductType.Helpdesk,
+    price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD-2', // TODO: update when price ids are created
+    public: true,
+    tier: HelpdeskPlanTier.BASIC,
+}
+
 export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
     amount: 60000,
@@ -269,6 +287,24 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     tier: HelpdeskPlanTier.PRO,
 }
 
+export const proQuarterlyHelpdeskPlan: HelpdeskPlan = {
+    custom: false,
+    amount: 36000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    extra_ticket_cost: 0.36,
+    features: proHelpdeskPlanFeatures,
+    num_quota_tickets: 2000,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'pro-quarterly-usd-4',
+    name: 'Pro',
+    product: ProductType.Helpdesk,
+    price_id: 'price_1LJBjaI9qXomtXqSvYfzmmEU-2', // TODO: update when price ids are created
+    public: true,
+    tier: HelpdeskPlanTier.PRO,
+}
+
 export const proYearlyHelpdeskPlan: HelpdeskPlan = {
     custom: false,
     amount: 360000,
@@ -301,6 +337,24 @@ export const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
     name: 'Advanced',
     product: ProductType.Helpdesk,
     price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K',
+    public: true,
+    tier: HelpdeskPlanTier.ADVANCED,
+}
+
+export const advancedQuarterlyHelpdeskPlan: HelpdeskPlan = {
+    custom: false,
+    amount: 90000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    extra_ticket_cost: 0.36,
+    features: advancedHelpdeskPlanFeatures,
+    num_quota_tickets: 5000,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'advanced-quarterly-usd-4',
+    name: 'Advanced',
+    product: ProductType.Helpdesk,
+    price_id: 'price_1LJBjdI9qXomtXqS8RzPPA7K-2', // TODO: update when price ids are created
     public: true,
     tier: HelpdeskPlanTier.ADVANCED,
 }
@@ -379,6 +433,21 @@ export const firstTierMonthlyAutomationPlan: AutomatePlan = {
     price_id: 'price_1Qs400I9qXomtXqSTWFHnorA',
 }
 
+export const basicQuarterlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    amount: 30000,
+    cadence: Cadence.Quarter,
+    extra_ticket_cost: 0.2,
+    num_quota_tickets: 360,
+    currency: 'usd',
+    features: automatePlanFeatures,
+    plan_id: 'aut-addon-basic-full-price-quarterly-usd-4',
+    name: 'Basic',
+    product: ProductType.Automation,
+    price_id: 'price_1LJBjZI9qXomtXqSPNgkEZpl-2', // TODO: update when price ids are created
+}
+
 export const basicYearlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -409,6 +478,21 @@ export const proMonthlyAutomationPlan: AutomatePlan = {
     price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P',
 }
 
+export const proQuarterlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    extra_ticket_cost: 0.18,
+    cadence: Cadence.Quarter,
+    num_quota_tickets: 190,
+    amount: 18000,
+    currency: 'usd',
+    features: automatePlanFeatures,
+    plan_id: 'aut-addon-pro-full-price-quarterly-usd-4',
+    name: 'Pro',
+    product: ProductType.Automation,
+    price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P-2', // TODO: update when price ids are created
+}
+
 export const proYearlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -437,6 +521,21 @@ export const advancedMonthlyAutomatePlan: AutomatePlan = {
     name: 'Advanced',
     product: ProductType.Automation,
     price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL',
+}
+
+export const advancedQuarterlyAutomatePlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    extra_ticket_cost: 0.18,
+    num_quota_tickets: 530,
+    cadence: Cadence.Quarter,
+    amount: 45000,
+    currency: 'usd',
+    features: automatePlanFeatures,
+    plan_id: 'aut-addon-advanced-full-price-quarterly-usd-4',
+    name: 'Advanced',
+    product: ProductType.Automation,
+    price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL-2', // TODO: update when price ids are created
 }
 
 export const advancedYearlyAutomatePlan: AutomatePlan = {
@@ -584,6 +683,20 @@ export const voicePlan3: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 3000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 300,
+    plan_id: 'voice-01-quarterly-usd-5',
+    name: 'Voice Addon 300 Quarterly',
+    price_id: 'price_1O9TX8I9qXomtXqSR9drzVqz-2', // TODO: update when price ids are created
+    product: ProductType.Voice,
+    extra_ticket_cost: 2.2,
+}
+
+export const voicePlan4: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 3000,
     cadence: Cadence.Year,
     currency: 'usd',
     num_quota_tickets: 300,
@@ -623,6 +736,20 @@ export const smsPlan2: SMSOrVoicePlan = {
 }
 
 export const smsPlan3: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 200,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 300,
+    plan_id: 'sms-01-quarterly-usd-5',
+    name: 'SMS Addon 300 Quarterly',
+    price_id: 'price_1O9Vc7I9qXomtXqS4a8p3S7e',
+    product: ProductType.SMS,
+    extra_ticket_cost: 1.5,
+}
+
+export const smsPlan4: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 200,
@@ -744,6 +871,21 @@ export const convertPlan6: ConvertPlan = {
     custom: false,
     public: true,
     amount: 36000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 600,
+    plan_id: 'convert-01-quarterly-usd-6',
+    name: 'Convert 600 Quarterly',
+    price_id: 'price_2NmZrmH2GG3UYmlxBGfOOSL1-2', // TODO: update when price ids are created
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 1,
+}
+
+export const convertPlan7: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 36000,
     cadence: Cadence.Year,
     currency: 'usd',
     num_quota_tickets: 600,
@@ -764,20 +906,26 @@ export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
 export const helpdeskAvailablePlans = [
     starterHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
+    basicQuarterlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
+    proQuarterlyHelpdeskPlan,
     proYearlyHelpdeskPlan,
     advancedMonthlyHelpdeskPlan,
+    advancedQuarterlyHelpdeskPlan,
     advancedYearlyHelpdeskPlan,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const automationAvailablePlans = [
     legacyAutomatePlan,
     basicMonthlyAutomationPlan,
+    basicQuarterlyAutomationPlan,
     basicYearlyAutomationPlan,
     proMonthlyAutomationPlan,
+    proQuarterlyAutomationPlan,
     proYearlyAutomationPlan,
     advancedMonthlyAutomatePlan,
+    advancedQuarterlyAutomatePlan,
     advancedYearlyAutomatePlan,
     firstTierMonthlyAutomationPlan,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
@@ -786,12 +934,17 @@ export const voiceAvailablePlans = [
     voicePlan1,
     voicePlan2,
     voicePlan3,
+    voicePlan4,
     voicePlan0,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
-export const smsAvailablePlans = [smsPlan1, smsPlan2, smsPlan3, smsPlan0].sort(
-    (a, b) => a.amount - b.amount,
-) // Sort to match behaviour in redux selector
+export const smsAvailablePlans = [
+    smsPlan1,
+    smsPlan2,
+    smsPlan3,
+    smsPlan4,
+    smsPlan0,
+].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const convertAvailablePlans = [
     convertPlan0,
@@ -801,6 +954,7 @@ export const convertAvailablePlans = [
     convertPlan4,
     convertPlan5,
     convertPlan6,
+    convertPlan7,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const helpdeskProduct: Product<ProductType.Helpdesk> = {
