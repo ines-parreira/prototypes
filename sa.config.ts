@@ -20,6 +20,18 @@ export default defineConfig({
                     type: 'ui-kit-migration',
                     date: '2025-08-12',
                 },
+                //
+                //  axiom related Legacy component deprecations
+                {
+                    pkgName: '@gorgias/axiom',
+                    imports: [
+                        'LegacyButton',
+                        'LegacyIconButton',
+                        'LegacySelectField',
+                    ],
+                    type: 'ui-kit-migration',
+                    date: '2025-10-15',
+                },
             ],
         },
     },

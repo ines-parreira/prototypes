@@ -14,16 +14,18 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    LegacyIconButton: React.forwardRef(
-        (props: any, ref: React.Ref<HTMLButtonElement>) => (
-            <button {...props} ref={ref} data-testid="icon-button" />
+jest.mock('@gorgias/axiom', () => {
+    return {
+        LegacyIconButton: React.forwardRef(
+            (props: any, ref: React.Ref<HTMLButtonElement>) => (
+                <button {...props} ref={ref} data-testid="icon-button" />
+            ),
         ),
-    ),
-    SelectField: (props: any) => (
-        <div data-testid="select-field">{JSON.stringify(props)}</div>
-    ),
-}))
+        LegacySelectField: (props: any) => (
+            <div data-testid="select-field">{JSON.stringify(props)}</div>
+        ),
+    }
+})
 
 jest.mock(
     'pages/common/components/dropdown/Dropdown',

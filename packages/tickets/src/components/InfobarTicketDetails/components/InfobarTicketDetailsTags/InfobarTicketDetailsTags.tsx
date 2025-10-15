@@ -144,8 +144,8 @@ export function InfobarTicketDetailsTags({
                         isSearchable={true}
                         searchValue={search}
                         onSearchChange={setSearch}
-                        options={tagsOptions}
-                        selectedOptions={ticketTags}
+                        items={tagsOptions}
+                        selectedItems={ticketTags}
                         onSelect={handleSelectChange}
                         maxHeight={256}
                         isLoading={isLoading}
@@ -155,13 +155,11 @@ export function InfobarTicketDetailsTags({
                         {(option) => (
                             <ListItem
                                 key={option.id}
+                                label={option.label}
                                 leadingSlot={({ isSelected }) => (
                                     <CheckBoxField value={isSelected} />
                                 )}
-                                textValue={option.label}
-                            >
-                                {option.label}
-                            </ListItem>
+                            />
                         )}
                     </MultiSelect>
                 </OverflowListItem>

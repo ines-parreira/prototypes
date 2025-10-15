@@ -3,14 +3,16 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
-import { Box, SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
 
-jest.mock('@gorgias/axiom')
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacySelectField: jest.fn(),
+}))
 
 const SelectFieldMock = assumeMock(SelectField)
-const BoxMock = assumeMock(Box)
 
 describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>
@@ -18,7 +20,6 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
 
     beforeEach(() => {
         SelectFieldMock.mockReturnValue(<div>SelectField</div>)
-        BoxMock.mockImplementation(({ children }) => <div>{children}</div>)
     })
 
     it('default state - should display dropdown, dynamic content and links', () => {

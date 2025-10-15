@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import _merge from 'lodash/merge'
 
-import type { SelectFieldOption } from '@gorgias/axiom'
+import type { LegacySelectFieldOption as SelectFieldOption } from '@gorgias/axiom'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'

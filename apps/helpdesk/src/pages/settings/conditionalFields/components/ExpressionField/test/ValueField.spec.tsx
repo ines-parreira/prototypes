@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { CustomTypeDefinitionNumber } from 'custom-fields/types'
@@ -25,7 +25,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/axiom'),
-            SelectField: jest.fn(() => <div data-testid="Mock" />),
+            LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )
 jest.mock('pages/common/forms/input/NumberInput', () => jest.fn(() => <div />))

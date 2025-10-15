@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Box, SelectField } from '@gorgias/axiom'
+import { Box, LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import IconLink from 'core/ui/components/IconLink'
 import SettingsSidebar from 'pages/settings/SettingsSidebar'

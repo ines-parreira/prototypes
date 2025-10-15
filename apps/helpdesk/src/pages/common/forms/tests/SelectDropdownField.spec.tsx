@@ -1,11 +1,14 @@
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import SelectDropdownField from '../SelectDropdownField'
 
-jest.mock('@gorgias/axiom')
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacySelectField: jest.fn(),
+}))
 
 const SelectFieldMock = assumeMock(SelectField)
 SelectFieldMock.mockReturnValue(<div>Mocked SelectField</div>)

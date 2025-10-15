@@ -1,6 +1,9 @@
 import { ComponentProps } from 'react'
 
-import { SelectField, SelectFieldRawOption } from '@gorgias/axiom'
+import {
+    LegacySelectField as SelectField,
+    LegacySelectFieldRawOption as SelectFieldRawOption,
+} from '@gorgias/axiom'
 
 type Props<T extends SelectFieldRawOption> = ComponentProps<
     typeof SelectField<T>

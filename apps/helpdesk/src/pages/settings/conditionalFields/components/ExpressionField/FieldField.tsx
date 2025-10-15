@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import { SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import { useFormContext } from 'core/forms'
 import {

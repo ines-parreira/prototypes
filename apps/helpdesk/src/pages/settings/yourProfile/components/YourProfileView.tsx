@@ -13,7 +13,7 @@ import {
     Avatar,
     LegacyButton as Button,
     Label,
-    SelectField,
+    LegacySelectField as SelectField,
     ToggleField,
 } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'

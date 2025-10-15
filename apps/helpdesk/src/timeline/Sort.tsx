@@ -5,8 +5,8 @@ import classNames from 'classnames'
 
 import {
     LegacyIconButton as IconButton,
-    SelectField,
-    SelectFieldTriggerProps,
+    LegacySelectField as SelectField,
+    LegacySelectFieldTriggerProps as SelectFieldTriggerProps,
 } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'

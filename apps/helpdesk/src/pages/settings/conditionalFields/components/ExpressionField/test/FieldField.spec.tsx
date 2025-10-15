@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import { useFormContext } from 'core/forms'
 import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
@@ -21,7 +21,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/axiom'),
-            SelectField: jest.fn(() => <div data-testid="Mock" />),
+            LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )
 jest.mock('core/forms', () => ({

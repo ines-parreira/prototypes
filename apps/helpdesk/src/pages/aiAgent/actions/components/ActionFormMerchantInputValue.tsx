@@ -1,6 +1,9 @@
 import React, { useRef } from 'react'
 
-import { Label, SelectFieldOption } from '@gorgias/axiom'
+import {
+    Label,
+    LegacySelectFieldOption as SelectFieldOption,
+} from '@gorgias/axiom'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'

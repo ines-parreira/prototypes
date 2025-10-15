@@ -2,8 +2,8 @@ import React, { useMemo } from 'react'
 
 import {
     LegacyButton as Button,
-    SelectField,
-    type SelectFieldTriggerProps,
+    LegacySelectField as SelectField,
+    type LegacySelectFieldTriggerProps as SelectFieldTriggerProps,
 } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
 

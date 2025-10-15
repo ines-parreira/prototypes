@@ -4,8 +4,8 @@ import classnames from 'classnames'
 
 import {
     LegacyButton as Button,
-    SelectField,
-    SelectFieldRawOption,
+    LegacySelectField as SelectField,
+    LegacySelectFieldRawOption as SelectFieldRawOption,
     Skeleton,
 } from '@gorgias/axiom'
 import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
