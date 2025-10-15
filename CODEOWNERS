@@ -1,0 +1,3 @@
+
+.trivyignore @gorgias/platform-sre
+.gitleaks.toml @gorgias/platform-sre

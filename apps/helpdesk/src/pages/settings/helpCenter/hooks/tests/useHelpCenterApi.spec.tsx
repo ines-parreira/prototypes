@@ -10,7 +10,7 @@ import {
 } from '../useHelpCenterApi'
 
 const TOKEN_EXAMPLE =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudF9pZCI6MSwicm9sZSI6eyJuYW1lIjoiYWRtaW4ifSwicnVsZXMiOlt7ImFjdGlvbiI6Im1hbmFnZSIsInN1YmplY3QiOiJhbGwifV0sImlhdCI6MTc0OTU1MTUxMiwiZXhwIjoxNzQ5NTUzMzEyfQ.0DBS0ttuHQARRmOnT9arVW34EMw36GMcTXwj-43KSQo'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWNjb3VudF9pZCI6MSwicm9sZSI6eyJuYW1lIjoiYWRtaW4ifSwicnVsZXMiOlt7ImFjdGlvbiI6Im1hbmFnZSIsInN1YmplY3QiOiJhbGwifV0sImlhdCI6MTc0OTU1MTUxMiwiZXhwIjoxNzQ5NTUzMzEyfQ.0DBS0ttuHQARRmOnT9arVW34EMw36GMcTXwj-43KSQo' // gitleaks:allow
 
 describe('HelpCenterApiClientProvider', () => {
     it('should render useHelpCenterApi', async () => {

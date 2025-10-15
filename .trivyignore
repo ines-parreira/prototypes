@@ -1,0 +1,5 @@
+# Ignore specific vulnerabilities
+# For more information, see https://trivy.dev/v0.65/docs/configuration/filtering/#by-finding-ids
+
+# Example: Ignore risk until 2023-01-01
+CVE-2022-99999 exp:2023-01-01

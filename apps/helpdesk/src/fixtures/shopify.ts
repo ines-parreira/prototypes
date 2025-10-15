@@ -201,7 +201,7 @@ export const shopifyOrderFixture = ({
         test: false,
         email: 'apu@gorgias.com',
         phone: null,
-        token: '46a2ba4414e9539325b3a03975da8657',
+        token: '46a2ba4414e9539325b3a03975da8657', // gitleaks:allow
         app_id: 1354745,
         number: 684,
         refunds: [],
@@ -371,7 +371,7 @@ export const shopifyOrderFixture = ({
         financial_status: FinancialStatus.PartiallyPaid,
         landing_site_ref: null,
         order_status_url:
-            'https://storegorgias3.myshopify.com/17817573/orders/46a2ba4414e9539325b3a03975da8657/authenticate?key=b422672687af40802905f0ba54c1b2a9',
+            'https://storegorgias3.myshopify.com/17817573/orders/46a2ba4414e9539325b3a03975da8657/authenticate?key=b422672687af40802905f0ba54c1b2a9', // gitleaks:allow
         shipping_address: {
             zip: null,
             city: null,
@@ -413,7 +413,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
         test: true,
         email: 'samy+lumine@gorgias.com',
         phone: null,
-        token: '02bb19dc21bf27e8f9763c5261019872',
+        token: '02bb19dc21bf27e8f9763c5261019872', // gitleaks:allow
         app_id: 580111,
         number: 12,
         refunds: [],
@@ -615,7 +615,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
                 currency_code: 'USD',
             },
         },
-        checkout_token: 'bc493ee2aeb737e5dea6a8edf950369f',
+        checkout_token: 'bc493ee2aeb737e5dea6a8edf950369f', // gitleaks:allow
         client_details: {
             browser_ip: '24.5.175.157',
             user_agent:
@@ -699,7 +699,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
         financial_status: FinancialStatus.Paid,
         landing_site_ref: null,
         order_status_url:
-            'https://samy-test2.myshopify.com/35156820107/orders/02bb19dc21bf27e8f9763c5261019872/authenticate?key=e50cf6d29745c7b7c3a3d992e097d4d4',
+            'https://samy-test2.myshopify.com/35156820107/orders/02bb19dc21bf27e8f9763c5261019872/authenticate?key=e50cf6d29745c7b7c3a3d992e097d4d4', // gitleaks:allow
         shipping_address: {
             zip: '94103',
             city: 'SF',

@@ -19,7 +19,7 @@ const renderWithVariables = (
 }
 
 const corsProxyBaseUrl = 'https://cors-proxy.gorgias.workers.dev'
-const corsProxyKey = '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86'
+const corsProxyKey = '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86' // gitleaks:allow
 
 async function fetchToken(
     refreshTokenUrl: string,

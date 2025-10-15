@@ -1,0 +1,9 @@
+title = "Gitleaks default config overrides"
+[extend]
+useDefault = true
+
+[allowlist]
+paths = [
+  # '''(^|/)cmd/example/config/example.conf''',
+  '''.*tests/__snapshots__/.+''',
+]

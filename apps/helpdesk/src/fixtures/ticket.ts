@@ -347,7 +347,7 @@ export const ticket: Ticket = {
                         total_discounts: '0.00',
                         updated_at: '2017-07-12T16:14:10-04:00',
                         tags: '',
-                        token: 'c4e9a492adf51bed245af52b4dd1789a',
+                        token: 'c4e9a492adf51bed245af52b4dd1789a', // gitleaks:allow
                         cart_token: null,
                         order_number: 1202,
                         total_line_items_price: '9.00',

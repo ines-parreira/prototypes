@@ -52,7 +52,7 @@ describe('Configuration', () => {
     beforeAll(() => {
         authServer = new MockAdapter(authClient)
         authServer.onPost(`/gorgias-apps/auth`).reply(200, {
-            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Gfx6VO9tcxwk6xqx9yYzSfebfeakZp5JYIgP_edcw_A',
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Gfx6VO9tcxwk6xqx9yYzSfebfeakZp5JYIgP_edcw_A', // gitleaks:allow
         })
 
         apiServer = new MockAdapter(apiClient)

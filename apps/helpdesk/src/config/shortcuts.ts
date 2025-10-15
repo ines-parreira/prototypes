@@ -223,7 +223,7 @@ const shortcuts: Record<string, KeyMap> = {
                 description: 'Send message.',
             },
             SUBMIT_CLOSE_TICKET: {
-                key: 'mod+shift+enter',
+                key: 'mod+shift+enter', // gitleaks:allow
                 description: 'Send message and close the ticket.',
             },
             APPLY_QUICK_MACROS: {

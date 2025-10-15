@@ -17,8 +17,8 @@ export const actionConfigurationFixture: StoresWorkflowConfiguration[number] = {
                     content: {
                         html: 'content',
                         text: 'content',
-                        html_tkey: '01HW8C2C5ZFWE60385WZK53HGD',
-                        text_tkey: '01HW8C2C5ZRW101CVNK57Y64E4',
+                        html_tkey: '01HW8C2C5ZFWE60385WZK53HGD', // gitleaks:allow
+                        text_tkey: '01HW8C2C5ZRW101CVNK57Y64E4', // gitleaks:allow
                     },
                 },
             },

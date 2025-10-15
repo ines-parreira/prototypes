@@ -24,7 +24,7 @@ describe('<APIView/>', () => {
             const { container } = render(
                 <APIViewContainer
                     {...minProps}
-                    apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
+                    apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510" // gitleaks:allow
                 />,
             )
 
@@ -41,7 +41,7 @@ describe('<APIView/>', () => {
             render(
                 <APIViewContainer
                     {...minProps}
-                    apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
+                    apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510" // gitleaks:allow
                 />,
             )
 

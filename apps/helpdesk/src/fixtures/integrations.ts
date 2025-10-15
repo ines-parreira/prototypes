@@ -184,7 +184,7 @@ export const integrationsState = {
                 },
                 headers: {},
                 execution_order: 99,
-                url: 'https://hooks.slack.com/services/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',
+                url: 'https://hooks.slack.com/services/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', // gitleaks:allow
                 request_content_type: 'application/json',
                 id: 3,
                 triggers: {
