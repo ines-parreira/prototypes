@@ -26,7 +26,6 @@ const BillingFrequency = ({
         useFlag(FeatureFlagKey.BillingQuarterlyFrequency) ||
         currentCadence === Cadence.Quarter
 
-    const hasDisabledCadences = disabledCadences.size > 0
     const disabledCadenceNames = Array.from(disabledCadences)
         .filter(
             (cadence: Cadence) =>
@@ -34,6 +33,7 @@ const BillingFrequency = ({
         )
         .map((cadence) => getCadenceName(cadence))
         .join(' and ')
+    const hasDisabledCadences = disabledCadenceNames.length > 0
 
     return (
         <div className={css.container}>

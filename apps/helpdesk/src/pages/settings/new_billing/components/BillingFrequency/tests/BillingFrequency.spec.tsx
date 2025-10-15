@@ -140,6 +140,32 @@ describe('BillingFrequency', () => {
         },
     )
 
+    it('should not show the disabled cadences warning for filtered cadences', () => {
+        let mockFeatureFlags = {
+            [FeatureFlagKey.BillingQuarterlyFrequency]: false,
+        } as Record<FeatureFlagKey, boolean>
+
+        // Reset to override the default in beforeEach
+        useFlagMock.mockClear()
+        useFlagMock.mockImplementation(
+            (flag: FeatureFlagKey) => mockFeatureFlags[flag],
+        )
+
+        setup({
+            disabledCadences: new Set<Cadence>([Cadence.Quarter]),
+        })
+
+        expect(useFlagMock).toHaveBeenCalledWith(
+            FeatureFlagKey.BillingQuarterlyFrequency,
+        )
+
+        expect(() =>
+            screen.getAllByText(
+                /billing is not available for your current plan configuration./,
+            ),
+        ).toThrow()
+    })
+
     it.each(cadenceValues)(
         'should allow selection of cadence downgrades when allowDowngrades is true [currentCadence=%s]',
         (currentCadence: Cadence) => {
