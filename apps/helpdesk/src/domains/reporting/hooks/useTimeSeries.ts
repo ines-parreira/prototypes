@@ -9,7 +9,9 @@ import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingGranularity,
@@ -122,14 +124,16 @@ const selectPerDimension =
         return objectMap(_groupBy(escapedResponse, dimension), select(query))
     }
 
-export function useTimeSeries<TCube extends Cubes>(
+export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     query: TimeSeriesQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
 ) {
-    return usePostReporting<
+    return usePostReportingV2<
         Record<string, string>[],
         TimeSeriesDataItem[][],
-        TCube
-    >([query], {
+        TCube,
+        TMeta
+    >([query], queryV2, {
         select: (res) => select<TCube>(query)(res.data.data),
     })
 }

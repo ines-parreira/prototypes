@@ -78,7 +78,7 @@ export type BuiltQuery<
     Prettify<QueryFor<TQuery> & { metricName: TName; scope: TQuery['scope'] }>
 >
 
-type Context = {
+export type Context = {
     timezone: string
     filters: StatsFiltersWithLogicalOperator
     sortDirection?: OrderDirection

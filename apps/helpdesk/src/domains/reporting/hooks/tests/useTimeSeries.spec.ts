@@ -28,6 +28,7 @@ import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/
 import {
     fetchPostReporting,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import {
     ReportingFilterOperator,
@@ -38,6 +39,7 @@ import {
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 describe('useTimeSeries', () => {
@@ -179,12 +181,13 @@ describe('useTimeSeries', () => {
         ],
     ]
 
-    it('should call usePostReportingMock with the query', () => {
+    it('should call usePostReportingV2Mock with the query', () => {
         renderHook(() => useTimeSeries(defaultQuery))
-        const select = usePostReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
-        expect(usePostReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
             [defaultQuery],
+            undefined,
             expect.objectContaining({
                 select,
             }),
@@ -193,7 +196,7 @@ describe('useTimeSeries', () => {
 
     it('should fill in the missing dates', () => {
         renderHook(() => useTimeSeries(defaultQuery))
-        const select = usePostReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
         expect(
             select?.({
@@ -221,7 +224,7 @@ describe('useTimeSeries', () => {
                 ],
             }),
         )
-        const select = usePostReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
         expect(
             select?.({
@@ -270,7 +273,7 @@ describe('useTimeSeries', () => {
     describe('edge cases for select function', () => {
         it('should handle empty data array', () => {
             renderHook(() => useTimeSeries(defaultQuery))
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
             const result = select?.({
                 data: {
@@ -339,7 +342,7 @@ describe('useTimeSeries', () => {
 
         it('should handle single data point with all measures populated', () => {
             renderHook(() => useTimeSeries(defaultQuery))
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
             const singleDataPoint = [
                 {
@@ -437,7 +440,7 @@ describe('useTimeSeries', () => {
 
         it('should handle data with null and undefined measure values', () => {
             renderHook(() => useTimeSeries(defaultQuery))
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
             const dataWithNulls = [
                 {
@@ -477,6 +480,52 @@ describe('useTimeSeries', () => {
                 })
             }
         })
+    })
+
+    it('should call usePostReportingV2 with V2 queries when provided', () => {
+        const queryV2 = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        renderHook(() => useTimeSeries(defaultQuery, queryV2))
+
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+            [defaultQuery],
+            queryV2,
+            expect.objectContaining({
+                select: expect.any(Function),
+            }),
+        )
+    })
+
+    it('should return data when using V2 queries', () => {
+        const queryV2 = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        const singleDataPoint = [
+            {
+                [TicketDimension.CreatedDatetime]: '2023-04-17T00:00:00.000',
+                [TicketMessagesMeasure.MedianFirstResponseTime]: 3,
+            },
+        ]
+
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultResult,
+            data: singleDataPoint,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useTimeSeries(defaultQuery, queryV2),
+        )
+
+        expect(result.current.data).toEqual(singleDataPoint)
     })
 })
 

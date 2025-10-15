@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
@@ -10,7 +10,7 @@ import {
 import useCampaignPerformanceTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMock = assumeMock(usePostReportingV2)
 
 describe('useCampaignPerformanceTimeSeries', () => {
     const defaultReporting = {
@@ -98,6 +98,7 @@ describe('useCampaignPerformanceTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ],
+            undefined,
             expect.anything(),
         )
         expect(usePostReportingMock).toHaveBeenCalledWith(
@@ -118,6 +119,7 @@ describe('useCampaignPerformanceTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ],
+            undefined,
             expect.anything(),
         )
 

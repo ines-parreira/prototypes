@@ -7,6 +7,7 @@ import {
     postEnrichedReporting,
     postReporting,
 } from 'domains/reporting/models/resources'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     Cube,
     EnrichmentFields,
@@ -37,6 +38,10 @@ export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<TData>
 
 export const reportingKeys = {
     post: (data: ReportingParams) => ['reporting', 'post-reporting', data],
+    postV2: <TMeta extends ScopeMeta>(
+        data: ReportingParams,
+        dataV2: BuiltQuery<TMeta>,
+    ) => ['reporting-v2', 'post-reporting-v2', data, dataV2],
     postEnriched: (data: {
         query: ReportingQuery
         enrichment_fields: EnrichmentFields[]
@@ -58,6 +63,35 @@ export const fetchPostReporting = <
     return appQueryClient.fetchQuery({
         queryKey: reportingKeys.post(data),
         queryFn: () => postReporting<TData, TCube>(data),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
+/**
+ * Similar to usePostReporting but with support for v2 queries.
+ * This is a temporary solution, because some metrics use `usePostReporting` directly
+ * and not one of the `useMetricX` hooks and refactoring all of them would be too time-consuming for now.
+ */
+export const usePostReportingV2 = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>,
+    TCube extends Cube = Cube,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    data: ReportingParams<TCube>,
+    dataV2?: BuiltQuery<TMeta>,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >,
+) => {
+    return useQuery({
+        queryKey: dataV2
+            ? reportingKeys.postV2<TMeta>(data, dataV2)
+            : reportingKeys.post(data),
+        queryFn: () => postReporting<TData, TCube, TMeta>(data, dataV2),
         ...defaultOptions,
         ...overrides,
     })

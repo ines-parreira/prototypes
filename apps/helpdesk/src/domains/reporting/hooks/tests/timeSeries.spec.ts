@@ -47,6 +47,10 @@ import {
     getCustomFieldValueSerializer,
     withDefaultLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
+import { sentMessagesTimeseries } from 'domains/reporting/models/scopes/messagesSent'
+import { closedTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedTimeseries } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     Sentiment,
     StatsFilters,
@@ -83,23 +87,27 @@ describe('time series', () => {
             'useTicketsClosedTimeSeries',
             useTicketsClosedTimeSeries,
             closedTicketsTimeSeriesQueryFactory,
+            closedTicketsTimeseries.build.bind(closedTicketsTimeseries),
         ],
         [
             'useTicketsCreatedTimeSeries',
             useTicketsCreatedTimeSeries,
             ticketsCreatedTimeSeriesQueryFactory,
+            createdTicketsTimeseries.build.bind(createdTicketsTimeseries),
         ],
         [
             'useTicketsRepliedTimeSeries',
             useTicketsRepliedTimeSeries,
             ticketsRepliedTimeSeriesQueryFactory,
+            ticketsRepliedTimeseries.build.bind(ticketsRepliedTimeseries),
         ],
         [
             'useMessagesSentTimeSeries',
             useMessagesSentTimeSeries,
             messagesSentTimeSeriesQueryFactory,
+            sentMessagesTimeseries.build.bind(sentMessagesTimeseries),
         ],
-    ])('%s', (_, useTrendFn, queryFactory) => {
+    ])('%s', (_, useTrendFn, queryFactory, queryV2Factory) => {
         it('should use query factory for $testName', () => {
             const filters: StatsFilters = {
                 period: {
@@ -124,6 +132,7 @@ describe('time series', () => {
 
             expect(useTimeSeriesMock).toHaveBeenCalledWith(
                 queryFactory(filters, timezone, granularity),
+                queryV2Factory?.({ filters, timezone, granularity }),
             )
         })
     })

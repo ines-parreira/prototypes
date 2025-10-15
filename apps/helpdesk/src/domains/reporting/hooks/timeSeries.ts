@@ -1,3 +1,4 @@
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -25,7 +26,18 @@ import {
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
+import { sentMessagesTimeseries } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsTimeseries } from 'domains/reporting/models/scopes/oneTouchTickets'
 import {
+    BuiltQuery,
+    Context,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import { closedTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedTimeseries } from 'domains/reporting/models/scopes/ticketsReplied'
+import {
+    AggregationWindow,
     Sentiment,
     StatsFilters,
     TicketTimeReference,
@@ -43,14 +55,33 @@ type TimeSeriesQueryFactory<TCube extends Cubes> = (
     granularity: ReportingGranularity,
 ) => TimeSeriesQuery<TCube>
 
+type BuiltTimeSeriesQueryFactory<
+    TMeta extends ScopeMeta,
+    TMetricName extends MetricName,
+> = (ctx: Context) => BuiltQuery<TMeta, TMetricName>
+
 const getTimeSeriesHook =
-    <TCube extends Cubes>(query: TimeSeriesQueryFactory<TCube>) =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: TimeSeriesQueryFactory<TCube>,
+        queryV2?: BuiltTimeSeriesQueryFactory<TMeta, TMetricName>,
+    ) =>
     (
         filters: StatsFilters,
         timezone: string,
         granularity: ReportingGranularity,
     ) => {
-        return useTimeSeries(query(filters, timezone, granularity))
+        return useTimeSeries(
+            query(filters, timezone, granularity),
+            queryV2?.({
+                filters,
+                timezone,
+                granularity: granularity as AggregationWindow,
+            }),
+        )
     }
 
 const getTimeSeriesFetch =
@@ -65,6 +96,7 @@ const getTimeSeriesFetch =
 
 export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
     ticketsCreatedTimeSeriesQueryFactory,
+    createdTicketsTimeseries.build.bind(createdTicketsTimeseries),
 )
 export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
     ticketsCreatedTimeSeriesQueryFactory,
@@ -72,6 +104,7 @@ export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
 
 export const useTicketsClosedTimeSeries = getTimeSeriesHook(
     closedTicketsTimeSeriesQueryFactory,
+    closedTicketsTimeseries.build.bind(closedTicketsTimeseries),
 )
 export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
     closedTicketsTimeSeriesQueryFactory,
@@ -79,6 +112,7 @@ export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
 
 export const useTicketsRepliedTimeSeries = getTimeSeriesHook(
     ticketsRepliedTimeSeriesQueryFactory,
+    ticketsRepliedTimeseries.build.bind(ticketsRepliedTimeseries),
 )
 export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
     ticketsRepliedTimeSeriesQueryFactory,
@@ -86,6 +120,7 @@ export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
 
 export const useMessagesSentTimeSeries = getTimeSeriesHook(
     messagesSentTimeSeriesQueryFactory,
+    sentMessagesTimeseries.build.bind(sentMessagesTimeseries),
 )
 
 export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
@@ -102,6 +137,7 @@ export const fetchMessagesReceivedTimeSeries = getTimeSeriesFetch(
 
 export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(
     oneTouchTicketsTimeSeriesQueryFactory,
+    oneTouchTicketsTimeseries.build.bind(oneTouchTicketsTimeseries),
 )
 
 export const fetchOneTouchTicketsTimeSeries = getTimeSeriesFetch(
