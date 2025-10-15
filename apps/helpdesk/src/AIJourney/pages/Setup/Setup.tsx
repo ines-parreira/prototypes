@@ -180,6 +180,8 @@ export const Setup = () => {
         try {
             if (abandonedCartJourney) {
                 await handleUpdate({
+                    journeyMessageInstructions:
+                        abandonedCartJourney.message_instructions,
                     journeyState: abandonedCartJourney.state,
                 })
             } else {

@@ -423,6 +423,8 @@ describe('<Setup />', () => {
                 journey: {
                     id: 'journey-123',
                     type: 'cart_abandoned',
+                    state: 'active',
+                    message_instructions: 'My custom instructions',
                 },
                 journeyData: {
                     configuration: {
@@ -468,7 +470,10 @@ describe('<Setup />', () => {
             })
 
             await waitFor(() => {
-                expect(mockHandleUpdate).toHaveBeenCalled()
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    journeyMessageInstructions: 'My custom instructions',
+                    journeyState: 'active',
+                })
             })
         })
 
