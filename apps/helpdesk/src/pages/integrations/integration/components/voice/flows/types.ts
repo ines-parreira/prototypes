@@ -5,6 +5,7 @@ import {
     ForwardToExternalNumberStep,
     IvrMenuStep,
     PlayMessageStep,
+    RouteToInternalNumber,
     SendToSMSStep,
     SendToVoicemailStep,
     TimeSplitConditionalStep,
@@ -50,6 +51,10 @@ export type EnqueueOptionNode = Node<
     EnqueueOptionStep,
     VoiceFlowNodeType.EnqueueOption
 >
+export type RouteToInternalNumberNode = Node<
+    RouteToInternalNumber,
+    VoiceFlowNodeType.RouteToInternalNumber
+>
 export type SendToVoicemailNode = Node<
     SendToVoicemailStep,
     VoiceFlowNodeType.SendToVoicemail
@@ -91,6 +96,7 @@ export type VoiceFlowNode =
     | SendToSMSNode
     | IntermediaryNode
     | ForwardToExternalNode
+    | RouteToInternalNumberNode
 
 export type VoiceFlowNodeBase<T extends VoiceFlowNode = VoiceFlowNode> = Pick<
     T,

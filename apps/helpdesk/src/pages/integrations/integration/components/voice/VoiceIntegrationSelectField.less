@@ -1,0 +1,25 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .label {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        margin-bottom: var(--layout-spacing-xxs);
+    }
+
+    .error {
+        color: var(--feedback-error-2);
+        margin-bottom: var(--layout-spacing-xs);
+    }
+
+    .caption {
+        .caption-regular();
+    }
+}

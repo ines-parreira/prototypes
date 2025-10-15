@@ -1,9 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Controls } from '@xyflow/react'
 
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
+import { useFlag } from 'core/flags'
 import {
     Background,
     CustomControls,
@@ -16,39 +18,12 @@ import {
 import { createFlowGraph } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from './constants'
-import { EndCallNode } from './nodes/EndCallNode'
-import { EnqueueNode } from './nodes/EnqueueNode'
-import { EnqueueOptionNode } from './nodes/EnqueueOptionNode'
-import { ForwardToNode } from './nodes/ForwardToNode'
-import { IncomingCallNode } from './nodes/IncomingCallNode'
-import { IntermediaryNode } from './nodes/IntermediaryNode'
-import { IvrMenuNode } from './nodes/IvrMenuNode'
-import { IvrOptionNode } from './nodes/IvrOptionNode'
-import { PlayMessageNode } from './nodes/PlayMessageNode'
-import { SendToSMSNode } from './nodes/SendToSMSNode'
-import { SendToVoicemailNode } from './nodes/SendToVoicemailNode'
-import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
-import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
+import { DEPRECATED_EnqueueNode } from './nodes/DEPRECATED_EnqueueNode'
+import { nodeTypes } from './nodeTypes'
 import { VoiceFlowNode } from './types'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge, VoiceFlowPreviewEdge } from './VoiceFlowEdge'
 import VoiceFlowProvider from './VoiceFlowProvider'
-
-const nodeTypes = {
-    [VoiceFlowNodeType.IncomingCall]: IncomingCallNode,
-    [VoiceFlowNodeType.IvrMenu]: IvrMenuNode,
-    [VoiceFlowNodeType.IvrOption]: IvrOptionNode,
-    [VoiceFlowNodeType.EndCall]: EndCallNode,
-    [VoiceFlowNodeType.PlayMessage]: PlayMessageNode,
-    [VoiceFlowNodeType.SendToVoicemail]: SendToVoicemailNode,
-    [VoiceFlowNodeType.TimeSplitConditional]: TimeSplitConditionalNode,
-    [VoiceFlowNodeType.TimeSplitOption]: TimeSplitOptionNode,
-    [VoiceFlowNodeType.SendToSMS]: SendToSMSNode,
-    [VoiceFlowNodeType.Intermediary]: IntermediaryNode,
-    [VoiceFlowNodeType.Enqueue]: EnqueueNode,
-    [VoiceFlowNodeType.EnqueueOption]: EnqueueOptionNode,
-    [VoiceFlowNodeType.ForwardToExternalNumber]: ForwardToNode,
-}
 
 const edgeTypes = {
     default: VoiceFlowEdge,
@@ -64,6 +39,10 @@ type VoiceFlowProps = {
 }
 
 export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
+    const isExtendedCallFlowsGAReady = useFlag(
+        FeatureFlagKey.ExtendedCallFlowsGAReady,
+    )
+
     const computeEdges = useCallback(
         (nodes: VoiceFlowNode[]) => createFlowGraph(nodes, getNextNodes).edges,
         [],
@@ -84,7 +63,15 @@ export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
             <Flow<VoiceFlowNode, Edge>
                 nodes={nodes}
                 edges={edges}
-                nodeTypes={nodeTypes}
+                nodeTypes={
+                    isExtendedCallFlowsGAReady
+                        ? nodeTypes
+                        : {
+                              ...nodeTypes,
+                              [VoiceFlowNodeType.Enqueue]:
+                                  DEPRECATED_EnqueueNode,
+                          }
+                }
                 edgeTypes={preview ? previewEdgeType : edgeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}

@@ -29,6 +29,7 @@ import {
 } from './constants'
 import {
     EnqueueNode,
+    EnqueueOptionNode,
     IntermediaryNode,
     IvrMenuNode,
     IvrOptionNode,
@@ -69,7 +70,7 @@ export function isVoiceFlowStep(
 
 export function isBranchingNode(
     node: VoiceFlowNodeBase,
-): node is IvrMenuNode | TimeSplitConditionalNode {
+): node is IvrMenuNode | TimeSplitConditionalNode | EnqueueNode {
     const isEnqueueBranchingNode =
         node.type === VoiceFlowNodeType.Enqueue &&
         'conditional_routing' in node.data &&
@@ -86,7 +87,7 @@ export function isBranchingNode(
 
 export function isBranchingOption(
     node: VoiceFlowNodeBase,
-): node is TimeSplitOptionNode | IvrOptionNode {
+): node is TimeSplitOptionNode | IvrOptionNode | EnqueueOptionNode {
     return (
         node.type === VoiceFlowNodeType.TimeSplitOption ||
         node.type === VoiceFlowNodeType.IvrOption ||
@@ -672,12 +673,6 @@ export const linkFormStep = (
                         : option,
                 ),
             }
-        case VoiceFlowNodeType.PlayMessage:
-        case VoiceFlowNodeType.ForwardToExternalNumber:
-            return {
-                ...formStep,
-                next_step_id: nextStepId,
-            }
         case VoiceFlowNodeType.Enqueue:
             if (
                 formStep.conditional_routing &&
@@ -702,8 +697,14 @@ export const linkFormStep = (
         case VoiceFlowNodeType.SendToVoicemail:
             // these are final nodes, we shouldn't be updating them
             return null
+        case VoiceFlowNodeType.PlayMessage:
+        case VoiceFlowNodeType.ForwardToExternalNumber:
+        case VoiceFlowNodeType.RouteToInternalNumber:
         default:
-            return null
+            return {
+                ...formStep,
+                next_step_id: nextStepId as any,
+            }
     }
 }
 

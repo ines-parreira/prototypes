@@ -52,6 +52,7 @@ const PreviewRadioFieldSet = ({
                     isDisabled={disabled || isDisabled}
                     onClick={() => onChange(value)}
                     preview={preview}
+                    className={css.option}
                 />
             ))}
         </fieldset>

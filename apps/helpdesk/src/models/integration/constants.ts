@@ -148,4 +148,4 @@ export const DEFAULT_CALLBACK_REQUESTS = {
             'Your callback has been requested. Please leave a message after the tone.',
     },
     allow_to_leave_voicemail: true,
-}
+} as const

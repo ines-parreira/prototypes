@@ -4,6 +4,7 @@ export enum VoiceFlowNodeType {
     PlayMessage = 'play_message',
     Enqueue = 'enqueue',
     EnqueueOption = 'enqueue_option',
+    RouteToInternalNumber = 'route_to_internal_number',
     SendToVoicemail = 'send_to_voicemail',
     TimeSplitConditional = 'time_split_conditional',
     TimeSplitOption = 'time_split_option',

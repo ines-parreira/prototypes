@@ -1674,7 +1674,7 @@ describe('utils', () => {
             expect(updated).toBeNull()
         })
 
-        it('should return null for unknown node type', () => {
+        it('should return next_step_id for unknown node type', () => {
             const relatedNode: VoiceFlowNode = {
                 id: 'unknown-1',
                 type: 'UnknownType' as any,
@@ -1690,7 +1690,8 @@ describe('utils', () => {
 
             const updated = linkFormStep(relatedNode, formStep, 'new-id')
 
-            expect(updated).toBeNull()
+            // @ts-ignore
+            expect(updated?.next_step_id).toBe('new-id')
         })
 
         it('should return null when TimeSplitConditional relatedNode is wrong type', () => {

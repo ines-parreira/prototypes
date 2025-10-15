@@ -19,7 +19,7 @@ import { useDeleteNode } from 'pages/integrations/integration/components/voice/f
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import * as utils from '../../utils'
-import { EnqueueNode } from '../EnqueueNode'
+import { DEPRECATED_EnqueueNode as EnqueueNode } from '../DEPRECATED_EnqueueNode'
 
 jest.mock(
     'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
@@ -42,7 +42,7 @@ afterAll(() => {
     server.close()
 })
 
-describe('EnqueueNode', () => {
+describe('DEPRECATED_EnqueueNode', () => {
     const mockStep = mockEnqueueStep({
         queue_id: 123,
     })
@@ -83,6 +83,25 @@ describe('EnqueueNode', () => {
             </FlowProvider>,
         )
     }
+
+    it('renders with correct title and icon', () => {
+        renderComponent(mockStep)
+
+        expect(screen.getAllByText('Route to')).toHaveLength(2)
+        expect(screen.getByText('Queue')).toBeInTheDocument()
+        expect(screen.getByLabelText('arrow-routing')).toBeInTheDocument()
+    })
+
+    it('shows error when queue is not selected', () => {
+        const mockStep = mockEnqueueStep({
+            queue_id: null,
+        } as any)
+        renderComponent(mockStep)
+
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
+    })
 
     it('shows callback configuration when callback requests are enabled', () => {
         const mockStep = mockEnqueueStep({
@@ -132,8 +151,40 @@ describe('EnqueueNode', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('shows error when callback requests are enabled but misconfigured', () => {
+        const mockStep = mockEnqueueStep({
+            queue_id: 123,
+            callback_requests: {
+                enabled: true,
+                prompt_message: {
+                    voice_message_type: 'text_to_speech',
+                    text_to_speech_content: '',
+                },
+                confirmation_message: {
+                    voice_message_type: 'voice_recording',
+                    voice_recording_file_path: '',
+                },
+            },
+        })
+
+        renderComponent(mockStep)
+
+        expect(
+            screen.getByRole('img', { name: 'octagon-warning' }),
+        ).toBeInTheDocument()
+    })
+
     it('renders all form sections with correct headers', () => {
         renderComponent(mockStep)
+
+        expect(
+            screen.getByText('Step 1: Where should this call go?'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Select the queue you want your callers to be routed to:',
+            ),
+        ).toBeInTheDocument()
 
         expect(
             screen.getByText('Step 2: Handle busy times (Optional)'),
@@ -154,16 +205,15 @@ describe('EnqueueNode', () => {
         ).toBeInTheDocument()
     })
 
-    it('should not render form fields when queue is not selected', () => {
-        const step = mockEnqueueStep({
-            queue_id: null!,
-        })
+    it('should not render node when form value does not exist', () => {
+        const step = mockEnqueueStep()
+        const flow = {
+            steps: {},
+        }
 
-        renderComponent(step)
+        renderComponent(step, flow as any)
 
-        expect(
-            screen.queryByText('Step 2: Handle busy times (Optional)'),
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Route to')).not.toBeInTheDocument()
     })
 
     it('should call transformToReactFlowNodes when conditional routing is enabled', async () => {
