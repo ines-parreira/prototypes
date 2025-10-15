@@ -14,11 +14,20 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-jest.mock('pages/aiAgent/Playground/AiAgentPlaygroundView', () => ({
-    AiAgentPlaygroundView: () => (
-        <div data-testid="mock-playground">Playground</div>
-    ),
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
 }))
+
+jest.mock('pages/aiAgent/Playground/AiAgentPlaygroundView', () => ({
+    AiAgentPlaygroundView: () => <div>Playground</div>,
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlayground', () => ({
+    AiAgentPlayground: () => <div>Playground V2</div>,
+}))
+
+const { useFlag } = require('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 describe('TestSection', () => {
     const mockStepMetadata: PostOnboardingStepMetadata = {
@@ -39,6 +48,7 @@ describe('TestSection', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('renders the component with correct description', () => {
@@ -151,5 +161,94 @@ describe('TestSection', () => {
                 type: 'refresh-ai-agent-playground',
             }),
         )
+    })
+
+    describe('when feature flag is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('renders Playground V2 when drawer is opened', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestSection
+                    stepMetadata={mockStepMetadata}
+                    step={mockStep}
+                    updateStep={mockUpdateStep}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Test' }))
+            })
+
+            expect(screen.getByText('Playground V2')).toBeInTheDocument()
+        })
+
+        it('resets playground when refresh button is clicked', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestSection
+                    stepMetadata={mockStepMetadata}
+                    step={mockStep}
+                    updateStep={mockUpdateStep}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Test' }))
+            })
+
+            expect(screen.getByText('Playground V2')).toBeInTheDocument()
+
+            await act(async () => {
+                const refreshButton =
+                    screen.getByLabelText('refresh playground')
+                await user.click(refreshButton)
+            })
+
+            expect(screen.getByText('Playground V2')).toBeInTheDocument()
+        })
+
+        it('does not display reset button in Playground V2', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestSection
+                    stepMetadata={mockStepMetadata}
+                    step={mockStep}
+                    updateStep={mockUpdateStep}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Test' }))
+            })
+
+            expect(screen.getByText('Playground V2')).toBeInTheDocument()
+        })
+    })
+
+    describe('when feature flag is disabled', () => {
+        it('renders original Playground when drawer is opened', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestSection
+                    stepMetadata={mockStepMetadata}
+                    step={mockStep}
+                    updateStep={mockUpdateStep}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Test' }))
+            })
+
+            expect(screen.getByText('Playground')).toBeInTheDocument()
+            expect(screen.queryByText('Playground V2')).not.toBeInTheDocument()
+        })
     })
 })

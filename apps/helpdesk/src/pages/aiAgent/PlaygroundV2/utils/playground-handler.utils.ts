@@ -10,8 +10,8 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
-import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
 import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
+import { PlaygroundChannels } from '../types'
 import {
     shouldAiAgentResponseDisplay,
     shouldDisplayActions,

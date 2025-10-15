@@ -17,14 +17,14 @@ import {
     PLAYGROUND_PROMPT_CONTENT,
 } from '../../constants'
 import {
-    PlaygroundChannelAvailability,
-    PlaygroundChannels,
-    PlaygroundFormValues,
-} from '../components/PlaygroundChat/PlaygroundChat.types'
-import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE_TEXT,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
+import {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+    PlaygroundFormValues,
+} from '../types'
 
 type PlaygroundMessageMeta = {
     ai_agent_message_type: string

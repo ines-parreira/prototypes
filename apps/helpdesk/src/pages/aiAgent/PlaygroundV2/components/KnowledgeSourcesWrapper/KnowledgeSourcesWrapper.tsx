@@ -14,14 +14,15 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 
+import { usePlaygroundEvent } from '../../contexts/PlaygroundContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
+import { PlaygroundEvent } from '../../types'
 
 import css from './KnowledgeSourcesWrapper.less'
 
-interface KnowledgeSourcesWrapperProps {
+type KnowledgeSourcesWrapperProps = {
     executionId: string
     storeConfiguration: StoreConfiguration
-    onFeedbackPollingStop?: (stopPolling: () => void) => void
     outcome?: TicketOutcome
 }
 
@@ -30,7 +31,6 @@ const OPEN_IN_NEW_TAB_ICON = 'open_in_new'
 const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
     executionId,
     storeConfiguration,
-    onFeedbackPollingStop,
     outcome,
 }) => {
     const { feedback, isPolling, startPolling, stopPolling } =
@@ -55,12 +55,8 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
         }
     }, [executionId, hasReceivedData, startPolling])
 
-    // Expose the stopPolling function to parent component
-    useEffect(() => {
-        if (onFeedbackPollingStop) {
-            onFeedbackPollingStop(stopPolling)
-        }
-    }, [stopPolling, onFeedbackPollingStop])
+    // Stop polling when conversation is reset
+    usePlaygroundEvent(PlaygroundEvent.RESET_CONVERSATION, stopPolling)
 
     const knowledgeSources = useMemo(() => {
         if (!enrichedData || !enrichedData.knowledgeResources) return []

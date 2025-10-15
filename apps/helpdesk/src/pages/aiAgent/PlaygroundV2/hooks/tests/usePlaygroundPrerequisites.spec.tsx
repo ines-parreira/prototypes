@@ -6,11 +6,14 @@ import { usePlaygroundPrerequisites } from '../usePlaygroundPrerequisites'
 
 jest.mock('../../../hooks/useFileIngestion')
 jest.mock('../../../hooks/usePublicResources')
+jest.mock('../../../hooks/useGuidanceArticles')
 
 const mockUseFileIngestion = require('../../../hooks/useFileIngestion')
     .useFileIngestion as jest.Mock
 const mockUsePublicResources = require('../../../hooks/usePublicResources')
     .usePublicResources as jest.Mock
+const mockUseGuidanceArticles = require('../../../hooks/useGuidanceArticles')
+    .useGuidanceArticles as jest.Mock
 
 describe('usePlaygroundPrerequisites', () => {
     const mockStoreConfiguration: Partial<StoreConfiguration> = {
@@ -23,6 +26,10 @@ describe('usePlaygroundPrerequisites', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseGuidanceArticles.mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
     })
 
     describe('hasPrerequisites', () => {
@@ -182,6 +189,127 @@ describe('usePlaygroundPrerequisites', () => {
                     storeConfiguration: {
                         ...mockStoreConfiguration,
                         helpCenterId: null,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(true)
+        })
+
+        it('should return true when has public guidance articles', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [
+                    { id: 1, visibility: 'PUBLIC', title: 'Test Article' },
+                    { id: 2, visibility: 'PRIVATE', title: 'Private Article' },
+                ],
+                isGuidanceArticleListLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(true)
+        })
+
+        it('should return false when only has private guidance articles', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [
+                    { id: 1, visibility: 'PRIVATE', title: 'Private Article' },
+                ],
+                isGuidanceArticleListLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(false)
+        })
+
+        it('should return false when loading guidance articles', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [
+                    { id: 1, visibility: 'PUBLIC', title: 'Test Article' },
+                ],
+                isGuidanceArticleListLoading: true,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(false)
+        })
+
+        it('should return true when has any combination of sources with public guidance', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [{ id: 1, status: 'done' }],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [{ id: 1, status: 'SUCCESSFUL' }],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [
+                    { id: 1, visibility: 'PUBLIC', title: 'Test Article' },
+                ],
+                isGuidanceArticleListLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
                     } as any,
                     snippetHelpCenterId: 456,
                 }),
@@ -395,6 +523,34 @@ describe('usePlaygroundPrerequisites', () => {
             expect(result.current.isCheckingPrerequisites).toBe(true)
         })
 
+        it('should return true when loading guidance articles', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [],
+                isGuidanceArticleListLoading: true,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.isCheckingPrerequisites).toBe(true)
+        })
+
         it('should return false when done loading', () => {
             mockUsePublicResources.mockReturnValue({
                 sourceItems: [{ id: 1, status: 'done' }],
@@ -521,6 +677,64 @@ describe('usePlaygroundPrerequisites', () => {
                     helpCenterId: 0,
                 }),
             )
+        })
+
+        it('should call useGuidanceArticles with guidanceHelpCenterId', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [],
+                isGuidanceArticleListLoading: false,
+            })
+
+            renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        guidanceHelpCenterId: 999,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(mockUseGuidanceArticles).toHaveBeenCalledWith(999, {
+                enabled: true,
+            })
+        })
+
+        it('should call useGuidanceArticles with 0 when no guidanceHelpCenterId', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [],
+                isGuidanceArticleListLoading: false,
+            })
+
+            renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        guidanceHelpCenterId: undefined,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(mockUseGuidanceArticles).toHaveBeenCalledWith(0, {
+                enabled: false,
+            })
         })
     })
 })

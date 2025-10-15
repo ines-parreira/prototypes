@@ -15,6 +15,10 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnrichFeedbackData } from '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import {
+    usePlaygroundContext,
+    usePlaygroundEvent,
+} from '../../contexts/PlaygroundContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
 import KnowledgeSourcesWrapper from './KnowledgeSourcesWrapper'
 
@@ -24,9 +28,16 @@ jest.mock(
     '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData',
 )
 jest.mock('@gorgias/axiom')
+jest.mock('../../contexts/PlaygroundContext', () => ({
+    ...jest.requireActual('../../contexts/PlaygroundContext'),
+    usePlaygroundContext: jest.fn(),
+    usePlaygroundEvent: jest.fn(),
+}))
 
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)
+const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUsePlaygroundEvent = jest.mocked(usePlaygroundEvent)
 const SkeletonMock = assumeMock(Skeleton)
 
 const mockStore = configureMockStore()
@@ -40,7 +51,6 @@ const mockStoreConfiguration = {
 const renderComponent = (props: {
     executionId: string
     storeConfiguration: StoreConfiguration
-    onFeedbackPollingStop?: (stopPolling: () => void) => void
     outcome?: TicketOutcome
 }) => {
     return render(
@@ -58,6 +68,38 @@ describe('KnowledgeSourcesWrapper', () => {
 
         // Mock Skeleton component to render a test-id for easy testing
         SkeletonMock.mockImplementation(() => <div data-testid="skeleton" />)
+
+        // Mock PlaygroundContext
+        mockUsePlaygroundContext.mockReturnValue({
+            storeConfiguration: {},
+            snippetHelpCenterId: 123,
+            httpIntegrationId: 456,
+            baseUrl: 'https://test.com',
+            gorgiasDomain: 'test.gorgias.com',
+            accountId: 789,
+            chatIntegrationId: 101,
+            events: {
+                on: jest.fn(() => jest.fn()),
+                emit: jest.fn(),
+            },
+            uiState: {
+                isInitialMessage: true,
+                setIsInitialMessage: jest.fn(),
+            },
+            channelState: {
+                channel: 'email',
+                channelAvailability: 'online',
+                onChannelChange: jest.fn(),
+                onChannelAvailabilityChange: jest.fn(),
+            },
+            messagesState: {
+                messages: [],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+            },
+        } as any)
     })
     it('should display knowledge sources when data is loaded', () => {
         const mockEnrichedData = {
@@ -236,9 +278,9 @@ describe('KnowledgeSourcesWrapper', () => {
         expect(deletedLink).toHaveClass('deleted')
     })
 
-    it('should call onFeedbackPollingStop callback with stopPolling function', () => {
+    it('should register event listener for RESET_CONVERSATION', () => {
         const stopPollingMock = jest.fn()
-        const onFeedbackPollingStop = jest.fn()
+        const onMock = jest.fn()
 
         mockUseFeedbackPolling.mockReturnValue({
             feedback: undefined,
@@ -256,13 +298,46 @@ describe('KnowledgeSourcesWrapper', () => {
             isLoading: false,
         } as any)
 
+        mockUsePlaygroundContext.mockReturnValue({
+            storeConfiguration: {},
+            snippetHelpCenterId: 123,
+            httpIntegrationId: 456,
+            baseUrl: 'https://test.com',
+            gorgiasDomain: 'test.gorgias.com',
+            accountId: 789,
+            chatIntegrationId: 101,
+            events: {
+                on: onMock,
+                emit: jest.fn(),
+            },
+            uiState: {
+                isInitialMessage: true,
+                setIsInitialMessage: jest.fn(),
+            },
+            channelState: {
+                channel: 'email',
+                channelAvailability: 'online',
+                onChannelChange: jest.fn(),
+                onChannelAvailabilityChange: jest.fn(),
+            },
+            messagesState: {
+                messages: [],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+            },
+        } as any)
+
         renderComponent({
             executionId: 'test-execution-id',
             storeConfiguration: mockStoreConfiguration,
-            onFeedbackPollingStop,
         })
 
-        expect(onFeedbackPollingStop).toHaveBeenCalledWith(stopPollingMock)
+        expect(mockUsePlaygroundEvent).toHaveBeenCalledWith(
+            'RESET_CONVERSATION',
+            stopPollingMock,
+        )
     })
 
     it('should render knowledge source links with correct attributes', () => {

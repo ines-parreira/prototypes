@@ -13,6 +13,7 @@ import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/Guidance
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -73,6 +74,10 @@ export const GuidanceForm = ({
 }: Props) => {
     const areActionsInGuidanceEnabled = useFlag<boolean>(
         FeatureFlagKey.AiAgentSupportActionInGuidance,
+        false,
+    )
+    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
+        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
         false,
     )
     const dispatch = useAppDispatch()
@@ -168,7 +173,11 @@ export const GuidanceForm = ({
         setFormState(initialFormState)
     }
 
-    const handleSubmit = async ({ redirectTo }: { redirectTo: string }) => {
+    const { openPlayground: openPlaygroundPanel } = usePlaygroundPanel()
+
+    const handleSubmit = async ({
+        redirectTo,
+    }: { redirectTo?: string } = {}) => {
         try {
             await onSubmit(formState)
             const notificationMessage =
@@ -186,7 +195,12 @@ export const GuidanceForm = ({
             if (guidanceArticles.length >= 2) {
                 handleOnTriggerActivateAiAgentNotification()
             }
-            history.push(redirectTo)
+
+            if (isPlaygroundAvailableEverywhere && redirectTo === routes.test) {
+                openPlaygroundPanel()
+            } else if (redirectTo) {
+                history.push(redirectTo)
+            }
         } catch (error) {
             const duplicateErrorResult = handleGuidanceDuplicateError(
                 error,

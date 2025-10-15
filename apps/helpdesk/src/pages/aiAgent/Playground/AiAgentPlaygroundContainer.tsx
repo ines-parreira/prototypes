@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 
 import PlaygroundActionsToggle from 'pages/aiAgent/Playground/components/PlaygroundActionsToggle/PlaygroundActionsToggle'
 
-import PostCompletionWizardModal from '../AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { TEST } from '../constants'
 import { AiAgentPlaygroundView } from './AiAgentPlaygroundView'
@@ -39,8 +38,6 @@ export const AiAgentPlaygroundContainer = () => {
                 shopName={shopName}
                 arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
             />
-
-            <PostCompletionWizardModal />
         </AiAgentLayout>
     )
 }

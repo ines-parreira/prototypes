@@ -70,6 +70,7 @@ import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportu
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import { AiAgentPlaygroundContainer } from 'pages/aiAgent/Playground/AiAgentPlaygroundContainer'
+import { AiAgentPlaygroundPage } from 'pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
@@ -131,6 +132,23 @@ import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/useTicketLegacyBridgeFunctions'
+
+// Create wrapped components outside of render to prevent re-creation on every render
+const AiAgentSalesWithPaywall = SalesPaywallMiddleware(AiAgentSales)
+const AiAgentCustomerEngagementWithPaywall = SalesPaywallMiddleware(
+    AiAgentCustomerEngagement,
+)
+const AiAgentProductRecommendationsWithPaywall = SalesPaywallMiddleware(
+    AiAgentProductRecommendations,
+)
+const AiAgentProductRecommendationsPromoteWithPaywall = SalesPaywallMiddleware(
+    AiAgentProductRecommendationsPromote,
+)
+const AiAgentProductRecommendationsExcludeWithPaywall = SalesPaywallMiddleware(
+    AiAgentProductRecommendationsExclude,
+)
+const AiAgentSalesStrategyWithPaywall =
+    SalesPaywallMiddleware(AiAgentSalesStrategy)
 
 export default function Routes() {
     const ticketLegacyBridgeFunctions = useTicketLegacyBridgeFunctions()
@@ -340,6 +358,11 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         false,
     )
 
+    const isNewPlayground = useFlag(
+        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
+        false,
+    )
+
     const isShoppingAssitantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
@@ -419,7 +442,11 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/test`}
                             exact
-                            component={AiAgentPlaygroundContainer}
+                            component={
+                                isNewPlayground
+                                    ? AiAgentPlaygroundPage
+                                    : AiAgentPlaygroundContainer
+                            }
                         />
                     </AiAgentErrorBoundary>
 
@@ -745,7 +772,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales`}
                             exact
-                            component={SalesPaywallMiddleware(AiAgentSales)}
+                            component={AiAgentSalesWithPaywall}
                         />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
@@ -755,9 +782,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales/customer-engagement`}
                             exact
-                            component={SalesPaywallMiddleware(
-                                AiAgentCustomerEngagement,
-                            )}
+                            component={AiAgentCustomerEngagementWithPaywall}
                         />
                     </AiAgentErrorBoundary>
                     {isAiShoppingAssistantProductRecommendationsEnabled && (
@@ -768,25 +793,25 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             <Route
                                 path={`${path}/sales/product-recommendations`}
                                 exact
-                                component={SalesPaywallMiddleware(
-                                    AiAgentProductRecommendations,
-                                )}
+                                component={
+                                    AiAgentProductRecommendationsWithPaywall
+                                }
                             />
 
                             <Route
                                 path={`${path}/sales/product-recommendations/promote`}
                                 exact
-                                component={SalesPaywallMiddleware(
-                                    AiAgentProductRecommendationsPromote,
-                                )}
+                                component={
+                                    AiAgentProductRecommendationsPromoteWithPaywall
+                                }
                             />
 
                             <Route
                                 path={`${path}/sales/product-recommendations/exclude`}
                                 exact
-                                component={SalesPaywallMiddleware(
-                                    AiAgentProductRecommendationsExclude,
-                                )}
+                                component={
+                                    AiAgentProductRecommendationsExcludeWithPaywall
+                                }
                             />
                         </AiAgentErrorBoundary>
                     )}
@@ -800,9 +825,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/sales/strategy`}
                             exact
-                            component={SalesPaywallMiddleware(
-                                AiAgentSalesStrategy,
-                            )}
+                            component={AiAgentSalesStrategyWithPaywall}
                         />
                     </AiAgentErrorBoundary>
                 </AiAgentStoreConfigurationProvider>

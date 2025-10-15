@@ -10,7 +10,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
-import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../types'
 
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1

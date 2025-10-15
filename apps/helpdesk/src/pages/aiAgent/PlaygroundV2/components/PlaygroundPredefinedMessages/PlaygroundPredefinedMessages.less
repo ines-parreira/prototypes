@@ -1,0 +1,76 @@
+:local {
+    .container {
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+        z-index: 4;
+        opacity: 1;
+        visibility: visible;
+        transition:
+            opacity 0.2s ease-in-out,
+            visibility 0s 0s;
+
+        &.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity 0.2s ease-in-out,
+                visibility 0s 0.2s;
+        }
+    }
+
+    .list {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        gap: var(--layout-spacing-xxs);
+        margin-bottom: 0;
+        flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        cursor: grab;
+        user-select: none;
+        height: fit-content;
+        pointer-events: auto;
+
+        /* Hide scrollbar but allow scrolling */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+
+        &::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        > li > div > button {
+            border-radius: var(--xxs, 6px);
+            border: 0.5px solid var(--border-border-neutral-tertiary, #b3b8c1);
+            background-color: var(--neutral-grey-0);
+        }
+    }
+
+    .listItem {
+        height: fit-content;
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .title {
+        color: var(--neutral-grey-5);
+        padding-bottom: var(--layout-spacing-xs);
+        display: block;
+    }
+
+    .popover {
+        background-color: var(--white);
+    }
+
+    .popoverBody {
+        padding: var(--layout-spacing-s);
+        max-width: 420px;
+    }
+}

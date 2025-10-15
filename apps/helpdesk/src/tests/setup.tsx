@@ -348,3 +348,14 @@ jest.mock('services/socketManager/socketManager', () => ({
     __esModule: true,
     default: SocketManagerMock(),
 }))
+
+jest.mock('pages/AppContext', () => ({
+    useAppContext: jest.fn(() => ({
+        collapsibleColumnChildren: null,
+        setCollapsibleColumnChildren: jest.fn(),
+        isCollapsibleColumnOpen: false,
+        setIsCollapsibleColumnOpen: jest.fn(),
+    })),
+    AppContextProvider: ({ children }: { children: React.ReactNode }) =>
+        children,
+}))

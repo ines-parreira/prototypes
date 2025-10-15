@@ -38,6 +38,9 @@ jest.mock('react-router-dom', () => {
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 jest.mock('state/notifications/actions')
+jest.mock('pages/AppContext')
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -69,6 +72,17 @@ const mockUseParams = assumeMock(useParams)
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 const mockedStore = mockStore(getAiAgentStoreFixture())
+
+const { useAppContext } = require('pages/AppContext')
+const mockUseAppContext = jest.mocked(useAppContext)
+
+const {
+    useAiAgentNavigation,
+} = require('pages/aiAgent/hooks/useAiAgentNavigation')
+const mockUseAiAgentNavigation = jest.mocked(useAiAgentNavigation)
+
+const { usePlaygroundPanel } = require('pages/aiAgent/hooks/usePlaygroundPanel')
+const mockUsePlaygroundPanel = jest.mocked(usePlaygroundPanel)
 
 const renderComponent = () =>
     renderWithRouter(
@@ -108,6 +122,23 @@ describe('AiAgentPreviewModeSettingsView', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
+
+        mockUseAppContext.mockReturnValue({
+            setCollapsibleColumnChildren: jest.fn(),
+            collapsibleColumnChildren: null,
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: jest.fn(),
+        })
+
+        mockUseAiAgentNavigation.mockReturnValue({
+            routes: {},
+            navigationItems: [],
+        } as any)
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: jest.fn(),
+            closePlayground: jest.fn(),
+        } as any)
     })
 
     it('renders form elements properly', () => {

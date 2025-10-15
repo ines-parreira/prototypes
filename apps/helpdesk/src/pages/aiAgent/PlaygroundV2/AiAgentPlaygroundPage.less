@@ -1,0 +1,32 @@
+:local {
+    // The `:global(.container-fluid)` explicitly targets the navbar component from reactstrap
+    // This will force this style to overwrite the one from Bootstrap
+    :global(.container-fluid).container {
+        display: flex;
+        flex-grow: 1;
+    }
+    .container {
+        padding-top: 0 !important;
+    }
+
+    :global(#froalaToolbarContainer) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--layout-spacing-xs);
+
+        :global(.fr-button) {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            width: 24px;
+        }
+
+        :global(.fr-btn-grp) {
+            margin: 0;
+        }
+    }
+}

@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { Ticket } from '@gorgias/helpdesk-client'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -72,8 +70,6 @@ export const PlaygroundCustomerSelection = ({
                 name: CustomerHttpIntegrationDataMock.name,
             }
             onCustomerChange(playgroundCustomer)
-        } else {
-            onCustomerChange(DEFAULT_PLAYGROUND_CUSTOMER)
         }
     }
 
@@ -83,17 +79,11 @@ export const PlaygroundCustomerSelection = ({
         onTicketChange(ticketData)
     }
 
-    useEffect(() => {
-        if (customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id) {
-            onSenderTypeChange(SenderTypeValues.NEW_CUSTOMER)
-        }
-    }, [customer, onSenderTypeChange])
-
     const customerEmail =
         customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id ? '' : customer.email
 
     return (
-        <div className={css.container}>
+        <>
             <SelectField
                 fullWidth
                 showSelectedOption
@@ -103,21 +93,29 @@ export const PlaygroundCustomerSelection = ({
                 className={css.senderSelect}
                 disabled={isDisabled}
             />
-            {senderType === SenderTypeValues.EXISTING_TICKET && (
-                <TicketSearchDropdownSelectView
-                    className={css.ticketSearch}
-                    onSelect={handleTicketSelect}
-                    isDisabled={isDisabled}
-                />
-            )}
-            {senderType === SenderTypeValues.EXISTING_CUSTOMER && (
-                <CustomerSearchDropdownSelectView
-                    className={css.customerSearch}
-                    baseSearchTerm={customerEmail}
-                    onSelect={onCustomerChange}
-                    isDisabled={isDisabled}
-                />
-            )}
-        </div>
+            <div
+                className={css.conditionalContent}
+                data-visible={
+                    senderType === SenderTypeValues.EXISTING_TICKET ||
+                    senderType === SenderTypeValues.EXISTING_CUSTOMER
+                }
+            >
+                {senderType === SenderTypeValues.EXISTING_TICKET && (
+                    <TicketSearchDropdownSelectView
+                        className={css.ticketSearch}
+                        onSelect={handleTicketSelect}
+                        isDisabled={isDisabled}
+                    />
+                )}
+                {senderType === SenderTypeValues.EXISTING_CUSTOMER && (
+                    <CustomerSearchDropdownSelectView
+                        className={css.customerSearch}
+                        baseSearchTerm={customerEmail}
+                        onSelect={onCustomerChange}
+                        isDisabled={isDisabled}
+                    />
+                )}
+            </div>
+        </>
     )
 }

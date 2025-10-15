@@ -1,5 +1,15 @@
+import { useRef, useState } from 'react'
+
+import classnames from 'classnames'
+
+import { Chip } from '@gorgias/axiom'
+
+import { Popover } from 'components/Popover'
+import { sanitizeHtmlDefault } from 'utils/html'
+
 import { PlaygroundTemplateMessage } from '../../types'
-import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
+
+import css from './PlaygroundPredefinedMessages.less'
 
 const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [
     {
@@ -12,7 +22,7 @@ const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [
         id: 2,
         title: 'Where is my order?',
         content:
-            "Hi there,<br/>I hope you're doing well! I recently placed an order on your website. I’m excited to receive my items and wanted to check on the status of my order. Could you please provide an update?<br/>Best regards",
+            "Hi there,<br/>I hope you're doing well! I recently placed an order on your website. I'm excited to receive my items and wanted to check on the status of my order. Could you please provide an update?<br/>Best regards",
     },
     {
         id: 3,
@@ -30,20 +40,131 @@ const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [
 
 type Props = {
     onMessageSelect: (predefinedMessage: PlaygroundTemplateMessage) => void
+    isVisible?: boolean
 }
 
-export const PlaygroundPredefinedMessages = ({ onMessageSelect }: Props) => {
-    const actions = TEMPLATE_MESSAGES.map((message) => ({
-        id: message.id,
-        label: message.title,
-        content: message.content,
-        onClick: () => onMessageSelect(message),
-    }))
+const PlaygroundPredefinedMessage = ({
+    message,
+    onMessageSelect,
+}: {
+    message: PlaygroundTemplateMessage
+    onMessageSelect: (message: PlaygroundTemplateMessage) => void
+}) => {
+    const ref = useRef<HTMLDivElement>(null)
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
     return (
-        <PlaygroundActions
-            title="Or test a common question"
-            actions={actions}
-        />
+        <>
+            <div
+                ref={ref}
+                onMouseEnter={() => {
+                    setIsPreviewOpen(true)
+                }}
+                onMouseLeave={() => setIsPreviewOpen(false)}
+            >
+                <Chip
+                    label={message.title}
+                    onClick={() => onMessageSelect(message)}
+                    id={`predefined-message-chip-${message.id}`}
+                />
+            </div>
+            <Popover
+                target={ref}
+                isOpen={isPreviewOpen}
+                placement="top-end"
+                setIsOpen={setIsPreviewOpen}
+                footer={false}
+                className={css.popover}
+            >
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizeHtmlDefault(message.content),
+                    }}
+                />
+            </Popover>
+        </>
+    )
+}
+
+export const PlaygroundPredefinedMessages = ({
+    onMessageSelect,
+    isVisible = true,
+}: Props) => {
+    const listRef = useRef<HTMLUListElement>(null)
+    const isDragging = useRef(false)
+    const startX = useRef(0)
+    const scrollLeft = useRef(0)
+    const hasMoved = useRef(false)
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (!listRef.current) return
+        isDragging.current = true
+        hasMoved.current = false
+        startX.current = e.pageX - listRef.current.offsetLeft
+        scrollLeft.current = listRef.current.scrollLeft
+    }
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging.current || !listRef.current) return
+        e.preventDefault()
+        const x = e.pageX - listRef.current.offsetLeft
+        const walk = (x - startX.current) * 2
+        listRef.current.scrollLeft = scrollLeft.current - walk
+        if (Math.abs(x - startX.current) > 3) {
+            hasMoved.current = true
+        }
+    }
+
+    const handleMouseUp = (e: React.MouseEvent) => {
+        isDragging.current = false
+        if (hasMoved.current) {
+            e.preventDefault()
+            e.stopPropagation()
+            const target = e.target as HTMLElement
+            if (target.tagName === 'BUTTON' || target.closest('button')) {
+                const button =
+                    target.tagName === 'BUTTON'
+                        ? target
+                        : (target.closest('button') as HTMLElement)
+                button.addEventListener(
+                    'click',
+                    (clickEvent) => {
+                        clickEvent.preventDefault()
+                        clickEvent.stopPropagation()
+                    },
+                    { once: true, capture: true },
+                )
+            }
+        }
+    }
+
+    const handleMouseLeave = () => {
+        isDragging.current = false
+    }
+
+    return (
+        <div
+            className={classnames(css.container, {
+                [css.hidden]: !isVisible,
+            })}
+        >
+            <ul
+                ref={listRef}
+                className={css.list}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+            >
+                {TEMPLATE_MESSAGES.map((message) => (
+                    <li key={message.id}>
+                        <PlaygroundPredefinedMessage
+                            message={message}
+                            onMessageSelect={onMessageSelect}
+                        />
+                    </li>
+                ))}
+            </ul>
+        </div>
     )
 }

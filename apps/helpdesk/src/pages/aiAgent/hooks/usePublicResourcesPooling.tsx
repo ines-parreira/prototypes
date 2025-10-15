@@ -80,9 +80,10 @@ export const usePublicResourcesPooling = ({
         },
         {
             refetchInterval: UPDATE_STATUS_INTERVAL,
-            enabled:
+            enabled: !!(
                 processingArticleIngestionIds &&
-                processingArticleIngestionIds.length > 0,
+                processingArticleIngestionIds.length > 0
+            ),
         },
     )
 

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -6,35 +6,48 @@ import { useParams } from 'react-router'
 
 import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
+import { FROALA_KEY } from 'config'
 import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'
-import { useSearchParam } from 'hooks/useSearchParam'
-import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import TextInput from 'pages/common/forms/input/TextInput'
+import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
 import shortcutManager from 'services/shortcutManager'
 
-import {
-    PLAYGROUND_PROMPT_CONTENT,
-    WIZARD_POST_COMPLETION_QUERY_KEY,
-    WIZARD_POST_COMPLETION_STATE,
-} from '../../../constants'
+import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
+import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
-import { PlaygroundCustomer } from '../../types'
-import { PlaygroundAction } from '../PlaygroundActions/types'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
-    PlaygroundFormValues,
-} from '../PlaygroundChat/PlaygroundChat.types'
+    PlaygroundCustomer,
+    PlaygroundEvent,
+    PlaygroundTemplateMessage,
+} from '../../types'
+import { mapPlaygroundFormValuesToMessage } from '../../utils/playground-messages.utils'
 import {
     PlaygroundCustomerSelection,
     SenderTypeValues,
     TicketData,
 } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
-import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
+import { PlaygroundPredefinedMessages } from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 
 import css from './PlaygroundInputSection.less'
+
+const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
+
+// cf https://froala.com/wysiwyg-editor/docs/options
+const froalaConfig = {
+    key: FROALA_KEY,
+    attribution: false,
+    toolbarSticky: false,
+    typingTimer: 150,
+    toolbarBottom: true,
+    quickInsertEnabled: false,
+    charCounterCount: false,
+    toolbarButtons: ['emoticons', 'insertLink'],
+    toolbarContainer: `#${TOOLBAR_CONTAINER_ID}`,
+}
 
 const STANDALONE_CHANNEL_SEGMENTS = [
     {
@@ -66,96 +79,79 @@ const CHAT_AVAILABILITY_SEGMENTS = [
 ]
 
 type Props = {
-    formValues: PlaygroundFormValues
-    onFormValuesChange: <Key extends keyof PlaygroundFormValues>(
-        key: Key,
-        value: PlaygroundFormValues[Key],
-    ) => void
-    isDisabled?: boolean
-    isInitialMessage: boolean
-    disabledMessage?: ReactNode
-    onSendMessage: () => void
-    onNewConversation: () => void
-    isMessageSending: boolean
-    onChannelChange: (channel: PlaygroundChannels) => void
-    channel: PlaygroundChannels
-    isWaitingResponse: boolean
-    onPromptMessage: (action: PlaygroundPromptType) => void
-    channelAvailability: PlaygroundChannelAvailability
-    onChannelAvailabilityChange: (value: PlaygroundChannelAvailability) => void
-    arePlaygroundActionsAllowed?: boolean
+    shouldDisplayResetButton: boolean
 }
-export const PlaygroundInputSection = ({
-    formValues,
-    onFormValuesChange,
-    isDisabled,
-    disabledMessage,
-    isInitialMessage,
-    onSendMessage,
-    onNewConversation,
-    isMessageSending,
-    onChannelChange,
-    channel,
-    isWaitingResponse,
-    onPromptMessage,
-    channelAvailability,
-    onChannelAvailabilityChange,
-    arePlaygroundActionsAllowed,
-}: Props) => {
+
+export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-    const handleMessageChange = (message: string) => {
-        onFormValuesChange('message', message)
-    }
+
+    const {
+        storeConfiguration,
+        snippetHelpCenterId,
+        events,
+        uiState,
+        channelState,
+        messagesState,
+    } = usePlaygroundContext()
+
+    const {
+        channel,
+        channelAvailability,
+        onChannelChange,
+        onChannelAvailabilityChange,
+    } = channelState
+
+    const { onMessageSend, isMessageSending } = messagesState
+
+    const {
+        formValues,
+        isFormValid,
+        isDisabled,
+        disabledMessage,
+        onFormValuesChange,
+        clearForm,
+    } = usePlaygroundForm({
+        shopName,
+        snippetHelpCenterId: snippetHelpCenterId || 0,
+        helpCenterId: storeConfiguration?.helpCenterId ?? null,
+    })
+
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER,
     )
     const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false)
 
-    const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
-        WIZARD_POST_COMPLETION_QUERY_KEY,
-    )
     const subjectInputRef = useRef<HTMLInputElement | null>(null)
 
-    useEffect(() => {
-        if (
-            wizardQueryParam === WIZARD_POST_COMPLETION_STATE.test_subject &&
-            subjectInputRef.current
-        ) {
-            subjectInputRef.current.focus()
-            setWizardQueryParam(null)
-        }
-    }, [setWizardQueryParam, wizardQueryParam])
+    const { onTestMessageSent } = usePlaygroundTracking({ shopName })
+
+    const isStandalone = useFlag(
+        FeatureFlagKey.StandaloneHandoverCapabilities,
+        false,
+    )
+
+    const { isInitialMessage } = uiState
+
+    const handleMessageChange = (message: string) => {
+        onFormValuesChange('message', message)
+    }
 
     const handleSubjectChange = (subject: string) => {
         onFormValuesChange('subject', subject)
     }
 
-    const customActions: PlaygroundAction[] | undefined = isWaitingResponse
-        ? [
-              {
-                  id: 1,
-                  label: PLAYGROUND_PROMPT_CONTENT[
-                      PlaygroundPromptType.RELEVANT_RESPONSE
-                  ],
-                  onClick: () => {
-                      onPromptMessage(PlaygroundPromptType.RELEVANT_RESPONSE)
-                  },
-              },
-              {
-                  id: 2,
-                  label: PLAYGROUND_PROMPT_CONTENT[
-                      PlaygroundPromptType.NOT_RELEVANT_RESPONSE
-                  ],
-                  onClick: () => {
-                      onPromptMessage(
-                          PlaygroundPromptType.NOT_RELEVANT_RESPONSE,
-                      )
-                  },
-              },
-          ]
-        : undefined
+    useEffect(() => {
+        return events.on(PlaygroundEvent.RESET_CONVERSATION, clearForm)
+    }, [events, clearForm])
+
+    const handlePredefinedMessageSelect = (
+        message: PlaygroundTemplateMessage,
+    ) => {
+        onFormValuesChange('message', message.content)
+        onFormValuesChange('subject', message.title)
+    }
 
     const handleCustomerChange = useCallback(
         (customer: PlaygroundCustomer) => {
@@ -187,10 +183,22 @@ export const PlaygroundInputSection = ({
         [onChannelAvailabilityChange],
     )
 
-    const { onTestMessageSent } = usePlaygroundTracking({ shopName })
-
     const handleSendMessage = useCallback(() => {
-        onSendMessage()
+        if (!isFormValid) {
+            return
+        }
+
+        if (!onMessageSend || !formValues) {
+            return
+        }
+
+        const playgroundMessage = mapPlaygroundFormValuesToMessage(formValues)
+        void onMessageSend(playgroundMessage, {
+            customer: formValues.customer,
+            subject: formValues.subject,
+        })
+
+        onFormValuesChange('message', '')
         setHasMessageBeenSent(true)
 
         onTestMessageSent({
@@ -201,7 +209,10 @@ export const PlaygroundInputSection = ({
                     : channelAvailability,
         })
     }, [
-        onSendMessage,
+        isFormValid,
+        onMessageSend,
+        formValues,
+        onFormValuesChange,
         onTestMessageSent,
         channel,
         senderSelectedOption,
@@ -209,28 +220,13 @@ export const PlaygroundInputSection = ({
     ])
 
     const onReset = useCallback(() => {
-        onNewConversation()
+        events.emit(PlaygroundEvent.RESET_CONVERSATION)
+        clearForm()
         setHasMessageBeenSent(false)
-    }, [onNewConversation])
+    }, [events, clearForm])
 
-    const arePlaygroundActionsAllowedRef = useRef(arePlaygroundActionsAllowed)
-
-    useEffect(() => {
-        if (
-            arePlaygroundActionsAllowedRef.current !==
-            arePlaygroundActionsAllowed
-        ) {
-            onReset()
-            arePlaygroundActionsAllowedRef.current = arePlaygroundActionsAllowed
-        }
-    }, [arePlaygroundActionsAllowed, onReset])
-
-    const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
-
-    // Handle keyboard shortcut for sending message (Cmd/Ctrl + Enter)
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            // Check if the event originated from within the PlaygroundEditor
             const target = event.target as HTMLElement
             const isFromPlaygroundEditor =
                 target.closest('.fr-element') !== null
@@ -253,41 +249,41 @@ export const PlaygroundInputSection = ({
         }
     }, [isDisabled, isMessageSending, handleSendMessage])
 
+    const isFormDisabled = isDisabled || isMessageSending
+
     return (
         <div className={css.container}>
             <div
-                className={classnames(css.section, {
+                className={classnames(css.section, css.topSection, {
                     [css.disabled]: !isInitialMessage,
                 })}
             >
-                <div className={css.topSection}>
+                <PlaygroundSegmentControl
+                    selectedValue={channel}
+                    onValueChange={handleChannelChange}
+                    isDisabled={!isInitialMessage}
+                    segments={
+                        isStandalone
+                            ? STANDALONE_CHANNEL_SEGMENTS
+                            : CHANNEL_SEGMENTS
+                    }
+                />
+                {channel === 'chat' && (
                     <PlaygroundSegmentControl
-                        selectedValue={channel}
-                        onValueChange={handleChannelChange}
+                        selectedValue={channelAvailability}
+                        onValueChange={handleChannelAvailabilityChange}
                         isDisabled={!isInitialMessage}
-                        segments={
-                            isStandalone
-                                ? STANDALONE_CHANNEL_SEGMENTS
-                                : CHANNEL_SEGMENTS
-                        }
+                        segments={CHAT_AVAILABILITY_SEGMENTS}
                     />
-                    {channel === 'chat' && (
-                        <PlaygroundSegmentControl
-                            selectedValue={channelAvailability}
-                            onValueChange={handleChannelAvailabilityChange}
-                            isDisabled={!isInitialMessage}
-                            segments={CHAT_AVAILABILITY_SEGMENTS}
-                        />
-                    )}
-                    <PlaygroundCustomerSelection
-                        customer={formValues.customer}
-                        onCustomerChange={handleCustomerChange}
-                        onTicketChange={handleTicketChange}
-                        isDisabled={!isInitialMessage}
-                        senderType={senderSelectedOption}
-                        onSenderTypeChange={setSenderSelectedOption}
-                    />
-                </div>
+                )}
+                <PlaygroundCustomerSelection
+                    customer={formValues.customer}
+                    onCustomerChange={handleCustomerChange}
+                    onTicketChange={handleTicketChange}
+                    isDisabled={!isInitialMessage}
+                    senderType={senderSelectedOption}
+                    onSenderTypeChange={setSenderSelectedOption}
+                />
             </div>
             {channel === 'email' && (
                 <div
@@ -301,53 +297,66 @@ export const PlaygroundInputSection = ({
                         value={formValues.subject}
                         onChange={handleSubjectChange}
                         maxLength={135}
-                        prefix={
-                            <span className="body-semibold">Subject: </span>
-                        }
+                        placeholder="Subject"
                         isDisabled={!isInitialMessage}
                     />
                 </div>
             )}
             <div className={classnames(css.section, css.editor)}>
-                <PlaygroundEditor
-                    value={formValues.message}
-                    onMessageChange={handleMessageChange}
-                    onSubjectChange={handleSubjectChange}
-                    enablePredefinedMessages={!isMessageSending}
-                    customActions={customActions}
-                />
-            </div>
-            <div className={classnames(css.section, css.footer)}>
-                {isDisabled && disabledMessage && (
-                    <Tooltip target="send-button">{disabledMessage}</Tooltip>
-                )}
-                <Button
-                    id="send-button"
-                    isDisabled={isDisabled}
-                    onClick={handleSendMessage}
-                >
-                    Send
-                </Button>
-                {!isDisabled && (
-                    <Tooltip
-                        placement="top"
-                        target="send-button"
-                        offset="0, 4px"
-                    >
-                        {shortcutManager.getActionKeys(
-                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET,
+                <div className={css.froalaEditor}>
+                    <FroalaEditorComponent
+                        model={formValues.message}
+                        tag="textarea"
+                        config={{
+                            ...froalaConfig,
+                            placeholderText: 'Write your message...',
+                        }}
+                        onModelChange={handleMessageChange}
+                    />
+
+                    <PlaygroundPredefinedMessages
+                        onMessageSelect={handlePredefinedMessageSelect}
+                        isVisible={
+                            isInitialMessage && !formValues.message?.trim()
+                        }
+                    />
+                    <div id={TOOLBAR_CONTAINER_ID}>
+                        {isFormDisabled && disabledMessage && (
+                            <Tooltip target="send-button">
+                                {disabledMessage}
+                            </Tooltip>
                         )}
-                    </Tooltip>
-                )}
-                <Button
-                    intent="secondary"
-                    leadingIcon="refresh"
-                    onClick={onReset}
-                    isDisabled={!hasMessageBeenSent}
-                    className="resetButton"
-                >
-                    Reset
-                </Button>
+                        <Button
+                            id="send-button"
+                            isDisabled={isFormDisabled}
+                            onClick={handleSendMessage}
+                        >
+                            Send
+                        </Button>
+                        {!isFormDisabled && (
+                            <Tooltip
+                                placement="top"
+                                target="send-button"
+                                offset="0, 4px"
+                            >
+                                {shortcutManager.getActionKeys(
+                                    keymap.TicketDetailContainer.actions
+                                        .SUBMIT_TICKET,
+                                )}
+                            </Tooltip>
+                        )}
+                        {shouldDisplayResetButton && (
+                            <Button
+                                intent="secondary"
+                                leadingIcon="refresh"
+                                onClick={onReset}
+                                isDisabled={!hasMessageBeenSent}
+                            >
+                                Reset
+                            </Button>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     )

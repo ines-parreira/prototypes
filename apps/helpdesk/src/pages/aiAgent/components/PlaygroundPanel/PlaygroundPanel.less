@@ -1,0 +1,76 @@
+@import '~css/typography';
+
+:local {
+    .playground-panel {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0);
+    }
+
+    .panel-header {
+        padding: 12px var(--layout-spacing-m);
+        border-bottom: 1px solid var(--neutral-grey-3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--neutral-grey-0);
+        height: 57px;
+
+        &-title {
+            .heading-subsection-semibold();
+        }
+
+        &-title-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-header-actions {
+            display: flex;
+            flex-direction: row;
+            gap: var(--layout-spacing-xs);
+            align-items: center;
+        }
+
+        .actions-allowed-toggle {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--layout-spacing-xs);
+            justify-content: center;
+        }
+    }
+
+    .panel-body {
+        flex: 1;
+        overflow: auto;
+        padding: var(--layout-spacing-s);
+
+        :global(#froalaToolbarContainer) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: var(--layout-spacing-xs);
+
+            :global(.fr-button) {
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 24px;
+                width: 24px;
+            }
+
+            :global(.fr-btn-grp) {
+                margin: 0;
+            }
+
+            :global(.fr-popup) {
+                transform: translateX(-10px) !important;
+            }
+        }
+    }
+}

@@ -1,12 +1,21 @@
 import { ReactNode, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
+import { LegacyButton as Button } from '@gorgias/axiom'
+
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useDisplayPlaygroundButtonInLayoutHeader } from 'pages/aiAgent/components/AiAgentLayout/usePlaygroundButtonInLayoutHeader'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentView } from '../AiAgentView/AiAgentView'
@@ -20,9 +29,9 @@ type Props = {
     className?: string
     title: ReactNode
     isLoading?: boolean
-    // Hide title and navbar (eg: to show a paywall)
     fullscreen?: boolean
     titleChildren?: ReactNode
+    hideSaveAndTest?: boolean
 }
 
 export const AiAgentLayout = ({
@@ -34,7 +43,13 @@ export const AiAgentLayout = ({
     fullscreen,
     titleChildren,
 }: Props) => {
+    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
+        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
+        false,
+    )
+
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
+    const { togglePlayground, isPlaygroundOpen } = usePlaygroundPanel()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -56,6 +71,17 @@ export const AiAgentLayout = ({
             canStartTrial ||
             canStartTrialFromFeatureFlag,
     })
+    const displayPlaygroundButtonInLayoutHeader =
+        useDisplayPlaygroundButtonInLayoutHeader({
+            shopName,
+            shopType: SHOPIFY_INTEGRATION_TYPE,
+        })
+
+    const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
+
+    useEffectOnce(() => {
+        setIsCollapsibleColumnOpen(false)
+    })
 
     const AiAgentTitle = useMemo(() => {
         return (
@@ -63,10 +89,30 @@ export const AiAgentLayout = ({
                 <div className={css.customAiAgentTitleSubContainer}>
                     <h1 className="d-flex align-items-center">{title}</h1>
                 </div>
-                {titleChildren}
+                <div className={css.testButtonContainer}>
+                    {titleChildren}
+                    {isPlaygroundAvailableEverywhere &&
+                        displayPlaygroundButtonInLayoutHeader &&
+                        !isPlaygroundOpen && (
+                            <Button
+                                onClick={togglePlayground}
+                                intent="secondary"
+                                leadingIcon="science"
+                            >
+                                Test
+                            </Button>
+                        )}
+                </div>
             </div>
         )
-    }, [title, titleChildren])
+    }, [
+        title,
+        titleChildren,
+        displayPlaygroundButtonInLayoutHeader,
+        isPlaygroundOpen,
+        isPlaygroundAvailableEverywhere,
+        togglePlayground,
+    ])
 
     return (
         <AiAgentView

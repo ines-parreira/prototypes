@@ -5,24 +5,19 @@ import { ToggleField, Tooltip } from '@gorgias/axiom'
 import warningIcon from 'assets/img/icons/warning.svg'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
+import { getActionsToggleTooltipContent } from '../../utils/playground.utils'
 import PlaygroundActionsModal from '../PlaygroundActionsModal/PlaygroundActionsModal'
 
 import css from './PlaygroundActionsToggle.less'
 
-interface PlaygroundActionsToggleProps {
+type PlaygroundActionsToggleProps = {
     value: boolean
     onChange: (value: boolean) => void
 }
 
-const getTooltipContent = (isEnabled: boolean) => {
-    return isEnabled
-        ? 'Actions triggered on existing tickets or customers will change live data. These changes are permanent and cannot be undone. Proceed with caution.'
-        : 'Any Actions used by AI Agent in test conversations will not actually be performed and will not impact real customer or order data.'
-}
-
 const EnabledState = () => {
     const warningIconRef = React.useRef<HTMLImageElement>(null)
-    const tooltipContent = getTooltipContent(true)
+    const tooltipContent = getActionsToggleTooltipContent(true)
 
     return (
         <span className={css.enabledContainer}>
@@ -50,7 +45,7 @@ const PlaygroundActionsToggle: React.FC<PlaygroundActionsToggleProps> = (
     props,
 ) => {
     const [isModalOpen, setIsModalOpen] = React.useState(false)
-    const tooltipContent = getTooltipContent(props.value)
+    const tooltipContent = getActionsToggleTooltipContent(props.value)
 
     const onModalConfirm = () => {
         props.onChange(true)

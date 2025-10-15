@@ -1,18 +1,7 @@
 :local {
-    .container {
-        flex: 1;
-    }
-
-    .customerSearch {
-        margin-top: var(--layout-spacing-xs);
-    }
-
-    .ticketSearch {
-        margin-top: var(--layout-spacing-xs);
-    }
-
     .senderSelect {
         height: 34px;
+        flex: 1;
 
         > div {
             border: 0;
@@ -21,6 +10,22 @@
             & span {
                 height: auto !important;
             }
+        }
+    }
+
+    .conditionalContent {
+        width: 0;
+        visibility: hidden;
+        max-height: 0;
+        transition:
+            visibility 0.3s,
+            max-height 0.3s ease-in-out;
+
+        &[data-visible='true'] {
+            visibility: visible;
+            max-height: 200px;
+            width: 100%;
+            margin-top: -13px;
         }
     }
 }

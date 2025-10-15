@@ -5,6 +5,8 @@ import { act, renderHook } from '@testing-library/react'
 import { AppContextProvider } from '../AppContext'
 import { useCollapsibleColumn } from '../common/hooks/useCollapsibleColumn'
 
+jest.unmock('../AppContext')
+
 const wrapper = ({ children }: { children: ReactNode }) => (
     <AppContextProvider>{children}</AppContextProvider>
 )
@@ -31,7 +33,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(testContent)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(testContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(testContent)
     })
 
     it('should update isCollapsibleColumnOpen when setIsCollapsibleColumnOpen is called', () => {
@@ -60,7 +62,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(testContent)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(testContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(testContent)
 
         act(() => {
             result.current.setCollapsibleColumnChildren(null)
@@ -87,7 +89,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(complexContent)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(complexContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(complexContent)
     })
 
     it('should maintain state across multiple updates', () => {
@@ -102,14 +104,14 @@ describe('useCollapsibleColumn', () => {
             result.current.setIsCollapsibleColumnOpen(true)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(content1)
+        expect(result.current.collapsibleColumnChildren).toEqual(content1)
         expect(result.current.isCollapsibleColumnOpen).toBe(true)
 
         act(() => {
             result.current.setCollapsibleColumnChildren(content2)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(content2)
+        expect(result.current.collapsibleColumnChildren).toEqual(content2)
         expect(result.current.isCollapsibleColumnOpen).toBe(true)
 
         act(() => {
@@ -117,7 +119,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(content3)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(content3)
+        expect(result.current.collapsibleColumnChildren).toEqual(content3)
         expect(result.current.isCollapsibleColumnOpen).toBe(false)
     })
 
@@ -157,9 +159,9 @@ describe('useCollapsibleColumn', () => {
             hookResults[0].setIsCollapsibleColumnOpen(true)
         })
 
-        expect(hookResults[0].collapsibleColumnChildren).toBe(sharedContent)
+        expect(hookResults[0].collapsibleColumnChildren).toEqual(sharedContent)
         expect(hookResults[0].isCollapsibleColumnOpen).toBe(true)
-        expect(hookResults[1].collapsibleColumnChildren).toBe(sharedContent)
+        expect(hookResults[1].collapsibleColumnChildren).toEqual(sharedContent)
         expect(hookResults[1].isCollapsibleColumnOpen).toBe(true)
     })
 
@@ -171,7 +173,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(stringContent)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(stringContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(stringContent)
     })
 
     it('should handle number children', () => {
@@ -182,7 +184,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(numberContent)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(numberContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(numberContent)
     })
 
     it('should handle array of elements as children', () => {
@@ -197,7 +199,7 @@ describe('useCollapsibleColumn', () => {
             result.current.setCollapsibleColumnChildren(arrayContent as any)
         })
 
-        expect(result.current.collapsibleColumnChildren).toBe(arrayContent)
+        expect(result.current.collapsibleColumnChildren).toEqual(arrayContent)
     })
 
     it('should preserve function references across renders', () => {

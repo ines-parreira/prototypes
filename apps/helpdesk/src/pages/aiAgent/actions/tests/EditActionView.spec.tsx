@@ -2,7 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { produce } from 'immer'
 import { fromJS } from 'immutable'
@@ -27,6 +27,8 @@ import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -55,6 +57,9 @@ jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
 jest.mock('core/flags')
 jest.mock('pages/automate/workflows/utils/serverValidationErrors')
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/AppContext')
+jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
@@ -77,6 +82,11 @@ const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
 const mockServerValidationErrors = jest.mocked(serverValidationErrors)
+const mockUseAiAgentNavigation = jest.mocked(useAiAgentNavigation)
+const mockUsePlaygroundPanel = jest.mocked(usePlaygroundPanel)
+
+const { useAppContext } = require('pages/AppContext')
+const mockUseAppContext = jest.mocked(useAppContext)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/integrations/selectors', () => ({
@@ -203,6 +213,28 @@ describe('<EditActionView />', () => {
         mockServerValidationErrors.mapServerErrorsToGraph = jest
             .fn()
             .mockReturnValue(null)
+
+        mockUseAiAgentNavigation.mockReturnValue({
+            routes: {
+                actions: '/app/ai-agent/shopify/shopify-store/actions',
+                test: '/app/ai-agent/shopify/shopify-store/test',
+                actionEvents: (id: string) =>
+                    `/app/ai-agent/shopify/shopify-store/actions/events/${id}`,
+            },
+            navigationItems: [],
+        } as unknown as ReturnType<typeof useAiAgentNavigation>)
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: jest.fn(),
+            closePlayground: jest.fn(),
+        } as unknown as ReturnType<typeof usePlaygroundPanel>)
+
+        mockUseAppContext.mockReturnValue({
+            setCollapsibleColumnChildren: jest.fn(),
+            collapsibleColumnChildren: null,
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: jest.fn(),
+        })
     })
 
     it('should render edit action page', () => {
@@ -307,7 +339,7 @@ describe('<EditActionView />', () => {
         )
     })
 
-    it('should redirect to actions on edit success', () => {
+    it('should not redirect after successful edit (stays on edit page)', async () => {
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
@@ -334,56 +366,12 @@ describe('<EditActionView />', () => {
             },
         )
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions`,
-        )
+        await waitFor(() => {
+            expect(historyPushSpy).not.toHaveBeenCalled()
+        })
     })
 
-    it('should redirect to AI Agent test on edit success', () => {
-        const history = createMemoryHistory({
-            initialEntries: [
-                `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            ],
-        })
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        const { rerender } = renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
-            {
-                history,
-                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
-                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
-            },
-        )
-
-        act(() => {
-            fireEvent.click(screen.getByText('Save and test'))
-        })
-
-        mockUseUpsertAction.mockReturnValue({
-            isLoading: false,
-            mutateAsync: jest.fn(),
-            isSuccess: true,
-        } as unknown as ReturnType<typeof useUpsertAction>)
-
-        rerender(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    <EditActionView configuration={configuration} />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/test`,
-        )
-    })
-
-    it('should redirect to actions on delete success', () => {
+    it('should redirect to actions on delete success', async () => {
         mockUseDeleteAction.mockReturnValue({
             isLoading: false,
             mutateAsync: jest.fn(),
@@ -410,9 +398,11 @@ describe('<EditActionView />', () => {
             },
         )
 
-        expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/ai-agent/shopify/shopify-store/actions`,
-        )
+        await waitFor(() => {
+            expect(historyPushSpy).toHaveBeenCalledWith(
+                `/app/ai-agent/shopify/shopify-store/actions`,
+            )
+        })
     })
 
     it('should disable "Save and test" button if action is disabled', () => {

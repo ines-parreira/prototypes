@@ -11,7 +11,6 @@ import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { reportError } from 'utils/errors'
 
 import { AiAgentGuidanceView } from './AiAgentGuidanceView'
-import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { KNOWLEDGE } from './constants'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
@@ -107,7 +106,6 @@ export const AiAgentGuidanceContainer = () => {
                 shopType={shopType}
                 locale={guidanceHelpCenter.default_locale}
             />
-            <PostCompletionWizardModal />
         </AiAgentLayout>
     )
 }

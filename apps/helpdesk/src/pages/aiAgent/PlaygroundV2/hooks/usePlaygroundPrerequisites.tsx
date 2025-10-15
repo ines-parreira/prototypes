@@ -1,16 +1,17 @@
 import { useMemo } from 'react'
 
 import { StoreConfiguration } from 'models/aiAgent/types'
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
 import { useFileIngestion } from '../../hooks/useFileIngestion'
 import { usePublicResources } from '../../hooks/usePublicResources'
 
-interface UsePlaygroundPrerequisitesProps {
+type UsePlaygroundPrerequisitesProps = {
     storeConfiguration?: StoreConfiguration
     snippetHelpCenterId?: number
 }
 
-interface UsePlaygroundPrerequisitesReturn {
+type UsePlaygroundPrerequisitesReturn = {
     hasPrerequisites: boolean
     isCheckingPrerequisites: boolean
     missingKnowledgeSource: boolean
@@ -35,15 +36,31 @@ export const usePlaygroundPrerequisites = ({
             },
         })
 
-    const isLoading = isSourceItemsListLoading || isExternalFilesLoading
+    const { guidanceArticles, isGuidanceArticleListLoading } =
+        useGuidanceArticles(
+            storeConfiguration?.guidanceHelpCenterId ?? 0,
+
+            {
+                enabled: !!storeConfiguration?.guidanceHelpCenterId,
+            },
+        )
+
+    const guidanceUsed = useMemo(() => {
+        return guidanceArticles?.filter(
+            (article) => article.visibility === 'PUBLIC',
+        )
+    }, [guidanceArticles])
+
+    const isLoading =
+        isSourceItemsListLoading ||
+        isExternalFilesLoading ||
+        isGuidanceArticleListLoading
 
     const hasPrerequisites = useMemo(() => {
         if (isLoading) return false
 
-        if (
-            storeConfiguration?.helpCenterId !== null &&
-            storeConfiguration?.helpCenterId
-        ) {
+        // If we have a help center, prerequisites are met
+        if (!!storeConfiguration?.helpCenterId) {
             return true
         }
 
@@ -60,13 +77,16 @@ export const usePlaygroundPrerequisites = ({
                 (ingestedFile) => ingestedFile.status === 'SUCCESSFUL',
             )
 
-        return hasPublicUrlSources || hasExternalFiles
+        const hasGuidance = guidanceUsed.length > 0
+
+        return hasPublicUrlSources || hasExternalFiles || hasGuidance
     }, [
         storeConfiguration,
         snippetHelpCenterId,
         sourceItems,
         ingestedFiles,
         isLoading,
+        guidanceUsed,
     ])
 
     const missingKnowledgeSource = useMemo(() => {

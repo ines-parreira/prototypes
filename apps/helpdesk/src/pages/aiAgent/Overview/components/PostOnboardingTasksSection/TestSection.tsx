@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -11,6 +12,7 @@ import {
 } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import {
     PostStoreInstallationStepStatus,
     StepConfiguration,
@@ -20,6 +22,7 @@ import {
     REFRESH_AI_AGENT_PLAYGROUND_EVENT,
 } from 'pages/aiAgent/constants'
 import { AiAgentPlaygroundView } from 'pages/aiAgent/Playground/AiAgentPlaygroundView'
+import { AiAgentPlayground } from 'pages/aiAgent/PlaygroundV2/AiAgentPlayground'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 
 import { PostOnboardingStepMetadata } from './types'
@@ -39,9 +42,10 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
         shopName: string
         shopType: string
     }>()
+    const [resetPlayground, setResetPlayground] = useState(false)
 
     const handleOpenPlayground = () => {
-        if (!step.stepStartedDatetime) {
+        if (!step?.stepStartedDatetime) {
             updateStep({
                 ...step,
                 stepStartedDatetime: new Date().toISOString(),
@@ -87,6 +91,7 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
         document.dispatchEvent(
             new CustomEvent(REFRESH_AI_AGENT_PLAYGROUND_EVENT),
         )
+        setResetPlayground(true)
     }
 
     useEffect(() => {
@@ -104,6 +109,11 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
             )
         }
     }, [])
+
+    const isNewPlaygroundEnabled = useFlag(
+        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
+        false,
+    )
 
     return (
         <div className={css.container}>
@@ -166,11 +176,19 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
                     </Drawer.HeaderActions>
                 </Drawer.Header>
                 <Drawer.Content>
-                    {shopName && (
-                        <AiAgentPlaygroundView
-                            shopName={shopName}
+                    {isNewPlaygroundEnabled ? (
+                        <AiAgentPlayground
                             arePlaygroundActionsAllowed={false}
+                            resetPlayground={resetPlayground}
+                            resetPlaygroundCallback={() =>
+                                setResetPlayground(false)
+                            }
+                            shouldDisplayResetButton={false}
                         />
+                    ) : (
+                        shopName && (
+                            <AiAgentPlaygroundView shopName={shopName} />
+                        )
                     )}
                 </Drawer.Content>
             </Drawer>

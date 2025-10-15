@@ -10,15 +10,14 @@ export const PlaygroundInitialContent = () => {
             <div className={css.avatarContainer}>
                 <Avatar isAIAgent={true} isAgent={true} name="AI Agent" />
             </div>
-            <h2 className={css.title}>
-                Ask AI Agent a question your customers may ask
-            </h2>
-            <p className={css.subtitle}>
-                AI Agent will use your knowledge and order history to respond
-            </p>
-            <p className={css.footer}>
-                Knowledge must be enabled in order to test
-            </p>
+            <div>
+                <h2 className={css.title}>Preview customer experience</h2>
+                <h3 className={css.subtitle}>
+                    Ask questions like a customer would and see exactly how AI
+                    Agent responds. Use this to fine-tune knowledge, tone, and
+                    accuracy.
+                </h3>
+            </div>
         </div>
     )
 }

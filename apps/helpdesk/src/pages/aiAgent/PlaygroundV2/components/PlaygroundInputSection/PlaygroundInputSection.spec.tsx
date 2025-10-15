@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,12 +12,17 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
+import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
+import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,
-} from '../PlaygroundChat/PlaygroundChat.types'
+} from '../../types'
 import { PlaygroundInputSection } from './PlaygroundInputSection'
+
+const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUsePlaygroundForm = jest.mocked(usePlaygroundForm)
 
 jest.mock('./PlaygroundInputSection.less', () => ({
     container: 'container',
@@ -49,17 +54,30 @@ jest.mock('../../hooks/usePlaygroundTracking', () => ({
     }),
 }))
 
-jest.mock('../PlaygroundEditor/PlaygroundEditor', () => ({
-    PlaygroundEditor: ({ value, onMessageChange }: any) => (
-        <div className="fr-element">
-            <textarea
-                value={value}
-                onChange={(e) => onMessageChange(e.target.value)}
-                data-testid="playground-editor"
-            />
-        </div>
-    ),
+jest.mock('../../contexts/PlaygroundContext', () => ({
+    ...jest.requireActual('../../contexts/PlaygroundContext'),
+    usePlaygroundContext: jest.fn(),
 }))
+
+jest.mock('../../hooks/usePlaygroundForm', () => ({
+    usePlaygroundForm: jest.fn(),
+}))
+
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
+    () => ({
+        __esModule: true,
+        default: ({ model, onModelChange }: any) => (
+            <div className="fr-element">
+                <textarea
+                    value={model}
+                    onChange={(e) => onModelChange(e.target.value)}
+                    data-testid="playground-editor"
+                />
+            </div>
+        ),
+    }),
+)
 
 jest.mock('../PlaygroundSegmentControl/PlaygroundSegmentControl', () => ({
     PlaygroundSegmentControl: ({
@@ -167,13 +185,119 @@ const defaultProps = {
     onPromptMessage: jest.fn(),
     channelAvailability: 'online' as PlaygroundChannelAvailability,
     onChannelAvailabilityChange: jest.fn(),
+    shouldDisplayResetButton: true,
 }
 
-const renderComponent = (props = {}) => {
+const renderComponent = (props: any = {}) => {
+    const contextOverrides = props.contextOverrides || {}
+    const stateOverrides = props.stateOverrides || {}
+    const formOverrides = props.formOverrides || {}
+
+    // Map old-style props to new structure
+    const mappedChannelOverrides = {
+        ...(props.channel && { channel: props.channel }),
+        ...(props.channelAvailability && {
+            channelAvailability: props.channelAvailability,
+        }),
+        ...(props.onChannelChange && {
+            onChannelChange: props.onChannelChange,
+        }),
+        ...(props.onChannelAvailabilityChange && {
+            onChannelAvailabilityChange: props.onChannelAvailabilityChange,
+        }),
+    }
+
+    const mappedMessagesOverrides = {
+        ...(props.onSendMessage && { onMessageSend: props.onSendMessage }),
+        ...(props.isMessageSending !== undefined && {
+            isMessageSending: props.isMessageSending,
+        }),
+        ...(props.onNewConversation && {
+            onNewConversation: props.onNewConversation,
+        }),
+        ...(props.isWaitingResponse !== undefined && {
+            isWaitingResponse: props.isWaitingResponse,
+        }),
+        ...(props.isInitialMessage !== undefined && {
+            messages: props.isInitialMessage ? [] : [{ sender: 'Customer' }],
+        }),
+        ...stateOverrides,
+    }
+
+    const mappedFormOverrides = {
+        ...(props.formValues && { formValues: props.formValues }),
+        ...(props.isDisabled !== undefined && { isDisabled: props.isDisabled }),
+        ...(props.onFormValuesChange && {
+            onFormValuesChange: props.onFormValuesChange,
+        }),
+        ...formOverrides,
+    }
+
+    mockUsePlaygroundContext.mockReturnValue({
+        storeConfiguration: {},
+        snippetHelpCenterId: 123,
+        events: {
+            on: jest.fn(() => jest.fn()),
+            emit: jest.fn(),
+        },
+        uiState: {
+            isInitialMessage: mappedMessagesOverrides.messages
+                ? mappedMessagesOverrides.messages.length === 0
+                : true,
+            setIsInitialMessage: jest.fn(),
+        },
+        channelState: {
+            channel: mappedChannelOverrides.channel || defaultProps.channel,
+            channelAvailability:
+                mappedChannelOverrides.channelAvailability ||
+                defaultProps.channelAvailability,
+            onChannelChange:
+                mappedChannelOverrides.onChannelChange ||
+                defaultProps.onChannelChange,
+            onChannelAvailabilityChange:
+                mappedChannelOverrides.onChannelAvailabilityChange ||
+                defaultProps.onChannelAvailabilityChange,
+        },
+        messagesState: {
+            messages: mappedMessagesOverrides.messages || [],
+            onMessageSend:
+                mappedMessagesOverrides.onMessageSend ||
+                defaultProps.onSendMessage,
+            isMessageSending:
+                mappedMessagesOverrides.isMessageSending !== undefined
+                    ? mappedMessagesOverrides.isMessageSending
+                    : defaultProps.isMessageSending,
+            onNewConversation:
+                mappedMessagesOverrides.onNewConversation ||
+                defaultProps.onNewConversation,
+            isWaitingResponse:
+                mappedMessagesOverrides.isWaitingResponse !== undefined
+                    ? mappedMessagesOverrides.isWaitingResponse
+                    : defaultProps.isWaitingResponse,
+        },
+        ...contextOverrides,
+    } as any)
+
+    mockUsePlaygroundForm.mockReturnValue({
+        formValues: defaultProps.formValues,
+        isFormValid: !defaultProps.isDisabled,
+        isDisabled: defaultProps.isDisabled,
+        disabledMessage: '',
+        onFormValuesChange: defaultProps.onFormValuesChange,
+        clearForm: jest.fn(),
+        ...mappedFormOverrides,
+    })
+
     return renderWithRouter(
         <Provider store={mockStore({})}>
             <QueryClientProvider client={queryClient}>
-                <PlaygroundInputSection {...defaultProps} {...props} />
+                <PlaygroundInputSection
+                    shouldDisplayResetButton={
+                        props.shouldDisplayResetButton !== undefined
+                            ? props.shouldDisplayResetButton
+                            : defaultProps.shouldDisplayResetButton
+                    }
+                />
             </QueryClientProvider>
         </Provider>,
         {
@@ -515,162 +639,6 @@ describe('PlaygroundInputSection', () => {
                 const tabs = screen.getAllByRole('tab')
                 expect(tabs).toHaveLength(1)
                 expect(tabs[0]).toBeDisabled()
-            })
-        })
-    })
-
-    describe('arePlaygroundActionsAllowed prop', () => {
-        const rerenderWithActionsAllowed = (
-            rerender: any,
-            arePlaygroundActionsAllowed: boolean | undefined,
-            additionalProps: any,
-        ) => {
-            rerender(
-                <Provider store={mockStore({})}>
-                    <QueryClientProvider client={queryClient}>
-                        <PlaygroundInputSection
-                            {...defaultProps}
-                            {...additionalProps}
-                            arePlaygroundActionsAllowed={
-                                arePlaygroundActionsAllowed
-                            }
-                        />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-        }
-
-        it('should reset the playground when arePlaygroundActionsAllowed value changes', async () => {
-            const onNewConversation = jest.fn()
-            const onSendMessage = jest.fn()
-
-            const { rerender } = renderComponent({
-                arePlaygroundActionsAllowed: true,
-                onNewConversation,
-                onSendMessage,
-                formValues: {
-                    ...defaultProps.formValues,
-                    message: 'Test message',
-                },
-            })
-
-            const sendButton = screen.getByRole('button', { name: 'Send' })
-
-            await act(async () => {
-                await userEvent.click(sendButton)
-            })
-
-            expect(onSendMessage).toHaveBeenCalledTimes(1)
-            expect(
-                screen.getByRole('button', { name: 'Reset' }),
-            ).toHaveAttribute('aria-disabled', 'false')
-            expect(onNewConversation).not.toHaveBeenCalled()
-
-            onNewConversation.mockClear()
-            onSendMessage.mockClear()
-
-            rerenderWithActionsAllowed(rerender, false, {
-                onNewConversation,
-                onSendMessage,
-                formValues: {
-                    ...defaultProps.formValues,
-                    message: 'Test message',
-                },
-            })
-
-            await waitFor(() => {
-                expect(onNewConversation).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        it('should not reset when arePlaygroundActionsAllowed value stays the same', async () => {
-            const onNewConversation = jest.fn()
-
-            const { rerender } = renderComponent({
-                arePlaygroundActionsAllowed: true,
-                onNewConversation,
-            })
-
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: 'Send' }),
-                ).toBeInTheDocument()
-            })
-
-            onNewConversation.mockClear()
-
-            rerenderWithActionsAllowed(rerender, true, {
-                onNewConversation,
-            })
-
-            expect(onNewConversation).not.toHaveBeenCalled()
-        })
-
-        it('should reset when arePlaygroundActionsAllowed changes from undefined to a value', async () => {
-            const onNewConversation = jest.fn()
-
-            const { rerender } = renderComponent({
-                arePlaygroundActionsAllowed: undefined,
-                onNewConversation,
-            })
-
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: 'Send' }),
-                ).toBeInTheDocument()
-            })
-
-            onNewConversation.mockClear()
-
-            rerenderWithActionsAllowed(rerender, true, {
-                onNewConversation,
-            })
-
-            await waitFor(() => {
-                expect(onNewConversation).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        it('should disable reset button after automatic reset when arePlaygroundActionsAllowed changes', async () => {
-            const onNewConversation = jest.fn()
-            const onSendMessage = jest.fn()
-
-            const { rerender } = renderComponent({
-                arePlaygroundActionsAllowed: true,
-                onNewConversation,
-                onSendMessage,
-                formValues: {
-                    ...defaultProps.formValues,
-                    message: 'Test message',
-                },
-            })
-
-            const sendButton = screen.getByRole('button', { name: 'Send' })
-
-            await act(async () => {
-                await userEvent.click(sendButton)
-            })
-
-            const resetButton = screen.getByRole('button', { name: 'Reset' })
-            expect(resetButton).toHaveAttribute('aria-disabled', 'false')
-
-            rerenderWithActionsAllowed(rerender, false, {
-                onNewConversation,
-                onSendMessage,
-                formValues: {
-                    ...defaultProps.formValues,
-                    message: 'Test message',
-                },
-            })
-
-            await waitFor(() => {
-                const resetButtonAfterReset = screen.getByRole('button', {
-                    name: 'Reset',
-                })
-                expect(resetButtonAfterReset).toHaveAttribute(
-                    'aria-disabled',
-                    'true',
-                )
             })
         })
     })

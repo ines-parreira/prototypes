@@ -24,25 +24,28 @@ type UseShopNameResolutionReturn = {
  * This hook takes a shop name parameter and finds the corresponding store integration,
  * providing a consistent way to resolve shop names across components.
  *
- * @param shopName - The shop name to match against store integrations
  * @returns Resolved shop name and related store integration data
  */
-export const useShopNameResolution = (): UseShopNameResolutionReturn => {
-    const { shopName } = useParams<{ shopName?: string }>()
+export const useShopNameResolution = (
+    shopName?: string,
+): UseShopNameResolutionReturn => {
+    const { shopName: paramShopName } = useParams<{ shopName?: string }>()
     // Get store integrations and determine shopName from them
     const storeIntegrations = useStoreIntegrations()
+
+    const finalShopName = shopName || paramShopName || ''
 
     // Find the current store integration based on provided shop name or default to first one
     const currentStoreIntegration =
         storeIntegrations.find(
             (integration) =>
-                getShopNameFromStoreIntegration(integration) === shopName,
+                getShopNameFromStoreIntegration(integration) === finalShopName,
         ) || storeIntegrations[0]
 
     // Get shopName from the store integration (more reliable than external sources)
     const resolvedShopName = currentStoreIntegration
         ? getShopNameFromStoreIntegration(currentStoreIntegration)
-        : shopName || ''
+        : finalShopName
 
     return {
         resolvedShopName,

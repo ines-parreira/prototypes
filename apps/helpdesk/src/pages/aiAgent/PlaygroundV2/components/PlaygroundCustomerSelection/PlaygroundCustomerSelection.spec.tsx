@@ -142,8 +142,8 @@ describe('PlaygroundCustomerSelection', () => {
 
         const existingCustomerOption = screen.getByText('Existing customer')
         fireEvent.click(existingCustomerOption)
-        expect(mockOnCustomerChange).toHaveBeenCalledWith(
-            DEFAULT_PLAYGROUND_CUSTOMER,
+        expect(mockOnSenderTypeChange).toHaveBeenCalledWith(
+            SenderTypeValues.EXISTING_CUSTOMER,
         )
     })
 

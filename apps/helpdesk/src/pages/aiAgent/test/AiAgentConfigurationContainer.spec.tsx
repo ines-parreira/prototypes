@@ -57,6 +57,10 @@ jest.mock(
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 
+jest.mock('pages/AppContext')
+const { useAppContext } = require('pages/AppContext')
+const mockUseAppContext = jest.mocked(useAppContext)
+
 jest.mock('models/helpCenter/queries')
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 
@@ -306,6 +310,13 @@ const setupMocks = ({
     })
 
     mockUseAppDispatch.mockReturnValue(jest.fn())
+
+    mockUseAppContext.mockReturnValue({
+        setCollapsibleColumnChildren: jest.fn(),
+        collapsibleColumnChildren: null,
+        isCollapsibleColumnOpen: false,
+        setIsCollapsibleColumnOpen: jest.fn(),
+    })
 
     mockUseAiAgentStoreConfigurationContext.mockReturnValue({
         ...mockedAiAgentStoreConfigurationContext,

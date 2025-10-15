@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
@@ -14,6 +16,7 @@ import {
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
@@ -231,19 +234,38 @@ const EditActionView = ({ configuration }: Props) => {
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)
 
+    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
+        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
+        false,
+    )
+
     useEffect(() => {
         if (isDeleteActionSuccess) {
             history.push(routes.actions)
         }
     }, [isDeleteActionSuccess, history, routes])
 
+    const { openPlayground: openPlaygroundPanel } = usePlaygroundPanel()
+
     useEffect(() => {
         if (isEditActionSuccess) {
-            history.push(
-                isSaveAndTestButtonClicked ? routes.test : routes.actions,
-            )
+            if (isSaveAndTestButtonClicked) {
+                if (isPlaygroundAvailableEverywhere) {
+                    openPlaygroundPanel()
+                    setIsSaveAndTestButtonClicked(false)
+                } else {
+                    history.push(routes.test)
+                }
+            }
         }
-    }, [isEditActionSuccess, isSaveAndTestButtonClicked, history, routes])
+    }, [
+        isEditActionSuccess,
+        isSaveAndTestButtonClicked,
+        isPlaygroundAvailableEverywhere,
+        openPlaygroundPanel,
+        history,
+        routes,
+    ])
 
     if (isEditingSteps) {
         return (

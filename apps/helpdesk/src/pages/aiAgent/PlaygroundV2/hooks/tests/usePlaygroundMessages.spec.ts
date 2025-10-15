@@ -43,6 +43,15 @@ jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
 }))
 
+const mockUsePlaygroundContextFn = jest.fn()
+
+jest.mock('../../contexts/PlaygroundContext', () => ({
+    ...jest.requireActual('../../contexts/PlaygroundContext'),
+    usePlaygroundContext: () => mockUsePlaygroundContextFn(),
+}))
+
+const mockedUsePlaygroundContext = mockUsePlaygroundContextFn
+
 const defaultParams = {
     storeData: getStoreConfigurationFixture(),
     gorgiasDomain: 'acme',
@@ -50,6 +59,10 @@ const defaultParams = {
     httpIntegrationId: 1,
     channel: 'email' as const,
     channelIntegrationId: 123,
+    events: {
+        on: jest.fn(() => jest.fn()),
+        emit: jest.fn(),
+    },
 }
 
 describe('usePlaygroundMessages hook', () => {
@@ -72,6 +85,40 @@ describe('usePlaygroundMessages hook', () => {
         })
 
         mockedUseFlag.mockReturnValue(false)
+
+        mockedUsePlaygroundContext.mockImplementation(
+            () =>
+                ({
+                    storeConfiguration: {},
+                    snippetHelpCenterId: 123,
+                    httpIntegrationId: 456,
+                    baseUrl: 'https://test.com',
+                    gorgiasDomain: 'test.gorgias.com',
+                    accountId: 789,
+                    chatIntegrationId: 101,
+                    events: {
+                        on: jest.fn(() => jest.fn()),
+                        emit: jest.fn(),
+                    },
+                    uiState: {
+                        isInitialMessage: true,
+                        setIsInitialMessage: jest.fn(),
+                    },
+                    channelState: {
+                        channel: 'email',
+                        channelAvailability: 'online',
+                        onChannelChange: jest.fn(),
+                        onChannelAvailabilityChange: jest.fn(),
+                    },
+                    messagesState: {
+                        messages: [],
+                        onMessageSend: jest.fn(),
+                        isMessageSending: false,
+                        onNewConversation: jest.fn(),
+                        isWaitingResponse: false,
+                    },
+                }) as any,
+        )
 
         mockedUsePlaygroundPolling.mockReturnValue({
             isPolling: false,

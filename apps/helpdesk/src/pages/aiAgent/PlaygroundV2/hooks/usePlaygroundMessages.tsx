@@ -23,6 +23,8 @@ import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundCustomer,
+    PlaygroundEvent,
+    PlaygroundEventEmitter,
 } from '../types'
 import {
     handleAiAgentResponse,
@@ -55,6 +57,7 @@ export const usePlaygroundMessages = ({
     channelAvailability,
     baseUrl,
     arePlaygroundActionsAllowed,
+    events,
 }: {
     storeData?: StoreConfiguration
     gorgiasDomain: string
@@ -65,6 +68,7 @@ export const usePlaygroundMessages = ({
     channelAvailability?: PlaygroundChannelAvailability
     baseUrl?: string
     arePlaygroundActionsAllowed?: boolean
+    events: PlaygroundEventEmitter
 }) => {
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
@@ -102,6 +106,10 @@ export const usePlaygroundMessages = ({
         setMessages([])
         setIsWaitingResponse(false)
     }, [abortCurrentRequest, stopPolling])
+
+    useEffect(() => {
+        return events.on(PlaygroundEvent.RESET_CONVERSATION, onNewConversation)
+    }, [events, onNewConversation])
 
     const processMessages = useCallback(
         async (

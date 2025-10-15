@@ -26,7 +26,6 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { Tag } from 'models/aiAgent/types'
 import { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationModal'
-import PostCompletionWizardModal from 'pages/aiAgent/AiAgentOnboardingWizard/PostCompletionWizardModal'
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { PublicSourcesSection } from 'pages/aiAgent/components//PublicSourcesSection/PublicSourcesSection'
 import { AiAgentNameFormComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/AiAgentNameFormComponent'
@@ -1012,7 +1011,6 @@ export const StoreConfigForm = ({
             >
                 {drawerContent[activeDrawerContent].content}
             </StoreConfigDrawer>
-            <PostCompletionWizardModal />
             <AiAgentConfigurationModal
                 isOpen={isAiAgentConfigurationModalOpen}
                 onClose={onCloseAiAgentConfigurationModal}

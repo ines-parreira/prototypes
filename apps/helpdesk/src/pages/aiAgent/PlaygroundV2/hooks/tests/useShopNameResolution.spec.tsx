@@ -44,7 +44,7 @@ describe('useShopNameResolution', () => {
         mockUseParams.mockReturnValue({})
     })
 
-    it('should return resolved shop name from matching store integration', () => {
+    it('should return resolved shop name from matching store integration using URL params', () => {
         mockUseParams.mockReturnValue({ shopName: 'test-store' })
 
         const { result } = renderHook(() => useShopNameResolution())
@@ -54,6 +54,28 @@ describe('useShopNameResolution', () => {
             mockStoreIntegration,
         )
         expect(result.current.storeIntegrations).toEqual([mockStoreIntegration])
+    })
+
+    it('should return resolved shop name from matching store integration using prop parameter', () => {
+        mockUseParams.mockReturnValue({})
+
+        const { result } = renderHook(() => useShopNameResolution('test-store'))
+
+        expect(result.current.resolvedShopName).toBe('test-store')
+        expect(result.current.currentStoreIntegration).toBe(
+            mockStoreIntegration,
+        )
+        expect(result.current.storeIntegrations).toEqual([mockStoreIntegration])
+    })
+
+    it('should prioritize prop parameter over URL params', () => {
+        mockUseParams.mockReturnValue({ shopName: 'url-shop-name' })
+
+        const { result } = renderHook(() =>
+            useShopNameResolution('prop-shop-name'),
+        )
+
+        expect(result.current.resolvedShopName).toBe('test-store')
     })
 
     it('should work without providing a shop name parameter', () => {
@@ -67,10 +89,23 @@ describe('useShopNameResolution', () => {
         )
     })
 
-    it('should fallback to first store integration when shop name does not match', () => {
+    it('should fallback to first store integration when URL param shop name does not match', () => {
         mockUseParams.mockReturnValue({ shopName: 'non-matching-store' })
 
         const { result } = renderHook(() => useShopNameResolution())
+
+        expect(result.current.resolvedShopName).toBe('test-store')
+        expect(result.current.currentStoreIntegration).toBe(
+            mockStoreIntegration,
+        )
+    })
+
+    it('should fallback to first store integration when prop shop name does not match', () => {
+        mockUseParams.mockReturnValue({})
+
+        const { result } = renderHook(() =>
+            useShopNameResolution('non-matching-store'),
+        )
 
         expect(result.current.resolvedShopName).toBe('test-store')
         expect(result.current.currentStoreIntegration).toBe(

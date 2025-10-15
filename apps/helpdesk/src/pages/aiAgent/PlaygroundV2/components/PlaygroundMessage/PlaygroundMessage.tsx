@@ -16,7 +16,7 @@ import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
-import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../../types'
 
 import css from './PlaygroundMessage.less'
 
@@ -140,6 +140,7 @@ export const PlaygroundGenericErrorMessage = ({
         AI Agent encountered an error and didn’t send a response.
         <div
             className={css.errorMessageLink}
+            // oxlint-disable-next-line prefer-tag-over-role
             role="button"
             tabIndex={0}
             onClick={onClick}
@@ -173,6 +174,8 @@ const MessageContainer = ({
             case 'chat':
                 return 'forum'
             case 'email':
+                return 'mail'
+            default:
                 return 'mail'
         }
     }

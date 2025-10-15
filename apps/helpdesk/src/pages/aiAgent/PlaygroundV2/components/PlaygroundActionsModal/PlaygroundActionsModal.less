@@ -2,10 +2,18 @@
 
 :local {
     .PlaygroundActionsModal {
+        [class*='Modal--modalContent--'] {
+            max-width: 500px;
+        }
+        .modalHeader {
+            border: none;
+        }
         .modalBody {
             display: flex;
             flex-direction: column;
-            gap: var(--layout-spacing-l);
+            gap: var(--layout-spacing-s);
+            padding-top: 0;
+            padding-bottom: 0;
 
             ul {
                 padding-left: 20px;
@@ -18,7 +26,11 @@
             .modalContent {
                 display: flex;
                 flex-direction: column;
-                gap: 14px;
+                gap: var(--layout-spacing-s);
+
+                .modalContentList {
+                    gap: 0;
+                }
             }
 
             .modalBodyConfirmation {
@@ -48,9 +60,12 @@
 
         .modalFooter {
             display: flex;
+            gap: var(--layout-spacing-xs);
             flex-direction: row;
             padding: var(--layout-spacing-s);
-            justify-content: space-between;
+            justify-content: flex-end;
+            background-color: inherit;
+            border: none;
         }
     }
 }

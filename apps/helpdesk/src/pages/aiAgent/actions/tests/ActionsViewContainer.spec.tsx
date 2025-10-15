@@ -22,6 +22,9 @@ import { actionConfigurationFixture } from '../hooks/tests/actions.fixtures'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../components/ActionsList', () => () => <div>ActionsList</div>)
+jest.mock('pages/AppContext')
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 
 jest.mock('models/workflows/queries', () => ({
     useGetStoreWorkflowsConfigurations: jest.fn(),
@@ -40,6 +43,17 @@ const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)
+
+const { useAppContext } = require('pages/AppContext')
+const mockUseAppContext = jest.mocked(useAppContext)
+
+const {
+    useAiAgentNavigation,
+} = require('pages/aiAgent/hooks/useAiAgentNavigation')
+const mockUseAiAgentNavigation = jest.mocked(useAiAgentNavigation)
+
+const { usePlaygroundPanel } = require('pages/aiAgent/hooks/usePlaygroundPanel')
+const mockUsePlaygroundPanel = jest.mocked(usePlaygroundPanel)
 
 const mockStore = configureMockStore([thunk])
 
@@ -98,13 +112,32 @@ describe('ActionsViewContainer', () => {
             data: [],
             isLoading: false,
         } as unknown as ReturnType<typeof useListTrackstarConnections>)
+
+        mockUseAppContext.mockReturnValue({
+            setCollapsibleColumnChildren: jest.fn(),
+            collapsibleColumnChildren: null,
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: jest.fn(),
+        })
+
+        mockUseAiAgentNavigation.mockReturnValue({
+            routes: {
+                newAction: (templateId?: string) =>
+                    `/app/ai-agent/shopify/test-shop/actions/new${templateId ? `?template_id=${templateId}` : ''}`,
+                actions: '/app/ai-agent/shopify/test-shop/actions',
+            },
+            navigationItems: [],
+        } as any)
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: jest.fn(),
+            closePlayground: jest.fn(),
+        } as any)
     })
 
     it('should render guidance page with title "Support Actions"', () => {
         renderComponent()
 
-        expect(
-            screen.queryByText(SUPPORT_ACTIONS, { selector: 'h1' }),
-        ).toBeInTheDocument()
+        expect(screen.getByText(SUPPORT_ACTIONS)).toBeInTheDocument()
     })
 })

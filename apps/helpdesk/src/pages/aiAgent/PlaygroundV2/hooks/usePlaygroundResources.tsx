@@ -26,10 +26,8 @@ type UsePlaygroundResourcesReturn = {
     accountConfiguration?: Omit<AccountConfiguration, 'helpdeskOAuth'>
     snippetHelpCenterId?: number
 
-    // Loading state
     isLoading: boolean
 
-    // Error state
     error: unknown
     storeConfigurationNotInitialized: boolean
 }
@@ -109,15 +107,10 @@ export const usePlaygroundResources = ({
     const error = storeFetchError || accountFetchError
 
     return {
-        // Data
         storeConfiguration: storeData?.data?.storeConfiguration,
         accountConfiguration: accountData?.data?.accountConfiguration,
         snippetHelpCenterId: snippetHelpCenter?.id,
-
-        // Loading state
         isLoading,
-
-        // Error state
         error,
         storeConfigurationNotInitialized,
     }
