@@ -5,7 +5,7 @@ import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button, Separator } from '@gorgias/axiom'
+import { Box, Button, Separator } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -25,6 +25,8 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import * as actions from 'state/widgets/actions'
 import { itemsWithContext } from 'state/widgets/utils'
 
+import { TicketMessageSourceType } from '../../../../../../business/types/ticket'
+import SourceIcon from '../../../SourceIcon'
 import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
 import CustomerFields from './CustomerFields'
@@ -226,6 +228,12 @@ const InfobarCustomerInfo = ({
         return null
     }
 
+    const channels = customer.get('channels')
+    const hasIgChannel = channels
+        ? !!channels
+              .toJS()
+              .find(({ type }: { type: string }) => type === 'instagram')
+        : false
     let chatIntegrationData: Map<any, any> | null = null
     if (customerIntegrationsData) {
         chatIntegrationData = customerIntegrationsData.find(
@@ -294,6 +302,27 @@ const InfobarCustomerInfo = ({
                     customerId={customer.get('id', '')}
                     customerName={customer.get('name', '')}
                 >
+                    {hasIgChannel && (
+                        <Box
+                            flex={1}
+                            flexDirection="row"
+                            mb="var(--layout-spacing-xs)"
+                        >
+                            <SourceIcon
+                                type={TicketMessageSourceType.Instagram}
+                                className={css.igIcon}
+                            />
+                            <a
+                                href={encodeURI(
+                                    `https://www.instagram.com/${getDisplayName(customer)}`,
+                                )}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                @{getDisplayName(customer) as ReactNode}
+                            </a>
+                        </Box>
+                    )}
                     <CustomerNote
                         customerId={Number(customer.get('id'))}
                         initialNote={customer.get('note')}

@@ -34,7 +34,6 @@ const useFlagMock = useFlag as jest.Mock
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
 }))
-jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
 jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
@@ -59,6 +58,15 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
     customer: fromJS({ id: 1, name: 'foo' }),
 }
 
+const renderWithProviders = (ui: React.ReactElement, customStore = store) => {
+    const queryClient = mockQueryClient()
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={customStore}>{ui}</Provider>
+        </QueryClientProvider>,
+    )
+}
+
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
@@ -66,31 +74,23 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should not render because there is no passed customer', () => {
-        const { container } = render(
-            <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} customer={undefined} />
-            </Provider>,
+        const { container } = renderWithProviders(
+            <InfobarCustomerInfo {...minProps} customer={undefined} />,
         )
 
         expect(container.firstChild).toBeNull()
     })
 
     it('should not render because the passed customer is empty', () => {
-        const { container } = render(
-            <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} customer={fromJS({})} />
-            </Provider>,
+        const { container } = renderWithProviders(
+            <InfobarCustomerInfo {...minProps} customer={fromJS({})} />,
         )
 
         expect(container.firstChild).toBeNull()
     })
 
     it('should render CustomerFields', () => {
-        render(
-            <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} />
-            </Provider>,
-        )
+        renderWithProviders(<InfobarCustomerInfo {...minProps} />)
 
         expect(screen.getByText('CustomerFields')).toBeInTheDocument()
     })
@@ -121,15 +121,13 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            render(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={sources}
-                        widgets={widgets}
-                        isEditing
-                    />{' '}
-                </Provider>,
+            renderWithProviders(
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                    isEditing
+                />,
             )
 
             expect(screen.getByText('Generate default widgets'))
@@ -162,15 +160,13 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            const { container } = render(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={sources}
-                        widgets={widgets}
-                        isEditing
-                    />{' '}
-                </Provider>,
+            const { container } = renderWithProviders(
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                    isEditing
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -199,14 +195,12 @@ describe('<InfobarCustomerInfo/>', () => {
                 items: [],
             })
 
-            render(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={sources}
-                        widgets={widgets}
-                    />{' '}
-                </Provider>,
+            renderWithProviders(
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                />,
             )
 
             expect(screen.queryByText('InfobarWidgets')).toBeNull()
@@ -243,14 +237,12 @@ describe('<InfobarCustomerInfo/>', () => {
                 ],
             })
 
-            const { container } = render(
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={sources}
-                        widgets={widgets}
-                    />
-                </Provider>,
+            const { container } = renderWithProviders(
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={sources}
+                    widgets={widgets}
+                />,
             )
 
             expect(
@@ -271,20 +263,18 @@ describe('<InfobarCustomerInfo/>', () => {
     ])(
         'should not display `AddAppSuggestion` because there is an active integration of type %s',
         (integrationType) => {
-            render(
-                <Provider
-                    store={mockStore({
-                        integrations: fromJS({
-                            integrations: [{ type: integrationType }],
-                        }),
-                    })}
-                >
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={fromJS({})}
-                        widgets={fromJS({ currentContext: 'ticket' })}
-                    />
-                </Provider>,
+            const customStore = mockStore({
+                integrations: fromJS({
+                    integrations: [{ type: integrationType }],
+                }),
+            })
+            renderWithProviders(
+                <InfobarCustomerInfo
+                    {...minProps}
+                    sources={fromJS({})}
+                    widgets={fromJS({ currentContext: 'ticket' })}
+                />,
+                customStore,
             )
 
             expect(screen.queryByText('Add app')).toBeNull()
@@ -292,28 +282,25 @@ describe('<InfobarCustomerInfo/>', () => {
     )
 
     it('should pass `AddAppSuggestion` because there is no active data integration', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                })}
-            >
-                <InfobarCustomerInfo
-                    {...minProps}
-                    sources={fromJS({})}
-                    widgets={fromJS({ currentContext: 'ticket' })}
-                />
-            </Provider>,
+        const customStore = mockStore({
+            integrations: fromJS({
+                integrations: [],
+            }),
+        })
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                sources={fromJS({})}
+                widgets={fromJS({ currentContext: 'ticket' })}
+            />,
+            customStore,
         )
 
         expect(screen.getByText('Add app'))
     })
 
     it('should display the button `Sync the customer to Shopify', () => {
-        const queryClient = mockQueryClient()
-        const store = mockStore({
+        const customStore = mockStore({
             integrations: fromJS({
                 integrations: [
                     { type: HTTP_INTEGRATION_TYPE },
@@ -343,19 +330,15 @@ describe('<InfobarCustomerInfo/>', () => {
             items: [],
         })
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <InfobarCustomerInfo
-                        {...minProps}
-                        sources={sources}
-                        widgets={widgets}
-                        customer={customer}
-                        isEditing={false}
-                    />{' '}
-                </Provider>
-                ,
-            </QueryClientProvider>,
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                sources={sources}
+                widgets={widgets}
+                customer={customer}
+                isEditing={false}
+            />,
+            customStore,
         )
 
         expect(screen.getByText('Sync Profile')).toBeInTheDocument()
@@ -384,16 +367,14 @@ describe('<InfobarCustomerInfo/>', () => {
             items: [],
         })
 
-        render(
-            <Provider store={store}>
-                <InfobarCustomerInfo
-                    {...minProps}
-                    sources={sources}
-                    widgets={widgets}
-                    customer={customer}
-                    isEditing={false}
-                />{' '}
-            </Provider>,
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                sources={sources}
+                widgets={widgets}
+                customer={customer}
+                isEditing={false}
+            />,
         )
 
         expect(screen.queryByText('Sync Profile')).not.toBeInTheDocument()
@@ -402,12 +383,64 @@ describe('<InfobarCustomerInfo/>', () => {
     it('should render the new avatar if the ticket thread revamp flag is enabled', () => {
         useFlagMock.mockReturnValue(true)
 
-        render(
-            <Provider store={store}>
-                <InfobarCustomerInfo {...minProps} />
-            </Provider>,
-        )
+        renderWithProviders(<InfobarCustomerInfo {...minProps} />)
 
         expect(screen.getByText('New Avatar')).toBeInTheDocument()
+    })
+
+    it('should render Instagram profile link when customer has an Instagram channel', () => {
+        const customerWithIg = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [{ type: 'instagram' }],
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+        )
+
+        const igLink = screen.getByRole('link', { name: /@test_user/ })
+        expect(igLink).toBeInTheDocument()
+        expect(igLink).toHaveAttribute(
+            'href',
+            'https://www.instagram.com/test_user',
+        )
+        expect(igLink).toHaveAttribute('target', '_blank')
+        expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('should not render Instagram profile link when customer has no Instagram channel', () => {
+        const customerWithoutIg = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [{ type: 'email' }],
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo {...minProps} customer={customerWithoutIg} />,
+        )
+
+        expect(
+            screen.queryByRole('link', { name: /@test_user/ }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render Instagram profile link when customer has empty channels', () => {
+        const customerWithEmptyChannels = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [],
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithEmptyChannels}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('link', { name: /@test_user/ }),
+        ).not.toBeInTheDocument()
     })
 })

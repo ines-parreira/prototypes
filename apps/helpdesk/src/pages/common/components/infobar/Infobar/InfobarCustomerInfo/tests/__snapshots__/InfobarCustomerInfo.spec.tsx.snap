@@ -53,8 +53,54 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
       data-variant="solid"
       role="separator"
     />
-    <div>
-      CustomerChannels
+    <div
+      class="customerChannels"
+    >
+      <div>
+        <div
+          class="customerNote"
+        >
+          <i
+            class="material-icons noteIcon"
+          >
+            note
+          </i>
+          <div
+            class="noteInputContainer"
+          >
+            <textarea
+              class="noteInput"
+              placeholder="This customer has no note."
+              rows="1"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <p
+          class="customerChannel"
+        >
+          <i
+            class="icon d-inline-block material-icons uncolored mr-2 channelIcon"
+          >
+            person
+          </i>
+          <span
+            class="disabledChannel"
+          >
+            Customer Fields
+          </span>
+          <div
+            class="wrapper d-inline-block ml-2"
+          >
+            <i
+              class="material-icons-outlined icon"
+            >
+              info
+            </i>
+          </div>
+        </p>
+      </div>
     </div>
     <div
       class="ui-separator-separator-f4da separator"
@@ -125,8 +171,54 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
       data-variant="solid"
       role="separator"
     />
-    <div>
-      CustomerChannels
+    <div
+      class="customerChannels"
+    >
+      <div>
+        <div
+          class="customerNote"
+        >
+          <i
+            class="material-icons noteIcon"
+          >
+            note
+          </i>
+          <div
+            class="noteInputContainer"
+          >
+            <textarea
+              class="noteInput"
+              placeholder="This customer has no note."
+              rows="1"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <p
+          class="customerChannel"
+        >
+          <i
+            class="icon d-inline-block material-icons uncolored mr-2 channelIcon"
+          >
+            person
+          </i>
+          <span
+            class="disabledChannel"
+          >
+            Customer Fields
+          </span>
+          <div
+            class="wrapper d-inline-block ml-2"
+          >
+            <i
+              class="material-icons-outlined icon"
+            >
+              info
+            </i>
+          </div>
+        </p>
+      </div>
     </div>
     <div
       class="ui-separator-separator-f4da separator"
