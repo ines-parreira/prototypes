@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1511,
-    "reportGeneratedAt": "2025-10-15T09:25:45.844Z"
+    "totalUsages": 1512,
+    "reportGeneratedAt": "2025-10-15T15:24:08.289Z"
   },
   "entries": [
     {
@@ -1342,8 +1342,6 @@
               "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingUserNudges/PostOnboardingUserNudges.tsx",
               "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/SetupTaskBodies.tsx",
               "apps/helpdesk/src/pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware.tsx",
-              "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundActions/PlaygroundActionsItem.tsx",
-              "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundInputSection/PlaygroundInputSection.tsx",
               "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundSegmentControl/PlaygroundSegmentControl.tsx",
               "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActions/PlaygroundActionsItem.tsx",
@@ -1366,6 +1364,7 @@
               "apps/helpdesk/src/pages/aiAgent/actions/components/UseCaseTemplateModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/actions/components/ViewActionEventsButton.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
+              "apps/helpdesk/src/pages/aiAgent/components/AiAgentLayout/AiAgentLayout.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardLinkButton.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/GuidanceForm/GuidanceForm.tsx",
@@ -1715,6 +1714,7 @@
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/ConfigureRoutingBehaviorStep.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/DEPRECATED_ConfigureRoutingBehaviorStep.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/VoiceIntegrationOnboardingCancelButton.tsx",
+              "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationSelectField.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationSettingsForm.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationVoicemail.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueCreatePage.tsx",
@@ -1970,7 +1970,7 @@
               "apps/helpdesk/src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
               "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundChat/PlaygroundChat.tsx",
               "apps/helpdesk/src/pages/aiAgent/Playground/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
-              "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundChat/PlaygroundChat.tsx",
+              "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundMissingKnowledgeAlert/PlaygroundMissingKnowledgeAlert.tsx",
               "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts.tsx",
               "apps/helpdesk/src/pages/aiAgent/actions/components/ConvertActionToAdvancedViewDialog.tsx",
               "apps/helpdesk/src/pages/aiAgent/actions/components/SimplifiedStepBuilderSteps.tsx",
