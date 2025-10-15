@@ -102,10 +102,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -138,10 +138,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -174,10 +174,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -210,10 +210,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -247,10 +247,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['integrations'],
+                dimensions: ['integrationId'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -283,10 +283,10 @@ describe('averageCsatScope', () => {
 
             const expected = {
                 measures: ['scoredSurveysCount'],
-                dimensions: ['integrations'],
+                dimensions: ['integrationId'],
                 time_dimensions: [
                     {
-                        dimension: 'surveySentDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],

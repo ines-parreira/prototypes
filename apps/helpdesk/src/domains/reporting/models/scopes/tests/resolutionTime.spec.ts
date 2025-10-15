@@ -53,7 +53,7 @@ describe('resolutionTimeScope', () => {
 
             const expected = {
                 measures: ['medianResolutionTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -82,7 +82,7 @@ describe('resolutionTimeScope', () => {
 
             const expected = {
                 measures: ['medianResolutionTime'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {

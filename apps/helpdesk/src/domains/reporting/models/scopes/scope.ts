@@ -1,50 +1,18 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
+import {
+    CustomFieldsFilter,
+    DimensionName,
+    StandardFilter,
+    TagsFilter,
+    TimeDimensionName,
+} from 'domains/reporting/models/scopes/types'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-
-export type DateFilter = {
-    member: string
-    operator:
-        | ReportingFilterOperator.AfterDate
-        | ReportingFilterOperator.BeforeDate
-    values: string[]
-}
-
-export type StandardFilter = {
-    member: string
-    operator: LogicalOperatorEnum
-    values: string[]
-}
-
-export type CustomFieldsFilter = {
-    member: string
-    values: Array<{
-        custom_field_id: string
-        operator: LogicalOperatorEnum.ONE_OF | LogicalOperatorEnum.NOT_ONE_OF
-        values: string[]
-    }>
-}
-
-export type TagsFilter = {
-    member: string
-    values: Array<{
-        operator: LogicalOperatorEnum
-        values: string[]
-    }>
-}
-
-export type FilterGroup =
-    | StandardFilter
-    | CustomFieldsFilter
-    | TagsFilter
-    | DateFilter
 
 type Values<T> = T extends readonly (infer U)[] ? U : never
 
@@ -67,15 +35,13 @@ type OptionalFilters<TFilterMembers extends readonly string[]> = {
 export type ScopeMeta = {
     scope: MetricScope
     measures?: readonly string[]
-    dimensions?: readonly string[]
-    timeDimensions?: readonly string[]
+    dimensions?: readonly DimensionName[]
+    timeDimensions?: readonly TimeDimensionName[]
     filters?: readonly string[]
     order?: readonly string[]
     limit?: number
 }
 
-// TODO: expose as public interface? By default support standard filters
-// end let the users extend with "custom" filters?
 export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
     TScopeMeta['filters'] extends readonly string[]
         ? OptionalFilters<TScopeMeta['filters']>

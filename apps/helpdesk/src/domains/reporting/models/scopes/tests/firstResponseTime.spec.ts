@@ -101,7 +101,7 @@ describe('firstResponseTimeScope', () => {
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -137,7 +137,7 @@ describe('firstResponseTimeScope', () => {
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -173,7 +173,7 @@ describe('firstResponseTimeScope', () => {
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -209,7 +209,7 @@ describe('firstResponseTimeScope', () => {
 
             const expected = {
                 measures: ['medianFirstResponseTime'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {

@@ -4,7 +4,7 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 const ticketsRepliedScope = defineScope({
     scope: MetricScope.TicketsReplied,
     measures: ['ticketCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['createdDatetime'],
     order: ['ticketId', 'createdDatetime', 'ticketCount'],
     filters: [
@@ -53,7 +53,7 @@ export const ticketsRepliedCountPerAgent = ticketsRepliedScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
         }
 
         if (ctx.sortDirection) {
@@ -73,7 +73,7 @@ export const ticketsRepliedCountPerChannel = ticketsRepliedScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

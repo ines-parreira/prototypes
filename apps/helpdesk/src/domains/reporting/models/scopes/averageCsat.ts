@@ -5,13 +5,13 @@ const averageCsatScope = defineScope({
     scope: MetricScope.AverageCsat,
     measures: ['averageSurveyScore', 'scoredSurveysCount'],
     dimensions: [
-        'tickets',
-        'agents',
-        'channels',
-        'integrations',
+        'ticketId',
+        'agentId',
+        'channel',
+        'integrationId',
         'surveyScore',
     ],
-    timeDimensions: ['createdDatetime', 'surveySentDatetime'],
+    timeDimensions: ['createdDatetime', 'sentDatetime'],
     filters: [
         'periodStart',
         'periodEnd',
@@ -56,10 +56,10 @@ export const averageCsatScorePerAgentTimeseries = averageCsatScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
             time_dimensions: [
                 {
-                    dimension: 'surveySentDatetime' as const,
+                    dimension: 'sentDatetime' as const,
                     granularity: ctx.granularity,
                 },
             ],
@@ -82,10 +82,10 @@ export const averageCsatScorePerChannelTimeseries = averageCsatScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
             time_dimensions: [
                 {
-                    dimension: 'surveySentDatetime' as const,
+                    dimension: 'sentDatetime' as const,
                     granularity: ctx.granularity,
                 },
             ],
@@ -108,10 +108,10 @@ export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['scoredSurveysCount'] as const,
-            dimensions: ['integrations'] as const,
+            dimensions: ['integrationId'] as const,
             time_dimensions: [
                 {
-                    dimension: 'surveySentDatetime' as const,
+                    dimension: 'sentDatetime' as const,
                     granularity: ctx.granularity,
                 },
             ],

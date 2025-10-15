@@ -81,7 +81,7 @@ describe('ticketHandleTimeScope', () => {
 
             const expected = {
                 measures: ['averageHandleTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -109,7 +109,7 @@ describe('ticketHandleTimeScope', () => {
 
             const expected = {
                 measures: ['averageHandleTime'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {

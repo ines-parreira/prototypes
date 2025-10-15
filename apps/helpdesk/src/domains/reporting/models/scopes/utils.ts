@@ -1,15 +1,14 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
+import { ScopeFilters, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     CustomFieldsFilter,
     DateFilter,
     FilterGroup,
-    ScopeFilters,
-    ScopeMeta,
     StandardFilter,
     TagsFilter,
-} from 'domains/reporting/models/scopes/scope'
+} from 'domains/reporting/models/scopes/types'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     Cube,

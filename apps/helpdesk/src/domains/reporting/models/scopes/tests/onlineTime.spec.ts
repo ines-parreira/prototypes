@@ -57,7 +57,7 @@ describe('onlineTimeScope', () => {
 
             const expected = {
                 measures: ['onlineTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {

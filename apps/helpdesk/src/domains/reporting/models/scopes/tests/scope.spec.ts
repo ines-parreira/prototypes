@@ -58,7 +58,7 @@ describe('scope', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
                 measures: ['testMeasure'],
-                dimensions: ['testDimension'],
+                dimensions: ['ticketId'] as const,
                 filters: ['periodStart', 'periodEnd'],
             }
 
@@ -82,10 +82,10 @@ describe('scope', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
                 measures: ['ticketCount'],
-                dimensions: ['agents', 'channels'],
-                timeDimensions: ['createdDatetime'],
-                filters: ['periodStart', 'periodEnd', 'agents'],
-                order: ['ticketId'],
+                dimensions: ['agentId', 'channel'] as const,
+                timeDimensions: ['createdDatetime' as const],
+                filters: ['periodStart', 'periodEnd', 'agents' as const],
+                order: ['ticketId' as const],
             }
 
             const result = defineScope(config)
@@ -98,7 +98,7 @@ describe('scope', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
-            dimensions: ['testDimension'],
+            dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
 
@@ -116,7 +116,7 @@ describe('scope', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
-            dimensions: ['testDimension'],
+            dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
 
@@ -139,7 +139,7 @@ describe('scope', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
-            dimensions: ['testDimension'],
+            dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
 
@@ -167,7 +167,7 @@ describe('scope', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'],
-            dimensions: ['testDimension'],
+            dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
 
@@ -238,7 +238,7 @@ describe('scope', () => {
             const scope = defineScope({
                 scope: MetricScope.OnlineTime,
                 measures: ['onlineTime'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 filters: ['periodStart', 'periodEnd', 'agents'],
                 order: ['onlineTime'],
             })
@@ -272,7 +272,7 @@ describe('scope', () => {
             const ticketsRepliedScope = defineScope({
                 scope: MetricScope.TicketsReplied,
                 measures: ['ticketCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 filters: ['periodStart', 'periodEnd', 'agents'],
                 order: ['ticketId'],
             })
@@ -286,7 +286,7 @@ describe('scope', () => {
                 .defineQuery(({ ctx, config }) => {
                     const query: QueryFor<typeof ticketsRepliedScope.config> = {
                         measures: ['ticketCount'],
-                        dimensions: ['agents'],
+                        dimensions: ['agentId'],
                         timezone: ctx.timezone,
                         filters: createScopeFilters(ctx.filters, config),
                     }
@@ -305,7 +305,7 @@ describe('scope', () => {
 
             expect(result).toEqual({
                 measures: ['ticketCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'UTC',
                 filters: mockScopeFilters,
                 order: [['ticketId', 'asc']],

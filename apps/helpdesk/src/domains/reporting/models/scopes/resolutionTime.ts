@@ -6,10 +6,10 @@ const resolutionTimeScope = defineScope({
     scope: MetricScope.ResolutionTime,
     measures: ['medianResolutionTime'],
     dimensions: [
-        'tickets',
-        'agents',
-        'channels',
-        'integrations',
+        'ticketId',
+        'agentId',
+        'channel',
+        'integrationId',
         'resolutionTime',
     ],
     timeDimensions: ['createdDatetime'],
@@ -45,7 +45,7 @@ export const medianResolutionTimePerAgent = resolutionTimeScope
     )
     .defineQuery(() => ({
         measures: ['medianResolutionTime'] as const,
-        dimensions: ['agents'] as const,
+        dimensions: ['agentId'] as const,
     }))
 
 export const medianResolutionTimePerChannel = resolutionTimeScope
@@ -54,5 +54,5 @@ export const medianResolutionTimePerChannel = resolutionTimeScope
     )
     .defineQuery(() => ({
         measures: ['medianResolutionTime'] as const,
-        dimensions: ['channels'] as const,
+        dimensions: ['channel'] as const,
     }))

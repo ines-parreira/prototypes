@@ -5,7 +5,7 @@ import { defineScope } from './scope'
 const ticketsOpenScope = defineScope({
     scope: MetricScope.TicketsOpen,
     measures: ['ticketCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['createdDatetime'],
     order: ['ticketId', 'createdDatetime'],
     filters: [

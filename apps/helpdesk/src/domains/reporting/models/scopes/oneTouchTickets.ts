@@ -4,7 +4,7 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 const oneTouchTicketsScope = defineScope({
     scope: MetricScope.OneTouchTickets,
     measures: ['ticketCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
     filters: [
         'periodStart',
@@ -64,7 +64,7 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
         }
 
         if (ctx.sortDirection) {
@@ -84,7 +84,7 @@ export const oneTouchTicketsPerChannel = oneTouchTicketsScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

@@ -136,7 +136,7 @@ describe('ticketsCreatedScope', () => {
 
             const expected = {
                 measures: ['ticketCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -171,7 +171,7 @@ describe('ticketsCreatedScope', () => {
 
             const expected = {
                 measures: ['ticketCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {

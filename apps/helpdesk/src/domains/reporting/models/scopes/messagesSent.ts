@@ -4,7 +4,7 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 const messagesSentScope = defineScope({
     scope: MetricScope.MessagesSent,
     measures: ['messagesCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['sentDatetime'],
     order: ['ticketId', 'messagesCount'],
     filters: [
@@ -51,7 +51,7 @@ export const sentMessagesPerAgent = messagesSentScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['messagesCount'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
         }
 
         if (ctx.sortDirection) {
@@ -71,7 +71,7 @@ export const sentMessagesPerChannel = messagesSentScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['messagesCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

@@ -5,7 +5,7 @@ import { OrderDirection } from 'models/api/types'
 const ticketsClosedScope = defineScope({
     scope: MetricScope.TicketsClosed,
     measures: ['ticketCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['closedDatetime', 'createdDatetime'],
     filters: [
         'periodStart',
@@ -49,7 +49,7 @@ export const closedTicketsPerAgent = ticketsClosedScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
         }
 
         if (ctx.sortDirection) {
@@ -69,7 +69,7 @@ export const closedTicketsPerChannel = ticketsClosedScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

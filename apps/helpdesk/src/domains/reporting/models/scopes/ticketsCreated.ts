@@ -6,7 +6,7 @@ import { defineScope } from './scope'
 const ticketsCreatedScope = defineScope({
     scope: MetricScope.TicketsCreated,
     measures: ['ticketCount'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations'],
+    dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
     timeDimensions: ['createdDatetime'],
     filters: [
         'periodStart',
@@ -52,7 +52,7 @@ export const createdTicketsPerChannel = ticketsCreatedScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['ticketCount'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

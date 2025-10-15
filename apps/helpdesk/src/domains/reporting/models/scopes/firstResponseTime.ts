@@ -5,10 +5,10 @@ const firstResponseTimeScope = defineScope({
     scope: MetricScope.FirstResponseTime,
     measures: ['medianFirstResponseTime', 'medianFirstResponseTimeInSeconds'],
     dimensions: [
-        'tickets',
-        'agents',
-        'channels',
-        'integrations',
+        'ticketId',
+        'agentId',
+        'channel',
+        'integrationId',
         'firstResponseTime',
     ],
     timeDimensions: ['createdDatetime', 'firstAgentMessageDatetime'],
@@ -65,7 +65,7 @@ export const medianFirstResponseTimePerAgent = firstResponseTimeScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['medianFirstResponseTime'] as const,
-            dimensions: ['agents'] as const,
+            dimensions: ['agentId'] as const,
         }
 
         if (ctx.sortDirection) {
@@ -87,7 +87,7 @@ export const medianFirstResponseTimePerChannel = firstResponseTimeScope
     .defineQuery(({ ctx }) => {
         const query = {
             measures: ['medianFirstResponseTime'] as const,
-            dimensions: ['channels'] as const,
+            dimensions: ['channel'] as const,
         }
 
         if (ctx.sortDirection) {

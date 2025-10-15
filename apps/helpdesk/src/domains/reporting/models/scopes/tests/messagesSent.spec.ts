@@ -103,7 +103,7 @@ describe('messagesSentScope', () => {
 
             const expected = {
                 measures: ['messagesCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -139,7 +139,7 @@ describe('messagesSentScope', () => {
 
             const expected = {
                 measures: ['messagesCount'],
-                dimensions: ['agents'],
+                dimensions: ['agentId'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -177,7 +177,7 @@ describe('messagesSentScope', () => {
 
             const expected = {
                 measures: ['messagesCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -213,7 +213,7 @@ describe('messagesSentScope', () => {
 
             const expected = {
                 measures: ['messagesCount'],
-                dimensions: ['channels'],
+                dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [
                     {

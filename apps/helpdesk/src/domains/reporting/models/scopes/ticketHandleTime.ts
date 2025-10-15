@@ -4,7 +4,13 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 const ticketHandleTimeScope = defineScope({
     scope: MetricScope.TicketHandleTime,
     measures: ['averageHandleTime', 'handleTime'],
-    dimensions: ['tickets', 'agents', 'channels', 'integrations', 'handleTime'],
+    dimensions: [
+        'ticketId',
+        'agentId',
+        'channel',
+        'integrationId',
+        'handleTime',
+    ],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
     filters: [
         'periodStart',
@@ -42,7 +48,7 @@ export const ticketAverageHandleTimePerAgent = ticketHandleTimeScope
     .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT)
     .defineQuery(() => ({
         measures: ['averageHandleTime'] as const,
-        dimensions: ['agents'] as const,
+        dimensions: ['agentId'] as const,
     }))
 
 export const ticketAverageHandleTimePerChannel = ticketHandleTimeScope
@@ -51,5 +57,5 @@ export const ticketAverageHandleTimePerChannel = ticketHandleTimeScope
     )
     .defineQuery(() => ({
         measures: ['averageHandleTime'] as const,
-        dimensions: ['channels'] as const,
+        dimensions: ['channel'] as const,
     }))
