@@ -8,6 +8,7 @@ type UsePlaygroundTrackingProps = {
 
 type PlaygroundTrackingCallbacks = {
     onTestPageViewed: () => void
+    onPlaygroundReset: () => void
     onTestMessageSent: ({
         channel,
         playgroundSettings,
@@ -20,7 +21,11 @@ type PlaygroundTrackingCallbacks = {
 export const usePlaygroundTracking = ({
     shopName,
 }: UsePlaygroundTrackingProps): PlaygroundTrackingCallbacks => {
-    const eventContext = useMemo(() => ({ shopName }), [shopName])
+    const currentPath = window.location.pathname
+    const eventContext = useMemo(
+        () => ({ shopName, currentPath }),
+        [shopName, currentPath],
+    )
 
     const onTestPageViewed = useCallback(() => {
         logEvent(SegmentEvent.AiAgentTestPageViewed, {
@@ -45,8 +50,15 @@ export const usePlaygroundTracking = ({
         [eventContext],
     )
 
+    const onPlaygroundReset = useCallback(() => {
+        logEvent(SegmentEvent.AiAgentTestReset, {
+            ...eventContext,
+        })
+    }, [eventContext])
+
     return {
         onTestPageViewed,
         onTestMessageSent,
+        onPlaygroundReset,
     }
 }

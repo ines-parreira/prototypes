@@ -84,6 +84,7 @@ export enum SegmentEvent {
     AiAgentShoppingAssistantTrialSystemBannerClicked = 'ai-agent-shopping-assistant-trial-system-banner-clicked',
     AiAgentTestPageViewed = 'ai-agent-test-page-viewed',
     AiAgentTestMessageSent = 'ai-agent-test-message-sent',
+    AiAgentTestReset = 'ai-agent-test-reset',
     AiAgentTicketDrilldownClicked = 'ai-agent-ticket-drilldown-clicked',
     AiAgentTicketViewed = 'ai-agent-ticket-viewed',
     AiAgentViewTicketsClicked = 'ai-agent-view-tickets-clicked',

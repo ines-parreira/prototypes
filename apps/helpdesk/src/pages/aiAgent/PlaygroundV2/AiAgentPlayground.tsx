@@ -13,6 +13,7 @@ import { PlaygroundMissingKnowledgeAlert } from './components/PlaygroundMissingK
 import {
     PlaygroundProvider,
     usePlaygroundContext,
+    usePlaygroundEvent,
 } from './contexts/PlaygroundContext'
 import { useAiAgentHttpIntegration } from './hooks/useAiAgentHttpIntegration'
 import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
@@ -27,18 +28,26 @@ type ResetEventEmitterProps = {
     arePlaygroundActionsAllowed?: boolean
     resetPlayground?: boolean
     resetPlaygroundCallback?: () => void
+    shopName?: string
 }
 
 const ResetEventEmitter = ({
     arePlaygroundActionsAllowed,
     resetPlayground,
     resetPlaygroundCallback,
+    shopName,
 }: ResetEventEmitterProps) => {
     const { events } = usePlaygroundContext()
     const arePlaygroundActionsAllowedRef = useRef<boolean | undefined>(
         arePlaygroundActionsAllowed,
     )
     const resetPlaygroundRef = useRef<boolean | undefined>(resetPlayground)
+
+    const { onPlaygroundReset } = usePlaygroundTracking({
+        shopName: shopName || '',
+    })
+
+    usePlaygroundEvent(PlaygroundEvent.RESET_CONVERSATION, onPlaygroundReset)
 
     useEffect(() => {
         if (
@@ -168,6 +177,7 @@ export const AiAgentPlayground = ({
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                     resetPlayground={resetPlayground}
                     resetPlaygroundCallback={resetPlaygroundCallback}
+                    shopName={shopName}
                 />
                 <div className={css.container}>
                     <PlaygroundMessageList />

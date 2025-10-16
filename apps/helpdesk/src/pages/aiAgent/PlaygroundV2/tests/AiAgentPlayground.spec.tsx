@@ -9,7 +9,10 @@ import thunk from 'redux-thunk'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import { AiAgentPlayground } from '../AiAgentPlayground'
-import { usePlaygroundContext } from '../contexts/PlaygroundContext'
+import {
+    usePlaygroundContext,
+    usePlaygroundEvent,
+} from '../contexts/PlaygroundContext'
 import { useAiAgentHttpIntegration } from '../hooks/useAiAgentHttpIntegration'
 import { usePlaygroundPrerequisites } from '../hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from '../hooks/usePlaygroundResources'
@@ -19,6 +22,7 @@ import { useShopNameResolution } from '../hooks/useShopNameResolution'
 jest.mock('../contexts/PlaygroundContext', () => ({
     PlaygroundProvider: ({ children }: any) => <div>{children}</div>,
     usePlaygroundContext: jest.fn(),
+    usePlaygroundEvent: jest.fn(),
 }))
 
 jest.mock('../hooks/useAiAgentHttpIntegration')
@@ -58,6 +62,7 @@ jest.mock('hooks/useAppSelector', () => ({
 }))
 
 const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUsePlaygroundEvent = jest.mocked(usePlaygroundEvent)
 const mockUseAiAgentHttpIntegration = jest.mocked(useAiAgentHttpIntegration)
 const mockUsePlaygroundPrerequisites = jest.mocked(usePlaygroundPrerequisites)
 const mockUsePlaygroundResources = jest.mocked(usePlaygroundResources)
@@ -144,6 +149,7 @@ describe('AiAgentPlayground', () => {
                 emit: jest.fn(),
             },
         } as any)
+        mockUsePlaygroundEvent.mockImplementation(() => {})
     })
 
     const renderComponent = (props = {}) => {
