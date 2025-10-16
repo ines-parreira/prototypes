@@ -11,9 +11,18 @@ const onlineTimeScope = defineScope({
 
 export const onlineTime = onlineTimeScope
     .defineMetricName(METRIC_NAMES.AGENTXP_ONLINE_TIME)
-    .defineQuery(() => ({
-        measures: ['onlineTime'] as const,
-    }))
+    .defineQuery(({ ctx }) => {
+        const query = {
+            measures: ['onlineTime'] as const,
+        }
+        if (ctx.sortDirection) {
+            return {
+                ...query,
+                order: [['onlineTime', ctx.sortDirection]] as const,
+            }
+        }
+        return query
+    })
 
 export const onlineTimeQueryV2Factory = (ctx: Context) => onlineTime.build(ctx)
 

@@ -34,6 +34,7 @@ export const useSearchTermsMetrics = ({
         limit: itemPerPage,
         offset: itemPerPage * (currentPage - 1),
     })
+    // P2/P3
     const searchResultCount = useMetric(
         searchResultQueryCountFactory(statsFilters, timezone),
     )

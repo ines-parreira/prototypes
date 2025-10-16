@@ -36,6 +36,7 @@ import { OrderDirection } from 'models/api/types'
 
 export const HOURS_FOR_AUTOMATED_INTERACTIONS = 72
 
+// P2/P3
 export const useTotalAiAgentTicketsByCustomField = (
     filters: StatsFilters,
     timezone: string,

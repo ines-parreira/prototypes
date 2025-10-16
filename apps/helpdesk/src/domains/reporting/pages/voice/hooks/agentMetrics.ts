@@ -39,6 +39,7 @@ export const ignoreDeclinedWithNoAgentsFilter: ReportingFilter = {
     values: [],
 }
 
+// P2/P3
 export const useTotalCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -61,6 +62,7 @@ export const fetchTotalCallsMetric = (
         ),
     )
 
+// P2/P3
 export const useAnsweredCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -79,6 +81,7 @@ export const useAnsweredCallsMetric = (
         ),
     )
 
+// P2/P3
 export const fetchAnsweredCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -96,7 +99,7 @@ export const fetchAnsweredCallsMetric = (
             ignoreCallsWithNoAgentsFilter,
         ),
     )
-
+// P2/P3
 export const useMissedCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -115,6 +118,7 @@ export const useMissedCallsMetric = (
         ),
     )
 
+// P2/P3
 export const fetchMissedCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -132,7 +136,7 @@ export const fetchMissedCallsMetric = (
             ignoreCallsWithNoAgentsFilter,
         ),
     )
-
+// P2/P3
 export const useOutboundCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -151,6 +155,7 @@ export const useOutboundCallsMetric = (
         ),
     )
 
+// P2/P3
 export const fetchOutboundCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -168,7 +173,7 @@ export const fetchOutboundCallsMetric = (
             ignoreCallsWithNoAssignedAgentFilter,
         ),
     )
-
+// P2/P3
 export const useDeclinedCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -190,7 +195,7 @@ export const fetchDeclinedCallsMetric = (
             ignoreDeclinedWithNoAgentsFilter,
         ),
     )
-
+// P2/P3
 export const useAverageTalkTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -217,7 +222,7 @@ export const fetchAverageTalkTimeMetric = (
             ignoreCallsWithNoAssignedAgentFilter,
         ),
     )
-
+// P2/P3
 export const useTransferredInboundCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,

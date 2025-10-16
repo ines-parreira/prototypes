@@ -6,21 +6,28 @@ import {
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
-    usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
+import { BuiltQuery, ScopeMeta } from '../models/scopes/scope'
+
 export type MetricFetch = (...arg: any) => Promise<Metric>
 
-export function useMetric<TCube extends Cubes = Cubes>(
+export function useMetric<
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
     query: ReportingQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
     enabled: boolean = true,
 ): Metric {
-    const currentPeriodMetric = usePostReporting<
+    const currentPeriodMetric = usePostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
-        TCube
-    >([query], {
+        TCube,
+        TMeta
+    >([query], queryV2, {
         select: (data) => selectMeasure(query.measures[0], data),
         enabled,
     })

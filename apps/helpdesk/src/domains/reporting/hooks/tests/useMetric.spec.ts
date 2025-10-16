@@ -9,12 +9,13 @@ import {
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     fetchPostReporting,
-    usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 describe('Metric', () => {
@@ -30,77 +31,100 @@ describe('Metric', () => {
         metricName: METRIC_NAMES.TEST_METRIC,
     }
 
+    const defaultQueryV2 = medianFirstResponseTime.build({
+        timezone: 'UTC',
+        filters: {
+            period: {
+                start_datetime: '2023-01-01',
+                end_datetime: '2023-01-31',
+            },
+        },
+    })
+
     describe('useMetric', () => {
         beforeEach(() => {
-            usePostReportingMock.mockReturnValue(defaultReporting)
+            usePostReportingV2Mock.mockReturnValue(defaultReporting)
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.isFetching).toBe(false)
         })
 
         it('should return isFetching=true when one the queries is fetching', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 isFetching: true,
             })
 
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.isFetching).toBe(true)
         })
 
         it('should return isError=false when no queries errored', () => {
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.isError).toBe(false)
         })
 
         it('should return isError=true when one the queries errored', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 isError: true,
             } as UseQueryResult)
 
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.isError).toBe(true)
         })
 
         it('should not return data when one the queries does not have data', () => {
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.data).toBe(undefined)
         })
 
         it('should return data', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: 1,
             } as UseQueryResult)
 
-            const { result } = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() =>
+                useMetric(defaultQuery, defaultQueryV2),
+            )
 
             expect(result.current.data).toEqual({
                 value: 1,
             })
         })
 
-        it('should call usePostReporting with the query', () => {
+        it('should call usePostReportingV2 with the query', () => {
             const medianFirstResponseTime = 1000
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: 1,
             } as UseQueryResult)
 
-            renderHook(() => useMetric(defaultQuery))
+            renderHook(() => useMetric(defaultQuery, defaultQueryV2))
 
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
-            expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect(usePostReportingV2Mock).toHaveBeenCalledWith(
                 [defaultQuery],
+                defaultQueryV2,
                 expect.objectContaining({
                     select,
                 }),

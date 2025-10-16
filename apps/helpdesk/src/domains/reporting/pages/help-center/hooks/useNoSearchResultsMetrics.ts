@@ -32,6 +32,7 @@ export const useNoSearchResultsMetrics = ({
         limit: itemPerPage,
         offset: itemPerPage * (currentPage - 1),
     })
+    // P2/P3
     const noSearchResultCount = useMetric(
         noSearchResultsCountQueryFactory(statsFilters, timezone),
     )

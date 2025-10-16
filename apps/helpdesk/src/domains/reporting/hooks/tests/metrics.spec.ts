@@ -55,12 +55,22 @@ import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFacto
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
+import { sentMessagesCount } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTickets } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { onlineTime } from 'domains/reporting/models/scopes/onlineTime'
+import { medianResolutionTime } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsCount } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,
     withFilter,
 } from 'domains/reporting/utils/reporting'
+import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useShouldIncludeBots')
 const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
@@ -99,6 +109,7 @@ describe('metrics', () => {
             'useClosedTicketsMetric',
             useClosedTicketsMetric,
             closedTicketsQueryFactory,
+            closedTicketsCount,
         ],
         [
             'useCustomerSatisfactionMetric',
@@ -119,11 +130,13 @@ describe('metrics', () => {
             'useMedianResolutionTimeMetric',
             useMedianResolutionTimeMetric,
             medianResolutionTimeQueryFactory,
+            medianResolutionTime,
         ],
         [
             'useOneTouchTicketsMetric',
             useOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
+            oneTouchTickets,
         ],
         [
             'useZeroTouchTicketsMetric',
@@ -134,6 +147,7 @@ describe('metrics', () => {
             'useTicketHandleTimeMetric',
             useTicketAverageHandleTimeMetric,
             ticketAverageHandleTimeQueryFactory,
+            ticketAverageHandleTime,
         ],
     ])(
         '%s',
@@ -144,18 +158,34 @@ describe('metrics', () => {
                 statsFilters: StatsFilters,
                 timezone: string,
             ) => ReportingQuery,
+            newQueryBuilder?: {
+                build: (ctx: { filters: StatsFilters; timezone: string }) => any
+            },
         ) => {
             it('should create reporting metric with assigned tickets only', () => {
                 const { result } = renderHook(() =>
                     useTrendFn(statsFilters, timezone),
                 )
 
-                expect(useMetricMock).toHaveBeenCalledWith(
-                    withFilter(
-                        queryFactory(statsFilters, timezone),
-                        ignoreNotAssignedTicketsFilter,
-                    ),
-                )
+                if (newQueryBuilder) {
+                    expect(useMetricMock).toHaveBeenCalledWith(
+                        withFilter(
+                            queryFactory(statsFilters, timezone),
+                            ignoreNotAssignedTicketsFilter,
+                        ),
+                        newQueryBuilder.build({
+                            filters: statsFilters,
+                            timezone,
+                        }),
+                    )
+                } else {
+                    expect(useMetricMock).toHaveBeenCalledWith(
+                        withFilter(
+                            queryFactory(statsFilters, timezone),
+                            ignoreNotAssignedTicketsFilter,
+                        ),
+                    )
+                }
                 expect(result.current).toBe(defaultMetricValue)
             })
         },
@@ -171,6 +201,10 @@ describe('metrics', () => {
                 medianFirstResponseTimeQueryFactory(statsFilters, timezone),
                 ignoreNotAssignedFirstResponseMessageAssigneeFilter,
             ),
+            medianFirstResponseTime.build({
+                filters: statsFilters,
+                timezone,
+            }),
         )
         expect(result.current).toBe(defaultMetricValue)
     })
@@ -184,6 +218,10 @@ describe('metrics', () => {
 
         expect(useMetricMock).toHaveBeenCalledWith(
             medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
+            medianFirstResponseTime.build({
+                filters: statsFilters,
+                timezone,
+            }),
         )
     })
 
@@ -278,6 +316,7 @@ describe('metrics', () => {
             'useMessagesSentMetric',
             useMessagesSentMetric,
             messagesSentQueryFactory,
+            sentMessagesCount,
         ],
         [
             'useMessagesReceivedMetric',
@@ -288,12 +327,19 @@ describe('metrics', () => {
             'useTicketsRepliedMetric',
             useTicketsRepliedMetric,
             ticketsRepliedQueryFactory,
+            ticketsRepliedCount,
         ],
-        ['useOnlineTimeMetric', useOnlineTimeMetric, onlineTimeQueryFactory],
+        [
+            'useOnlineTimeMetric',
+            useOnlineTimeMetric,
+            onlineTimeQueryFactory,
+            onlineTime,
+        ],
         [
             'useTicketsCreatedMetric',
             useTicketsCreatedMetric,
             ticketsCreatedQueryFactory,
+            createdTicketsCount,
         ],
     ])(
         '%s',
@@ -304,15 +350,28 @@ describe('metrics', () => {
                 statsFilters: StatsFilters,
                 timezone: string,
             ) => ReportingQuery,
+            newQueryBuilder?: {
+                build: (ctx: { filters: StatsFilters; timezone: string }) => any
+            },
         ) => {
             it('should create reporting metric with all tickets', () => {
                 const { result } = renderHook(() =>
                     useTrendFn(statsFilters, timezone),
                 )
 
-                expect(useMetricMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone),
-                )
+                if (newQueryBuilder) {
+                    expect(useMetricMock).toHaveBeenCalledWith(
+                        queryFactory(statsFilters, timezone),
+                        newQueryBuilder.build({
+                            filters: statsFilters,
+                            timezone,
+                        }),
+                    )
+                } else {
+                    expect(useMetricMock).toHaveBeenCalledWith(
+                        queryFactory(statsFilters, timezone),
+                    )
+                }
                 expect(result.current).toBe(defaultMetricValue)
             })
         },
@@ -364,4 +423,20 @@ describe('metrics', () => {
             })
         },
     )
+
+    it('should create online time metric with sortDirection', () => {
+        const { result } = renderHook(() =>
+            useOnlineTimeMetric(statsFilters, timezone, OrderDirection.Desc),
+        )
+
+        expect(useMetricMock).toHaveBeenCalledWith(
+            onlineTimeQueryFactory(statsFilters, timezone, OrderDirection.Desc),
+            onlineTime.build({
+                filters: statsFilters,
+                timezone,
+                sortDirection: OrderDirection.Desc,
+            }),
+        )
+        expect(result.current).toBe(defaultMetricValue)
+    })
 })

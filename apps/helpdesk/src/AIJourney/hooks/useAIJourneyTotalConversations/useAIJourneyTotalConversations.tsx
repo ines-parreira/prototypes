@@ -16,7 +16,7 @@ export const useAIJourneyTotalConversations = ({
     filters,
 }: UseAIJourneyTotalConversationsParams): MetricProps => {
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
-
+    // P2/P3
     const { data, isFetching } = useMetric(
         aiJourneyTotalConversationsQueryFactory(
             filters,

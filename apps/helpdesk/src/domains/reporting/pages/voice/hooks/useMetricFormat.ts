@@ -39,8 +39,13 @@ export const useMetricFormat = ({
         METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
     )
     const hasTotalCount = percentageOfValue !== undefined
+    // P2/P3
     const { data: allCallsMetric, isFetching: isAllCallsMetricFetching } =
-        useMetric(queryFactory, isPercentageEnabled && !hasTotalCount)
+        useMetric(
+            queryFactory,
+            undefined,
+            isPercentageEnabled && !hasTotalCount,
+        )
 
     const totalCountValue = hasTotalCount
         ? percentageOfValue

@@ -65,7 +65,11 @@ describe('useMetricFormat', () => {
             undefined,
             METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
         )
-        expect(useMetricMock).toHaveBeenCalledWith(defaultQueryFactory, false)
+        expect(useMetricMock).toHaveBeenCalledWith(
+            defaultQueryFactory,
+            undefined,
+            false,
+        )
     })
 
     it('should use provided queryFactory when specified', () => {
@@ -80,7 +84,11 @@ describe('useMetricFormat', () => {
             }),
         )
 
-        expect(useMetricMock).toHaveBeenCalledWith(customQueryFactory, true)
+        expect(useMetricMock).toHaveBeenCalledWith(
+            customQueryFactory,
+            undefined,
+            true,
+        )
     })
 
     it('should format value using the selectedFormat', () => {

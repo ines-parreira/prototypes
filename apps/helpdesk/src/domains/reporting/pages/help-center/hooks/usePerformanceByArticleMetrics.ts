@@ -39,6 +39,7 @@ export const usePerformanceByArticleMetrics = ({
         limit: itemPerPage,
         offset: itemPerPage * (currentPage - 1),
     })
+    // P2/P3
     const articleCountMetric = useMetric(
         performanceByArticleCountQueryFactory(statsFilters, timezone),
     )

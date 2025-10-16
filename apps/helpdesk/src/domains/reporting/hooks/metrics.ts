@@ -22,6 +22,14 @@ import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFacto
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
+import { sentMessagesCount } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTickets } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { onlineTime } from 'domains/reporting/models/scopes/onlineTime'
+import { medianResolutionTime } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
+import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilter,
@@ -29,6 +37,8 @@ import {
 } from 'domains/reporting/models/types'
 import { withFilter } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
+
+import { createdTicketsCount } from '../models/scopes/ticketsCreated'
 
 export type Metric = {
     isFetching: boolean
@@ -54,7 +64,14 @@ export const ignoreNotAssignedFirstResponseMessageAssigneeFilter: ReportingFilte
 export const useTicketsCreatedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(ticketsCreatedQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        ticketsCreatedQueryFactory(statsFilters, timezone),
+        createdTicketsCount.build({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const fetchTicketsCreatedMetric = (
     statsFilters: StatsFilters,
@@ -71,6 +88,10 @@ export const useClosedTicketsMetric = (
             closedTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        closedTicketsCount.build({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchClosedTicketsMetric = (
@@ -83,7 +104,7 @@ export const fetchClosedTicketsMetric = (
             ignoreNotAssignedTicketsFilter,
         ),
     )
-
+// P2/P3
 export const useCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -94,7 +115,7 @@ export const useCustomerSatisfactionMetric = (
             ignoreNotAssignedTicketsFilter,
         ),
     )
-
+// P2/P3
 export const fetchCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -125,7 +146,13 @@ export const useMedianFirstResponseTimeMetric = (
         )
     }
 
-    return useMetric(query)
+    return useMetric(
+        query,
+        medianFirstResponseTime.build({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 }
 
 export const fetchMedianFirstResponseTimeMetric = async (
@@ -145,7 +172,7 @@ export const fetchMedianFirstResponseTimeMetric = async (
         ),
     )
 }
-
+// P2/P3
 export const useMedianResponseTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -167,7 +194,7 @@ export const fetchMedianResponseTimeMetric = async (
             ignoreNotAssignedTicketsFilter,
         ),
     )
-
+// P2/P3
 export const useHumanResponseTimeAfterAiHandoffMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -199,6 +226,10 @@ export const useMedianResolutionTimeMetric = (
             medianResolutionTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        medianResolutionTime.build({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchMedianResolutionTimeMetric = (
@@ -215,7 +246,14 @@ export const fetchMedianResolutionTimeMetric = (
 export const useTicketsRepliedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(ticketsRepliedQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        ticketsRepliedQueryFactory(statsFilters, timezone),
+        ticketsRepliedCount.build({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const fetchTicketsRepliedMetric = (
     statsFilters: StatsFilters,
@@ -226,7 +264,14 @@ export const fetchTicketsRepliedMetric = (
 export const useMessagesSentMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(messagesSentQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        messagesSentQueryFactory(statsFilters, timezone),
+        sentMessagesCount.build({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const fetchMessagesSentMetric = (
     statsFilters: StatsFilters,
@@ -234,6 +279,7 @@ export const fetchMessagesSentMetric = (
 ): Promise<Metric> =>
     fetchMetric(messagesSentQueryFactory(statsFilters, timezone))
 
+// P2/P3
 export const useMessagesReceivedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
@@ -254,6 +300,10 @@ export const useOneTouchTicketsMetric = (
             oneTouchTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        oneTouchTickets.build({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchOneTouchTicketsMetric = (
@@ -303,6 +353,10 @@ export const useTicketAverageHandleTimeMetric = (
             ),
             ignoreNotAssignedTicketsFilter,
         ),
+        ticketAverageHandleTime.build({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchTicketAverageHandleTimeMetric = async (
@@ -325,7 +379,15 @@ export const useOnlineTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-): Metric => useMetric(onlineTimeQueryFactory(statsFilters, timezone, sorting))
+): Metric =>
+    useMetric(
+        onlineTimeQueryFactory(statsFilters, timezone, sorting),
+        onlineTime.build({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
+    )
 
 export const fetchOnlineTimeMetric = (
     statsFilters: StatsFilters,
