@@ -94,7 +94,12 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
             <div className={css.container}>
                 <div className={css.leftContent}>
                     <Text size="md" variant="regular">
-                        {stepMetadata.stepDescription}
+                        <span
+                            className={css.stepDescription}
+                            dangerouslySetInnerHTML={{
+                                __html: stepMetadata.stepDescription as string,
+                            }}
+                        />
                     </Text>
 
                     <TrainButton

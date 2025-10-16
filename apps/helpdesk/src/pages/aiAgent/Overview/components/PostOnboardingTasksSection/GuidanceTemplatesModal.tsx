@@ -68,7 +68,7 @@ export const GuidanceTemplatesModal: React.FC<Props> = ({
                     </span>{' '}
                     Explore our{' '}
                     <a
-                        href="https://docs.gorgias.com/en-US"
+                        href="https://link.gorgias.com/y4z"
                         target="_blank"
                         rel="noopener noreferrer"
                         className={css.helpCenterLink}

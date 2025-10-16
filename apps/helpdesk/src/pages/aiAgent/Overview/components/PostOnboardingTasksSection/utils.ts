@@ -24,7 +24,7 @@ export const POST_ONBOARDING_STEPS_METADATA: Record<
         stepName: StepName.TRAIN,
         stepTitle: 'Train AI Agent',
         stepDescription:
-            'Guidance are custom instructions that you write for AI Agent. Create Guidance to train AI Agent how to respond to and resolve common customer scenarios. We recommend creating at least 5 guidances to set your AI Agent up for success. Learn best practices for writing Guidance.',
+            'Guidance are custom instructions that you write for your AI Agent. Create Guidance to train your AI Agent on how to respond to and resolve common customer scenarios. We recommend creating at least 5 pieces of Guidance to set your AI Agent up for success. Learn <a href="https://link.gorgias.com/rb3" target="_blank" rel="noopener noreferrer">best practices</a> for writing Guidance.',
         stepImage: assetsUrl('/img/ai-agent/post_onboarding_task_guidance.png'),
     },
     TEST: {

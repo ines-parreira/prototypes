@@ -46,7 +46,11 @@ export const ChannelToggle = ({
     return (
         <div className={classNames(css.channel, className)}>
             <div className={css.channelToggle}>
-                <Label className={css.label}>
+                <Label
+                    className={classNames(css.label, {
+                        [css.disabled]: disabled,
+                    })}
+                >
                     <NewToggleButton
                         isDisabled={disabled}
                         checked={checked}

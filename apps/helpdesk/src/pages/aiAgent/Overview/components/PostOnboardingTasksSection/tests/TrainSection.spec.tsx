@@ -33,7 +33,6 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     }),
 }))
 
-// We're using real components for all UI elements
 jest.mock('lodash/noop', () => jest.fn())
 
 const mockGuidanceArticles: GuidanceArticle[] = [
