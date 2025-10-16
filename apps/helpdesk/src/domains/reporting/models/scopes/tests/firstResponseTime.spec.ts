@@ -3,7 +3,10 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 import {
     medianFirstResponseTime,
     medianFirstResponseTimePerAgent,
+    medianFirstResponseTimePerAgentQueryV2Factory,
     medianFirstResponseTimePerChannel,
+    medianFirstResponseTimePerChannelQueryV2Factory,
+    medianFirstResponseTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/firstResponseTime'
 import {
     AggregationWindow,
@@ -236,6 +239,151 @@ describe('firstResponseTimeScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('medianFirstResponseTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianFirstResponseTimeQueryV2Factory(context)
+                const buildResult = medianFirstResponseTime.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('supports sorting', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    medianFirstResponseTimeQueryV2Factory(contextWithSort)
+                const buildResult =
+                    medianFirstResponseTime.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([
+                    ['medianFirstResponseTime', 'desc'],
+                ])
+            })
+
+            it('supports granularity', () => {
+                const contextWithHourlyGranularity = {
+                    ...context,
+                    granularity: 'hour' as AggregationWindow,
+                }
+
+                const factoryResult = medianFirstResponseTimeQueryV2Factory(
+                    contextWithHourlyGranularity,
+                )
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'hour',
+                    },
+                ])
+            })
+        })
+
+        describe('medianFirstResponseTimePerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianFirstResponseTimePerAgentQueryV2Factory(context)
+                const buildResult =
+                    medianFirstResponseTimePerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('supports sorting', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Asc,
+                }
+
+                const factoryResult =
+                    medianFirstResponseTimePerAgentQueryV2Factory(
+                        contextWithSort,
+                    )
+                const buildResult =
+                    medianFirstResponseTimePerAgent.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([
+                    ['medianFirstResponseTime', 'asc'],
+                ])
+            })
+
+            it('supports granularity', () => {
+                const contextWithWeeklyGranularity = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    medianFirstResponseTimePerAgentQueryV2Factory(
+                        contextWithWeeklyGranularity,
+                    )
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'week',
+                    },
+                ])
+            })
+        })
+
+        describe('medianFirstResponseTimePerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianFirstResponseTimePerChannelQueryV2Factory(context)
+                const buildResult =
+                    medianFirstResponseTimePerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('supports sorting', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    medianFirstResponseTimePerChannelQueryV2Factory(
+                        contextWithSort,
+                    )
+                const buildResult =
+                    medianFirstResponseTimePerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([
+                    ['medianFirstResponseTime', 'desc'],
+                ])
+            })
+
+            it('supports granularity', () => {
+                const contextWithMonthlyGranularity = {
+                    ...context,
+                    granularity: 'month' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    medianFirstResponseTimePerChannelQueryV2Factory(
+                        contextWithMonthlyGranularity,
+                    )
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'month',
+                    },
+                ])
+            })
         })
     })
 })

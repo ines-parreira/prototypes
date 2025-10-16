@@ -1,9 +1,13 @@
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
-    usePostReporting,
     UsePostReportingQueryData,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import {
+    type BuiltQuery,
+    type ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
@@ -103,23 +107,30 @@ export async function fetchMetricTrend<TCube extends Cubes>(
         })
 }
 
-export default function useMetricTrend<TCube extends Cubes>(
+export default function useMetricTrend<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
     currentPeriodQuery: ReportingQuery<TCube>,
     prevPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQueryV2?: BuiltQuery<TMeta>,
+    prevPeriodQueryV2?: BuiltQuery<TMeta>,
 ): MetricTrend {
-    const currentPeriodMetric = usePostReporting<
+    const currentPeriodMetric = usePostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
-        TCube
-    >([currentPeriodQuery], {
+        TCube,
+        TMeta
+    >([currentPeriodQuery], currentPeriodQueryV2, {
         select: (data) => selectMeasure(currentPeriodQuery.measures[0], data),
     })
 
-    const prevPeriodMetric = usePostReporting<
+    const prevPeriodMetric = usePostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
-        TCube
-    >([prevPeriodQuery], {
+        TCube,
+        TMeta
+    >([prevPeriodQuery], prevPeriodQueryV2, {
         select: (data) => selectMeasure(prevPeriodQuery.measures[0], data),
     })
 

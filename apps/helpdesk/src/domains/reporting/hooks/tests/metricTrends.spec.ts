@@ -7,9 +7,12 @@ import {
     fetchHumanResponseTimeAfterAiHandoffTrend,
     fetchMedianFirstResponseTimeTrend,
     fetchMedianResolutionTimeTrend,
+    fetchMedianResponseTimeTrend,
     fetchMessagesPerTicketTrend,
+    fetchMessagesReceivedTrend,
     fetchMessagesSentTrend,
     fetchOneTouchTicketsTrend,
+    fetchOnlineTimeTrend,
     fetchOpenTicketsTrend,
     fetchTicketHandleTimeTrend,
     fetchTicketsCreatedTrend,
@@ -20,9 +23,12 @@ import {
     useHumanResponseTimeAfterAiHandoffTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
+    useMedianResponseTimeTrend,
     useMessagesPerTicketTrend,
+    useMessagesReceivedTrend,
     useMessagesSentTrend,
     useOneTouchTicketsTrend,
+    useOnlineTimeTrend,
     useOpenTicketsTrend,
     useTicketHandleTimeTrend,
     useTicketsCreatedTrend,
@@ -36,6 +42,7 @@ import {
     fetchShouldIncludeBots,
     useShouldIncludeBots,
 } from 'domains/reporting/hooks/useShouldIncludeBots'
+import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
@@ -45,15 +52,30 @@ import {
     medianFirstResponseTimeQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
+import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
+import { messagesReceivedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/openTickets'
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import {
+    medianFirstResponseTime,
+    medianFirstResponseTimeQueryV2Factory,
+} from 'domains/reporting/models/scopes/firstResponseTime'
+import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
+import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
+import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { openTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsOpen'
+import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,
     getPreviousPeriod,
@@ -85,9 +107,11 @@ describe('metric trends', () => {
     const timezone = 'someTimeZone'
 
     beforeEach(() => {
-        useMetricTrendMock.mockImplementation(
-            ((queryCreator: ReportingQuery) => queryCreator) as any,
-        )
+        useMetricTrendMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: { value: 0, prevValue: 0 },
+        })
 
         fetchShouldIncludeBotsMock.mockResolvedValue(true)
         useShouldIncludeBotsMock.mockReturnValue(true)
@@ -111,6 +135,14 @@ describe('metric trends', () => {
                         prevStatsFilters,
                         timezone,
                     ),
+                    medianFirstResponseTime.build({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    medianFirstResponseTime.build({
+                        filters: prevStatsFilters,
+                        timezone,
+                    }),
                 )
             })
         })
@@ -136,76 +168,121 @@ describe('metric trends', () => {
     })
 
     describe.each([
-        ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
+        [
+            'useOpenTicketsTrend',
+            useOpenTicketsTrend,
+            openTicketsQueryFactory,
+            openTicketsCountQueryV2Factory,
+        ],
         [
             'useCustomerSatisfactionTrend',
             useCustomerSatisfactionTrend,
             customerSatisfactionQueryFactory,
+            undefined,
         ],
         [
             'useMedianFirstResponseTimeTrend',
             useMedianFirstResponseTimeTrend,
             medianFirstResponseTimeQueryFactory,
+            medianFirstResponseTimeQueryV2Factory,
         ],
 
         [
             'useHumanResponseTimeAfterAiHandoffTrend',
             useHumanResponseTimeAfterAiHandoffTrend,
             humanResponseTimeAfterAiHandoffQueryFactory,
+            undefined,
         ],
         [
             'useMedianResolutionTimeTrend',
             useMedianResolutionTimeTrend,
             medianResolutionTimeQueryFactory,
+            medianResolutionTimeQueryV2Factory,
         ],
         [
             'useClosedTicketsTrend',
             useClosedTicketsTrend,
             closedTicketsQueryFactory,
+            closedTicketsCountQueryV2Factory,
         ],
         [
             'useTicketsCreatedTrend',
             useTicketsCreatedTrend,
             ticketsCreatedQueryFactory,
+            createdTicketsCountQueryV2Factory,
         ],
         [
             'useOneTouchTicketsTrend',
             useOneTouchTicketsTrend,
             oneTouchTicketsQueryFactory,
+            oneTouchTicketsQueryV2Factory,
         ],
         [
             'useZeroTouchTicketsTrend',
             useZeroTouchTicketsTrend,
             zeroTouchTicketsQueryFactory,
+            undefined,
         ],
-        ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
+        [
+            'useOpenTicketsTrend',
+            useOpenTicketsTrend,
+            openTicketsQueryFactory,
+            openTicketsCountQueryV2Factory,
+        ],
         [
             'useTicketsRepliedTrend',
             useTicketsRepliedTrend,
             ticketsRepliedQueryFactory,
+            ticketsRepliedCountQueryV2Factory,
         ],
         [
             'useMessagesSentTrend',
             useMessagesSentTrend,
             messagesSentQueryFactory,
+            sentMessagesCountQueryV2Factory,
         ],
         [
             'useMessagesPerTicketTrend',
             useMessagesPerTicketTrend,
             messagesPerTicketQueryFactory,
+            messagesPerTicketCountQueryV2Factory,
         ],
         [
             'useTicketHandleTimeTrend',
             useTicketHandleTimeTrend,
             ticketAverageHandleTimeQueryFactory,
+            ticketAverageHandleTimeQueryV2Factory,
         ],
-    ])('%s', (_testName, useTrendFn, queryFactory) => {
+        [
+            'useOnlineTimeTrend',
+            useOnlineTimeTrend,
+            onlineTimeQueryFactory,
+            onlineTimeQueryV2Factory,
+        ],
+        [
+            'useMessagesReceivedTrend',
+            useMessagesReceivedTrend,
+            messagesReceivedQueryFactory,
+            undefined,
+        ],
+        [
+            'useMedianResponseTimeTrend',
+            useMedianResponseTimeTrend,
+            medianResponseTimeQueryFactory,
+            undefined,
+        ],
+    ])('%s', (_testName, useTrendFn, queryFactory, scopeQuery) => {
         it('should create reporting filters', () => {
             renderHook(() => useTrendFn(statsFilters, timezone))
 
             expect(useMetricTrendMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone),
                 queryFactory(prevStatsFilters, timezone),
+                scopeQuery?.({ filters: statsFilters, timezone }),
+                scopeQuery?.({
+                    filters: prevStatsFilters,
+                    timezone,
+                }),
             )
         })
     })
@@ -280,6 +357,17 @@ describe('metric trends', () => {
             'fetchTicketHandleTimeTrend',
             fetchTicketHandleTimeTrend,
             ticketAverageHandleTimeQueryFactory,
+        ],
+        ['fetchOnlineTimeTrend', fetchOnlineTimeTrend, onlineTimeQueryFactory],
+        [
+            'fetchMessagesReceivedTrend',
+            fetchMessagesReceivedTrend,
+            messagesReceivedQueryFactory,
+        ],
+        [
+            'fetchMedianResponseTimeTrend',
+            fetchMedianResponseTimeTrend,
+            medianResponseTimeQueryFactory,
         ],
     ])('%s', (_testName, fetchTrendFn, queryFactory) => {
         it('should create reporting filters', async () => {

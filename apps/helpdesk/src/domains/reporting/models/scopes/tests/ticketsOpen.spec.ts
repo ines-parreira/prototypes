@@ -1,4 +1,7 @@
-import { openTicketsCount } from 'domains/reporting/models/scopes/ticketsOpen'
+import {
+    openTicketsCount,
+    openTicketsCountQueryV2Factory,
+} from 'domains/reporting/models/scopes/ticketsOpen'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('ticketsOpenScope', () => {
@@ -40,6 +43,17 @@ describe('ticketsOpenScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('openTicketsCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = openTicketsCountQueryV2Factory(context)
+                const buildResult = openTicketsCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

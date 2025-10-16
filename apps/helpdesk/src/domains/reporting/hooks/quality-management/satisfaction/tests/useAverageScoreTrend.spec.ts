@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { averageScoreQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
+import { averageScoreQueryV2Factory } from 'domains/reporting/models/scopes/averageCsat'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -43,6 +44,17 @@ describe('AverageScoreTrend', () => {
                     },
                     timezone,
                 ),
+                averageScoreQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                averageScoreQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const averageCsatScope = defineScope({
     scope: MetricScope.AverageCsat,
@@ -49,6 +49,9 @@ export const averageScore = averageCsatScope
         return query
     })
 
+export const averageScoreQueryV2Factory = (ctx: Context) =>
+    averageScore.build(ctx)
+
 export const averageCsatScorePerAgentTimeseries = averageCsatScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
@@ -74,6 +77,10 @@ export const averageCsatScorePerAgentTimeseries = averageCsatScope
 
         return query
     })
+
+export const averageCsatScorePerAgentTimeseriesQueryV2Factory = (
+    ctx: Context,
+) => averageCsatScorePerAgentTimeseries.build(ctx)
 
 export const averageCsatScorePerChannelTimeseries = averageCsatScope
     .defineMetricName(
@@ -101,6 +108,10 @@ export const averageCsatScorePerChannelTimeseries = averageCsatScope
         return query
     })
 
+export const averageCsatScorePerChannelTimeseriesQueryV2Factory = (
+    ctx: Context,
+) => averageCsatScorePerChannelTimeseries.build(ctx)
+
 export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
@@ -126,3 +137,7 @@ export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
 
         return query
     })
+
+export const averageCsatScorePerIntegrationTimeseriesQueryV2Factory = (
+    ctx: Context,
+) => averageCsatScorePerIntegrationTimeseries.build(ctx)

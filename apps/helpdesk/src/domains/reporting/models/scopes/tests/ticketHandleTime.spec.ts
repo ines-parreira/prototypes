@@ -1,8 +1,12 @@
 import {
     ticketAverageHandleTime,
     ticketAverageHandleTimePerAgent,
+    ticketAverageHandleTimePerAgentQueryV2Factory,
     ticketAverageHandleTimePerChannel,
+    ticketAverageHandleTimePerChannelQueryV2Factory,
+    ticketAverageHandleTimeQueryV2Factory,
     ticketHandleTime,
+    ticketHandleTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 
@@ -129,6 +133,49 @@ describe('ticketHandleTimeScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('ticketHandleTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = ticketHandleTimeQueryV2Factory(context)
+                const buildResult = ticketHandleTime.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('ticketAverageHandleTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketAverageHandleTimeQueryV2Factory(context)
+                const buildResult = ticketAverageHandleTime.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('ticketAverageHandleTimePerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketAverageHandleTimePerAgentQueryV2Factory(context)
+                const buildResult =
+                    ticketAverageHandleTimePerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('ticketAverageHandleTimePerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketAverageHandleTimePerChannelQueryV2Factory(context)
+                const buildResult =
+                    ticketAverageHandleTimePerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

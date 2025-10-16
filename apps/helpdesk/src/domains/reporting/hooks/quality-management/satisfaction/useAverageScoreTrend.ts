@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { averageScoreQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
+import { averageScoreQueryV2Factory } from 'domains/reporting/models/scopes/averageCsat'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -15,6 +16,17 @@ export const useAverageScoreTrend = (filters: StatsFilters, timezone: string) =>
             },
             timezone,
         ),
+        averageScoreQueryV2Factory({
+            filters,
+            timezone,
+        }),
+        averageScoreQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 export const fetchAverageScoreTrend = (

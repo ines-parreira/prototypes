@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const firstResponseTimeScope = defineScope({
     scope: MetricScope.FirstResponseTime,
@@ -58,6 +58,9 @@ export const medianFirstResponseTime = firstResponseTimeScope
         return query
     })
 
+export const medianFirstResponseTimeQueryV2Factory = (ctx: Context) =>
+    medianFirstResponseTime.build(ctx)
+
 export const medianFirstResponseTimePerAgent = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
@@ -80,6 +83,9 @@ export const medianFirstResponseTimePerAgent = firstResponseTimeScope
         return query
     })
 
+export const medianFirstResponseTimePerAgentQueryV2Factory = (ctx: Context) =>
+    medianFirstResponseTimePerAgent.build(ctx)
+
 export const medianFirstResponseTimePerChannel = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
@@ -101,3 +107,6 @@ export const medianFirstResponseTimePerChannel = firstResponseTimeScope
 
         return query
     })
+
+export const medianFirstResponseTimePerChannelQueryV2Factory = (ctx: Context) =>
+    medianFirstResponseTimePerChannel.build(ctx)

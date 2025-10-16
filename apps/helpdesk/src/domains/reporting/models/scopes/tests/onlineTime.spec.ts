@@ -1,6 +1,8 @@
 import {
     onlineTime,
     onlineTimePerAgent,
+    onlineTimePerAgentQueryV2Factory,
+    onlineTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/onlineTime'
 import {
     AggregationWindow,
@@ -76,6 +78,26 @@ describe('onlineTimeScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('onlineTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = onlineTimeQueryV2Factory(context)
+                const buildResult = onlineTime.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('onlineTimePerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = onlineTimePerAgentQueryV2Factory(context)
+                const buildResult = onlineTimePerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

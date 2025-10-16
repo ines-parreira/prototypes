@@ -1,3 +1,4 @@
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
@@ -25,6 +26,21 @@ import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
+import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
+import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
+import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import {
+    MetricQueryFactory,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { openTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsOpen'
+import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     StatsFilters,
     StatsFiltersWithLogicalOperator,
@@ -55,7 +71,14 @@ export const getTrendFetch =
     }
 
 export const getTrendHook =
-    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: QueryFactory<TCube>,
+        queryV2?: MetricQueryFactory<TMeta, TMetricName>,
+    ) =>
     (filters: StatsFilters, timezone: string) =>
         useMetricTrend(
             query(filters, timezone),
@@ -66,6 +89,17 @@ export const getTrendHook =
                 },
                 timezone,
             ),
+            queryV2?.({
+                filters,
+                timezone,
+            }),
+            queryV2?.({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            }),
         )
 
 export const useCustomerSatisfactionTrend = getTrendHook(
@@ -94,6 +128,17 @@ export const useMedianFirstResponseTimeTrend = (
             },
             timezone,
         ),
+        medianFirstResponseTime.build({
+            filters,
+            timezone,
+        }),
+        medianFirstResponseTime.build({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 }
 
@@ -137,6 +182,7 @@ export const useHumanResponseTimeAfterAiHandoffTrend = getTrendHook(
 
 export const useMessagesPerTicketTrend = getTrendHook(
     messagesPerTicketQueryFactory,
+    messagesPerTicketCountQueryV2Factory,
 )
 
 export const fetchMessagesPerTicketTrend = getTrendFetch(
@@ -145,21 +191,31 @@ export const fetchMessagesPerTicketTrend = getTrendFetch(
 
 export const useMedianResolutionTimeTrend = getTrendHook(
     medianResolutionTimeQueryFactory,
+    medianResolutionTimeQueryV2Factory,
 )
 
 export const fetchMedianResolutionTimeTrend = getTrendFetch(
     medianResolutionTimeQueryFactory,
 )
 
-export const useOpenTicketsTrend = getTrendHook(openTicketsQueryFactory)
+export const useOpenTicketsTrend = getTrendHook(
+    openTicketsQueryFactory,
+    openTicketsCountQueryV2Factory,
+)
 
 export const fetchOpenTicketsTrend = getTrendFetch(openTicketsQueryFactory)
 
-export const useClosedTicketsTrend = getTrendHook(closedTicketsQueryFactory)
+export const useClosedTicketsTrend = getTrendHook(
+    closedTicketsQueryFactory,
+    closedTicketsCountQueryV2Factory,
+)
 
 export const fetchClosedTicketsTrend = getTrendFetch(closedTicketsQueryFactory)
 
-export const useOneTouchTicketsTrend = getTrendHook(oneTouchTicketsQueryFactory)
+export const useOneTouchTicketsTrend = getTrendHook(
+    oneTouchTicketsQueryFactory,
+    oneTouchTicketsQueryV2Factory,
+)
 
 export const fetchOneTouchTicketsTrend = getTrendFetch(
     oneTouchTicketsQueryFactory,
@@ -173,19 +229,28 @@ export const fetchZeroTouchTicketsTrend = getTrendFetch(
     zeroTouchTicketsQueryFactory,
 )
 
-export const useTicketsCreatedTrend = getTrendHook(ticketsCreatedQueryFactory)
+export const useTicketsCreatedTrend = getTrendHook(
+    ticketsCreatedQueryFactory,
+    createdTicketsCountQueryV2Factory,
+)
 
 export const fetchTicketsCreatedTrend = getTrendFetch(
     ticketsCreatedQueryFactory,
 )
 
-export const useTicketsRepliedTrend = getTrendHook(ticketsRepliedQueryFactory)
+export const useTicketsRepliedTrend = getTrendHook(
+    ticketsRepliedQueryFactory,
+    ticketsRepliedCountQueryV2Factory,
+)
 
 export const fetchTicketsRepliedTrend = getTrendFetch(
     ticketsRepliedQueryFactory,
 )
 
-export const useMessagesSentTrend = getTrendHook(messagesSentQueryFactory)
+export const useMessagesSentTrend = getTrendHook(
+    messagesSentQueryFactory,
+    sentMessagesCountQueryV2Factory,
+)
 
 export const fetchMessagesSentTrend = getTrendFetch(messagesSentQueryFactory)
 
@@ -199,12 +264,16 @@ export const fetchMessagesReceivedTrend = getTrendFetch(
 
 export const useTicketHandleTimeTrend = getTrendHook(
     ticketAverageHandleTimeQueryFactory,
+    ticketAverageHandleTimeQueryV2Factory,
 )
 
 export const fetchTicketHandleTimeTrend = getTrendFetch(
     ticketAverageHandleTimeQueryFactory,
 )
 
-export const useOnlineTimeTrend = getTrendHook(onlineTimeQueryFactory)
+export const useOnlineTimeTrend = getTrendHook(
+    onlineTimeQueryFactory,
+    onlineTimeQueryV2Factory,
+)
 
 export const fetchOnlineTimeTrend = getTrendFetch(onlineTimeQueryFactory)

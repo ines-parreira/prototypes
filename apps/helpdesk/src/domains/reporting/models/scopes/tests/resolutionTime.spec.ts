@@ -1,7 +1,10 @@
 import {
     medianResolutionTime,
     medianResolutionTimePerAgent,
+    medianResolutionTimePerAgentQueryV2Factory,
     medianResolutionTimePerChannel,
+    medianResolutionTimePerChannelQueryV2Factory,
+    medianResolutionTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/resolutionTime'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 
@@ -102,6 +105,39 @@ describe('resolutionTimeScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('medianResolutionTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianResolutionTimeQueryV2Factory(context)
+                const buildResult = medianResolutionTime.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('medianResolutionTimePerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianResolutionTimePerAgentQueryV2Factory(context)
+                const buildResult = medianResolutionTimePerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('medianResolutionTimePerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    medianResolutionTimePerChannelQueryV2Factory(context)
+                const buildResult =
+                    medianResolutionTimePerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

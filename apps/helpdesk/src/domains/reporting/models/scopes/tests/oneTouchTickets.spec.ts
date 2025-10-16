@@ -3,8 +3,12 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 import {
     oneTouchTickets,
     oneTouchTicketsPerAgent,
+    oneTouchTicketsPerAgentQueryV2Factory,
     oneTouchTicketsPerChannel,
+    oneTouchTicketsPerChannelQueryV2Factory,
+    oneTouchTicketsQueryV2Factory,
     oneTouchTicketsTimeseries,
+    oneTouchTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/oneTouchTickets'
 import {
     AggregationWindow,
@@ -266,6 +270,105 @@ describe('oneTouchTicketsScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('oneTouchTicketsQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = oneTouchTicketsQueryV2Factory(context)
+                const buildResult = oneTouchTickets.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    oneTouchTicketsQueryV2Factory(contextWithSort)
+                const buildResult = oneTouchTickets.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('oneTouchTicketsTimeseriesQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    oneTouchTicketsTimeseriesQueryV2Factory(context)
+                const buildResult = oneTouchTicketsTimeseries.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles different granularity levels', () => {
+                const weeklyContext = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    oneTouchTicketsTimeseriesQueryV2Factory(weeklyContext)
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'week',
+                    },
+                ])
+            })
+        })
+
+        describe('oneTouchTicketsPerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    oneTouchTicketsPerAgentQueryV2Factory(context)
+                const buildResult = oneTouchTicketsPerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Asc,
+                }
+
+                const factoryResult =
+                    oneTouchTicketsPerAgentQueryV2Factory(contextWithSort)
+                const buildResult =
+                    oneTouchTicketsPerAgent.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('oneTouchTicketsPerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    oneTouchTicketsPerChannelQueryV2Factory(context)
+                const buildResult = oneTouchTicketsPerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    oneTouchTicketsPerChannelQueryV2Factory(contextWithSort)
+                const buildResult =
+                    oneTouchTicketsPerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

@@ -6,7 +6,7 @@ import moment from 'moment'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     fetchPostReporting,
-    usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -31,7 +31,7 @@ const statsFilters: StatsFilters = {
 const queryClient = mockQueryClient()
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 jest.useFakeTimers()

@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const oneTouchTicketsScope = defineScope({
     scope: MetricScope.OneTouchTickets,
@@ -43,6 +43,9 @@ export const oneTouchTickets = oneTouchTicketsScope
         return query
     })
 
+export const oneTouchTicketsQueryV2Factory = (ctx: Context) =>
+    oneTouchTickets.build(ctx)
+
 export const oneTouchTicketsTimeseries = oneTouchTicketsScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES,
@@ -56,6 +59,9 @@ export const oneTouchTicketsTimeseries = oneTouchTicketsScope
             },
         ],
     }))
+
+export const oneTouchTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
+    oneTouchTicketsTimeseries.build(ctx)
 
 export const oneTouchTicketsPerAgent = oneTouchTicketsScope
     .defineMetricName(
@@ -77,6 +83,9 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
         return query
     })
 
+export const oneTouchTicketsPerAgentQueryV2Factory = (ctx: Context) =>
+    oneTouchTicketsPerAgent.build(ctx)
+
 export const oneTouchTicketsPerChannel = oneTouchTicketsScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL,
@@ -96,3 +105,6 @@ export const oneTouchTicketsPerChannel = oneTouchTicketsScope
 
         return query
     })
+
+export const oneTouchTicketsPerChannelQueryV2Factory = (ctx: Context) =>
+    oneTouchTicketsPerChannel.build(ctx)

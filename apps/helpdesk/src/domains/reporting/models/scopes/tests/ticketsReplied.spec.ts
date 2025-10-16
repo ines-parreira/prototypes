@@ -1,8 +1,12 @@
 import {
     ticketsRepliedCount,
     ticketsRepliedCountPerAgent,
+    ticketsRepliedCountPerAgentQueryV2Factory,
     ticketsRepliedCountPerChannel,
+    ticketsRepliedCountPerChannelQueryV2Factory,
+    ticketsRepliedCountQueryV2Factory,
     ticketsRepliedTimeseries,
+    ticketsRepliedTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     AggregationWindow,
@@ -194,6 +198,94 @@ describe('ticketsRepliedScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('ticketsRepliedCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = ticketsRepliedCountQueryV2Factory(context)
+                const buildResult = ticketsRepliedCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('ticketsRepliedTimeseriesQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketsRepliedTimeseriesQueryV2Factory(context)
+                const buildResult = ticketsRepliedTimeseries.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles different granularity levels', () => {
+                const weeklyContext = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    ticketsRepliedTimeseriesQueryV2Factory(weeklyContext)
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'week',
+                    },
+                ])
+            })
+        })
+
+        describe('ticketsRepliedCountPerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketsRepliedCountPerAgentQueryV2Factory(context)
+                const buildResult = ticketsRepliedCountPerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    ticketsRepliedCountPerAgentQueryV2Factory(contextWithSort)
+                const buildResult =
+                    ticketsRepliedCountPerAgent.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
+        })
+
+        describe('ticketsRepliedCountPerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    ticketsRepliedCountPerChannelQueryV2Factory(context)
+                const buildResult = ticketsRepliedCountPerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    ticketsRepliedCountPerChannelQueryV2Factory(contextWithSort)
+                const buildResult =
+                    ticketsRepliedCountPerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
         })
     })
 })

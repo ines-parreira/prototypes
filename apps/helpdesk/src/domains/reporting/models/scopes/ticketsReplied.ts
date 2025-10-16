@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const ticketsRepliedScope = defineScope({
     scope: MetricScope.TicketsReplied,
@@ -32,6 +32,9 @@ export const ticketsRepliedCount = ticketsRepliedScope
         measures: ['ticketCount'] as const,
     }))
 
+export const ticketsRepliedCountQueryV2Factory = (ctx: Context) =>
+    ticketsRepliedCount.build(ctx)
+
 export const ticketsRepliedTimeseries = ticketsRepliedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_TIME_SERIES,
@@ -45,6 +48,9 @@ export const ticketsRepliedTimeseries = ticketsRepliedScope
             },
         ],
     }))
+
+export const ticketsRepliedTimeseriesQueryV2Factory = (ctx: Context) =>
+    ticketsRepliedTimeseries.build(ctx)
 
 export const ticketsRepliedCountPerAgent = ticketsRepliedScope
     .defineMetricName(
@@ -66,6 +72,9 @@ export const ticketsRepliedCountPerAgent = ticketsRepliedScope
         return query
     })
 
+export const ticketsRepliedCountPerAgentQueryV2Factory = (ctx: Context) =>
+    ticketsRepliedCountPerAgent.build(ctx)
+
 export const ticketsRepliedCountPerChannel = ticketsRepliedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED_PER_CHANNEL,
@@ -85,3 +94,6 @@ export const ticketsRepliedCountPerChannel = ticketsRepliedScope
 
         return query
     })
+
+export const ticketsRepliedCountPerChannelQueryV2Factory = (ctx: Context) =>
+    ticketsRepliedCountPerChannel.build(ctx)

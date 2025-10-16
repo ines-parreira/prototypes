@@ -2,8 +2,11 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
     createdTicketsCount,
+    createdTicketsCountQueryV2Factory,
     createdTicketsPerChannel,
+    createdTicketsPerChannelQueryV2Factory,
     createdTicketsTimeseries,
+    createdTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsCreated'
 import {
     AggregationWindow,
@@ -197,6 +200,86 @@ describe('ticketsCreatedScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('createdTicketsCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = createdTicketsCountQueryV2Factory(context)
+                const buildResult = createdTicketsCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    createdTicketsCountQueryV2Factory(contextWithSort)
+                const buildResult = createdTicketsCount.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
+        })
+
+        describe('createdTicketsTimeseriesQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    createdTicketsTimeseriesQueryV2Factory(context)
+                const buildResult = createdTicketsTimeseries.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles different granularity levels', () => {
+                const weeklyContext = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    createdTicketsTimeseriesQueryV2Factory(weeklyContext)
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'week',
+                    },
+                ])
+                expect(factoryResult.order).toEqual([
+                    ['createdDatetime', 'asc'],
+                ])
+            })
+        })
+
+        describe('createdTicketsPerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    createdTicketsPerChannelQueryV2Factory(context)
+                const buildResult = createdTicketsPerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Asc,
+                }
+
+                const factoryResult =
+                    createdTicketsPerChannelQueryV2Factory(contextWithSort)
+                const buildResult =
+                    createdTicketsPerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'asc']])
+            })
         })
     })
 })

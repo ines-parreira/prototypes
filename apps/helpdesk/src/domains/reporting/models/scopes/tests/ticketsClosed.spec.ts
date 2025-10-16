@@ -3,9 +3,13 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     closedTicketsCount,
+    closedTicketsCountQueryV2Factory,
     closedTicketsPerAgent,
+    closedTicketsPerAgentQueryV2Factory,
     closedTicketsPerChannel,
+    closedTicketsPerChannelQueryV2Factory,
     closedTicketsTimeseries,
+    closedTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsClosed'
 import {
     AggregationWindow,
@@ -266,6 +270,94 @@ describe('ticketsClosedScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('closedTicketsCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = closedTicketsCountQueryV2Factory(context)
+                const buildResult = closedTicketsCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('closedTicketsTimeseriesQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    closedTicketsTimeseriesQueryV2Factory(context)
+                const buildResult = closedTicketsTimeseries.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles different granularity levels', () => {
+                const weeklyContext = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    closedTicketsTimeseriesQueryV2Factory(weeklyContext)
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'week',
+                    },
+                ])
+                expect(factoryResult.order).toEqual([['closedDatetime', 'asc']])
+            })
+        })
+
+        describe('closedTicketsPerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    closedTicketsPerAgentQueryV2Factory(context)
+                const buildResult = closedTicketsPerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Asc,
+                }
+
+                const factoryResult =
+                    closedTicketsPerAgentQueryV2Factory(contextWithSort)
+                const buildResult = closedTicketsPerAgent.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'asc']])
+            })
+        })
+
+        describe('closedTicketsPerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    closedTicketsPerChannelQueryV2Factory(context)
+                const buildResult = closedTicketsPerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    closedTicketsPerChannelQueryV2Factory(contextWithSort)
+                const buildResult =
+                    closedTicketsPerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
         })
     })
 })

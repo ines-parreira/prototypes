@@ -1,4 +1,7 @@
-import { messagesPerTicketCount } from 'domains/reporting/models/scopes/messagesPerTicket'
+import {
+    messagesPerTicketCount,
+    messagesPerTicketCountQueryV2Factory,
+} from 'domains/reporting/models/scopes/messagesPerTicket'
 import {
     AggregationWindow,
     StatsFilters,
@@ -51,6 +54,18 @@ describe('messagesPerTicketScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('messagesPerTicketCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    messagesPerTicketCountQueryV2Factory(context)
+                const buildResult = messagesPerTicketCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
         })
     })
 })

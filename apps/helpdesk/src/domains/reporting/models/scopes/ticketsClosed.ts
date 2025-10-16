@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
 
 const ticketsClosedScope = defineScope({
@@ -29,6 +29,9 @@ export const closedTicketsCount = ticketsClosedScope
         measures: ['ticketCount'] as const,
     }))
 
+export const closedTicketsCountQueryV2Factory = (ctx: Context) =>
+    closedTicketsCount.build(ctx)
+
 export const closedTicketsTimeseries = ticketsClosedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_TIME_SERIES,
@@ -43,6 +46,9 @@ export const closedTicketsTimeseries = ticketsClosedScope
         ],
         order: [['closedDatetime', OrderDirection.Asc]] as const,
     }))
+
+export const closedTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
+    closedTicketsTimeseries.build(ctx)
 
 export const closedTicketsPerAgent = ticketsClosedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT)
@@ -61,6 +67,9 @@ export const closedTicketsPerAgent = ticketsClosedScope
 
         return query
     })
+
+export const closedTicketsPerAgentQueryV2Factory = (ctx: Context) =>
+    closedTicketsPerAgent.build(ctx)
 
 export const closedTicketsPerChannel = ticketsClosedScope
     .defineMetricName(
@@ -81,3 +90,6 @@ export const closedTicketsPerChannel = ticketsClosedScope
 
         return query
     })
+
+export const closedTicketsPerChannelQueryV2Factory = (ctx: Context) =>
+    closedTicketsPerChannel.build(ctx)

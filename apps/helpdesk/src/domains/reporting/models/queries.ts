@@ -68,35 +68,6 @@ export const fetchPostReporting = <
     })
 }
 
-/**
- * Similar to usePostReporting but with support for v2 queries.
- * This is a temporary solution, because some metrics use `usePostReporting` directly
- * and not one of the `useMetricX` hooks and refactoring all of them would be too time-consuming for now.
- */
-export const usePostReportingV2 = <
-    TData extends unknown[],
-    SelectData = UsePostReportingQueryData<TData>,
-    TCube extends Cube = Cube,
-    TMeta extends ScopeMeta = ScopeMeta,
->(
-    data: ReportingParams<TCube>,
-    dataV2?: BuiltQuery<TMeta>,
-    overrides?: UseQueryOptions<
-        UsePostReportingQueryData<TData>,
-        unknown,
-        SelectData
-    >,
-) => {
-    return useQuery({
-        queryKey: dataV2
-            ? reportingKeys.postV2<TMeta>(data, dataV2)
-            : reportingKeys.post(data),
-        queryFn: () => postReporting<TData, TCube, TMeta>(data, dataV2),
-        ...defaultOptions,
-        ...overrides,
-    })
-}
-
 export const usePostReporting = <
     TData extends unknown[],
     SelectData = UsePostReportingQueryData<TData>,
@@ -112,6 +83,35 @@ export const usePostReporting = <
     return useQuery({
         queryKey: reportingKeys.post(data),
         queryFn: () => postReporting<TData, TCube>(data),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
+/**
+ * Similar to usePostReporting but with support for v2 queries.
+ * This is a temporary solution, because some metrics use `usePostReporting` directly
+ * and not one of the `useMetricX` hooks and refactoring all of them would be too time-consuming for now.
+ */
+export const usePostReportingV2 = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>,
+    TCube extends Cube = Cube,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    oldQuery: ReportingParams<TCube>,
+    newQuery?: BuiltQuery<TMeta>,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >,
+) => {
+    return useQuery({
+        queryKey: newQuery
+            ? reportingKeys.postV2(oldQuery, newQuery)
+            : reportingKeys.post(oldQuery),
+        queryFn: () => postReporting<TData, TCube, TMeta>(oldQuery, newQuery),
         ...defaultOptions,
         ...overrides,
     })

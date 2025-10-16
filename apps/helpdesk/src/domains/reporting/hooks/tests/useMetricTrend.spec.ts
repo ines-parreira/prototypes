@@ -14,12 +14,12 @@ import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     fetchPostReporting,
-    usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
 const defaultReporting = {
@@ -36,7 +36,7 @@ const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
 
 describe('useMetricTrend', () => {
     beforeEach(() => {
-        usePostReportingMock.mockReturnValue(defaultReporting)
+        usePostReportingV2Mock.mockReturnValue(defaultReporting)
     })
 
     it('should return isFetching=false when no queries are fetching', () => {
@@ -48,7 +48,7 @@ describe('useMetricTrend', () => {
     })
 
     it('should return isFetching=true when one the queries is fetching', () => {
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             isFetching: true,
         })
@@ -69,7 +69,7 @@ describe('useMetricTrend', () => {
     })
 
     it('should return isError=true when one the queries errored', () => {
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             isError: true,
         } as UseQueryResult)
@@ -90,11 +90,11 @@ describe('useMetricTrend', () => {
     })
 
     it('should return data', () => {
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
         } as UseQueryResult)
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: null,
         } as UseQueryResult)
@@ -109,7 +109,7 @@ describe('useMetricTrend', () => {
         })
     })
 
-    it('should call usePostReporting with the query', () => {
+    it('should call usePostReportingV2 with the query and null V2 queries', () => {
         const messagesAverage = 100
         const data = {
             data: {
@@ -126,35 +126,126 @@ describe('useMetricTrend', () => {
             ...defaultQuery,
             measures: [TicketMessagesMeasure.MessagesAverage],
         }
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
         } as UseQueryResult)
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: 2,
         } as UseQueryResult)
 
         renderHook(() => useMetricTrend(defaultQuery, prevPeriodQuery))
 
-        const defaultSelect = usePostReportingMock.mock.calls[0][1]?.select
-        const previousSelect = usePostReportingMock.mock.calls[1][1]?.select
+        const defaultSelect = usePostReportingV2Mock.mock.calls[0][2]?.select
+        const previousSelect = usePostReportingV2Mock.mock.calls[1][2]?.select
 
-        expect(usePostReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
             [defaultQuery],
+            undefined,
             expect.objectContaining({
                 select: defaultSelect,
             }),
         )
         expect(defaultSelect?.(data)).toEqual(null)
 
-        expect(usePostReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
             [prevPeriodQuery],
+            undefined,
             expect.objectContaining({
-                select: usePostReportingMock.mock.calls[1][1]?.select,
+                select: usePostReportingV2Mock.mock.calls[1][2]?.select,
             }),
         )
         expect(previousSelect?.(data)).toEqual(messagesAverage)
+    })
+
+    it('should call usePostReportingV2 with V2 queries when provided', () => {
+        const currentV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        const prevV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 10,
+        } as UseQueryResult)
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 5,
+        } as UseQueryResult)
+
+        renderHook(() =>
+            useMetricTrend(
+                defaultQuery,
+                defaultQuery,
+                currentV2Query,
+                prevV2Query,
+            ),
+        )
+
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+            [defaultQuery],
+            currentV2Query,
+            expect.objectContaining({
+                select: expect.any(Function),
+            }),
+        )
+
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+            [defaultQuery],
+            prevV2Query,
+            expect.objectContaining({
+                select: expect.any(Function),
+            }),
+        )
+    })
+
+    it('should return data when using V2 queries', () => {
+        const currentV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        const prevV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 42,
+        } as UseQueryResult)
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 21,
+        } as UseQueryResult)
+
+        const { result } = renderHook(() =>
+            useMetricTrend(
+                defaultQuery,
+                defaultQuery,
+                currentV2Query,
+                prevV2Query,
+            ),
+        )
+
+        expect(result.current.data).toEqual({
+            value: 42,
+            prevValue: 21,
+        })
     })
 
     describe('selectMeasure', () => {

@@ -85,6 +85,12 @@ export type Context = {
     granularity?: AggregationWindow
 }
 
+export type MetricQueryFactory<
+    TMeta extends ScopeMeta = ScopeMeta,
+    TMetricName extends MetricName = MetricName,
+    TContext extends Context = Context,
+> = (ctx: TContext) => BuiltQuery<TMeta, TMetricName>
+
 class MetricQuery<
     TMeta extends ScopeMeta,
     TMetricName extends MetricName,

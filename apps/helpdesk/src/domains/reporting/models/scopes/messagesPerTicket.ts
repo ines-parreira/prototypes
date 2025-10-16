@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const messagesPerTicketScope = defineScope({
     scope: MetricScope.MessagesPerTicket,
@@ -37,3 +37,6 @@ export const messagesPerTicketCount = messagesPerTicketScope
     .defineQuery(() => ({
         measures: ['messagesAverage'] as const,
     }))
+
+export const messagesPerTicketCountQueryV2Factory = (ctx: Context) =>
+    messagesPerTicketCount.build(ctx)

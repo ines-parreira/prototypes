@@ -1,6 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const ticketsOpenScope = defineScope({
     scope: MetricScope.TicketsOpen,
@@ -32,3 +31,6 @@ export const openTicketsCount = ticketsOpenScope
     .defineQuery(() => ({
         measures: ['ticketCount'],
     }))
+
+export const openTicketsCountQueryV2Factory = (ctx: Context) =>
+    openTicketsCount.build(ctx)

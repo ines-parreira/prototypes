@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const messagesSentScope = defineScope({
     scope: MetricScope.MessagesSent,
@@ -32,6 +32,9 @@ export const sentMessagesCount = messagesSentScope
         measures: ['messagesCount'] as const,
     }))
 
+export const sentMessagesCountQueryV2Factory = (ctx: Context) =>
+    sentMessagesCount.build(ctx)
+
 export const sentMessagesTimeseries = messagesSentScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_TIME_SERIES,
@@ -45,6 +48,9 @@ export const sentMessagesTimeseries = messagesSentScope
             },
         ],
     }))
+
+export const sentMessagesTimeseriesQueryV2Factory = (ctx: Context) =>
+    sentMessagesTimeseries.build(ctx)
 
 export const sentMessagesPerAgent = messagesSentScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT)
@@ -63,6 +69,9 @@ export const sentMessagesPerAgent = messagesSentScope
 
         return query
     })
+
+export const sentMessagesPerAgentQueryV2Factory = (ctx: Context) =>
+    sentMessagesPerAgent.build(ctx)
 
 export const sentMessagesPerChannel = messagesSentScope
     .defineMetricName(
@@ -83,3 +92,6 @@ export const sentMessagesPerChannel = messagesSentScope
 
         return query
     })
+
+export const sentMessagesPerChannelQueryV2Factory = (ctx: Context) =>
+    sentMessagesPerChannel.build(ctx)

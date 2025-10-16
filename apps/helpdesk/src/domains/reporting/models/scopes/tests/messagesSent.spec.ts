@@ -2,9 +2,13 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
     sentMessagesCount,
+    sentMessagesCountQueryV2Factory,
     sentMessagesPerAgent,
+    sentMessagesPerAgentQueryV2Factory,
     sentMessagesPerChannel,
+    sentMessagesPerChannelQueryV2Factory,
     sentMessagesTimeseries,
+    sentMessagesTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/messagesSent'
 import {
     AggregationWindow,
@@ -239,6 +243,93 @@ describe('messagesSentScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('sentMessagesCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = sentMessagesCountQueryV2Factory(context)
+                const buildResult = sentMessagesCount.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('sentMessagesTimeseriesQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    sentMessagesTimeseriesQueryV2Factory(context)
+                const buildResult = sentMessagesTimeseries.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles different granularity levels', () => {
+                const weeklyContext = {
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                }
+
+                const factoryResult =
+                    sentMessagesTimeseriesQueryV2Factory(weeklyContext)
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    {
+                        dimension: 'sentDatetime',
+                        granularity: 'week',
+                    },
+                ])
+            })
+        })
+
+        describe('sentMessagesPerAgentQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    sentMessagesPerAgentQueryV2Factory(context)
+                const buildResult = sentMessagesPerAgent.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Asc,
+                }
+
+                const factoryResult =
+                    sentMessagesPerAgentQueryV2Factory(contextWithSort)
+                const buildResult = sentMessagesPerAgent.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['messagesCount', 'asc']])
+            })
+        })
+
+        describe('sentMessagesPerChannelQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    sentMessagesPerChannelQueryV2Factory(context)
+                const buildResult = sentMessagesPerChannel.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('handles sorting correctly', () => {
+                const contextWithSort = {
+                    ...context,
+                    sortDirection: OrderDirection.Desc,
+                }
+
+                const factoryResult =
+                    sentMessagesPerChannelQueryV2Factory(contextWithSort)
+                const buildResult =
+                    sentMessagesPerChannel.build(contextWithSort)
+
+                expect(factoryResult).toEqual(buildResult)
+                expect(factoryResult.order).toEqual([['messagesCount', 'desc']])
+            })
         })
     })
 })

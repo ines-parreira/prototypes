@@ -1,7 +1,6 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
-
-import { defineScope } from './scope'
 
 const ticketsCreatedScope = defineScope({
     scope: MetricScope.TicketsCreated,
@@ -45,6 +44,9 @@ export const createdTicketsCount = ticketsCreatedScope
         return query
     })
 
+export const createdTicketsCountQueryV2Factory = (ctx: Context) =>
+    createdTicketsCount.build(ctx)
+
 export const createdTicketsPerChannel = ticketsCreatedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_CHANNEL,
@@ -65,6 +67,9 @@ export const createdTicketsPerChannel = ticketsCreatedScope
         return query
     })
 
+export const createdTicketsPerChannelQueryV2Factory = (ctx: Context) =>
+    createdTicketsPerChannel.build(ctx)
+
 export const createdTicketsTimeseries = ticketsCreatedScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES,
@@ -79,3 +84,6 @@ export const createdTicketsTimeseries = ticketsCreatedScope
         ],
         order: [['createdDatetime', OrderDirection.Asc]] as const,
     }))
+
+export const createdTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
+    createdTicketsTimeseries.build(ctx)

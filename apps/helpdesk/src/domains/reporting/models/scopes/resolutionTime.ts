@@ -1,6 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-
-import { defineScope } from './scope'
+import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const resolutionTimeScope = defineScope({
     scope: MetricScope.ResolutionTime,
@@ -39,6 +38,9 @@ export const medianResolutionTime = resolutionTimeScope
         measures: ['medianResolutionTime'] as const,
     }))
 
+export const medianResolutionTimeQueryV2Factory = (ctx: Context) =>
+    medianResolutionTime.build(ctx)
+
 export const medianResolutionTimePerAgent = resolutionTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
@@ -48,6 +50,9 @@ export const medianResolutionTimePerAgent = resolutionTimeScope
         dimensions: ['agentId'] as const,
     }))
 
+export const medianResolutionTimePerAgentQueryV2Factory = (ctx: Context) =>
+    medianResolutionTimePerAgent.build(ctx)
+
 export const medianResolutionTimePerChannel = resolutionTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_CHANNEL,
@@ -56,3 +61,6 @@ export const medianResolutionTimePerChannel = resolutionTimeScope
         measures: ['medianResolutionTime'] as const,
         dimensions: ['channel'] as const,
     }))
+
+export const medianResolutionTimePerChannelQueryV2Factory = (ctx: Context) =>
+    medianResolutionTimePerChannel.build(ctx)
