@@ -73,7 +73,7 @@ export const usePostReporting = <
     SelectData = UsePostReportingQueryData<TData>,
     TCube extends Cube = Cube,
 >(
-    data: ReportingParams<TCube>,
+    query: ReportingParams<TCube>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
         unknown,
@@ -81,8 +81,8 @@ export const usePostReporting = <
     >,
 ) => {
     return useQuery({
-        queryKey: reportingKeys.post(data),
-        queryFn: () => postReporting<TData, TCube>(data),
+        queryKey: reportingKeys.post(query),
+        queryFn: () => postReporting<TData, TCube>(query),
         ...defaultOptions,
         ...overrides,
     })

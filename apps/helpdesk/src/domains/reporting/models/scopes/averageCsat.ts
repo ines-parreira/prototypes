@@ -1,4 +1,6 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
 const averageCsatScope = defineScope({
@@ -137,6 +139,13 @@ export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
 
         return query
     })
+
+export const integrationCsatQueryBuilder = {
+    [TicketDimension.AssigneeUserId]: averageCsatScorePerAgentTimeseries,
+    [TicketDimension.Channel]: averageCsatScorePerChannelTimeseries,
+    [TicketMessagesDimension.Integration]:
+        averageCsatScorePerIntegrationTimeseries,
+}
 
 export const averageCsatScorePerIntegrationTimeseriesQueryV2Factory = (
     ctx: Context,

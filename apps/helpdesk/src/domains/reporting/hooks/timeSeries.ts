@@ -151,7 +151,7 @@ export const useZeroTouchTicketsTimeSeries = getTimeSeriesHook(
 export const fetchZeroTouchTicketsTimeSeries = getTimeSeriesFetch(
     zeroTouchTicketsTimeSeriesQueryFactory,
 )
-
+// P2/P3
 export const useCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -169,7 +169,7 @@ export const useCustomFieldsTicketCountTimeSeries = (
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
     )
 }
-
+// P2/P3
 export const useAIIntentCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -197,7 +197,7 @@ export const useAIIntentCustomFieldsTicketCountTimeSeries = (
         ],
     })
 }
-
+// P2/P3
 export const useSentimentsCustomFieldsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -216,7 +216,7 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
             sorting,
         ),
     )
-
+// P2/P3
 export const useCustomFieldsTicketCountForProductTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -255,6 +255,7 @@ export const fetchCustomFieldsTicketCountTimeSeries = (
     )
 }
 
+// P2/P3
 export const useTagsTicketCountTimeSeries = (
     filters: StatsFilters,
     timezone: string,

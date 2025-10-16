@@ -27,9 +27,9 @@ import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMess
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
     fetchPostReporting,
-    usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -38,7 +38,6 @@ import {
 } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 
@@ -554,6 +553,20 @@ describe('TimeSeriesPerDimension', () => {
         metricName: METRIC_NAMES.TEST_METRIC,
         timeDimensions: [defaultTimeDimension],
     }
+    const defaultQueryV2: BuiltQuery<ScopeMeta> = {
+        metricName: METRIC_NAMES.TEST_METRIC,
+        measures: [VALUE_FIELD],
+        time_dimensions: [defaultTimeDimension] as any,
+        dimensions: ['agentId'],
+        filters: [
+            {
+                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
+                operator: ReportingFilterOperator.Equals,
+                values: [customFieldId],
+            },
+        ] as any,
+        scope: 'test-scope' as any,
+    }
     const defaultData = [
         {
             [TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime]:
@@ -587,11 +600,14 @@ describe('TimeSeriesPerDimension', () => {
     describe('useTimeSeriesPerDimension', () => {
         it('should return separate time series per escaped dimension value', () => {
             renderHook(() =>
-                useTimeSeriesPerDimension({
-                    ...defaultQuery,
-                }),
+                useTimeSeriesPerDimension(
+                    {
+                        ...defaultQuery,
+                    },
+                    defaultQueryV2,
+                ),
             )
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
             expect(
                 select?.({
@@ -749,11 +765,14 @@ describe('TimeSeriesPerDimension', () => {
             }
 
             renderHook(() =>
-                useTimeSeriesPerDimension({
-                    ...query,
-                }),
+                useTimeSeriesPerDimension(
+                    {
+                        ...query,
+                    },
+                    defaultQueryV2,
+                ),
             )
-            const select = usePostReportingMock.mock.calls[0][1]?.select
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
 
             expect(
                 select?.({

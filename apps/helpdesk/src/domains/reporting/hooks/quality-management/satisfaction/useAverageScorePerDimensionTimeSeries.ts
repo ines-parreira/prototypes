@@ -7,6 +7,7 @@ import {
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { averageCSATScorePerDimensionTimeSeriesFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { integrationCsatQueryBuilder } from 'domains/reporting/models/scopes/averageCsat'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ReportFetch } from 'domains/reporting/pages/dashboards/types'
@@ -202,5 +203,11 @@ const useAverageCSATPerDimensionTimeSeries = (
             granularity,
             OrderDirection.Desc,
         ),
+        integrationCsatQueryBuilder[dimension].build({
+            timezone,
+            granularity,
+            filters,
+            sortDirection: OrderDirection.Desc,
+        }),
     )
 }

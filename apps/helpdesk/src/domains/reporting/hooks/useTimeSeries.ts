@@ -8,7 +8,6 @@ import { DataResponse } from 'domains/reporting/hooks/withDeciles'
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
-    usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
@@ -148,15 +147,16 @@ export async function fetchTimeSeries<TCube extends Cubes>(
     >([query], {}).then((res) => select<TCube>(query)(res.data.data))
 }
 
-export function useTimeSeriesPerDimension<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>,
-    enabled = true,
-) {
-    return usePostReporting<
+export function useTimeSeriesPerDimension<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(query: TimeSeriesQuery<TCube>, newQuery?: BuiltQuery<TMeta>, enabled = true) {
+    return usePostReportingV2<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
-        TCube
-    >([query], {
+        TCube,
+        TMeta
+    >([query], newQuery, {
         select: (res) => selectPerDimension<TCube>(query)(res.data.data),
         enabled,
     })
