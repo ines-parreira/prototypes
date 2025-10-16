@@ -79,7 +79,7 @@ describe('utils', () => {
             const result = createScopeFilters(statFilters, scopeConfig)
 
             expect(result).toContainEqual({
-                member: 'agents',
+                member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['123', '456'],
             })
@@ -102,7 +102,7 @@ describe('utils', () => {
             const result = createScopeFilters(statFilters, scopeConfig)
 
             expect(result).toContainEqual({
-                member: 'channels',
+                member: 'channel',
                 operator: LogicalOperatorEnum.NOT_ONE_OF,
                 values: ['email', 'chat'],
             })
@@ -125,7 +125,7 @@ describe('utils', () => {
             const result = createScopeFilters(statFilters, scopeConfig)
 
             expect(result).toContainEqual({
-                member: 'integrations',
+                member: 'integrationId',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['789', '101112'],
             })
@@ -506,12 +506,12 @@ describe('utils', () => {
 
             expect(result).toHaveLength(6) // 2 period filters + 4 scope filters
             expect(result).toContainEqual({
-                member: 'agents',
+                member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['123', '456'],
             })
             expect(result).toContainEqual({
-                member: 'channels',
+                member: 'channel',
                 operator: LogicalOperatorEnum.NOT_ONE_OF,
                 values: ['email'],
             })
@@ -553,12 +553,12 @@ describe('utils', () => {
 
             expect(result).toHaveLength(3) // 2 period filters + 1 agents filter
             expect(result).toContainEqual({
-                member: 'agents',
+                member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['123'],
             })
             expect(result).not.toContainEqual(
-                expect.objectContaining({ member: 'channels' }),
+                expect.objectContaining({ member: 'channel' }),
             )
         })
 
@@ -581,12 +581,12 @@ describe('utils', () => {
 
             expect(result).toHaveLength(3) // 2 period filters + 1 agents filter
             expect(result).toContainEqual({
-                member: 'agents',
+                member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['123'],
             })
             expect(result).not.toContainEqual(
-                expect.objectContaining({ member: 'channels' }),
+                expect.objectContaining({ member: 'channel' }),
             )
         })
 
@@ -608,7 +608,7 @@ describe('utils', () => {
                 const result = createScopeFilters(statFilters, scopeConfig)
 
                 expect(result).toContainEqual({
-                    member: 'agents',
+                    member: 'agentId',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['123', '456', '789'],
                 })
@@ -631,7 +631,7 @@ describe('utils', () => {
                 const result = createScopeFilters(statFilters, scopeConfig)
 
                 expect(result).toContainEqual({
-                    member: 'integrations',
+                    member: 'integrationId',
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
                     values: ['100', '200'],
                 })
@@ -783,7 +783,7 @@ describe('utils', () => {
             dimensions: ['tickets.status'],
             filters: [
                 {
-                    member: 'agents',
+                    member: 'agentId',
                     operator: 'one-of' as any,
                     values: ['123', '456'],
                 },
@@ -797,7 +797,7 @@ describe('utils', () => {
             dimensions: ['tickets.status'],
             filters: [
                 {
-                    member: 'agents',
+                    member: 'agentId',
                     operator: 'one-of' as any,
                     values: ['123', '456'],
                 },
@@ -870,7 +870,7 @@ describe('utils', () => {
                 ...baseV2Query,
                 filters: [
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['789'],
                     },
@@ -884,7 +884,7 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different',
                 expect.arrayContaining([
-                    'V1 filter not found in V2: {"member":"agents","operator":"one-of","values":["123","456"]}',
+                    'V1 filter not found in V2: {"member":"agentId","operator":"one-of","values":["123","456"]}',
                 ]),
             )
         })
@@ -893,9 +893,9 @@ describe('utils', () => {
             const v1Query = {
                 ...baseV1Query,
                 filters: [
-                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    { member: 'agentId', operator: 'one-of', values: ['123'] },
                     {
-                        member: 'channels',
+                        member: 'channel',
                         operator: 'one-of',
                         values: ['email'],
                     },
@@ -904,7 +904,7 @@ describe('utils', () => {
             const v2Query = {
                 ...baseV2Query,
                 filters: [
-                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    { member: 'agentId', operator: 'one-of', values: ['123'] },
                 ],
             } as any
 
@@ -922,9 +922,9 @@ describe('utils', () => {
             const v1Query = {
                 ...baseV1Query,
                 filters: [
-                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    { member: 'agentId', operator: 'one-of', values: ['123'] },
                     {
-                        member: 'channels',
+                        member: 'channel',
                         operator: 'one-of',
                         values: ['email'],
                     },
@@ -934,11 +934,11 @@ describe('utils', () => {
                 ...baseV2Query,
                 filters: [
                     {
-                        member: 'channels',
+                        member: 'channel',
                         operator: 'one-of',
                         values: ['email'],
                     },
-                    { member: 'agents', operator: 'one-of', values: ['123'] },
+                    { member: 'agentId', operator: 'one-of', values: ['123'] },
                 ],
             } as any
 

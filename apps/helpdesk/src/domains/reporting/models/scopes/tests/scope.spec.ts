@@ -359,12 +359,12 @@ describe('scope', () => {
             const complexMockFilters = [
                 ...mockScopeFilters,
                 {
-                    member: 'agents',
+                    member: 'agentId',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['1', '2', '3'],
                 },
                 {
-                    member: 'channels',
+                    member: 'channel',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['email', 'chat'],
                 },

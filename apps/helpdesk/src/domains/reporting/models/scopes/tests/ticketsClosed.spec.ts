@@ -61,7 +61,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },
@@ -100,7 +100,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },
@@ -133,7 +133,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },
@@ -173,7 +173,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },
@@ -213,7 +213,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },
@@ -253,7 +253,7 @@ describe('ticketsClosedScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                     {
-                        member: 'agents',
+                        member: 'agentId',
                         operator: 'one-of',
                         values: ['123'],
                     },

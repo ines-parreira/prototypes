@@ -6,6 +6,7 @@ import {
     CustomFieldsFilter,
     DateFilter,
     FilterGroup,
+    FilterName,
     StandardFilter,
     TagsFilter,
 } from 'domains/reporting/models/scopes/types'
@@ -22,7 +23,7 @@ import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
 
 function createDateFilter(
-    member: string,
+    member: FilterName,
     operator:
         | ReportingFilterOperator.AfterDate
         | ReportingFilterOperator.BeforeDate,
@@ -36,7 +37,7 @@ function createDateFilter(
 }
 
 function createStandardFilter(
-    member: string,
+    member: FilterName,
     operator: LogicalOperatorEnum,
     values: string[],
 ): StandardFilter {
@@ -100,7 +101,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 if (statFilters.agents && hasFilter(statFilters.agents)) {
                     filters.push(
                         createStandardFilter(
-                            'agents',
+                            'agentId',
                             statFilters.agents.operator,
                             statFilters.agents.values.map(String),
                         ),
@@ -112,7 +113,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 if (statFilters.channels && hasFilter(statFilters.channels)) {
                     filters.push(
                         createStandardFilter(
-                            'channels',
+                            'channel',
                             statFilters.channels.operator,
                             statFilters.channels.values,
                         ),
@@ -127,7 +128,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 ) {
                     filters.push(
                         createStandardFilter(
-                            'integrations',
+                            'integrationId',
                             statFilters.integrations.operator,
                             statFilters.integrations.values.map(String),
                         ),

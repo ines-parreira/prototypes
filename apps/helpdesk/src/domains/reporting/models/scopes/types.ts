@@ -2,7 +2,7 @@ import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export type DateFilter = {
-    member: string
+    member: FilterName
     operator:
         | ReportingFilterOperator.AfterDate
         | ReportingFilterOperator.BeforeDate
@@ -10,13 +10,13 @@ export type DateFilter = {
 }
 
 export type StandardFilter = {
-    member: string
+    member: FilterName
     operator: LogicalOperatorEnum
     values: string[]
 }
 
 export type CustomFieldsFilter = {
-    member: string
+    member: FilterName
     values: Array<{
         custom_field_id: string
         operator: LogicalOperatorEnum.ONE_OF | LogicalOperatorEnum.NOT_ONE_OF
@@ -25,7 +25,7 @@ export type CustomFieldsFilter = {
 }
 
 export type TagsFilter = {
-    member: string
+    member: FilterName
     values: Array<{
         operator: LogicalOperatorEnum
         values: string[]
@@ -54,3 +54,21 @@ export type TimeDimensionName =
     | 'sentDatetime'
     | 'closedDatetime'
     | 'firstAgentMessageDatetime'
+
+export type FilterName =
+    | 'periodStart'
+    | 'periodEnd'
+    | 'agentId'
+    | 'channel'
+    | 'score'
+    | 'integrationId'
+    | 'communicationSkills'
+    | 'languageProficiency'
+    | 'resolutionCompleteness'
+    | 'accuracy'
+    | 'efficiency'
+    | 'internalCompliance'
+    | 'brandVoice'
+    | 'storeId'
+    | 'customFields'
+    | 'tags'
