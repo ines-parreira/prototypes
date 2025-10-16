@@ -3,7 +3,16 @@
         display: inline-flex;
         gap: 4px;
         padding: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
-        border-radius: var(--layout-spacing-xxs);
+        border: 1px solid var(--neutral-grey-2);
+        border-radius: var(--layout-spacing-xs);
+    }
+
+    .channelButton {
+        border: none !important;
+
+        &Active {
+            border: none !important;
+            background-color: var(--neutral-grey-2) !important;
+        }
     }
 }

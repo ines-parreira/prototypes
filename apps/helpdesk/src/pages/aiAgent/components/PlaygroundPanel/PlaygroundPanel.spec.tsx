@@ -71,7 +71,7 @@ describe('PlaygroundPanel', () => {
             render(<PlaygroundPanel />)
 
             const resetButton = screen.getAllByRole('button', {
-                name: /previous banner/,
+                name: /reset playground/,
             })[0]
             expect(resetButton).toBeInTheDocument()
         })
@@ -79,9 +79,9 @@ describe('PlaygroundPanel', () => {
         it('should render close button', () => {
             render(<PlaygroundPanel />)
 
-            const closeButton = screen.getAllByRole('button', {
-                name: /previous banner/,
-            })[1]
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
             expect(closeButton).toBeInTheDocument()
         })
 
@@ -103,9 +103,9 @@ describe('PlaygroundPanel', () => {
         it('should call setIsCollapsibleColumnOpen(false) when close button is clicked', async () => {
             render(<PlaygroundPanel />)
 
-            const closeButton = screen.getAllByRole('button', {
-                name: /previous banner/,
-            })[1]
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
 
             await userEvent.click(closeButton)
 
@@ -117,9 +117,9 @@ describe('PlaygroundPanel', () => {
         it('should pass resetPlayground=true to AiAgentPlayground when reset button is clicked', async () => {
             render(<PlaygroundPanel />)
 
-            const resetButton = screen.getAllByRole('button', {
-                name: /previous banner/,
-            })[0]
+            const resetButton = screen.getByRole('button', {
+                name: /reset playground/i,
+            })
 
             await userEvent.click(resetButton)
 
@@ -136,9 +136,9 @@ describe('PlaygroundPanel', () => {
         it('should reset resetPlayground to false after callback', async () => {
             render(<PlaygroundPanel />)
 
-            const resetButton = screen.getAllByRole('button', {
-                name: /previous banner/,
-            })[0]
+            const resetButton = screen.getByRole('button', {
+                name: /reset playground/i,
+            })
 
             await userEvent.click(resetButton)
 
@@ -415,9 +415,9 @@ describe('PlaygroundPanel', () => {
         it('should handle multiple reset clicks', async () => {
             render(<PlaygroundPanel />)
 
-            const resetButton = screen.getAllByRole('button', {
-                name: /previous banner/,
-            })[0]
+            const resetButton = screen.getByRole('button', {
+                name: /reset playground/i,
+            })
 
             await userEvent.click(resetButton)
             await userEvent.click(resetButton)

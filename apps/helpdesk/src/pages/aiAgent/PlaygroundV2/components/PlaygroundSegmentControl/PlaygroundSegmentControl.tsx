@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './PlaygroundSegmentControl.less'
@@ -27,13 +29,13 @@ const SegmentButton = ({
 }) => {
     return (
         <Button
-            intent="secondary"
-            size="small"
-            role="tab"
-            aria-selected={isActive ? 'true' : 'false'}
-            fillStyle={isActive ? 'fill' : 'ghost'}
             onClick={onClick}
             isDisabled={isDisabled}
+            intent="secondary"
+            className={cn([
+                css.channelButton,
+                isActive ? css.channelButtonActive : '',
+            ])}
         >
             {label}
         </Button>

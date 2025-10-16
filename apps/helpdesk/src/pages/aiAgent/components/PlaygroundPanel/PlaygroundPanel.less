@@ -1,11 +1,33 @@
 @import '~css/typography';
 
 :local {
+    [aria-label='reset playground'] {
+        i {
+            rotate: -45deg;
+        }
+    }
+
     .playground-panel {
         height: 100%;
         display: flex;
         flex-direction: column;
         background-color: var(--neutral-grey-0);
+    }
+
+    .actions-allowed-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        i {
+            color: inherit;
+        }
+    }
+
+    .toggle-label {
+        line-height: 100%;
+        text-align: center;
+        vertical-align: middle;
     }
 
     .panel-header {
@@ -30,7 +52,7 @@
         .panel-header-actions {
             display: flex;
             flex-direction: row;
-            gap: var(--layout-spacing-xs);
+            gap: 12px;
             align-items: center;
         }
 

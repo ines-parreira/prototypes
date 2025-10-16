@@ -51,34 +51,38 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
                     <span className={css['panel-header-title']}>Test</span>
                 </div>
                 <div className={css['panel-header-actions']}>
-                    <div className={css['actions-allowed-toggle']}>
-                        <NewToggleButton
-                            checked={actionsAllowed}
-                            onChange={() =>
-                                actionsAllowed
-                                    ? setActionsAllowed(false)
-                                    : setIsModalOpen(true)
-                            }
-                        />
-                        <span className={css['toggle-label']}> Actions </span>
+                    <div className={css['actions-allowed-container']}>
+                        <div className={css['actions-allowed-toggle']}>
+                            <NewToggleButton
+                                checked={actionsAllowed}
+                                onChange={() =>
+                                    actionsAllowed
+                                        ? setActionsAllowed(false)
+                                        : setIsModalOpen(true)
+                                }
+                            />
+                            <span className={css['toggle-label']}>Actions</span>
+                        </div>
                         <IconTooltip icon="info" interactive>
                             {getActionsToggleTooltipContent(actionsAllowed)}
                         </IconTooltip>
                     </div>
-                    <IconButton
-                        icon="replay"
-                        intent="secondary"
-                        fillStyle="ghost"
-                        onClick={handleResetPlayground}
-                        aria-label="previous banner"
-                    />
-                    <IconButton
-                        icon="close"
-                        intent="secondary"
-                        fillStyle="ghost"
-                        onClick={handleClose}
-                        aria-label="previous banner"
-                    />
+                    <div>
+                        <IconButton
+                            icon="replay"
+                            intent="secondary"
+                            fillStyle="ghost"
+                            onClick={handleResetPlayground}
+                            aria-label="reset playground"
+                        />
+                        <IconButton
+                            icon="close"
+                            intent="secondary"
+                            fillStyle="ghost"
+                            onClick={handleClose}
+                            aria-label="close playground panel"
+                        />
+                    </div>
                 </div>
             </div>
             <div className={css['panel-body']}>

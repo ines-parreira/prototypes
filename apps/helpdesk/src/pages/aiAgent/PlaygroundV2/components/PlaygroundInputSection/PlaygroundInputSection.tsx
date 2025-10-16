@@ -10,6 +10,7 @@ import { FROALA_KEY } from 'config'
 import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'
 import TextInput from 'pages/common/forms/input/TextInput'
+import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
 import shortcutManager from 'services/shortcutManager'
 
@@ -35,6 +36,16 @@ import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/Playground
 import css from './PlaygroundInputSection.less'
 
 const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
+
+FroalaEditor.DefineIcon('emoticons', {
+    NAME: 'sentiment_satisfied',
+    template: 'material_design',
+})
+
+FroalaEditor.DefineIcon('insertLink', {
+    NAME: 'insert_link',
+    template: 'material_design',
+})
 
 // cf https://froala.com/wysiwyg-editor/docs/options
 const froalaConfig = {

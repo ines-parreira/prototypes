@@ -43,4 +43,12 @@
     .collapsible-column-content {
         overflow: hidden;
     }
+
+    // Hide the shadow of other infobars when the collapsible column is open
+    :has(.collapsible-column-open)
+        [class*='App--contentInfobar--']:not(
+            .collapsible-column-open [class*='App--contentInfobar--']
+        ) {
+        box-shadow: none;
+    }
 }

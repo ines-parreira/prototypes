@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { useFlag } from 'core/flags'
@@ -97,7 +97,6 @@ export const AiAgentLayout = ({
                             <Button
                                 onClick={togglePlayground}
                                 intent="secondary"
-                                leadingIcon="science"
                             >
                                 Test
                             </Button>
