@@ -32,7 +32,7 @@ describe('<Playground />', () => {
         jest.clearAllMocks()
 
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: { type: 'cart_abandoned', id: 'journey-123' },
             journeyData: {
                 id: '01JZAKJ16K3TG5G3HJ9BNAP327',
                 type: 'cart_abandoned',
@@ -73,11 +73,37 @@ describe('<Playground />', () => {
         expect(
             screen.queryByText('AI Journey Playground placeholder'),
         ).toBeInTheDocument()
+        expect(screen.getByText('JourneyID: journey-123')).toBeInTheDocument()
+    })
+
+    it('should not render journey id when not available', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentJourney: undefined,
+            isLoading: false,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Playground />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        screen.debug()
+        expect(screen.getByText('JourneyID: undefined')).toBeInTheDocument()
+        expect(
+            screen.queryByText('AI Journey Playground placeholder'),
+        ).toBeInTheDocument()
     })
 
     it('should render loading state', () => {
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: undefined,
             shopName: 'shopify-store',

@@ -46,60 +46,62 @@ function AiJourneyBaseRoutes() {
         <Switch>
             <Route path={`${path}/`} exact render={() => <RedirectToShop />} />
             <Route path={`${path}/:shopName`}>
-                <App navbar={AiJourneyNavbar}>
-                    <Switch>
-                        <Route
-                            path={`${path}/:shopName`}
-                            exact
-                            render={() => <LandingPage />}
-                        />
-                        <Route
-                            path={`${path}/:shopName/setup`}
-                            exact
-                            render={() => (
-                                <AiJourneyOnboarding
-                                    step={STEPS_NAMES.SETUP}
-                                    stepComponent={<Setup />}
-                                />
-                            )}
-                        />
-                        <Route
-                            path={`${path}/:shopName/test`}
-                            exact
-                            render={() => (
-                                <AiJourneyOnboarding
-                                    step={STEPS_NAMES.TEST}
-                                    stepComponent={<Test />}
-                                />
-                            )}
-                        />
-                        <Route
-                            path={`${path}/:shopName/activate`}
-                            exact
-                            render={() => (
-                                <AiJourneyOnboarding
-                                    step={STEPS_NAMES.ACTIVATE}
-                                    stepComponent={<Activation />}
-                                />
-                            )}
-                        />
-                        <Route
-                            path={`${path}/:shopName/performance`}
-                            exact
-                            render={() => <Performance />}
-                        />
-                        <Route
-                            path={`${path}/:shopName/playground`}
-                            exact
-                            render={() => <Playground />}
-                        />
-                        <Route
-                            path={`${path}/:shopName/analytics`}
-                            exact
-                            render={() => <Analytics />}
-                        />
-                    </Switch>
-                </App>
+                <JourneyProvider journeyType="cart_abandoned">
+                    <App navbar={AiJourneyNavbar}>
+                        <Switch>
+                            <Route
+                                path={`${path}/:shopName`}
+                                exact
+                                render={() => <LandingPage />}
+                            />
+                            <Route
+                                path={`${path}/:shopName/setup`}
+                                exact
+                                render={() => (
+                                    <AiJourneyOnboarding
+                                        step={STEPS_NAMES.SETUP}
+                                        stepComponent={<Setup />}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path={`${path}/:shopName/test`}
+                                exact
+                                render={() => (
+                                    <AiJourneyOnboarding
+                                        step={STEPS_NAMES.TEST}
+                                        stepComponent={<Test />}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path={`${path}/:shopName/activate`}
+                                exact
+                                render={() => (
+                                    <AiJourneyOnboarding
+                                        step={STEPS_NAMES.ACTIVATE}
+                                        stepComponent={<Activation />}
+                                    />
+                                )}
+                            />
+                            <Route
+                                path={`${path}/:shopName/performance`}
+                                exact
+                                render={() => <Performance />}
+                            />
+                            <Route
+                                path={`${path}/:shopName/playground`}
+                                exact
+                                render={() => <Playground />}
+                            />
+                            <Route
+                                path={`${path}/:shopName/analytics`}
+                                exact
+                                render={() => <Analytics />}
+                            />
+                        </Switch>
+                    </App>
+                </JourneyProvider>
             </Route>
         </Switch>
     )
@@ -109,9 +111,7 @@ export function AiJourneyRoutes() {
     return (
         <IntegrationsProvider>
             <TokenProvider>
-                <JourneyProvider journeyType="cart_abandoned">
-                    <AiJourneyBaseRoutes />
-                </JourneyProvider>
+                <AiJourneyBaseRoutes />
             </TokenProvider>
         </IntegrationsProvider>
     )

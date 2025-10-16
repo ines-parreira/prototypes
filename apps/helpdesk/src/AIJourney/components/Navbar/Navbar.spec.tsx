@@ -95,7 +95,7 @@ describe('<AiJourneyNavbar />', () => {
     ]
 
     const mockJourneyContext = {
-        journey: { type: 'cart_abandoned', id: 'journey-123' },
+        currentJourney: { type: 'cart_abandoned', id: 'journey-123' },
         journeyData: {
             configuration: {
                 max_follow_up_messages: 3,
@@ -185,7 +185,8 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when no journey exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: undefined,
+                currentJourney: undefined,
+                journeys: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -193,6 +194,8 @@ describe('<AiJourneyNavbar />', () => {
             )
 
             renderNavbar()
+
+            screen.debug()
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -203,7 +206,8 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when journey exists without id', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: { type: 'cart_abandoned', id: undefined },
+                currentJourney: { type: 'cart_abandoned', id: undefined },
+                journeys: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -221,7 +225,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when journey is in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -243,7 +247,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when feature flag is disabled', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -275,7 +279,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should render analytics section when journey exists and is not in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'paused',
@@ -310,7 +314,8 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when no journey exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: undefined,
+                currentJourney: undefined,
+                journeys: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -328,7 +333,8 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when journey exists without id', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: { type: 'cart_abandoned', id: undefined },
+                currentJourney: { type: 'cart_abandoned', id: undefined },
+                journeys: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -346,7 +352,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when journey is in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -365,10 +371,41 @@ describe('<AiJourneyNavbar />', () => {
             expect(screen.queryByText('Playground')).not.toBeInTheDocument()
         })
 
+        it('should not render playground section when journey is in draft state', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                currentJourney: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'draft',
+                },
+                journeys: [
+                    {
+                        id: 'journey-id',
+                        type: 'cart_abandoned',
+                        store_name: 'arthur-gorgias',
+                        store_type: 'shopify',
+                        state: 'draft',
+                    },
+                ],
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+        })
+
         it('should not render playground section when feature flag is disabled', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -400,7 +437,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should render playground section when journey exists and is not in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journey: {
+                currentJourney: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'paused',

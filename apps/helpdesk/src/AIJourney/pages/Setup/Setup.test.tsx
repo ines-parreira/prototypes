@@ -141,7 +141,7 @@ const mockPhoneNumbers: NewPhoneNumber[] = [
 ]
 
 const mockJourneyContext = {
-    journey: {
+    currentJourney: {
         id: 'journey-123',
         state: 'active',
     },
@@ -440,7 +440,7 @@ describe('Setup', () => {
             // Mock context without existing journey
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                journey: null,
+                currentJourney: null,
             } as any)
         })
 
@@ -494,7 +494,7 @@ describe('Setup', () => {
             // Mock context without integration
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                journey: null,
+                currentJourney: null,
                 currentIntegration: null,
             } as any)
 
@@ -519,7 +519,7 @@ describe('Setup', () => {
             // Mock context with integration without name
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                journey: null,
+                currentJourney: null,
                 currentIntegration: {
                     id: 100,
                     name: undefined,
@@ -547,7 +547,7 @@ describe('Setup', () => {
             // Mock context with integration without id
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                journey: null,
+                currentJourney: null,
                 currentIntegration: {
                     id: undefined,
                     name: 'Test Store',
@@ -682,7 +682,7 @@ describe('Setup', () => {
         it('should handle creation with disabled discount', async () => {
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                journey: null,
+                currentJourney: null,
                 journeyData: {
                     configuration: {
                         ...mockJourneyContext.journeyData!.configuration,

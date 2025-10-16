@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -13,7 +13,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 type UseJourneyActionsParams = {
     integrationId?: number
-    abandonedCartJourney?: { id: string }
+    journey?: JourneyApiDTO
     followUpValue?: number
     isDiscountEnabled?: boolean
     discountValue?: string
@@ -24,7 +24,7 @@ type UseJourneyActionsParams = {
 
 export const useJourneyUpdateHandler = ({
     integrationId,
-    abandonedCartJourney,
+    journey,
     followUpValue,
     isDiscountEnabled,
     discountValue,
@@ -46,9 +46,9 @@ export const useJourneyUpdateHandler = ({
             journeyMessageInstructions?: string | null
         }) => {
             try {
-                if (!integrationId || !abandonedCartJourney?.id) {
+                if (!integrationId || !journey?.id) {
                     throw new Error(
-                        `Missing integration information: ID: ${integrationId}, journey ID: ${abandonedCartJourney?.id}`,
+                        `Missing integration information: ID: ${integrationId}, journey ID: ${journey?.id}`,
                     )
                 }
 
@@ -75,7 +75,7 @@ export const useJourneyUpdateHandler = ({
                 )
 
                 const requestBody = {
-                    journeyId: abandonedCartJourney.id,
+                    journeyId: journey.id,
                     params: {
                         state: journeyState,
                         message_instructions: journeyMessageInstructions,
@@ -101,7 +101,7 @@ export const useJourneyUpdateHandler = ({
         },
         [
             integrationId,
-            abandonedCartJourney,
+            journey,
             followUpValue,
             isDiscountEnabled,
             discountValue,

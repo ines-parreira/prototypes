@@ -5,7 +5,7 @@ import { NavLink, useHistory, useParams } from 'react-router-dom'
 
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
-import { JourneyProvider, useJourneyContext } from 'AIJourney/providers'
+import { useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'
@@ -16,7 +16,7 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 
 import css from './Navbar.less'
 
-const AiJourneyNavbarComponent = () => {
+export const AiJourneyNavbar = () => {
     const { shopName } = useParams<{ shopName: string }>()
     const isAiJourneyAnalyticsEnabled = useFlag(
         FeatureFlagKey.AiJourneyAnalyticsEnabled,
@@ -26,7 +26,7 @@ const AiJourneyNavbarComponent = () => {
         FeatureFlagKey.AiJourneyPlaygroundEnabled,
     )
 
-    const { journey: abandonedCartJourney } = useJourneyContext()
+    const { journeys, currentJourney } = useJourneyContext()
 
     const history = useHistory()
 
@@ -35,14 +35,12 @@ const AiJourneyNavbarComponent = () => {
     const [selectedStore, setSelectedStore] = useState(shopName)
 
     const hasJourney = useMemo(() => {
-        return !!abandonedCartJourney && !!abandonedCartJourney.id
-    }, [abandonedCartJourney])
+        return journeys?.length !== 0
+    }, [journeys])
 
     const isJourneyDraft = useMemo(
-        () =>
-            hasJourney &&
-            abandonedCartJourney?.state === JourneyStatusEnum.Draft,
-        [abandonedCartJourney, hasJourney],
+        () => hasJourney && currentJourney?.state === JourneyStatusEnum.Draft,
+        [currentJourney, hasJourney],
     )
 
     const hasValidJourney = useMemo(
@@ -133,9 +131,3 @@ const AiJourneyNavbarComponent = () => {
         </Navbar>
     )
 }
-
-export const AiJourneyNavbar = () => (
-    <JourneyProvider journeyType="cart_abandoned">
-        <AiJourneyNavbarComponent />
-    </JourneyProvider>
-)

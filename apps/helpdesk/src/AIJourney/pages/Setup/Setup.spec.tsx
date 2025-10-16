@@ -96,7 +96,7 @@ describe('<Setup />', () => {
 
         // Default mock for useJourneyContext
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: undefined,
             shopName: 'shopify-store',
@@ -148,7 +148,7 @@ describe('<Setup />', () => {
 
     it('should redirect from conversation setup to landing page on return', async () => {
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -188,7 +188,7 @@ describe('<Setup />', () => {
 
     it('should update state when journeyParams is fetched', async () => {
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -233,7 +233,7 @@ describe('<Setup />', () => {
     it('should reset the discount threshold message when total of message is changed', async () => {
         // Mock no existing journey configuration so the component starts with defaults
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: { id: 1, name: 'shopify-store' },
             shopName: 'shopify-store',
@@ -420,7 +420,7 @@ describe('<Setup />', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                journey: {
+                currentJourney: {
                     id: 'journey-123',
                     type: 'cart_abandoned',
                     state: 'active',
@@ -489,7 +489,7 @@ describe('<Setup />', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
+                currentJourney: undefined,
                 journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
@@ -622,7 +622,7 @@ describe('<Setup />', () => {
 
             // Default mock for useJourneyContext in handleContinue tests
             mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
@@ -662,7 +662,7 @@ describe('<Setup />', () => {
         it('should navigate to test page after successful journey creation', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
+                currentJourney: undefined,
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
@@ -766,7 +766,7 @@ describe('<Setup />', () => {
         it('should call handleCreate when no existing journey exists', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
+                currentJourney: undefined,
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
@@ -831,7 +831,7 @@ describe('<Setup />', () => {
         it('should call handleCreate without discount_code_message_threshold when no existing journey exists and discount disabled', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
+                currentJourney: undefined,
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,

@@ -2,7 +2,11 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { JourneyApiDTO, JourneyDetailApiDTO } from '@gorgias/convert-client'
+import {
+    JourneyApiDTO,
+    JourneyDetailApiDTO,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
 import { useJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
@@ -15,12 +19,14 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { useIntegrations } from '../IntegrationsProvider/IntegrationsProvider'
 
 type JourneyContextType = {
-    journey: JourneyApiDTO | undefined
+    journeys: JourneyApiDTO[] | undefined
+    currentJourney: JourneyApiDTO | undefined
     journeyData: JourneyDetailApiDTO | undefined
     currentIntegration: Integration | undefined
     shopName: string
     isLoading: boolean
-    journeyType: string
+    isLoadingJourneys: boolean
+    journeyType: JourneyTypeEnum
     storeConfiguration: StoreConfiguration | undefined
 }
 
@@ -28,7 +34,7 @@ const JourneyContext = createContext<JourneyContextType | undefined>(undefined)
 
 type JourneyProviderProps = {
     children: React.ReactNode
-    journeyType?: string
+    journeyType?: JourneyTypeEnum
 }
 
 export const JourneyProvider = ({
@@ -38,19 +44,29 @@ export const JourneyProvider = ({
     const { shopName } = useParams<{ shopName: string }>()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const accountDomain = currentAccount.get('domain')
+    const accountDomain = useMemo(
+        () => currentAccount.get('domain'),
+        [currentAccount],
+    )
 
     const { currentIntegration, isLoading: isLoadingIntegrations } =
         useIntegrations(shopName)
 
-    const integrationId = currentIntegration?.id
+    const integrationId = useMemo(
+        () => currentIntegration?.id,
+        [currentIntegration],
+    )
 
-    const { data: journey, isLoading: isLoadingJourneys } = useJourneys(
+    const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
         integrationId,
         {
             enabled: !!integrationId,
-            select: (journeys) => journeys.find((j) => j.type === journeyType),
         },
+    )
+
+    const currentJourney = useMemo(
+        () => journeys?.find((j) => j.type === journeyType?.replace('-', '_')),
+        [journeys, journeyType],
     )
 
     const { isLoading: isStoreConfigurationLoading, data: storeConfiguration } =
@@ -72,32 +88,36 @@ export const JourneyProvider = ({
         )
 
     const { data: journeyData, isLoading: isLoadingJourneyConfiguration } =
-        useJourneyData(journey?.id, {
-            enabled: !!integrationId && !!journey?.id,
+        useJourneyData(currentJourney?.id, {
+            enabled: currentJourney && !!integrationId && !!currentJourney?.id,
         })
 
     const isLoading =
         isLoadingIntegrations ||
         isLoadingJourneys ||
         isStoreConfigurationLoading ||
-        (!!journey?.id && isLoadingJourneyConfiguration)
+        (!!currentJourney?.id && isLoadingJourneyConfiguration)
 
     const contextValue = useMemo(
         () => ({
-            journey,
+            currentJourney,
+            journeys,
             journeyData,
             currentIntegration,
             shopName,
             isLoading,
+            isLoadingJourneys,
             journeyType,
             storeConfiguration,
         }),
         [
-            journey,
+            currentJourney,
+            journeys,
             journeyData,
             currentIntegration,
             shopName,
             isLoading,
+            isLoadingJourneys,
             journeyType,
             storeConfiguration,
         ],

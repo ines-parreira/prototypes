@@ -255,7 +255,7 @@ export const Performance = () => {
                         analyticsData={journeyMetrics}
                         journeyData={journeyData}
                         integrationId={integrationId}
-                        abandonedCartJourney={abandonedCartJourney}
+                        journey={abandonedCartJourney}
                         totalConversations={formattedTotalConversationsSent}
                         key={abandonedCartJourney?.id}
                     />

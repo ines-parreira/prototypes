@@ -33,7 +33,7 @@ type AnalyticsCardProps = {
     journeyData?: JourneyDetailApiDTO
     integrationId?: number
     currentIntegration?: Integration
-    abandonedCartJourney?: Omit<JourneyApiDTO, 'created_datetime'>
+    journey?: JourneyApiDTO
     totalConversations?: string
     period: {
         start: string
@@ -46,13 +46,13 @@ export const AnalyticsCard = ({
     analyticsData,
     journeyData,
     integrationId,
-    abandonedCartJourney,
+    journey,
     totalConversations,
 }: AnalyticsCardProps) => {
     const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
     const [journeyState, setJourneyState] = useState<JourneyStatusEnum>(
-        abandonedCartJourney?.state || JourneyStatusEnum.Draft,
+        journey?.state || JourneyStatusEnum.Draft,
     )
 
     const isLoadingMetrics = analyticsData.some((data) => data.isLoading)
@@ -64,9 +64,8 @@ export const AnalyticsCard = ({
     const shouldRenderFooter = !isLoadingMetrics && !isEmpty
 
     useEffect(() => {
-        if (abandonedCartJourney?.state)
-            setJourneyState(abandonedCartJourney?.state)
-    }, [abandonedCartJourney])
+        if (journey?.state) setJourneyState(journey?.state)
+    }, [journey])
 
     const statusIcon = {
         active: greenLightningIcon,
@@ -95,7 +94,7 @@ export const AnalyticsCard = ({
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        abandonedCartJourney,
+        journey,
     })
 
     const handleUpdateJourneyState = useCallback(async () => {
@@ -105,8 +104,7 @@ export const AnalyticsCard = ({
                     journeyState === JourneyStatusEnum.Active
                         ? JourneyStatusEnum.Paused
                         : JourneyStatusEnum.Active,
-                journeyMessageInstructions:
-                    abandonedCartJourney?.message_instructions,
+                journeyMessageInstructions: journey?.message_instructions,
             })
             setJourneyState(newData.state)
         } catch (error) {
@@ -117,12 +115,7 @@ export const AnalyticsCard = ({
                 }),
             )
         }
-    }, [
-        journeyState,
-        dispatch,
-        handleUpdate,
-        abandonedCartJourney?.message_instructions,
-    ])
+    }, [journeyState, dispatch, handleUpdate, journey?.message_instructions])
 
     const totalRevenue = analyticsData.find(
         (data) => data.label === 'Total Revenue',

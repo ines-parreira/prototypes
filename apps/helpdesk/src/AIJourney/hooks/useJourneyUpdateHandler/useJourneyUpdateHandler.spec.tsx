@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,7 +23,7 @@ jest.mock('state/notifications/actions', () => ({
 
 const params = {
     integrationId: 1,
-    abandonedCartJourney: { id: 'journey-id' },
+    journey: { id: 'journey-id' } as JourneyApiDTO,
     followUpValue: 3,
     isDiscountEnabled: true,
     discountValue: '10',
@@ -125,7 +125,7 @@ describe('useJourneyUpdateHandler', () => {
     it('should throw an error if integrationId missing', async () => {
         const params = {
             integrationId: undefined,
-            abandonedCartJourney: { id: 'journey-id' },
+            journey: { id: 'journey-id' } as JourneyApiDTO,
         }
 
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {
@@ -145,10 +145,10 @@ describe('useJourneyUpdateHandler', () => {
         expect(mockMutateAsync).not.toHaveBeenCalled()
     })
 
-    it('should throw an error if abandonedCartJourney missing', async () => {
+    it('should throw an error if journey missing', async () => {
         const params = {
             integrationId: 1,
-            abandonedCartJourney: undefined,
+            journey: undefined,
         }
 
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {

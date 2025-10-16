@@ -33,9 +33,10 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+const mockHandleUpdate = jest.fn()
 jest.mock('AIJourney/hooks', () => ({
     useJourneyUpdateHandler: jest.fn(() => ({
-        handleUpdate: jest.fn().mockResolvedValueOnce(undefined), // Mock it to resolve
+        handleUpdate: mockHandleUpdate,
     })),
 }))
 
@@ -116,7 +117,7 @@ describe('<Activation />', () => {
 
         // Default mock for useJourneyContext
         mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
+            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -194,7 +195,29 @@ describe('<Activation />', () => {
     })
 
     it('should redirect from Activation to performance on continue', async () => {
-        // Uses default mock from beforeEach
+        mockUseJourneyContext.mockReturnValue({
+            currentJourney: {
+                id: 'journey-123',
+                type: 'cart_abandoned',
+                message_instructions: 'test message instructions',
+            },
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -231,11 +254,13 @@ describe('<Activation />', () => {
             },
             { timeout: 1000 },
         )
+        expect(mockHandleUpdate).toHaveBeenCalledWith({
+            journeyMessageInstructions: 'test message instructions',
+            journeyState: 'active',
+        })
     })
 
-    it('should redirect from setup to landing page on return', async () => {
-        // Uses default mock from beforeEach
-
+    it('should redirect from activation to test step on return', async () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
@@ -339,7 +364,7 @@ describe('<Activation />', () => {
         it('should show error notification when journey ID is missing', async () => {
             // Override useJourneyContext to have journey without id
             mockUseJourneyContext.mockReturnValue({
-                journey: { type: 'cart_abandoned' }, // missing id
+                currentJourney: { type: 'cart_abandoned' }, // missing id
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
@@ -397,7 +422,7 @@ describe('<Activation />', () => {
 
             // Override useJourneyContext to have a journey with ID
             mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
@@ -563,7 +588,7 @@ describe('<Activation />', () => {
 
             // Override useJourneyContext to have no journey
             mockUseJourneyContext.mockReturnValue({
-                journey: undefined,
+                currentJourney: undefined,
                 journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
@@ -632,7 +657,7 @@ describe('<Activation />', () => {
 
             // Override useJourneyContext to have a journey
             mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,

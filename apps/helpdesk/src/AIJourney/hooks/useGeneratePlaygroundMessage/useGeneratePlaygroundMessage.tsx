@@ -21,7 +21,7 @@ import { NotificationStatus } from 'state/notifications/types'
 const POLLING_INTERVAL = 5 * 1000
 
 type useGeneratePlaygroundMessageProps = {
-    abandonedCartJourney?: JourneyApiDTO
+    journey?: JourneyApiDTO
     currentIntegration?: Integration
     journeyMessageInstructions: string
     journeyParams?: CartAbandonedJourneyConfigurationApiDTO
@@ -30,7 +30,7 @@ type useGeneratePlaygroundMessageProps = {
 }
 
 export const useGeneratePlaygroundMessage = ({
-    abandonedCartJourney,
+    journey,
     currentIntegration,
     journeyMessageInstructions,
     journeyParams,
@@ -105,11 +105,7 @@ export const useGeneratePlaygroundMessage = ({
                 return
             }
 
-            if (
-                !abandonedCartJourney?.id ||
-                !currentIntegration ||
-                !journeyParams
-            ) {
+            if (!journey?.id || !currentIntegration || !journeyParams) {
                 void dispatch(
                     notify({
                         message: 'Missing journey configuration',
@@ -131,9 +127,9 @@ export const useGeneratePlaygroundMessage = ({
                 storeIntegrationId: currentIntegration.id,
                 storeName: currentIntegration.name,
                 storeType: 'shopify',
-                journeyType: abandonedCartJourney.type,
-                journeyId: abandonedCartJourney.id,
+                journeyId: journey.id,
                 journeyMessageInstructions: journeyMessageInstructions,
+                journeyType: journey.type,
                 followUpAttempt: 0,
                 testModeSessionId: newTestSessionId,
                 cart: {
@@ -195,7 +191,7 @@ export const useGeneratePlaygroundMessage = ({
             )
         }
     }, [
-        abandonedCartJourney,
+        journey,
         accountId,
         createTestSession,
         currentIntegration,

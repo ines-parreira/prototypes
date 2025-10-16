@@ -27,7 +27,7 @@ export const Test = () => {
     const history = useHistory()
 
     const {
-        journey: abandonedCartJourney,
+        currentJourney,
         journeyData,
         currentIntegration,
         shopName,
@@ -36,7 +36,7 @@ export const Test = () => {
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
-        useState<string>(abandonedCartJourney?.message_instructions || '')
+        useState<string>(currentJourney?.message_instructions || '')
 
     const integrationId = currentIntegration?.id
 
@@ -55,7 +55,7 @@ export const Test = () => {
 
     const { handleGenerateMessages, playgroundMessages, isGeneratingMessages } =
         useGeneratePlaygroundMessage({
-            abandonedCartJourney,
+            journey: currentJourney,
             currentIntegration,
             journeyParams,
             selectedProduct,
@@ -65,16 +65,14 @@ export const Test = () => {
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        abandonedCartJourney,
+        journey: currentJourney,
     })
 
     useEffect(() => {
-        if (abandonedCartJourney?.message_instructions) {
-            setJourneyMessageInstructions(
-                abandonedCartJourney.message_instructions,
-            )
+        if (currentJourney?.message_instructions) {
+            setJourneyMessageInstructions(currentJourney.message_instructions)
         }
-    }, [abandonedCartJourney])
+    }, [currentJourney])
 
     useEffect(() => {
         if (productList.length > 0 && !selectedProduct) {
@@ -84,7 +82,7 @@ export const Test = () => {
 
     const handleContinue = async () => {
         await handleUpdate({
-            journeyState: abandonedCartJourney?.state || 'draft',
+            journeyState: currentJourney?.state || 'draft',
             journeyMessageInstructions,
         })
         history.push(`/app/ai-journey/${shopName}/activate`)

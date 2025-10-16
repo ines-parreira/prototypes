@@ -46,7 +46,7 @@ jest.mock('pages/aiAgent/Playground/hooks/usePlaygroundPolling', () => ({
 const mockedUsePlaygroundPolling = jest.mocked(usePlaygroundPolling)
 
 const hookParameters = {
-    abandonedCartJourney: {
+    journey: {
         id: '01JZJYRGEYYSE0ABKN756HW2CP',
         type: JourneyTypeEnum.CartAbandoned,
         account_id: 69822,
@@ -254,10 +254,36 @@ describe('useGeneratePlaygroundMessage', () => {
                 () =>
                     useGeneratePlaygroundMessage({
                         ...hookParameters,
-                        abandonedCartJourney: {
-                            ...hookParameters.abandonedCartJourney,
+                        journey: {
+                            ...hookParameters.journey,
                             id: undefined,
-                        } as unknown as typeof hookParameters.abandonedCartJourney,
+                        } as unknown as typeof hookParameters.journey,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleGenerateMessages()
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: 'Missing journey configuration',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
+
+        it('should notify if abandoned Cart Journey is missing', async () => {
+            const { result } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        journey: undefined,
                     }),
                 {
                     wrapper: ({ children }) => (

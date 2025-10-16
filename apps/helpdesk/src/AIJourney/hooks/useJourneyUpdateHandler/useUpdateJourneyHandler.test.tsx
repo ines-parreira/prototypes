@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -63,7 +63,7 @@ describe('useJourneyUpdateHandler', () => {
 
     const defaultParams = {
         integrationId: 100,
-        abandonedCartJourney: { id: 'journey-123' },
+        journey: { id: 'journey-123' } as JourneyApiDTO,
         followUpValue: 3,
         isDiscountEnabled: true,
         discountValue: '10',
@@ -194,7 +194,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should not include journey configs when all values are undefined or null', async () => {
             const paramsWithoutConfigs = {
                 integrationId: 100,
-                abandonedCartJourney: { id: 'journey-123' },
+                journey: { id: 'journey-123' } as JourneyApiDTO,
                 followUpValue: undefined,
                 isDiscountEnabled: undefined,
                 discountValue: undefined,
@@ -302,10 +302,10 @@ describe('useJourneyUpdateHandler', () => {
             )
         })
 
-        it('should throw error when abandonedCartJourney id is missing', async () => {
+        it('should throw error when journey id is missing', async () => {
             const paramsWithoutJourneyId = {
                 ...defaultParams,
-                abandonedCartJourney: undefined,
+                journey: undefined,
             }
 
             const { result } = renderHook(
@@ -486,7 +486,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should handle journey with empty id string', async () => {
             const paramsWithEmptyJourneyId = {
                 ...defaultParams,
-                abandonedCartJourney: { id: '' },
+                journey: { id: '' } as JourneyApiDTO,
             }
 
             const { result } = renderHook(
@@ -506,7 +506,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should include journey configs when at least one value is defined', async () => {
             const paramsWithSingleConfig = {
                 integrationId: 100,
-                abandonedCartJourney: { id: 'journey-123' },
+                journey: { id: 'journey-123' } as JourneyApiDTO,
                 followUpValue: 1, // Only this is defined
                 isDiscountEnabled: false,
                 discountValue: undefined,

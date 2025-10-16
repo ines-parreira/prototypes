@@ -2,12 +2,12 @@ import { motion } from 'framer-motion'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { JourneyProvider, useJourneyContext } from 'AIJourney/providers'
+import { useJourneyContext } from 'AIJourney/providers'
 
 import css from './Playground.less'
 
-const PlaygroundComponent = () => {
-    const { journey: abandonedCartJourney, isLoading } = useJourneyContext()
+export const Playground = () => {
+    const { currentJourney, isLoading } = useJourneyContext()
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -22,15 +22,9 @@ const PlaygroundComponent = () => {
             {!isLoading && (
                 <>
                     <span>AI Journey Playground placeholder</span>
-                    {`JourneyID: ${abandonedCartJourney?.id}`}
+                    {`JourneyID: ${currentJourney?.id}`}
                 </>
             )}
         </motion.div>
     )
 }
-
-export const Playground = () => (
-    <JourneyProvider journeyType="cart_abandoned">
-        <PlaygroundComponent />
-    </JourneyProvider>
-)

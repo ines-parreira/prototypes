@@ -124,7 +124,7 @@ describe('<Test />', () => {
         mockUseJourneyContext.mockImplementation(() => ({
             journey: null,
             journeyData: null,
-            currentIntegration: { id: 1, name: 'shopify-store' },
+            currentIntegration: undefined,
             shopName: 'shopify-store',
             isLoading: true,
         }))
@@ -189,6 +189,7 @@ describe('<Test />', () => {
             )
         })
     })
+
     it('should update journeyMessageInstructions and products when parameters change', () => {
         const newInstructions = 'New message instructions'
 
@@ -218,7 +219,7 @@ describe('<Test />', () => {
 
         act(() => {
             mockUseJourneyContext.mockReturnValueOnce({
-                journey: { message_instructions: newInstructions },
+                currentJourney: { message_instructions: newInstructions },
                 journeyData: null,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',

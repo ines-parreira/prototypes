@@ -42,7 +42,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
     )
 
     const {
-        journey: abandonedCartJourney,
+        currentJourney,
         currentIntegration,
         shopName,
         isLoading: isLoadingJourneyData,
@@ -78,7 +78,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        abandonedCartJourney,
+        journey: currentJourney,
     })
 
     const handleTestSms = async () => {
@@ -91,10 +91,10 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                     }),
                 )
                 return
-            } else if (!abandonedCartJourney?.id || !testSmsNumber) {
+            } else if (!currentJourney?.id || !testSmsNumber) {
                 void dispatch(
                     notify({
-                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${abandonedCartJourney?.id}`,
+                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${currentJourney?.id}`,
                         status: NotificationStatus.Error,
                     }),
                 )
@@ -104,11 +104,11 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             await testSms.mutateAsync({
                 // TODO use generic phone number formatting
                 phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
-                journeyId: abandonedCartJourney?.id,
+                journeyId: currentJourney.id,
                 product: {
                     product_id: String(selectedProduct.id),
-                    variant_id: String(selectedProduct.variants[0]?.id),
-                    price: Number(selectedProduct.variants[0]?.price),
+                    variant_id: String(selectedProduct.variants[0].id),
+                    price: Number(selectedProduct.variants[0].price),
                 },
             })
             // Add a delay to allow the SMS to be sent
@@ -139,7 +139,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             await handleUpdate({
                 journeyState: JourneyStatusEnum.Active,
                 journeyMessageInstructions:
-                    abandonedCartJourney?.message_instructions,
+                    currentJourney?.message_instructions,
             })
             setIsVisible(false)
             setTimeout(() => {

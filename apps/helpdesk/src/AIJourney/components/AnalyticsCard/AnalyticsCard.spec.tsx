@@ -134,7 +134,7 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         period={period}
                         analyticsData={data}
-                        abandonedCartJourney={mockAbandonedCartJourney}
+                        journey={mockAbandonedCartJourney}
                         journeyData={
                             {
                                 ...mockJourneyData,
@@ -163,7 +163,7 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         period={period}
                         analyticsData={data}
-                        abandonedCartJourney={{
+                        journey={{
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Paused,
                         }}
@@ -199,7 +199,7 @@ describe('<AnalyticsCard />', () => {
                         <AnalyticsCard
                             period={period}
                             analyticsData={data}
-                            abandonedCartJourney={{
+                            journey={{
                                 ...mockAbandonedCartJourney,
                                 message_instructions:
                                     'Custom message instructions for pause test',
@@ -249,7 +249,7 @@ describe('<AnalyticsCard />', () => {
                         <AnalyticsCard
                             period={period}
                             analyticsData={data}
-                            abandonedCartJourney={{
+                            journey={{
                                 ...mockAbandonedCartJourney,
                                 state: JourneyStatusEnum.Paused,
                                 message_instructions:
@@ -297,7 +297,7 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         period={period}
                         analyticsData={loadingData}
-                        abandonedCartJourney={mockAbandonedCartJourney}
+                        journey={mockAbandonedCartJourney}
                         journeyData={
                             {
                                 ...mockJourneyData,
@@ -327,7 +327,7 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         period={period}
                         analyticsData={[]}
-                        abandonedCartJourney={mockAbandonedCartJourney}
+                        journey={undefined}
                         journeyData={
                             {
                                 ...mockJourneyData,
@@ -355,14 +355,14 @@ describe('<AnalyticsCard />', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders draft status when abandonedCartJourney is undefined', () => {
+    it('renders draft status when journey is undefined', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsCard
                         period={period}
                         analyticsData={data}
-                        abandonedCartJourney={undefined}
+                        journey={undefined}
                         journeyData={mockJourneyData as JourneyDetailApiDTO}
                     />
                 </Provider>
@@ -373,14 +373,14 @@ describe('<AnalyticsCard />', () => {
         expect(screen.getByText('DRAFT')).toBeInTheDocument()
     })
 
-    it('should update journey state when abandonedCartJourney state changes', () => {
+    it('should update journey state when journey state changes', () => {
         const { rerender } = render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <AnalyticsCard
                         period={period}
                         analyticsData={data}
-                        abandonedCartJourney={{
+                        journey={{
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Draft,
                         }}
@@ -398,7 +398,7 @@ describe('<AnalyticsCard />', () => {
                     <AnalyticsCard
                         period={period}
                         analyticsData={data}
-                        abandonedCartJourney={{
+                        journey={{
                             ...mockAbandonedCartJourney,
                             state: JourneyStatusEnum.Active,
                         }}

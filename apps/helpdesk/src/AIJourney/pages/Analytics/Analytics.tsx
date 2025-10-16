@@ -3,12 +3,12 @@ import { motion } from 'framer-motion'
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { PerformanceBadge } from 'AIJourney/components'
-import { JourneyProvider, useJourneyContext } from 'AIJourney/providers'
+import { useJourneyContext } from 'AIJourney/providers'
 
 import css from './Analytics.less'
 
-const AnalyticsComponent = () => {
-    const { journey: abandonedCartJourney, isLoading } = useJourneyContext()
+export const Analytics = () => {
+    const { currentJourney, isLoading } = useJourneyContext()
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -23,15 +23,9 @@ const AnalyticsComponent = () => {
             {!isLoading && (
                 <>
                     <PerformanceBadge />
-                    {`JourneyID: ${abandonedCartJourney?.id}`}
+                    {`JourneyID: ${currentJourney?.id}`}
                 </>
             )}
         </motion.div>
     )
 }
-
-export const Analytics = () => (
-    <JourneyProvider journeyType="cart_abandoned">
-        <AnalyticsComponent />
-    </JourneyProvider>
-)

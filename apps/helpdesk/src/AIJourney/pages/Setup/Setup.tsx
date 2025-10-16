@@ -34,7 +34,7 @@ export const Setup = () => {
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
 
     const {
-        journey: abandonedCartJourney,
+        currentJourney,
         journeyData,
         currentIntegration,
         shopName,
@@ -165,7 +165,7 @@ export const Setup = () => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        abandonedCartJourney,
+        journey: currentJourney,
         followUpValue: numberOfMessageValue - 1,
         isDiscountEnabled,
         discountValue,
@@ -178,11 +178,11 @@ export const Setup = () => {
 
     const handleContinue = async () => {
         try {
-            if (abandonedCartJourney) {
+            if (currentJourney) {
                 await handleUpdate({
                     journeyMessageInstructions:
-                        abandonedCartJourney.message_instructions,
-                    journeyState: abandonedCartJourney.state,
+                        currentJourney.message_instructions,
+                    journeyState: currentJourney.state,
                 })
             } else {
                 await handleCreate()

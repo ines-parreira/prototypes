@@ -30,6 +30,10 @@ jest.mock('AIJourney/queries/useJourneyData/useJourneyData', () => ({
     useJourneyData: jest.fn(),
 }))
 
+jest.mock('AIJourney/queries/useJourneys/useJourneys', () => ({
+    useJourneys: jest.fn(),
+}))
+
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
@@ -44,19 +48,17 @@ jest.mock('models/aiAgent/queries', () => ({
 const mockUseParams = useParams as jest.Mock
 const mockUseIntegrations =
     require('AIJourney/providers/IntegrationsProvider/IntegrationsProvider').useIntegrations
-const mockGetAllJourneysPublic =
-    require('@gorgias/convert-client').getAllJourneysPublic
-const mockGetJourneyDetails =
-    require('@gorgias/convert-client').getJourneyDetails
 const mockUseAppSelector = require('hooks/useAppSelector') as jest.Mock
 const mockUseJourneyData =
     require('AIJourney/queries/useJourneyData/useJourneyData').useJourneyData
+const mockUseJourneys =
+    require('AIJourney/queries/useJourneys/useJourneys').useJourneys
 const mockUseGetStoresConfigurationForAccount =
     require('models/aiAgent/queries').useGetStoresConfigurationForAccount
 
 const TestComponent = () => {
     const {
-        journey,
+        currentJourney,
         journeyData,
         currentIntegration,
         shopName,
@@ -75,7 +77,7 @@ const TestComponent = () => {
             <div data-testid="currentIntegration">
                 {currentIntegration?.name}
             </div>
-            <div data-testid="journey">{journey?.id}</div>
+            <div data-testid="journey">{currentJourney?.id}</div>
             <div data-testid="journeyConfiguration">
                 {journeyData?.configuration?.max_follow_up_messages}
             </div>
@@ -89,6 +91,9 @@ const TestComponent = () => {
 describe('<JourneyProvider />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseParams.mockReturnValue({ shopName: 'test-shop' })
+
         // Mock useAppSelector to return a mock account with domain
         mockUseAppSelector.mockReturnValue({
             get: (key: string) => {
@@ -106,45 +111,24 @@ describe('<JourneyProvider />', () => {
             isLoading: false,
         })
 
-        // Mock useJourneyData
         mockUseJourneyData.mockReturnValue({
             data: undefined,
             isLoading: false,
         })
 
-        // Default mock for getAllJourneysPublic
-        mockGetAllJourneysPublic.mockResolvedValue({
-            data: [],
-        })
-
-        // Default mock for getJourneyDetails
-        mockGetJourneyDetails.mockResolvedValue({
-            data: {
-                configuration: null,
-            },
-        })
+        mockUseJourneys.mockImplementation(() => ({
+            data: [
+                { id: 'journey-123', type: 'cart_abandoned', state: 'active' },
+            ],
+            isError: false,
+            isLoading: false,
+        }))
     })
 
     it('provides journey data and loading state', async () => {
-        mockUseParams.mockReturnValue({ shopName: 'test-shop' })
         mockUseIntegrations.mockReturnValue({
             currentIntegration: { id: 1, name: 'test-shop', type: 'shopify' },
             isLoading: false,
-        })
-        mockGetAllJourneysPublic.mockResolvedValue({
-            data: [
-                {
-                    id: 'journey-1',
-                    type: 'cart_abandoned',
-                    state: 'active',
-                    message_instructions: 'Test instructions',
-                },
-                {
-                    id: 'journey-2',
-                    type: 'other_type',
-                    state: 'draft',
-                },
-            ],
         })
         mockUseJourneyData.mockReturnValue({
             data: {
@@ -187,9 +171,12 @@ describe('<JourneyProvider />', () => {
     })
 
     it('provides loading state when data is loading', () => {
-        mockUseParams.mockReturnValue({ shopName: 'test-shop' })
         mockUseIntegrations.mockReturnValue({
             currentIntegration: undefined,
+            isLoading: true,
+        })
+        mockUseJourneyData.mockReturnValue({
+            data: undefined,
             isLoading: true,
         })
         // Don't need to mock getAllJourneysPublic for loading state
@@ -219,5 +206,23 @@ describe('<JourneyProvider />', () => {
         )
 
         spy.mockRestore()
+    })
+
+    it('should return empty current journey if no journey is available ', () => {
+        mockUseJourneys.mockImplementation(() => ({
+            data: [],
+            isError: false,
+            isLoading: false,
+        }))
+
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <JourneyProvider>
+                    <TestComponent />
+                </JourneyProvider>
+            </QueryClientProvider>,
+        )
+
+        expect(screen.getByTestId('journey')).toHaveTextContent('')
     })
 })

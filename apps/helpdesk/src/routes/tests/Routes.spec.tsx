@@ -919,7 +919,7 @@ describe('<Routes/>', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                journey: { id: 'journey-123', type: 'cart_abandoned' },
+                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,
