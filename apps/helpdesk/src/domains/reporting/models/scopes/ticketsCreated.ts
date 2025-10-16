@@ -13,6 +13,7 @@ const ticketsCreatedScope = defineScope({
         'agents',
         'channels',
         'integrations',
+        'stores',
         'tags',
         'customFields',
         'communicationSkills',

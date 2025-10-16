@@ -19,6 +19,7 @@ const resolutionTimeScope = defineScope({
         'channels',
         'csatScores',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

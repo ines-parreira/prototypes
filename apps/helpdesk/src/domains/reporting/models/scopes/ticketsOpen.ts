@@ -14,6 +14,7 @@ const ticketsOpenScope = defineScope({
         'channels',
         'score',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

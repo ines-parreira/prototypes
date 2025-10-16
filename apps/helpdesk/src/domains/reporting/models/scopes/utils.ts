@@ -136,6 +136,18 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
+            case 'stores':
+                if (statFilters.stores && hasFilter(statFilters.stores)) {
+                    filters.push(
+                        createStandardFilter(
+                            'storeId',
+                            statFilters.stores.operator,
+                            statFilters.stores.values.map(String),
+                        ),
+                    )
+                }
+                break
+
             case 'tags':
                 if (statFilters.tags && hasFilter(statFilters.tags)) {
                     filters.push(

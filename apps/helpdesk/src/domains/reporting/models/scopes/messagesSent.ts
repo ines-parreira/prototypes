@@ -14,6 +14,7 @@ const messagesSentScope = defineScope({
         'channels',
         'score',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

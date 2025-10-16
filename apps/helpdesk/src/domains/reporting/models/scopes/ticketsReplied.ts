@@ -14,6 +14,7 @@ const ticketsRepliedScope = defineScope({
         'channels',
         'score',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

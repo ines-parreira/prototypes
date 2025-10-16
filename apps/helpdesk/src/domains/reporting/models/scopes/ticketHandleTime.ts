@@ -19,6 +19,7 @@ const ticketHandleTimeScope = defineScope({
         'channels',
         'csatScores',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

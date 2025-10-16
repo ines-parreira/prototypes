@@ -19,6 +19,7 @@ const firstResponseTimeScope = defineScope({
         'channels',
         'csatScores',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

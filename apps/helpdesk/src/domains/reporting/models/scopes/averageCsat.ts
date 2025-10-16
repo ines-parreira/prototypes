@@ -21,6 +21,7 @@ const averageCsatScope = defineScope({
         'channels',
         'csatScores',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

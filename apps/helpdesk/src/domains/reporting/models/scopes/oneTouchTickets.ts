@@ -13,6 +13,7 @@ const oneTouchTicketsScope = defineScope({
         'channels',
         'csatScores',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',

@@ -131,6 +131,29 @@ describe('utils', () => {
             })
         })
 
+        it('should add stores filter when present in scope config and stat filters', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['stores'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [877777, 101112],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'storeId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['877777', '101112'],
+            })
+        })
+
         describe('tags filter', () => {
             it('should add tags filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {

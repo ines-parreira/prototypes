@@ -20,6 +20,7 @@ const messagesPerTicketScope = defineScope({
         'channels',
         'score',
         'integrations',
+        'stores',
         'communicationSkills',
         'languageProficiency',
         'resolutionCompleteness',
