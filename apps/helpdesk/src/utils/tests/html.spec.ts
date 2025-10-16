@@ -214,6 +214,11 @@ describe('html util', () => {
             `
             expect(sanitizeHtmlDefault(tablehtml)).toBe(tablehtml)
         })
+        it("shouldn't remove data URLs", () => {
+            expect(sanitizeHtmlDefault('<img src="data:foo" />')).toBe(
+                '<img src="data:foo" />',
+            )
+        })
     })
 
     describe('sanitizeHtmlMinimal', () => {
@@ -283,6 +288,11 @@ describe('html util', () => {
             expect(
                 sanitizeHtmlMinimal(inputHtml).replace(/\s+/g, ' ').trim(),
             ).toBe(expectedOutput.replace(/\s+/g, ' ').trim())
+        })
+        it("shouldn't remove data URLs", () => {
+            expect(sanitizeHtmlDefault('<img src="data:foo" />')).toBe(
+                '<img src="data:foo" />',
+            )
         })
         it('should remove meta tags using exclusiveFilter', () => {
             const htmlWithMeta = `

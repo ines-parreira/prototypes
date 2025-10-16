@@ -48,6 +48,8 @@ exports[`global utils parseMedia should not proxify a proxified image 1`] = `"<i
 
 exports[`global utils parseMedia should not touch html with not img 1`] = `"<span>123</span>"`;
 
+exports[`global utils parseMedia should not touch inline images 1`] = `"<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="/>"`;
+
 exports[`global utils parseMedia should work with direct image 1`] = `"<img src="http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg"/>"`;
 
 exports[`global utils parseMedia should work with format 1`] = `"<img src="http://proxy-url/100x100,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;

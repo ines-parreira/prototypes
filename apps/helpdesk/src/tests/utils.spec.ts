@@ -736,6 +736,14 @@ describe('global utils', () => {
                 '<audio src="https://acme.gorgias.com/api/attachment/download/hello"></audio>',
             )
         })
+
+        it('should not touch inline images', () => {
+            expect(
+                utils.parseMedia(
+                    '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" />',
+                ),
+            ).toMatchSnapshot()
+        })
     })
 
     describe('validateWebhookURL', () => {

@@ -565,9 +565,9 @@ export const parseMedia = (html: string, imageFormat = '1000x'): string => {
                 if (
                     name === 'img' &&
                     k === 'src' &&
-                    (attributes.src as string).indexOf(
-                        window.IMAGE_PROXY_URL,
-                    ) === -1
+                    typeof attributes.src === 'string' &&
+                    !attributes.src.startsWith('data:image') &&
+                    attributes.src.indexOf(window.IMAGE_PROXY_URL) === -1
                 ) {
                     if (isPrivateAsset(attributes.src as string)) {
                         v = replaceAttachmentURL(

@@ -113,6 +113,7 @@ export function sanitizeHtmlDefault(html: string): string {
                 'data-discount-code', // used for chat discount sharing.
             ],
         },
+        allowedSchemes: ['http', 'https', 'data'],
         nonTextTags: [
             'style',
             'script',
@@ -145,6 +146,7 @@ export function sanitizeHtmlMinimal(html: string): string {
             a: ['href', 'title'],
             img: ['src', 'alt'],
         },
+        allowedSchemes: ['http', 'https', 'data'],
         nonTextTags: [
             'style',
             'script',
