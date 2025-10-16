@@ -23,7 +23,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.79.0'
+    '@gorgias/axiom': '0.83.1'
     '@gorgias/design-tokens': '0.10.7'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.14'
