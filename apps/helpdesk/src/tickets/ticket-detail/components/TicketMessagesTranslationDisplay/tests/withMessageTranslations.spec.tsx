@@ -3,8 +3,10 @@ import React from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
 
 import {
     mockGetCurrentUserHandler,
@@ -112,6 +114,18 @@ const mockCurrentUserWithFrench = {
     ],
 }
 
+// Create mock store
+const mockStore = {
+    getState: () => ({
+        ticket: fromJS({
+            id: 456,
+            language: 'es',
+        }),
+    }),
+    subscribe: jest.fn(),
+    dispatch: jest.fn(),
+}
+
 // Create mock handlers
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(mockCurrentUser),
@@ -171,11 +185,13 @@ afterAll(() => {
 
 // Test component wrapper with providers
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
-        <TicketMessageTranslationDisplayProvider>
-            {children}
-        </TicketMessageTranslationDisplayProvider>
-    </QueryClientProvider>
+    <Provider store={mockStore as any}>
+        <QueryClientProvider client={appQueryClient}>
+            <TicketMessageTranslationDisplayProvider>
+                {children}
+            </TicketMessageTranslationDisplayProvider>
+        </QueryClientProvider>
+    </Provider>
 )
 
 describe('withMessageTranslations', () => {

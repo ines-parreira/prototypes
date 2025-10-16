@@ -7,7 +7,7 @@ import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
 
 import { CheckBoxField, Tooltip } from '@gorgias/axiom'
-import { TicketTranslationCompact } from '@gorgias/helpdesk-types'
+import { Language, TicketTranslationCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
@@ -15,6 +15,7 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
+import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
 import { TicketCompact, TicketPartial } from '../types'
@@ -65,6 +66,7 @@ export default function Ticket({
         false,
     )
 
+    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
@@ -73,6 +75,17 @@ export default function Ticket({
                 : null,
         [ticket],
     )
+
+    const showTranslatedContent = useMemo(() => {
+        if (!('language' in ticket)) {
+            return false
+        }
+
+        if (!shouldShowTranslatedContent(ticket.language as Language)) {
+            return false
+        }
+        return !!translation?.subject || !!translation?.excerpt
+    }, [ticket, shouldShowTranslatedContent, translation])
 
     const checkboxRef = useRef<HTMLInputElement | null>(null)
     const handleClickLink = useCallback((e: MouseEvent<HTMLAnchorElement>) => {
@@ -183,24 +196,30 @@ export default function Ticket({
                                     )}
                                 </header>
                                 <span className={css.subject}>
-                                    {translation?.subject || ticket.subject}
-                                    {translation?.subject && (
-                                        <i
-                                            className={cn(
-                                                'material-icons',
-                                                css.translateIcon,
-                                            )}
-                                        >
-                                            translate
-                                        </i>
-                                    )}
+                                    {showTranslatedContent
+                                        ? translation?.subject || ticket.subject
+                                        : ticket.subject}
+                                    {showTranslatedContent &&
+                                        translation?.subject && (
+                                            <i
+                                                className={cn(
+                                                    'material-icons',
+                                                    css.translateIcon,
+                                                )}
+                                            >
+                                                translate
+                                            </i>
+                                        )}
                                 </span>
                                 {!hasUndeliveredMessages && (
                                     <div
                                         ref={excerptRef}
                                         className={css.excerpt}
                                     >
-                                        {translation?.excerpt || ticket.excerpt}
+                                        {showTranslatedContent
+                                            ? translation?.excerpt ||
+                                              ticket.excerpt
+                                            : ticket.excerpt}
                                     </div>
                                 )}
                                 {hasUndeliveredMessages && (
@@ -213,7 +232,10 @@ export default function Ticket({
                                         placement="top"
                                         target={excerptRef}
                                     >
-                                        {translation?.excerpt || ticket.excerpt}
+                                        {showTranslatedContent
+                                            ? translation?.excerpt ||
+                                              ticket.excerpt
+                                            : ticket.excerpt}
                                     </Tooltip>
                                 )}
                             </div>

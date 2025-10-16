@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useGetCurrentUser, UserSettingType } from '@gorgias/helpdesk-queries'
 import {
@@ -29,12 +29,28 @@ export function useCurrentUserPreferredLanguage() {
         return preferences?.data
     }, [currentUser])
 
+    const languagesNotToTranslateFor = useMemo(
+        () =>
+            [
+                languagePreferences?.primary,
+                ...(languagePreferences?.proficient ?? []),
+            ].filter(Boolean) as Language[],
+        [languagePreferences],
+    )
+
+    const shouldShowTranslatedContent = useCallback(
+        (language?: Language | null) =>
+            !language
+                ? false
+                : !languagePreferences?.primary
+                  ? false
+                  : !languagesNotToTranslateFor.includes(language),
+        [languagesNotToTranslateFor, languagePreferences],
+    )
+
     return {
         primary: languagePreferences?.primary as Language | undefined,
         proficient: languagePreferences?.proficient as Language[] | undefined,
-        languagesNotToTranslateFor: [
-            languagePreferences?.primary,
-            ...(languagePreferences?.proficient ?? []),
-        ].filter(Boolean) as Language[],
+        shouldShowTranslatedContent,
     }
 }

@@ -4,8 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
 
 import {
     mockGetCurrentUserHandler,
@@ -109,15 +111,29 @@ const mockTranslationDisplayContext = {
     setAllTicketMessagesToTranslated: jest.fn(),
 }
 
+// Create mock store
+const mockStore = {
+    getState: () => ({
+        ticket: fromJS({
+            id: 1,
+            language: 'es',
+        }),
+    }),
+    subscribe: jest.fn(),
+    dispatch: jest.fn(),
+}
+
 // Test component wrapper
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
-        <TicketMessagesTranslationDisplayContext.Provider
-            value={mockTranslationDisplayContext}
-        >
-            {children}
-        </TicketMessagesTranslationDisplayContext.Provider>
-    </QueryClientProvider>
+    <Provider store={mockStore as any}>
+        <QueryClientProvider client={appQueryClient}>
+            <TicketMessagesTranslationDisplayContext.Provider
+                value={mockTranslationDisplayContext}
+            >
+                {children}
+            </TicketMessagesTranslationDisplayContext.Provider>
+        </QueryClientProvider>
+    </Provider>
 )
 
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (

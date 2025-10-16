@@ -26,11 +26,11 @@ describe('useCurrentUserPreferredLanguage', () => {
 
         const { result } = renderHook(() => useCurrentUserPreferredLanguage())
 
-        expect(result.current).toEqual({
-            primary: undefined,
-            proficient: undefined,
-            languagesNotToTranslateFor: [],
-        })
+        expect(result.current.primary).toBeUndefined()
+        expect(result.current.proficient).toBeUndefined()
+        expect(typeof result.current.shouldShowTranslatedContent).toBe(
+            'function',
+        )
     })
 
     it('should return empty values when current user has no settings', () => {
@@ -52,7 +52,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -86,7 +86,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -118,7 +118,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Fr,
             proficient: undefined,
-            languagesNotToTranslateFor: [Language.Fr],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -150,7 +150,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Fr,
             proficient: [Language.En, Language.Es],
-            languagesNotToTranslateFor: [Language.Fr, Language.En, Language.Es],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -182,7 +182,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: [Language.En, Language.De],
-            languagesNotToTranslateFor: [Language.En, Language.De],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -214,7 +214,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -243,7 +243,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -280,7 +280,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Es,
             proficient: [Language.En],
-            languagesNotToTranslateFor: [Language.Es, Language.En],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -319,7 +319,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Ga,
             proficient: [Language.It],
-            languagesNotToTranslateFor: [Language.Ga, Language.It],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -355,7 +355,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.En,
             proficient: [],
-            languagesNotToTranslateFor: [Language.En],
+            shouldShowTranslatedContent: expect.any(Function),
         })
 
         // Update user data with different language
@@ -385,7 +385,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Fr,
             proficient: [Language.Es, Language.De],
-            languagesNotToTranslateFor: [Language.Fr, Language.Es, Language.De],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -408,7 +408,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -427,7 +427,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: undefined,
             proficient: undefined,
-            languagesNotToTranslateFor: [],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -467,7 +467,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.It,
             proficient: [Language.Pt],
-            languagesNotToTranslateFor: [Language.It, Language.Pt],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -499,7 +499,7 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.Fr,
             proficient: [],
-            languagesNotToTranslateFor: [Language.Fr],
+            shouldShowTranslatedContent: expect.any(Function),
         })
     })
 
@@ -530,7 +530,190 @@ describe('useCurrentUserPreferredLanguage', () => {
         expect(result.current).toEqual({
             primary: Language.De,
             proficient: undefined,
-            languagesNotToTranslateFor: [Language.De],
+            shouldShowTranslatedContent: expect.any(Function),
+        })
+    })
+
+    describe('shouldShowTranslatedContent', () => {
+        it('should return false when language is not provided', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.En,
+                                    proficient: [Language.Fr, Language.Es],
+                                },
+                            },
+                        ],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(result.current.shouldShowTranslatedContent(null)).toBe(false)
+        })
+
+        it('should return false when language is undefined', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.En,
+                                    proficient: [Language.Fr, Language.Es],
+                                },
+                            },
+                        ],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(result.current.shouldShowTranslatedContent(undefined)).toBe(
+                false,
+            )
+        })
+
+        it('should return false when language matches primary', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.En,
+                                    proficient: [Language.Fr, Language.Es],
+                                },
+                            },
+                        ],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(
+                result.current.shouldShowTranslatedContent(Language.En),
+            ).toBe(false)
+        })
+
+        it('should return false when language is in proficient languages', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.En,
+                                    proficient: [Language.Fr, Language.Es],
+                                },
+                            },
+                        ],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(
+                result.current.shouldShowTranslatedContent(Language.Fr),
+            ).toBe(false)
+        })
+
+        it('should return true when language is not in proficient languages', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [
+                            {
+                                id: 1,
+                                type: UserSettingType.LanguagePreferences,
+                                data: {
+                                    primary: Language.En,
+                                    proficient: [Language.Fr, Language.Es],
+                                },
+                            },
+                        ],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(
+                result.current.shouldShowTranslatedContent(Language.De),
+            ).toBe(true)
+        })
+
+        it('should return false when user has no language preferences and a language is provided', () => {
+            mockUseGetCurrentUser.mockReturnValue({
+                data: {
+                    data: {
+                        id: 1,
+                        email: 'user@example.com',
+                        settings: [],
+                    },
+                },
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useCurrentUserPreferredLanguage(),
+            )
+
+            expect(
+                result.current.shouldShowTranslatedContent(Language.Es),
+            ).toBe(false)
         })
     })
 })

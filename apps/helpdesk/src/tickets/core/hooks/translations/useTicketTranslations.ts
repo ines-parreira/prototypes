@@ -11,9 +11,13 @@ import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLangua
 
 type TicketTranslationsParams = {
     ticket_id?: number
+    enabled?: boolean
 }
 
-export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
+export function useTicketTranslations({
+    ticket_id,
+    enabled = true,
+}: TicketTranslationsParams) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const { primary } = useCurrentUserPreferredLanguage()
 
@@ -27,6 +31,7 @@ export function useTicketTranslations({ ticket_id }: TicketTranslationsParams) {
             query: {
                 staleTime: 60000 * 5,
                 enabled:
+                    enabled &&
                     Boolean(primary) &&
                     Boolean(ticket_id) &&
                     hasMessagesTranslation,

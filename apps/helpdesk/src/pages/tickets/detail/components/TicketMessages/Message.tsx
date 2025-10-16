@@ -3,11 +3,17 @@ import { useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 
-import { TicketMessage as TicketMessageType } from '@gorgias/helpdesk-types'
+import {
+    Language,
+    TicketMessage as TicketMessageType,
+} from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
+import useAppSelector from 'hooks/useAppSelector'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
+import { getTicket } from 'state/ticket/selectors'
+import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
@@ -43,6 +49,7 @@ export default function Message({
 
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
+    const ticket = useAppSelector(getTicket)
 
     const { getMessageTranslation } = useTicketMessageTranslations({
         ticket_id: ticketId,
@@ -50,6 +57,7 @@ export default function Message({
 
     const { getTicketMessageTranslationDisplay } =
         useTicketMessageTranslationDisplay()
+    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
 
     const messageTranslations = useMemo(
         () => (message?.id ? getMessageTranslation(message.id) : null),
@@ -58,6 +66,9 @@ export default function Message({
 
     const displayedMessage = useMemo(() => {
         if (!message?.id) return message
+        if (!shouldShowTranslatedContent(ticket.language as Language))
+            return message
+
         const displayType = getTicketMessageTranslationDisplay(message.id)
         if (
             displayType.display === DisplayedContent.Translated &&
@@ -70,7 +81,13 @@ export default function Message({
             }
         }
         return message
-    }, [message, messageTranslations, getTicketMessageTranslationDisplay])
+    }, [
+        message,
+        messageTranslations,
+        getTicketMessageTranslationDisplay,
+        shouldShowTranslatedContent,
+        ticket,
+    ])
 
     return (
         <div
@@ -97,9 +114,12 @@ export default function Message({
                 hasError={hasError}
                 messagePosition={messagePosition}
             />
-            {hasMessagesTranslation && !!messageTranslations && message.id && (
-                <TranslationsDropdown messageId={message.id} />
-            )}
+            {hasMessagesTranslation &&
+                !!messageTranslations &&
+                message.id &&
+                shouldShowTranslatedContent(ticket.language as Language) && (
+                    <TranslationsDropdown messageId={message.id} />
+                )}
             <MessageAttachments
                 message={displayedMessage as TicketMessageType}
             />

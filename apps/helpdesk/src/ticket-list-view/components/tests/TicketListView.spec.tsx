@@ -589,4 +589,180 @@ describe('<TicketListView />', () => {
             expect(getByText('1 selected')).toBeInTheDocument()
         })
     })
+
+    describe('translations', () => {
+        it('should pass undefined translation when no translation exists', () => {
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: [ticket],
+                newTickets: {},
+                ticketIds: { current: [152] },
+                initialLoaded: true,
+                partials: [ticket],
+            })
+
+            renderWithQueryClientAndRouter(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    ticket,
+                    translation: undefined,
+                }),
+                {},
+            )
+        })
+
+        it('should fetch translations for all partial tickets', () => {
+            const mockPartials = [
+                { id: 1, subject: 'Subject 1' },
+                { id: 2, subject: 'Subject 2' },
+                { id: 3, subject: 'Subject 3' },
+            ]
+
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: mockPartials,
+                newTickets: {},
+                ticketIds: { current: [1, 2, 3] },
+                initialLoaded: true,
+                partials: mockPartials,
+            })
+
+            renderWithQueryClientAndRouter(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).toHaveBeenCalledTimes(3)
+        })
+
+        it('should pass translation from translationMap to each ticket', () => {
+            const mockTickets = [
+                { id: 1, subject: 'Subject 1' },
+                { id: 2, subject: 'Subject 2' },
+            ]
+
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: mockTickets,
+                newTickets: {},
+                ticketIds: { current: [1, 2] },
+                initialLoaded: true,
+                partials: mockTickets,
+            })
+
+            renderWithQueryClientAndRouter(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    ticket: mockTickets[0],
+                    translation: undefined,
+                }),
+                {},
+            )
+            expect(TicketMock).toHaveBeenNthCalledWith(
+                2,
+                expect.objectContaining({
+                    ticket: mockTickets[1],
+                    translation: undefined,
+                }),
+                {},
+            )
+        })
+
+        it('should update translations when partials change', () => {
+            const initialPartials = [{ id: 1, subject: 'Subject 1' }]
+            const updatedPartials = [
+                { id: 1, subject: 'Subject 1' },
+                { id: 2, subject: 'Subject 2' },
+            ]
+
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: initialPartials,
+                newTickets: {},
+                ticketIds: { current: [1] },
+                initialLoaded: true,
+                partials: initialPartials,
+            })
+
+            const { rerender } = renderWithQueryClientAndRouter(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).toHaveBeenCalledTimes(1)
+
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: updatedPartials,
+                newTickets: {},
+                ticketIds: { current: [1, 2] },
+                initialLoaded: true,
+                partials: updatedPartials,
+            })
+
+            rerender(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).toHaveBeenCalledTimes(3)
+        })
+
+        it('should handle empty partials array', () => {
+            useTicketsMock.mockReturnValue({
+                loadMore,
+                pauseUpdates,
+                resumeUpdates,
+                setElement,
+                staleTickets: {},
+                tickets: [],
+                newTickets: {},
+                ticketIds: { current: [] },
+                initialLoaded: true,
+                partials: [],
+            })
+
+            renderWithQueryClientAndRouter(
+                <Provider store={store}>
+                    <TicketListView viewId={123} />
+                </Provider>,
+            )
+
+            expect(TicketMock).not.toHaveBeenCalled()
+        })
+    })
 })

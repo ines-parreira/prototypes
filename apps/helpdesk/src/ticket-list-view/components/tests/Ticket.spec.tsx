@@ -22,6 +22,16 @@ jest.mock('pages/tickets/common/components/PriorityLabel', () => ({
     PriorityLabel: jest.fn(({ priority }) => <div>priority: {priority}</div>),
 }))
 
+const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
+jest.mock(
+    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    () => ({
+        useCurrentUserPreferredLanguage: () => ({
+            shouldShowTranslatedContent: mockShouldShowTranslatedContent,
+        }),
+    }),
+)
+
 describe('Ticket', () => {
     const defaultTicket = {
         channel: 'email',
@@ -54,6 +64,8 @@ describe('Ticket', () => {
             agentViewingMessage: '',
             isTicketViewed: false,
         })
+        mockShouldShowTranslatedContent.mockReturnValue(true)
+        mockShouldShowTranslatedContent.mockClear()
     })
 
     it('should render a default ticket', () => {
@@ -440,6 +452,7 @@ describe('Ticket', () => {
     describe('translation behavior', () => {
         const ticketWithTranslation = {
             ...defaultTicket,
+            language: 'es',
         }
 
         const mockTranslation = {
@@ -609,6 +622,284 @@ describe('Ticket', () => {
                 defaultTicket.excerpt!,
             ).parentElement
             expect(tooltip).toBeInTheDocument()
+        })
+    })
+
+    describe('shouldShowTranslatedContent integration', () => {
+        const ticketWithLanguage = {
+            ...defaultTicket,
+            language: 'es',
+        }
+
+        const mockTranslation = {
+            ...mockTicketTranslationCompact(),
+            subject: 'Translated Subject',
+            excerpt: 'Translated Excerpt',
+        }
+
+        afterEach(() => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+        })
+
+        it('should not show translation when shouldShowTranslatedContent returns false', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(false)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Subject'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Excerpt'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should show translation when shouldShowTranslatedContent returns true', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText('Translated Subject')).toBeInTheDocument()
+            expect(screen.getByText('Translated Excerpt')).toBeInTheDocument()
+            expect(screen.getByText('translate')).toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.subject),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(defaultTicket.excerpt!),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call shouldShowTranslatedContent with ticket language', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('es')
+        })
+
+        it('should not show translation when ticket has no language property', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={defaultTicket}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated Subject'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should not call shouldShowTranslatedContent when ticket has no language', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={defaultTicket}
+                    translation={mockTranslation}
+                />,
+            )
+
+            expect(mockShouldShowTranslatedContent).not.toHaveBeenCalled()
+        })
+
+        it('should not show translation when translation is undefined even if shouldShowTranslatedContent returns true', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={undefined}
+                />,
+            )
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should not show translation when translation exists but both subject and excerpt are empty', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={{
+                        ...mockTicketTranslationCompact(),
+                        subject: '',
+                        excerpt: '',
+                    }}
+                />,
+            )
+
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should show translation when only subject is translated and shouldShowTranslatedContent returns true', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={{
+                        ...mockTicketTranslationCompact(),
+                        subject: 'Translated Subject Only',
+                        excerpt: '',
+                    }}
+                />,
+            )
+
+            expect(
+                screen.getByText('Translated Subject Only'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('translate')).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.excerpt!)).toBeInTheDocument()
+        })
+
+        it('should show translation when only excerpt is translated and shouldShowTranslatedContent returns true', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={{
+                        ...mockTicketTranslationCompact(),
+                        subject: '',
+                        excerpt: 'Translated Excerpt Only',
+                    }}
+                />,
+            )
+
+            expect(
+                screen.getByText('Translated Excerpt Only'),
+            ).toBeInTheDocument()
+            expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+        })
+
+        it('should handle different languages correctly', () => {
+            const testCases = [
+                { language: 'en', shouldShow: false },
+                { language: 'es', shouldShow: true },
+                { language: 'fr', shouldShow: true },
+                { language: 'de', shouldShow: false },
+            ]
+
+            testCases.forEach(({ language, shouldShow }) => {
+                mockShouldShowTranslatedContent.mockImplementation(
+                    (lang) => lang !== 'en' && lang !== 'de',
+                )
+
+                const { unmount } = render(
+                    <Ticket
+                        {...defaultProps}
+                        ticket={{ ...defaultTicket, language }}
+                        translation={mockTranslation}
+                    />,
+                )
+
+                if (shouldShow) {
+                    expect(
+                        screen.getByText('Translated Subject'),
+                    ).toBeInTheDocument()
+                } else {
+                    expect(
+                        screen.getByText(defaultTicket.subject),
+                    ).toBeInTheDocument()
+                }
+
+                expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith(
+                    language,
+                )
+                unmount()
+                mockShouldShowTranslatedContent.mockClear()
+            })
+        })
+
+        it('should not show translation in tooltip when shouldShowTranslatedContent returns false', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(false)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={mockTranslation}
+                />,
+            )
+
+            const tooltip = screen.getByText(
+                defaultTicket.excerpt!,
+            ).parentElement
+            expect(tooltip).toBeInTheDocument()
+        })
+
+        it('should show translated content in tooltip when shouldShowTranslatedContent returns true', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithLanguage}
+                    translation={mockTranslation}
+                />,
+            )
+
+            const tooltip = screen.getByText('Translated Excerpt').parentElement
+            expect(tooltip).toBeInTheDocument()
+        })
+
+        it('should not show translation when ticket is a partial without channel property', () => {
+            const partialTicket = {
+                id: 1,
+                subject: 'Subject',
+                excerpt: 'Excerpt',
+                language: 'es',
+            }
+
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={partialTicket as any}
+                    translation={mockTranslation}
+                />,
+            )
+
+            // Should render skeleton, not translated content
+            expect(
+                screen.queryByText('Translated Subject'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('translate')).not.toBeInTheDocument()
         })
     })
 })

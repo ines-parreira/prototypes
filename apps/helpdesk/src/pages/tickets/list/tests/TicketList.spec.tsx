@@ -88,6 +88,27 @@ jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({
     }),
 }))
 
+const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
+jest.mock(
+    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    () => ({
+        useCurrentUserPreferredLanguage: () => ({
+            shouldShowTranslatedContent: mockShouldShowTranslatedContent,
+        }),
+    }),
+)
+
+const mockTranslationMap: Record<number, { subject: string; excerpt: string }> =
+    {}
+jest.mock(
+    'tickets/core/hooks/translations/useTicketsTranslatedProperties',
+    () => ({
+        useTicketsTranslatedProperties: () => ({
+            translationMap: mockTranslationMap,
+        }),
+    }),
+)
+
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
     tickets: fromJS({ items: [] }),
@@ -351,5 +372,439 @@ describe('<TicketList />', () => {
         )
 
         expect(mockViewTickets).toHaveBeenCalledWith([1, 2])
+    })
+
+    describe('ticket translations', () => {
+        beforeEach(() => {
+            Object.keys(mockTranslationMap).forEach((key) => {
+                delete mockTranslationMap[Number(key)]
+            })
+        })
+
+        afterEach(() => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+            mockShouldShowTranslatedContent.mockClear()
+        })
+
+        it('should not apply translations when shouldShowTranslatedContent returns false', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(false)
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                        language: 'en',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Original Subject')
+            expect(items.get(0).get('excerpt')).toBe('Original Excerpt')
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('en')
+        })
+
+        it('should not apply translations when ticket has no language property', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Original Subject')
+            expect(items.get(0).get('excerpt')).toBe('Original Excerpt')
+            expect(mockShouldShowTranslatedContent).not.toHaveBeenCalled()
+        })
+
+        it('should apply translations when shouldShowTranslatedContent returns true and translation exists', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+            mockTranslationMap[1] = {
+                subject: 'Translated Subject',
+                excerpt: 'Translated Excerpt',
+            }
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                        language: 'es',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Translated Subject')
+            expect(items.get(0).get('excerpt')).toBe('Translated Excerpt')
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('es')
+        })
+
+        it('should keep original content when shouldShowTranslatedContent returns true but no translation exists', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                        language: 'es',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Original Subject')
+            expect(items.get(0).get('excerpt')).toBe('Original Excerpt')
+        })
+
+        it('should handle multiple tickets with mixed translation scenarios', () => {
+            const mockShouldShowTranslatedContentImpl = jest.fn(
+                (language) => language !== 'en',
+            )
+            mockShouldShowTranslatedContent.mockImplementation(
+                mockShouldShowTranslatedContentImpl,
+            )
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'English Subject',
+                                        excerpt: 'English Excerpt',
+                                        language: 'en',
+                                    },
+                                    {
+                                        id: 2,
+                                        subject: 'Spanish Subject',
+                                        excerpt: 'Spanish Excerpt',
+                                        language: 'es',
+                                    },
+                                    {
+                                        id: 3,
+                                        subject: 'No Language Subject',
+                                        excerpt: 'No Language Excerpt',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('English Subject')
+            expect(items.get(1).get('subject')).toBe('Spanish Subject')
+            expect(items.get(2).get('subject')).toBe('No Language Subject')
+            expect(mockShouldShowTranslatedContentImpl).toHaveBeenCalledWith(
+                'en',
+            )
+            expect(mockShouldShowTranslatedContentImpl).toHaveBeenCalledWith(
+                'es',
+            )
+            expect(mockShouldShowTranslatedContentImpl).toHaveBeenCalledTimes(2)
+        })
+
+        it('should call shouldShowTranslatedContent with correct language for each ticket', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(false)
+
+            jest.spyOn(ViewTable, 'default').mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Subject 1',
+                                        language: 'en',
+                                    },
+                                    {
+                                        id: 2,
+                                        subject: 'Subject 2',
+                                        language: 'fr',
+                                    },
+                                    {
+                                        id: 3,
+                                        subject: 'Subject 3',
+                                        language: 'de',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('en')
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('fr')
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledWith('de')
+            expect(mockShouldShowTranslatedContent).toHaveBeenCalledTimes(3)
+        })
+
+        it('should apply partial translations when only subject is translated', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+            mockTranslationMap[1] = {
+                subject: 'Translated Subject',
+                excerpt: '',
+            }
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                        language: 'ja',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Translated Subject')
+            expect(items.get(0).get('excerpt')).toBe('')
+        })
+
+        it('should apply partial translations when only excerpt is translated', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+            mockTranslationMap[1] = {
+                subject: '',
+                excerpt: 'Translated Excerpt',
+            }
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject',
+                                        excerpt: 'Original Excerpt',
+                                        language: 'zh',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('')
+            expect(items.get(0).get('excerpt')).toBe('Translated Excerpt')
+        })
+
+        it('should handle mixed translations for multiple tickets', () => {
+            mockShouldShowTranslatedContent.mockReturnValue(true)
+            mockTranslationMap[1] = {
+                subject: 'Translated Subject 1',
+                excerpt: 'Translated Excerpt 1',
+            }
+            mockTranslationMap[3] = {
+                subject: 'Translated Subject 3',
+                excerpt: 'Translated Excerpt 3',
+            }
+
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider
+                        store={mockStore({
+                            tickets: fromJS({
+                                items: [
+                                    {
+                                        id: 1,
+                                        subject: 'Original Subject 1',
+                                        excerpt: 'Original Excerpt 1',
+                                        language: 'es',
+                                    },
+                                    {
+                                        id: 2,
+                                        subject: 'Original Subject 2',
+                                        excerpt: 'Original Excerpt 2',
+                                        language: 'fr',
+                                    },
+                                    {
+                                        id: 3,
+                                        subject: 'Original Subject 3',
+                                        excerpt: 'Original Excerpt 3',
+                                        language: 'de',
+                                    },
+                                ],
+                            }),
+                            views: fromJS({
+                                active: fixtureView,
+                                _internal: {
+                                    selectedItemsIds: [],
+                                },
+                            }),
+                        })}
+                    >
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const items = spy.mock.calls[0][0].items
+            expect(items.get(0).get('subject')).toBe('Translated Subject 1')
+            expect(items.get(0).get('excerpt')).toBe('Translated Excerpt 1')
+            expect(items.get(1).get('subject')).toBe('Original Subject 2')
+            expect(items.get(1).get('excerpt')).toBe('Original Excerpt 2')
+            expect(items.get(2).get('subject')).toBe('Translated Subject 3')
+            expect(items.get(2).get('excerpt')).toBe('Translated Excerpt 3')
+        })
     })
 })

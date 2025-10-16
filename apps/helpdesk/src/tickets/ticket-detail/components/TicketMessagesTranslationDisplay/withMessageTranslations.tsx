@@ -1,6 +1,11 @@
 import { type ComponentType, useMemo } from 'react'
 
+import { Language } from '@gorgias/helpdesk-types'
+
+import useAppSelector from 'hooks/useAppSelector'
 import { TicketMessage } from 'models/ticket/types'
+import { getTicket } from 'state/ticket/selectors'
+import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 
 import { DisplayedContent } from './context/ticketMessageTranslationDisplayContext'
@@ -15,6 +20,9 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
     Component: ComponentType<T & WithMessageTranslationsProps>,
 ) {
     return (props: T) => {
+        const ticket = useAppSelector(getTicket)
+        const { shouldShowTranslatedContent } =
+            useCurrentUserPreferredLanguage()
         const { getTicketMessageTranslationDisplay } =
             useTicketMessageTranslationDisplay()
         const { getMessageTranslation } = useTicketMessageTranslations({
@@ -23,6 +31,10 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
 
         const displayedMessage = useMemo(() => {
             if (!props.message?.id) return props.message
+
+            if (!shouldShowTranslatedContent(ticket.language as Language))
+                return props.message
+
             const messageTranslations = getMessageTranslation(props.message.id)
             const displayType = getTicketMessageTranslationDisplay(
                 props.message.id,
@@ -42,6 +54,8 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
             getTicketMessageTranslationDisplay,
             getMessageTranslation,
             props.message,
+            shouldShowTranslatedContent,
+            ticket,
         ])
 
         return <Component {...props} message={displayedMessage} />

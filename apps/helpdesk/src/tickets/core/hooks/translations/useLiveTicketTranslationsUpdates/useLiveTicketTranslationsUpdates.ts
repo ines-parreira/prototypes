@@ -105,28 +105,39 @@ export const useLiveTicketTranslationsUpdates = ({
         ],
     )
 
-    const { primary, languagesNotToTranslateFor } =
+    const { primary, shouldShowTranslatedContent } =
         useCurrentUserPreferredLanguage()
+
+    const { translationMap, isInitialLoading } = useTicketsTranslatedProperties(
+        {
+            ticket_ids: [ticketId],
+            ticketsRequiresTranslations:
+                shouldShowTranslatedContent(ticketLanguage),
+        },
+    )
+
+    const { data: ticketTranslations } = useTicketTranslations({
+        ticket_id: ticketId,
+        enabled: shouldShowTranslatedContent(ticketLanguage),
+    })
+    const { mutate: requestTicketTranslation } = useRequestTicketTranslation()
+    const { mutateAsync: generateTicketMessageTranslation } =
+        useRequestTicketMessageTranslation()
+
+    const { setTicketMessageTranslationDisplay } =
+        useTicketMessageTranslationDisplay()
 
     /**
      * Ticket subject translations
      */
     const pendingTicketSubjectRequestsRef = useRef<Set<string>>(new Set())
 
-    const { translationMap, isInitialLoading } = useTicketsTranslatedProperties(
-        {
-            ticket_ids: [ticketId],
-        },
-    )
-
-    const { mutate: requestTicketTranslation } = useRequestTicketTranslation()
-
     const shouldGenerateTicketSubjectTranslation = useMemo(() => {
         if (!hasMessagesTranslation) return false
 
         if (!ticketId || !ticketLanguage || !primary) return false
 
-        if (languagesNotToTranslateFor.includes(ticketLanguage)) return false
+        if (!shouldShowTranslatedContent(ticketLanguage)) return false
 
         if (isInitialLoading) return false
 
@@ -138,7 +149,7 @@ export const useLiveTicketTranslationsUpdates = ({
     }, [
         ticketId,
         ticketLanguage,
-        languagesNotToTranslateFor,
+        shouldShowTranslatedContent,
         primary,
         hasMessagesTranslation,
         isInitialLoading,
@@ -178,15 +189,6 @@ export const useLiveTicketTranslationsUpdates = ({
     const hasSetInitialTicketMessageDisplayRef = useRef<
         Record<number, boolean>
     >({ [ticketId ?? 0]: false })
-
-    const { setTicketMessageTranslationDisplay } =
-        useTicketMessageTranslationDisplay()
-
-    const { data: ticketTranslations } = useTicketTranslations({
-        ticket_id: ticketId,
-    })
-    const { mutateAsync: generateTicketMessageTranslation } =
-        useRequestTicketMessageTranslation()
 
     const messagesWithNoTranslation = useMemo(
         () =>
@@ -236,7 +238,7 @@ export const useLiveTicketTranslationsUpdates = ({
         // if no ticketId or ticketLanguage, don't generate translations
         if (!ticketId || !ticketLanguage || !primary) return false
 
-        if (languagesNotToTranslateFor.includes(ticketLanguage)) return false
+        if (!shouldShowTranslatedContent(ticketLanguage)) return false
 
         // We first need to check if the ticket has already generated translations and how many of them
         if (!ticketTranslations?.data.data) return false
@@ -250,7 +252,7 @@ export const useLiveTicketTranslationsUpdates = ({
         ticketId,
         ticketLanguage,
         ticketMessages,
-        languagesNotToTranslateFor,
+        shouldShowTranslatedContent,
         primary,
         hasMessagesTranslation,
         ticketTranslations,

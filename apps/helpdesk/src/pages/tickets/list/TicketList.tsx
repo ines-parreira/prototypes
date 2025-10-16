@@ -36,6 +36,7 @@ import {
     hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
+import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import { compactInteger } from 'utils'
 
@@ -54,6 +55,7 @@ const TicketList = () => {
                 .toJS() as number[],
         [tickets],
     )
+    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
     const { translationMap } = useTicketsTranslatedProperties({
         ticket_ids: ticketIds,
     })
@@ -119,6 +121,12 @@ const TicketList = () => {
 
     const translatedTickets = useMemo(() => {
         const translatedTickets = tickets.toJS().map((ticket: Ticket) => {
+            if (
+                !ticket.language ||
+                !shouldShowTranslatedContent(ticket.language)
+            ) {
+                return ticket
+            }
             const translation = translationMap[ticket.id]
             return {
                 ...ticket,
@@ -132,7 +140,7 @@ const TicketList = () => {
         })
 
         return fromJS(translatedTickets)
-    }, [tickets, translationMap])
+    }, [tickets, translationMap, shouldShowTranslatedContent])
 
     const viewTable = (
         <ViewTable

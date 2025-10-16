@@ -27,4 +27,5 @@ export type TicketCompact = Pick<
     | 'subject'
     | 'updated_datetime'
     | 'priority'
+    | 'language'
 >

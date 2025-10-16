@@ -7,7 +7,7 @@ import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
 import { LegacyIconButton, Tooltip } from '@gorgias/axiom'
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import { Language, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
@@ -103,27 +103,26 @@ const TicketHeader = ({
         allMessageDisplayState,
     } = useTicketMessageTranslationDisplay()
 
-    const { primary, languagesNotToTranslateFor } =
-        useCurrentUserPreferredLanguage()
+    const { primary } = useCurrentUserPreferredLanguage()
 
-    const shouldTranslateTicketSubject = useMemo(
-        () =>
-            primary &&
-            !!ticket.get('language') &&
-            !languagesNotToTranslateFor.includes(ticket.get('language')),
-        [languagesNotToTranslateFor, primary, ticket],
-    )
+    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
     const { translationMap, updateTicketTranslatedSubject, isInitialLoading } =
         useTicketsTranslatedProperties({
             ticket_ids: [ticket.get('id')],
-            ticketsRequiresTranslations: shouldTranslateTicketSubject,
+            ticketsRequiresTranslations: shouldShowTranslatedContent(
+                ticket.get('language') as Language,
+            ),
         })
 
     const isSubjectLoading = useMemo(() => {
-        if (!shouldTranslateTicketSubject || !ticket.get('id')) return false
+        if (
+            !shouldShowTranslatedContent(ticket.get('language')) ||
+            !ticket.get('id')
+        )
+            return false
         if (isInitialLoading) return true
         return !translationMap[ticket.get('id')]?.subject
-    }, [shouldTranslateTicketSubject, isInitialLoading, translationMap, ticket])
+    }, [shouldShowTranslatedContent, isInitialLoading, translationMap, ticket])
 
     const shouldDisplayAllFollowUps = useAppSelector(
         getShouldDisplayAllFollowUps,
@@ -361,13 +360,22 @@ const TicketHeader = ({
 
     const translatedSubject = translationMap[ticket.get('id')]?.subject
     const title = useMemo(() => {
+        if (!shouldShowTranslatedContent(ticket.get('language') as Language)) {
+            return ticket.get('subject') ?? 'New ticket'
+        }
+
         if (translatedSubject) {
             return allMessageDisplayState === DisplayedContent.Translated
                 ? translatedSubject
                 : ticket.get('subject')
         }
         return ticket.get('subject') ?? 'New ticket'
-    }, [translatedSubject, allMessageDisplayState, ticket])
+    }, [
+        translatedSubject,
+        allMessageDisplayState,
+        ticket,
+        shouldShowTranslatedContent,
+    ])
 
     useTitle(title)
 
@@ -376,35 +384,38 @@ const TicketHeader = ({
             <div className={css.title}>
                 <TicketHeaderToggle />
                 <TicketSubjectLoadingState isInitialLoading={isSubjectLoading}>
-                    {translationMap[ticket.get('id')]?.subject && (
-                        <div className={css.translateIcon}>
-                            <LegacyIconButton
-                                ref={translateIconRef}
-                                icon="translate"
-                                fillStyle="ghost"
-                                intent="secondary"
-                                size="medium"
-                                onClick={handleTranslateAllMessages}
-                            />
+                    {shouldShowTranslatedContent(
+                        ticket.get('language') as Language,
+                    ) &&
+                        translationMap[ticket.get('id')]?.subject && (
+                            <div className={css.translateIcon}>
+                                <LegacyIconButton
+                                    ref={translateIconRef}
+                                    icon="translate"
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    size="medium"
+                                    onClick={handleTranslateAllMessages}
+                                />
 
-                            <Tooltip
-                                target={translateIconRef}
-                                boundariesElement="viewport"
-                                offset="0, 8"
-                                placement="right"
-                                trigger={['hover']}
-                            >
-                                {allMessageDisplayState ===
-                                DisplayedContent.Translated ? (
-                                    <>{`Ticket translated from ${IntlDisplayNames.of(ticket.get('language')) as string}. Click to revert to original.`}</>
-                                ) : (
-                                    <>
-                                        {`Click to translate ticket ${primary ? `to ${IntlDisplayNames.of(primary) as string}` : ''}`.trim()}
-                                    </>
-                                )}
-                            </Tooltip>
-                        </div>
-                    )}
+                                <Tooltip
+                                    target={translateIconRef}
+                                    boundariesElement="viewport"
+                                    offset="0, 8"
+                                    placement="right"
+                                    trigger={['hover']}
+                                >
+                                    {allMessageDisplayState ===
+                                    DisplayedContent.Translated ? (
+                                        <>{`Ticket translated from ${IntlDisplayNames.of(ticket.get('language')) as string}. Click to revert to original.`}</>
+                                    ) : (
+                                        <>
+                                            {`Click to translate ticket ${primary ? `to ${IntlDisplayNames.of(primary) as string}` : ''}`.trim()}
+                                        </>
+                                    )}
+                                </Tooltip>
+                            </div>
+                        )}
                     <EditableTitle
                         className={css.editableTitleWrapper}
                         inputClassName={css.editableTitle}
