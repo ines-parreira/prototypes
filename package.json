@@ -54,7 +54,7 @@
     "engines": {
         "node": "22"
     },
-    "packageManager": "pnpm@10.17.0",
+    "packageManager": "pnpm@10.18.3",
     "peerDependenciesMeta": {
         "react-native": {
             "optional": true
