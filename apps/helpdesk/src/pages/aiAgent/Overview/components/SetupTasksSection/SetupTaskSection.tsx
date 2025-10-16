@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
@@ -26,6 +26,26 @@ export const SetupTaskSection = ({
 }) => {
     const accountId = useAppSelector(getCurrentAccountId)
     const [showMarkAsCompleted, setShowMarkAsCompleted] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setShowMarkAsCompleted(false)
+            }
+        }
+
+        if (showMarkAsCompleted) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [showMarkAsCompleted])
 
     const {
         tasksConfigByCategory,
@@ -114,7 +134,7 @@ export const SetupTaskSection = ({
                     <Text size="sm" variant="bold">
                         {completionPercentage}% complete
                     </Text>
-                    <div className={css.list}>
+                    <div className={css.list} ref={dropdownRef}>
                         <div
                             className={css.actionButton}
                             onClick={() => {

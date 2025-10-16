@@ -2,6 +2,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class VerifyYourEmailDomainTask extends Task {
+    public readonly taskType = 'VerifyYourEmailDomainTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Verify your email domain',

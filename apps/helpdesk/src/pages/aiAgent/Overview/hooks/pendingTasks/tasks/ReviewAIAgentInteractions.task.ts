@@ -2,6 +2,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class ReviewAIAgentInteractionsTask extends Task {
+    public readonly taskType = 'ReviewAIAgentInteractionsTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Review AI Agent interactions',
@@ -21,7 +23,7 @@ export class ReviewAIAgentInteractionsTask extends Task {
     }
 
     protected getFeatureUrl({
-        data: { ticketToReviewViewData: ticketToReviewViewData },
+        data: { ticketToReviewViewData },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

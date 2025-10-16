@@ -4,6 +4,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class PrepareAskAnythingInputTask extends Task {
+    public readonly taskType = 'PrepareAskAnythingInputTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Ask anything input for Chat',

@@ -12,9 +12,10 @@ export const createRuleEngineTaskMap = (
     return new Map(
         allRuleEngineTasks
             .map((task) => {
-                const stepName = RULE_ENGINE_TASK_TO_STEP_NAME.get(
-                    task.constructor.name,
-                )
+                const stepName = task.taskType
+                    ? RULE_ENGINE_TASK_TO_STEP_NAME.get(task.taskType)
+                    : undefined
+
                 return [stepName, task] as const
             })
             .filter(

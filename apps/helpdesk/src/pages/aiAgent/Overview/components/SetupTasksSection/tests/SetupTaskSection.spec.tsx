@@ -340,4 +340,125 @@ describe('SetupTaskSection', () => {
 
         expect(container.firstChild).toBeNull()
     })
+
+    describe('Mark as completed dropdown', () => {
+        it('should show dropdown when clicking the meatballs menu icon', () => {
+            renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+
+            expect(
+                screen.getByText('Mark all as completed'),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide dropdown when clicking outside', () => {
+            renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+
+            expect(
+                screen.getByText('Mark all as completed'),
+            ).toBeInTheDocument()
+
+            fireEvent.mouseDown(document.body)
+
+            expect(
+                screen.queryByText('Mark all as completed'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not hide dropdown when clicking inside the dropdown', () => {
+            renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+
+            const dropdown = screen.getByText('Mark all as completed')
+            expect(dropdown).toBeInTheDocument()
+
+            fireEvent.mouseDown(dropdown)
+
+            expect(dropdown).toBeInTheDocument()
+        })
+
+        it('should toggle dropdown visibility when clicking meatballs button multiple times', () => {
+            renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+            expect(
+                screen.getByText('Mark all as completed'),
+            ).toBeInTheDocument()
+
+            fireEvent.click(meatballsButton)
+            expect(
+                screen.queryByText('Mark all as completed'),
+            ).not.toBeInTheDocument()
+
+            fireEvent.click(meatballsButton)
+            expect(
+                screen.getByText('Mark all as completed'),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide dropdown when clicking on a category tab', () => {
+            renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+
+            expect(
+                screen.getByText('Mark all as completed'),
+            ).toBeInTheDocument()
+
+            const essentialTab = screen.getByText('Essential')
+            fireEvent.mouseDown(essentialTab)
+
+            expect(
+                screen.queryByText('Mark all as completed'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should properly cleanup event listener on unmount', () => {
+            const removeEventListenerSpy = jest.spyOn(
+                document,
+                'removeEventListener',
+            )
+
+            const { unmount } = renderComponent()
+
+            const meatballsButton = screen.getByRole('img', {
+                name: 'dots-meatballs-horizontal',
+            })
+
+            fireEvent.click(meatballsButton)
+
+            unmount()
+
+            expect(removeEventListenerSpy).toHaveBeenCalledWith(
+                'mousedown',
+                expect.any(Function),
+            )
+
+            removeEventListenerSpy.mockRestore()
+        })
+    })
 })

@@ -2,6 +2,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class CreateAnActionTask extends Task {
+    public readonly taskType = 'CreateAnActionTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Create an Action',

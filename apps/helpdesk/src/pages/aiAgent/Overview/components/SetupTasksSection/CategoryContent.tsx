@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
@@ -33,10 +33,22 @@ export const CategoryContent = ({
     const [expandedStep, setExpandedStep] = useState<string | null>(
         getFirstIncompleteStep(selectedCategoryTasks),
     )
+    const previousTasksRef = useRef(selectedCategoryTasks)
 
     useEffect(() => {
-        setExpandedStep(getFirstIncompleteStep(selectedCategoryTasks))
-    }, [selectedCategoryTasks, setExpandedStep])
+        const hasTasksChanged =
+            previousTasksRef.current !== selectedCategoryTasks
+        const hasTaskListChanged =
+            previousTasksRef.current.length !== selectedCategoryTasks.length ||
+            previousTasksRef.current[0]?.stepName !==
+                selectedCategoryTasks[0]?.stepName
+
+        if (hasTasksChanged && hasTaskListChanged) {
+            setExpandedStep(getFirstIncompleteStep(selectedCategoryTasks))
+        }
+
+        previousTasksRef.current = selectedCategoryTasks
+    }, [selectedCategoryTasks])
 
     const { updateStepConfiguration } = usePostStoreInstallationStepsMutation({
         accountDomain: accountDomain,
@@ -62,6 +74,7 @@ export const CategoryContent = ({
             action: newIsCompleted ? 'completed' : 'not_completed',
         })
     }
+
     return (
         <div className={css.groupContent}>
             <Accordion
@@ -82,6 +95,8 @@ export const CategoryContent = ({
                             <AccordionHeader
                                 className={cn(css.stepTitleContainer, {
                                     [css.completed]: task.isCompleted,
+                                    [css.expanded]:
+                                        expandedStep === task.stepName,
                                 })}
                             >
                                 <span onClick={() => toggleIsCompleted(task)}>

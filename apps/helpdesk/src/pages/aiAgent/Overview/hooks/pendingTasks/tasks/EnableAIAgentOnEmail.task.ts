@@ -4,6 +4,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class EnableAIAgentOnEmailTask extends Task {
+    public readonly taskType = 'EnableAIAgentOnEmailTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Email',

@@ -1,6 +1,7 @@
 import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 
 export abstract class Task {
+    public readonly taskType?: string
     public readonly display: boolean
     public readonly featureUrl: string
     public readonly available: boolean

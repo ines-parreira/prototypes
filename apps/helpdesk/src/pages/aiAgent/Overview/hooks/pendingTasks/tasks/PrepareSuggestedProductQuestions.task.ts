@@ -4,6 +4,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class PrepareSuggestedProductQuestionsTask extends Task {
+    public readonly taskType = 'PrepareSuggestedProductQuestionsTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Suggested Product Questions',

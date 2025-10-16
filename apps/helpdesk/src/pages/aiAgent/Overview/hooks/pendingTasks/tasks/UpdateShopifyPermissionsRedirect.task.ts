@@ -2,6 +2,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class UpdateShopifyPermissionsRedirectTask extends Task {
+    public readonly taskType = 'UpdateShopifyPermissionsRedirectTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Update Shopify permissions',

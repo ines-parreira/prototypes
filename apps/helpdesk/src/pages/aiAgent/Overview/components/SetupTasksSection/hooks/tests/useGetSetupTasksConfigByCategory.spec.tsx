@@ -63,6 +63,7 @@ const createMockTask = (
         type: 'BASIC' as const,
         isCheckedAutomatically,
         completed,
+        taskType: taskClassName,
         constructor: {
             name: taskClassName,
         },
@@ -296,10 +297,10 @@ describe('useGetSetupTasksConfigByCategory', () => {
             isLoading: false,
             isFetched: true,
             pendingTasks: [
-                createMockTask('EnableSuggestedProductQuestionsTask'),
+                createMockTask('PrepareSuggestedProductQuestionsTask'),
             ],
             completedTasks: [
-                createMockTask('EnableTriggerOnSearchTask', false),
+                createMockTask('PrepareTriggerOnSearchTask', false),
             ],
         })
 
@@ -340,7 +341,7 @@ describe('useGetSetupTasksConfigByCategory', () => {
             isLoading: false,
             isFetched: true,
             pendingTasks: [
-                createMockTask('EnableSuggestedProductQuestionsTask'),
+                createMockTask('PrepareSuggestedProductQuestionsTask'),
             ],
             completedTasks: [],
         })
@@ -414,8 +415,8 @@ describe('useGetSetupTasksConfigByCategory', () => {
             isFetched: true,
             pendingTasks: [
                 createMockTask('VerifyYourEmailDomainTask'),
-                createMockTask('UpdateShopifyPermissionsTask'),
-                createMockTask('EnableTriggerOnSearchTask'),
+                createMockTask('UpdateShopifyPermissionsRedirectTask'),
+                createMockTask('PrepareTriggerOnSearchTask'),
                 createMockTask('CreateAnActionTask'),
                 createMockTask('EnableAIAgentOnChatTask'),
             ],
@@ -456,8 +457,8 @@ describe('useGetSetupTasksConfigByCategory', () => {
             isFetched: true,
             pendingTasks: [
                 createMockTask('VerifyYourEmailDomainTask'),
-                createMockTask('UpdateShopifyPermissionsTask'),
-                createMockTask('EnableTriggerOnSearchTask'),
+                createMockTask('UpdateShopifyPermissionsRedirectTask'),
+                createMockTask('PrepareTriggerOnSearchTask'),
                 createMockTask('CreateAnActionTask'),
                 createMockTask('EnableAIAgentOnChatTask'),
             ],

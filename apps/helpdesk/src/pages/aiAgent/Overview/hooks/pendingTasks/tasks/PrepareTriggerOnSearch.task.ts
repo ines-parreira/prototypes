@@ -4,6 +4,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class PrepareTriggerOnSearchTask extends Task {
+    public readonly taskType = 'PrepareTriggerOnSearchTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable Trigger on Search',

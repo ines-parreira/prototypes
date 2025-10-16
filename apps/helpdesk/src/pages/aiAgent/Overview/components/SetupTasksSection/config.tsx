@@ -14,32 +14,23 @@ import {
     TaskConfigTemplate,
     TasksCategory,
 } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
-import { CreateAnActionTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/CreateAnAction.task'
-import { EnableAIAgentOnChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAIAgentOnChat.task'
-import { EnableAIAgentOnEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAIAgentOnEmail.task'
-import { PrepareAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareAskAnythingInput.task'
-import { PrepareSuggestedProductQuestionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareSuggestedProductQuestions.task'
-import { PrepareTriggerOnSearchTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/PrepareTriggerOnSearch.task'
-import { ReviewAIAgentInteractionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/ReviewAIAgentInteractions.task'
-import { UpdateShopifyPermissionsRedirectTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissionsRedirect.task'
-import { VerifyYourEmailDomainTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/VerifyYourEmailDomain.task'
 
 export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
-    [VerifyYourEmailDomainTask.name, StepName.VERIFY_EMAIL_DOMAIN],
+    ['VerifyYourEmailDomainTask', StepName.VERIFY_EMAIL_DOMAIN],
     [
-        UpdateShopifyPermissionsRedirectTask.name,
+        'UpdateShopifyPermissionsRedirectTask',
         StepName.UPDATE_SHOPIFY_PERMISSIONS,
     ],
-    [PrepareTriggerOnSearchTask.name, StepName.ENABLE_TRIGGER_ON_SEARCH],
+    ['PrepareTriggerOnSearchTask', StepName.ENABLE_TRIGGER_ON_SEARCH],
     [
-        PrepareSuggestedProductQuestionsTask.name,
+        'PrepareSuggestedProductQuestionsTask',
         StepName.ENABLE_SUGGESTED_PRODUCTS,
     ],
-    [PrepareAskAnythingInputTask.name, StepName.ENABLE_ASK_ANYTHING],
-    [CreateAnActionTask.name, StepName.CREATE_AN_ACTION],
-    [ReviewAIAgentInteractionsTask.name, StepName.REVIEW_AI_AGENT_INTERACTIONS],
-    [EnableAIAgentOnChatTask.name, StepName.ENABLE_AI_AGENT_ON_CHAT],
-    [EnableAIAgentOnEmailTask.name, StepName.ENABLE_AI_AGENT_ON_EMAIL],
+    ['PrepareAskAnythingInputTask', StepName.ENABLE_ASK_ANYTHING],
+    ['CreateAnActionTask', StepName.CREATE_AN_ACTION],
+    ['ReviewAIAgentInteractionsTask', StepName.REVIEW_AI_AGENT_INTERACTIONS],
+    ['EnableAIAgentOnChatTask', StepName.ENABLE_AI_AGENT_ON_CHAT],
+    ['EnableAIAgentOnEmailTask', StepName.ENABLE_AI_AGENT_ON_EMAIL],
 ])
 
 export const TASK_CONFIG_TEMPLATES: Record<

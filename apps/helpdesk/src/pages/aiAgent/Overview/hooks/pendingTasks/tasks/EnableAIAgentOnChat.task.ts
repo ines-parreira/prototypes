@@ -4,6 +4,8 @@ import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class EnableAIAgentOnChatTask extends Task {
+    public readonly taskType = 'EnableAIAgentOnChatTask'
+
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
             'Enable AI Agent on Chat',
