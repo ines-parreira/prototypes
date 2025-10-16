@@ -20,11 +20,11 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
       <div>
         <label
           class="ui-label-label-3864 label"
-          for="option-0"
+          for="radio-button-option-0"
         >
           <input
             class="input"
-            id="option-0"
+            id="radio-button-option-0"
             role="checkbox"
             tabindex="-1"
             type="radio"
@@ -47,12 +47,12 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
       <div>
         <label
           class="ui-label-label-3864 label"
-          for="option-1"
+          for="radio-button-option-1"
         >
           <input
             checked=""
             class="input"
-            id="option-1"
+            id="radio-button-option-1"
             role="checkbox"
             tabindex="-1"
             type="radio"
@@ -81,11 +81,11 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
       <div>
         <label
           class="ui-label-label-3864 label"
-          for="option-2"
+          for="radio-button-option-2"
         >
           <input
             class="input"
-            id="option-2"
+            id="radio-button-option-2"
             role="checkbox"
             tabindex="-1"
             type="radio"

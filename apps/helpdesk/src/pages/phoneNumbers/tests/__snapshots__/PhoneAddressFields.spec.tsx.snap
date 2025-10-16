@@ -18,12 +18,12 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="company"
+            for="radio-button-company"
           >
             <input
               checked=""
               class="input"
-              id="company"
+              id="radio-button-company"
               tabindex="-1"
               type="radio"
             />
@@ -45,11 +45,11 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="personal"
+            for="radio-button-personal"
           >
             <input
               class="input"
-              id="personal"
+              id="radio-button-personal"
               tabindex="-1"
               type="radio"
             />
@@ -298,11 +298,11 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="company"
+            for="radio-button-company"
           >
             <input
               class="input"
-              id="company"
+              id="radio-button-company"
               tabindex="-1"
               type="radio"
             />
@@ -324,12 +324,12 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="personal"
+            for="radio-button-personal"
           >
             <input
               checked=""
               class="input"
-              id="personal"
+              id="radio-button-personal"
               tabindex="-1"
               type="radio"
             />
@@ -578,11 +578,11 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="company"
+            for="radio-button-company"
           >
             <input
               class="input"
-              id="company"
+              id="radio-button-company"
               tabindex="-1"
               type="radio"
             />
@@ -604,11 +604,11 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="personal"
+            for="radio-button-personal"
           >
             <input
               class="input"
-              id="personal"
+              id="radio-button-personal"
               tabindex="-1"
               type="radio"
             />
@@ -864,11 +864,11 @@ exports[`<PhoneAddressFields /> should render 1`] = `
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="company"
+            for="radio-button-company"
           >
             <input
               class="input"
-              id="company"
+              id="radio-button-company"
               tabindex="-1"
               type="radio"
             />
@@ -890,11 +890,11 @@ exports[`<PhoneAddressFields /> should render 1`] = `
         <div>
           <label
             class="ui-label-label-3864 label"
-            for="personal"
+            for="radio-button-personal"
           >
             <input
               class="input"
-              id="personal"
+              id="radio-button-personal"
               tabindex="-1"
               type="radio"
             />

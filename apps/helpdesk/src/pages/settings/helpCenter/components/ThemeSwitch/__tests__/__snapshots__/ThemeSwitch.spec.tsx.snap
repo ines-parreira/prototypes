@@ -27,12 +27,12 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       <div>
         <label
           class="ui-label-label-3864 label"
-          for="light"
+          for="radio-button-light"
         >
           <input
             checked=""
             class="input"
-            id="light"
+            id="radio-button-light"
             name="theme"
             tabindex="-1"
             type="radio"
@@ -60,11 +60,11 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       <div>
         <label
           class="ui-label-label-3864 label"
-          for="dark"
+          for="radio-button-dark"
         >
           <input
             class="input"
-            id="dark"
+            id="radio-button-dark"
             name="theme"
             tabindex="-1"
             type="radio"

@@ -63,12 +63,12 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               <div>
                 <label
                   class="ui-label-label-3864 label"
-                  for="Entire order"
+                  for="radio-button-Entire order"
                 >
                   <input
                     checked=""
                     class="input"
-                    id="Entire order"
+                    id="radio-button-Entire order"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"
@@ -87,11 +87,11 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               <div>
                 <label
                   class="ui-label-label-3864 label"
-                  for="Manual amount"
+                  for="radio-button-Manual amount"
                 >
                   <input
                     class="input"
-                    id="Manual amount"
+                    id="radio-button-Manual amount"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"
@@ -368,13 +368,13 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               <div>
                 <label
                   class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                  for="Entire order"
+                  for="radio-button-Entire order"
                 >
                   <input
                     checked=""
                     class="input"
                     disabled=""
-                    id="Entire order"
+                    id="radio-button-Entire order"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"
@@ -393,12 +393,12 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               <div>
                 <label
                   class="ui-label-label-3864 ui-label-isdisabled-3864 label"
-                  for="Manual amount"
+                  for="radio-button-Manual amount"
                 >
                   <input
                     class="input"
                     disabled=""
-                    id="Manual amount"
+                    id="radio-button-Manual amount"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"
@@ -660,12 +660,12 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               <div>
                 <label
                   class="ui-label-label-3864 label"
-                  for="Entire order"
+                  for="radio-button-Entire order"
                 >
                   <input
                     checked=""
                     class="input"
-                    id="Entire order"
+                    id="radio-button-Entire order"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"
@@ -684,11 +684,11 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               <div>
                 <label
                   class="ui-label-label-3864 label"
-                  for="Manual amount"
+                  for="radio-button-Manual amount"
                 >
                   <input
                     class="input"
-                    id="Manual amount"
+                    id="radio-button-Manual amount"
                     role="checkbox"
                     tabindex="-1"
                     type="radio"

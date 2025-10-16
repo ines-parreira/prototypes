@@ -45,6 +45,7 @@ const PreviewRadioFieldSet = ({
                 <PreviewRadioButton
                     key={value}
                     name={fieldsetName}
+                    id={`${fieldsetName}-${value}`}
                     value={value}
                     label={label}
                     caption={caption}

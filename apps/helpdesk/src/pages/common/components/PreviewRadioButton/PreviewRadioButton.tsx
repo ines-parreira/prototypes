@@ -44,6 +44,7 @@ export const PreviewRadioButton = ({
         )}
         <RadioButton
             {...other}
+            id={`radio-button-${id ?? other.value}`}
             label={label}
             isSelected={isSelected}
             isDisabled={isDisabled}

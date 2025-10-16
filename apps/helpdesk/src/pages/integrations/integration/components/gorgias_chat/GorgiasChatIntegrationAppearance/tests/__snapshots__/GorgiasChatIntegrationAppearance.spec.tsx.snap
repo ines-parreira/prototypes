@@ -68,12 +68,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="ecommerce-platforms"
+                        for="radio-button-ecommerce-platforms"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="ecommerce-platforms"
+                          id="radio-button-ecommerce-platforms"
                           tabindex="-1"
                           type="radio"
                         />
@@ -96,11 +96,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="any-other-website"
+                        for="radio-button-any-other-website"
                       >
                         <input
                           class="input"
-                          id="any-other-website"
+                          id="radio-button-any-other-website"
                           tabindex="-1"
                           type="radio"
                         />
@@ -8836,12 +8836,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="ecommerce-platforms"
+                        for="radio-button-ecommerce-platforms"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="ecommerce-platforms"
+                          id="radio-button-ecommerce-platforms"
                           tabindex="-1"
                           type="radio"
                         />
@@ -8864,11 +8864,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="any-other-website"
+                        for="radio-button-any-other-website"
                       >
                         <input
                           class="input"
-                          id="any-other-website"
+                          id="radio-button-any-other-website"
                           tabindex="-1"
                           type="radio"
                         />
@@ -13159,12 +13159,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="ecommerce-platforms"
+                        for="radio-button-ecommerce-platforms"
                       >
                         <input
                           checked=""
                           class="input"
-                          id="ecommerce-platforms"
+                          id="radio-button-ecommerce-platforms"
                           tabindex="-1"
                           type="radio"
                         />
@@ -13187,11 +13187,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     <div>
                       <label
                         class="ui-label-label-3864 label"
-                        for="any-other-website"
+                        for="radio-button-any-other-website"
                       >
                         <input
                           class="input"
-                          id="any-other-website"
+                          id="radio-button-any-other-website"
                           tabindex="-1"
                           type="radio"
                         />

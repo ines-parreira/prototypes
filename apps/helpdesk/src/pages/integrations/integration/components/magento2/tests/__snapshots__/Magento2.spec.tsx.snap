@@ -659,12 +659,12 @@ exports[`<Magento2/> New should render 1`] = `
             <div>
               <label
                 class="ui-label-label-3864 label"
-                for="oneStepConnect"
+                for="radio-button-oneStepConnect"
               >
                 <input
                   checked=""
                   class="input"
-                  id="oneStepConnect"
+                  id="radio-button-oneStepConnect"
                   tabindex="-1"
                   type="radio"
                 />
@@ -683,11 +683,11 @@ exports[`<Magento2/> New should render 1`] = `
             <div>
               <label
                 class="ui-label-label-3864 label"
-                for="manualConnect"
+                for="radio-button-magento-manual-connect3"
               >
                 <input
                   class="input"
-                  id="manualConnect"
+                  id="radio-button-magento-manual-connect3"
                   tabindex="-1"
                   type="radio"
                 />
