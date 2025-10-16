@@ -12,6 +12,7 @@ import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
+    customerDropdownFieldDefinition,
     customerInputFieldDefinition,
     ticketDropdownFieldDefinition,
 } from 'fixtures/customField'
@@ -768,7 +769,7 @@ describe('<Widget />', () => {
             expect(screen.getByText('is not')).toBeInTheDocument()
         })
 
-        it('should handle custom field operators from schemas and convert to widget format', () => {
+        it('should handle ticket custom field operators from schemas and convert to widget format', () => {
             useGetCustomFieldByIdMock.mockReturnValue(
                 ticketDropdownFieldDefinition,
             )
@@ -820,6 +821,77 @@ describe('<Widget />', () => {
             })
 
             expect(screen.getByText('Select an option')).toBeInTheDocument()
+        })
+
+        it('should handle customer custom field operators from ticket custom fields schemas and convert to widget format', () => {
+            useGetCustomFieldByIdMock.mockReturnValue(
+                customerDropdownFieldDefinition,
+            )
+
+            renderComponent({
+                leftsiblings: fromJS([
+                    'definitions',
+                    'Ticket',
+                    'properties',
+                    'customer',
+                    'properties',
+                    'custom_fields',
+                    customerDropdownFieldDefinition.id.toString(),
+                    'operators',
+                ]),
+                schemas: fromJS({
+                    definitions: {
+                        Ticket: {
+                            properties: {
+                                custom_fields: {
+                                    meta: {
+                                        operators: {
+                                            dropdown: {
+                                                eq: { label: 'contains' },
+                                                neq: {
+                                                    label: 'does not contain',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }),
+            })
+
+            expect(screen.getByText('contains')).toBeInTheDocument()
+            expect(screen.getByText('does not contain')).toBeInTheDocument()
+        })
+
+        it('should fallback to BASIC_OPERATORS for customer custom fields when schema not found', () => {
+            useGetCustomFieldByIdMock.mockReturnValue(
+                ticketDropdownFieldDefinition,
+            )
+
+            renderComponent({
+                leftsiblings: fromJS([
+                    'definitions',
+                    'Ticket',
+                    'properties',
+                    'customer',
+                    'properties',
+                    'custom_fields',
+                    ticketDropdownFieldDefinition.id.toString(),
+                    'operators',
+                ]),
+                schemas: fromJS({
+                    definitions: {
+                        Ticket: {
+                            properties: {},
+                        },
+                    },
+                }),
+            })
+
+            expect(screen.getByText('is')).toBeInTheDocument()
+            expect(screen.getByText('is not')).toBeInTheDocument()
         })
     })
 })

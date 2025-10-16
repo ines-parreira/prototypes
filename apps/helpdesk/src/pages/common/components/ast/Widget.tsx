@@ -133,8 +133,12 @@ const Widget = ({
             DateAndTimeFormatting.CompactDateWithTime,
         ),
     )
+    const isCustomerCustomField = leftsiblings?.includes('customer') || false
+    const objectType = isCustomerCustomField ? 'Customer' : 'Ticket'
+
     const customField = useGetCustomFieldById(
         getCustomFieldIdFromPath(leftsiblings),
+        objectType,
     )
 
     const schemaDefinitionKey = customField

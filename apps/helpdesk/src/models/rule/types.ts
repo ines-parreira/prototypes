@@ -101,6 +101,11 @@ export enum RuleType {
     Managed = 'managed',
 }
 
+export enum CustomFieldTreePath {
+    Ticket = 'ticket.custom_fields',
+    Customer = 'ticket.customer.custom_fields',
+}
+
 export type RulePriority = {
     id: number
     priority: number

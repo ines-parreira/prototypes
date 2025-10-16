@@ -145,6 +145,7 @@ export const CallExpression = ({
         customField,
         isCustomFieldPath,
         isQaScoreFieldPath,
+        getOperators,
     ])
 
     // useGetStoreMappingsByAccountId seems to return the wrong type assuming stores.data is already StoreMapping[]

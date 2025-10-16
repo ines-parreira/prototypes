@@ -27,10 +27,8 @@ import { RootState } from 'state/types'
 
 import { MemberExpression } from '../MemberExpression'
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = assumeMock(useFlag)
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
@@ -721,5 +719,155 @@ describe('<MemberExpression/>', () => {
         expect(screen.getByText('Message')).toBeInTheDocument()
         expect(screen.getByText('Ticket')).toBeInTheDocument()
         expect(screen.getByText('Customer')).toBeInTheDocument()
+    })
+
+    describe('Customer Custom Fields', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseCustomFieldDefinitions.mockReturnValue({
+                data: apiListCursorPaginationResponse([
+                    {
+                        ...ticketInputFieldDefinition,
+                        id: 101,
+                        label: 'Customer Name',
+                        definition: {
+                            ...ticketInputFieldDefinition.definition,
+                            object_type: 'Customer',
+                        },
+                    },
+                    {
+                        ...ticketDropdownFieldDefinition,
+                        id: 102,
+                        label: 'Customer Type',
+                        definition: {
+                            ...ticketDropdownFieldDefinition.definition,
+                            object_type: 'Customer',
+                        },
+                    },
+                ]),
+                isLoading: false,
+                isFetched: true,
+            } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+        })
+
+        it('should show customer custom fields when Customer fields is selected', async () => {
+            renderComponent()
+
+            fireEvent.click(screen.getByText('Customer'))
+            fireEvent.click(screen.getByText('Customer fields'))
+
+            await waitFor(() => {
+                // Check that both customer custom fields are available in the dropdown
+                expect(screen.getAllByText('Customer Name')).toHaveLength(2) // Selected value + dropdown option
+                expect(screen.getByText('Customer Type')).toBeInTheDocument()
+            })
+        })
+
+        it('should auto-select first customer custom field when Customer fields is selected', async () => {
+            const mockModifyCodeAST = jest.fn()
+            renderComponent({
+                actions: {
+                    modifyCodeAST: mockModifyCodeAST,
+                    getCondition: jest.fn(),
+                },
+            })
+
+            fireEvent.click(screen.getByText('Customer'))
+            fireEvent.click(screen.getByText('Customer fields'))
+
+            await waitFor(() => {
+                expect(mockModifyCodeAST).toHaveBeenCalledWith(
+                    fromJS(['body', 0, 'test', 'arguments', 0]),
+                    fromJS({
+                        computed: false,
+                        object: {
+                            computed: false,
+                            object: {
+                                computed: false,
+                                object: {
+                                    computed: false,
+                                    object: {
+                                        name: 'ticket',
+                                        type: 'Identifier',
+                                    },
+                                    property: {
+                                        name: 'customer',
+                                        type: 'Identifier',
+                                    },
+                                    type: 'MemberExpression',
+                                },
+                                property: {
+                                    name: 'custom_fields',
+                                    type: 'Identifier',
+                                },
+                                type: 'MemberExpression',
+                            },
+                            property: {
+                                name: '101',
+                                type: 'Identifier',
+                            },
+                            type: 'MemberExpression',
+                        },
+                        property: {
+                            name: 'value',
+                            type: 'Identifier',
+                        },
+                        type: 'MemberExpression',
+                    }),
+                    'UPDATE',
+                    undefined,
+                    'text',
+                )
+            })
+        })
+
+        it('should allow selecting different customer custom fields', async () => {
+            const modifyCodeAST = jest.fn()
+            renderComponent({
+                actions: {
+                    modifyCodeAST,
+                    getCondition: jest.fn(),
+                },
+            })
+
+            fireEvent.click(screen.getByText('Customer'))
+            fireEvent.click(screen.getByText('Customer fields'))
+
+            await waitFor(() => {
+                // Customer Name should be auto-selected (appears in both selected value and dropdown)
+                expect(screen.getAllByText('Customer Name')).toHaveLength(2)
+                expect(modifyCodeAST).toHaveBeenCalled()
+            })
+
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Customer Name' }),
+            )
+
+            fireEvent.click(
+                screen.getByRole('menuitem', { name: 'Customer Type' }),
+            )
+
+            await waitFor(() => {
+                // After selection, Customer Type should be selected (appears in both selected value and dropdown)
+                expect(screen.getAllByText('Customer Type')).toHaveLength(2)
+            })
+
+            const customerSelectionCall = modifyCodeAST.mock.calls.at(-1)!
+
+            expect(customerSelectionCall[0]).toEqualImmutable(minProps.parent)
+            expect(customerSelectionCall[2]).toBe('UPDATE')
+            expect(customerSelectionCall[1]).toEqualImmutable(
+                fromJS(
+                    generateExpression([
+                        'value',
+                        '102',
+                        'custom_fields',
+                        'customer',
+                        'ticket',
+                    ]),
+                ),
+            )
+            expect(customerSelectionCall[4]).toBeDefined()
+        })
     })
 })

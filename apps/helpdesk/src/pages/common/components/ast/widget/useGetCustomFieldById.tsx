@@ -1,14 +1,17 @@
 import { useMemo } from 'react'
 
+import { ObjectType } from '@gorgias/helpdesk-types'
+
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
 export const useGetCustomFieldById = (
     customFieldId?: number | string | null,
+    objectType: ObjectType = ObjectType.Ticket,
 ) => {
     const customFields = useCustomFieldDefinitions(
         {
             archived: false,
-            object_type: 'Ticket',
+            object_type: objectType,
         },
         {
             query: {

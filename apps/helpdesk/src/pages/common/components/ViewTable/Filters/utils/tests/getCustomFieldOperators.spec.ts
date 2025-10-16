@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable'
 
 import { BASIC_OPERATORS } from 'config'
+import { CustomFieldTreePath } from 'models/rule/types'
 
 import getCustomFieldOperators from '../getCustomFieldOperators'
 import { mockCustomField, mockSchemas } from './mocks'
@@ -18,5 +19,85 @@ describe('getCustomFieldOperators', () => {
                 label: 'is',
             },
         })
+    })
+
+    it('should use custom schema path when provided', () => {
+        const customerSchemas = fromJS({
+            definitions: {
+                Ticket: {
+                    properties: {
+                        customer: {
+                            $ref: '#/definitions/Customer',
+                        },
+                    },
+                },
+                Customer: {
+                    properties: {
+                        custom_fields: {
+                            meta: {
+                                operators: {
+                                    text: {
+                                        eq: { label: 'is' },
+                                        neq: { label: 'is not' },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        })
+
+        expect(
+            getCustomFieldOperators(
+                customerSchemas,
+                mockCustomField,
+                CustomFieldTreePath.Customer,
+            ),
+        ).toEqual({
+            eq: { label: 'is' },
+            neq: { label: 'is not' },
+        })
+    })
+
+    it('should fallback to BASIC_OPERATORS when custom schema path does not exist', () => {
+        const emptySchemas = fromJS({ definitions: {} })
+
+        expect(
+            getCustomFieldOperators(
+                emptySchemas,
+                mockCustomField,
+                CustomFieldTreePath.Customer,
+            ),
+        ).toEqual(BASIC_OPERATORS)
+    })
+
+    it('should fallback to BASIC_OPERATORS when custom field schema exists but no operators for field type', () => {
+        const schemasWithoutOperators = fromJS({
+            definitions: {
+                Ticket: {
+                    properties: {
+                        customer: {
+                            $ref: '#/definitions/Customer',
+                        },
+                    },
+                },
+                Customer: {
+                    properties: {
+                        custom_fields: {
+                            meta: {},
+                        },
+                    },
+                },
+            },
+        })
+
+        expect(
+            getCustomFieldOperators(
+                schemasWithoutOperators,
+                mockCustomField,
+                CustomFieldTreePath.Customer,
+            ),
+        ).toEqual(BASIC_OPERATORS)
     })
 })

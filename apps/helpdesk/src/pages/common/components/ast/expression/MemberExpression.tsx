@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { Expression } from 'estree'
 import { fromJS, List } from 'immutable'
 
-import { CustomField } from '@gorgias/helpdesk-types'
+import { CustomField, ObjectType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -15,7 +15,11 @@ import {
     IDENTIFIER_CATEGORIES,
     IDENTIFIER_VARIABLES_BY_CATEGORY,
 } from 'models/rule/constants'
-import { IdentifierCategoryKey, IdentifierElement } from 'models/rule/types'
+import {
+    CustomFieldTreePath,
+    IdentifierCategoryKey,
+    IdentifierElement,
+} from 'models/rule/types'
 import {
     generateExpression,
     getAstPath,
@@ -48,36 +52,130 @@ export function MemberExpression({
         return getSyntaxTreeLeaves(object)
     }, [object])
 
-    const hasCustomFieldInTree = useMemo(() => {
+    const hasCustomTicketFieldInTree = useMemo(() => {
         if (!syntaxTreeLeaves) {
             return false
         }
 
-        return syntaxTreeLeaves.includes('custom_fields')
+        return syntaxTreeLeaves.join('.').startsWith(CustomFieldTreePath.Ticket)
+    }, [syntaxTreeLeaves])
+
+    const hasCustomCustomerFieldInTree = useMemo(() => {
+        if (!syntaxTreeLeaves) {
+            return false
+        }
+
+        return syntaxTreeLeaves
+            .join('.')
+            .startsWith(CustomFieldTreePath.Customer)
     }, [syntaxTreeLeaves])
 
     const customFieldIdFromTree = useMemo(() => {
-        if (!hasCustomFieldInTree) {
+        if (!hasCustomTicketFieldInTree && !hasCustomCustomerFieldInTree) {
             return null
         }
 
-        const customFieldId = syntaxTreeLeaves?.get(-1)
+        const customFieldId = syntaxTreeLeaves?.last()
         if (!customFieldId || Number.isNaN(Number(customFieldId))) {
             return null
         }
 
         return Number(customFieldId)
-    }, [syntaxTreeLeaves, hasCustomFieldInTree])
+    }, [
+        syntaxTreeLeaves,
+        hasCustomTicketFieldInTree,
+        hasCustomCustomerFieldInTree,
+    ])
 
     const hasIntegrationType = useAppSelector(makeHasIntegrationOfTypes)
     const hasAutomate = useAppSelector(getHasAutomate)
     const [selectedCategory, setSelectedCategory] =
         useState<IdentifierCategoryKey | null>(null)
+
+    // Handles showing the custom field selection dropdown
     const [showCustomFieldSelection, setShowCustomFieldSelection] = useState(
-        () => hasCustomFieldInTree,
+        () => hasCustomTicketFieldInTree,
     )
-    const [selectedCustomField, setSelectedCustomField] =
+    const [
+        showCustomerCustomFieldSelection,
+        setShowCustomerCustomFieldSelection,
+    ] = useState(() => hasCustomCustomerFieldInTree)
+
+    // Handles the selection of the custom field
+    const [selectedTicketCustomField, setSelectedTicketCustomField] =
         useState<CustomField | null>(null)
+    const [selectedCustomerCustomField, setSelectedCustomerCustomField] =
+        useState<CustomField | null>(null)
+
+    const selectCustomFieldByType = useCallback(
+        (field: CustomField | undefined, fieldType: ObjectType) => {
+            if (!field) {
+                return
+            }
+
+            if (fieldType === ObjectType.Ticket) {
+                setSelectedTicketCustomField(field)
+            } else {
+                setSelectedCustomerCustomField(field)
+            }
+
+            const expressionSegments =
+                fieldType === ObjectType.Ticket
+                    ? ['value', field.id.toString(), 'custom_fields', 'ticket']
+                    : [
+                          'value',
+                          field.id.toString(),
+                          'custom_fields',
+                          'customer',
+                          'ticket',
+                      ]
+
+            actions.modifyCodeAST(
+                parent,
+                fromJS(generateExpression(expressionSegments)),
+                RuleOperation.Update,
+                undefined,
+                getFieldSchemaDefinitionKey(field),
+            )
+        },
+        [actions, parent],
+    )
+
+    // Since the logic is similar for both ticket and customer custom fields, we build a generic function to handle the selection
+    // cases on render or when the state attributes change.
+    const handleCustomFieldSelectionOnRender = useCallback(
+        (
+            activeFields: CustomField[],
+            enabled: boolean,
+            fieldType: ObjectType,
+            hasCustomFieldInTree: boolean,
+            isFetched: boolean,
+            selectedField: CustomField | null,
+            setSelectedField: (field: CustomField) => void,
+        ) => {
+            if (
+                !enabled ||
+                selectedField ||
+                !isFetched ||
+                activeFields.length === 0
+            ) {
+                return
+            }
+
+            if (hasCustomFieldInTree && customFieldIdFromTree) {
+                const matchingField = activeFields.find(
+                    (field) => field.id === customFieldIdFromTree,
+                )
+                if (matchingField) {
+                    setSelectedField(matchingField)
+                    return
+                }
+            }
+
+            selectCustomFieldByType(activeFields[0], fieldType)
+        },
+        [customFieldIdFromTree, selectCustomFieldByType],
+    )
 
     const displayedValue = useMemo(() => {
         const valuePath = getAstPath(property, object)
@@ -112,9 +210,32 @@ export function MemberExpression({
         },
     )
 
+    // Fetch available customer custom fields
+    const {
+        data: { data: customerCustomFields = [] } = {},
+        isLoading: isLoadingCustomerCustomFields,
+        isFetched: isCustomerCustomFieldsFetched,
+    } = useCustomFieldDefinitions(
+        {
+            archived: false,
+            object_type: 'Customer',
+        },
+        {
+            query: {
+                enabled: showCustomerCustomFieldSelection,
+            },
+        },
+    )
+
     const activeCustomFields = useMemo(
         () => customFields.filter((field) => !field.deactivated_datetime),
         [customFields],
+    )
+
+    const activeCustomerCustomFields = useMemo(
+        () =>
+            customerCustomFields.filter((field) => !field.deactivated_datetime),
+        [customerCustomFields],
     )
 
     const filteredCategories = useMemo(() => {
@@ -144,12 +265,23 @@ export function MemberExpression({
 
     const handleSelect = (value: string) => {
         setSelectedCategory(null)
-        if (value === 'ticket.custom_fields') {
+        if (value === CustomFieldTreePath.Ticket) {
             setShowCustomFieldSelection(true)
-            handleSelectCustomField(activeCustomFields[0])
+            setShowCustomerCustomFieldSelection(false)
+            selectCustomFieldByType(activeCustomFields[0], ObjectType.Ticket)
+            return
+        }
+        if (value === CustomFieldTreePath.Customer) {
+            setShowCustomerCustomFieldSelection(true)
+            setShowCustomFieldSelection(false)
+            selectCustomFieldByType(
+                activeCustomerCustomFields[0],
+                ObjectType.Customer,
+            )
             return
         }
         setShowCustomFieldSelection(false)
+        setShowCustomerCustomFieldSelection(false)
         actions.modifyCodeAST(
             parent,
             fromJS(generateExpression(value.split('.').reverse())),
@@ -159,59 +291,42 @@ export function MemberExpression({
         )
     }
 
-    const handleSelectCustomField = useCallback(
-        (field?: CustomField) => {
-            if (!field) {
-                return
-            }
-            setSelectedCustomField(field)
-            actions.modifyCodeAST(
-                parent,
-                fromJS(
-                    generateExpression([
-                        'value',
-                        field.id.toString(),
-                        'custom_fields',
-                        'ticket',
-                    ]),
-                ),
-                RuleOperation.Update,
-                undefined,
-                getFieldSchemaDefinitionKey(field),
-            )
-        },
-        [actions, parent],
-    )
-
     useEffect(() => {
-        if (
-            showCustomFieldSelection &&
-            !selectedCustomField &&
-            isFetched &&
-            activeCustomFields.length > 0
-        ) {
-            if (customFieldIdFromTree) {
-                const matchingField = activeCustomFields.find(
-                    (field) => field.id === customFieldIdFromTree,
-                )
-                if (matchingField) {
-                    // if the custom field is found, set it as the selected custom field
-                    // we should not call handleSelectCustomField here because we don't want to update the AST.
-                    setSelectedCustomField(matchingField)
-                    return
-                }
-            }
-
-            // if the custom field is not found, set the first custom field as the selected custom field
-            handleSelectCustomField(activeCustomFields[0])
-        }
+        handleCustomFieldSelectionOnRender(
+            activeCustomFields,
+            showCustomFieldSelection,
+            ObjectType.Ticket,
+            hasCustomTicketFieldInTree,
+            isFetched,
+            selectedTicketCustomField,
+            setSelectedTicketCustomField,
+        )
     }, [
         activeCustomFields,
-        customFieldIdFromTree,
-        handleSelectCustomField,
+        handleCustomFieldSelectionOnRender,
+        hasCustomTicketFieldInTree,
         isFetched,
-        selectedCustomField,
+        selectedTicketCustomField,
         showCustomFieldSelection,
+    ])
+
+    useEffect(() => {
+        handleCustomFieldSelectionOnRender(
+            activeCustomerCustomFields,
+            showCustomerCustomFieldSelection,
+            ObjectType.Customer,
+            hasCustomCustomerFieldInTree,
+            isCustomerCustomFieldsFetched,
+            selectedCustomerCustomField,
+            setSelectedCustomerCustomField,
+        )
+    }, [
+        activeCustomerCustomFields,
+        handleCustomFieldSelectionOnRender,
+        hasCustomCustomerFieldInTree,
+        isCustomerCustomFieldsFetched,
+        selectedCustomerCustomField,
+        showCustomerCustomFieldSelection,
     ])
 
     const valueLabel = useMemo(() => {
@@ -251,6 +366,11 @@ export function MemberExpression({
 
     const isCustomFieldsInRulesConditionsEnabled = useFlag(
         FeatureFlagKey.TicketCustomFieldsInRuleConditions,
+        false,
+    )
+
+    const isCustomerCustomFieldsInRulesConditionsEnabled = useFlag(
+        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
         false,
     )
 
@@ -321,8 +441,16 @@ export function MemberExpression({
                             ].map((subcategory) => {
                                 if (
                                     subcategory.value ===
-                                        'ticket.custom_fields' &&
+                                        CustomFieldTreePath.Ticket &&
                                     !isCustomFieldsInRulesConditionsEnabled
+                                ) {
+                                    return null
+                                }
+
+                                if (
+                                    subcategory.value ===
+                                        CustomFieldTreePath.Customer &&
+                                    !isCustomerCustomFieldsInRulesConditionsEnabled
                                 ) {
                                     return null
                                 }
@@ -367,20 +495,52 @@ export function MemberExpression({
                 )}
             </RuleSelect>
 
-            {/* Second dropdown - for selecting custom fields (only shown when Custom Fields is selected) */}
+            {/* Only shown when Custom Fields is selected */}
             {showCustomFieldSelection && (
                 <RuleSelect
                     className="IdentifierDropdown"
                     dropdownClassName={css.dropdown}
                     placeholder="Select Custom Field..."
-                    valueLabel={selectedCustomField?.label}
+                    valueLabel={selectedTicketCustomField?.label}
                 >
                     {isLoadingCustomFields
                         ? 'Loading custom fields...'
                         : activeCustomFields.map((field) => (
                               <RuleSelect.Option
                                   key={field.id}
-                                  onClick={() => handleSelectCustomField(field)}
+                                  onClick={() =>
+                                      selectCustomFieldByType(
+                                          field,
+                                          ObjectType.Ticket,
+                                      )
+                                  }
+                                  value={field.id.toString()}
+                              >
+                                  {field.label}
+                              </RuleSelect.Option>
+                          ))}
+                </RuleSelect>
+            )}
+
+            {/* Only shown when Customer Fields is selected */}
+            {showCustomerCustomFieldSelection && (
+                <RuleSelect
+                    className="IdentifierDropdown"
+                    dropdownClassName={css.dropdown}
+                    placeholder="Select Custom Field..."
+                    valueLabel={selectedCustomerCustomField?.label}
+                >
+                    {isLoadingCustomerCustomFields
+                        ? 'Loading customer custom fields...'
+                        : activeCustomerCustomFields.map((field) => (
+                              <RuleSelect.Option
+                                  key={field.id}
+                                  onClick={() =>
+                                      selectCustomFieldByType(
+                                          field,
+                                          ObjectType.Customer,
+                                      )
+                                  }
                                   value={field.id.toString()}
                               >
                                   {field.label}

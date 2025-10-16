@@ -1,6 +1,7 @@
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 
 import {
+    CustomFieldTreePath,
     IdentifierCategoryKey,
     IdentifierCategoryValue,
     IdentifierElement,
@@ -256,7 +257,7 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         {
             label: 'Ticket fields',
             text: 'ticket fields',
-            value: 'ticket.custom_fields',
+            value: CustomFieldTreePath.Ticket,
         },
         {
             label: 'Unsnooze date',
@@ -274,6 +275,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: 'Data',
             text: 'customer data',
             value: 'ticket.customer.data',
+        },
+        {
+            label: 'Customer fields',
+            text: 'customer fields',
+            value: CustomFieldTreePath.Customer,
         },
         {
             label: 'Email',
