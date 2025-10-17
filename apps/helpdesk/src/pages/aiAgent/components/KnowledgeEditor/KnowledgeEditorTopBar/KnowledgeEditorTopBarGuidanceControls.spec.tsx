@@ -7,7 +7,7 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
         const onEdit = jest.fn()
         const onCopy = jest.fn()
         const onDelete = jest.fn()
-
+        const onTest = jest.fn()
         render(
             <KnowledgeEditorTopBarGuidanceControls
                 mode={{
@@ -15,6 +15,7 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
                     onEdit,
                     onCopy,
                     onDelete,
+                    onTest,
                 }}
             />,
         )
@@ -30,6 +31,10 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
         fireEvent.click(screen.getByRole('button', { name: 'delete' }))
 
         expect(onDelete).toHaveBeenCalled()
+
+        fireEvent.click(screen.getByRole('button', { name: 'test' }))
+
+        expect(onTest).toHaveBeenCalled()
     })
 
     it('renders edit mode', () => {

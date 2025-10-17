@@ -60,6 +60,7 @@ ForGuidanceRead.args = {
                 onCopy: () => {},
                 onEdit: () => {},
                 onDelete: () => {},
+                onTest: () => {},
             }}
         />
     ),
@@ -104,6 +105,7 @@ ForHelpCenterArticleRead.args = {
                 mode: 'read',
                 onEdit: () => {},
                 onDelete: () => {},
+                onTest: () => {},
             }}
         />
     ),
@@ -162,5 +164,5 @@ ForSnippet.args = {
     onClickPrevious: () => {},
     onClickNext: () => {},
     title: 'Document snippet',
-    children: <KnowledgeEditorTopBarSnippetControls />,
+    children: <KnowledgeEditorTopBarSnippetControls onTest={() => {}} />,
 }

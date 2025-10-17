@@ -42,3 +42,13 @@ export const CopyIconButton = (props: { onCopy: () => void }) => (
         <Icon name="copy" />
     </button>
 )
+
+export const TestButton = (props: { onTest: () => void }) => (
+    <button
+        className={classNames(css.button, css.secondaryButton)}
+        onClick={props.onTest}
+        aria-label="test"
+    >
+        Test
+    </button>
+)

@@ -6,13 +6,14 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
     it('renders read mode', () => {
         const onEdit = jest.fn()
         const onDelete = jest.fn()
-
+        const onTest = jest.fn()
         render(
             <KnowledgeEditorTopBarHelpCenterArticlesControls
                 mode={{
                     mode: 'read',
                     onEdit,
                     onDelete,
+                    onTest,
                 }}
             />,
         )
@@ -24,6 +25,10 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
         fireEvent.click(screen.getByRole('button', { name: 'delete' }))
 
         expect(onDelete).toHaveBeenCalled()
+
+        fireEvent.click(screen.getByRole('button', { name: 'test' }))
+
+        expect(onTest).toHaveBeenCalled()
     })
 
     it('renders editDraft mode', () => {

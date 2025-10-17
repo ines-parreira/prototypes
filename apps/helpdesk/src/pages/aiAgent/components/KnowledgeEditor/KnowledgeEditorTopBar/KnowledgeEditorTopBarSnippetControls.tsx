@@ -2,9 +2,14 @@ import classNames from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
 
+import { TestButton } from './KnowledgeEditorTopBarCommonControls'
+
 import css from './KnowledgeEditorTopBarControls.less'
 
-export const KnowledgeEditorTopBarSnippetControls = () => (
+type Props = {
+    onTest: () => void
+}
+export const KnowledgeEditorTopBarSnippetControls = (props: Props) => (
     <>
         <button
             className={classNames(
@@ -16,5 +21,6 @@ export const KnowledgeEditorTopBarSnippetControls = () => (
         >
             <Icon name="lock" aria-label="editing disabled" /> Edit
         </button>
+        <TestButton onTest={props.onTest} />
     </>
 )

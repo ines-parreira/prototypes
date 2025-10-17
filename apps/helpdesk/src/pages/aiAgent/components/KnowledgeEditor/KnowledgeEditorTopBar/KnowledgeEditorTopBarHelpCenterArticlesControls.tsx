@@ -4,6 +4,7 @@ import {
     CancelButton,
     DeleteIconButton,
     EditIconButton,
+    TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
 
 import css from './KnowledgeEditorTopBarControls.less'
@@ -13,6 +14,7 @@ type ArticleMode =
           mode: 'read'
           onEdit: () => void
           onDelete: () => void
+          onTest: () => void
       }
     | {
           mode: 'editDraft'
@@ -34,6 +36,7 @@ const ReadControls = (props: Extract<ArticleMode, { mode: 'read' }>) => (
     <>
         <EditIconButton onEdit={props.onEdit} />
         <DeleteIconButton onDelete={props.onDelete} />
+        <TestButton onTest={props.onTest} />
     </>
 )
 
