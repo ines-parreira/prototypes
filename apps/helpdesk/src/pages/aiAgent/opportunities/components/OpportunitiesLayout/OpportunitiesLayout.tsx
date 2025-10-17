@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -32,6 +34,12 @@ export const OpportunitiesLayout = () => {
     const guidanceHelpCenter = useAiAgentHelpCenter({
         helpCenterType: 'guidance',
         shopName,
+    })
+
+    const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
+    useEffectOnce(() => {
+        // replicates the behavior of AiAgentLayout
+        setIsCollapsibleColumnOpen(false)
     })
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE

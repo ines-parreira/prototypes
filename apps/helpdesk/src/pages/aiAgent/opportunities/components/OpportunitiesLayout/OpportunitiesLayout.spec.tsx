@@ -43,6 +43,12 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
+    useCollapsibleColumn: jest.fn(() => ({
+        setIsCollapsibleColumnOpen: jest.fn(),
+    })),
+}))
+
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(() => 'en-US'),
