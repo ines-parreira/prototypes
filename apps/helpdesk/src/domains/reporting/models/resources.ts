@@ -117,15 +117,12 @@ export const postReporting = <
     oldQuery: ReportingParams<TCube>,
     newQuery?: BuiltQuery<TMeta>,
 ) => {
-    // Temporary Check until all P1 queries are defined
-    if (!newQuery) {
-        return postReportingV1<TData, TCube>(oldQuery)
-    }
-
     return executeMetric<TData>({
         metricName: oldQuery[0].metricName,
         oldApi: () => postReportingV1<TData, TCube>(oldQuery),
-        newQueryApi: () => postReportingV2Query<TCube, TMeta>(newQuery),
+        newQueryApi: newQuery
+            ? () => postReportingV2Query<TCube, TMeta>(newQuery)
+            : undefined,
         validateQuery: compareAndReportQueries,
     })
 }

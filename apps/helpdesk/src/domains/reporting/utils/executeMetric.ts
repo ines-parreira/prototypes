@@ -43,6 +43,7 @@ export interface ExecuteMetricConfig<TData = any> {
     ) => void
     /** Validates old and next responses during migration - required in 'shadow' mode */
     validateQuery?: (
+        metricName: MetricName,
         oldResponseQuery: ReportingQuery,
         newResponseQuery: ReportingQuery,
     ) => void
@@ -130,7 +131,11 @@ async function executeShadowMode<TData>(
     }
 
     if (nextResult.status === 'fulfilled') {
-        config.validateQuery(oldResult.value.data.query, nextResult.value.data)
+        config.validateQuery(
+            config.metricName,
+            oldResult.value.data.query,
+            nextResult.value.data,
+        )
     } else {
         reportError(
             new Error(
@@ -203,9 +208,19 @@ export async function executeMetric<TData>(
     | AxiosResponse<ReportingV2Response<TData>, any>
 > {
     const flagName = resolveMetricFlag(config.metricName)
-    const migrationMode = await getMigrationMode(flagName)
+    let migrationMode = await getMigrationMode(flagName)
 
-    validateMetricConfig(config, migrationMode)
+    try {
+        validateMetricConfig(config, migrationMode)
+    } catch (error) {
+        // report configuration errors but allow metric execution to continue in 'off' mode
+        reportError(error as Error, {
+            extra: { metricName: config.metricName },
+        })
+        // Fallback to 'off' mode if configuration is invalid
+        migrationMode = 'off'
+        validateMetricConfig(config, migrationMode)
+    }
 
     const executionFunction = EXECUTION_FUNCTIONS[migrationMode]
 

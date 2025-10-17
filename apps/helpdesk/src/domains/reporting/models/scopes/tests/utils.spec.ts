@@ -883,7 +883,7 @@ describe('utils', () => {
         })
 
         it('should return identical queries as equal', () => {
-            compareAndReportQueries(baseV1Query, baseV2Query)
+            compareAndReportQueries('tickets' as any, baseV1Query, baseV2Query)
 
             // Should not log any errors for identical queries
             expect(consoleSpy).not.toHaveBeenCalled()
@@ -897,11 +897,11 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(baseV1Query, v2Query)
+            compareAndReportQueries('tickets' as any, baseV1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
-                ['measures: ["tickets.count"] !== ["orders.count"]'],
+                'New Stats API and Legacy API queries are different for metric tickets',
+                ['measures: ["tickets.count"] (V1) !== ["orders.count"] (V2)'],
             )
         })
 
@@ -913,11 +913,13 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(baseV1Query, v2Query)
+            compareAndReportQueries('tickets' as any, baseV1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
-                ['dimensions: ["tickets.status"] !== ["orders.status"]'],
+                'New Stats API and Legacy API queries are different for metric tickets',
+                [
+                    'dimensions: ["tickets.status"] (V1) !== ["orders.status"] (V2)',
+                ],
             )
         })
 
@@ -926,10 +928,10 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(baseV1Query, v2Query)
+            compareAndReportQueries('tickets' as any, baseV1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
+                'New Stats API and Legacy API queries are different for metric tickets',
                 ['timezone: UTC !== EST'],
             )
         })
@@ -948,10 +950,10 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(baseV1Query, v2Query)
+            compareAndReportQueries('tickets' as any, baseV1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
+                'New Stats API and Legacy API queries are different for metric tickets',
                 expect.arrayContaining([
                     'V1 filter not found in V2: {"member":"agentId","operator":"one-of","values":["123","456"]}',
                 ]),
@@ -979,10 +981,10 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
+                'New Stats API and Legacy API queries are different for metric tickets',
                 expect.arrayContaining(['filters length: V1 2 !== V2 1']),
             )
         })
@@ -1013,7 +1015,7 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
@@ -1025,11 +1027,11 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
-                ['segments: ["segment1"] !== ["segment2"]'],
+                'New Stats API and Legacy API queries are different for metric tickets',
+                ['segments: ["segment1"] (V1) !== ["segment2"] (V2)'],
             )
         })
 
@@ -1039,7 +1041,7 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
@@ -1051,7 +1053,7 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
@@ -1081,11 +1083,11 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
-                ['timeDimensions[0].granularity: day !== month'],
+                'New Stats API and Legacy API queries are different for metric tickets',
+                ['timeDimensions[0].granularity: day (V1) !== month (V2)'],
             )
         })
 
@@ -1118,11 +1120,11 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
-                ['timeDimensions length: 2 !== 1'],
+                'New Stats API and Legacy API queries are different for metric tickets',
+                ['timeDimensions length: 2 (V1) !== 1 (V2)'],
             )
         })
 
@@ -1150,12 +1152,12 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
+                'New Stats API and Legacy API queries are different for metric tickets',
                 [
-                    'timeDimensions[0].dimension: tickets.created_at !== tickets.updated_at',
+                    'timeDimensions[0].dimension: tickets.created_at (V1) !== tickets.updated_at (V2)',
                 ],
             )
         })
@@ -1172,12 +1174,12 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             expect(consoleSpy).toHaveBeenCalledWith(
-                'New Stats API and Legacy API queries are different',
+                'New Stats API and Legacy API queries are different for metric tickets',
                 [
-                    'order: [{"id":"tickets.count","desc":true}] !== [{"id":"tickets.count","desc":false}]',
+                    'order: [{"id":"tickets.count","desc":true}] (V1) !== [{"id":"tickets.count","desc":false}] (V2)',
                 ],
             )
         })
@@ -1198,7 +1200,7 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             // Should not log any errors because metricName, limit, and offset are not compared
             expect(consoleSpy).not.toHaveBeenCalled()
@@ -1224,7 +1226,7 @@ describe('utils', () => {
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
 
-            compareAndReportQueries(v1Query, v2Query)
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
             // Should log error due to circular reference
             expect(consoleSpy).toHaveBeenCalled()

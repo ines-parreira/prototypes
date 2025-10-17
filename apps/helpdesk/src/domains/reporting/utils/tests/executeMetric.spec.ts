@@ -219,29 +219,53 @@ describe('executeMetric', () => {
             )
         })
 
-        it('should throw error when next function is missing', async () => {
+        it('should fallback to off mode when next function is missing', async () => {
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
+                oldApi: mockOld,
                 normalize: mockNormalize,
             }
 
-            await expect(executeMetric(config)).rejects.toThrow(
-                'Missing required functions for metric test-metric in complete mode: newApi',
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in complete mode: newApi',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
         })
 
-        it('should throw error when normalize function is missing', async () => {
+        it('should fallback to off mode when normalize function is missing', async () => {
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
             const mockNext = jest
                 .fn()
                 .mockResolvedValue(createMockNextResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
+                oldApi: mockOld,
                 newApi: mockNext,
             }
 
-            await expect(executeMetric(config)).rejects.toThrow(
-                'Missing required functions for metric test-metric in complete mode: normalize',
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in complete mode: normalize',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
         })
     })
 
@@ -270,6 +294,7 @@ describe('executeMetric', () => {
             expect(mockOld).toHaveBeenCalledTimes(1)
             expect(mockNext).toHaveBeenCalledTimes(1)
             expect(mockValidateQuery).toHaveBeenCalledWith(
+                'test-metric',
                 (result.data as any).query,
                 createMockNextQueryResponse().data,
             )
@@ -321,17 +346,31 @@ describe('executeMetric', () => {
             )
         })
 
-        it('should throw error when required functions are missing', async () => {
+        it('should fallback to off mode when validate function is missing', async () => {
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
+            const mockNext = jest
+                .fn()
+                .mockResolvedValue(createMockNextQueryResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
-                oldApi: jest.fn(),
-                newQueryApi: jest.fn(),
-                // Missing validate function
+                oldApi: mockOld,
+                newQueryApi: mockNext,
+                // Missing validateQuery function
             }
 
-            await expect(executeMetric(config)).rejects.toThrow(
-                'Missing required functions for metric test-metric in shadow mode: validate',
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in shadow mode: validateQuery',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
         })
     })
 
@@ -415,18 +454,32 @@ describe('executeMetric', () => {
             )
         })
 
-        it('should throw error when required functions are missing', async () => {
+        it('should fallback to off mode when validate function is missing', async () => {
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
+            const mockNext = jest
+                .fn()
+                .mockResolvedValue(createMockNextResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
-                oldApi: jest.fn(),
-                newApi: jest.fn(),
+                oldApi: mockOld,
+                newApi: mockNext,
                 normalize: mockNormalize,
                 // Missing validate function
             }
 
-            await expect(executeMetric(config)).rejects.toThrow(
-                'Missing required functions for metric test-metric in live mode: validate',
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in live mode: validate',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
         })
     })
 
@@ -462,31 +515,157 @@ describe('executeMetric', () => {
             )
         })
 
-        it('should handle unknown migration mode', async () => {
+        it('should fallback to off mode for unknown migration mode', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
             getMigrationModeMock.mockResolvedValue('unknown' as any)
 
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
-                oldApi: jest.fn(),
+                oldApi: mockOld,
             }
 
-            await expect(executeMetric(config)).rejects.toThrow(
-                'Unknown migration mode: unknown',
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: 'Unknown migration mode: unknown',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
         })
 
-        it('should throw error for gibberish migration mode', async () => {
+        it('should fallback to off mode for gibberish migration mode', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
             getMigrationModeMock.mockResolvedValue('gibberish' as any)
 
+            const mockOld = jest.fn().mockResolvedValue(createMockOldResponse())
             const config: ExecuteMetricConfig<TestData> = {
                 metricName: 'test-metric',
-                oldApi: jest.fn(),
+                oldApi: mockOld,
+            }
+
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: 'Unknown migration mode: gibberish',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
+            )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(42)
+        })
+    })
+
+    describe('configuration validation with fallback', () => {
+        it('should fallback to off mode when shadow mode config is invalid', async () => {
+            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
+            getMigrationModeMock.mockResolvedValue('shadow')
+
+            const mockOld = jest
+                .fn()
+                .mockResolvedValue(createMockOldResponse(500))
+            const config: ExecuteMetricConfig<TestData> = {
+                metricName: 'test-metric',
+                oldApi: mockOld,
+            }
+
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in shadow mode: newQueryApi, validateQuery',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
+            )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(500)
+        })
+
+        it('should fallback to off mode when live mode config is invalid', async () => {
+            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
+            getMigrationModeMock.mockResolvedValue('live')
+
+            const mockOld = jest
+                .fn()
+                .mockResolvedValue(createMockOldResponse(600))
+            const config: ExecuteMetricConfig<TestData> = {
+                metricName: 'test-metric',
+                oldApi: mockOld,
+            }
+
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in live mode: newApi, normalize, validate',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
+            )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(600)
+        })
+
+        it('should fallback to off mode when complete mode config is invalid', async () => {
+            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
+            getMigrationModeMock.mockResolvedValue('complete')
+
+            const mockOld = jest
+                .fn()
+                .mockResolvedValue(createMockOldResponse(700))
+            const config: ExecuteMetricConfig<TestData> = {
+                metricName: 'test-metric',
+                oldApi: mockOld,
+            }
+
+            const result = await executeMetric(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in complete mode: newApi, normalize',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
+            )
+            expect(mockOld).toHaveBeenCalledTimes(1)
+            expect(result.data.data[0]).toBe(700)
+        })
+
+        it('should throw error when fallback to off mode also fails', async () => {
+            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
+            getMigrationModeMock.mockResolvedValue('shadow')
+
+            const config: ExecuteMetricConfig<TestData> = {
+                metricName: 'test-metric',
             }
 
             await expect(executeMetric(config)).rejects.toThrow(
-                'Unknown migration mode: gibberish',
+                'Missing required functions for metric test-metric in off mode: oldApi',
+            )
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Missing required functions for metric test-metric in shadow mode: oldApi, newQueryApi, validateQuery',
+                }),
+                expect.objectContaining({
+                    extra: { metricName: 'test-metric' },
+                }),
             )
         })
     })

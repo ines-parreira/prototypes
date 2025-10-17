@@ -26,6 +26,8 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
 
+import { MetricName } from '../../hooks/metricNames'
+
 function createDateFilter(
     member: FilterName,
     operator:
@@ -332,7 +334,7 @@ function compareArrays<T>(
     const sorted2 = [...v2].sort()
     if (JSON.stringify(sorted1) !== JSON.stringify(sorted2)) {
         differences.push(
-            `${fieldName}: ${JSON.stringify(v1)} !== ${JSON.stringify(v2)}`,
+            `${fieldName}: ${JSON.stringify(v1)} (V1) !== ${JSON.stringify(v2)} (V2)`,
         )
     }
 }
@@ -395,7 +397,7 @@ function compareTimeDimensions(
 ) {
     if (v1TimeDimensions.length !== v2TimeDimensions.length) {
         differences.push(
-            `timeDimensions length: ${v1TimeDimensions.length} !== ${v2TimeDimensions.length}`,
+            `timeDimensions length: ${v1TimeDimensions.length} (V1) !== ${v2TimeDimensions.length} (V2)`,
         )
         return
     }
@@ -406,12 +408,12 @@ function compareTimeDimensions(
 
         if (v1TimeDim.dimension !== v2TimeDim.dimension) {
             differences.push(
-                `timeDimensions[${i}].dimension: ${v1TimeDim.dimension} !== ${v2TimeDim.dimension}`,
+                `timeDimensions[${i}].dimension: ${v1TimeDim.dimension} (V1) !== ${v2TimeDim.dimension} (V2)`,
             )
         }
         if (v1TimeDim.granularity !== v2TimeDim.granularity) {
             differences.push(
-                `timeDimensions[${i}].granularity: ${v1TimeDim.granularity} !== ${v2TimeDim.granularity}`,
+                `timeDimensions[${i}].granularity: ${v1TimeDim.granularity} (V1) !== ${v2TimeDim.granularity} (V2)`,
             )
         }
     }
@@ -420,11 +422,13 @@ function compareTimeDimensions(
 /**
  * Compares two reporting queries.
  * Function should not compare limit, offset and metricName.
+ * @param metricName - The name of the metric being compared.
  * @param v1query - The first query to compare.
  * @param v2query - The second query to compare.
  * @returns An object containing the comparison results.
  */
 export function compareAndReportQueries<TCube extends Cube = Cube>(
+    metricName: MetricName,
     v1query: ReportingQuery<TCube>,
     v2query: ReportingQuery<TCube>,
 ) {
@@ -459,7 +463,7 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
             JSON.stringify(v2query.order || [])
         ) {
             differences.push(
-                `order: ${JSON.stringify(v1query.order)} !== ${JSON.stringify(v2query.order)}`,
+                `order: ${JSON.stringify(v1query.order)} (V1) !== ${JSON.stringify(v2query.order)} (V2)`,
             )
         }
 
@@ -479,15 +483,20 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
 
         if (differences.length > 0) {
             console.error(
-                'New Stats API and Legacy API queries are different',
+                `New Stats API and Legacy API queries are different for metric ${metricName}`,
                 differences,
             )
             reportError(
-                new Error('New Stats API and Legacy API queries are different'),
+                new Error(
+                    `New Stats API and Legacy API queries are different for metric ${metricName}`,
+                ),
                 {
                     extra: {
                         differences,
                         summary: `Found ${differences.length} difference(s)`,
+                        metricName,
+                        v1query,
+                        v2query,
                     },
                 },
             )

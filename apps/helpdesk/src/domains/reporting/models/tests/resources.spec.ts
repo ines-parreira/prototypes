@@ -112,12 +112,20 @@ describe('Reporting resources', () => {
 
     describe('postReporting', () => {
         it('should resolve with the data on success', async () => {
+            executeMetricMock.mockImplementation(async (config) => {
+                return await config.oldApi!()
+            })
+
             const res = await postReporting<[number]>([query])
 
             expect(res.data.data).toEqual([1])
         })
 
         it('should reject with an error on success', async () => {
+            executeMetricMock.mockImplementation(async (config) => {
+                return await config.oldApi!()
+            })
+
             const statusCode = 503
             mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(statusCode)
 
@@ -129,6 +137,10 @@ describe('Reporting resources', () => {
         })
 
         it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            executeMetricMock.mockImplementation(async (config) => {
+                return await config.oldApi!()
+            })
+
             mockedAPIClient
                 .onPost(REPORTING_ENDPOINT)
                 .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
@@ -143,6 +155,10 @@ describe('Reporting resources', () => {
         })
 
         it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            executeMetricMock.mockImplementation(async (config) => {
+                return await config.oldApi!()
+            })
+
             mockedAPIClient
                 .onPost(REPORTING_ENDPOINT)
                 .reply(
@@ -159,6 +175,10 @@ describe('Reporting resources', () => {
         })
 
         it('should report 4xx errors with query details', async () => {
+            executeMetricMock.mockImplementation(async (config) => {
+                return await config.oldApi!()
+            })
+
             mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(400)
 
             const error = new Error('Request failed with status code 400')
