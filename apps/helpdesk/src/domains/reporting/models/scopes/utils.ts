@@ -198,7 +198,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                                     ReportingStatsOperatorsEnum.OneOf
                                         ? LogicalOperatorEnum.ONE_OF
                                         : LogicalOperatorEnum.NOT_ONE_OF,
-                                values: field.values,
+                                values: field.values.map((value) => {
+                                    // Remove a leading numeric id followed by '::' (e.g. "1234::test::chose" -> "test::chose")
+                                    return value.replace(/^\d+::/, '')
+                                }),
                             })),
                         ),
                     )

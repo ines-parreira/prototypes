@@ -308,6 +308,143 @@ describe('utils', () => {
                     ],
                 })
             })
+
+            it('should remove ID prefix from custom field values when value after separator is an integer', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFields'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    customFields: [
+                        {
+                            customFieldId: 123,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: ['1234::5678', '5678::9012', '9012::123'],
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFields',
+                    values: [
+                        {
+                            custom_field_id: '123',
+                            operator: 'one-of',
+                            values: ['5678', '9012', '123'],
+                        },
+                    ],
+                })
+            })
+
+            it('should remove ID prefix from custom field values when value after separator is not an integer', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFields'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    customFields: [
+                        {
+                            customFieldId: 123,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [
+                                '1234::High Priority',
+                                '5678::Medium Priority',
+                                '9012::Low Priority',
+                            ],
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFields',
+                    values: [
+                        {
+                            custom_field_id: '123',
+                            operator: 'one-of',
+                            values: [
+                                'High Priority',
+                                'Medium Priority',
+                                'Low Priority',
+                            ],
+                        },
+                    ],
+                })
+            })
+
+            it('should handle mixed custom field values with integers and non-integers', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFields'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    customFields: [
+                        {
+                            customFieldId: 123,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [
+                                '1234::5678',
+                                '5678::High Priority',
+                                '9012::123',
+                                'Low',
+                            ],
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFields',
+                    values: [
+                        {
+                            custom_field_id: '123',
+                            operator: 'one-of',
+                            values: ['5678', 'High Priority', '123', 'Low'],
+                        },
+                    ],
+                })
+            })
+
+            it('should handle custom field values without ID prefix', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFields'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    customFields: [
+                        {
+                            customFieldId: 789,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: ['Plain Value', 'Another Value'],
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFields',
+                    values: [
+                        {
+                            custom_field_id: '789',
+                            operator: 'one-of',
+                            values: ['Plain Value', 'Another Value'],
+                        },
+                    ],
+                })
+            })
         })
 
         describe('CSAT metrics filters', () => {
