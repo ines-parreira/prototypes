@@ -2,6 +2,7 @@ import classNames from 'classnames'
 
 import {
     CancelButton,
+    CopyIconButton,
     DeleteIconButton,
     EditIconButton,
 } from './KnowledgeEditorTopBarCommonControls'
@@ -11,6 +12,7 @@ import css from './KnowledgeEditorTopBarControls.less'
 type GuidanceMode =
     | {
           mode: 'read'
+          onCopy: () => void
           onEdit: () => void
           onDelete: () => void
       }
@@ -32,6 +34,7 @@ type Props = {
 const ReadControls = (props: Extract<GuidanceMode, { mode: 'read' }>) => (
     <>
         <EditIconButton onEdit={props.onEdit} />
+        <CopyIconButton onCopy={props.onCopy} />
         <DeleteIconButton onDelete={props.onDelete} />
     </>
 )

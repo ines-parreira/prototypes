@@ -32,3 +32,13 @@ export const CancelButton = (props: { onCancel: () => void }) => (
         Cancel
     </button>
 )
+
+export const CopyIconButton = (props: { onCopy: () => void }) => (
+    <button
+        className={classNames(css.icon, css.secondaryButton)}
+        onClick={props.onCopy}
+        aria-label="copy"
+    >
+        <Icon name="copy" />
+    </button>
+)

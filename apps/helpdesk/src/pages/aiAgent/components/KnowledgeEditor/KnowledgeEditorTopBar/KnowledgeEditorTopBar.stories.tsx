@@ -57,6 +57,7 @@ ForGuidanceRead.args = {
         <KnowledgeEditorTopBarGuidanceControls
             mode={{
                 mode: 'read',
+                onCopy: () => {},
                 onEdit: () => {},
                 onDelete: () => {},
             }}
