@@ -182,6 +182,8 @@ type Props = {
     // Override the search placeholder
     searchPlaceholder?: string
     disabledTooltipText?: string
+    // Hide the selected count in the button label
+    hideSelectedCount?: boolean
 }
 
 const DefaultDropdownMenu = ({
@@ -216,6 +218,7 @@ const SelectFilter = ({
     label,
     searchPlaceholder,
     disabledTooltipText,
+    hideSelectedCount,
 }: Props) => {
     const dispatch = useAppDispatch()
     const [search, setSearch] = useState('')
@@ -267,6 +270,9 @@ const SelectFilter = ({
             return label
         }
         if (isMultiple) {
+            if (hideSelectedCount) {
+                return hasSelection ? _capitalize(plural) : `All ${plural}`
+            }
             return hasSelection
                 ? `${value.length} ${value.length > 1 ? plural : singular}`
                 : `All ${plural}`
@@ -275,7 +281,16 @@ const SelectFilter = ({
         const selectedItem = items.find((item) => item.props.value === value[0])
 
         return selectedItem ? selectedItem.props.label : _capitalize(singular)
-    }, [hasSelection, isMultiple, items, plural, singular, value, label])
+    }, [
+        hasSelection,
+        isMultiple,
+        items,
+        plural,
+        singular,
+        value,
+        label,
+        hideSelectedCount,
+    ])
 
     const groups = useMemo(
         () =>
@@ -485,6 +500,7 @@ const SelectFilter = ({
                                     }
                                 }}
                                 isPartial={isPartial}
+                                hideCount={hideSelectedCount}
                             />
                         )}
                         <DropdownItem divider className={css.dropdownDivider} />

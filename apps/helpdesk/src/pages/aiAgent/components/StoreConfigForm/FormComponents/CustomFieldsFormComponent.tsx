@@ -226,6 +226,7 @@ export const CustomFieldsFormComponent = ({
                     label="Add Ticket Field"
                     searchPlaceholder="Ticket Fields"
                     className={css.selectFilter}
+                    hideSelectedCount={true}
                 >
                     {availableSelectCustomFieldOptions.map((field) => (
                         <SelectFilter.Item

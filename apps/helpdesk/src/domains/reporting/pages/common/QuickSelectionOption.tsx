@@ -10,6 +10,7 @@ type Props = {
     onClick: () => void
     selectedItemsCount: number
     totalItemsCount: number
+    hideCount?: boolean
 }
 
 const QuickSelectionOption = ({
@@ -18,6 +19,7 @@ const QuickSelectionOption = ({
     onClick,
     selectedItemsCount,
     totalItemsCount,
+    hideCount,
 }: Props) => (
     <DropdownItem toggle={false} className={css.component}>
         <CheckBox
@@ -34,13 +36,15 @@ const QuickSelectionOption = ({
                 : selectedItemsCount === 1
                   ? 'Deselect'
                   : 'Deselect all'}
-            <div
-                className={classnames(css.badge, {
-                    [css['badge--unselect']]: selectedItemsCount > 0,
-                })}
-            >
-                {selectedItemsCount || totalItemsCount}
-            </div>
+            {!hideCount && (
+                <div
+                    className={classnames(css.badge, {
+                        [css['badge--unselect']]: selectedItemsCount > 0,
+                    })}
+                >
+                    {selectedItemsCount || totalItemsCount}
+                </div>
+            )}
         </CheckBox>
     </DropdownItem>
 )

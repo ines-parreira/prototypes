@@ -327,4 +327,101 @@ describe('<SelectFilter />', () => {
         fireEvent.click(getByText('All items'))
         await waitFor(() => expect(statFiltersClean).toHaveBeenCalled())
     })
+
+    describe('hideSelectedCount prop', () => {
+        it('should hide the count badge in QuickSelectionOption when hideSelectedCount is true', () => {
+            const { getByText, queryByText } = render(
+                <Provider store={mockStore({})}>
+                    <SelectFilter
+                        {...commonProps}
+                        value={['1']}
+                        hideSelectedCount={true}
+                    >
+                        {items.map((item) => (
+                            <SelectFilter.Item
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                            />
+                        ))}
+                    </SelectFilter>
+                </Provider>,
+            )
+
+            userEvent.click(getByText(/Items/i))
+
+            expect(queryByText('1')).not.toBeInTheDocument()
+        })
+
+        it('should show count when hideSelectedCount is false or undefined', () => {
+            const { getByText } = render(
+                <Provider store={mockStore({})}>
+                    <SelectFilter
+                        {...commonProps}
+                        value={['1', '2']}
+                        plural="channels"
+                        singular="channel"
+                    >
+                        {items.map((item) => (
+                            <SelectFilter.Item
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                            />
+                        ))}
+                    </SelectFilter>
+                </Provider>,
+            )
+
+            expect(getByText('2 channels')).toBeInTheDocument()
+        })
+
+        it('should display capitalized plural when hideSelectedCount is true and items are selected', () => {
+            const { getByText } = render(
+                <Provider store={mockStore({})}>
+                    <SelectFilter
+                        {...commonProps}
+                        value={['1', '2']}
+                        plural="channels"
+                        singular="channel"
+                        hideSelectedCount={true}
+                    >
+                        {items.map((item) => (
+                            <SelectFilter.Item
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                            />
+                        ))}
+                    </SelectFilter>
+                </Provider>,
+            )
+
+            expect(getByText('Channels')).toBeInTheDocument()
+        })
+
+        it('should display "All {plural}" when hideSelectedCount is true and no items are selected', () => {
+            const { getByText } = render(
+                <Provider store={mockStore({})}>
+                    <SelectFilter
+                        {...commonProps}
+                        value={[]}
+                        plural="channels"
+                        singular="channel"
+                        hideSelectedCount={true}
+                    >
+                        {items.map((item) => (
+                            <SelectFilter.Item
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                            />
+                        ))}
+                    </SelectFilter>
+                </Provider>,
+            )
+
+            expect(getByText('All channels')).toBeInTheDocument()
+        })
+    })
 })

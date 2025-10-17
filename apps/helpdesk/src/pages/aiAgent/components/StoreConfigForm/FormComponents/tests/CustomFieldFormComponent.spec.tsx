@@ -168,6 +168,25 @@ describe('CustomFieldsFormComponent', () => {
                 within(container).getByPlaceholderText('Search Ticket Fields'),
             ).toBeInTheDocument()
         })
+        test('The select filter should not show selected count', () => {
+            const { container } = render(
+                <QueryClientProvider client={queryClient}>
+                    <CustomFieldsFormComponent
+                        {...mockProps}
+                        customFieldIds={[1, 3]}
+                    />
+                    ,
+                </QueryClientProvider>,
+            )
+
+            expect(
+                within(container).getByText('Add Ticket Field'),
+            ).toBeInTheDocument()
+
+            expect(
+                within(container).queryByText(/\d+ Ticket Field/),
+            ).not.toBeInTheDocument()
+        })
 
         describe('On close', () => {
             test('Selected fields should be appended to the store configuration custom fields', () => {
