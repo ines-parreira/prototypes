@@ -7,7 +7,11 @@ import {
     DateFilter,
     FilterGroup,
     FilterName,
+    NumberFilterName,
+    NumberStandardFilter,
     StandardFilter,
+    StringFilterName,
+    StringStandardFilter,
     TagsFilter,
 } from 'domains/reporting/models/scopes/types'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
@@ -37,15 +41,25 @@ function createDateFilter(
 }
 
 function createStandardFilter(
-    member: FilterName,
+    member: NumberFilterName,
+    operator: LogicalOperatorEnum,
+    values: number[],
+): NumberStandardFilter
+function createStandardFilter(
+    member: StringFilterName,
     operator: LogicalOperatorEnum,
     values: string[],
+): StringStandardFilter
+function createStandardFilter(
+    member: FilterName,
+    operator: LogicalOperatorEnum,
+    values: string[] | number[],
 ): StandardFilter {
     return {
         member,
         operator,
         values,
-    }
+    } as StandardFilter
 }
 
 // TODO: pass member
@@ -103,7 +117,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                         createStandardFilter(
                             'agentId',
                             statFilters.agents.operator,
-                            statFilters.agents.values.map(String),
+                            statFilters.agents.values,
                         ),
                     )
                 }
@@ -130,7 +144,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                         createStandardFilter(
                             'integrationId',
                             statFilters.integrations.operator,
-                            statFilters.integrations.values.map(String),
+                            statFilters.integrations.values,
                         ),
                     )
                 }
@@ -142,7 +156,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                         createStandardFilter(
                             'storeId',
                             statFilters.stores.operator,
-                            statFilters.stores.values.map(String),
+                            statFilters.stores.values,
                         ),
                     )
                 }

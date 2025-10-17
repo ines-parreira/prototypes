@@ -81,7 +81,7 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['123', '456'],
+                values: [123, 456],
             })
         })
 
@@ -127,7 +127,7 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'integrationId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['789', '101112'],
+                values: [789, 101112],
             })
         })
 
@@ -150,7 +150,7 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'storeId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['877777', '101112'],
+                values: [877777, 101112],
             })
         })
 
@@ -531,7 +531,7 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['123', '456'],
+                values: [123, 456],
             })
             expect(result).toContainEqual({
                 member: 'channel',
@@ -578,7 +578,7 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['123'],
+                values: [123],
             })
             expect(result).not.toContainEqual(
                 expect.objectContaining({ member: 'channel' }),
@@ -606,15 +606,15 @@ describe('utils', () => {
             expect(result).toContainEqual({
                 member: 'agentId',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['123'],
+                values: [123],
             })
             expect(result).not.toContainEqual(
                 expect.objectContaining({ member: 'channel' }),
             )
         })
 
-        describe('data type conversion', () => {
-            it('should convert agent values to strings', () => {
+        describe('data type handling', () => {
+            it('should keep agent values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
                     filters: ['agents'],
@@ -633,11 +633,11 @@ describe('utils', () => {
                 expect(result).toContainEqual({
                     member: 'agentId',
                     operator: LogicalOperatorEnum.ONE_OF,
-                    values: ['123', '456', '789'],
+                    values: [123, 456, 789],
                 })
             })
 
-            it('should convert integration values to strings', () => {
+            it('should keep integration values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
                     filters: ['integrations'],
@@ -656,7 +656,53 @@ describe('utils', () => {
                 expect(result).toContainEqual({
                     member: 'integrationId',
                     operator: LogicalOperatorEnum.NOT_ONE_OF,
-                    values: ['100', '200'],
+                    values: [100, 200],
+                })
+            })
+
+            it('should keep store values as numbers', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['stores'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    stores: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [300, 400],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'storeId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [300, 400],
+                })
+            })
+
+            it('should keep score values as strings', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['score'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    score: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['3', '4', '5'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'score',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['3', '4', '5'],
                 })
             })
 

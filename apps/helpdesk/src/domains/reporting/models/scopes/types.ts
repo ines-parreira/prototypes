@@ -9,10 +9,16 @@ export type DateFilter = {
     values: string[]
 }
 
-export type StandardFilter = {
-    member: FilterName
+export type StringStandardFilter = {
+    member: StringFilterName
     operator: LogicalOperatorEnum
     values: string[]
+}
+
+export type NumberStandardFilter = {
+    member: NumberFilterName
+    operator: LogicalOperatorEnum
+    values: number[]
 }
 
 export type CustomFieldsFilter = {
@@ -31,6 +37,8 @@ export type TagsFilter = {
         values: string[]
     }>
 }
+
+export type StandardFilter = StringStandardFilter | NumberStandardFilter
 
 export type FilterGroup =
     | StandardFilter
@@ -55,13 +63,11 @@ export type TimeDimensionName =
     | 'closedDatetime'
     | 'firstAgentMessageDatetime'
 
-export type FilterName =
+export type StringFilterName =
     | 'periodStart'
     | 'periodEnd'
-    | 'agentId'
     | 'channel'
     | 'score'
-    | 'integrationId'
     | 'communicationSkills'
     | 'languageProficiency'
     | 'resolutionCompleteness'
@@ -69,6 +75,9 @@ export type FilterName =
     | 'efficiency'
     | 'internalCompliance'
     | 'brandVoice'
-    | 'storeId'
     | 'customFields'
     | 'tags'
+
+export type NumberFilterName = 'agentId' | 'integrationId' | 'storeId'
+
+export type FilterName = StringFilterName | NumberFilterName

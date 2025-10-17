@@ -63,7 +63,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets',
@@ -102,7 +102,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-time-series',
@@ -135,7 +135,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-per-agent',
@@ -175,7 +175,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 order: [['ticketCount', 'asc']],
@@ -215,7 +215,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 metricName: 'support-performance-closed-tickets-per-channel',
@@ -255,7 +255,7 @@ describe('ticketsClosedScope', () => {
                     {
                         member: 'agentId',
                         operator: 'one-of',
-                        values: ['123'],
+                        values: [123],
                     },
                 ],
                 order: [['ticketCount', 'desc']],
