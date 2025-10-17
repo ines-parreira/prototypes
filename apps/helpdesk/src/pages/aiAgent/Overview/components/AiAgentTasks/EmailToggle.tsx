@@ -13,6 +13,7 @@ import css from './EmailToggle.less'
 type EmailToggleProps = {
     isEmailChannelEnabled: boolean
     isLoading: boolean
+    isReadOnly?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     label?: string
@@ -24,6 +25,7 @@ type EmailToggleProps = {
 export const EmailToggle = ({
     isEmailChannelEnabled,
     isLoading,
+    isReadOnly = false,
     storeConfiguration,
     shopName,
     setIsEmailChannelEnabled,
@@ -70,9 +72,13 @@ export const EmailToggle = ({
             <ChannelToggle
                 className={css.customToggle}
                 color="var(--surface-inverted-default)"
-                label={label}
+                label={
+                    <Text size="md" variant="regular">
+                        {label}
+                    </Text>
+                }
                 checked={isEmailChannelEnabled}
-                disabled={isEmailChannelDisabled || isLoading}
+                disabled={isEmailChannelDisabled || isLoading || isReadOnly}
                 onChange={handleEmailToggle}
                 warnings={[renderEmailWarning()]}
                 tooltip={{

@@ -18,6 +18,7 @@ import css from './ChatToggle.less'
 type ChatToggleProps = {
     isChatChannelEnabled: boolean
     isLoading: boolean
+    isReadOnly?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     shopType: string
@@ -30,6 +31,7 @@ type ChatToggleProps = {
 export const ChatToggle = ({
     isChatChannelEnabled,
     isLoading,
+    isReadOnly = false,
     shopName,
     shopType,
     storeConfiguration,
@@ -121,9 +123,13 @@ export const ChatToggle = ({
             <ChannelToggle
                 className={css.customToggle}
                 color="var(--surface-inverted-default)"
-                label={label}
+                label={
+                    <Text size="md" variant="regular">
+                        {label}
+                    </Text>
+                }
                 checked={isChatChannelEnabled}
-                disabled={isChatChannelDisabled || isLoading}
+                disabled={isChatChannelDisabled || isLoading || isReadOnly}
                 onChange={handleChatToggle}
                 warnings={[renderChatWarning()]}
                 tooltip={{

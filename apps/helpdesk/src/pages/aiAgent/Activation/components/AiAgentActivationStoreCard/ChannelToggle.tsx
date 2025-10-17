@@ -11,7 +11,7 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 type ChannelToggleProps = {
-    label: string
+    label: string | React.ReactNode
     checked: boolean
     disabled: boolean
     onChange: (value: boolean) => void

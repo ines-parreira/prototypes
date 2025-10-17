@@ -81,7 +81,7 @@ const TaskBodyWithButton = ({
             })}
         >
             <div className={css.setupTaskDescription}>
-                <Text size="sm">{description}</Text>
+                <Text size="md">{description}</Text>
             </div>
             <Button size="small" onClick={handleClick} isDisabled={isCompleted}>
                 {buttonLabel}
@@ -113,7 +113,7 @@ const TaskBodyWithToggle = ({
             })}
         >
             <div className={css.setupTaskDescription}>
-                <Text size="sm">{description}</Text>
+                <Text size="md">{description}</Text>
             </div>
             <div className={css.setupTaskToggle}>
                 <NewToggleField
@@ -348,7 +348,7 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
             })}
         >
             <div className={css.setupTaskDescription}>
-                <Text size="sm">
+                <Text size="md">
                     Start automating conversations on chat to save time and
                     provide faster, more personalized responses to your
                     customers.
@@ -357,6 +357,7 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
             <div className={css.channelToggle}>
                 <ChatToggle
                     isChatChannelEnabled={isChatChannelEnabled}
+                    isReadOnly={isCompleted}
                     isLoading={isLoading}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
                     onChatToggle={handleChatToggle}
@@ -406,7 +407,7 @@ export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
             })}
         >
             <div className={css.setupTaskDescription}>
-                <Text size="sm">
+                <Text size="md">
                     Start automating conversations on email to save time and
                     provide faster, more personalized responses to your
                     customers.
@@ -416,6 +417,7 @@ export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
                 <EmailToggle
                     isEmailChannelEnabled={isEmailChannelEnabled}
                     isLoading={isLoading}
+                    isReadOnly={isCompleted}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
                     onEmailToggle={handleEmailToggle}
                     storeConfiguration={storeConfiguration}
