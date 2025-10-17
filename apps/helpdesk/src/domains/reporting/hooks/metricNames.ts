@@ -35,6 +35,10 @@ export const METRIC_NAMES = {
         'ai-journey-total-number-of-sales-conversations-time-series',
     AI_JOURNEY_UNIQ_CLICKS: 'ai-journey-uniq-clicks',
     AI_JOURNEY_UNIQ_CLICKS_TIME_SERIES: 'ai-journey-uniq-clicks-time-series',
+    AI_JOURNEY_TOTAL_CONTACTS_COMPLETE_JOURNEY:
+        'ai-journey-total-contacts-complete-journey',
+    AI_JOURNEY_TOTAL_CONTACTS_COMPLETE_JOURNEY_TIME_SERIES:
+        'ai-journey-total-contacts-complete-journey-time-series',
 
     // AI Sales Agent
     AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:
