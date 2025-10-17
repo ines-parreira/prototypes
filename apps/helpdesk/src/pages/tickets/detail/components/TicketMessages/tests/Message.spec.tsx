@@ -12,15 +12,16 @@ import { Provider } from 'react-redux'
 import {
     mockGetCurrentUserHandler,
     mockListTicketMessageTranslationsHandler,
+    mockTicketMessageTranslation,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { MacroActionName } from 'models/macroAction/types'
-import { ActionStatus, TicketMessage } from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import {
     DisplayedContent,
+    DisplayType,
     FetchingState,
     TicketMessagesTranslationDisplayContext,
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
@@ -35,6 +36,30 @@ jest.mock('core/flags', () => ({
 const mockUseFlag = require('core/flags').useFlag as jest.MockedFunction<
     typeof import('core/flags').useFlag
 >
+
+// Mock the translations hook
+jest.mock(
+    'tickets/core/hooks/translations/useTicketMessageTranslations',
+    () => ({
+        useTicketMessageTranslations: jest.fn(),
+    }),
+)
+
+const mockUseTicketMessageTranslations =
+    require('tickets/core/hooks/translations/useTicketMessageTranslations')
+        .useTicketMessageTranslations as jest.MockedFunction<any>
+
+// Mock the user language preference hook
+jest.mock(
+    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    () => ({
+        useCurrentUserPreferredLanguage: jest.fn(),
+    }),
+)
+
+const mockUseCurrentUserPreferredLanguage =
+    require('tickets/core/hooks/translations/useCurrentUserPreferredLanguage')
+        .useCurrentUserPreferredLanguage as jest.MockedFunction<any>
 
 // Create mock user with language preferences
 const mockCurrentUser = {
@@ -87,6 +112,12 @@ beforeEach(() => {
     mockUseFlag.mockImplementation(
         (flag) => flag === FeatureFlagKey.MessagesTranslations,
     )
+    mockUseTicketMessageTranslations.mockReturnValue({
+        getMessageTranslation: jest.fn(() => null),
+    })
+    mockUseCurrentUserPreferredLanguage.mockReturnValue({
+        shouldShowTranslatedContent: jest.fn(() => true),
+    })
 })
 
 afterEach(() => {
@@ -100,11 +131,14 @@ afterAll(() => {
 
 // Mock translation display context
 const mockTranslationDisplayContext = {
-    getTicketMessageTranslationDisplay: jest.fn(() => ({
-        display: DisplayedContent.Original,
-        fetchingState: FetchingState.Idle,
-        hasRegeneratedOnce: false,
-    })),
+    getTicketMessageTranslationDisplay: jest.fn(
+        () =>
+            ({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
+            }) as DisplayType,
+    ),
     setTicketMessageTranslationDisplay: jest.fn(),
     allMessageDisplayState: DisplayedContent.Translated,
     setAllTicketMessagesToOriginal: jest.fn(),
@@ -145,10 +179,19 @@ jest.mock('tickets/ticket-detail/components/MessageActions', () => ({
 jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
     MessageAttachments: () => <div>Attachments</div>,
 }))
-jest.mock('../Body', () => () => <div>Body</div>)
+
+const mockBodyComponent = jest.fn()
+jest.mock('../Body', () => (props: any) => {
+    mockBodyComponent(props)
+    return <div>Body</div>
+})
+
 jest.mock('../Errors', () => () => <div>Errors</div>)
 jest.mock('../ReplyDetailsCard', () => () => <div>ReplyDetailsCard</div>)
 jest.mock('../SourceActionsHeader', () => () => <div>SourceActionsHeader</div>)
+jest.mock('../TranslationsDropdown/TranslationsDropdown', () => ({
+    TranslationsDropdown: () => <div>TranslationsDropdown</div>,
+}))
 
 describe('Message', () => {
     const defaultProps = {
@@ -170,6 +213,7 @@ describe('Message', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockBodyComponent.mockClear()
         mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
             {
                 display: DisplayedContent.Original,
@@ -179,7 +223,7 @@ describe('Message', () => {
         )
     })
 
-    it('should render a message with all required sections', () => {
+    it('should render all message sections', () => {
         render(<Message {...defaultProps} />, { wrapper })
         expect(screen.getByText('Body')).toBeInTheDocument()
         expect(screen.getByText('Attachments')).toBeInTheDocument()
@@ -187,12 +231,12 @@ describe('Message', () => {
         expect(screen.getByText('Errors')).toBeInTheDocument()
     })
 
-    it('should render the source details if showSourceDetails is true', () => {
+    it('should render source details when showSourceDetails is true', () => {
         render(<Message {...defaultProps} showSourceDetails />, { wrapper })
         expect(screen.getByText('SourceActionsHeader')).toBeInTheDocument()
     })
 
-    it('should display an embedded reply details card if meta.replied_to is present', () => {
+    it('should render reply details card when meta.replied_to exists', () => {
         render(
             <Message
                 {...defaultProps}
@@ -211,24 +255,8 @@ describe('Message', () => {
         expect(screen.getByText('ReplyDetailsCard')).toBeInTheDocument()
     })
 
-    it('should not display reply details card when meta.replied_to is not present', () => {
+    it('should not render reply details card when meta.replied_to is absent', () => {
         render(<Message {...defaultProps} />, { wrapper })
-        expect(screen.queryByText('ReplyDetailsCard')).not.toBeInTheDocument()
-    })
-
-    it('should not display reply details card when meta.replied_to is falsy', () => {
-        render(
-            <Message
-                {...defaultProps}
-                message={{
-                    ...defaultProps.message,
-                    meta: {
-                        replied_to: undefined,
-                    },
-                }}
-            />,
-            { wrapper },
-        )
         expect(screen.queryByText('ReplyDetailsCard')).not.toBeInTheDocument()
     })
 
@@ -237,84 +265,7 @@ describe('Message', () => {
         expect(screen.queryByText('Actions')).not.toBeInTheDocument()
     })
 
-    it('should render Actions when isAIAgentMessage is false', () => {
-        render(<Message {...defaultProps} isAIAgentMessage={false} />, {
-            wrapper,
-        })
-        expect(screen.getByText('Actions')).toBeInTheDocument()
-    })
-
-    it('should apply correct CSS classes based on showSourceDetails', () => {
-        const { container } = render(
-            <Message {...defaultProps} showSourceDetails />,
-            { wrapper },
-        )
-        const messageWrapper = container.firstChild as HTMLElement
-        expect(messageWrapper).toHaveClass('hasSourceDetails')
-    })
-
-    it('should not apply hasSourceDetails class when showSourceDetails is false', () => {
-        const { container } = render(
-            <Message {...defaultProps} showSourceDetails={false} />,
-            { wrapper },
-        )
-        const messageWrapper = container.firstChild as HTMLElement
-        expect(messageWrapper).not.toHaveClass('hasSourceDetails')
-    })
-
-    it('should handle mouse enter and leave events for source details visibility', async () => {
-        const user = userEvent.setup()
-        render(<Message {...defaultProps} showSourceDetails />, { wrapper })
-
-        const messageWrapper = screen.getByText('Body').closest('div')
-        expect(messageWrapper).toBeInTheDocument()
-
-        if (messageWrapper) {
-            await user.hover(messageWrapper)
-            // The component should handle mouse events without errors
-            await user.unhover(messageWrapper)
-        }
-    })
-
-    it('should pass correct props to Body component', () => {
-        const messageWithError = {
-            ...defaultProps.message,
-            status: 'failed',
-        } as TicketMessage
-
-        render(
-            <Message
-                {...defaultProps}
-                message={messageWithError}
-                messagePosition={5}
-            />,
-            { wrapper },
-        )
-
-        // Body component should receive the message, hasError, and messagePosition
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should pass correct props to Errors component', () => {
-        const messageWithError = {
-            ...defaultProps.message,
-            status: 'failed',
-        } as TicketMessage
-
-        render(
-            <Message
-                {...defaultProps}
-                message={messageWithError}
-                setStatus={jest.fn()}
-            />,
-            { wrapper },
-        )
-
-        // Errors component should receive the message, ticketId, loading, hasActionError, and setStatus
-        expect(screen.getByText('Errors')).toBeInTheDocument()
-    })
-
-    it('should handle message without id gracefully', () => {
+    it('should handle message without id', () => {
         const messageWithoutId = {
             ...defaultProps.message,
             id: undefined,
@@ -324,131 +275,11 @@ describe('Message', () => {
             wrapper,
         })
 
-        // Should still render without errors
         expect(screen.getByText('Body')).toBeInTheDocument()
         expect(screen.getByText('Attachments')).toBeInTheDocument()
     })
 
-    it('should handle message with undefined id gracefully', () => {
-        const messageWithUndefinedId = {
-            ...defaultProps.message,
-            id: undefined,
-        } as TicketMessage
-
-        render(<Message {...defaultProps} message={messageWithUndefinedId} />, {
-            wrapper,
-        })
-
-        // Should still render without errors
-        expect(screen.getByText('Body')).toBeInTheDocument()
-        expect(screen.getByText('Attachments')).toBeInTheDocument()
-    })
-
-    it('should pass the displayedMessage to child components', () => {
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // All child components should receive the message prop
-        expect(screen.getByText('Body')).toBeInTheDocument()
-        expect(screen.getByText('Attachments')).toBeInTheDocument()
-        expect(screen.getByText('Errors')).toBeInTheDocument()
-    })
-
-    it('should handle setStatus prop when provided', () => {
-        const setStatus = jest.fn()
-        render(<Message {...defaultProps} setStatus={setStatus} />, { wrapper })
-
-        // Component should render without errors when setStatus is provided
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should handle setStatus prop when not provided', () => {
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // Component should render without errors when setStatus is not provided
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should render with different message positions', () => {
-        render(<Message {...defaultProps} messagePosition={10} />, { wrapper })
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should render with different ticket IDs', () => {
-        render(<Message {...defaultProps} ticketId={999} />, { wrapper })
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should handle translation when feature flag is enabled', () => {
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // The component should render without errors when translation feature is enabled
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should use original content when display is set to Original', () => {
-        mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-            {
-                display: DisplayedContent.Original,
-                fetchingState: FetchingState.Idle,
-                hasRegeneratedOnce: false,
-            },
-        )
-
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // The component should render with original content
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should handle loading state for translations', () => {
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // Should render with loading state handled appropriately
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should handle translation data gracefully', () => {
-        render(<Message {...defaultProps} />, { wrapper })
-
-        // Component should handle various translation data states without errors
-        expect(screen.getByText('Body')).toBeInTheDocument()
-    })
-
-    it('should handle message with pending status', () => {
-        const pendingMessage = {
-            ...defaultProps.message,
-            status: 'pending',
-        } as TicketMessage
-
-        render(<Message {...defaultProps} message={pendingMessage} />, {
-            wrapper,
-        })
-
-        expect(screen.getByText('Errors')).toBeInTheDocument()
-    })
-
-    it('should handle message with failed actions', () => {
-        const messageWithFailedAction = {
-            ...defaultProps.message,
-            actions: [
-                {
-                    status: ActionStatus.Error,
-                    name: MacroActionName.Http,
-                    title: 'Failed Action',
-                    type: 'some_action',
-                },
-            ],
-        } as TicketMessage
-
-        render(
-            <Message {...defaultProps} message={messageWithFailedAction} />,
-            { wrapper },
-        )
-
-        expect(screen.getByText('Errors')).toBeInTheDocument()
-    })
-
-    it('should apply visible class to right wrapper when hovered', async () => {
+    it('should show visible class on hover when showSourceDetails is true', async () => {
         const user = userEvent.setup()
         const { container } = render(
             <Message {...defaultProps} showSourceDetails />,
@@ -460,25 +291,181 @@ describe('Message', () => {
 
         const rightWrapper = container.querySelector('.rightWrapper')
         expect(rightWrapper).toHaveClass('visible')
+
+        await user.unhover(messageWrapper)
+        expect(rightWrapper).not.toHaveClass('visible')
     })
 
-    it('should remove visible class from right wrapper when mouse leaves', async () => {
-        const user = userEvent.setup()
-        const { container } = render(
-            <Message {...defaultProps} showSourceDetails />,
-            { wrapper },
-        )
+    describe('TranslationsDropdown visibility', () => {
+        it('should not render when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
 
-        const messageWrapper = container.firstChild as HTMLElement
+            render(<Message {...defaultProps} />, { wrapper })
 
-        // Hover first
-        await user.hover(messageWrapper)
-        let rightWrapper = container.querySelector('.rightWrapper')
-        expect(rightWrapper).toHaveClass('visible')
+            expect(
+                screen.queryByText('TranslationsDropdown'),
+            ).not.toBeInTheDocument()
+        })
 
-        // Then unhover
-        await user.unhover(messageWrapper)
-        rightWrapper = container.querySelector('.rightWrapper')
-        expect(rightWrapper).not.toHaveClass('visible')
+        it('should not render when message has no id', () => {
+            const messageWithoutId = {
+                ...defaultProps.message,
+                id: undefined,
+            } as TicketMessage
+
+            render(<Message {...defaultProps} message={messageWithoutId} />, {
+                wrapper,
+            })
+
+            expect(
+                screen.queryByText('TranslationsDropdown'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render when no translations and fetching state is Idle', () => {
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(
+                screen.queryByText('TranslationsDropdown'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render when fetching state is Loading', () => {
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Loading,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(screen.getByText('TranslationsDropdown')).toBeInTheDocument()
+        })
+
+        it('should render when translations exist', () => {
+            const mockTranslation = mockTicketMessageTranslation({
+                id: '456',
+                ticket_message_id: 123,
+                stripped_html: '<strong>translated test</strong>',
+                stripped_text: 'translated test',
+            })
+
+            mockUseTicketMessageTranslations.mockReturnValue({
+                getMessageTranslation: jest.fn(() => mockTranslation),
+            })
+
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(screen.getByText('TranslationsDropdown')).toBeInTheDocument()
+        })
+    })
+
+    describe('Translation display', () => {
+        it('should display original message when display type is Original', () => {
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            const mockTranslation = mockTicketMessageTranslation({
+                id: '456',
+                ticket_message_id: 123,
+                stripped_html: '<strong>translated test</strong>',
+                stripped_text: 'translated test',
+            })
+
+            mockUseTicketMessageTranslations.mockReturnValue({
+                getMessageTranslation: jest.fn(() => mockTranslation),
+            })
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(mockBodyComponent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: expect.objectContaining({
+                        id: 123,
+                        body_text: 'a test',
+                        body_html: '<strong>a test</strong>',
+                    }),
+                }),
+            )
+        })
+
+        it('should display translated content when display type is Translated', () => {
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Translated,
+                    fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            const mockTranslation = mockTicketMessageTranslation({
+                id: '456',
+                ticket_message_id: 123,
+                stripped_html: '<strong>translated test</strong>',
+                stripped_text: 'translated test',
+            })
+
+            mockUseTicketMessageTranslations.mockReturnValue({
+                getMessageTranslation: jest.fn(() => mockTranslation),
+            })
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(mockBodyComponent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: expect.objectContaining({
+                        id: 123,
+                        body_text: 'a test',
+                        body_html: '<strong>a test</strong>',
+                        stripped_html: '<strong>translated test</strong>',
+                        stripped_text: 'translated test',
+                    }),
+                }),
+            )
+        })
+
+        it('should fall back to original when display is Translated but no translation exists', () => {
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Translated,
+                    fetchingState: FetchingState.Completed,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(mockBodyComponent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: expect.objectContaining({
+                        body_text: 'a test',
+                        body_html: '<strong>a test</strong>',
+                    }),
+                }),
+            )
+        })
     })
 })

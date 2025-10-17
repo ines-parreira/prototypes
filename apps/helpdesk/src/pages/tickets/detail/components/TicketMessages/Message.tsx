@@ -17,7 +17,10 @@ import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
-import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import {
+    DisplayedContent,
+    FetchingState,
+} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import Body from './Body'
@@ -64,6 +67,14 @@ export default function Message({
         [message?.id, getMessageTranslation],
     )
 
+    const fetchingState = useMemo(
+        () =>
+            message?.id
+                ? getTicketMessageTranslationDisplay(message.id).fetchingState
+                : FetchingState.Idle,
+        [message?.id, getTicketMessageTranslationDisplay],
+    )
+
     const displayedMessage = useMemo(() => {
         if (!message?.id) return message
         if (!shouldShowTranslatedContent(ticket.language as Language))
@@ -88,6 +99,20 @@ export default function Message({
         shouldShowTranslatedContent,
         ticket,
     ])
+
+    const showTranslationsDropdown = useMemo(
+        () =>
+            hasMessagesTranslation &&
+            shouldShowTranslatedContent(ticket.language as Language) &&
+            (!!messageTranslations || fetchingState !== FetchingState.Idle),
+        [
+            hasMessagesTranslation,
+            messageTranslations,
+            fetchingState,
+            ticket.language,
+            shouldShowTranslatedContent,
+        ],
+    )
 
     return (
         <div
@@ -114,12 +139,9 @@ export default function Message({
                 hasError={hasError}
                 messagePosition={messagePosition}
             />
-            {hasMessagesTranslation &&
-                !!messageTranslations &&
-                message.id &&
-                shouldShowTranslatedContent(ticket.language as Language) && (
-                    <TranslationsDropdown messageId={message.id} />
-                )}
+            {showTranslationsDropdown && message.id && (
+                <TranslationsDropdown messageId={message.id} />
+            )}
             <MessageAttachments
                 message={displayedMessage as TicketMessageType}
             />

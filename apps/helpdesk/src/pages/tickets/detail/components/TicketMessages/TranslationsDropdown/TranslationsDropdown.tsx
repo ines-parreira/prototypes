@@ -44,96 +44,94 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
             {fetchingState === FetchingState.Loading ? (
                 <TranslationLoader />
             ) : (
-                <Dropdown
-                    isOpen={isTranslationsDropdownOpen}
-                    toggle={() =>
-                        setTranslationsDropdownOpen((isOpen) => !isOpen)
-                    }
-                    className={css.dropdown}
-                >
-                    <DropdownToggle className={css.dropdownToggle}>
-                        <i
-                            className="material-icons"
-                            aria-label="Translate message"
+                <>
+                    {display === DisplayedContent.Original ? (
+                        <button
+                            className={css.dropdownToggle}
+                            onClick={() => {
+                                setTicketMessageTranslationDisplay([
+                                    {
+                                        messageId,
+                                        fetchingState,
+                                        hasRegeneratedOnce,
+                                        display: DisplayedContent.Translated,
+                                    },
+                                ])
+                                setTranslationsDropdownOpen(false)
+                            }}
                         >
-                            translate
-                        </i>
-                        {ticket?.language && (
-                            <>
-                                Translated from{' '}
-                                {IntlDisplayNames.of(ticket.language)}
-                                <i
-                                    className="material-icons"
-                                    aria-label="Translate message"
-                                >
-                                    arrow_drop_down
-                                </i>
-                            </>
-                        )}
-                    </DropdownToggle>
-
-                    <DropdownMenu right className={css.menuWrapper}>
-                        <ul className={css.translationsList}>
-                            {display === DisplayedContent.Original && (
-                                <TranslationsItem
-                                    onClick={() =>
-                                        setTicketMessageTranslationDisplay([
-                                            {
-                                                messageId,
-                                                fetchingState,
-                                                hasRegeneratedOnce,
-                                                display:
-                                                    DisplayedContent.Translated,
-                                            },
-                                        ])
-                                    }
-                                >
-                                    <span className={css.icon}>
-                                        <i className="material-icons">
-                                            translate
+                            See translation
+                        </button>
+                    ) : (
+                        <Dropdown
+                            isOpen={isTranslationsDropdownOpen}
+                            toggle={() =>
+                                setTranslationsDropdownOpen((isOpen) => !isOpen)
+                            }
+                            className={css.dropdown}
+                        >
+                            <DropdownToggle className={css.dropdownToggle}>
+                                {ticket?.language && (
+                                    <>
+                                        Translated from{' '}
+                                        {IntlDisplayNames.of(ticket.language)}
+                                        <i
+                                            className="material-icons"
+                                            aria-label="Translate message"
+                                        >
+                                            arrow_drop_down
                                         </i>
-                                    </span>
-                                    <span className={css.label}>
-                                        See translation
-                                    </span>
-                                </TranslationsItem>
-                            )}
-                            {display === DisplayedContent.Translated && (
-                                <TranslationsItem
-                                    onClick={() =>
-                                        setTicketMessageTranslationDisplay([
-                                            {
-                                                messageId,
-                                                fetchingState,
-                                                hasRegeneratedOnce,
-                                                display:
-                                                    DisplayedContent.Original,
-                                            },
-                                        ])
-                                    }
-                                >
-                                    <span className={css.icon}>
-                                        <i className="material-icons">undo</i>
-                                    </span>
-                                    <span className={css.label}>
-                                        See original
-                                    </span>
-                                </TranslationsItem>
-                            )}
-                            <TranslationsItem
-                                disabled={hasRegeneratedOnce}
-                                onClick={handleRegenerateTranslation}
-                            >
-                                <span className={css.icon}>
-                                    <i className="material-icons">loop</i>
-                                </span>
-                                <span className={css.label}>
-                                    Re-generate translation
-                                </span>
-                            </TranslationsItem>
-                        </ul>
-                    </DropdownMenu>
-                </Dropdown>
+                                    </>
+                                )}
+                            </DropdownToggle>
+
+                            <DropdownMenu right className={css.menuWrapper}>
+                                <ul className={css.translationsList}>
+                                    {display ===
+                                        DisplayedContent.Translated && (
+                                        <TranslationsItem
+                                            onClick={() =>
+                                                setTicketMessageTranslationDisplay(
+                                                    [
+                                                        {
+                                                            messageId,
+                                                            fetchingState,
+                                                            hasRegeneratedOnce,
+                                                            display:
+                                                                DisplayedContent.Original,
+                                                        },
+                                                    ],
+                                                )
+                                            }
+                                        >
+                                            <span className={css.icon}>
+                                                <i className="material-icons">
+                                                    undo
+                                                </i>
+                                            </span>
+                                            <span className={css.label}>
+                                                Show original
+                                            </span>
+                                        </TranslationsItem>
+                                    )}
+                                    <TranslationsItem
+                                        disabled={hasRegeneratedOnce}
+                                        onClick={handleRegenerateTranslation}
+                                    >
+                                        <span className={css.icon}>
+                                            <i className="material-icons">
+                                                loop
+                                            </i>
+                                        </span>
+                                        <span className={css.label}>
+                                            Re-generate translation
+                                        </span>
+                                    </TranslationsItem>
+                                </ul>
+                            </DropdownMenu>
+                        </Dropdown>
+                    )}
+                </>
             )}
 
             {fetchingState === FetchingState.Failed && hasRegeneratedOnce && (
