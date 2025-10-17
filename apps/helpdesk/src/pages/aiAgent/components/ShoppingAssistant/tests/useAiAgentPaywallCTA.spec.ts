@@ -41,7 +41,6 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
         trialFinishSetupModal: {},
     },
     isOnUpdateOnboardingWizard: false,
-    isTrialingSubscription: false,
     ...overrides,
 })
 
@@ -411,52 +410,5 @@ describe('useAiAgentCtas', () => {
         startAiAgentButton.props.onClick()
 
         expect(onOpenWizard).toHaveBeenCalled()
-    })
-
-    it('returns Upgrade Now primary CTA when isTrialingSubscription is true', () => {
-        const onOpenUpgradePlanModal = jest.fn()
-        const props = createDefaultProps({
-            isTrialingSubscription: true,
-            hasAutomate: false,
-            onOpenUpgradePlanModal,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const upgradeNowButton = Array.isArray(ctas.props.children)
-            ? ctas.props.children[0]
-            : ctas.props.children
-
-        expect(upgradeNowButton.props.children).toBe('Upgrade Now')
-
-        upgradeNowButton.props.onClick()
-
-        expect(onOpenUpgradePlanModal).toHaveBeenCalledWith(false)
-        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
-            TrialEventType.UpgradePlan,
-            TrialType.AiAgent,
-        )
-    })
-    it('subscription trial takes precedence over other flags', () => {
-        const props = createDefaultProps({
-            isTrialingSubscription: true,
-            canStartOnboarding: true,
-            isDuringOrAfterTrial: true,
-            canBookDemo: true,
-            canNotifyAdmin: true,
-            canSeeTrial: true,
-            isAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const upgradeNowButton = Array.isArray(ctas.props.children)
-            ? ctas.props.children[0]
-            : ctas.props.children
-
-        expect(upgradeNowButton.props.children).toBe('Upgrade Now')
-        expect(result.current.afterCtas).toBeUndefined()
     })
 })

@@ -8,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -55,8 +54,9 @@ const DEFAULT_TRIAL_ACCESS_MOCK = {
     canNotifyAdmin: false,
     hasCurrentStoreTrialStarted: false,
     hasCurrentStoreTrialExpired: false,
-    currentAutomatePlan: { generation: 5 },
+    currentAutomatePlan: { generation: 6 },
     trialType: TrialType.AiAgent,
+    isOnboarded: false,
 }
 
 jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
@@ -79,9 +79,6 @@ jest.mock('common/segment', () => ({
         AiAgentWelcomePageCtaClicked: 'ai-agent-welcome-page-cta-clicked',
     },
 }))
-
-jest.mock('core/flags')
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
     useTrialAccess: jest.fn(),
@@ -233,8 +230,6 @@ describe('<AIAgentWelcomePageView />', () => {
         mockUseShoppingAssistantTrialFlow.mockReturnValue(
             getUseShoppingAssistantTrialFlowFixture(),
         )
-
-        mockUseFlag.mockReturnValue(false)
     })
 
     const assertButtonAndLearnMore = () => {
@@ -500,11 +495,7 @@ describe('<AIAgentWelcomePageView />', () => {
         })
     })
 
-    describe('Feature flag: isAiAgentExpandingTrialExperienceMilestone2Enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
+    describe('CTA button display based on trial and onboarding state', () => {
         it('should show "Set Up AI Agent" CTA when trial expired and not onboarded', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
@@ -583,7 +574,7 @@ describe('<AIAgentWelcomePageView />', () => {
             mockUseTrialAccess.mockReturnValue({
                 ...DEFAULT_TRIAL_ACCESS_MOCK,
                 currentAutomatePlan: { generation: 6 },
-                isOnboarded: true,
+                isOnboarded: false,
             })
 
             renderWithProvider()
@@ -601,6 +592,27 @@ describe('<AIAgentWelcomePageView />', () => {
                 currentAutomatePlan: { generation: 5 },
                 hasCurrentStoreTrialExpired: true,
                 isOnboarded: false,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByText('Set Up AI Agent', {
+                    selector: 'button span',
+                }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('canStartOnboarding calculation', () => {
+        it('should allow onboarding when trial expired is the only qualifying condition', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                hasCurrentStoreTrialExpired: true,
+                isTrialingSubscription: false,
+                currentAutomatePlan: { generation: 6 },
+                isOnboarded: false,
+                trialType: TrialType.ShoppingAssistant,
             })
 
             renderWithProvider()
@@ -694,6 +706,23 @@ describe('<AIAgentWelcomePageView />', () => {
             ).toBeInTheDocument()
             expect(
                 screen.queryByAltText('AI Agent Logo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display AI Agent logo when canStartOnboarding is true via isTrialingSubscription with ShoppingAssistant trial', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                isTrialingSubscription: true,
+                isOnboarded: false,
+                trialType: TrialType.ShoppingAssistant,
+                currentAutomatePlan: { generation: 6 },
+            })
+
+            renderWithProvider()
+
+            expect(screen.getByAltText('AI Agent Logo')).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('Shopping Assistant Logo'),
             ).not.toBeInTheDocument()
         })
     })

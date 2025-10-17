@@ -4,24 +4,20 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { AiAgentRedirect } from '../AiAgentRedirect'
-
-jest.mock('core/flags/hooks/useFlag')
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -31,6 +27,9 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 
 jest.mock('pages/aiAgent/AiAgentPaywallView', () => ({
     AiAgentPaywallView: () => <div>Paywall</div>,
@@ -63,142 +62,90 @@ const renderWithProvider = () => {
     return { container, getByText, history }
 }
 
+const shop1 = {
+    ...shopifyIntegration,
+    meta: { ...shopifyIntegration.meta, shop_name: 'Test Store' },
+}
+const shop2 = {
+    ...shopifyIntegration,
+    meta: { ...shopifyIntegration.meta, shop_name: 'Test Store 2' },
+}
+
 describe('AiAgentRedirect', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
         mockUseAiAgentNavigation.mockImplementation(({ shopName }) => ({
             routes: {
                 main: `/app/ai-agent/${shopName}`,
                 overview: '/app/ai-agent/overview',
             },
         }))
-    })
-
-    describe('Feature flag disabled (original behavior)', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(false)
-        })
-
-        test('redirects to overview page when user has AI Agent and a store', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getShopifyIntegrationsSortedByName)
-                    return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
-                return []
-            })
-
-            const { history } = renderWithProvider()
-            expect(history.location.pathname).toBe('/app/ai-agent/overview')
-        })
-
-        test('renders the store integration view if no store is found', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getShopifyIntegrationsSortedByName) return []
-                return []
-            })
-
-            const { getByText, history } = renderWithProvider()
-
-            expect(history.location.pathname).toBe('/app/ai-agent')
-            expect(
-                getByText(
-                    'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
-                ),
-            ).toBeInTheDocument()
-        })
-
-        test('renders the paywall view when user has store but no automate', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return false
-                if (selector === getShopifyIntegrationsSortedByName)
-                    return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
-                return []
-            })
-
-            const { getByText, history } = renderWithProvider()
-
-            expect(getByText(/Paywall/)).toBeInTheDocument()
-            expect(history.location.pathname).toBe('/app/ai-agent')
-        })
-
-        test('renders the paywall view when user has no store and no automate', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return false
-                if (selector === getShopifyIntegrationsSortedByName) return []
-                return []
-            })
-
-            const { getByText, history } = renderWithProvider()
-
-            expect(getByText(/Paywall/)).toBeInTheDocument()
-            expect(history.location.pathname).toBe('/app/ai-agent')
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
         })
     })
 
-    describe('Feature flag enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+    test('renders the store integration view if no store is found, and hasAutomate is true', () => {
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getShopifyIntegrationsSortedByName) return []
+            return []
+        })
+        const { getByText, history } = renderWithProvider()
+
+        expect(history.location.pathname).toBe('/app/ai-agent')
+        expect(
+            getByText(
+                'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    test('redirects to overview page when user has AI Agent access and a store', () => {
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getShopifyIntegrationsSortedByName)
+                return [shop1, shop2]
+            return []
         })
 
-        test('renders the store integration view if no store is found, and hasAutomate is true', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getShopifyIntegrationsSortedByName) return []
-                return []
-            })
-            const { getByText, history } = renderWithProvider()
+        const { history } = renderWithProvider()
+        expect(history.location.pathname).toBe('/app/ai-agent/overview')
+    })
 
-            expect(history.location.pathname).toBe('/app/ai-agent')
-            expect(
-                getByText(
-                    'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
-                ),
-            ).toBeInTheDocument()
+    test('renders the store integration view when no store AND no AI Agent access', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getShopifyIntegrationsSortedByName) return []
+            return []
         })
 
-        test('redirects to overview page when user has automate plan and a store', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return true
-                if (selector === getShopifyIntegrationsSortedByName)
-                    return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
-                return []
-            })
+        const { getByText, history } = renderWithProvider()
 
-            const { history } = renderWithProvider()
-            expect(history.location.pathname).toBe('/app/ai-agent/overview')
+        expect(history.location.pathname).toBe('/app/ai-agent')
+        expect(
+            getByText(
+                'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    test('renders the paywall view when has store but no AI Agent access', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getShopifyIntegrationsSortedByName)
+                return [shop1, shop2]
+            return []
         })
 
-        test('renders the store integration view when no store AND no automate', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return false
-                if (selector === getShopifyIntegrationsSortedByName) return []
-                return []
-            })
+        const { getByText, history } = renderWithProvider()
 
-            const { getByText, history } = renderWithProvider()
-
-            expect(history.location.pathname).toBe('/app/ai-agent')
-            expect(
-                getByText(
-                    'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
-                ),
-            ).toBeInTheDocument()
-        })
-
-        test('renders the paywall view when has store but no automate', () => {
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getHasAutomate) return false
-                if (selector === getShopifyIntegrationsSortedByName)
-                    return [{ name: 'Test Store' }, { name: 'Test Store 2' }]
-                return []
-            })
-
-            const { getByText, history } = renderWithProvider()
-
-            expect(getByText(/Paywall/)).toBeInTheDocument()
-            expect(history.location.pathname).toBe('/app/ai-agent')
-        })
+        expect(getByText(/Paywall/)).toBeInTheDocument()
+        expect(history.location.pathname).toBe('/app/ai-agent')
     })
 })

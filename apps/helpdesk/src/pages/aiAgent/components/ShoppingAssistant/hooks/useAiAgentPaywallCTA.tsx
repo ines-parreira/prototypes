@@ -41,7 +41,6 @@ export type AiAgentCtasParams = {
         trialFinishSetupModal: any
     }
     isOnUpdateOnboardingWizard?: boolean
-    isTrialingSubscription: boolean
 }
 
 export type AiAgentCtas = {
@@ -70,34 +69,12 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         isNotifyAdminDisabled,
         trialModals,
         isOnUpdateOnboardingWizard,
-        isTrialingSubscription,
     } = props
 
     const openDemoPage = useCallback(() => {
         window.open(EXTERNAL_URLS.BOOK_DEMO_PAYWALL, '_blank')
     }, [])
 
-    const UpgradeNowPrimary = useMemo(
-        () => (
-            <>
-                <Button
-                    className={css.upgradeButton}
-                    intent="primary"
-                    size="medium"
-                    onClick={() => {
-                        logInTrialEventFromPaywall(
-                            TrialEventType.UpgradePlan,
-                            TrialType.AiAgent,
-                        )
-                        onOpenUpgradePlanModal(false)
-                    }}
-                >
-                    Upgrade Now
-                </Button>
-            </>
-        ),
-        [onOpenUpgradePlanModal],
-    )
     const UpgradeNowSecondary = useMemo(
         () => (
             <>
@@ -294,12 +271,6 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     )
 
     const { ctas, afterCtas } = useMemo(() => {
-        if (isTrialingSubscription) {
-            return {
-                ctas: UpgradeNowPrimary,
-            }
-        }
-
         // 1) onboarded, on Automate plan or trial expired
         if (canStartOnboarding) {
             return { ctas: SetupAIAgentButton }
@@ -421,8 +392,6 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         BookDemoComponent,
         StartAIAgentOnly,
         UpgradeNowSecondary,
-        isTrialingSubscription,
-        UpgradeNowPrimary,
     ])
 
     return { ctas, modals, afterCtas }

@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { logEvent, SegmentEvent } from 'common/segment'
-import { useFlag } from 'core/flags'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
@@ -85,10 +83,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
 
     const history = useHistory()
     const sameVisitRef = useRef(false)
-
-    const isAiAgentExpandingTrialExperienceMilestone2Enabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
-    )
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
@@ -293,13 +287,11 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     ])
 
     const hasAutomate = !!trialAccess.currentAutomatePlan
-    const isAfterTrialOrHasNewAutomatePlan =
-        (trialAccess.hasCurrentStoreTrialExpired && !trialAccess.isOnboarded) ||
-        hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)
     const canStartOnboarding =
-        isAiAgentExpandingTrialExperienceMilestone2Enabled
-            ? isAfterTrialOrHasNewAutomatePlan
-            : hasAutomate
+        (trialAccess.hasCurrentStoreTrialExpired ||
+            trialAccess.isTrialingSubscription ||
+            hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)) &&
+        !trialAccess.isOnboarded
 
     const isDuringOrAfterTrial =
         trialAccess.hasCurrentStoreTrialStarted ||
@@ -341,15 +333,14 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             trialFinishSetupModal: trialModalProps.trialFinishSetupModal,
         },
         isOnUpdateOnboardingWizard,
-        isTrialingSubscription: trialAccess.isTrialingSubscription,
     })
 
     const paywallFeature = useMemo(
         () =>
-            isAiAgentTrial || isAfterTrialOrHasNewAutomatePlan
+            isAiAgentTrial || canStartOnboarding
                 ? AIAgentPaywallFeatures.TrialSetup
                 : AIAgentPaywallFeatures.ShoppingAssistantTrialSetup,
-        [isAiAgentTrial, isAfterTrialOrHasNewAutomatePlan],
+        [isAiAgentTrial, canStartOnboarding],
     )
 
     return (
