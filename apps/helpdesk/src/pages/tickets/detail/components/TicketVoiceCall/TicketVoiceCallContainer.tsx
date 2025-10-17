@@ -3,8 +3,13 @@ import { ComponentProps, useEffect } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
+import { LegacyButton as Button } from '@gorgias/axiom'
+import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
+
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
+import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { Customer } from 'models/customer/types'
@@ -13,6 +18,7 @@ import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
 import TicketVoiceCallAudios from './TicketVoiceCallAudios'
@@ -42,9 +48,16 @@ export default function TicketVoiceCallContainer({
     source,
 }: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
+    const isCallListeningEnabled = useFlag(FeatureFlagKey.CallListening)
+
     const { isRecordingOpened, toggleRecordingOpened } =
         useVoiceRecordingsContext()
     const { setRecentItem } = useRecentItems<VoiceCall>(RecentItems.Calls)
+
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentUserId = currentUser.get('id')
+
+    const monitorCall = useMonitoringCall()
 
     useEffect(() => {
         void setRecentItem(voiceCall)
@@ -80,6 +93,27 @@ export default function TicketVoiceCallContainer({
                 </div>
                 <div className={css.row}>
                     <div className={css.callStatus}>{callStatus}</div>
+                    {isCallListeningEnabled &&
+                        voiceCall.status === VoiceCallStatus.Answered && (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                size="small"
+                                leadingIcon={
+                                    <i className="material-icons">
+                                        headset_mic
+                                    </i>
+                                }
+                                onClick={() =>
+                                    monitorCall({
+                                        mainCallSid: voiceCall.external_id,
+                                        agentId: currentUserId,
+                                    })
+                                }
+                            >
+                                Listen
+                            </Button>
+                        )}
                     <TicketVoiceCallDuration voiceCall={voiceCall} />
                 </div>
                 {voiceCall.has_call_recording && (

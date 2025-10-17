@@ -4,6 +4,7 @@ import { useBeforeUnload } from '@repo/hooks'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
+import MonitoringPhoneCall from 'pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall'
 
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
@@ -19,6 +20,8 @@ export default function PhoneIntegrationCallBar(): JSX.Element | null {
 
     useBeforeUnload(isInProgress)
 
+    const isMonitoring = call?.customParameters.get('is_monitoring') === 'true'
+
     useConditionalShortcuts(!!call, 'PhoneCall', {
         ACCEPT_CALL: {
             action: (e) => {
@@ -32,6 +35,10 @@ export default function PhoneIntegrationCallBar(): JSX.Element | null {
 
     if (!call) {
         return null
+    }
+
+    if (isMonitoring) {
+        return <MonitoringPhoneCall call={call} />
     }
 
     if (isRinging) {

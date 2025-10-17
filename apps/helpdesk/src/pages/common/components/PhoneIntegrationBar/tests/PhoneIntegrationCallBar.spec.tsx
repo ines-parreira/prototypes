@@ -10,6 +10,7 @@ import { initialState } from 'state/twilio/voiceDevice'
 import {
     mockDevice,
     mockIncomingCall,
+    mockMonitoringCall,
     mockOutgoingCall,
 } from 'tests/twilioMocks'
 import { renderWithRouter } from 'utils/testing'
@@ -29,6 +30,10 @@ jest.mock('../IncomingPhoneCall/IncomingPhoneCall', () => () => (
 
 jest.mock('../OutgoingPhoneCall/OutgoingPhoneCall', () => () => (
     <div data-testid="outgoing-phone-call" />
+))
+
+jest.mock('../MonitoringPhoneCall/MonitoringPhoneCall', () => () => (
+    <div data-testid="monitoring-phone-call" />
 ))
 
 jest.mock('hooks/integrations/phone/useVoiceDevice')
@@ -129,5 +134,19 @@ describe('<PhoneIntegrationCallBar/>', () => {
         const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
 
         expect(await findByTestId('ongoing-phone-call')).toBeTruthy()
+    })
+
+    it('should render monitoring call bar when is_monitoring parameter is true', async () => {
+        const device = mockDevice() as Device
+        const call = mockMonitoringCall() as Call
+        useVoiceDeviceMock.mockReturnValue({
+            ...initialState,
+            device,
+            call,
+        } as VoiceDeviceContextState)
+
+        const { findByTestId } = renderWithRouter(<PhoneIntegrationCallBar />)
+
+        expect(await findByTestId('monitoring-phone-call')).toBeTruthy()
     })
 })

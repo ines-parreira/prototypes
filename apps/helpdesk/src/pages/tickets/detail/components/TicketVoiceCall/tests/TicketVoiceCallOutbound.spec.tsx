@@ -1,14 +1,14 @@
-import React from 'react'
-
 import { userEvent } from '@repo/testing'
-import { render } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { OutboundVoiceCall, VoiceCall } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
+import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
+
+jest.mock('hooks/integrations/phone/useMonitoringCall')
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
@@ -64,7 +64,10 @@ describe('TicketVoiceCallOutbound', () => {
     } as OutboundVoiceCall
 
     const renderComponent = () => {
-        return render(<TicketVoiceCallOutbound voiceCall={voiceCall} />)
+        return renderWithStore(
+            <TicketVoiceCallOutbound voiceCall={voiceCall} />,
+            {},
+        )
     }
 
     it('renders the agent label', () => {

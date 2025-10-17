@@ -41,3 +41,13 @@ export const mockOutgoingCall = (integrationId = 1): Partial<Call> => ({
     ]),
     parameters: { From: '+25111111111' },
 })
+
+export const mockMonitoringCall = (): Partial<Call> => ({
+    ...mockCall(),
+    direction: Call.CallDirection.Outgoing,
+    status: () => Call.State.Ringing,
+    customParameters: new Map([
+        ['main_call_sid', 'main-call-sid'],
+        ['is_monitoring', 'true'],
+    ]),
+})

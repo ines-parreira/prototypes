@@ -1,12 +1,20 @@
 import { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
+import { RootState } from 'state/types'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 
@@ -22,6 +30,9 @@ const icon = 'phone'
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('hooks/integrations/phone/useMonitoringCall')
+const useMonitoringCallMock = assumeMock(useMonitoringCall)
 
 jest.mock(
     '../TicketVoiceCallAudios',
@@ -55,28 +66,41 @@ jest.mock('../TicketVoiceCallSummary', () => () => <div>Summary</div>)
 jest.mock('pages/common/hooks/useVoiceRecordingsContext')
 const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
+const mockStore = configureMockStore<Partial<RootState>>()
+
 const renderComponent = (
     props: Partial<ComponentProps<typeof TicketVoiceCallContainer>>,
 ): RenderResult => {
+    const store = mockStore({
+        currentUser: fromJS({
+            id: 123,
+            name: 'Test User',
+        }),
+    })
+
     return render(
-        <TicketVoiceCallContainer
-            header={header}
-            user={user}
-            callStatus={callStatus}
-            dateTime={dateTime}
-            voiceCall={voiceCall}
-            icon={icon}
-            source={{
-                from: 'John Doe',
-                to: 'Jane Doe',
-            }}
-            {...props}
-        />,
+        <Provider store={store}>
+            <TicketVoiceCallContainer
+                header={header}
+                user={user}
+                callStatus={callStatus}
+                dateTime={dateTime}
+                voiceCall={voiceCall}
+                icon={icon}
+                source={{
+                    from: 'John Doe',
+                    to: 'Jane Doe',
+                }}
+                {...props}
+            />
+        </Provider>,
     )
 }
 
 describe('TicketVoiceCallContainer', () => {
     const mockToggleRecording = jest.fn()
+    const mockMonitorCall = jest.fn()
+
     mockedUseVoiceRecordingsContext.mockReturnValue({
         isTranscriptionOpened: () => false,
         isRecordingOpened: () => false,
@@ -87,7 +111,14 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
+        jest.clearAllMocks()
+        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
+            if (flagKey === FeatureFlagKey.CallListening) {
+                return true
+            }
+            return false
+        })
+        useMonitoringCallMock.mockReturnValue(mockMonitorCall)
     })
 
     it('renders the component with all props', () => {
@@ -120,7 +151,15 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('should render the new avatar if the ticket thread revamp is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
+            if (flagKey === FeatureFlagKey.TicketThreadRevamp) {
+                return true
+            }
+            if (flagKey === FeatureFlagKey.CallListening) {
+                return true
+            }
+            return false
+        })
         renderComponent({
             voiceCall: {
                 ...voiceCall,
@@ -179,5 +218,53 @@ describe('TicketVoiceCallContainer', () => {
 
         fireEvent.click(getByText('Call Recording'))
         expect(mockToggleRecording).toHaveBeenCalledWith(voiceCall.id)
+    })
+
+    describe('Monitoring', () => {
+        it('should render Listen button when call is in progress with status Answered', () => {
+            renderComponent({
+                voiceCall: {
+                    ...voiceCall,
+                    status: VoiceCallStatus.Answered,
+                },
+            })
+
+            expect(screen.getByText('Listen')).toBeInTheDocument()
+        })
+
+        it('should not render Listen button when feature flag is disabled', () => {
+            useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
+                if (flagKey === FeatureFlagKey.CallListening) {
+                    return false
+                }
+                return false
+            })
+
+            renderComponent({
+                voiceCall: {
+                    ...voiceCall,
+                    status: VoiceCallStatus.Answered,
+                },
+            })
+
+            expect(screen.queryByText('Listen')).not.toBeInTheDocument()
+        })
+
+        it('should call monitorCall with correct parameters when Listen button is clicked', () => {
+            renderComponent({
+                voiceCall: {
+                    ...voiceCall,
+                    status: VoiceCallStatus.Answered,
+                    external_id: 'test-call-sid-123',
+                },
+            })
+
+            fireEvent.click(screen.getByText('Listen'))
+
+            expect(mockMonitorCall).toHaveBeenCalledWith({
+                mainCallSid: 'test-call-sid-123',
+                agentId: 123,
+            })
+        })
     })
 })
