@@ -437,4 +437,34 @@ describe('PlaygroundPanel', () => {
             )
         })
     })
+
+    describe('button tooltips', () => {
+        it('should show tooltip when hovering over reset button', async () => {
+            render(<PlaygroundPanel />)
+
+            const resetButton = screen.getByRole('button', {
+                name: /reset playground/i,
+            })
+
+            await userEvent.hover(resetButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Reset test')).toBeInTheDocument()
+            })
+        })
+
+        it('should show tooltip when hovering over close button', async () => {
+            render(<PlaygroundPanel />)
+
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
+
+            await userEvent.hover(closeButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Close')).toBeInTheDocument()
+            })
+        })
+    })
 })

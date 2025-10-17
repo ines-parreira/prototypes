@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 
-import { LegacyIconButton as IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, Tooltip } from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'
@@ -24,6 +24,9 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
     const [resetPlayground, setResetPlayground] = useState(false)
     const [actionsAllowed, setActionsAllowed] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const resetRef = useRef<HTMLButtonElement>(null)
+    const closeRef = useRef<HTMLButtonElement>(null)
+
     const { setNavBarDisplay } = useNavBar()
 
     useEffectOnce(() => {
@@ -82,14 +85,18 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
                             fillStyle="ghost"
                             onClick={handleResetPlayground}
                             aria-label="reset playground"
+                            ref={resetRef}
                         />
+                        <Tooltip target={resetRef}>Reset test</Tooltip>
                         <IconButton
                             icon="close"
                             intent="secondary"
                             fillStyle="ghost"
                             onClick={handleClose}
                             aria-label="close playground panel"
+                            ref={closeRef}
                         />
+                        <Tooltip target={closeRef}>Close</Tooltip>
                     </div>
                 </div>
             </div>
