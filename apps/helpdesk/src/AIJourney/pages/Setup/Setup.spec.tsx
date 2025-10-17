@@ -636,7 +636,7 @@ describe('<Setup />', () => {
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
-                journeyType: 'cart_abandoned',
+                journeyType: 'cart-abandoned',
                 storeConfiguration: {
                     monitoredSmsIntegrations: [1, 2],
                 },
@@ -676,7 +676,7 @@ describe('<Setup />', () => {
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
-                journeyType: 'cart_abandoned',
+                journeyType: 'cart-abandoned',
                 storeConfiguration: {
                     monitoredSmsIntegrations: [1, 2],
                 },
@@ -726,7 +726,7 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/test',
+                    '/app/ai-journey/shopify-store/cart-abandoned/test',
                 )
             })
 
@@ -758,7 +758,7 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/test',
+                    '/app/ai-journey/shopify-store/cart-abandoned/test',
                 )
             })
         })
@@ -780,7 +780,7 @@ describe('<Setup />', () => {
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
-                journeyType: 'cart_abandoned',
+                journeyType: 'cart-abandoned',
                 storeConfiguration: {
                     monitoredSmsIntegrations: [1, 2],
                 },

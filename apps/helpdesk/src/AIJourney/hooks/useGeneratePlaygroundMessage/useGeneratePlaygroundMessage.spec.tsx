@@ -75,6 +75,7 @@ const hookParameters = {
         discount_code_message_threshold: 1,
         include_image: false,
     },
+    journeyType: 'cart_abandoned' as JourneyTypeEnum,
     selectedProduct: {
         id: 8531448332426,
         title: 'ADIDAS | CLASSIC BACKPACK | LEGEND INK MULTICOLOUR',

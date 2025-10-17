@@ -1005,11 +1005,40 @@ describe('<Routes/>', () => {
             expect(mockHistory.location.pathname).toBe('/app')
         })
 
+        it('should redirect to landing page when no journey type is found in path', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return true
+            })
+
+            const history = createMemoryHistory({
+                initialEntries: ['/app/ai-journey/shopify-store/setup'],
+            })
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore}>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('AI Journey Performance'),
+            ).toBeInTheDocument()
+        })
+
         it('should render conversation setup page when feature flag is enabled', () => {
             mockUseFlag.mockReturnValue(true)
 
             const history = createMemoryHistory({
-                initialEntries: ['/app/ai-journey/shopify-store/setup'],
+                initialEntries: [
+                    '/app/ai-journey/shopify-store/cart-abandoned/setup',
+                ],
             })
 
             render(
@@ -1036,7 +1065,9 @@ describe('<Routes/>', () => {
             mockUseFlag.mockReturnValue(true)
 
             const history = createMemoryHistory({
-                initialEntries: ['/app/ai-journey/shopify-store/activate'],
+                initialEntries: [
+                    '/app/ai-journey/shopify-store/cart-abandoned/activate',
+                ],
             })
 
             render(

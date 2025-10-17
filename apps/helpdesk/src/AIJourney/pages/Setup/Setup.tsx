@@ -39,6 +39,7 @@ export const Setup = () => {
         currentIntegration,
         shopName,
         isLoading: isLoadingJourneyData,
+        journeyType,
         storeConfiguration,
     } = useJourneyContext()
 
@@ -188,7 +189,7 @@ export const Setup = () => {
                 await handleCreate()
             }
             setIsVisible(false)
-            history.push(`/app/ai-journey/${shopName}/test`)
+            history.push(`/app/ai-journey/${shopName}/${journeyType}/test`)
         } catch {
             return // Error handling is done in the handleUpdate and handleCreate functions
         }

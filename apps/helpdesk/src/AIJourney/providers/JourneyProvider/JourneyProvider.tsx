@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { matchPath, useLocation, useParams } from 'react-router-dom'
 
 import {
     JourneyApiDTO,
@@ -9,6 +9,7 @@ import {
 } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 import { useJourneys } from 'AIJourney/queries/useJourneys/useJourneys'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,7 +27,7 @@ type JourneyContextType = {
     shopName: string
     isLoading: boolean
     isLoadingJourneys: boolean
-    journeyType: JourneyTypeEnum
+    journeyType: string
     storeConfiguration: StoreConfiguration | undefined
 }
 
@@ -34,28 +35,40 @@ const JourneyContext = createContext<JourneyContextType | undefined>(undefined)
 
 type JourneyProviderProps = {
     children: React.ReactNode
-    journeyType?: JourneyTypeEnum
 }
 
-export const JourneyProvider = ({
-    children,
-    journeyType = 'cart_abandoned',
-}: JourneyProviderProps) => {
+export const JourneyProvider = ({ children }: JourneyProviderProps) => {
     const { shopName } = useParams<{ shopName: string }>()
+    const { pathname } = useLocation()
+
+    const match = useMemo(
+        () =>
+            matchPath<{ journeyType: string }>(pathname, {
+                path: `/app/ai-journey/:shopName/:journeyType`,
+            }),
+        [pathname],
+    )
+
+    const { currentIntegration, isLoading: isLoadingIntegrations } =
+        useIntegrations(shopName)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = useMemo(
         () => currentAccount.get('domain'),
         [currentAccount],
     )
-
-    const { currentIntegration, isLoading: isLoadingIntegrations } =
-        useIntegrations(shopName)
-
     const integrationId = useMemo(
         () => currentIntegration?.id,
-        [currentIntegration],
+        [currentIntegration?.id],
     )
+    const journeyType = useMemo(() => {
+        const journeyTypeParam = match?.params.journeyType
+        const availableJourneys = Object.values(JOURNEY_TYPES)
+        if (journeyTypeParam && availableJourneys.includes(journeyTypeParam))
+            return journeyTypeParam as JourneyTypeEnum
+
+        return JourneyTypeEnum.CartAbandoned.replace('_', '-')
+    }, [match?.params.journeyType])
 
     const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
         integrationId,

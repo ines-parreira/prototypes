@@ -5,6 +5,7 @@ import { MoreOptions } from './MoreOptions'
 
 describe('<MoreOptions />', () => {
     const shopName = 'test-shop'
+    const journeyType = 'cart_abandoned'
     const mockHandleChangeStatus = jest.fn()
 
     function setup(journeyState: 'active' | 'draft' | 'paused' = 'paused') {
@@ -13,6 +14,7 @@ describe('<MoreOptions />', () => {
                 <MoreOptions
                     journeyState={journeyState}
                     shopName={shopName}
+                    journeyType={journeyType}
                     handleChangeStatus={mockHandleChangeStatus}
                 />
             </MemoryRouter>,
@@ -48,7 +50,7 @@ describe('<MoreOptions />', () => {
         const editLink = screen.getByText('Test').closest('a')
         expect(editLink).toHaveAttribute(
             'to',
-            `/app/ai-journey/${shopName}/test`,
+            `/app/ai-journey/${shopName}/${journeyType.replace('_', '-')}/test`,
         )
     })
 

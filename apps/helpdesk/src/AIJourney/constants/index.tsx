@@ -1,7 +1,12 @@
 export const STEPS_NAMES = {
-    SETUP: 'Setup',
-    TEST: 'Test',
-    ACTIVATE: 'Activate',
+    SETUP: 'setup',
+    TEST: 'test',
+    ACTIVATE: 'activate',
+}
+
+export const JOURNEY_TYPES = {
+    CART_ABANDONMENT: 'cart-abandoned',
+    BROWSE_ABANDONMENT: 'browse-abandoned',
 }
 
 export const JOURNEY_COMPLETE_REASON = {

@@ -8,12 +8,12 @@ import css from './AiJourneyOnboarding.less'
 
 type AiJourneyOnboardingProps = {
     step: string
-    stepComponent: React.ReactNode
+    stepComponent: React.ComponentType
 }
 
 export const AiJourneyOnboarding = ({
     step,
-    stepComponent,
+    stepComponent: StepComponent,
 }: AiJourneyOnboardingProps) => {
     const JOURNEY_ONBOARDING_STEPS = [
         {
@@ -40,7 +40,7 @@ export const AiJourneyOnboarding = ({
                 steps={JOURNEY_ONBOARDING_STEPS}
                 activeStep={step}
             />
-            {stepComponent}
+            <StepComponent />
         </div>
     )
 }

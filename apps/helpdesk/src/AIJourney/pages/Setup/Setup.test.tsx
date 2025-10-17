@@ -155,6 +155,7 @@ const mockJourneyContext = {
             include_image: false,
         },
     },
+    journeyType: 'cart-abandoned',
     currentIntegration: {
         id: 100,
         name: 'Test Store',
@@ -412,7 +413,7 @@ describe('Setup', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/ai-journey/test-shop/test',
+                    '/app/ai-journey/test-shop/cart-abandoned/test',
                 )
             })
         })

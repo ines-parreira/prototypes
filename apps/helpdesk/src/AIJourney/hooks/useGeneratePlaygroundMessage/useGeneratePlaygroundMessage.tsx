@@ -25,6 +25,7 @@ type useGeneratePlaygroundMessageProps = {
     currentIntegration?: Integration
     journeyMessageInstructions: string
     journeyParams?: CartAbandonedJourneyConfigurationApiDTO
+    journeyType: string
     selectedProduct: Product | null
     totalMessagesToBeGenerated: number
 }

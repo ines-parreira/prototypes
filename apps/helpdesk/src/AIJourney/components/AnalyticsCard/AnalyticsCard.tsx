@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 import {
@@ -9,7 +8,6 @@ import {
     JourneyDetailApiDTO,
     JourneyStatusEnum,
 } from '@gorgias/convert-client'
-import { Integration } from '@gorgias/helpdesk-types'
 
 import { TotalConversationsCard } from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
@@ -30,30 +28,30 @@ import css from './AnalyticsCard.less'
 
 type AnalyticsCardProps = {
     analyticsData: MetricProps[]
-    journeyData?: JourneyDetailApiDTO
     integrationId?: number
-    currentIntegration?: Integration
     journey?: JourneyApiDTO
-    totalConversations?: string
+    journeyData?: JourneyDetailApiDTO
     period: {
         start: string
         end: string
     }
+    totalConversations?: string
 }
 
 export const AnalyticsCard = ({
-    period,
     analyticsData,
-    journeyData,
     integrationId,
     journey,
+    journeyData,
+    period,
     totalConversations,
 }: AnalyticsCardProps) => {
-    const { shopName } = useParams<{ shopName: string }>()
     const dispatch = useAppDispatch()
     const [journeyState, setJourneyState] = useState<JourneyStatusEnum>(
         journey?.state || JourneyStatusEnum.Draft,
     )
+
+    const { store_name: shopName, type: journeyType } = journeyData || {}
 
     const isLoadingMetrics = analyticsData.some((data) => data.isLoading)
     const isEmpty = !analyticsData.some(
@@ -121,6 +119,8 @@ export const AnalyticsCard = ({
         (data) => data.label === 'Total Revenue',
     )
 
+    const shouldRenderMoreOptions = shopName && journeyType
+
     const cardContent = () => {
         if (isLoadingMetrics) {
             return <LoadingSpinner style={{ height: '25px', width: '25px' }} />
@@ -144,11 +144,14 @@ export const AnalyticsCard = ({
                     <div className={statusBadgeClass}>
                         {journeyState?.toUpperCase()}
                     </div>
-                    <MoreOptions
-                        shopName={shopName}
-                        journeyState={journeyState}
-                        handleChangeStatus={handleUpdateJourneyState}
-                    />
+                    {shouldRenderMoreOptions && (
+                        <MoreOptions
+                            shopName={shopName}
+                            journeyState={journeyState}
+                            journeyType={journeyType}
+                            handleChangeStatus={handleUpdateJourneyState}
+                        />
+                    )}
                 </div>
                 {cardContent()}
                 {shouldRenderTotalConversationsCard && (
@@ -161,6 +164,7 @@ export const AnalyticsCard = ({
             {shouldRenderFooter && (
                 <Footer
                     isDiscountEnabled={isDiscountEnabled}
+                    journeyType={journey?.type.replace('_', '-')}
                     maxDiscount={maxDiscount}
                     totalRevenue={totalRevenue}
                 />

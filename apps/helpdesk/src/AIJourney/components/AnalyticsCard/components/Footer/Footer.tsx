@@ -7,12 +7,14 @@ import css from './Footer.less'
 
 type FooterProps = {
     isDiscountEnabled?: boolean
+    journeyType?: string
     maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
     totalRevenue?: MetricProps
 }
 
 export const Footer = ({
     isDiscountEnabled,
+    journeyType,
     maxDiscount,
     totalRevenue,
 }: FooterProps) => {
@@ -22,6 +24,7 @@ export const Footer = ({
                 totalRevenue={totalRevenue}
                 isDiscountEnabled={isDiscountEnabled}
                 maxDiscount={maxDiscount}
+                journeyType={journeyType}
             />
         </div>
     )

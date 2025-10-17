@@ -13,11 +13,13 @@ import css from './DiscountCard.less'
 export type DiscountCardProps = {
     totalRevenue?: MetricProps
     isDiscountEnabled?: boolean
+    journeyType?: string
     maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
 }
 export const DiscountCard = ({
     totalRevenue,
     isDiscountEnabled,
+    journeyType = 'cart-abandoned',
     maxDiscount,
 }: DiscountCardProps) => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -53,7 +55,7 @@ export const DiscountCard = ({
                     <Link
                         role="link"
                         className={css.discountLink}
-                        to={`/app/ai-journey/${shopName}/${STEPS_NAMES.SETUP.toLowerCase()}`}
+                        to={`/app/ai-journey/${shopName}/${journeyType}/${STEPS_NAMES.SETUP}`}
                     >
                         here
                     </Link>

@@ -200,7 +200,7 @@ describe('<AiJourneyOnboarding />', () => {
                     <IntegrationsProvider>
                         <AiJourneyOnboarding
                             step={STEPS_NAMES.SETUP}
-                            stepComponent={<Setup />}
+                            stepComponent={Setup}
                         />
                     </IntegrationsProvider>
                 </QueryClientProvider>

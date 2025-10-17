@@ -49,7 +49,9 @@ describe('<DiscountCard />', () => {
         renderDiscountCard()
 
         const link = screen.getByRole('link', { name: 'here' })
-        expect(link.getAttribute('to')).toBe('/app/ai-journey/test-store/setup')
+        expect(link.getAttribute('to')).toBe(
+            '/app/ai-journey/test-store/cart-abandoned/setup',
+        )
     })
 
     it('renders max discount when discount is enabled', () => {

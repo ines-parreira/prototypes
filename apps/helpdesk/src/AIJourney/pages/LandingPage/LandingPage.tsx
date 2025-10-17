@@ -17,7 +17,7 @@ export const LandingPage = () => {
     const { shopName } = useParams<{ shopName: string }>()
     const [isVisible, setIsVisible] = useState(true)
 
-    const { currentJourney, isLoading } = useJourneyContext()
+    const { currentJourney, journeyType, isLoading } = useJourneyContext()
 
     const shouldAccessOnboarding: boolean =
         !currentJourney || currentJourney?.state === 'draft'
@@ -32,7 +32,7 @@ export const LandingPage = () => {
         setIsVisible(false)
         setTimeout(() => {
             history.push(
-                `/app/ai-journey/${shopName}/${STEPS_NAMES.SETUP.toLowerCase()}`,
+                `/app/ai-journey/${shopName}/${journeyType}/${STEPS_NAMES.SETUP}`,
             )
         }, 700)
     }

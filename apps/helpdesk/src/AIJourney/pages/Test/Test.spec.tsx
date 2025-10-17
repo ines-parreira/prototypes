@@ -93,6 +93,7 @@ describe('<Test />', () => {
                     sms_sender_integration_id: 1,
                 },
             },
+            journeyType: 'cart-abandoned',
             currentIntegration: { id: 1, name: 'shopify-store' },
             shopName: 'shopify-store',
             isLoading: false,
@@ -175,7 +176,7 @@ describe('<Test />', () => {
         const linkElement = screen.getByRole('link', { name: 'Return' })
         expect(linkElement).toHaveAttribute(
             'href',
-            '/app/ai-journey/shopify-store/setup',
+            '/app/ai-journey/shopify-store/cart-abandoned/setup',
         ) // return button should have correct link
 
         const button = screen.getByTestId('ai-journey-button')
@@ -185,7 +186,7 @@ describe('<Test />', () => {
 
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledWith(
-                '/app/ai-journey/shopify-store/activate',
+                '/app/ai-journey/shopify-store/cart-abandoned/activate',
             )
         })
     })

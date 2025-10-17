@@ -29,6 +29,7 @@ export const Test = () => {
     const {
         currentJourney,
         journeyData,
+        journeyType,
         currentIntegration,
         shopName,
         isLoading: isLoadingJourneyData,
@@ -58,6 +59,7 @@ export const Test = () => {
             journey: currentJourney,
             currentIntegration,
             journeyParams,
+            journeyType,
             selectedProduct,
             totalMessagesToBeGenerated,
             journeyMessageInstructions,
@@ -85,7 +87,7 @@ export const Test = () => {
             journeyState: currentJourney?.state || 'draft',
             journeyMessageInstructions,
         })
-        history.push(`/app/ai-journey/${shopName}/activate`)
+        history.push(`/app/ai-journey/${shopName}/${journeyType}/activate`)
     }
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
@@ -143,7 +145,7 @@ export const Test = () => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/setup`}
+                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/setup`}
                     label="Return"
                 />
                 <Button

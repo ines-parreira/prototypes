@@ -10,14 +10,18 @@ import css from './MoreOptions.less'
 export const MoreOptions = ({
     shopName,
     journeyState,
+    journeyType,
     handleChangeStatus,
 }: {
     shopName: string
     journeyState: JourneyStatusEnum
+    journeyType: string
     handleChangeStatus: () => void
 }) => {
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
+
+    const formattedJourneyType = journeyType.replace('_', '-')
 
     const options = [
         {
@@ -104,7 +108,7 @@ export const MoreOptions = ({
                         <Link
                             className={css.option}
                             key={index}
-                            to={`/app/ai-journey/${shopName}/${path}`}
+                            to={`/app/ai-journey/${shopName}/${formattedJourneyType}/${path}`}
                         >
                             <i className="material-icons-outlined">{icon}</i>
                             {label}

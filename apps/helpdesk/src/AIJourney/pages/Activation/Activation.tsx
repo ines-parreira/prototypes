@@ -45,6 +45,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         currentJourney,
         currentIntegration,
         shopName,
+        journeyType,
         isLoading: isLoadingJourneyData,
     } = useJourneyContext()
 
@@ -189,7 +190,7 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/test`}
+                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/test`}
                     label="Return"
                 />
                 <Button

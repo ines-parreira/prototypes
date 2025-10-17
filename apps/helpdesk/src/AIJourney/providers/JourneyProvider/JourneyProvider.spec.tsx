@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
+import type { Location } from 'history'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { appQueryClient } from '../../../api/queryClient'
 import { JourneyProvider, useJourneyContext } from './JourneyProvider'
@@ -8,7 +9,11 @@ import { JourneyProvider, useJourneyContext } from './JourneyProvider'
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
+    useLocation: jest.fn(),
 }))
+
+const useParamsMock = jest.mocked(useParams)
+const useLocationMock = jest.mocked(useLocation)
 
 jest.mock(
     'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
@@ -18,6 +23,7 @@ jest.mock(
 )
 
 jest.mock('@gorgias/convert-client', () => ({
+    ...jest.requireActual('@gorgias/convert-client'),
     getAllJourneysPublic: jest.fn(),
     getJourneyDetails: jest.fn(),
 }))
@@ -123,6 +129,10 @@ describe('<JourneyProvider />', () => {
             isError: false,
             isLoading: false,
         }))
+
+        useLocationMock.mockReturnValue({
+            pathname: '/app/ai-journey/test-shop/cart-abandoned/setup',
+        } as Location)
     })
 
     it('provides journey data and loading state', async () => {
@@ -155,7 +165,7 @@ describe('<JourneyProvider />', () => {
                 'test-shop',
             )
             expect(screen.getByTestId('journeyType')).toHaveTextContent(
-                'cart_abandoned',
+                'cart-abandoned',
             )
             expect(screen.getByTestId('currentIntegration')).toHaveTextContent(
                 'test-shop',
@@ -224,5 +234,119 @@ describe('<JourneyProvider />', () => {
         )
 
         expect(screen.getByTestId('journey')).toHaveTextContent('')
+    })
+
+    describe('journeyType from URL', () => {
+        it('should extract cart-abandoned from URL path', () => {
+            useParamsMock.mockReturnValue({ shopName: 'test-shop' })
+            useLocationMock.mockReturnValue({
+                pathname: '/app/ai-journey/test-shop/cart-abandoned/setup',
+            } as Location)
+
+            mockUseIntegrations.mockReturnValue({
+                currentIntegration: {
+                    id: 1,
+                    name: 'test-shop',
+                    type: 'shopify',
+                },
+                isLoading: false,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <TestComponent />
+                    </JourneyProvider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByTestId('journeyType')).toHaveTextContent(
+                'cart-abandoned',
+            )
+        })
+
+        it('should extract browse-abandoned from URL path', () => {
+            useParamsMock.mockReturnValue({ shopName: 'test-shop' })
+            useLocationMock.mockReturnValue({
+                pathname: '/app/ai-journey/test-shop/browse-abandoned/test',
+            } as Location)
+
+            mockUseIntegrations.mockReturnValue({
+                currentIntegration: {
+                    id: 1,
+                    name: 'test-shop',
+                    type: 'shopify',
+                },
+                isLoading: false,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <TestComponent />
+                    </JourneyProvider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByTestId('journeyType')).toHaveTextContent(
+                'browse-abandoned',
+            )
+        })
+
+        it('should default to cart-abandoned for invalid journey type in URL', () => {
+            useParamsMock.mockReturnValue({ shopName: 'test-shop' })
+            useLocationMock.mockReturnValue({
+                pathname: '/app/ai-journey/test-shop/invalid-type/setup',
+            } as Location)
+
+            mockUseIntegrations.mockReturnValue({
+                currentIntegration: {
+                    id: 1,
+                    name: 'test-shop',
+                    type: 'shopify',
+                },
+                isLoading: false,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <TestComponent />
+                    </JourneyProvider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByTestId('journeyType')).toHaveTextContent(
+                'cart-abandoned',
+            )
+        })
+
+        it('should default to cart-abandoned when no journey type in URL', () => {
+            useParamsMock.mockReturnValue({ shopName: 'test-shop' })
+            useLocationMock.mockReturnValue({
+                pathname: '/app/ai-journey/test-shop',
+            } as Location)
+
+            mockUseIntegrations.mockReturnValue({
+                currentIntegration: {
+                    id: 1,
+                    name: 'test-shop',
+                    type: 'shopify',
+                },
+                isLoading: false,
+            })
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <TestComponent />
+                    </JourneyProvider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByTestId('journeyType')).toHaveTextContent(
+                'cart-abandoned',
+            )
+        })
     })
 })

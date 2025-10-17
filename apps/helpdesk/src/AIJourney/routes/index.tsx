@@ -3,16 +3,13 @@ import { useEffect } from 'react'
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
-import { STEPS_NAMES } from 'AIJourney/constants'
+import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
 import {
-    Activation,
     AiJourneyOnboarding,
     Analytics,
     LandingPage,
     Performance,
     Playground,
-    Setup,
-    Test,
 } from 'AIJourney/pages'
 import {
     IntegrationsProvider,
@@ -46,7 +43,7 @@ function AiJourneyBaseRoutes() {
         <Switch>
             <Route path={`${path}/`} exact render={() => <RedirectToShop />} />
             <Route path={`${path}/:shopName`}>
-                <JourneyProvider journeyType="cart_abandoned">
+                <JourneyProvider>
                     <App navbar={AiJourneyNavbar}>
                         <Switch>
                             <Route
@@ -54,36 +51,28 @@ function AiJourneyBaseRoutes() {
                                 exact
                                 render={() => <LandingPage />}
                             />
-                            <Route
-                                path={`${path}/:shopName/setup`}
-                                exact
-                                render={() => (
-                                    <AiJourneyOnboarding
-                                        step={STEPS_NAMES.SETUP}
-                                        stepComponent={<Setup />}
-                                    />
-                                )}
-                            />
-                            <Route
-                                path={`${path}/:shopName/test`}
-                                exact
-                                render={() => (
-                                    <AiJourneyOnboarding
-                                        step={STEPS_NAMES.TEST}
-                                        stepComponent={<Test />}
-                                    />
-                                )}
-                            />
-                            <Route
-                                path={`${path}/:shopName/activate`}
-                                exact
-                                render={() => (
-                                    <AiJourneyOnboarding
-                                        step={STEPS_NAMES.ACTIVATE}
-                                        stepComponent={<Activation />}
-                                    />
-                                )}
-                            />
+                            {AI_JOURNEY_ONBOARDING_STEPS.map(
+                                ({ journeyType, steps }) =>
+                                    steps.map(
+                                        ({ stepName, component }: any) => {
+                                            return (
+                                                <Route
+                                                    path={`${path}/:shopName/${journeyType}/${stepName}`}
+                                                    exact
+                                                    render={() => (
+                                                        <AiJourneyOnboarding
+                                                            step={stepName}
+                                                            stepComponent={
+                                                                component
+                                                            }
+                                                        />
+                                                    )}
+                                                    key={`${journeyType}-journey-${stepName}`}
+                                                />
+                                            )
+                                        },
+                                    ),
+                            )}
                             <Route
                                 path={`${path}/:shopName/performance`}
                                 exact
@@ -99,6 +88,7 @@ function AiJourneyBaseRoutes() {
                                 exact
                                 render={() => <Analytics />}
                             />
+                            <Route render={() => <LandingPage />} />
                         </Switch>
                     </App>
                 </JourneyProvider>
