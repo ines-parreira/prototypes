@@ -1,7 +1,10 @@
 import { useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'
 import { useAppContext } from 'pages/AppContext'
@@ -21,6 +24,11 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
     const [resetPlayground, setResetPlayground] = useState(false)
     const [actionsAllowed, setActionsAllowed] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const { setNavBarDisplay } = useNavBar()
+
+    useEffectOnce(() => {
+        setNavBarDisplay('collapsed')
+    })
 
     const onModalConfirm = () => {
         setActionsAllowed(true)

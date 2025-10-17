@@ -15,6 +15,12 @@ jest.mock('pages/aiAgent/PlaygroundV2/utils/playground.utils', () => ({
     ),
 }))
 
+jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
+    useNavBar: jest.fn(() => ({
+        setNavBarDisplay: jest.fn(),
+    })),
+}))
+
 const mockUseAppContext = require('pages/AppContext').useAppContext as jest.Mock
 
 const MockAiAgentPlayground = require('../../PlaygroundV2/AiAgentPlayground')
