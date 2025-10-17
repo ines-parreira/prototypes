@@ -8,6 +8,7 @@ import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBody
 import { fetchTicket } from 'state/ticket/actions'
 import { getBody } from 'state/ticket/selectors'
 
+import { KnowledgeSourceSideBarProvider } from './components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 
 import css from './TicketPrintContainer.less'
@@ -59,4 +60,12 @@ const TicketPrintContainer = () => {
     )
 }
 
-export default TicketPrintContainer
+function TicketPrintContainerWithSidebar() {
+    return (
+        <KnowledgeSourceSideBarProvider>
+            <TicketPrintContainer />
+        </KnowledgeSourceSideBarProvider>
+    )
+}
+
+export default TicketPrintContainerWithSidebar

@@ -23,6 +23,31 @@ jest.mock(
 
 jest.mock('services/activityTracker')
 
+jest.mock(
+    'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider',
+    () => ({
+        KnowledgeSourceSideBarProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => children,
+    }),
+)
+
+jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
+    useNavBar: () => ({
+        setNavBarDisplay: jest.fn(),
+        navBarDisplay: 'full',
+    }),
+}))
+
+jest.mock('split-ticket-view-toggle', () => ({
+    useSplitTicketView: () => ({
+        setIsEnabled: jest.fn(),
+        isEnabled: false,
+    }),
+}))
+
 window.print = jest.fn()
 
 const mockStore = configureMockStore([thunk])
@@ -46,6 +71,11 @@ describe('<TicketPrintContainer/>', () => {
         },
     }
 
+    const mockStoreState = {
+        currentAccount: fromJS({ id: 1 }),
+        currentUser: fromJS({ id: 1 }),
+    }
+
     beforeEach(() => {
         window.document.title = 'Gorgias'
     })
@@ -54,6 +84,7 @@ describe('<TicketPrintContainer/>', () => {
         const { container } = renderWithRouter(
             <Provider
                 store={mockStore({
+                    ...mockStoreState,
                     ticket: fromJS(loadingTicket),
                 })}
             >
@@ -70,7 +101,12 @@ describe('<TicketPrintContainer/>', () => {
 
     it('should render ticket body and call window.print when loading stops', () => {
         const { container, rerender } = renderWithRouter(
-            <Provider store={mockStore({ ticket: fromJS(loadingTicket) })}>
+            <Provider
+                store={mockStore({
+                    ...mockStoreState,
+                    ticket: fromJS(loadingTicket),
+                })}
+            >
                 <TicketPrintContainer />
             </Provider>,
             {
@@ -80,7 +116,12 @@ describe('<TicketPrintContainer/>', () => {
         )
 
         rerender(
-            <Provider store={mockStore({ ticket: fromJS(nonLoadingTicket) })}>
+            <Provider
+                store={mockStore({
+                    ...mockStoreState,
+                    ticket: fromJS(nonLoadingTicket),
+                })}
+            >
                 <TicketPrintContainer />
             </Provider>,
         )
@@ -94,6 +135,7 @@ describe('<TicketPrintContainer/>', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    ...mockStoreState,
                     ticket: fromJS(loadingTicket),
                 })}
             >
@@ -112,6 +154,7 @@ describe('<TicketPrintContainer/>', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    ...mockStoreState,
                     ticket: fromJS(nonLoadingTicket),
                 })}
             >
@@ -130,6 +173,7 @@ describe('<TicketPrintContainer/>', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
+                    ...mockStoreState,
                     ticket: fromJS({ ...nonLoadingTicket, subject: 'foo' }),
                 })}
             >
@@ -141,5 +185,24 @@ describe('<TicketPrintContainer/>', () => {
             },
         )
         expect(window.document.title).toEqual('123_foo')
+    })
+
+    it('should render with KnowledgeSourceSideBarProvider wrapper', () => {
+        const { container } = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    ...mockStoreState,
+                    ticket: fromJS(nonLoadingTicket),
+                })}
+            >
+                <TicketPrintContainer />
+            </Provider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            },
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

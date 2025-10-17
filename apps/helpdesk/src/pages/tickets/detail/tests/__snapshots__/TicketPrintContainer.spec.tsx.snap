@@ -27,3 +27,11 @@ exports[`<TicketPrintContainer/> should render ticket body and call window.print
   </div>
 </div>
 `;
+
+exports[`<TicketPrintContainer/> should render with KnowledgeSourceSideBarProvider wrapper 1`] = `
+<div>
+  <div>
+    TicketBodyNonVirtualized
+  </div>
+</div>
+`;
