@@ -972,9 +972,8 @@ export const StoreConfigForm = ({
                         </p>
                     </section>
                 </form>
-
-                <div className={css.ticketPreviewContainer}>
-                    {shouldDisplayGeneralSections && (
+                {shouldDisplayGeneralSections && (
+                    <div className={css.ticketPreviewContainer}>
                         <TicketPreview
                             toneOfVoice={formValues.toneOfVoice}
                             signature={formValues.signature}
@@ -995,8 +994,8 @@ export const StoreConfigForm = ({
                             }
                             isError={isError}
                         />
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
             <StoreConfigDrawer
                 title={drawerContent[activeDrawerContent].title}

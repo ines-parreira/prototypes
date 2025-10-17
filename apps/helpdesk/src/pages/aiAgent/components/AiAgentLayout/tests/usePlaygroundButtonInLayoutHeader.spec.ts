@@ -116,7 +116,7 @@ describe('useDisplayPlaygroundButtonInLayoutHeader', () => {
     describe('when not on overview page', () => {
         it('should return true when store onboarding is completed and not on test page', () => {
             mockUseLocation.mockReturnValue({
-                pathname: '/app/ai-agent/shopify/my-shop/settings',
+                pathname: '/app/ai-agent/shopify/my-shop/knowledge',
                 search: '',
                 state: undefined,
                 hash: '',
@@ -219,6 +219,24 @@ describe('useDisplayPlaygroundButtonInLayoutHeader', () => {
         it('should return false when on opportunities page', () => {
             mockUseLocation.mockReturnValue({
                 pathname: '/app/ai-agent/shopify/my-shop/opportunities',
+                search: '',
+                state: undefined,
+                hash: '',
+            } as any)
+
+            const { result } = renderHook(() =>
+                useDisplayPlaygroundButtonInLayoutHeader({
+                    shopName: 'my-shop',
+                    shopType: 'shopify',
+                }),
+            )
+
+            expect(result.current).toBe(false)
+        })
+
+        it('should return false when on settings page', () => {
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/my-shop/settings',
                 search: '',
                 state: undefined,
                 hash: '',

@@ -38,12 +38,17 @@ export const useDisplayPlaygroundButtonInLayoutHeader = ({
 
     const isOnOverviewPage = currentPath.endsWith('/overview')
 
+    const isOnSettingsPage = currentPath.endsWith('/settings')
+
     if (isOnOverviewPage) {
         return isAiAgentLiveModeEnabled
     }
 
     const isButtonEnabled =
-        storeOnboardingCompleted && !isOnTestPage && !isOnOpportunitiesPage
+        storeOnboardingCompleted &&
+        !isOnTestPage &&
+        !isOnOpportunitiesPage &&
+        !isOnSettingsPage
 
     return isButtonEnabled
 }
