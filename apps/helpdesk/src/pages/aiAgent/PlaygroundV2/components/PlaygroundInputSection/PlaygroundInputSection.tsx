@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FROALA_KEY } from 'config'
 import keymap from 'config/shortcuts'
@@ -269,24 +269,26 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                     [css.disabled]: !isInitialMessage,
                 })}
             >
-                <PlaygroundSegmentControl
-                    selectedValue={channel}
-                    onValueChange={handleChannelChange}
-                    isDisabled={!isInitialMessage}
-                    segments={
-                        isStandalone
-                            ? STANDALONE_CHANNEL_SEGMENTS
-                            : CHANNEL_SEGMENTS
-                    }
-                />
-                {channel === 'chat' && (
+                <div className={css.segmentControl}>
                     <PlaygroundSegmentControl
-                        selectedValue={channelAvailability}
-                        onValueChange={handleChannelAvailabilityChange}
+                        selectedValue={channel}
+                        onValueChange={handleChannelChange}
                         isDisabled={!isInitialMessage}
-                        segments={CHAT_AVAILABILITY_SEGMENTS}
+                        segments={
+                            isStandalone
+                                ? STANDALONE_CHANNEL_SEGMENTS
+                                : CHANNEL_SEGMENTS
+                        }
                     />
-                )}
+                    {channel === 'chat' && (
+                        <PlaygroundSegmentControl
+                            selectedValue={channelAvailability}
+                            onValueChange={handleChannelAvailabilityChange}
+                            isDisabled={!isInitialMessage}
+                            segments={CHAT_AVAILABILITY_SEGMENTS}
+                        />
+                    )}
+                </div>
                 <PlaygroundCustomerSelection
                     customer={formValues.customer}
                     onCustomerChange={handleCustomerChange}
@@ -310,6 +312,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                         maxLength={135}
                         placeholder="Subject"
                         isDisabled={!isInitialMessage}
+                        aria-label="Email subject"
                     />
                 </div>
             )}
@@ -341,6 +344,8 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                             id="send-button"
                             isDisabled={isFormDisabled}
                             onClick={handleSendMessage}
+                            size="sm"
+                            aria-label="Send message"
                         >
                             Send
                         </Button>
@@ -359,9 +364,10 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                         {shouldDisplayResetButton && (
                             <Button
                                 intent="secondary"
-                                leadingIcon="refresh"
                                 onClick={onReset}
                                 isDisabled={!hasMessageBeenSent}
+                                size="sm"
+                                aria-label="Reset conversation"
                             >
                                 Reset
                             </Button>

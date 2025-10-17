@@ -1,14 +1,20 @@
 :local {
     .container {
         display: inline-flex;
-        gap: 4px;
+        gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xxs);
         border: 1px solid var(--neutral-grey-2);
         border-radius: var(--layout-spacing-xs);
+
+        [class*='ui-button-wrapper-'] {
+            padding: 0 var(--layout-spacing-xs);
+        }
     }
 
     .channelButton {
         border: none !important;
+        height: 24px !important;
+        background-color: var(--neutral-grey-0) !important;
 
         &Active {
             border: none !important;

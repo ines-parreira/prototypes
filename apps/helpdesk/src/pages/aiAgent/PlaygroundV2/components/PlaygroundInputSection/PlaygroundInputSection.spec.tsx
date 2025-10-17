@@ -317,7 +317,9 @@ describe('PlaygroundInputSection', () => {
         it('should be disabled when no message is typed and no message has been sent', () => {
             renderComponent()
 
-            const resetButton = screen.getByRole('button', { name: 'Reset' })
+            const resetButton = screen.getByRole('button', {
+                name: 'Reset conversation',
+            })
             expect(resetButton).toHaveAttribute('aria-disabled', 'true')
         })
 
@@ -329,7 +331,9 @@ describe('PlaygroundInputSection', () => {
                 },
             })
 
-            const resetButton = screen.getByRole('button', { name: 'Reset' })
+            const resetButton = screen.getByRole('button', {
+                name: 'Reset conversation',
+            })
             expect(resetButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
@@ -340,7 +344,9 @@ describe('PlaygroundInputSection', () => {
                 isDisabled: false,
             })
 
-            const sendButton = screen.getByRole('button', { name: 'Send' })
+            const sendButton = screen.getByRole('button', {
+                name: 'Send message',
+            })
             expect(sendButton).toBeEnabled()
         })
 
@@ -354,7 +360,9 @@ describe('PlaygroundInputSection', () => {
                 onSendMessage,
             })
 
-            const sendButton = screen.getByRole('button', { name: 'Send' })
+            const sendButton = screen.getByRole('button', {
+                name: 'Send message',
+            })
 
             await act(async () => {
                 await userEvent.click(sendButton)

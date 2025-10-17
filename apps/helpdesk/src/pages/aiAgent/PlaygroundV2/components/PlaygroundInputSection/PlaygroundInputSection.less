@@ -6,7 +6,7 @@
     }
 
     .section {
-        padding: var(--layout-spacing-xxs) var(--layout-spacing-xxs);
+        padding: var(--layout-spacing-xxs);
 
         [class*='TextInput--input--'] {
             padding: 0 var(--layout-spacing-xxs);
@@ -15,9 +15,15 @@
 
     .topSection {
         display: flex;
-        gap: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xxs);
         align-items: flex-start;
+        justify-content: space-between;
         flex-wrap: wrap;
+    }
+
+    .segmentControl {
+        display: flex;
+        gap: var(--layout-spacing-xxs);
     }
 
     .fr-box.fr-basic .fr-element {
@@ -40,6 +46,11 @@
         flex-direction: column;
         gap: var(--layout-spacing-xs);
         position: relative;
+
+        :global(.fr-btn-grp) {
+            margin: 0;
+            height: 24px !important;
+        }
 
         :global {
             .fr-wrapper {
@@ -108,8 +119,8 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                height: 32px !important;
-                width: 32px !important;
+                height: 24px !important;
+                width: 24px !important;
             }
 
             [data-title='Insert Link (⌘K)'],
