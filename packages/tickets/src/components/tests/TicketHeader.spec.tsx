@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import type { Mock } from 'vitest'
 
 import { useTicket } from '../../hooks/useTicket'
+import { render } from '../../tests/render.utils'
 import { TicketHeader } from '../TicketHeader'
 
 vi.mock('../../hooks/useTicket', () => ({ useTicket: vi.fn() }))

@@ -114,3 +114,6 @@ catalogs:
   moment:
     'moment': '2.29.4'
     'moment-timezone': '0.5.39'
+  emoji-mart:
+    'emoji-mart': '1.0.1'
+    '@types/emoji-mart': '3.0.3'

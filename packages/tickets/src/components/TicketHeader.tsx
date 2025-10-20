@@ -2,6 +2,7 @@ import { Icon } from '@gorgias/axiom'
 
 import { getCustomerName } from '../helpers/getCustomerName'
 import { useTicket } from '../hooks/useTicket'
+import { TeamAssignee } from './TicketAssignee'
 
 import css from './TicketHeader.less'
 
@@ -15,6 +16,8 @@ export function TicketHeader({ ticketId }: Props) {
 
     if (!ticket) return <div className={css.container} />
 
+    const currentTeam = ticket.assignee_team
+
     return (
         <div className={css.container}>
             <div className={css.left}>
@@ -25,6 +28,9 @@ export function TicketHeader({ ticketId }: Props) {
                     <Icon name="arrow-chevron-right" size="sm" />
                 </span>
                 <span className={css.subject}>{ticket.subject}</span>
+            </div>
+            <div className={css.right}>
+                <TeamAssignee ticketId={ticketId} currentTeam={currentTeam} />
             </div>
         </div>
     )

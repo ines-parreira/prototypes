@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
+    renderHook as renderHookPrimitive,
     RenderOptions as RenderOptionsPrimitive,
     render as renderPrimitive,
 } from '@testing-library/react'
@@ -60,4 +61,32 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         },
         ...result,
     }
+}
+
+export const renderHook = <TProps, TResult>(
+    hook: (props: TProps) => TResult,
+    options?: RenderOptions,
+) => {
+    const {
+        initialEntries = ['/'],
+        path = '/',
+        dispatchNotification = vi.fn(),
+    } = options ?? {}
+
+    return renderHookPrimitive(hook, {
+        ...options,
+        wrapper: ({ children }) => (
+            <TicketsLegacyBridgeProvider
+                dispatchNotification={
+                    options?.dispatchNotification ?? dispatchNotification
+                }
+            >
+                <QueryClientProvider client={testAppQueryClient}>
+                    <MemoryRouter initialEntries={initialEntries}>
+                        <Route path={path}>{children}</Route>
+                    </MemoryRouter>
+                </QueryClientProvider>
+            </TicketsLegacyBridgeProvider>
+        ),
+    })
 }

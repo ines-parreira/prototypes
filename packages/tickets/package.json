@@ -26,7 +26,8 @@
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
-        "react-router-dom-v5-compat": "catalog:react-router"
+        "react-router-dom-v5-compat": "catalog:react-router",
+        "emoji-mart": "catalog:emoji-mart"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -43,6 +44,7 @@
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/emoji-mart": "catalog:emoji-mart",
         "@types/lodash": "catalog:lodash",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
