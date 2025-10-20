@@ -116,6 +116,42 @@ describe('ticketsCreatedQueryFactory', () => {
             timezone,
         })
     })
+
+    it('should properly format datetimes', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2021-05-29T00:00:00Z',
+                end_datetime: '2021-06-04T23:59:59Z',
+            },
+            agents: withDefaultLogicalOperator([1, 2]),
+        }
+        const query = ticketsCreatedQueryFactory(statsFilters, timezone)
+
+        expect(query.filters).toEqual(
+            expect.arrayContaining([
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+                {
+                    member: TicketMessagesMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+            ]),
+        )
+    })
 })
 
 describe('ticketsCreatedTimeSeriesQueryFactory', () => {

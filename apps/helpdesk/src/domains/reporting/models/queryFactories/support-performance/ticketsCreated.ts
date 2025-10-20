@@ -24,6 +24,7 @@ import {
 } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
@@ -57,7 +58,7 @@ export const ticketsCreatedQueryFactory = (
         commonFilters.push({
             member: TicketMessagesMember.PeriodStart,
             operator: ReportingFilterOperator.AfterDate,
-            values: [statFiltersWithoutAgents.period.start_datetime],
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
         })
     }
 
@@ -107,7 +108,7 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
         commonFilters.push({
             member: TicketMessagesMember.PeriodStart,
             operator: ReportingFilterOperator.AfterDate,
-            values: [statFiltersWithoutAgents.period.start_datetime],
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
         })
     }
 
