@@ -17,7 +17,6 @@ export const PlaygroundMissingKnowledgeAlert = ({ shopName }: Props) => {
 
     return (
         <div role="alert">
-            <h1 className={css.title}>Test AI Agent as a customer</h1>
             <Alert
                 className={css.alert}
                 icon
