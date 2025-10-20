@@ -107,7 +107,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             formatReportingQueryDate(statFilters.period.end_datetime),
         ]),
     ]
-
     // Only process filters that are defined in the scope configuration
     const scopeFilters = scopeConfig.filters || []
 
@@ -191,18 +190,22 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 ) {
                     filters.push(
                         createCustomFieldsFilter(
-                            statFilters.customFields.map((field) => ({
-                                custom_field_id: String(field.customFieldId),
-                                operator:
-                                    field.operator ===
-                                    ReportingStatsOperatorsEnum.OneOf
-                                        ? LogicalOperatorEnum.ONE_OF
-                                        : LogicalOperatorEnum.NOT_ONE_OF,
-                                values: field.values.map((value) => {
-                                    // Remove a leading numeric id followed by '::' (e.g. "1234::test::chose" -> "test::chose")
-                                    return value.replace(/^\d+::/, '')
-                                }),
-                            })),
+                            statFilters.customFields
+                                .filter((field) => field.values.length > 0)
+                                .map((field) => ({
+                                    custom_field_id: String(
+                                        field.customFieldId,
+                                    ),
+                                    operator:
+                                        field.operator ===
+                                        ReportingStatsOperatorsEnum.OneOf
+                                            ? LogicalOperatorEnum.ONE_OF
+                                            : LogicalOperatorEnum.NOT_ONE_OF,
+                                    values: field.values.map((value) => {
+                                        // Remove a leading numeric id followed by '::' (e.g. "1234::test::chose" -> "test::chose")
+                                        return value.replace(/^\d+::/, '')
+                                    }),
+                                })),
                         ),
                     )
                 }
@@ -489,6 +492,7 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                 `New Stats API and Legacy API queries are different for metric ${metricName}`,
                 differences,
             )
+
             reportError(
                 new Error(
                     `New Stats API and Legacy API queries are different for metric ${metricName}`,

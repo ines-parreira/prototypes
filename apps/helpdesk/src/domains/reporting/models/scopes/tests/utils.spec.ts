@@ -947,6 +947,45 @@ describe('utils', () => {
                 // Should only contain period filters
                 expect(result).toHaveLength(2)
             })
+
+            it('should handle arrays with values and not empty for customFields', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFields'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    customFields: [
+                        {
+                            customFieldId: 123,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: ['value1', 'value2'],
+                        },
+                        {
+                            customFieldId: 456,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [],
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                // empty values should be filtered out
+                expect(result).toContainEqual({
+                    member: 'customFields',
+                    values: [
+                        {
+                            custom_field_id: '123',
+                            operator: 'one-of',
+                            values: ['value1', 'value2'],
+                        },
+                    ],
+                })
+
+                expect(result).toHaveLength(3)
+            })
         })
 
         it('should handle error in createScopeFilters', () => {
