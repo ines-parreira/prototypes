@@ -238,16 +238,7 @@ describe('<MemberExpression/>', () => {
         expect(screen.queryByText('Priority')).toBeInTheDocument()
     })
 
-    it('should not show custom fields option when the flag is not enabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        renderComponent()
-
-        fireEvent.click(screen.getByText('Ticket'))
-        expect(screen.queryByText('Ticket fields')).not.toBeInTheDocument()
-    })
-
-    it('should show custom fields option when the flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should show custom fields option', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText('Ticket'))

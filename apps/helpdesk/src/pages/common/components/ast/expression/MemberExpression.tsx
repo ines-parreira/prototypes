@@ -364,11 +364,6 @@ export function MemberExpression({
         )
     }, [displayedValue])
 
-    const isCustomFieldsInRulesConditionsEnabled = useFlag(
-        FeatureFlagKey.TicketCustomFieldsInRuleConditions,
-        false,
-    )
-
     const isCustomerCustomFieldsInRulesConditionsEnabled = useFlag(
         FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
         false,
@@ -439,14 +434,6 @@ export function MemberExpression({
                             {IDENTIFIER_VARIABLES_BY_CATEGORY[
                                 selectedCategory
                             ].map((subcategory) => {
-                                if (
-                                    subcategory.value ===
-                                        CustomFieldTreePath.Ticket &&
-                                    !isCustomFieldsInRulesConditionsEnabled
-                                ) {
-                                    return null
-                                }
-
                                 if (
                                     subcategory.value ===
                                         CustomFieldTreePath.Customer &&
