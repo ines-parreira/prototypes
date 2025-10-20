@@ -6,7 +6,7 @@ export const STEPS_NAMES = {
 
 export const JOURNEY_TYPES = {
     CART_ABANDONMENT: 'cart-abandoned',
-    BROWSE_ABANDONMENT: 'browse-abandoned',
+    SESSION_ABANDONMENT: 'session-abandoned',
 }
 
 export const JOURNEY_COMPLETE_REASON = {

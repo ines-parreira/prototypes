@@ -1,0 +1,38 @@
+:local {
+    .infoText {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .onboardingJourneyOption {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--layout-spacing-xs);
+        font-size: 12px;
+        align-items: center;
+
+        border-radius: var(--layout-spacing-s);
+        box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: var(--layout-spacing-m);
+    }
+
+    .headerInfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--layout-spacing-s);
+        font-size: 14px;
+        max-width: 350px;
+    }
+
+    input[type='radio'] {
+        &:checked {
+            accent-color: var(
+                --content-neutral-default
+            ); // Use your theme variable
+        }
+    }
+}

@@ -265,10 +265,10 @@ describe('<JourneyProvider />', () => {
             )
         })
 
-        it('should extract browse-abandoned from URL path', () => {
+        it('should extract session-abandoned from URL path', () => {
             useParamsMock.mockReturnValue({ shopName: 'test-shop' })
             useLocationMock.mockReturnValue({
-                pathname: '/app/ai-journey/test-shop/browse-abandoned/test',
+                pathname: '/app/ai-journey/test-shop/session-abandoned/test',
             } as Location)
 
             mockUseIntegrations.mockReturnValue({
@@ -289,7 +289,7 @@ describe('<JourneyProvider />', () => {
             )
 
             expect(screen.getByTestId('journeyType')).toHaveTextContent(
-                'browse-abandoned',
+                'session-abandoned',
             )
         })
 

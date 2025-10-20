@@ -219,12 +219,13 @@ describe('<Test />', () => {
         expect(screen.queryByText('Strong phone')).not.toBeInTheDocument()
 
         act(() => {
-            mockUseJourneyContext.mockReturnValueOnce({
+            mockUseJourneyContext.mockReturnValue({
                 currentJourney: { message_instructions: newInstructions },
                 journeyData: null,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
+                journeyType: 'cart-abandoned',
             })
 
             useListProductsMock.mockReturnValue({

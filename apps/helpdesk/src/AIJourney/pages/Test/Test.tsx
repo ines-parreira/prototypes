@@ -10,6 +10,7 @@ import {
     FieldPresentation,
     PlaygroundPreview,
 } from 'AIJourney/components'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
     useGeneratePlaygroundMessage,
     useJourneyUpdateHandler,
@@ -96,6 +97,20 @@ export const Test = () => {
         return <LoadingSpinner />
     }
 
+    const textContent = {
+        [JOURNEY_TYPES.CART_ABANDONMENT]: {
+            name: 'Preview your abandoned cart messages',
+            description:
+                'See the messages your customers would receive if they left something in their cart.',
+        },
+
+        [JOURNEY_TYPES.SESSION_ABANDONMENT]: {
+            name: 'Preview your abandoned browse messages',
+            description:
+                'See the messages your customers would receive if they leave the product page without adding anything to their cart.',
+        },
+    }
+
     return (
         <div className={css.container}>
             <motion.div
@@ -107,8 +122,8 @@ export const Test = () => {
                 <div className={css.playgroundConfiguration}>
                     <div className={css.playgroundConfigurationFields}>
                         <FieldPresentation
-                            name="Preview your abandoned cart messages"
-                            description="See the messages your customers would receive if they left something in their cart."
+                            name={textContent[journeyType].name}
+                            description={textContent[journeyType].description}
                         />
                         <ProductSelectField
                             options={productList}

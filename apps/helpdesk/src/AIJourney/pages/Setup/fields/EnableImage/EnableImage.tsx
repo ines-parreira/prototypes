@@ -1,27 +1,37 @@
 import { useCallback } from 'react'
 
 import { FieldPresentation, Switch } from 'AIJourney/components'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 
 import css from './EnableImage.less'
 
 interface EnableImageFieldProps {
     isEnabled?: boolean
+    journeyType: string
     onChange?: () => void
 }
 
 export const EnableImageField = ({
     isEnabled = false,
+    journeyType,
     onChange,
-}: EnableImageFieldProps = {}) => {
+}: EnableImageFieldProps) => {
     const handleChange = useCallback(() => {
         onChange?.()
     }, [onChange])
 
+    const fieldDescription = {
+        [JOURNEY_TYPES.CART_ABANDONMENT]:
+            'Show the shopper an image of the items left in their cart in the first message.',
+        [JOURNEY_TYPES.SESSION_ABANDONMENT]:
+            'Show the shopper an image of the product from their last visited page.',
+    }
+
     return (
         <div className={css.enableImageField}>
             <FieldPresentation
-                name="Send product image"
-                description="Show the shopper an image of the items left in their cart in the first message."
+                name="Send image"
+                description={fieldDescription[journeyType]}
             />
             <Switch isChecked={isEnabled} onChange={handleChange} />
         </div>

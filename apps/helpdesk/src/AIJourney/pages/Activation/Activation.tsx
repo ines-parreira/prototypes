@@ -10,6 +10,7 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -161,6 +162,17 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
 
+    const productSelectDescription = {
+        [JOURNEY_TYPES.CART_ABANDONMENT]: {
+            name: 'Select an abandoned product',
+            description: `Customer ${customerName} has left their cart with the following product`,
+        },
+        [JOURNEY_TYPES.SESSION_ABANDONMENT]: {
+            name: 'Select an abandoned product',
+            description: `Customer ${customerName} has abandoned a page with the following product`,
+        },
+    }
+
     if (isLoading) {
         return <LoadingSpinner />
     }
@@ -177,10 +189,10 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
                 description="Impersonate a customer and test the conversation with the agent on your phone."
             />
             <ProductSelectField
+                name={productSelectDescription[journeyType].name}
+                description={productSelectDescription[journeyType].description}
                 options={productList}
                 onChange={handleProductSelectChange}
-                name="Select an abandoned product"
-                description={`Customer ${customerName} has left their cart with the following product`}
             />
             <TestSMSField
                 value={testSmsNumber}

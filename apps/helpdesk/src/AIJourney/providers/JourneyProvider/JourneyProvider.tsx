@@ -65,7 +65,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         const journeyTypeParam = match?.params.journeyType
         const availableJourneys = Object.values(JOURNEY_TYPES)
         if (journeyTypeParam && availableJourneys.includes(journeyTypeParam))
-            return journeyTypeParam as JourneyTypeEnum
+            return journeyTypeParam
 
         return JourneyTypeEnum.CartAbandoned.replace('_', '-')
     }, [match?.params.journeyType])
@@ -76,7 +76,6 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             enabled: !!integrationId,
         },
     )
-
     const currentJourney = useMemo(
         () => journeys?.find((j) => j.type === journeyType?.replace('-', '_')),
         [journeys, journeyType],

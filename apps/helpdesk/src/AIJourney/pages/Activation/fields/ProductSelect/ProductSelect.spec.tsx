@@ -92,7 +92,7 @@ describe('<ProductSelectField />', () => {
                     name="Customer scenario"
                     description="Customer John doe has left their cart with the following product"
                     options={options}
-                />
+                />{' '}
             </Provider>,
         )
         expect(

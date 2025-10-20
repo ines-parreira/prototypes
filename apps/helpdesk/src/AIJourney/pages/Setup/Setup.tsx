@@ -230,6 +230,7 @@ export const Setup = () => {
             {smsImagesEnabled && (
                 <EnableImageField
                     isEnabled={isImageEnabled}
+                    journeyType={journeyType}
                     onChange={handleImageToggle}
                 />
             )}

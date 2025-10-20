@@ -932,7 +932,7 @@ describe('<Routes/>', () => {
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
-                journeyType: 'cart_abandoned',
+                journeyType: 'cart-abandoned',
                 storeConfiguration: {
                     monitoredSmsIntegrations: [1, 2],
                 },
@@ -1056,7 +1056,7 @@ describe('<Routes/>', () => {
             )
 
             expect(
-                screen.getByText('SMS Abandoned Cart flow'),
+                screen.getByText('SMS Cart Abandoned flow'),
             ).toBeInTheDocument()
             expect(screen.getByText('Setup')).toBeInTheDocument()
         })

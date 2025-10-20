@@ -61,6 +61,9 @@ function AiJourneyBaseRoutes() {
                                                     exact
                                                     render={() => (
                                                         <AiJourneyOnboarding
+                                                            journeyType={
+                                                                journeyType
+                                                            }
                                                             step={stepName}
                                                             stepComponent={
                                                                 component

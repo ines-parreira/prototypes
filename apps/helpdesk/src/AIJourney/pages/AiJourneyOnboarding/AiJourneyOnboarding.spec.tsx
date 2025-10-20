@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { STEPS_NAMES } from 'AIJourney/constants'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
@@ -199,6 +199,28 @@ describe('<AiJourneyOnboarding />', () => {
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
                         <AiJourneyOnboarding
+                            journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            step={STEPS_NAMES.SETUP}
+                            stepComponent={Setup}
+                        />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+        expect(screen.getByText('SMS Cart Abandoned flow')).toBeInTheDocument()
+
+        expect(screen.getByText('Setup')).toBeInTheDocument()
+        expect(screen.getByText('Test')).toBeInTheDocument()
+        expect(screen.getByText('Activate')).toBeInTheDocument()
+    })
+
+    it('should render browse abandoned title when joruneyType is session-abandoned', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <AiJourneyOnboarding
+                            journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
                             step={STEPS_NAMES.SETUP}
                             stepComponent={Setup}
                         />
@@ -207,8 +229,8 @@ describe('<AiJourneyOnboarding />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Setup')).toBeInTheDocument()
-        expect(screen.getByText('Test')).toBeInTheDocument()
-        expect(screen.getByText('Activate')).toBeInTheDocument()
+        expect(
+            screen.getByText('SMS Browse Abandoned flow'),
+        ).toBeInTheDocument()
     })
 })
