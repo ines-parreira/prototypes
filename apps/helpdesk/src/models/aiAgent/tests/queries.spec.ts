@@ -10,10 +10,8 @@ import {
     useOptOutSalesTrialUpgradeMutation,
     useStartAiAgentTrialMutation,
     useStartSalesTrialMutation,
-    useUpgradeSubscriptionMutation,
 } from 'models/aiAgent/queries'
 import * as configurationResources from 'models/aiAgent/resources/configuration'
-import { billingKeys } from 'models/billing/queries'
 import { initialState } from 'state/currentAccount/reducers'
 import * as notificationActions from 'state/notifications/actions'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
@@ -43,9 +41,6 @@ describe('aiAgent queries', () => {
     let mockStartAiAgentTrial: jest.MockedFunction<
         typeof configurationResources.startAiAgentTrial
     >
-    let mockUpgradeSubscription: jest.MockedFunction<
-        typeof configurationResources.upgradeSubscription
-    >
     let mockGetTrials: jest.MockedFunction<
         typeof configurationResources.getTrials
     >
@@ -62,9 +57,6 @@ describe('aiAgent queries', () => {
         )
         mockStartAiAgentTrial = jest.mocked(
             configurationResources.startAiAgentTrial,
-        )
-        mockUpgradeSubscription = jest.mocked(
-            configurationResources.upgradeSubscription,
         )
         mockGetTrials = jest.mocked(configurationResources.getTrials)
     })
@@ -387,114 +379,6 @@ describe('aiAgent queries', () => {
             }
 
             expect(onErrorMock).toHaveBeenCalledWith(mockError, [], undefined)
-        })
-    })
-
-    describe('useUpgradeSubscriptionMutation', () => {
-        it('should call upgradeSubscription with correct parameters', async () => {
-            mockUpgradeSubscription.mockResolvedValue({ success: true })
-
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () => useUpgradeSubscriptionMutation(),
-                defaultState,
-            )
-
-            await result.current.mutateAsync([])
-
-            expect(mockUpgradeSubscription).toHaveBeenCalledWith('test-domain')
-        })
-
-        it('should invalidate store configuration and billing queries on success', async () => {
-            mockUpgradeSubscription.mockResolvedValue({ success: true })
-
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () => useUpgradeSubscriptionMutation(),
-                    defaultState,
-                )
-
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries',
-            )
-
-            await result.current.mutateAsync([])
-
-            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: storeConfigurationKeys.all(),
-            })
-            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: billingKeys.all,
-            })
-        })
-
-        it('should handle overrides correctly', async () => {
-            const onSuccessMock = jest.fn()
-            mockUpgradeSubscription.mockResolvedValue({ success: true })
-
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () =>
-                    useUpgradeSubscriptionMutation({
-                        onSuccess: onSuccessMock,
-                    }),
-                defaultState,
-            )
-
-            await result.current.mutateAsync([])
-
-            expect(onSuccessMock).toHaveBeenCalled()
-        })
-
-        it('should call onError override when provided and error occurs', async () => {
-            const mockError = new Error('Network error')
-            const onErrorMock = jest.fn()
-            mockUpgradeSubscription.mockRejectedValue(mockError)
-
-            const { result } = renderHookWithStoreAndQueryClientProvider(
-                () =>
-                    useUpgradeSubscriptionMutation({
-                        onError: onErrorMock,
-                    }),
-                defaultState,
-            )
-
-            try {
-                await result.current.mutateAsync([])
-            } catch {
-                // Expected to throw
-            }
-
-            expect(onErrorMock).toHaveBeenCalledWith(mockError, [], undefined)
-        })
-
-        it('should call overrides in correct order', async () => {
-            const callOrder: string[] = []
-            const onSuccessMock = jest.fn(() => callOrder.push('override'))
-            const invalidateQueriesSpy = jest.fn(() =>
-                callOrder.push('invalidate'),
-            )
-
-            mockUpgradeSubscription.mockResolvedValue({ success: true })
-
-            const { result, queryClient } =
-                renderHookWithStoreAndQueryClientProvider(
-                    () =>
-                        useUpgradeSubscriptionMutation({
-                            onSuccess: onSuccessMock,
-                        }),
-                    defaultState,
-                )
-
-            queryClient.invalidateQueries = invalidateQueriesSpy as any
-
-            await result.current.mutateAsync([])
-
-            expect(callOrder).toEqual([
-                'invalidate',
-                'invalidate',
-                'invalidate',
-                'override',
-            ])
         })
     })
 

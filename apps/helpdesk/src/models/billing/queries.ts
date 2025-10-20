@@ -1,4 +1,9 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 
 import { MutationOverrides } from '../../types/query'
 import {
@@ -9,6 +14,7 @@ import {
     getCouponsForSales,
     reactivateTrial,
     updateBillingContact,
+    upgradeAiAgentSubscriptionGeneration6Plan,
 } from './resources'
 
 export const billingKeys = {
@@ -101,3 +107,29 @@ export const useAiAgentGeneration6Plan = (
         ...aiAgentGen6PlanQuery,
         ...overrides,
     })
+
+export const useUpgradeAiAgentSubscriptionGeneration6Plan = (
+    overrides?: MutationOverrides<
+        typeof upgradeAiAgentSubscriptionGeneration6Plan
+    >,
+) => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: upgradeAiAgentSubscriptionGeneration6Plan,
+        ...overrides,
+        onSuccess: (...args) => {
+            // Invalidate billing state to refresh subscription
+            queryClient.invalidateQueries({
+                queryKey: billingKeys.all,
+            })
+            queryClient.invalidateQueries({
+                queryKey: aiAgentGen6PlanQuery.queryKey,
+            })
+            overrides?.onSuccess?.(...args)
+        },
+        onError: (...args) => {
+            overrides?.onError?.(...args)
+        },
+    })
+}

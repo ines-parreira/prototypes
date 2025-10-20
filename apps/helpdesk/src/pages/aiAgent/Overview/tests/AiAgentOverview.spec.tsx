@@ -27,6 +27,7 @@ import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOn
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -62,6 +63,7 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
+jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 
 jest.mock('pages/aiAgent/Overview/hooks/useHasNoOnboardedStores')
 const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
@@ -99,6 +101,7 @@ const mockUseThankYouModal = useThankYouModal as jest.Mock
 const mockUseTrialAccess = useTrialAccess as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
+const mockUseUpgradePlan = assumeMock(useUpgradePlan)
 const useLocationMock = assumeMock(useLocation)
 const useParamsMock = assumeMock(useParams)
 useLocationMock.mockReturnValue(defaultLocation)
@@ -184,6 +187,16 @@ describe('AiAgentOverview', () => {
         ).getPlanPriceFormatted
 
         mockGetPlanPriceFormatted?.mockReturnValue('$530')
+
+        // Mock useUpgradePlan
+        mockUseUpgradePlan.mockReturnValue({
+            upgradePlan: jest.fn(),
+            upgradePlanAsync: jest.fn(),
+            isLoading: false,
+            error: null,
+            isSuccess: false,
+            isError: false,
+        })
     })
     it('should render', () => {
         const { queryByText } = renderComponent()

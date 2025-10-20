@@ -34,7 +34,6 @@ import {
     startAiAgentTrial,
     startSalesTrial,
     updateOnboardingData,
-    upgradeSubscription,
     upsertAccountConfiguration,
     upsertAiAgentStoreHandoverConfiguration,
     upsertOnboardingNotificationState,
@@ -1007,44 +1006,6 @@ describe('Configuration', () => {
             await expect(
                 optOutAiAgentTrialUpgrade(gorgiasDomain),
             ).rejects.toThrow('Request failed with status code 400')
-        })
-    })
-
-    describe('upgradeSubscription', () => {
-        const gorgiasDomain = 'test-domain'
-
-        beforeEach(() => {
-            apiServer.restore()
-            apiServer = new MockAdapter(apiClient)
-        })
-
-        it('should resolve with the correct data on success', async () => {
-            const mockResponse = {
-                success: true,
-                message: 'Subscription upgraded successfully',
-            }
-
-            apiServer
-                .onPost(
-                    `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
-                )
-                .reply(200, mockResponse)
-
-            const result = await upgradeSubscription(gorgiasDomain)
-
-            expect(result).toEqual(mockResponse)
-        })
-
-        it('should handle an error correctly', async () => {
-            apiServer
-                .onPost(
-                    `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
-                )
-                .reply(400)
-
-            await expect(upgradeSubscription(gorgiasDomain)).rejects.toThrow(
-                'Request failed with status code 400',
-            )
         })
     })
 

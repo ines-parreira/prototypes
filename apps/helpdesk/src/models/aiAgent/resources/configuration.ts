@@ -315,13 +315,6 @@ export const optOutAiAgentTrialUpgrade = async (gorgiasDomain: string) => {
     return response.data
 }
 
-export const upgradeSubscription = async (gorgiasDomain: string) => {
-    const response = await apiClient.post(
-        `/config/accounts/${gorgiasDomain}/upgrade-subscription`,
-    )
-    return response.data
-}
-
 /**
  * Endpoints "/accounts/<gorgiasDomain>/stores/<storeName>/handover-configurations"
  */
@@ -380,13 +373,6 @@ export const startSalesTrial = async (
 export const optOutSalesTrialUpgrade = async (gorgiasDomain: string) => {
     const response = await apiClient.post(
         `/config/accounts/${gorgiasDomain}/sales/opt-out-trial-upgrade`,
-    )
-    return response.data
-}
-
-export const upgradeSalesSubscription = async (gorgiasDomain: string) => {
-    const response = await apiClient.post(
-        `/config/accounts/${gorgiasDomain}/sales/upgrade-subscription`,
     )
     return response.data
 }

@@ -7,7 +7,6 @@ import {
     apiClient,
     optOutSalesTrialUpgrade,
     startSalesTrial,
-    upgradeSalesSubscription,
 } from '../configuration'
 
 jest.mock('utils/gorgiasAppsAuth', () => ({
@@ -72,38 +71,6 @@ describe('Sales configuration endpoints', () => {
             expect(mock.history.post[0].url).toBe(
                 `/config/accounts/${gorgiasDomain}/sales/opt-out-trial-upgrade`,
             )
-        })
-    })
-
-    describe('upgradeSalesSubscription', () => {
-        it('should call the correct endpoint', async () => {
-            const gorgiasDomain = 'test-domain'
-            const expectedResponse = { success: true, planLevel: 6 }
-
-            mock.onPost(
-                `/config/accounts/${gorgiasDomain}/sales/upgrade-subscription`,
-            ).reply(200, expectedResponse)
-
-            const result = await upgradeSalesSubscription(gorgiasDomain)
-
-            expect(result).toEqual(expectedResponse)
-            expect(mock.history.post.length).toBe(1)
-            expect(mock.history.post[0].url).toBe(
-                `/config/accounts/${gorgiasDomain}/sales/upgrade-subscription`,
-            )
-        })
-
-        it('should handle API errors', async () => {
-            const gorgiasDomain = 'test-domain'
-            const errorMessage = 'Upgrade failed'
-
-            mock.onPost(
-                `/config/accounts/${gorgiasDomain}/sales/upgrade-subscription`,
-            ).reply(400, { error: errorMessage })
-
-            await expect(
-                upgradeSalesSubscription(gorgiasDomain),
-            ).rejects.toThrow()
         })
     })
 })

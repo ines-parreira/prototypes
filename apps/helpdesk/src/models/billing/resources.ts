@@ -85,3 +85,8 @@ export async function getAiAgentGeneration6Plan() {
     )
     return res.data
 }
+
+export async function upgradeAiAgentSubscriptionGeneration6Plan() {
+    const res = await client.post('/api/billing/ai-agent-generation-6', {})
+    return res.data
+}
