@@ -530,3 +530,74 @@ export const aiJourneyTotalContactsCompleteJourneyTimeSeriesQuery = (
         ],
     }
 }
+
+export const aiJourneyTotalContactsActiveQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter = journeyId
+        ? [
+              {
+                  member: AiSalesAgentConversationsDimension.JourneyId,
+                  operator: ReportingFilterOperator.Equals,
+                  values: [journeyId],
+              },
+          ]
+        : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_ACTIVE,
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyState,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['completed', 'cancelled'],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyTotalContactsActiveTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyTotalContactsActiveQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_ACTIVE_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}

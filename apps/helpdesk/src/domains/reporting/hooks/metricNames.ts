@@ -39,6 +39,9 @@ export const METRIC_NAMES = {
         'ai-journey-total-contacts-complete-journey',
     AI_JOURNEY_TOTAL_CONTACTS_COMPLETE_JOURNEY_TIME_SERIES:
         'ai-journey-total-contacts-complete-journey-time-series',
+    AI_JOURNEY_TOTAL_CONTACTS_ACTIVE: 'ai-journey-total-contacts-active',
+    AI_JOURNEY_TOTAL_CONTACTS_ACTIVE_TIME_SERIES:
+        'ai-journey-total-contacts-active-time-series',
 
     // AI Sales Agent
     AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:
