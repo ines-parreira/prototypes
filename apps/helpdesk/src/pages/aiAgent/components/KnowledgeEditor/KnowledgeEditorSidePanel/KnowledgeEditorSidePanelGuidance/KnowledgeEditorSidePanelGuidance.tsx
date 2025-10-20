@@ -16,15 +16,18 @@ type Props = {
     details: Omit<GuidanceDetailsProps, 'sectionId'>
     impact: Omit<ImpactProps, 'sectionId'>
     relatedTickets: Omit<RelatedTicketsProps, 'sectionId'>
+    className?: string
 }
 
 export const KnowledgeEditorSidePanelGuidance = ({
     details,
     impact,
     relatedTickets,
+    className,
 }: Props) => (
     <KnowledgeEditorSidePanel
         initialExpandedSections={['details', 'impact', 'related-tickets']}
+        className={className}
     >
         <KnowledgeEditorSidePanelSectionGuidanceDetails
             {...details}

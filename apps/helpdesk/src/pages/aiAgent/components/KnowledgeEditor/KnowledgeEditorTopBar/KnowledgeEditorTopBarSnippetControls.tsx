@@ -21,6 +21,6 @@ export const KnowledgeEditorTopBarSnippetControls = (props: Props) => (
         >
             <Icon name="lock" aria-label="editing disabled" /> Edit
         </button>
-        <TestButton onTest={props.onTest} />
+        <TestButton onTest={props.onTest} disabled={false} />
     </>
 )

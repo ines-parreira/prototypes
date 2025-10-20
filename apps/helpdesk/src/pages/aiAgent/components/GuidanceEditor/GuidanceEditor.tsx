@@ -19,13 +19,14 @@ type GuidanceEditorProps = {
     content: string
     shopName: string
     availableActions: GuidanceAction[]
+    showActionsButton: boolean
     handleUpdateContent: (content: string) => void
     onBlur?: () => void
     label?: string
 }
 
-const textLimit = 5000
-const toolbarActions = [
+export const textLimit = 5000
+const defaultToolbarActions = [
     ActionName.Bold,
     ActionName.Italic,
     ActionName.Underline,
@@ -41,10 +42,21 @@ export function GuidanceEditor({
     content,
     shopName,
     availableActions,
+    showActionsButton,
     handleUpdateContent,
     onBlur,
     label,
 }: GuidanceEditorProps) {
+    const toolbarActions = useMemo(
+        () =>
+            showActionsButton
+                ? defaultToolbarActions
+                : defaultToolbarActions.filter(
+                      (action) => action !== ActionName.GuidanceAction,
+                  ),
+        [showActionsButton],
+    )
+
     const richFieldValue = useMemo(
         () => ({
             html: content,

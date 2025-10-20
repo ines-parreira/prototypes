@@ -84,12 +84,13 @@ export type GuidanceArticle = {
     locale: LocaleCode
     visibility: CreateArticleDto['translation']['visibility_status']
     lastUpdated: string
+    createdDatetime: string
     templateKey: string | null
 }
 
 export type CreateGuidanceArticle = Omit<
     GuidanceArticle,
-    'id' | 'lastUpdated' | 'review'
+    'id' | 'lastUpdated' | 'review' | 'createdDatetime'
 >
 export type UpdateGuidanceArticle = Omit<
     Partial<GuidanceArticle>,

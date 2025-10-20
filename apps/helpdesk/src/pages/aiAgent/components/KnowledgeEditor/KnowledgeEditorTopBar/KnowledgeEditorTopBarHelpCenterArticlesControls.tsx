@@ -34,9 +34,9 @@ type Props = {
 
 const ReadControls = (props: Extract<ArticleMode, { mode: 'read' }>) => (
     <>
-        <EditIconButton onEdit={props.onEdit} />
-        <DeleteIconButton onDelete={props.onDelete} />
-        <TestButton onTest={props.onTest} />
+        <EditIconButton onEdit={props.onEdit} disabled={false} />
+        <DeleteIconButton onDelete={props.onDelete} disabled={false} />
+        <TestButton onTest={props.onTest} disabled={false} />
     </>
 )
 
@@ -44,7 +44,7 @@ const EditDraftControls = (
     props: Extract<ArticleMode, { mode: 'editDraft' }>,
 ) => (
     <>
-        <CancelButton onCancel={props.onCancel} />
+        <CancelButton onCancel={props.onCancel} disabled={false} />
 
         <button
             className={classNames(css.button, css.secondaryButton)}
@@ -68,7 +68,7 @@ const EditPublishedControls = (
     props: Extract<ArticleMode, { mode: 'editPublished' }>,
 ) => (
     <>
-        <CancelButton onCancel={props.onCancel} />
+        <CancelButton onCancel={props.onCancel} disabled={false} />
 
         <button
             className={classNames(css.button, css.primaryButton)}

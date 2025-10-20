@@ -73,6 +73,7 @@ describe('guidance.utils', () => {
                 content: article.translation.content,
                 locale: article.translation.locale,
                 visibility: 'PUBLIC',
+                createdDatetime: article.created_datetime,
                 lastUpdated: article.translation.updated_datetime,
                 templateKey: null,
             }
@@ -235,6 +236,24 @@ describe('guidance.utils', () => {
                     message:
                         'Guidance with the name "My Custom Name" already exists in this help center',
                 },
+            })
+        })
+
+        it('should return is duplicate when error is empty', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'already exists',
+                        },
+                    },
+                },
+            }
+
+            const result = handleGuidanceDuplicateError(error, 'Test Title')
+
+            expect(result).toEqual({
+                isDuplicate: false,
             })
         })
     })

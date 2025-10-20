@@ -55,12 +55,12 @@ ForGuidanceRead.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
+            isUpdating={false}
             mode={{
                 mode: 'read',
                 onCopy: () => {},
                 onEdit: () => {},
                 onDelete: () => {},
-                onTest: () => {},
             }}
         />
     ),
@@ -72,6 +72,7 @@ ForGuidanceEdit.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
+            isUpdating={false}
             mode={{
                 mode: 'edit',
                 onSave: undefined,
@@ -87,6 +88,7 @@ ForGuidanceCreate.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
+            isUpdating={false}
             mode={{
                 mode: 'create',
                 onCancel: () => {},

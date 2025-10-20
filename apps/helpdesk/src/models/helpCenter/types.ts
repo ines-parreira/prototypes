@@ -75,6 +75,9 @@ export type CreateArticleTranslationDto =
 export type UpdateArticleTranslationDto =
     Components.Schemas.UpdateArticleTranslationDto
 
+export type ArticleTranslationResponseDto =
+    Components.Schemas.ArticleTranslationResponseDto
+
 export type ArticlesListPage = Components.Schemas.ArticlesListPageDto
 export type ArticleWithLocalTranslationAndRating =
     Components.Schemas.ArticleListDataDto

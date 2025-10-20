@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 
@@ -9,6 +10,7 @@ import {
     Tooltip,
 } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { HelpCenter } from 'models/helpCenter/types'
@@ -82,6 +84,10 @@ export const ManageGuidanceForm = ({
     onSubmitNewMissingKnowledge,
     onSaveClick,
 }: ManageGuidanceFormProps) => {
+    const areActionsInGuidanceEnabled = useFlag<boolean>(
+        FeatureFlagKey.AiAgentSupportActionInGuidance,
+        false,
+    )
     const { closeModal, openEdit } = useKnowledgeSourceSideBar()
     const {
         isOpen,
@@ -431,6 +437,7 @@ export const ManageGuidanceForm = ({
                         label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                         shopName={shopName}
                         availableActions={guidanceActions}
+                        showActionsButton={areActionsInGuidanceEnabled}
                     />
                     <Caption isValid>
                         Provide instructions on how AI Agent should handle this

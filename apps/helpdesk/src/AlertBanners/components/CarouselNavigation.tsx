@@ -1,5 +1,7 @@
 import { Box, LegacyIconButton as IconButton, Separator } from '@gorgias/axiom'
 
+import css from './AlertBanner.less'
+
 type CarouselNavigationProps = {
     onPrevious: VoidFunction
     onNext: VoidFunction
@@ -50,7 +52,7 @@ export const CarouselNavigation = ({
                 onClick={total > 1 ? onNext : undefined}
                 aria-label="next banner"
             />
-            <Box ml="16px" mr="16px" h="30px">
+            <Box ml="16px" mr="16px" h="30px" className={css.separator}>
                 <Separator direction="vertical" />
             </Box>
         </Box>

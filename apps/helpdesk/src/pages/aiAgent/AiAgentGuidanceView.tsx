@@ -218,6 +218,7 @@ export const AiAgentGuidanceView = ({
                     shopName={shopName}
                 />
             )}
+
             <GuidanceList
                 guidanceArticles={guidanceArticles}
                 isLoading={isLoading}

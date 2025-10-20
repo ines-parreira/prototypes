@@ -172,6 +172,7 @@ describe('ManageGuidanceForm', () => {
         content: 'Test guidance content',
         visibility: 'PUBLIC' as const,
         locale: 'en-US' as LocaleCode,
+        createdDatetime: '2023-10-01T00:00:00Z',
         lastUpdated: '2023-10-01T00:00:00Z',
         templateKey: '',
     }

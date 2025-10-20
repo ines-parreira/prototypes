@@ -10,6 +10,7 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
                     aiAgentStatus: { value: true, onChange: jest.fn() },
                     createdDatetime: new Date('2025-06-17'),
                     lastUpdatedDatetime: new Date('2025-06-17'),
+                    isUpdating: false,
                 }}
                 impact={{
                     successRate: 0.28,

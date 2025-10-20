@@ -308,6 +308,7 @@ export const GuidanceForm = ({
                             label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                             shopName={shopName}
                             availableActions={availableActions}
+                            showActionsButton={areActionsInGuidanceEnabled}
                         />
                         <Caption isValid>
                             Provide instructions on how AI Agent should handle

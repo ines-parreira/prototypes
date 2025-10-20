@@ -16,6 +16,7 @@ export type Props = {
     createdDatetime?: Date
     lastUpdatedDatetime?: Date
     sectionId: string
+    isUpdating: boolean
 }
 
 export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
@@ -41,6 +42,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
                         checked={props.aiAgentStatus.value}
                         className={css.extraLeftMargin}
                         onChange={props.aiAgentStatus.onChange}
+                        isDisabled={props.isUpdating}
                     />,
                 ],
                 [

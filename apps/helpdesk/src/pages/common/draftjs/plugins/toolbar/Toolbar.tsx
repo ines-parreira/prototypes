@@ -115,11 +115,6 @@ const Toolbar = ({
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
-    const areActionsInGuidanceEnabled: boolean = useFlag(
-        FeatureFlagKey.AiAgentSupportActionInGuidance,
-        false,
-    )
-
     const isTranslationEnabled = useFlag(
         FeatureFlagKey.MessagesTranslations,
         false,
@@ -313,7 +308,6 @@ const Toolbar = ({
                             )}
 
                         {isActionDisplayed(ActionName.GuidanceAction) &&
-                            areActionsInGuidanceEnabled &&
                             displayedActions && (
                                 <GuidanceActionPicker
                                     onSelect={handleGuidanceActionSelection}

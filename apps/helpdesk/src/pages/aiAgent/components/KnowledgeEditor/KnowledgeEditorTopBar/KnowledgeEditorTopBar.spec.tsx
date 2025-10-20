@@ -13,6 +13,7 @@ describe('KnowledgeEditorTopBar', () => {
 
         render(
             <KnowledgeEditorTopBar
+                isUpdating={false}
                 title="Guidance"
                 isFullscreen={false}
                 onToggleFullscreen={onToggleFullscreen}
@@ -63,6 +64,7 @@ describe('KnowledgeEditorTopBar', () => {
 
         render(
             <KnowledgeEditorTopBar
+                isUpdating={false}
                 title="Guidance"
                 isFullscreen={true}
                 onToggleFullscreen={onToggleFullscreen}
@@ -77,5 +79,29 @@ describe('KnowledgeEditorTopBar', () => {
         )
 
         expect(onToggleFullscreen).toHaveBeenCalled()
+    })
+
+    it('renders disabled', () => {
+        render(
+            <KnowledgeEditorTopBar
+                isUpdating={true}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+            />,
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'fullscreen' }),
+        ).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'close' })).toBeDisabled()
+        expect(
+            screen.getByRole('button', { name: 'expand side panel' }),
+        ).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'previous' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'next' })).toBeDisabled()
     })
 })

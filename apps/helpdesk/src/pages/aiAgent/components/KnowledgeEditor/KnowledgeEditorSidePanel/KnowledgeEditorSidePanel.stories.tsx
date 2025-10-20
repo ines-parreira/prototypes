@@ -136,6 +136,7 @@ ForGuidance.args = {
                 aiAgentStatus: { value: true, onChange: () => {} },
                 createdDatetime: new Date('2025-06-17'),
                 lastUpdatedDatetime: new Date('2025-06-17'),
+                isUpdating: false,
             }}
             impact={{
                 successRate: 0.28,
@@ -156,6 +157,7 @@ ForNewGuidance.args = {
                 aiAgentStatus: { value: true, onChange: () => {} },
                 createdDatetime: new Date('2025-06-17'),
                 lastUpdatedDatetime: new Date('2025-06-17'),
+                isUpdating: false,
             }}
             impact={{}}
             relatedTickets={{}}

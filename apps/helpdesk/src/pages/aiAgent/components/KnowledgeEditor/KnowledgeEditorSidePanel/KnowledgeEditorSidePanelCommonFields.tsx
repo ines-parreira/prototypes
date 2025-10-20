@@ -41,11 +41,13 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     className,
     tooltip,
     onChange,
+    isDisabled,
 }: {
     checked: boolean
     className?: string
     tooltip?: string
     onChange?: (value: boolean) => void
+    isDisabled?: boolean
 }) => {
     const id = useId()
 
@@ -55,7 +57,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                 <NewToggleButton
                     color="var(--surface-inverted-default)"
                     checked={checked}
-                    isDisabled={!onChange}
+                    isDisabled={!onChange || isDisabled}
                     onChange={onChange ?? (() => {})}
                     size="small"
                     className={className}

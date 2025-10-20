@@ -5,18 +5,16 @@ import {
     CopyIconButton,
     DeleteIconButton,
     EditIconButton,
-    TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
 
 import css from './KnowledgeEditorTopBarControls.less'
 
-type GuidanceMode =
+export type GuidanceMode =
     | {
           mode: 'read'
           onCopy: () => void
           onEdit: () => void
           onDelete: () => void
-          onTest: () => void
       }
     | {
           mode: 'edit'
@@ -31,39 +29,45 @@ type GuidanceMode =
 
 type Props = {
     mode: GuidanceMode
+    isUpdating: boolean
 }
 
-const ReadControls = (props: Extract<GuidanceMode, { mode: 'read' }>) => (
+const ReadControls = (
+    props: Extract<GuidanceMode, { mode: 'read' }> & { disabled: boolean },
+) => (
     <>
-        <EditIconButton onEdit={props.onEdit} />
-        <CopyIconButton onCopy={props.onCopy} />
-        <DeleteIconButton onDelete={props.onDelete} />
-        <TestButton onTest={props.onTest} />
+        <EditIconButton onEdit={props.onEdit} disabled={props.disabled} />
+        <CopyIconButton onCopy={props.onCopy} disabled={props.disabled} />
+        <DeleteIconButton onDelete={props.onDelete} disabled={props.disabled} />
     </>
 )
 
-const EditControls = (props: Extract<GuidanceMode, { mode: 'edit' }>) => (
+const EditControls = (
+    props: Extract<GuidanceMode, { mode: 'edit' }> & { disabled: boolean },
+) => (
     <>
-        <CancelButton onCancel={props.onCancel} />
+        <CancelButton onCancel={props.onCancel} disabled={props.disabled} />
 
         <button
             className={classNames(css.button, css.primaryButton)}
             onClick={props.onSave}
-            disabled={props.onSave === undefined}
+            disabled={props.onSave === undefined || props.disabled}
         >
             Save
         </button>
     </>
 )
 
-const CreateControls = (props: Extract<GuidanceMode, { mode: 'create' }>) => (
+const CreateControls = (
+    props: Extract<GuidanceMode, { mode: 'create' }> & { disabled: boolean },
+) => (
     <>
-        <CancelButton onCancel={props.onCancel} />
+        <CancelButton onCancel={props.onCancel} disabled={props.disabled} />
 
         <button
             className={classNames(css.button, css.primaryButton)}
             onClick={props.onCreate}
-            disabled={props.onCreate === undefined}
+            disabled={props.onCreate === undefined || props.disabled}
         >
             Create
         </button>
@@ -72,9 +76,9 @@ const CreateControls = (props: Extract<GuidanceMode, { mode: 'create' }>) => (
 
 export const KnowledgeEditorTopBarGuidanceControls = (props: Props) =>
     props.mode.mode === 'read' ? (
-        <ReadControls {...props.mode} />
+        <ReadControls {...props.mode} disabled={props.isUpdating} />
     ) : props.mode.mode === 'edit' ? (
-        <EditControls {...props.mode} />
+        <EditControls {...props.mode} disabled={props.isUpdating} />
     ) : (
-        <CreateControls {...props.mode} />
+        <CreateControls {...props.mode} disabled={props.isUpdating} />
     )
