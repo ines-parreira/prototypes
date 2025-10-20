@@ -221,6 +221,7 @@ describe('stats components utils', () => {
             ['hour', 3600, '1h'],
             ['day', 24 * 3600, '1d'],
             ['month', 24 * 3600 * 31, '1mo'],
+            ['year', 24 * 3600 * 365 * 2, '1y 11mo 29d'],
         ])('should match template for %s', (testName, duration, expected) => {
             expect(formatDuration(duration)).toBe(expected)
         })
@@ -235,6 +236,27 @@ describe('stats components utils', () => {
             const duration = 24 * 3600 * 31 + 24 * 3600 + 3600 + 60 + 1
             expect(formatDuration(duration, precision)).toBe(expected)
         })
+
+        it.each<[number, string]>([
+            [1, '2y'],
+            [2, '2y 1mo'],
+            [3, '2y 1mo 01d'],
+            [4, '2y 1mo 01d 01h'],
+            [5, '2y 1mo 01d 01h 01m'],
+            [6, '2y 1mo 01d 01h 01m 01s'],
+        ])(
+            'should match template with year for precision %i',
+            (precision, expected) => {
+                const duration =
+                    24 * 3600 * 365 * 2 +
+                    24 * 3600 * 31 +
+                    24 * 3600 +
+                    3600 +
+                    60 +
+                    1
+                expect(formatDuration(duration, precision)).toBe(expected)
+            },
+        )
     })
 
     describe('formatMetricValue', () => {

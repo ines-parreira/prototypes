@@ -117,6 +117,7 @@ export const formatDuration = (value: number, precision = 9) => {
     const duration = moment.duration(value, 'seconds')
     let currentPrecision = 0
     const parts = [
+        [duration.years(), 'y'],
         [duration.months(), 'mo'],
         [duration.days(), 'd'],
         [duration.hours(), 'h'],
