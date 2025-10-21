@@ -1,16 +1,15 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
@@ -23,11 +22,11 @@ import { usePaywallConfig } from 'pages/automate/common/hooks/usePaywallConfig'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('common/segment')
 jest.mock('../../hooks/usePaywallConfig')
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlag = useFlag as jest.Mock
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 const mockUsePaywallConfig = usePaywallConfig as jest.MockedFunction<
     typeof usePaywallConfig
@@ -66,9 +65,7 @@ describe('AutomatePaywallView', () => {
 
     beforeEach(() => {
         mockUsePaywallConfig.mockReturnValue(paywallConfig)
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityROICalculator]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
     })
 
     const renderWithProvider = (ui: React.ReactElement) => {
@@ -205,9 +202,7 @@ describe('AutomatePaywallView', () => {
     })
 
     it('does not display ROI Calculator button when feature flag is disabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityROICalculator]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
         renderWithProvider(
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )

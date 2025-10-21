@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ulid } from 'ulidx'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
@@ -12,11 +11,11 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import useApps from '../useApps'
 import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 
-const mockUseFlags = jest.mocked(useFlags)
+const mockUseFlag = jest.mocked(useFlag)
 
 const queryClient = mockQueryClient()
 const mockUseApps = jest.mocked(useApps)
@@ -187,7 +186,7 @@ describe('useEnabledActionStepsByApp()', () => {
     })
 
     it('should return all steps', () => {
-        mockUseFlags.mockReturnValue({ [FeatureFlagKey.ActionSteps]: {} })
+        mockUseFlag.mockReturnValue({})
 
         const { result } = renderHook(() => useEnabledActionStepsByApp(true), {
             wrapper: ({ children }) => (
@@ -212,7 +211,7 @@ describe('useEnabledActionStepsByApp()', () => {
     })
 
     it("shouldn't return any steps", () => {
-        mockUseFlags.mockReturnValue({ [FeatureFlagKey.ActionSteps]: [] })
+        mockUseFlag.mockReturnValue([])
 
         const { result } = renderHook(() => useEnabledActionStepsByApp(true), {
             wrapper: ({ children }) => (
@@ -233,12 +232,10 @@ describe('useEnabledActionStepsByApp()', () => {
     })
 
     it('should return some steps', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ActionSteps]: [
-                configuration1.internal_id,
-                configuration3.internal_id,
-            ],
-        })
+        mockUseFlag.mockReturnValue([
+            configuration1.internal_id,
+            configuration3.internal_id,
+        ])
 
         const { result } = renderHook(() => useEnabledActionStepsByApp(true), {
             wrapper: ({ children }) => (
@@ -262,7 +259,7 @@ describe('useEnabledActionStepsByApp()', () => {
     })
 
     it('should return not return recharge step without integration', () => {
-        mockUseFlags.mockReturnValue({ [FeatureFlagKey.ActionSteps]: {} })
+        mockUseFlag.mockReturnValue({})
 
         const { result } = renderHook(() => useEnabledActionStepsByApp(false), {
             wrapper: ({ children }) => (

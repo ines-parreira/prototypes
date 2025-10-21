@@ -1,15 +1,13 @@
 import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { useFlag } from 'core/flags'
 
 import { ActionTemplate } from '../types'
 
 const useGetIsActionStepEnabled = () => {
-    const enabledSteps:
-        | ActionTemplate['internal_id'][]
-        | Record<never, never>
-        | undefined = useFlags()[FeatureFlagKey.ActionSteps]
+    const enabledSteps = useFlag(FeatureFlagKey.ActionSteps)
 
     return useCallback(
         (internalId: ActionTemplate['internal_id']) => {

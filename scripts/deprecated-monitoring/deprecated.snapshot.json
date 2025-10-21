@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1514,
-    "reportGeneratedAt": "2025-10-20T17:12:39.056Z"
+    "totalUsages": 1506,
+    "reportGeneratedAt": "2025-10-21T07:10:52.568Z"
   },
   "entries": [
     {
@@ -520,7 +520,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 45,
+          "usageCount": 37,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -532,15 +532,7 @@
               "apps/helpdesk/src/Widgets/modules/Shopify/components/tests/OrderNotesField.spec.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
-              "apps/helpdesk/src/pages/automate/actionsPlatform/hooks/tests/useEnabledActionStepsByApp.spec.tsx",
-              "apps/helpdesk/src/pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled.ts",
-              "apps/helpdesk/src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/AutomatePaywallView.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/tests/AutomatePaywallView.spec.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateSavingsCard.spec.tsx",
-              "apps/helpdesk/src/pages/automate/orderManagement/OrderManagementView.tsx",
               "apps/helpdesk/src/pages/automate/workflows/WorkflowsView.tsx",
               "apps/helpdesk/src/pages/automate/workflows/components/LanguageSelector.tsx",
               "apps/helpdesk/src/pages/automate/workflows/components/WorkflowLanguageSelect.tsx",

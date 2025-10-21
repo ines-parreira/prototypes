@@ -1,10 +1,10 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import {
     formatCurrency,
@@ -37,8 +37,9 @@ export const AutomateSavingsCard = ({
     ticketHandleTime,
     hasAgentCosts = false,
 }: Props) => {
-    const isTicketTimeToHandleEnabled =
-        useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
+    const isTicketTimeToHandleEnabled = useFlag(
+        FeatureFlagKey.ObservabilityTicketTimeToHandle,
+    )
 
     const exploreDataModal = useRef<AutomateExploreDataModalHandle>(null)
 
@@ -47,7 +48,7 @@ export const AutomateSavingsCard = ({
     const user = useAppSelector(getCurrentUser)
 
     const hasAccessToROICalculator =
-        useFlags()[FeatureFlagKey.ObservabilityROICalculator] &&
+        useFlag(FeatureFlagKey.ObservabilityROICalculator) &&
         (isAdmin(user) || hasAgentPrivileges(user))
 
     const timeSavedByAgents =

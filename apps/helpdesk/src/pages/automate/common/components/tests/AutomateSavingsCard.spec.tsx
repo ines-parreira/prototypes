@@ -1,13 +1,10 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import { RootState, StoreDispatch } from 'state/types'
@@ -15,22 +12,18 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AutomateSavingsCard } from '../AutomateSavingsCard'
 
-// Mock the useFlags hook and other necessary hooks
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const store = mockStore({
     currentUser: fromJS(user),
     billing: fromJS(billingState),
 } as RootState)
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlag = useFlag as jest.Mock
 
 describe('AutomateSavingsCard', () => {
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ObservabilityTicketTimeToHandle]: true,
-            [FeatureFlagKey.ObservabilityROICalculator]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
     })
 
     test('renders savings information correctly', () => {
