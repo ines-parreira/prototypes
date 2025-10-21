@@ -16,14 +16,15 @@ import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useIntegrationBusinessHours } from 'hooks/businessHours/useIntegrationBusinessHours'
 import PrefilledTimeScheduleField from 'pages/common/components/TimeScheduleField/PrefilledTimeScheduleField'
-import InputField from 'pages/common/forms/input/InputField'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
+import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
 import {
     BUSINESS_HOURS_BASE_URL,
     DAYS_OPTIONS,
 } from 'pages/settings/businessHours/constants'
+import { is24_7Schedule } from 'pages/settings/businessHours/utils'
+import { getMomentTimezoneNames } from 'utils/date'
 
-import { is24_7Schedule } from '../../../../../../settings/businessHours/utils'
 import type { TimeSplitConditionalNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { VoiceStepNode } from './VoiceStepNode'
@@ -72,14 +73,24 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const warnings = is24_7 ? [alwaysOnWarning] : []
 
     useEffect(() => {
-        // If the rule type is set to custom hours, ensure the timezone is set automatically
-        if (isCustomHours && businessHours?.timezone) {
+        // If the rule type is set to custom hours, ensure the timezone is set automatically if unset
+        if (
+            isCustomHours &&
+            businessHours?.timezone &&
+            !step?.custom_hours?.timezone
+        ) {
             setValue(
                 `steps.${id}.custom_hours.timezone`,
                 businessHours.timezone,
             )
         }
-    }, [setValue, isCustomHours, businessHours?.timezone, id])
+    }, [
+        setValue,
+        isCustomHours,
+        businessHours?.timezone,
+        step?.custom_hours?.timezone,
+        id,
+    ])
 
     useEffect(() => {
         // Update the node data when the rule type changes to reflect in the children nodes
@@ -142,11 +153,15 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
                 />
                 {isCustomHours && (
                     <>
-                        <InputField
-                            label="Timezone"
-                            isDisabled
-                            defaultValue={businessHours?.timezone}
-                        />
+                        <div>
+                            <FormField
+                                name={`steps.${id}.custom_hours.timezone`}
+                                label="Timezone"
+                                field={SelectDropdownField}
+                                options={getMomentTimezoneNames()}
+                                root={ref.current ?? undefined}
+                            />
+                        </div>
                         <PrefilledTimeScheduleField
                             name={`steps.${id}.custom_hours.business_hours`}
                             root={ref.current ?? undefined}

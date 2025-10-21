@@ -165,6 +165,21 @@ describe('TimeSplitConditionalNode', () => {
 
             expect(container.querySelector('div')).toBeNull()
         })
+
+        it('should not render when step is undefined', () => {
+            const mockFlow = {
+                ...mockDefaultFlowData,
+                steps: {
+                    [mockDefaultStep.id]: undefined,
+                },
+            }
+            const { container } = renderComponent(
+                mockDefaultStep,
+                mockFlow as any,
+            )
+
+            expect(container.querySelector('div')).toBeNull()
+        })
     })
 
     describe('Custom Hours', () => {
@@ -193,17 +208,13 @@ describe('TimeSplitConditionalNode', () => {
             await waitFor(() => {
                 expect(screen.getByLabelText('Custom hours')).toBeChecked()
 
-                // we use timezone from integration business hours
+                // we use timezone from custom hours
                 expect(
                     screen.getByText(
-                        /Custom hours: Mon-Fri, 10:00 AM-6:00 PM, America\/New_York/,
+                        /Custom hours: Mon-Fri, 10:00 AM-6:00 PM, Europe\/London/,
                     ),
                 ).toBeInTheDocument()
-
-                const timezoneInput = screen.getByLabelText('Timezone')
-                expect(timezoneInput).toBeInTheDocument()
-                expect(timezoneInput).toBeDisabled()
-
+                expect(screen.getByText('Timezone')).toBeInTheDocument()
                 expect(screen.getByText(/add time range/i)).toBeInTheDocument()
             })
         })
@@ -222,7 +233,33 @@ describe('TimeSplitConditionalNode', () => {
         await act(() => user.click(customHoursRadio))
 
         await waitFor(() => {
-            expect(screen.getByLabelText('Timezone')).toBeInTheDocument()
+            expect(screen.getByText('Timezone')).toBeInTheDocument()
+        })
+    })
+
+    it('should switch to custom hours with no custom hours set in the step', async () => {
+        const user = userEvent.setup()
+        const mockStep = {
+            ...mockDefaultStep,
+            custom_hours: undefined,
+        }
+        const mockFlow = {
+            ...mockDefaultFlowData,
+            steps: { [mockStep.id]: mockStep },
+        }
+        renderComponent(mockStep, mockFlow)
+
+        await waitFor(() => {
+            expect(screen.getByLabelText('Custom hours')).toBeInTheDocument()
+        })
+
+        const customHoursRadio = screen.getByLabelText('Custom hours')
+
+        await act(() => user.click(customHoursRadio))
+
+        await waitFor(() => {
+            expect(screen.getByText('Timezone')).toBeInTheDocument()
+            expect(screen.getByText('America/New_York')).toBeInTheDocument()
         })
     })
 
