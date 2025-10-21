@@ -7,11 +7,18 @@ import AutoSaveBadge from '../AutoSaveBadge'
 
 jest.useFakeTimers()
 
+const mockTooltip = jest.fn(({ children, placement }) => (
+    <div data-testid="tooltip" data-placement={placement}>
+        Tooltip
+        {children}
+    </div>
+))
+
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
         LoadingSpinner: () => <div>Spinner</div>,
-        Tooltip: () => <div>Tooltip</div>,
+        Tooltip: (props: any) => mockTooltip(props),
     }
 })
 
@@ -28,6 +35,7 @@ describe('AutoSaveBadge', () => {
     afterEach(() => {
         jest.clearAllTimers()
         jest.clearAllMocks()
+        mockTooltip.mockClear()
     })
 
     it('renders nothing when state is INITIAL', () => {
@@ -126,6 +134,66 @@ describe('AutoSaveBadge', () => {
 
         await waitFor(() => {
             expect(screen.queryByText('Tooltip')).toBeInTheDocument()
+        })
+    })
+
+    it('should render custom icon when savedIcon prop is provided', () => {
+        const customIcon = <div data-testid="custom-icon">Custom Icon</div>
+        render(
+            <AutoSaveBadge
+                state={AutoSaveState.SAVED}
+                savedIcon={customIcon}
+            />,
+        )
+
+        expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
+        expect(screen.getByText('Custom Icon')).toBeInTheDocument()
+        expect(screen.queryByText('check')).not.toBeInTheDocument()
+    })
+
+    it('should render default check icon when savedIcon prop is not provided', () => {
+        render(<AutoSaveBadge state={AutoSaveState.SAVED} />)
+
+        expect(screen.getByText('check')).toBeInTheDocument()
+    })
+
+    it('should pass tooltipPlacement prop to Tooltip component', async () => {
+        const updatedAt = new Date()
+        render(
+            <AutoSaveBadge
+                state={AutoSaveState.SAVED}
+                updatedAt={updatedAt}
+                tooltipPlacement="bottom-start"
+            />,
+        )
+
+        act(() => {
+            jest.advanceTimersByTime(3000)
+        })
+
+        await waitFor(() => {
+            expect(mockTooltip).toHaveBeenCalled()
+            const lastCall =
+                mockTooltip.mock.calls[mockTooltip.mock.calls.length - 1]
+            expect(lastCall[0].placement).toBe('bottom-start')
+        })
+    })
+
+    it('should use default tooltip placement when tooltipPlacement prop is not provided', async () => {
+        const updatedAt = new Date()
+        render(
+            <AutoSaveBadge state={AutoSaveState.SAVED} updatedAt={updatedAt} />,
+        )
+
+        act(() => {
+            jest.advanceTimersByTime(3000)
+        })
+
+        await waitFor(() => {
+            expect(mockTooltip).toHaveBeenCalled()
+            const lastCall =
+                mockTooltip.mock.calls[mockTooltip.mock.calls.length - 1]
+            expect(lastCall[0].placement).toBeUndefined()
         })
     })
 })

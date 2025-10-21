@@ -1,0 +1,207 @@
+@import (reference) '~css/typography';
+
+:local {
+    .headerWithBadge {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+    .settings {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .label {
+        color: var(--content-neutral-default);
+
+        .caption-semibold();
+    }
+
+    .slugLabel {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+
+    .slugIcon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .setting {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .inlineLanguageSelect {
+        display: block;
+        position: relative;
+        width: 100%;
+        line-height: 1.25;
+        padding: 0 6px 0 14px;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 0.25rem;
+        background-clip: padding-box;
+        -webkit-background-clip: padding-box;
+        background-image: none;
+        background-color: var(--neutral-grey-0); // legacy
+        color: #464a4c;
+        font-size: 1rem;
+        white-space: nowrap;
+        box-sizing: border-box;
+
+        :global(.dropdown-options) {
+            margin-top: 0.125rem;
+        }
+
+        button {
+            padding: 5px 0px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &:focus {
+                outline: none;
+            }
+
+            :global(.material-icons) {
+                color: var(--neutral-grey-4);
+                font-size: 20px;
+            }
+        }
+    }
+
+    .visibilitySelect {
+        padding: 0;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        align-self: stretch;
+        .slugInputWrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            span {
+                padding-left: 0px !important;
+            }
+        }
+        .trailingSlot {
+            display: flex;
+            padding: var(--spacing-xxs) var(--spacing-xs);
+            align-items: center;
+            gap: 10px;
+            border-radius: 0 var(--spacing-xxs) var(--spacing-) 0;
+            border: 1px solid var(--border-neutral-default);
+            max-height: 32px;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: -0.14px;
+            span {
+                padding-left: 0px !important;
+            }
+        }
+    }
+
+    .slugInput {
+        border-left: 0; // there is a double border due to the InputGroup
+    }
+
+    .caption {
+        color: var(--content-neutral-tertiary);
+
+        .body-regular();
+
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 0.12px;
+    }
+
+    .excerptInput {
+        width: 100%;
+        textarea {
+            display: flex;
+            min-height: 52px;
+            padding: var(--spacing-xxs) var(--spacing-xs);
+            align-items: flex-start;
+            gap: var(--spacing-xs);
+            align-self: stretch;
+            border-radius: var(--xxs, 6px);
+            border: 1px solid var(--border-neutral-default);
+        }
+        label {
+            font-weight: 500;
+        }
+    }
+
+    .inputErrorCaption {
+        margin-top: 0px;
+    }
+
+    .seoField {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        align-self: stretch;
+
+        &.disabled {
+            .seoField__content {
+                opacity: 0.5;
+            }
+        }
+
+        &__checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-xs);
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-xxs);
+            align-self: stretch;
+        }
+
+        &__controlContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-xxxs);
+            align-self: stretch;
+        }
+
+        &__control {
+            align-self: stretch;
+        }
+
+        &__control--textarea {
+            width: 100%;
+            min-height: 52px;
+        }
+    }
+
+    .seoFieldMetaTitleGap {
+        gap: var(--spacing-xxxs);
+    }
+
+    // Utilities
+    .uErrorBorder {
+        border: 1px solid var(--border-error-primary);
+    }
+
+    .uErrorCaption {
+        margin-top: 0px;
+    }
+}

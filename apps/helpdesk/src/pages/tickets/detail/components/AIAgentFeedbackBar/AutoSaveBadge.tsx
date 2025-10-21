@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { ComponentProps, useEffect, useRef, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 import cn from 'classnames'
@@ -16,9 +16,16 @@ const STALE_TIMEOUT = 3000
 type AutoSaveBadgeProps = {
     state: AutoSaveState
     updatedAt?: Date
+    savedIcon?: React.ReactNode
+    tooltipPlacement?: ComponentProps<typeof Tooltip>['placement']
 }
 
-const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
+const AutoSaveBadge = ({
+    state,
+    updatedAt,
+    savedIcon,
+    tooltipPlacement,
+}: AutoSaveBadgeProps) => {
     const badgeRef = useRef<HTMLDivElement>(null)
     const [isStaleSaved, setIsStaleSaved] = useState(false)
     const [setTimeout, clearTimeout] = useTimeout()
@@ -54,6 +61,8 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
     const showSavedText = showSaved && !isStaleSaved
     const isTooltipEnabled = updatedAt && showSaved && isStaleSaved
 
+    const defaultSavedIcon = <i className={cn('material-icons')}>check</i>
+
     return (
         <>
             <Badge
@@ -63,7 +72,7 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
             >
                 {showSaving && <LoadingSpinner size="small" />}
 
-                {showSaved && <i className={cn('material-icons')}>check</i>}
+                {showSaved && (savedIcon ?? defaultSavedIcon)}
 
                 <div
                     className={cn(css.text, {
@@ -74,12 +83,14 @@ const AutoSaveBadge = ({ state, updatedAt }: AutoSaveBadgeProps) => {
                 </div>
             </Badge>
             {isTooltipEnabled && (
-                <Tooltip target={badgeRef}>
-                    {`Last updated: ${formatDatetime(
-                        updatedAt.toISOString(),
-                        datetimeFormat,
-                        Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    )}`}
+                <Tooltip target={badgeRef} placement={tooltipPlacement}>
+                    <span>
+                        {`Last updated: ${formatDatetime(
+                            updatedAt.toISOString(),
+                            datetimeFormat,
+                            Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        )}`}
+                    </span>
                 </Tooltip>
             )}
         </>
