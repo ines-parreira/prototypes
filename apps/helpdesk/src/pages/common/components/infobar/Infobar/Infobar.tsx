@@ -190,7 +190,7 @@ export const Infobar = ({
         if (!identifier) {
             return
         }
-
+        logEvent(SegmentEvent.InfobarEditWidgetsClicked)
         if (isEditing) {
             history.push(`/app/${context}/${identifier}${location.search}`)
         } else {

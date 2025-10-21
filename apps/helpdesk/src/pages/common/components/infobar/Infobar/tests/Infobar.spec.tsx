@@ -6,6 +6,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { SegmentEvent } from 'common/segment'
 import { agents } from 'fixtures/agents'
 import { mockSearchRank } from 'fixtures/searchRank'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
@@ -35,6 +36,19 @@ const mockedSimilarCustomer = assumeMock(similarCustomer)
 const mockedFetchPreviewCustomer = assumeMock(fetchPreviewCustomer)
 const mockedStartEditionMode = assumeMock(startEditionMode)
 const mockedStopEditionMode = assumeMock(stopEditionMode)
+
+jest.mock(
+    'common/segment',
+    () =>
+        ({
+            ...jest.requireActual('common/segment'),
+            logEvent: jest.fn(),
+        }) as Record<string, unknown>,
+)
+
+const { logEvent } = jest.requireMock('common/segment') as {
+    logEvent: jest.Mock
+}
 
 const store = mockStore({
     currentUser: fromJS(agents[1]),
@@ -656,5 +670,20 @@ describe('<Infobar/>', () => {
             expect(searchInput).toHaveValue('')
             expect(queryByText('Set Customer')).not.toBeInTheDocument()
         })
+    })
+
+    it('should log InfobarEditWidgetsClicked segment event when edit widgets button is clicked', () => {
+        renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>,
+        )
+
+        const settingsButton = screen.getByRole('button', { name: /settings/i })
+        fireEvent.click(settingsButton)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.InfobarEditWidgetsClicked,
+        )
     })
 })

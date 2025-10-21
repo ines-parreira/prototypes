@@ -463,6 +463,7 @@ export enum SegmentEvent {
     WizardArticleEditViewed = 'wizard/article-edit-viewed',
     WizardArticleSaved = 'wizard/article-saved',
     WizardPageViewed = 'wizard/page-viewed',
+    InfobarEditWidgetsClicked = 'infobar-edit-widgets-clicked',
 }
 
 export type SegmentEventToSend = {
