@@ -57,7 +57,7 @@ export default function TicketVoiceCallContainer({
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = currentUser.get('id')
 
-    const monitorCall = useMonitoringCall()
+    const { makeMonitoringCall } = useMonitoringCall()
 
     useEffect(() => {
         void setRecentItem(voiceCall)
@@ -94,7 +94,8 @@ export default function TicketVoiceCallContainer({
                 <div className={css.row}>
                     <div className={css.callStatus}>{callStatus}</div>
                     {isCallListeningEnabled &&
-                        voiceCall.status === VoiceCallStatus.Answered && (
+                        (voiceCall.status === VoiceCallStatus.Answered ||
+                            voiceCall.status === VoiceCallStatus.Connected) && (
                             <Button
                                 fillStyle="ghost"
                                 intent="primary"
@@ -105,10 +106,7 @@ export default function TicketVoiceCallContainer({
                                     </i>
                                 }
                                 onClick={() =>
-                                    monitorCall({
-                                        mainCallSid: voiceCall.external_id,
-                                        agentId: currentUserId,
-                                    })
+                                    makeMonitoringCall(voiceCall, currentUserId)
                                 }
                             >
                                 Listen

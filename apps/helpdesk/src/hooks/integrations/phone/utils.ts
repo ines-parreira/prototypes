@@ -479,6 +479,28 @@ export function gatherCallContext(call: Call): {
     }
 }
 
+export function extractMonitoringCallParams(call: Call): {
+    integrationId: number
+    inCallAgentId: number
+    customerId: number
+    customerPhoneNumber: string
+} {
+    return {
+        integrationId: parseInt(
+            call.customParameters.get('integration_id') as string,
+        ),
+        inCallAgentId: parseInt(
+            call.customParameters.get('in_call_agent_id') as string,
+        ),
+        customerId: parseInt(
+            call.customParameters.get('customer_id') as string,
+        ),
+        customerPhoneNumber: call.customParameters.get(
+            'customer_phone_number',
+        ) as string,
+    }
+}
+
 export function sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }

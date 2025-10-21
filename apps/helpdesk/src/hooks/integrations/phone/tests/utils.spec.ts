@@ -19,6 +19,7 @@ import * as utils from 'hooks/integrations/phone/utils'
 import {
     connectDevice,
     disconnectDevice,
+    extractMonitoringCallParams,
     generateCallId,
     getCallSid,
     handleAcceptedCallEvent,
@@ -33,6 +34,7 @@ import { VoiceDeviceActions } from 'pages/integrations/integration/components/vo
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
+import { mockMonitoringCall } from 'tests/twilioMocks'
 import * as envUtils from 'utils/environment'
 import { reportError } from 'utils/errors'
 import { getLDClient } from 'utils/launchDarkly'
@@ -891,5 +893,30 @@ describe('isRecoverableError', () => {
         const error = new TwilioError.TwilioError()
         error.code = TwilioErrorCode.GeneralTransport
         expect(utils.isRecoverableError(error)).toBeTruthy()
+    })
+})
+
+describe('extractMonitoringCallParams', () => {
+    it('should extract monitoring call parameters from call object', () => {
+        const integrationId = 1
+        const inCallAgentId = 123
+        const customerId = 456
+        const customerPhoneNumber = '+14158880101'
+
+        const call = mockMonitoringCall(
+            integrationId,
+            inCallAgentId,
+            customerId,
+            customerPhoneNumber,
+        ) as Call
+
+        const params = extractMonitoringCallParams(call)
+
+        expect(params).toEqual({
+            integrationId,
+            inCallAgentId,
+            customerId,
+            customerPhoneNumber,
+        })
     })
 })

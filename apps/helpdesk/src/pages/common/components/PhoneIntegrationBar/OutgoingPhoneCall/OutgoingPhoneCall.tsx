@@ -3,6 +3,7 @@ import { Call } from '@twilio/voice-sdk'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useCallStatus } from 'hooks/integrations/phone/useCallStatus'
+import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -25,17 +26,17 @@ export default function OutgoingPhoneCall({ call }: Props): JSX.Element {
     return (
         <PhoneBarContainer isHighlighted>
             <PhoneBarInnerContent>
-                <div className={css.callerDetailsContainer}>
+                <PhoneBarCallerDetailsContainer>
                     <PhoneIntegrationName
                         integrationId={integrationId}
                         primary
                     />
-                    <span className="mr-1">Outgoing call to</span>
+                    <span>Outgoing call to</span>
                     <PhoneCustomerName
                         name={customerName}
                         phoneNumber={customerPhoneNumber}
                     />
-                </div>
+                </PhoneBarCallerDetailsContainer>
                 <Button
                     intent="secondary"
                     className={css.end}

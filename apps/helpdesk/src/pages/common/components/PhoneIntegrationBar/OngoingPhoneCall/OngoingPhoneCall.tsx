@@ -22,6 +22,7 @@ import {
 } from 'pages/common/components/PhoneIntegrationBar/constants'
 import { useConnectionParameters } from 'pages/common/components/PhoneIntegrationBar/hooks'
 import { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -164,7 +165,7 @@ export function OngoingPhoneCall({
     return (
         <PhoneBarContainer>
             <PhoneBarInnerContent>
-                <div className={css.callerDetailsContainer}>
+                <PhoneBarCallerDetailsContainer>
                     <PhoneIntegrationName integrationId={integrationId} />
                     {transferringTo ? (
                         <TransferTargetLabel transferringTo={transferringTo} />
@@ -174,7 +175,7 @@ export function OngoingPhoneCall({
                             phoneNumber={customerPhoneNumber}
                         />
                     )}
-                </div>
+                </PhoneBarCallerDetailsContainer>
                 <InCallDialPad className={css.dialPad} call={call} />
                 <IconButtonTooltip
                     intent="secondary"

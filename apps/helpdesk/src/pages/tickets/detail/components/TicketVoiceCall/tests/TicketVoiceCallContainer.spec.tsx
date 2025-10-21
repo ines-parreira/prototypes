@@ -99,7 +99,7 @@ const renderComponent = (
 
 describe('TicketVoiceCallContainer', () => {
     const mockToggleRecording = jest.fn()
-    const mockMonitorCall = jest.fn()
+    const mockMakeMonitoringCall = jest.fn()
 
     mockedUseVoiceRecordingsContext.mockReturnValue({
         isTranscriptionOpened: () => false,
@@ -118,7 +118,9 @@ describe('TicketVoiceCallContainer', () => {
             }
             return false
         })
-        useMonitoringCallMock.mockReturnValue(mockMonitorCall)
+        useMonitoringCallMock.mockReturnValue({
+            makeMonitoringCall: mockMakeMonitoringCall,
+        })
     })
 
     it('renders the component with all props', () => {
@@ -221,16 +223,22 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     describe('Monitoring', () => {
-        it('should render Listen button when call is in progress with status Answered', () => {
-            renderComponent({
-                voiceCall: {
-                    ...voiceCall,
-                    status: VoiceCallStatus.Answered,
-                },
-            })
+        it.each([
+            { status: VoiceCallStatus.Answered },
+            { status: VoiceCallStatus.Connected },
+        ])(
+            'should render Listen button when call is in progress with status $status',
+            ({ status }) => {
+                renderComponent({
+                    voiceCall: {
+                        ...voiceCall,
+                        status,
+                    },
+                })
 
-            expect(screen.getByText('Listen')).toBeInTheDocument()
-        })
+                expect(screen.getByText('Listen')).toBeInTheDocument()
+            },
+        )
 
         it('should not render Listen button when feature flag is disabled', () => {
             useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
@@ -250,21 +258,23 @@ describe('TicketVoiceCallContainer', () => {
             expect(screen.queryByText('Listen')).not.toBeInTheDocument()
         })
 
-        it('should call monitorCall with correct parameters when Listen button is clicked', () => {
+        it('should call makeMonitoringCall with correct parameters when Listen button is clicked', () => {
+            const testVoiceCall = {
+                ...voiceCall,
+                status: VoiceCallStatus.Answered,
+                external_id: 'test-call-sid-123',
+            }
+
             renderComponent({
-                voiceCall: {
-                    ...voiceCall,
-                    status: VoiceCallStatus.Answered,
-                    external_id: 'test-call-sid-123',
-                },
+                voiceCall: testVoiceCall,
             })
 
             fireEvent.click(screen.getByText('Listen'))
 
-            expect(mockMonitorCall).toHaveBeenCalledWith({
-                mainCallSid: 'test-call-sid-123',
-                agentId: 123,
-            })
+            expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
+                testVoiceCall,
+                123,
+            )
         })
     })
 })

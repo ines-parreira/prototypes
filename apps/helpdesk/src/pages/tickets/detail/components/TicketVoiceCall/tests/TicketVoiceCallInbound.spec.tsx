@@ -3,12 +3,15 @@ import { userEvent } from '@repo/testing'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { VoiceCall } from 'models/voiceCall/types'
-import * as utils from 'models/voiceCall/utils'
 import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallInbound from '../TicketVoiceCallInbound'
 
-jest.mock('hooks/integrations/phone/useMonitoringCall')
+jest.mock('hooks/integrations/phone/useMonitoringCall', () => ({
+    useMonitoringCall: () => ({
+        makeMonitoringCall: jest.fn(),
+    }),
+}))
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
@@ -50,8 +53,6 @@ jest.mock(
     () => () => <div>TicketVoiceCallDuration</div>,
 )
 
-const isFinalVoiceCallSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
-
 describe('TicketVoiceCallInbound', () => {
     const voiceCall = {
         id: 1,
@@ -62,7 +63,7 @@ describe('TicketVoiceCallInbound', () => {
         status: VoiceCallStatus.InProgress,
     } as VoiceCall
 
-    const renderComponent = () => {
+    const renderComponent = (voiceCall: VoiceCall) => {
         return renderWithStore(
             <TicketVoiceCallInbound voiceCall={voiceCall} />,
             {},
@@ -70,13 +71,13 @@ describe('TicketVoiceCallInbound', () => {
     }
 
     it('renders the customer label', () => {
-        const { getByText } = renderComponent()
+        const { getByText } = renderComponent(voiceCall)
         const customerLabel = getByText('VoiceCallCustomerLabel 123')
         expect(customerLabel).toBeInTheDocument()
     })
 
     it('renders the call status', () => {
-        const { getByText } = renderComponent()
+        const { getByText } = renderComponent(voiceCall)
         const callStatus = getByText(
             `TicketVoiceCallInboundStatus ${voiceCall.status}`,
         )
@@ -84,7 +85,7 @@ describe('TicketVoiceCallInbound', () => {
     })
 
     it('renders the call icon with correct tooltip content', async () => {
-        const { getByText, findByText } = renderComponent()
+        const { getByText, findByText } = renderComponent(voiceCall)
         const icon = getByText('call_received')
         expect(icon).toBeInTheDocument()
 
@@ -95,15 +96,16 @@ describe('TicketVoiceCallInbound', () => {
     })
 
     it('displays correct header when call is still in progress', () => {
-        isFinalVoiceCallSpy.mockReturnValue(false)
-        const { getByText } = renderComponent()
+        const { getByText } = renderComponent(voiceCall)
         const header = getByText('is calling')
         expect(header).toBeInTheDocument()
     })
 
     it('displays correct header when call is finished', () => {
-        isFinalVoiceCallSpy.mockReturnValue(true)
-        const { getByText } = renderComponent()
+        const { getByText } = renderComponent({
+            ...voiceCall,
+            status: VoiceCallStatus.Completed,
+        })
         const header = getByText('called')
         expect(header).toBeInTheDocument()
     })
