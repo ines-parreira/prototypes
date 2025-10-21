@@ -1,6 +1,6 @@
 import { Call } from '@twilio/voice-sdk'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/utils'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
