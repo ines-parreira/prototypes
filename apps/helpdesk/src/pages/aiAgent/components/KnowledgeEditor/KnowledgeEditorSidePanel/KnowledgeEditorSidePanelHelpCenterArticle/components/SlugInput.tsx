@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Icon, IconSize, NewTextField, Tooltip } from '@gorgias/axiom'
+import { Icon, IconSize, TextField, Tooltip } from '@gorgias/axiom'
 
 import css from '../KnowledgeEditorSidePanelSectionHelpCenterArticleSettings.less'
 
@@ -47,7 +47,7 @@ export const SlugInput = ({
             </div>
             <div className={css.inputContainer}>
                 <div className={css.slugInputWrapper}>
-                    <NewTextField
+                    <TextField
                         value={inputValue}
                         onChange={handleChange}
                         onBlur={handleBlur}

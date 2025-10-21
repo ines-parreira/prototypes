@@ -44,12 +44,14 @@ export const SeoMetaDescription = ({
 
     return (
         <div className={classNames(css.seoField, css['seoField--description'])}>
-            <NewCheckBoxField
-                className={css.seoField__checkbox}
-                value={isChecked}
-                onChange={onCheckboxChange}
-                label="Use as meta description"
-            />
+            <div className={css.seoField__checkbox}>
+                <NewCheckBoxField
+                    value={isChecked}
+                    onChange={onCheckboxChange}
+                    label="Use as meta description"
+                />
+            </div>
+
             {!isChecked && (
                 <div className={css.seoField__content}>
                     <div className={css.seoField__controlContainer}>
