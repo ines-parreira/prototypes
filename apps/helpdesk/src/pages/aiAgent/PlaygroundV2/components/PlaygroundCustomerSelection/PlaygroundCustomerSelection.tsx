@@ -97,7 +97,7 @@ export const PlaygroundCustomerSelection = ({
                     value={selectedOption}
                     onChange={handleSenderSelectChange}
                     items={senderSelectOptions}
-                    disabled={false}
+                    isDisabled={false}
                 >
                     {(option: (typeof senderSelectOptions)[number]) => (
                         <ListItem label={option.label} />

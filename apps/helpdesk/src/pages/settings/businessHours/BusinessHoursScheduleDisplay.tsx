@@ -44,13 +44,9 @@ export default function BusinessHoursScheduleDisplay({
                 disabled={!isOverflowing}
             >
                 {businessHoursConfig && (
-                    <Box p="var(--layout-spacing-s)" flexDirection="column">
+                    <Box p="lg" flexDirection="column">
                         <Label>Schedule</Label>
-                        <Box
-                            flexDirection="column"
-                            gap="var(--layout-spacing-xs)"
-                            p="var(--layout-spacing-xs)"
-                        >
+                        <Box flexDirection="column" gap="xs" p="xs">
                             {getBusinessHoursConfigTimeFrameLabelList(
                                 businessHoursConfig,
                             ).map((timeframe, index) => (

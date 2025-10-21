@@ -78,7 +78,7 @@ const PlaygroundActionsModal: React.FC<PlaygroundActionsModalProps> = ({
                 </div>
             </ModalBody>
             <ModalFooter className={css.modalFooter}>
-                <Button intent="secondary" onClick={onClose}>
+                <Button variant="secondary" onClick={onClose}>
                     Cancel
                 </Button>
                 <Button

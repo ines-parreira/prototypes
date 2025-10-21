@@ -31,7 +31,7 @@ export default function EmailDomainVerificationSupportContentSidebar() {
                     data-candu-id={`email-domain-verification-support-content-${selectedOption.value || 'default'}`}
                 />
 
-                <Box gap="var(--layout-spacing-m)">
+                <Box gap="lg">
                     <IconLink
                         icon="menu_book"
                         href="https://link.gorgias.com/a6c23e"

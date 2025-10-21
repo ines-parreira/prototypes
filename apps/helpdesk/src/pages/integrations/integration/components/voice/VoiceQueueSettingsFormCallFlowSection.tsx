@@ -4,7 +4,7 @@ import {
     Banner,
     LegacyButton as Button,
     Label,
-    TextField,
+    LegacyTextField as TextField,
     ToggleField,
 } from '@gorgias/axiom'
 import {

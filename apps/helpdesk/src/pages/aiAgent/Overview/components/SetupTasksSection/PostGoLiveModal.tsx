@@ -1,4 +1,4 @@
-import { Button, Heading, Icon, Text } from '@gorgias/axiom'
+import { LegacyButton as Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import Modal from 'pages/common/components/modal/Modal'
@@ -24,7 +24,7 @@ export const PostGoLiveModal: React.FC<Props> = ({ isOpen, handleOnClose }) => {
                 <img src={modalImage} alt="Setup complete" />
                 <div className={css.closeButtonWrapper}>
                     <Button
-                        variant="ghost"
+                        fillStyle="ghost"
                         intent="secondary"
                         size="medium"
                         onClick={handleOnClose}
@@ -44,7 +44,7 @@ export const PostGoLiveModal: React.FC<Props> = ({ isOpen, handleOnClose }) => {
             <ModalFooter className={css.modalFooter}>
                 <Button
                     intent="primary"
-                    variant="filled"
+                    fillStyle="fill"
                     onClick={handleOnClose}
                 >
                     Got it

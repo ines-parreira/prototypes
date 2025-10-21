@@ -23,14 +23,14 @@ export const PlaygroundActionsItem = ({ action }: Props) => {
     return (
         <>
             <Button
-                intent="secondary"
+                variant="secondary"
                 id={`template-button-${id}`}
                 onClick={onClick}
                 onMouseEnter={() => {
                     setIsPreviewOpen(true)
                 }}
                 onMouseLeave={() => setIsPreviewOpen(false)}
-                size="small"
+                size="sm"
             >
                 {label}
             </Button>

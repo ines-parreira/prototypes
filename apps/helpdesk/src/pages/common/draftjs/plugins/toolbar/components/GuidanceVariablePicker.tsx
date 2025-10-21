@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import {
     LegacyButton as Button,
-    type ButtonSize,
+    LegacyButtonSize,
     Tooltip,
 } from '@gorgias/axiom'
 
@@ -14,7 +14,7 @@ export type GuidanceVariablePickerProps = {
     onSelect: (value: GuidanceVariable) => void
     label?: string
     disabled?: boolean
-    size?: ButtonSize
+    size?: LegacyButtonSize
     tooltipMessage?: string | null
     variableDropdownProps?: Partial<
         React.ComponentProps<typeof GuidanceVariableDropdown>

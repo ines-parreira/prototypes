@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, SyntheticEvent } from 'react'
 
-import { ButtonIntent } from '@gorgias/axiom'
+import { LegacyButtonIntent } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getFacebookRedirectUri } from 'state/integrations/selectors'
@@ -9,7 +9,7 @@ import FacebookLoginButton from './FacebookLoginButton'
 
 type Props = {
     children?: ReactNode
-    intent?: ButtonIntent
+    intent?: LegacyButtonIntent
     link?: boolean
     reconnect?: boolean
 }

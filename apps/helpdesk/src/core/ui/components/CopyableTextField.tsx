@@ -4,8 +4,8 @@ import { useCopyToClipboard } from '@repo/hooks'
 
 import {
     LegacyButton as Button,
-    TextField,
-    TextFieldProps,
+    LegacyTextField as TextField,
+    LegacyTextFieldProps as TextFieldProps,
 } from '@gorgias/axiom'
 
 export type CopyableTextFieldProps = TextFieldProps & {

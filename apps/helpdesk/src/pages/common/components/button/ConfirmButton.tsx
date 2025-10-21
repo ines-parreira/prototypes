@@ -5,7 +5,7 @@ import { Popover } from 'reactstrap'
 import {
     LegacyButton as Button,
     type LegacyButtonComponentProps as ButtonComponentProps,
-    type ButtonProps,
+    type LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

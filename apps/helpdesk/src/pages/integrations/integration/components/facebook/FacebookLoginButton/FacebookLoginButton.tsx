@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, ButtonIntent } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyButtonIntent } from '@gorgias/axiom'
 
 import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
 
@@ -10,7 +10,7 @@ import css from './FacebookLoginButton.less'
 
 type Props = {
     children?: ReactNode
-    intent?: ButtonIntent
+    intent?: LegacyButtonIntent
     onClick?: (e: React.SyntheticEvent) => void
     showIcon?: boolean
     isLoading?: boolean

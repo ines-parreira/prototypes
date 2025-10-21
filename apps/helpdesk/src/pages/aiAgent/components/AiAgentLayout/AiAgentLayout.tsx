@@ -96,7 +96,7 @@ export const AiAgentLayout = ({
                         !isPlaygroundOpen && (
                             <Button
                                 onClick={togglePlayground}
-                                intent="secondary"
+                                variant="secondary"
                             >
                                 Test
                             </Button>

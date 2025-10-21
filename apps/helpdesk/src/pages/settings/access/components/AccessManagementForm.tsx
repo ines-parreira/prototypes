@@ -1,4 +1,4 @@
-import { Box, TextField } from '@gorgias/axiom'
+import { Box, LegacyTextField as TextField } from '@gorgias/axiom'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import InputGroup from 'pages/common/forms/input/InputGroup'

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import {
     LegacyButton as Button,
     type LegacyButtonComponentProps as ButtonComponentProps,
-    type ButtonProps,
+    type LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'

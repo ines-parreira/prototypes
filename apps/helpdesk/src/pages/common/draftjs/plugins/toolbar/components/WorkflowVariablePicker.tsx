@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import {
     LegacyButton as Button,
-    type ButtonSize,
+    type LegacyButtonSize,
     Tooltip,
 } from '@gorgias/axiom'
 
@@ -14,7 +14,7 @@ export type WorkflowVariablePickerProps = {
     onSelect: (value: WorkflowVariable) => void
     label?: string
     disabled?: boolean
-    size?: ButtonSize
+    size?: LegacyButtonSize
     tooltipMessage?: string | null
     variableDropdownProps?: Partial<
         React.ComponentProps<typeof WorkflowVariableDropdown>

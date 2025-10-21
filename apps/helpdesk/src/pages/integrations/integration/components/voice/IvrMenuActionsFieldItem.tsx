@@ -26,7 +26,7 @@ export function IvrMenuActionFieldItem({
     const value: BranchOptions | null = useWatch({ name: fieldName })
 
     return (
-        <Box gap="var(--layout-spacing-xs)" width="100%">
+        <Box gap="xs" width="100%">
             <Button intent="secondary">{value?.input_digit}</Button>
             <FormField
                 key={fieldName}

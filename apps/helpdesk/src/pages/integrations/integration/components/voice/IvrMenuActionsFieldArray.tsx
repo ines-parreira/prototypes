@@ -46,11 +46,7 @@ export function IvrMenuActionsFieldArray({
     }
 
     return (
-        <Box
-            gap="var(--layout-spacing-s)"
-            flexDirection="column"
-            alignItems="flex-start"
-        >
+        <Box gap="md" flexDirection="column" alignItems="flex-start">
             {fields.map((field, index) => {
                 return (
                     <IvrMenuActionFieldItem

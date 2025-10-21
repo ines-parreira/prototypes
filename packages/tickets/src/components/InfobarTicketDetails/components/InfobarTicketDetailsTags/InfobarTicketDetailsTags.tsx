@@ -138,7 +138,7 @@ export function InfobarTicketDetailsTags({
                             <Button
                                 slot="button"
                                 icon="add-plus"
-                                intent="secondary"
+                                variant="secondary"
                                 size="sm"
                             />
                         )}

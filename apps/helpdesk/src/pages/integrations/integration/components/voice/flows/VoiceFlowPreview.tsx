@@ -14,8 +14,8 @@ const DEFAULT_HEIGHT = '280px'
 
 type Props = {
     integrationId: number
-    width?: string
-    height?: string
+    width?: `${number}px`
+    height?: `${number}px`
 }
 
 function VoiceFlowPreview({

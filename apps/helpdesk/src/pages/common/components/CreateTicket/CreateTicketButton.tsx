@@ -4,7 +4,10 @@ import { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button, type ButtonIntent } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    type LegacyButtonIntent as ButtonIntent,
+} from '@gorgias/axiom'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import DropdownButton from 'pages/common/components/button/DropdownButton'

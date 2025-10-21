@@ -141,11 +141,7 @@ export function RouteToNode(
                         </>
                     )}
                     {isVoiceIntegrationOptionSelected && (
-                        <Box
-                            mt="var(--layout-spacing-xs)"
-                            flexDirection="column"
-                            gap="var(--layout-spacing-xxs)"
-                        >
+                        <Box mt="xs" flexDirection="column" gap="xxs">
                             <FormField
                                 name={`steps.${id}.integration_id`}
                                 field={VoiceIntegrationSelectField}

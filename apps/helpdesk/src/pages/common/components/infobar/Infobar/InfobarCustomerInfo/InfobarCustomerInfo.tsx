@@ -303,11 +303,7 @@ const InfobarCustomerInfo = ({
                     customerName={customer.get('name', '')}
                 >
                     {hasIgChannel && (
-                        <Box
-                            flex={1}
-                            flexDirection="row"
-                            mb="var(--layout-spacing-xs)"
-                        >
+                        <Box flex={1} flexDirection="row" mb="xs">
                             <SourceIcon
                                 type={TicketMessageSourceType.Instagram}
                                 className={css.igIcon}

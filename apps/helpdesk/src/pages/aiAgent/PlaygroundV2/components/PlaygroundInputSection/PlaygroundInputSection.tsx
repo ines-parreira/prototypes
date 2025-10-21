@@ -363,7 +363,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                         )}
                         {shouldDisplayResetButton && (
                             <Button
-                                intent="secondary"
+                                variant="secondary"
                                 onClick={onReset}
                                 isDisabled={!hasMessageBeenSent}
                                 size="sm"

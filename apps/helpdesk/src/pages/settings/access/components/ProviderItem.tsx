@@ -18,7 +18,7 @@ const ProviderItem = ({
     providerName,
 }: ProviderItemProps) => {
     return (
-        <Box key={providerId} padding={css.providerItemPadding}>
+        <Box key={providerId}>
             <Box alignItems="center" justifyContent="between">
                 <Box alignItems="center">
                     <span className={css.lockIcon}>🔒</span>

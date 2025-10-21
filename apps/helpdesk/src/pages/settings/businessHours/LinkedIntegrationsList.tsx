@@ -34,11 +34,7 @@ export default function LinkedIntegrationsList({ businessHoursId }: Props) {
     }, [isError, notify])
 
     return (
-        <Box
-            gap="var(--layout-spacing-xs)"
-            flexDirection="column"
-            className={css.container}
-        >
+        <Box gap="xs" flexDirection="column" className={css.container}>
             <Label>Integrations</Label>
             <InfiniteScroll
                 onLoad={fetchNextPage}
@@ -48,7 +44,7 @@ export default function LinkedIntegrationsList({ businessHoursId }: Props) {
                 {integrations.map((integration) => (
                     <Box
                         key={integration.integration_id}
-                        gap="var(--layout-spacing-xs)"
+                        gap="xs"
                         alignItems="center"
                     >
                         <SourceIcon

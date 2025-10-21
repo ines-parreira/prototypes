@@ -144,7 +144,7 @@ export default function CustomBusinessHoursIntegrationsTable({
     }
 
     return (
-        <Box gap="var(--layout-spacing-m)" flexDirection="column">
+        <Box gap="md" flexDirection="column">
             <Box justifyContent="space-between">
                 <div>
                     {!!assignIntegrations.length && (
@@ -237,7 +237,7 @@ export default function CustomBusinessHoursIntegrationsTable({
             </div>
             {integrationsToOverride.length > 0 && (
                 <Banner type="warning">
-                    <Box flexDirection="column" gap="var(--layout-spacing-xs)">
+                    <Box flexDirection="column" gap="xs">
                         <div>
                             {integrationsToOverride.length} of the selected
                             integrations are already assigned to other custom
