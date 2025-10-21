@@ -9,7 +9,7 @@ import {
     averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
     averageScore,
     averageScoreQueryV2Factory,
-} from 'domains/reporting/models/scopes/averageCsat'
+} from 'domains/reporting/models/scopes/satisfactionSurveys'
 import {
     AggregationWindow,
     StatsFilters,
@@ -52,7 +52,7 @@ describe('averageCsatScope', () => {
                     },
                 ],
                 metricName: 'satisfaction-average-score',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
                 time_dimensions: [
                     {
                         dimension: 'createdDatetime',
@@ -87,7 +87,7 @@ describe('averageCsatScope', () => {
                 ],
                 order: [['surveyScore', 'desc']],
                 metricName: 'satisfaction-average-score',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
                 time_dimensions: [
                     {
                         dimension: 'createdDatetime',
@@ -128,7 +128,7 @@ describe('averageCsatScope', () => {
                 ],
                 metricName:
                     'satisfaction-average-csat-score-per-agent-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)
@@ -165,7 +165,7 @@ describe('averageCsatScope', () => {
                 order: [['scoredSurveysCount', 'asc']],
                 metricName:
                     'satisfaction-average-csat-score-per-agent-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)
@@ -200,7 +200,7 @@ describe('averageCsatScope', () => {
                 ],
                 metricName:
                     'satisfaction-average-csat-score-per-channel-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)
@@ -237,7 +237,7 @@ describe('averageCsatScope', () => {
                 order: [['scoredSurveysCount', 'desc']],
                 metricName:
                     'satisfaction-average-csat-score-per-channel-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)
@@ -273,7 +273,7 @@ describe('averageCsatScope', () => {
                 ],
                 metricName:
                     'satisfaction-average-csat-score-per-integration-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)
@@ -310,7 +310,7 @@ describe('averageCsatScope', () => {
                 order: [['scoredSurveysCount', 'asc']],
                 metricName:
                     'satisfaction-average-csat-score-per-integration-time-series',
-                scope: 'average-csat',
+                scope: 'satisfaction-surveys',
             }
 
             expect(actual).toEqual(expected)

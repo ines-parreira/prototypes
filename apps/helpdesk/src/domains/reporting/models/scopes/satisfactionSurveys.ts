@@ -3,8 +3,8 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
-const averageCsatScope = defineScope({
-    scope: MetricScope.AverageCsat,
+const satisfactionSurveysScope = defineScope({
+    scope: MetricScope.SatisfactionSurveys,
     measures: ['averageSurveyScore', 'scoredSurveysCount'],
     dimensions: [
         'ticketId',
@@ -35,7 +35,7 @@ const averageCsatScope = defineScope({
     order: ['tickets', 'createdDatetime', 'surveyScore', 'scoredSurveysCount'],
 })
 
-export const averageScore = averageCsatScope
+export const averageScore = satisfactionSurveysScope
     .defineMetricName(METRIC_NAMES.SATISFACTION_AVERAGE_SCORE)
     .defineQuery(({ ctx }) => {
         const query = {
@@ -55,7 +55,7 @@ export const averageScore = averageCsatScope
 export const averageScoreQueryV2Factory = (ctx: Context) =>
     averageScore.build(ctx)
 
-export const averageCsatScorePerAgentTimeseries = averageCsatScope
+export const averageCsatScorePerAgentTimeseries = satisfactionSurveysScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
     )
@@ -85,7 +85,7 @@ export const averageCsatScorePerAgentTimeseriesQueryV2Factory = (
     ctx: Context,
 ) => averageCsatScorePerAgentTimeseries.build(ctx)
 
-export const averageCsatScorePerChannelTimeseries = averageCsatScope
+export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
     )
@@ -115,7 +115,7 @@ export const averageCsatScorePerChannelTimeseriesQueryV2Factory = (
     ctx: Context,
 ) => averageCsatScorePerChannelTimeseries.build(ctx)
 
-export const averageCsatScorePerIntegrationTimeseries = averageCsatScope
+export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
     .defineMetricName(
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
     )

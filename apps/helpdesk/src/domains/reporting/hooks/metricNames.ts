@@ -475,7 +475,7 @@ export enum MetricScope {
     FirstResponseTime = 'first-response-time',
     ResolutionTime = 'resolution-time',
     OneTouchTickets = 'one-touch-tickets',
-    AverageCsat = 'average-csat',
+    SatisfactionSurveys = 'satisfaction-surveys',
     MessagesPerTicket = 'messages-per-ticket',
     TicketsOpen = 'tickets-open',
     TicketHandleTime = 'ticket-handle-time',
@@ -524,7 +524,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_CHANNEL,
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_TIME_SERIES,
     ],
-    [MetricScope.AverageCsat]: [
+    [MetricScope.SatisfactionSurveys]: [
         METRIC_NAMES.SATISFACTION_AVERAGE_SCORE,
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
