@@ -384,38 +384,6 @@ const TicketHeader = ({
             <div className={css.title}>
                 <TicketHeaderToggle />
                 <TicketSubjectLoadingState isInitialLoading={isSubjectLoading}>
-                    {shouldShowTranslatedContent(
-                        ticket.get('language') as Language,
-                    ) &&
-                        translationMap[ticket.get('id')]?.subject && (
-                            <div className={css.translateIcon}>
-                                <LegacyIconButton
-                                    ref={translateIconRef}
-                                    icon="translate"
-                                    fillStyle="ghost"
-                                    intent="secondary"
-                                    size="medium"
-                                    onClick={handleTranslateAllMessages}
-                                />
-
-                                <Tooltip
-                                    target={translateIconRef}
-                                    boundariesElement="viewport"
-                                    offset="0, 8"
-                                    placement="right"
-                                    trigger={['hover']}
-                                >
-                                    {allMessageDisplayState ===
-                                    DisplayedContent.Translated ? (
-                                        <>{`Ticket translated from ${IntlDisplayNames.of(ticket.get('language')) as string}. Click to revert to original.`}</>
-                                    ) : (
-                                        <>
-                                            {`Click to translate ticket ${primary ? `to ${IntlDisplayNames.of(primary) as string}` : ''}`.trim()}
-                                        </>
-                                    )}
-                                </Tooltip>
-                            </div>
-                        )}
                     <EditableTitle
                         className={css.editableTitleWrapper}
                         inputClassName={css.editableTitle}
@@ -429,6 +397,38 @@ const TicketHeader = ({
 
                 <div className={css.actions}>
                     <>
+                        {shouldShowTranslatedContent(
+                            ticket.get('language') as Language,
+                        ) &&
+                            translationMap[ticket.get('id')]?.subject && (
+                                <div className={css.translateIcon}>
+                                    <LegacyIconButton
+                                        ref={translateIconRef}
+                                        icon="translate"
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        size="small"
+                                        onClick={handleTranslateAllMessages}
+                                    />
+
+                                    <Tooltip
+                                        target={translateIconRef}
+                                        boundariesElement="viewport"
+                                        offset="0, 8"
+                                        placement="bottom"
+                                        trigger={['hover']}
+                                    >
+                                        {allMessageDisplayState ===
+                                        DisplayedContent.Translated ? (
+                                            <>{`Ticket translated from ${IntlDisplayNames.of(ticket.get('language')) as string}. Click to revert to original.`}</>
+                                        ) : (
+                                            <>
+                                                {`Click to translate ticket to ${IntlDisplayNames.of(primary as Language) as string}`}
+                                            </>
+                                        )}
+                                    </Tooltip>
+                                </div>
+                            )}
                         <TicketTrash
                             className={css.headerIcon}
                             trashed={
