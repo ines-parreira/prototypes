@@ -339,10 +339,13 @@ describe('executeMetric', () => {
 
             expect(result.data.data[0]).toBe(42)
             expect(reportErrorMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message:
-                        'Next function failed in shadow mode for test-metric: Next API failed',
-                }),
+                new Error(
+                    'Next function failed in shadow mode for test-metric: Next API failed',
+                ),
+                {
+                    extra: { metricName: 'test-metric', reason: '{}' },
+                    tags: { team: 'crm-reporting' },
+                },
             )
         })
 

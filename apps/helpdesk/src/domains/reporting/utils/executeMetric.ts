@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
@@ -141,6 +142,13 @@ async function executeShadowMode<TData>(
             new Error(
                 `Next function failed in shadow mode for ${config.metricName}: ${nextResult.reason.message}`,
             ),
+            {
+                tags: { team: SentryTeam.CRM_REPORTING },
+                extra: {
+                    metricName: config.metricName,
+                    reason: JSON.stringify(nextResult.reason),
+                },
+            },
         )
     }
 
@@ -215,6 +223,7 @@ export async function executeMetric<TData>(
     } catch (error) {
         // report configuration errors but allow metric execution to continue in 'off' mode
         reportError(error as Error, {
+            tags: { team: SentryTeam.CRM_REPORTING },
             extra: { metricName: config.metricName },
         })
         // Fallback to 'off' mode if configuration is invalid

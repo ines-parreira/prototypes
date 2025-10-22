@@ -1,5 +1,6 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import { ScopeFilters, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
@@ -498,18 +499,20 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                     `New Stats API and Legacy API queries are different for metric ${metricName}`,
                 ),
                 {
+                    tags: { team: SentryTeam.CRM_REPORTING },
                     extra: {
                         differences,
                         summary: `Found ${differences.length} difference(s)`,
                         metricName,
-                        v1query,
-                        v2query,
+                        v1query: JSON.stringify(v1query),
+                        v2query: JSON.stringify(v2query),
                     },
                 },
             )
         }
     } catch (error: Error | unknown) {
         reportError(error, {
+            tags: { team: SentryTeam.CRM_REPORTING },
             extra: {
                 message: 'Error comparing reporting queries in New Stats API',
             },
