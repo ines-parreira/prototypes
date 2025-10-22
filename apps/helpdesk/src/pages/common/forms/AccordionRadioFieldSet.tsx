@@ -45,25 +45,26 @@ const AccordionRadioFieldSet = ({
                 defaultExpandedItem={defaultExpandedItem}
             >
                 {options.map(({ value, label, caption, disabled, body }) => (
-                    <AccordionItem id={value} key={value}>
-                        <AccordionHeader
-                            action={
-                                <RadioButton
-                                    key={value}
-                                    name={fieldsetName}
-                                    value={value}
-                                    label={label}
-                                    caption={caption}
-                                    isSelected={selectedValue === value}
-                                    isDisabled={disabled || isDisabled}
-                                    onClick={() => onChange(value)}
-                                    className={css.radioOption}
-                                />
-                            }
-                            isExpandable={!!body}
-                        />
-                        {body && <AccordionBody>{body}</AccordionBody>}
-                    </AccordionItem>
+                    <div onClick={() => onChange(value)} key={value}>
+                        <AccordionItem id={value} key={value}>
+                            <AccordionHeader
+                                action={
+                                    <RadioButton
+                                        key={value}
+                                        name={fieldsetName}
+                                        value={value}
+                                        label={label}
+                                        caption={caption}
+                                        isSelected={selectedValue === value}
+                                        isDisabled={disabled || isDisabled}
+                                        className={css.radioOption}
+                                    />
+                                }
+                                isExpandable={!!body}
+                            />
+                            {body && <AccordionBody>{body}</AccordionBody>}
+                        </AccordionItem>
+                    </div>
                 ))}
             </Accordion>
         </fieldset>
