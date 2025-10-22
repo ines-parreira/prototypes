@@ -588,6 +588,7 @@ describe('<Setup />', () => {
                     params: {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
+                        type: 'cart_abandoned',
                     },
                     journeyConfigs: {
                         discount_code_message_threshold: 1,
@@ -713,6 +714,7 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
+                    type: 'cart_abandoned',
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -816,6 +818,7 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
+                    type: 'cart_abandoned',
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -881,8 +884,10 @@ describe('<Setup />', () => {
                 params: {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
+                    type: 'cart_abandoned',
                 },
                 journeyConfigs: {
+                    discount_code_message_threshold: undefined,
                     max_follow_up_messages: 3,
                     offer_discount: false,
                     max_discount_percent: 20,

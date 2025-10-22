@@ -17,7 +17,6 @@ import { shopifyProductResult } from 'fixtures/shopify'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListProducts } from 'models/integration/queries'
-import { NotificationStatus } from 'state/notifications/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { Activation } from './Activation'
@@ -34,9 +33,13 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const mockHandleUpdate = jest.fn()
+const mockHandleTestSms = jest.fn()
 jest.mock('AIJourney/hooks', () => ({
     useJourneyUpdateHandler: jest.fn(() => ({
         handleUpdate: mockHandleUpdate,
+    })),
+    useHandleSendTestSMS: jest.fn(() => ({
+        handleTestSms: mockHandleTestSms,
     })),
 }))
 
@@ -77,7 +80,6 @@ jest.mock('AIJourney/queries', () => ({
     useCreateNewJourney: jest.fn(),
     useUpdateJourney: jest.fn(),
     useSmsIntegrations: jest.fn(),
-    useTestSms: jest.fn(),
 }))
 
 const mockUseSmsIntegrations = require('AIJourney/queries')
@@ -89,7 +91,6 @@ const mockUseCreateNewJourney = require('AIJourney/queries')
     .useCreateNewJourney as jest.Mock
 const mockUseUpdateJourney = require('AIJourney/queries')
     .useUpdateJourney as jest.Mock
-const mockuseTestSms = require('AIJourney/queries').useTestSms as jest.Mock
 
 jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)
@@ -113,7 +114,6 @@ describe('<Activation />', () => {
 
         const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
         const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
-        const mockTestSmsMutateAsync = jest.fn().mockResolvedValue({})
 
         // Default mock for useJourneyContext
         mockUseJourneyContext.mockReturnValue({
@@ -161,12 +161,6 @@ describe('<Activation />', () => {
 
         mockUseCreateNewJourney.mockImplementation(() => ({
             mutateAsync: mockCreateJourneyMutateAsync,
-            isError: false,
-            isLoading: false,
-        }))
-
-        mockuseTestSms.mockImplementation(() => ({
-            mutateAsync: mockTestSmsMutateAsync,
             isError: false,
             isLoading: false,
         }))
@@ -223,7 +217,7 @@ describe('<Activation />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <Activation delaySendingSMSms={0} />
+                        <Activation />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -333,94 +327,12 @@ describe('<Activation />', () => {
     })
 
     describe('handleTestSms', () => {
-        const mockDispatch = jest.fn()
-        const mockNotifyAction = { type: 'NOTIFY_ACTION' }
-        const mockNotify = jest.fn().mockReturnValue(mockNotifyAction)
-        const mockTestSmsMutateAsync = jest.fn().mockResolvedValue({})
-
         beforeEach(() => {
             jest.clearAllMocks()
-            jest.spyOn(
-                require('hooks/useAppDispatch'),
-                'default',
-            ).mockReturnValue(mockDispatch)
-
-            jest.spyOn(
-                require('state/notifications/actions'),
-                'notify',
-            ).mockImplementation(mockNotify)
-
-            mockuseTestSms.mockImplementation(() => ({
-                mutateAsync: mockTestSmsMutateAsync,
-                isError: false,
-                isLoading: false,
-            }))
+            mockHandleTestSms.mockResolvedValue(undefined)
         })
 
-        afterEach(() => {
-            jest.clearAllMocks()
-        })
-
-        it('should show error notification when journey ID is missing', async () => {
-            // Override useJourneyContext to have journey without id
-            mockUseJourneyContext.mockReturnValue({
-                currentJourney: { type: 'cart_abandoned' }, // missing id
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart-abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
-            })
-
-            const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
-            await act(async () => {
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
-            })
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        it('should show error notification when testSms mutation fails', async () => {
-            const mockTestSmsMutateAsync = jest.fn().mockImplementation(() => {
-                return Promise.reject(new Error('SMS service unavailable'))
-            })
-
-            mockuseTestSms.mockImplementation(() => ({
-                mutateAsync: mockTestSmsMutateAsync,
-                isError: true,
-                isLoading: false,
-            }))
-
-            // Override useJourneyContext to have a journey with ID
+        it('should call handleTestSms when Send SMS button is clicked', async () => {
             mockUseJourneyContext.mockReturnValue({
                 currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
@@ -445,7 +357,7 @@ describe('<Activation />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Activation delaySendingSMSms={0} />
+                            <Activation />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -465,73 +377,11 @@ describe('<Activation />', () => {
             })
 
             await waitFor(() => {
-                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
-            })
-
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: 'Could not send test SMS',
-                    status: 'error',
-                })
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
-        })
-
-        it('should successfully send test SMS when all conditions are met', async () => {
-            const mockTestSmsMutateAsync = jest.fn().mockResolvedValue({})
-            mockuseTestSms.mockImplementation(() => ({
-                mutateAsync: mockTestSmsMutateAsync,
-                isError: false,
-                isLoading: false,
-            }))
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            await waitFor(async () => {
-                expect(screen.queryAllByText('Strong phone')).toHaveLength(1)
-            })
-
-            await act(async () => {
-                await userEvent.click(screen.getByText('Strong phone'))
-            })
-
-            const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
-
-            await act(async () => {
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
-            })
-
-            waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledTimes(1)
-                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
-
-                expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
-                    phoneNumber: '+11234567890',
-                    journeyId: 'journey-123',
-                    product: {
-                        product_id: '6694863569105',
-                        variant_id: '39924461306065',
-                        price: 3310,
-                    },
-                })
+                expect(mockHandleTestSms).toHaveBeenCalledTimes(1)
             })
         })
 
         it('should auto-select the first product when products are loaded', async () => {
-            // Uses default mock from beforeEach - currentIntegration is already set
-
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
@@ -543,151 +393,7 @@ describe('<Activation />', () => {
             )
 
             await waitFor(async () => {
-                expect(screen.queryAllByText('Black shirt')).toHaveLength(2) // one in the display, other in the list
-            })
-
-            const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
-
-            await act(async () => {
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
-            })
-
-            waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledTimes(1)
-                expect(mockTestSmsMutateAsync).toHaveBeenCalledTimes(1)
-
-                expect(mockTestSmsMutateAsync).toHaveBeenCalledWith({
-                    phoneNumber: '+11234567890',
-                    journeyId: 'journey-123',
-                    product: {
-                        price: 25,
-                        product_id: '1',
-                        variant_id: '39923189874897',
-                    },
-                })
-            })
-        })
-
-        it('should show error notification when no journey is available', async () => {
-            const mockDispatch = jest.fn()
-            const mockNotifyAction = { type: 'NOTIFY_ACTION' }
-            const mockNotify = jest.fn().mockReturnValue(mockNotifyAction)
-
-            jest.spyOn(
-                require('hooks/useAppDispatch'),
-                'default',
-            ).mockReturnValue(mockDispatch)
-
-            jest.spyOn(
-                require('state/notifications/actions'),
-                'notify',
-            ).mockImplementation(mockNotify)
-
-            // Override useJourneyContext to have no journey
-            mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
-                journeyData: undefined,
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart-abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
-            })
-
-            const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
-
-            await act(async () => {
-                await userEvent.clear(input)
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
-            })
-
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message:
-                        'Missing information: test number: (123) 456-7890, journeyID: undefined',
-                    status: NotificationStatus.Error,
-                })
-                expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
-            })
-        })
-
-        it('should show error notification when no product is selected', async () => {
-            const mockDispatch = jest.fn()
-            const mockNotifyAction = { type: 'NOTIFY_ACTION' }
-            const mockNotify = jest.fn().mockReturnValue(mockNotifyAction)
-
-            jest.spyOn(
-                require('hooks/useAppDispatch'),
-                'default',
-            ).mockReturnValue(mockDispatch)
-
-            jest.spyOn(
-                require('state/notifications/actions'),
-                'notify',
-            ).mockImplementation(mockNotify)
-
-            // Mock empty products list so no product gets auto-selected
-            useListProductsMock.mockReturnValue({
-                data: {
-                    pages: [{ data: { data: [] } }],
-                },
-            } as any)
-
-            // Override useJourneyContext to have a journey
-            mockUseJourneyContext.mockReturnValue({
-                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                journeyType: 'cart-abandoned',
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-            })
-
-            renderWithRouter(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
+                expect(screen.queryAllByText('Black shirt')).toHaveLength(2)
             })
 
             const input = screen.getByRole('textbox')
@@ -700,11 +406,7 @@ describe('<Activation />', () => {
             })
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: 'Please select a product',
-                    status: NotificationStatus.Error,
-                })
-                expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+                expect(mockHandleTestSms).toHaveBeenCalledTimes(1)
             })
         })
 

@@ -11,10 +11,9 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import { Button } from 'AIJourney/components/Button/Button'
 import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { useJourneyUpdateHandler } from 'AIJourney/hooks'
+import { useHandleSendTestSMS, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useTestSms } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -26,12 +25,7 @@ import css from './Activation.less'
 
 const TEST_SMS_NUMBER_KEY = 'ai-journey-test-sms-number'
 
-type ActivationProps = {
-    // Allow to override the delay for sending the SMS
-    // This is useful for testing purposes
-    delaySendingSMSms?: number
-}
-export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
+export const Activation = () => {
     const history = useHistory()
     const dispatch = useAppDispatch()
 
@@ -52,8 +46,6 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
 
     const { data: currentUser } = useGetCurrentUser()
     const customerName = currentUser?.data?.name || 'John Doe'
-
-    const testSms = useTestSms()
 
     const integrationId = currentIntegration?.id
 
@@ -83,58 +75,12 @@ export const Activation = ({ delaySendingSMSms = 10_000 }: ActivationProps) => {
         journey: currentJourney,
     })
 
-    const handleTestSms = async () => {
-        try {
-            if (!selectedProduct) {
-                void dispatch(
-                    notify({
-                        message: 'Please select a product',
-                        status: NotificationStatus.Error,
-                    }),
-                )
-                return
-            } else if (!currentJourney?.id || !testSmsNumber) {
-                void dispatch(
-                    notify({
-                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${currentJourney?.id}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
-                return
-            }
-
-            await testSms.mutateAsync({
-                // TODO use generic phone number formatting
-                phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
-                journeyId: currentJourney.id,
-                product: {
-                    product_id: String(selectedProduct.id),
-                    variant_id: String(selectedProduct.variants[0].id),
-                    price: Number(selectedProduct.variants[0].price),
-                },
-            })
-            // Add a delay to allow the SMS to be sent
-            await new Promise((resolve) =>
-                setTimeout(resolve, delaySendingSMSms),
-            )
-
-            void dispatch(
-                notify({
-                    message: `SMS sent successfully`,
-                    status: NotificationStatus.Success,
-                }),
-            )
-        } catch (error) {
-            console.error(`Error sending test SMS: ${error}`)
-
-            void dispatch(
-                notify({
-                    message: `Could not send test SMS`,
-                    status: NotificationStatus.Error,
-                }),
-            )
-        }
-    }
+    const { handleTestSms } = useHandleSendTestSMS({
+        currentJourney,
+        selectedProduct,
+        testSmsNumber,
+        currentIntegration,
+    })
 
     const handleContinue = async () => {
         try {

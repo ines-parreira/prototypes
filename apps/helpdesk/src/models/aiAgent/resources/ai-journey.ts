@@ -26,6 +26,11 @@ type CreateAIJourneyPlaygroundOptions = {
         }>
     }
 
+    page?: {
+        url: string | null
+        productId: string | null
+    }
+
     settings: {
         maxFollowUpMessages: number | null
         smsSenderNumber: string | null
@@ -43,7 +48,6 @@ const createAIJourneyPlaygroundPayload = (
 ): TriggerAIJourneyPayload => {
     const now = Date.now()
     const nowISO = new Date(now).toISOString()
-
     // Mock customer - hardcoded
     const mockCustomer = {
         id: 1234567,
@@ -75,13 +79,25 @@ const createAIJourneyPlaygroundPayload = (
         marketingId: `marketing-${now}`,
         createdAt: nowISO,
         customer: mockCustomer,
-        cart: {
-            cartToken: `test-cart-${now}`,
-            lastCartUpdate: nowISO,
-            currency: 'USD',
-            abandonedCheckoutUrl: `https://${options.storeName}.myshopify.com/checkout/test`,
-            lineItems: options.cart?.lineItems ?? defaultLineItems,
-        },
+        ...(options.journeyType === JourneyTypeEnum.SessionAbandoned
+            ? {
+                  page: {
+                      url: options.page?.url ?? null,
+                      productId: options.page?.productId ?? null,
+                  },
+              }
+            : {}),
+        ...(options.journeyType === JourneyTypeEnum.CartAbandoned
+            ? {
+                  cart: {
+                      cartToken: `test-cart-${now}`,
+                      lastCartUpdate: nowISO,
+                      currency: 'USD',
+                      abandonedCheckoutUrl: `https://${options.storeName}.myshopify.com/checkout/test`,
+                      lineItems: options.cart?.lineItems ?? defaultLineItems,
+                  },
+              }
+            : {}),
         settings: {
             maxFollowUpMessages: options.settings.maxFollowUpMessages,
             smsSenderNumber: options.settings.smsSenderNumber,

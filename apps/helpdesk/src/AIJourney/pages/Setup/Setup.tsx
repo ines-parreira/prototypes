@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
@@ -130,10 +131,13 @@ export const Setup = () => {
                 )
             }
 
+            const formattedJourneyType = journeyType.replace('-', '_')
+
             await createNewJourney.mutateAsync({
                 params: {
                     store_integration_id: currentIntegration.id,
                     store_name: currentIntegration.name,
+                    type: formattedJourneyType as JourneyTypeEnum,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,

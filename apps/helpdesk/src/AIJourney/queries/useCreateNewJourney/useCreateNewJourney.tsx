@@ -41,17 +41,14 @@ export const useCreateNewJourney = () => {
             params,
             journeyConfigs,
         }: {
-            params: Omit<
-                CreateJourneyApiDTO,
-                'type' | 'store_type' | 'account_id'
-            >
+            params: Omit<CreateJourneyApiDTO, 'store_type' | 'account_id'>
             journeyConfigs: JourneyConfigurationApiDTO
         }) => {
             if (!accessToken) {
                 throw new Error('Access token is required to create a journey')
             }
             return createNewJourney(
-                { ...params, type: 'cart_abandoned', store_type: 'shopify' },
+                { ...params, store_type: 'shopify' },
                 accessToken,
                 journeyConfigs,
             )

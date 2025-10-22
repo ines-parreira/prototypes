@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { act, renderHook } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -64,7 +65,7 @@ const hookParameters = {
         id: 122834,
         name: 'arthur-gorgias',
         type: IntegrationType.Shopify,
-        meta: { ticket_view_id: 123 },
+        meta: { ticket_view_id: 123, shop_domain: 'shop-domain' },
     },
     journeyParams: {
         max_follow_up_messages: 3,
@@ -79,6 +80,7 @@ const hookParameters = {
     selectedProduct: {
         id: 8531448332426,
         title: 'ADIDAS | CLASSIC BACKPACK | LEGEND INK MULTICOLOUR',
+        handle: 'product-handle',
         variants: [
             {
                 id: 46190204387466,
@@ -135,7 +137,11 @@ describe('useGeneratePlaygroundMessage', () => {
         ],
     } as GetTestSessionLogsResponse
 
-    const mockStore = configureMockStore([thunk])()
+    const mockStore = configureMockStore([thunk])({
+        currentAccount: fromJS({
+            id: hookParameters.journey.account_id,
+        }),
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -430,22 +436,57 @@ describe('useGeneratePlaygroundMessage', () => {
         expect(mockStopPolling).toHaveBeenCalled()
     })
 
-    it('should stop polling when test session logs status is finished', async () => {
+    it('should trigger AI Journey and create test session', async () => {
+        jest.useFakeTimers()
+
         const mockStopPolling = jest.fn()
         const mockStartPolling = jest.fn()
 
-        mockedUsePlaygroundPolling.mockReturnValue({
-            testSessionLogs,
-            startPolling: mockStartPolling,
-            stopPolling: mockStopPolling,
-            isPolling: false,
+        mockCreateTestSession.mockResolvedValue({
+            testModeSession: { id: 'test-session-id' },
         })
 
-        const { result } = renderHook(
+        mockTriggerAIJourney.mockResolvedValue(undefined)
+
+        const testSessionLogsWithOneMessage = {
+            id: '123',
+            status: 'finished' as const,
+            logs: [
+                {
+                    id: '566c50b5-f4f3-4467-83f0-a54275681aae',
+                    data: {
+                        message: 'message-1',
+                        isSalesOpportunity: false,
+                        isSalesDiscount: true,
+                        isSalesOpportunityFieldId: 33778,
+                        isSalesDiscountFieldId: 33779,
+                    },
+                    type: TestSessionLogType.AI_AGENT_REPLY,
+                },
+            ],
+        } as GetTestSessionLogsResponse
+
+        let currentTestSessionLogs:
+            | GetTestSessionLogsResponse
+            | { logs: []; status: 'idle'; id: string } = {
+            logs: [],
+            status: 'idle' as const,
+            id: '1',
+        }
+        let currentIsPolling = false
+
+        mockedUsePlaygroundPolling.mockImplementation(() => ({
+            testSessionLogs: currentTestSessionLogs,
+            startPolling: mockStartPolling,
+            stopPolling: mockStopPolling,
+            isPolling: currentIsPolling,
+        }))
+
+        const { result, rerender } = renderHook(
             () =>
                 useGeneratePlaygroundMessage({
                     ...hookParameters,
-                    totalMessagesToBeGenerated: 0,
+                    totalMessagesToBeGenerated: 1,
                 }),
             {
                 wrapper: ({ children }) => (
@@ -454,10 +495,47 @@ describe('useGeneratePlaygroundMessage', () => {
             },
         )
 
+        const generatePromise = result.current.handleGenerateMessages()
+
         await act(async () => {
-            await result.current.handleGenerateMessages()
+            await Promise.resolve()
+            await Promise.resolve()
         })
 
-        expect(mockStopPolling).toHaveBeenCalled()
+        currentIsPolling = true
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        currentIsPolling = false
+        currentTestSessionLogs = testSessionLogsWithOneMessage
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        await act(async () => {
+            await generatePromise
+        })
+
+        expect(mockCreateTestSession).toHaveBeenCalled()
+        expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+            expect.objectContaining({
+                accountId: hookParameters.journey.account_id,
+                journeyId: hookParameters.journey.id,
+                followUpAttempt: 0,
+                testModeSessionId: 'test-session-id',
+                page: expect.objectContaining({
+                    url: 'https://shop-domain/products/product-handle',
+                    productId: String(hookParameters.selectedProduct.id),
+                }),
+            }),
+        ])
+        expect(mockStartPolling).toHaveBeenCalled()
+
+        jest.useRealTimers()
     })
 })

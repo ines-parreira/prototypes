@@ -2,3 +2,4 @@ export { useAiJourneyPhoneList } from './useAiJourneyPhoneList/useAiJourneyPhone
 export { useJourneyUpdateHandler } from './useJourneyUpdateHandler/useUpdateJourneyHandler'
 export { useAIJourneyProductList } from './useAIJourneyProductList/useAIJourneyProductList'
 export { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage/useGeneratePlaygroundMessage'
+export { useHandleSendTestSMS } from './useHandleSendTestSMS/useHandleSendTestSMS'

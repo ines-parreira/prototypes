@@ -391,7 +391,11 @@ export type TriggerAIJourneyPayload = {
         timezone: string
         language: string
     }
-    cart: {
+    page?: {
+        url: string | null
+        productId: string | null
+    }
+    cart?: {
         cartToken: string
         lastCartUpdate: string
         currency: string

@@ -46,6 +46,7 @@ describe('useCreateNewJourney', () => {
                 params: {
                     store_integration_id: 123,
                     store_name: 'shopify-store',
+                    type: 'cart_abandoned',
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -90,6 +91,7 @@ describe('useCreateNewJourney', () => {
                     params: {
                         store_integration_id: 123,
                         store_name: 'shopify-store',
+                        type: 'session_abandoned',
                     },
                     journeyConfigs: {
                         max_follow_up_messages: 3,
@@ -105,7 +107,7 @@ describe('useCreateNewJourney', () => {
                 {
                     store_integration_id: 123,
                     store_name: 'shopify-store',
-                    type: 'cart_abandoned',
+                    type: 'session_abandoned',
                     store_type: 'shopify',
                     configuration: {
                         max_follow_up_messages: 3,
@@ -133,6 +135,7 @@ describe('useCreateNewJourney', () => {
                     params: {
                         store_integration_id: 123,
                         store_name: 'shopify-store',
+                        type: 'cart_abandoned',
                     },
                     journeyConfigs: {
                         max_follow_up_messages: 3,

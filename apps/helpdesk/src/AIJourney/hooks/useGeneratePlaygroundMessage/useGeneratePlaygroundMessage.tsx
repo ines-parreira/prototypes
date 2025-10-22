@@ -116,6 +116,9 @@ export const useGeneratePlaygroundMessage = ({
                 return
             }
 
+            const { shop_domain: shopDomain } = currentIntegration.meta
+            const { handle } = selectedProduct
+
             setPlaygroundMessages([])
             setIsGeneratingMessages(true)
 
@@ -133,6 +136,10 @@ export const useGeneratePlaygroundMessage = ({
                 journeyType: journey.type,
                 followUpAttempt: 0,
                 testModeSessionId: newTestSessionId,
+                page: {
+                    url: `https://${shopDomain}/products/${handle}`,
+                    productId: String(selectedProduct.id),
+                },
                 cart: {
                     lineItems: [
                         {
