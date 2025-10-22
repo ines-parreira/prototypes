@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import {
-    CartAbandonedJourneyConfigurationApiDTO,
+    JourneyConfigurationApiDTO,
     patchJourney,
     UpdateJourneyApiDTO,
 } from '@gorgias/convert-client'
@@ -14,7 +14,7 @@ const updateJourney = async (
     journeyId: string,
     params: UpdateJourneyApiDTO,
     accessToken: string,
-    journeyConfigs?: CartAbandonedJourneyConfigurationApiDTO,
+    journeyConfigs?: JourneyConfigurationApiDTO,
 ) => {
     const requestBody = {
         ...params,
@@ -47,7 +47,7 @@ export const useUpdateJourney = () => {
                 UpdateJourneyApiDTO,
                 'type' | 'store_type' | 'account_id'
             >
-            journeyConfigs?: CartAbandonedJourneyConfigurationApiDTO
+            journeyConfigs?: JourneyConfigurationApiDTO
         }) => {
             if (!accessToken) {
                 throw new Error('Unauthorized: Access token is required')

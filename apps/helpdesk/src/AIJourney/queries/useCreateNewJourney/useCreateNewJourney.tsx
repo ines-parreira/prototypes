@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import {
-    CartAbandonedJourneyConfigurationApiDTO,
     createJourney,
     CreateJourneyApiDTO,
+    JourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
@@ -13,7 +13,7 @@ import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/cli
 const createNewJourney = async (
     params: CreateJourneyApiDTO,
     accessToken: string,
-    journeyConfigs: CartAbandonedJourneyConfigurationApiDTO,
+    journeyConfigs: JourneyConfigurationApiDTO,
 ) => {
     return createJourney(
         {
@@ -45,7 +45,7 @@ export const useCreateNewJourney = () => {
                 CreateJourneyApiDTO,
                 'type' | 'store_type' | 'account_id'
             >
-            journeyConfigs: CartAbandonedJourneyConfigurationApiDTO
+            journeyConfigs: JourneyConfigurationApiDTO
         }) => {
             if (!accessToken) {
                 throw new Error('Access token is required to create a journey')

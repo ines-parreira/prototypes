@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
-import { CartAbandonedJourneyConfigurationApiDTO } from '@gorgias/convert-client'
+import { JourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
@@ -14,7 +14,7 @@ export type DiscountCardProps = {
     totalRevenue?: MetricProps
     isDiscountEnabled?: boolean
     journeyType?: string
-    maxDiscount?: CartAbandonedJourneyConfigurationApiDTO['max_discount_percent']
+    maxDiscount?: JourneyConfigurationApiDTO['max_discount_percent']
 }
 export const DiscountCard = ({
     totalRevenue,

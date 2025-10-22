@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
-    CartAbandonedJourneyConfigurationApiDTO,
     JourneyApiDTO,
+    JourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
@@ -24,7 +24,7 @@ type useGeneratePlaygroundMessageProps = {
     journey?: JourneyApiDTO
     currentIntegration?: Integration
     journeyMessageInstructions: string
-    journeyParams?: CartAbandonedJourneyConfigurationApiDTO
+    journeyParams?: JourneyConfigurationApiDTO
     journeyType: string
     selectedProduct: Product | null
     totalMessagesToBeGenerated: number
