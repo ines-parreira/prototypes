@@ -2,14 +2,18 @@ import { ComponentProps } from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
     mockCallRoutingFlow,
     mockForwardToExternalNumberStep,
+    mockListPhoneNumbersHandler,
 } from '@gorgias/helpdesk-mocks'
 import {
     CallRoutingFlow,
     ForwardToExternalNumberStep,
+    ListPhoneNumbers200DataItem,
 } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
@@ -18,10 +22,51 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { ForwardToNode } from '../ForwardToNode'
 
+const defaultHandler = mockListPhoneNumbersHandler(async () =>
+    HttpResponse.json({
+        data: [],
+        meta: {
+            next_cursor: null,
+            prev_cursor: null,
+        },
+        object: 'list',
+        uri: '/api/phone-numbers',
+    }),
+)
+
+const server = setupServer(defaultHandler.handler)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    server.use(defaultHandler.handler)
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const renderComponent = (
     mockStepData: Partial<ForwardToExternalNumberStep> = {},
     flow?: CallRoutingFlow,
+    phoneNumbersMock?: ListPhoneNumbers200DataItem,
 ) => {
+    const mockHandler = mockListPhoneNumbersHandler(async () =>
+        HttpResponse.json({
+            data: phoneNumbersMock ? [phoneNumbersMock] : [],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+            object: 'list',
+            uri: '/api/phone-numbers',
+        }),
+    )
+    server.use(mockHandler.handler)
+
     const mockStep = mockForwardToExternalNumberStep({
         external_number: '',
         ...mockStepData,
@@ -48,6 +93,10 @@ const renderComponent = (
 }
 
 describe('ForwardToNode', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('Rendering', () => {
         it('should render the node', () => {
             renderComponent()
@@ -113,6 +162,62 @@ describe('ForwardToNode', () => {
             await waitFor(() => {
                 expect(screen.queryByText('warning_amber')).toBeNull()
             })
+        })
+    })
+
+    describe('Internal Number Validation', () => {
+        it('should show error when forwarding to internal number', async () => {
+            const user = userEvent.setup()
+            const internalPhoneNumber = '+12125551234'
+
+            renderComponent(
+                { external_number: internalPhoneNumber },
+                undefined,
+                {
+                    phone_number: internalPhoneNumber,
+                } as ListPhoneNumbers200DataItem,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        /For forwarding to internal numbers, please use a/,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('img', { name: 'octagon-warning' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.hover(
+                    screen.getByRole('img', { name: 'octagon-warning' }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Cannot forward to an internal number'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not show error when forwarding to external number', async () => {
+            const externalPhoneNumber = '+12125551234'
+
+            renderComponent({ external_number: externalPhoneNumber })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('img', { name: 'octagon-warning' }),
+                ).toBeNull()
+            })
+
+            expect(
+                screen.queryByText(
+                    /For forwarding to internal numbers, please use the "Route to" step/,
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 
