@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1506,
-    "reportGeneratedAt": "2025-10-21T07:10:52.568Z"
+    "totalUsages": 1499,
+    "reportGeneratedAt": "2025-10-21T07:29:21.993Z"
   },
   "entries": [
     {
@@ -520,7 +520,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 37,
+          "usageCount": 30,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -533,13 +533,6 @@
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/WorkflowsView.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/components/LanguageSelector.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/components/WorkflowLanguageSelect.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/hooks/tests/useLanguagesMismatchWarnings.spec.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/hooks/useLanguagesMismatchWarnings.tsx",
-              "apps/helpdesk/src/pages/automate/workflows/hooks/useWorkflowChannelSupport.ts",
-              "apps/helpdesk/src/pages/automate/workflows/tests/WorkflowsView.spec.tsx",
               "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
               "apps/helpdesk/src/pages/integrations/integration/Integration.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationListItem.tsx",

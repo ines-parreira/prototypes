@@ -1,17 +1,14 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import { ChannelLanguage } from 'pages/automate/common/types'
 
 import useLanguagesMismatchWarnings from '../useLanguagesMismatchWarnings'
 
-// Mock useFlags from launchdarkly-react-client-sdk
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlag: jest.fn(),
-}))
-const useFlagsMock = assumeMock(useFlags)
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
@@ -22,7 +19,7 @@ const useGetWorkflowConfigurationsMock = assumeMock(
 
 describe('useLanguagesMismatchWarnings', () => {
     beforeEach(() => {
-        useFlagsMock.mockReturnValue({ ChatMultiLanguages: false })
+        useFlagMock.mockReturnValue(false)
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
             data: [],
@@ -57,7 +54,7 @@ describe('useLanguagesMismatchWarnings', () => {
     })
 
     it('returns warning for mono-language channels with multiple workflow languages', () => {
-        useFlagsMock.mockReturnValue({ ChatMultiLanguages: true })
+        useFlagMock.mockReturnValue(true)
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
             data: [

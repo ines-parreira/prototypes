@@ -1,14 +1,11 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -33,7 +30,7 @@ jest.mock('models/workflows/queries', () => ({
     useDeleteWorkflowConfiguration: jest.fn(),
 }))
 jest.mock('../hooks/useStoreWorkflows.ts')
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('../hooks/useStoreWorkflowsApi')
 
 function getIntegration(id: number, type: IntegrationType) {
@@ -70,7 +67,7 @@ const mockedUseDeleteWorkflowConfiguration = jest.mocked(
     useDeleteWorkflowConfiguration,
 )
 
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlag = useFlag as jest.Mock
 const moackAppendWorkflowInStore = jest.fn()
 const mockRemoveWorkflowFromStore = jest.fn()
 const mockDuplicateWorkflow = jest.fn()
@@ -204,9 +201,7 @@ describe('<WorkflowsView />', () => {
     })
 
     it('should render correctly with legacy path', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         useStoreWorkflowsMock.mockReturnValue({
             isFetchPending: false,
@@ -265,9 +260,7 @@ describe('<WorkflowsView />', () => {
     })
 
     it('should render correctly with revamp path', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         useStoreWorkflowsMock.mockReturnValue({
             isFetchPending: false,
@@ -318,9 +311,7 @@ describe('<WorkflowsView />', () => {
     })
 
     it('should render correctly when workflowslength is 0', async () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ChangeAutomateSettingButtomPosition]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         useStoreWorkflowsMock.mockReturnValue({
             isFetchPending: false,

@@ -1,9 +1,8 @@
-import React, { createElement, useMemo } from 'react'
+import { createElement, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     matchPath,
     Redirect,
@@ -18,6 +17,7 @@ import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
@@ -81,8 +81,9 @@ export default function WorkflowsView({
     const isFetchPending =
         isStoreWorkflowsFetchPending || isWorkflowsApiFetchPending
 
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return

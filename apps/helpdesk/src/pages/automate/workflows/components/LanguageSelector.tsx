@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ReactCountryFlag } from 'react-country-flag'
 
+import { useFlag } from 'core/flags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -30,7 +30,7 @@ export default function LanguageSelector({
 }: Props) {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
-    const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
+    const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
 
     const filteredLanguages = useMemo(() => {
         let options = supportedLanguages.filter(({ code }) =>

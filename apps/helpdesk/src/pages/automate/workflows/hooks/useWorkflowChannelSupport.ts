@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
@@ -86,7 +86,7 @@ function useSupportedChannelsFromFeatureFlag(
         | FeatureFlagKey.FlowsStepsShopperAuthentication
         | FeatureFlagKey.FlowsStepsOrderLineItemSelection,
 ): Set<SelfServiceChannelType> {
-    const supportedChannelsRaw: string = useFlags()[featureFlag] ?? ''
+    const supportedChannelsRaw: string = useFlag(featureFlag) ?? ''
 
     return useMemo(() => {
         return new Set(
