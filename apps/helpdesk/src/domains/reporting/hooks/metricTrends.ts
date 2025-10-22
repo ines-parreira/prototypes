@@ -26,7 +26,7 @@ import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
-import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
+import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
@@ -128,11 +128,11 @@ export const useMedianFirstResponseTimeTrend = (
             },
             timezone,
         ),
-        medianFirstResponseTime.build({
+        medianFirstResponseTimeQueryV2Factory({
             filters,
             timezone,
         }),
-        medianFirstResponseTime.build({
+        medianFirstResponseTimeQueryV2Factory({
             filters: {
                 ...filters,
                 period: getPreviousPeriod(filters.period),

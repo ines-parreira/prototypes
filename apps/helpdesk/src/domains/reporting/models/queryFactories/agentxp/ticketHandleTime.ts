@@ -64,32 +64,13 @@ export const ticketAverageHandleTimePerAgentPerChannelQueryFactory =
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL,
     )
 
-export const ticketHandleTimeQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-): ReportingQuery<HandleTimeCubeWithJoins> => ({
-    metricName: METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME,
-    filters: [
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-    ],
-    measures: [HandleTimeMeasure.HandleTime],
-    dimensions: [],
-    segments: [TicketSegment.ClosedTickets],
-    timezone,
-    ...(sorting
-        ? {
-              order: [[HandleTimeMeasure.HandleTime, sorting]],
-          }
-        : {}),
-})
-
 export const ticketHandleTimePerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
-    ...ticketHandleTimeQueryFactory(filters, timezone, sorting),
+    segments: [TicketSegment.ClosedTickets],
+    timezone,
     metricName: METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [

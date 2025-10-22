@@ -33,15 +33,6 @@ const ticketHandleTimeScope = defineScope({
     order: ['tickets', 'handleTime'],
 })
 
-export const ticketHandleTime = ticketHandleTimeScope
-    .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME)
-    .defineQuery(() => ({
-        measures: ['handleTime'] as const,
-    }))
-
-export const ticketHandleTimeQueryV2Factory = (ctx: Context) =>
-    ticketHandleTime.build(ctx)
-
 export const ticketAverageHandleTime = ticketHandleTimeScope
     .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME)
     .defineQuery(() => ({
@@ -61,7 +52,7 @@ export const ticketAverageHandleTimePerAgent = ticketHandleTimeScope
 export const ticketAverageHandleTimePerAgentQueryV2Factory = (ctx: Context) =>
     ticketAverageHandleTimePerAgent.build(ctx)
 
-export const ticketAverageHandleTimePerChannel = ticketHandleTimeScope
+export const ticketAverageHandleTimePerAgentPerChannel = ticketHandleTimeScope
     .defineMetricName(
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL,
     )
@@ -70,5 +61,6 @@ export const ticketAverageHandleTimePerChannel = ticketHandleTimeScope
         dimensions: ['channel'] as const,
     }))
 
-export const ticketAverageHandleTimePerChannelQueryV2Factory = (ctx: Context) =>
-    ticketAverageHandleTimePerChannel.build(ctx)
+export const ticketAverageHandleTimePerAgentPerChannelQueryV2Factory = (
+    ctx: Context,
+) => ticketAverageHandleTimePerAgentPerChannel.build(ctx)

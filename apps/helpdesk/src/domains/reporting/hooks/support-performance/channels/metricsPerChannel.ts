@@ -5,7 +5,7 @@ import {
 import {
     fetchMetricPerDimension,
     MetricWithDecile,
-    useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchShouldIncludeBots,
@@ -27,6 +27,14 @@ import { oneTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/
 import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { medianFirstResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { sentMessagesPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { medianResolutionTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
@@ -50,8 +58,13 @@ export const useMedianFirstResponseTimeMetricPerChannel = (
         ? medianFirstResponseTimeMetricPerChannelQueryFactory
         : medianFirstAgentResponseTimePerChannelQueryFactory
 
-    return useMetricPerDimension(
+    return useMetricPerDimensionV2(
         queryFactory(statsFilters, timezone, sorting),
+        medianFirstResponseTimePerChannelQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
         dimensionId,
     )
 }
@@ -73,14 +86,14 @@ export const fetchMedianFirstResponseTimeMetricPerChannel = async (
         dimensionId,
     )
 }
-
+// P2/P3
 export const useMedianResponseTimeMetricPerChannel =
     createMetricPerDimensionHook(medianResponseTimeMetricPerChannelQueryFactory)
 
 export const fetchMedianResponseTimeMetricPerChannel = createFetchPerDimension(
     medianResponseTimeMetricPerChannelQueryFactory,
 )
-
+// P2/P3
 export const useHumanResponseTimeAfterAiHandoffPerChannel =
     createMetricPerDimensionHook(
         humanResponseTimeAfterAiHandoffPerChannelQueryFactory,
@@ -93,6 +106,7 @@ export const fetchHumanResponseTimeAfterAiHandoffPerChannel =
 
 export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
     ticketsRepliedMetricPerChannelQueryFactory,
+    ticketsRepliedCountPerChannelQueryV2Factory,
 )
 export const fetchTicketsRepliedMetricPerChannel = createFetchPerDimension(
     ticketsRepliedMetricPerChannelQueryFactory,
@@ -100,6 +114,7 @@ export const fetchTicketsRepliedMetricPerChannel = createFetchPerDimension(
 
 export const useClosedTicketsMetricPerChannel = createMetricPerDimensionHook(
     closedTicketsPerChannelQueryFactory,
+    closedTicketsPerChannelQueryV2Factory,
 )
 export const fetchClosedTicketsMetricPerChannel = createFetchPerDimension(
     closedTicketsPerChannelQueryFactory,
@@ -107,12 +122,15 @@ export const fetchClosedTicketsMetricPerChannel = createFetchPerDimension(
 
 export const useCreatedTicketsMetricPerChannel = createMetricPerDimensionHook(
     ticketsCreatedPerChannelPerChannelQueryFactory,
+    createdTicketsPerChannelQueryV2Factory,
 )
+
 export const fetchCreatedTicketsMetricPerChannel = createFetchPerDimension(
     ticketsCreatedPerChannelPerChannelQueryFactory,
 )
 export const useMessagesSentMetricPerChannel = createMetricPerDimensionHook(
     messagesSentMetricPerChannelQueryFactory,
+    sentMessagesPerChannelQueryV2Factory,
 )
 export const fetchMessagesSentMetricPerChannel = createFetchPerDimension(
     messagesSentMetricPerChannelQueryFactory,
@@ -126,6 +144,7 @@ export const fetchMessagesReceivedMetricPerChannel = createFetchPerDimension(
 export const useMedianResolutionTimeMetricPerChannel =
     createMetricPerDimensionHook(
         medianResolutionTimeMetricPerChannelQueryFactory,
+        medianResolutionTimePerChannelQueryV2Factory,
     )
 export const fetchMedianResolutionTimeMetricPerChannel =
     createFetchPerDimension(medianResolutionTimeMetricPerChannelQueryFactory)
@@ -139,6 +158,7 @@ export const fetchCustomerSatisfactionMetricPerChannel =
 
 export const useOneTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
     oneTouchTicketsPerChannelQueryFactory,
+    oneTouchTicketsPerChannelQueryV2Factory,
 )
 export const fetchOneTouchTicketsMetricPerChannel = createFetchPerDimension(
     oneTouchTicketsPerChannelQueryFactory,
@@ -154,6 +174,7 @@ export const fetchZeroTouchTicketsMetricPerChannel = createFetchPerDimension(
 export const useTicketAverageHandleTimePerChannel =
     createMetricPerDimensionHook(
         ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+        ticketAverageHandleTimePerAgentPerChannelQueryV2Factory,
     )
 export const fetchTicketAverageHandleTimePerChannel = createFetchPerDimension(
     ticketAverageHandleTimePerAgentPerChannelQueryFactory,

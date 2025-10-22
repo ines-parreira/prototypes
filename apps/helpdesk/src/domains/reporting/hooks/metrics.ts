@@ -22,14 +22,15 @@ import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFacto
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
-import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
-import { sentMessagesCount } from 'domains/reporting/models/scopes/messagesSent'
-import { oneTouchTickets } from 'domains/reporting/models/scopes/oneTouchTickets'
-import { onlineTime } from 'domains/reporting/models/scopes/onlineTime'
-import { medianResolutionTime } from 'domains/reporting/models/scopes/resolutionTime'
-import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketHandleTime'
-import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
-import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
+import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
+import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilter,
@@ -37,8 +38,6 @@ import {
 } from 'domains/reporting/models/types'
 import { withFilter } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-
-import { createdTicketsCount } from '../models/scopes/ticketsCreated'
 
 export type Metric = {
     isFetching: boolean
@@ -67,7 +66,7 @@ export const useTicketsCreatedMetric = (
 ): Metric =>
     useMetric(
         ticketsCreatedQueryFactory(statsFilters, timezone),
-        createdTicketsCount.build({
+        createdTicketsCountQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -88,7 +87,7 @@ export const useClosedTicketsMetric = (
             closedTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
-        closedTicketsCount.build({
+        closedTicketsCountQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -148,7 +147,7 @@ export const useMedianFirstResponseTimeMetric = (
 
     return useMetric(
         query,
-        medianFirstResponseTime.build({
+        medianFirstResponseTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -226,7 +225,7 @@ export const useMedianResolutionTimeMetric = (
             medianResolutionTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
-        medianResolutionTime.build({
+        medianResolutionTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -249,7 +248,7 @@ export const useTicketsRepliedMetric = (
 ): Metric =>
     useMetric(
         ticketsRepliedQueryFactory(statsFilters, timezone),
-        ticketsRepliedCount.build({
+        ticketsRepliedCountQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -267,7 +266,7 @@ export const useMessagesSentMetric = (
 ): Metric =>
     useMetric(
         messagesSentQueryFactory(statsFilters, timezone),
-        sentMessagesCount.build({
+        sentMessagesCountQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -300,7 +299,7 @@ export const useOneTouchTicketsMetric = (
             oneTouchTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
-        oneTouchTickets.build({
+        oneTouchTicketsQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -353,7 +352,7 @@ export const useTicketAverageHandleTimeMetric = (
             ),
             ignoreNotAssignedTicketsFilter,
         ),
-        ticketAverageHandleTime.build({
+        ticketAverageHandleTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
         }),
@@ -382,7 +381,7 @@ export const useOnlineTimeMetric = (
 ): Metric =>
     useMetric(
         onlineTimeQueryFactory(statsFilters, timezone, sorting),
-        onlineTime.build({
+        onlineTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
             sortDirection: sorting,

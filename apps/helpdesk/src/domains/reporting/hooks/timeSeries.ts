@@ -26,16 +26,16 @@ import {
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
-import { sentMessagesTimeseries } from 'domains/reporting/models/scopes/messagesSent'
-import { oneTouchTicketsTimeseries } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { sentMessagesTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import {
     BuiltQuery,
     Context,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import { closedTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsClosed'
-import { createdTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsCreated'
-import { ticketsRepliedTimeseries } from 'domains/reporting/models/scopes/ticketsReplied'
+import { closedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     AggregationWindow,
     Sentiment,
@@ -96,7 +96,7 @@ const getTimeSeriesFetch =
 
 export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
     ticketsCreatedTimeSeriesQueryFactory,
-    createdTicketsTimeseries.build.bind(createdTicketsTimeseries),
+    createdTicketsTimeseriesQueryV2Factory,
 )
 export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
     ticketsCreatedTimeSeriesQueryFactory,
@@ -104,7 +104,7 @@ export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
 
 export const useTicketsClosedTimeSeries = getTimeSeriesHook(
     closedTicketsTimeSeriesQueryFactory,
-    closedTicketsTimeseries.build.bind(closedTicketsTimeseries),
+    closedTicketsTimeseriesQueryV2Factory,
 )
 export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
     closedTicketsTimeSeriesQueryFactory,
@@ -112,7 +112,7 @@ export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
 
 export const useTicketsRepliedTimeSeries = getTimeSeriesHook(
     ticketsRepliedTimeSeriesQueryFactory,
-    ticketsRepliedTimeseries.build.bind(ticketsRepliedTimeseries),
+    ticketsRepliedTimeseriesQueryV2Factory,
 )
 export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
     ticketsRepliedTimeSeriesQueryFactory,
@@ -120,7 +120,7 @@ export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
 
 export const useMessagesSentTimeSeries = getTimeSeriesHook(
     messagesSentTimeSeriesQueryFactory,
-    sentMessagesTimeseries.build.bind(sentMessagesTimeseries),
+    sentMessagesTimeseriesQueryV2Factory,
 )
 
 export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
@@ -137,7 +137,7 @@ export const fetchMessagesReceivedTimeSeries = getTimeSeriesFetch(
 
 export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(
     oneTouchTicketsTimeSeriesQueryFactory,
-    oneTouchTicketsTimeseries.build.bind(oneTouchTicketsTimeseries),
+    oneTouchTicketsTimeseriesQueryV2Factory,
 )
 
 export const fetchOneTouchTicketsTimeSeries = getTimeSeriesFetch(

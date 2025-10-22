@@ -1,5 +1,6 @@
 import { UseQueryResult } from '@tanstack/react-query'
 
+import { BuiltQuery, ScopeMeta } from 'domains/reporting//models/scopes/scope'
 import { RequestedData } from 'domains/reporting/hooks/types'
 import {
     TicketCustomFieldsTicketCountData,
@@ -17,6 +18,7 @@ import {
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
@@ -179,6 +181,29 @@ export function useMetricPerDimension<TCube extends Cubes>(
         QueryReturnType<TCube>,
         QueryReturnType<TCube>
     >([query], {
+        select: (data) => data.data.data,
+        queryFn: queryWithDeciles(query),
+        enabled,
+    })
+
+    return formatMetricPerDimensionResponse(metricData, query, dimensionId)
+}
+
+export function useMetricPerDimensionV2<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
+    query: ReportingQuery<TCube>,
+    newQuery?: BuiltQuery<TMeta>,
+    dimensionId?: string,
+    enabled?: boolean,
+): MetricWithDecile<TCube> {
+    const metricData = usePostReportingV2<
+        QueryReturnType<TCube>,
+        QueryReturnType<TCube>,
+        TCube,
+        TMeta
+    >([query], newQuery, {
         select: (data) => data.data.data,
         queryFn: queryWithDeciles(query),
         enabled,

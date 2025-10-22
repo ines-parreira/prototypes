@@ -141,13 +141,15 @@ export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
         return query
     })
 
-export const integrationCsatQueryBuilder = {
-    [TicketDimension.AssigneeUserId]: averageCsatScorePerAgentTimeseries,
-    [TicketDimension.Channel]: averageCsatScorePerChannelTimeseries,
-    [TicketMessagesDimension.Integration]:
-        averageCsatScorePerIntegrationTimeseries,
-}
-
 export const averageCsatScorePerIntegrationTimeseriesQueryV2Factory = (
     ctx: Context,
 ) => averageCsatScorePerIntegrationTimeseries.build(ctx)
+
+export const integrationCsatQueryBuilder = {
+    [TicketDimension.AssigneeUserId]:
+        averageCsatScorePerAgentTimeseriesQueryV2Factory,
+    [TicketDimension.Channel]:
+        averageCsatScorePerChannelTimeseriesQueryV2Factory,
+    [TicketMessagesDimension.Integration]:
+        averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
+}

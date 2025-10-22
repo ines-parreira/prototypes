@@ -26,7 +26,7 @@ import {
 } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import {
     fetchMetricPerDimension,
-    useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchShouldIncludeBots,
@@ -46,6 +46,14 @@ import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'domains/reportin
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { medianFirstResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { sentMessagesPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
+import { oneTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
+import { medianResolutionTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
+import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
+import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
+import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     StatsFilters,
     TagFilterInstanceId,
@@ -57,7 +65,7 @@ const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
 const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimensionV2)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 
 describe('metricsPerChannel', () => {
@@ -111,6 +119,11 @@ describe('metricsPerChannel', () => {
                         timezone,
                         sorting,
                     ),
+                    medianFirstResponseTimePerChannelQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
                     channel,
                 )
             })
@@ -146,61 +159,92 @@ describe('metricsPerChannel', () => {
                 hook: useMedianFirstResponseTimeMetricPerChannel,
                 queryFactory:
                     medianFirstResponseTimeMetricPerChannelQueryFactory,
+                newQueryFactory:
+                    medianFirstResponseTimePerChannelQueryV2Factory,
             },
             {
                 name: 'useTicketsRepliedMetricPerChannel',
                 hook: useTicketsRepliedMetricPerChannel,
                 queryFactory: ticketsRepliedMetricPerChannelQueryFactory,
+                newQueryFactory: ticketsRepliedCountPerChannelQueryV2Factory,
             },
             {
                 name: 'useClosedTicketsMetricPerChannel',
                 hook: useClosedTicketsMetricPerChannel,
                 queryFactory: closedTicketsPerChannelQueryFactory,
+                newQueryFactory: closedTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'useCreatedTicketsMetricPerChannel',
                 hook: useCreatedTicketsMetricPerChannel,
                 queryFactory: ticketsCreatedPerChannelPerChannelQueryFactory,
+                newQueryFactory: createdTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'useMessagesSentMetricPerChannel',
                 hook: useMessagesSentMetricPerChannel,
                 queryFactory: messagesSentMetricPerChannelQueryFactory,
+                newQueryFactory: sentMessagesPerChannelQueryV2Factory,
             },
             {
                 name: 'useMedianResolutionTimeMetricPerChannel',
                 hook: useMedianResolutionTimeMetricPerChannel,
                 queryFactory: medianResolutionTimeMetricPerChannelQueryFactory,
+                newQueryFactory: medianResolutionTimePerChannelQueryV2Factory,
             },
             {
                 name: 'useCustomerSatisfactionMetricPerChannel',
                 hook: useCustomerSatisfactionMetricPerChannel,
                 queryFactory: customerSatisfactionMetricPerChannelQueryFactory,
+                newQueryFactory: undefined,
             },
             {
                 name: 'useOneTouchTicketsMetricPerChannel',
                 hook: useOneTouchTicketsMetricPerChannel,
                 queryFactory: oneTouchTicketsPerChannelQueryFactory,
+                newQueryFactory: oneTouchTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'useZeroTouchTicketsMetricPerChannel',
                 hook: useZeroTouchTicketsMetricPerChannel,
                 queryFactory: zeroTouchTicketsPerChannelQueryFactory,
+                newQueryFactory: undefined,
             },
             {
                 name: 'useTicketAverageHandleTimePerChannel',
                 hook: useTicketAverageHandleTimePerChannel,
                 queryFactory:
                     ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+                newQueryFactory:
+                    ticketAverageHandleTimePerAgentPerChannelQueryV2Factory,
             },
-        ])('should pass the query to $name hook', ({ hook, queryFactory }) => {
-            renderHook(() => hook(statsFilters, timezone, sorting, channel), {})
+        ])(
+            'should pass the query to $name hook',
+            ({ hook, queryFactory, newQueryFactory }) => {
+                renderHook(
+                    () => hook(statsFilters, timezone, sorting, channel),
+                    {},
+                )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                queryFactory(statsFilters, timezone, sorting),
-                channel,
-            )
-        })
+                if (!newQueryFactory) {
+                    expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                        queryFactory(statsFilters, timezone, sorting),
+                        undefined,
+                        channel,
+                    )
+                } else {
+                    expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                        queryFactory(statsFilters, timezone, sorting),
+                        newQueryFactory({
+                            filters: statsFilters,
+                            timezone,
+                            sortDirection: sorting,
+                        }),
+                        channel,
+                    )
+                }
+            },
+        )
     })
 
     describe('fetch methods', () => {

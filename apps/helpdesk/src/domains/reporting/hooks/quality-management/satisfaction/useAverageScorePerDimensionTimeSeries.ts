@@ -203,7 +203,7 @@ const useAverageCSATPerDimensionTimeSeries = (
             granularity,
             OrderDirection.Desc,
         ),
-        integrationCsatQueryBuilder[dimension].build({
+        integrationCsatQueryBuilder[dimension]({
             timezone,
             granularity,
             filters,

@@ -8,6 +8,7 @@ import {
     fetchMetricPerDimensionWithEnrichment,
     QueryReturnType,
     useMetricPerDimension,
+    useMetricPerDimensionV2,
     useMetricPerDimensionWithBreakdown,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -28,6 +29,7 @@ import {
     fetchPostReporting,
     useEnrichedPostReporting,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -41,8 +43,11 @@ import {
     ReportingQuery,
 } from 'domains/reporting/models/types'
 
+import { METRIC_NAMES, MetricScope } from '../metricNames'
+
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMockV2 = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
 jest.mock('domains/reporting/models/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
@@ -62,6 +67,11 @@ describe('MetricPerDimension', () => {
             },
             'timezone',
         )
+    const queryV2 = {
+        metricName: METRIC_NAMES.TEST_METRIC,
+        scope: MetricScope.SatisfactionSurveys,
+    }
+
     const agentId = 456
     const metricValue = 4567
 
@@ -155,6 +165,86 @@ describe('MetricPerDimension', () => {
 
             const { result } = renderHook(() =>
                 useMetricPerDimension(query, String(agentId)),
+            )
+
+            expect(result.current?.data?.allData).toEqual(mockedResponse.data)
+        })
+    })
+
+    describe('useMetricPerDimensionV2', () => {
+        it('should usePostReporting with query and select', () => {
+            usePostReportingMockV2.mockReturnValue(mockedResponse)
+
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(result.current).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    value: metricValue,
+                    allData: mockedResponse.data,
+                    decile: null,
+                },
+            })
+        })
+        it('should return null when data not available for entity id', () => {
+            const agentId = 'notInResponse'
+            usePostReportingMockV2.mockReturnValue(mockedResponse)
+
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, agentId),
+            )
+
+            expect(result.current?.data?.value).toBeNull()
+        })
+
+        it('should return null when called without entity', () => {
+            usePostReportingMockV2.mockReturnValue(mockedResponse)
+
+            const { result } = renderHook(() => useMetricPerDimension(query))
+
+            expect(result.current?.data?.value).toBeNull()
+        })
+
+        it('should return null when no data in response', () => {
+            const agentIdNotInResponse = 'notInResponse'
+            usePostReportingMockV2.mockReturnValue({
+                ...mockedResponse,
+                data: undefined,
+            })
+
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, agentIdNotInResponse),
+            )
+
+            expect(result.current?.data).toBeNull()
+        })
+
+        it('should use the select function', () => {
+            const mockedClientResponse = {
+                data: {
+                    data: mockedResponse.data,
+                },
+            } as any
+            usePostReportingMockV2.mockImplementation(
+                jest
+                    .fn()
+                    .mockImplementation(
+                        (
+                            query,
+                            queryV2,
+                            { select }: { select: (data: unknown) => unknown },
+                        ) => ({
+                            ...mockedResponse,
+                            data: select(mockedClientResponse),
+                        }),
+                    ),
+            )
+
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
             )
 
             expect(result.current?.data?.allData).toEqual(mockedResponse.data)

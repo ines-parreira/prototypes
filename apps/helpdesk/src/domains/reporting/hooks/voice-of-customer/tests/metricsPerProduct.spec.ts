@@ -5,6 +5,7 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
+    useMetricPerDimensionV2,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -28,6 +29,7 @@ import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment,
@@ -72,8 +74,9 @@ describe('metricsPerProduct', () => {
                     {},
                 )
 
-                expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
+                    undefined,
                     productId,
                 )
             },

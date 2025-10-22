@@ -1,12 +1,13 @@
 import { flatMap } from 'lodash'
 
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     fetchMetricPerDimension,
     MetricWithDecileFetch,
     QueryReturnType,
     ReportingMetricItem,
-    useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
@@ -20,6 +21,10 @@ import {
     TicketTagsEnrichedDimension,
 } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
+import {
+    MetricQueryFactory,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -114,15 +119,27 @@ export const createFetchPerDimension =
         )
 
 export const createMetricPerDimensionHook =
-    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: QueryFactory<TCube>,
+        queryV2?: MetricQueryFactory<TMeta, TMetricName>,
+    ) =>
     (
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
         dimensionId?: string,
     ) =>
-        useMetricPerDimension(
+        useMetricPerDimensionV2(
             query(statsFilters, timezone, sorting),
+            queryV2?.({
+                filters: statsFilters,
+                timezone,
+                sortDirection: sorting,
+            }),
             dimensionId,
         )
 

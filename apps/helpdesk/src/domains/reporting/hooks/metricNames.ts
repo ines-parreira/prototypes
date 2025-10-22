@@ -101,7 +101,6 @@ export const METRIC_NAMES = {
         'agentxp-ticket-average-handle-time-per-agent',
     AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL:
         'agentxp-ticket-average-handle-time-per-agent-per-channel',
-    AGENTXP_TICKET_HANDLE_TIME: 'agentxp-ticket-handle-time',
     AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN:
         'agentxp-ticket-handle-time-per-ticket-drill-down',
 
@@ -535,7 +534,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.TicketsOpen]: [METRIC_NAMES.SUPPORT_PERFORMANCE_OPEN_TICKETS],
     [MetricScope.TicketHandleTime]: [
-        METRIC_NAMES.AGENTXP_TICKET_HANDLE_TIME,
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME,
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT,
         METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT_PER_CHANNEL,
