@@ -20,6 +20,7 @@ type Props = {
     value: LegacyStatsFilters['period']
     variant?: 'fill' | 'ghost'
     tooltipMessageForPreviousPeriod?: string
+    excludeOptions?: string[]
 }
 
 /**
@@ -31,6 +32,7 @@ export default function DEPRECATED_PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',
+    excludeOptions,
     tooltipMessageForPreviousPeriod,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -118,7 +120,7 @@ export default function DEPRECATED_PeriodStatsFilter({
                     endDate: value.end_datetime,
                 })
             }}
-            dateRanges={getNewSetOfRanges()}
+            dateRanges={getNewSetOfRanges({ excludeOptions })}
             labelDateFormat={shortDateBasedOnUserPreferences}
             tooltipMessageForPreviousPeriod={tooltipMessageForPreviousPeriod}
         />

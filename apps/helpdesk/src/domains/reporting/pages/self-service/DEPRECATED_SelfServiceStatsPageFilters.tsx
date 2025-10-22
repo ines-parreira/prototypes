@@ -10,6 +10,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Value } from 'pages/common/forms/SelectField/types'
 
+import { PAST_YEAR } from '../constants'
+
 /**
  * @deprecated
  * @date 2023-08-28
@@ -37,7 +39,10 @@ export const DEPRECATED_SelfServiceStatsPageFilters = () => {
                 onChange={handleIntegrationsFilterChange}
                 value={statsFilters[FilterKey.StoreIntegrations]}
             />
-            <PeriodStatsFilter value={statsFilters.period} />
+            <PeriodStatsFilter
+                value={statsFilters.period}
+                excludeOptions={[PAST_YEAR]}
+            />
         </>
     )
 }
