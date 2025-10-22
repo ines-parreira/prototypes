@@ -20,7 +20,7 @@ export type MetricProps = {
     isLoading: boolean
 }
 
-export const useAbandonedCartKpis = ({
+export const useKpisPerJourney = ({
     integrationId,
     journeyId,
     shopName,

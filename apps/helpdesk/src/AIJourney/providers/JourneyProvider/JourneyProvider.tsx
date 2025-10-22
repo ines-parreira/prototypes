@@ -2,11 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 import { matchPath, useLocation, useParams } from 'react-router-dom'
 
-import {
-    JourneyApiDTO,
-    JourneyDetailApiDTO,
-    JourneyTypeEnum,
-} from '@gorgias/convert-client'
+import { JourneyApiDTO, JourneyDetailApiDTO } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
@@ -27,6 +23,7 @@ type JourneyContextType = {
     shopName: string
     isLoading: boolean
     isLoadingJourneys: boolean
+    isLoadingJourneyData: boolean
     journeyType: string
     storeConfiguration: StoreConfiguration | undefined
 }
@@ -67,7 +64,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         if (journeyTypeParam && availableJourneys.includes(journeyTypeParam))
             return journeyTypeParam
 
-        return JourneyTypeEnum.CartAbandoned.replace('_', '-')
+        return JOURNEY_TYPES.CART_ABANDONMENT
     }, [match?.params.journeyType])
 
     const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
@@ -99,7 +96,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             },
         )
 
-    const { data: journeyData, isLoading: isLoadingJourneyConfiguration } =
+    const { data: journeyData, isLoading: isLoadingJourneyData } =
         useJourneyData(currentJourney?.id, {
             enabled: currentJourney && !!integrationId && !!currentJourney?.id,
         })
@@ -108,7 +105,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         isLoadingIntegrations ||
         isLoadingJourneys ||
         isStoreConfigurationLoading ||
-        (!!currentJourney?.id && isLoadingJourneyConfiguration)
+        (!!currentJourney?.id && isLoadingJourneyData)
 
     const contextValue = useMemo(
         () => ({
@@ -119,6 +116,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             shopName,
             isLoading,
             isLoadingJourneys,
+            isLoadingJourneyData,
             journeyType,
             storeConfiguration,
         }),
@@ -130,6 +128,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             shopName,
             isLoading,
             isLoadingJourneys,
+            isLoadingJourneyData,
             journeyType,
             storeConfiguration,
         ],

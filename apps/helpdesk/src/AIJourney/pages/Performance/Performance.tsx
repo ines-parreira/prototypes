@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { FeatureFlagKey } from '@repo/feature-flags'
+
+import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import {
     AnalyticsCard,
@@ -8,12 +10,12 @@ import {
     JourneyPlaceholder,
     Selector,
 } from 'AIJourney/components'
-import { useAbandonedCartKpis } from 'AIJourney/hooks/useAbandonedCartKpis/useAbandonedCartKpis'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
-import { useIntegrations } from 'AIJourney/providers'
-import { useJourneyData, useJourneys } from 'AIJourney/queries'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useFlag } from 'core/flags'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import {
     formatMetricTrend,
@@ -27,35 +29,26 @@ const digestContent = (
     revenueVariation: string,
     conversionVariationContent: string,
     conversations: string,
-    hasDiscount?: boolean,
-    hasMaxFollowUpMessages?: boolean,
 ) => (
     <>
-        Over the last 28 days, your Abandoned Cart Journey recovered{' '}
-        <b>{revenueVariation}</b>, converting at{' '}
-        <b>{conversionVariationContent}</b>, with{' '}
+        Over the last 28 days, your journeys recovered <b>{revenueVariation}</b>
+        , converting at <b>{conversionVariationContent}</b>, with{' '}
         <b>
             {conversations}{' '}
             {conversations === '1' ? 'total recipient' : 'total recipients'}
         </b>
         .{' '}
-        {(!hasDiscount || !hasMaxFollowUpMessages) && (
-            <>
-                {`To drive more revenue, consider enabling the ${!hasDiscount ? 'Discount Code skill' : ''}${
-                    !hasDiscount && !hasMaxFollowUpMessages ? ' or ' : ''
-                }${!hasMaxFollowUpMessages ? 'Follow-up messages' : ''}.`}
-            </>
-        )}
     </>
 )
 
-type UserJourney = {
-    name: string
-    status: string
-}
-
 type UpcomingJourney = {
     name: string
+}
+
+type AvailableJourney = {
+    name: string
+    available?: boolean
+    type: JourneyTypeEnum
 }
 
 const upcomingJourneys: UpcomingJourney[] = [
@@ -70,20 +63,55 @@ const upcomingJourneys: UpcomingJourney[] = [
     },
 ]
 
-const userJourneys: UserJourney[] = [
+const availableJourneys: AvailableJourney[] = [
     {
-        name: 'Abandoned Cart',
-        status: 'Active',
+        name: 'Cart Abandoned',
+        available: true,
+        type: JourneyTypeEnum.CartAbandoned,
+    },
+    {
+        name: 'Browse Abandoned',
+        available: true,
+        type: JourneyTypeEnum.SessionAbandoned,
     },
 ]
 
 const FILTERS = ['All', 'Active', 'Coming soon']
 
 export const Performance = () => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const isSessionAbandonedEnabled = useFlag(
+        FeatureFlagKey.AiJourneySessionAbandonedEnabled,
+    )
+
+    const filteredAvailableJourneys = availableJourneys.filter((journey) => {
+        if (!isSessionAbandonedEnabled)
+            return journey.type !== JourneyTypeEnum.SessionAbandoned
+        return true
+    })
+
     const [filter, setFilter] = useState('All')
 
-    const { currentIntegration } = useIntegrations(shopName)
+    const {
+        journeys,
+        currentIntegration,
+        isLoadingJourneys,
+        isLoadingJourneyData,
+    } = useJourneyContext()
+
+    const visibleJourneys = journeys?.filter((journey) => {
+        if (!isSessionAbandonedEnabled)
+            return journey.type !== JourneyTypeEnum.SessionAbandoned
+        return true
+    })
+
+    const inactiveJourneys = filteredAvailableJourneys.filter(
+        (availableJourney) => {
+            return !visibleJourneys?.some(
+                (journey) => journey.type === availableJourney.type,
+            )
+        },
+    )
+
     const namespacedShopName = useGetNamespacedShopNameForStore(
         currentIntegration?.id ? [currentIntegration.id] : [],
     )
@@ -91,25 +119,13 @@ export const Performance = () => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
 
-    const { data: merchantAiJourneys, isLoading: isLoadingJourneys } =
-        useJourneys(currentIntegration?.id, {
-            enabled: !!currentIntegration?.id,
-        })
-
-    const abandonedCartJourney = merchantAiJourneys?.find(
-        (journey) => journey.type === 'cart_abandoned',
+    const abandonedCartJourney = visibleJourneys?.find(
+        (journey) => journey.type === JOURNEY_TYPES.CART_ABANDONMENT,
     )
-    const { data: journeyData, isLoading: isLoadingJourneyParams } =
-        useJourneyData(abandonedCartJourney?.id, {
-            enabled: !!integrationId && !!abandonedCartJourney?.id,
-        })
-
-    const { configuration: journeyParams } = journeyData || {}
 
     const filters = useFilters()
 
     const totalConversations = useAIJourneyTotalConversations({
-        journeyId: abandonedCartJourney?.id,
         filters,
     })
     const formattedTotalConversationsSent =
@@ -117,19 +133,14 @@ export const Performance = () => {
             ? `${(totalConversations.value / 1000).toFixed(1)}k`
             : totalConversations.value.toString()
 
-    const {
-        offer_discount: isDiscountEnabled,
-        max_follow_up_messages: maxFollowUpMessages,
-    } = journeyParams || {}
-
-    let filteredUserJourneys: UserJourney[]
+    let filteredUserJourneys: JourneyApiDTO[] | undefined
     switch (filter) {
         case 'All':
-            filteredUserJourneys = userJourneys
+            filteredUserJourneys = visibleJourneys
             break
         case 'Active':
-            filteredUserJourneys = userJourneys.filter(
-                (j) => j.status === 'Active',
+            filteredUserJourneys = visibleJourneys?.filter(
+                (j) => j.state === 'active',
             )
             break
         default:
@@ -146,19 +157,23 @@ export const Performance = () => {
             filteredUpcomingJourneys = []
     }
 
+    let filteredInactiveJourneys: AvailableJourney[]
+    switch (filter) {
+        case 'All':
+            filteredInactiveJourneys = inactiveJourneys
+            break
+        case 'Coming soon':
+            filteredInactiveJourneys = []
+        default:
+            filteredInactiveJourneys = []
+    }
+
     const { metrics } = useAIJourneyKpis({
         integrationId: integrationId.toString(),
         shopName: namespacedShopName,
         filters,
     })
     const isLoadingMetrics = metrics?.some((metric) => metric.isLoading)
-
-    const { metrics: journeyMetrics } = useAbandonedCartKpis({
-        integrationId: integrationId.toString(),
-        journeyId: abandonedCartJourney?.id,
-        shopName,
-        filters,
-    })
 
     const metricsContent = useMemo(() => {
         const [gmvInfluenced] = metrics
@@ -220,12 +235,10 @@ export const Performance = () => {
                     metricsContent.revenueVariationContent,
                     metricsContent.conversionVariationContent,
                     formattedTotalConversationsSent,
-                    isDiscountEnabled,
-                    !!maxFollowUpMessages,
                 )}
                 metrics={metrics}
                 isLoading={
-                    isLoadingJourneyParams ||
+                    isLoadingJourneyData ||
                     isLoadingJourneys ||
                     isLoadingMetrics
                 }
@@ -234,7 +247,7 @@ export const Performance = () => {
                 <div>
                     <span className={css.filterPrimaryText}>Journeys</span>
                     <span className={css.filterSecondaryText}>
-                        {` (${filteredUpcomingJourneys.length + filteredUserJourneys.length})`}
+                        {` (${filteredUpcomingJourneys.length + (filteredUserJourneys?.length ?? 0)})`}
                     </span>
                 </div>
                 <div style={{ maxWidth: '600px' }}>
@@ -246,20 +259,27 @@ export const Performance = () => {
                 </div>
             </div>
             <div className={css.dashboardsContainer}>
-                {filteredUserJourneys.map(() => (
+                {filteredUserJourneys?.map((journey) => (
                     <AnalyticsCard
                         period={{
                             start: filters.period.start_datetime,
                             end: filters.period.end_datetime,
                         }}
-                        analyticsData={journeyMetrics}
-                        journeyData={journeyData}
                         integrationId={integrationId}
-                        journey={abandonedCartJourney}
-                        totalConversations={formattedTotalConversationsSent}
+                        journey={journey}
                         key={abandonedCartJourney?.id}
                     />
                 ))}
+                {filteredInactiveJourneys.map(
+                    ({ available, name, type }, index) => (
+                        <JourneyPlaceholder
+                            name={name}
+                            key={index}
+                            available={available}
+                            type={type}
+                        />
+                    ),
+                )}
                 {filteredUpcomingJourneys.map((journey, index) => (
                     <JourneyPlaceholder name={journey.name} key={index} />
                 ))}

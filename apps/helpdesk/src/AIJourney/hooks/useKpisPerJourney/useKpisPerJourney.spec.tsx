@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
-import { useAbandonedCartKpis } from './useAbandonedCartKpis'
+import { useKpisPerJourney } from './useKpisPerJourney'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('hooks/useAppSelector')
@@ -17,7 +17,7 @@ jest.mock('../useAIJourneyTotalOrders/useAIJourneyTotalOrders')
 jest.mock('../useClickThroughRate/useClickThroughRate')
 jest.mock('../useAIJourneyResponseRate/useAIJourneyResponseRate')
 
-describe('useAbandonedCartKpis', () => {
+describe('useKpisPerJourney', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
     const mockUseAIJourneyGmvInfluenced = useAIJourneyGmvInfluenced as jest.Mock
     const mockUseAIJourneyConversionRate =
@@ -55,7 +55,7 @@ describe('useAbandonedCartKpis', () => {
 
     it('should return KPIs in correct order', () => {
         const { result } = renderHook(() =>
-            useAbandonedCartKpis({
+            useKpisPerJourney({
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
@@ -80,7 +80,7 @@ describe('useAbandonedCartKpis', () => {
 
     it('should call all KPI hooks with correct parameters', () => {
         renderHook(() =>
-            useAbandonedCartKpis({
+            useKpisPerJourney({
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
@@ -118,7 +118,7 @@ describe('useAbandonedCartKpis', () => {
         })
 
         renderHook(() =>
-            useAbandonedCartKpis({
+            useKpisPerJourney({
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',
@@ -159,7 +159,7 @@ describe('useAbandonedCartKpis', () => {
         })
 
         renderHook(() =>
-            useAbandonedCartKpis({
+            useKpisPerJourney({
                 integrationId: '123',
                 journeyId: 'journey-id',
                 shopName: 'shopName',

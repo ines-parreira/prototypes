@@ -1,8 +1,20 @@
 import { render, screen } from '@testing-library/react'
+import { useParams } from 'react-router-dom'
 
 import { JourneyPlaceholder } from './JourneyPlaceholder'
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
+
+const useParamsMock = jest.mocked(useParams)
+
 describe('<JourneyPlaceholder />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        useParamsMock.mockReturnValue({ shopName: 'test-shop' })
+    })
     it('renders the journey name in both status and coverInfo', () => {
         render(<JourneyPlaceholder name="Test Journey" />)
         expect(screen.getAllByText('Test Journey')[0]).toBeInTheDocument()

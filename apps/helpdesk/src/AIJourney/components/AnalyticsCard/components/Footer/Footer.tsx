@@ -1,13 +1,17 @@
-import { JourneyConfigurationApiDTO } from '@gorgias/convert-client'
+import {
+    JourneyConfigurationApiDTO,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
+import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 
 import css from './Footer.less'
 
 type FooterProps = {
     isDiscountEnabled?: boolean
-    journeyType?: string
+    journeyType: JourneyTypeEnum
     maxDiscount?: JourneyConfigurationApiDTO['max_discount_percent']
     totalRevenue?: MetricProps
 }
@@ -24,7 +28,7 @@ export const Footer = ({
                 totalRevenue={totalRevenue}
                 isDiscountEnabled={isDiscountEnabled}
                 maxDiscount={maxDiscount}
-                journeyType={journeyType}
+                journeyType={JOURNEY_TYPES_MAP_TO_URL[journeyType]}
             />
         </div>
     )

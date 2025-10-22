@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { renderWithRouter } from 'utils/testing'
 
@@ -17,7 +19,13 @@ describe('Footer', () => {
     })
 
     it('should render discount information when discount is enabled', () => {
-        render(<Footer maxDiscount={20} isDiscountEnabled={true} />)
+        render(
+            <Footer
+                journeyType={JourneyTypeEnum.CartAbandoned}
+                maxDiscount={20}
+                isDiscountEnabled={true}
+            />,
+        )
 
         expect(
             screen.getByText('Discount code included is 20%'),
@@ -38,6 +46,7 @@ describe('Footer', () => {
 
         renderWithRouter(
             <Footer
+                journeyType={JourneyTypeEnum.CartAbandoned}
                 isDiscountEnabled={false}
                 maxDiscount={99}
                 totalRevenue={mockTotalRevenue}

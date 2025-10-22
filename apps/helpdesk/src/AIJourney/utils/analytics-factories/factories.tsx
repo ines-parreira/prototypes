@@ -454,7 +454,15 @@ export const aiJourneyTotalConversationsQueryFactory = (
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS,
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
-        filters: [...journeyIdFilter, ...baseFilters],
+        filters: [
+            ...journeyIdFilter,
+            ...baseFilters,
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+        ],
         timezone,
     }
 }

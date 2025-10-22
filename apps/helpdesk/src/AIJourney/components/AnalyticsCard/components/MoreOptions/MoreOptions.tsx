@@ -3,7 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
+
+import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 
 import css from './MoreOptions.less'
 
@@ -15,13 +17,11 @@ export const MoreOptions = ({
 }: {
     shopName: string
     journeyState: JourneyStatusEnum
-    journeyType: string
+    journeyType: JourneyTypeEnum
     handleChangeStatus: () => void
 }) => {
     const [menuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
-
-    const formattedJourneyType = journeyType.replace('_', '-')
 
     const options = [
         {
@@ -108,7 +108,7 @@ export const MoreOptions = ({
                         <Link
                             className={css.option}
                             key={index}
-                            to={`/app/ai-journey/${shopName}/${formattedJourneyType}/${path}`}
+                            to={`/app/ai-journey/${shopName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/${path}`}
                         >
                             <i className="material-icons-outlined">{icon}</i>
                             {label}

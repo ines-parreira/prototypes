@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
+import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
-import {
-    JourneyApiDTO,
-    JourneyDetailApiDTO,
-    JourneyStatusEnum,
-} from '@gorgias/convert-client'
+import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { TotalConversationsCard } from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
-import { useJourneyUpdateHandler } from 'AIJourney/hooks'
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import { JOURNEY_TYPES_MAP_TO_STRING } from 'AIJourney/constants'
+import { useJourneyUpdateHandler, useKpisPerJourney } from 'AIJourney/hooks'
+import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
+import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
+import { useJourneyContext } from 'AIJourney/providers'
 import greenLightningIcon from 'assets/img/ai-journey/green-lightning.svg'
 import greyLightningIcon from 'assets/img/ai-journey/lightning.svg'
 import orangeLightningIcon from 'assets/img/ai-journey/orange-lightning.svg'
@@ -27,42 +27,58 @@ import { MoreOptions } from './components/MoreOptions/MoreOptions'
 import css from './AnalyticsCard.less'
 
 type AnalyticsCardProps = {
-    analyticsData: MetricProps[]
-    integrationId?: number
-    journey?: JourneyApiDTO
-    journeyData?: JourneyDetailApiDTO
+    integrationId: number
+    journey: JourneyApiDTO
     period: {
         start: string
         end: string
     }
-    totalConversations?: string
 }
 
 export const AnalyticsCard = ({
-    analyticsData,
     integrationId,
     journey,
-    journeyData,
     period,
-    totalConversations,
 }: AnalyticsCardProps) => {
     const dispatch = useAppDispatch()
+    const filters = useFilters()
+    const { shopName } = useParams<{ shopName: string }>()
+
     const [journeyState, setJourneyState] = useState<JourneyStatusEnum>(
-        journey?.state || JourneyStatusEnum.Draft,
+        journey.state || JourneyStatusEnum.Draft,
     )
 
-    const { store_name: shopName, type: journeyType } = journeyData || {}
+    const { journeyData } = useJourneyContext()
+
+    const { type: journeyType } = journey
+
+    const { metrics: analyticsData } = useKpisPerJourney({
+        integrationId: integrationId.toString(),
+        journeyId: journey.id,
+        shopName,
+        filters,
+    })
+
+    const totalConversations = useAIJourneyTotalConversations({
+        journeyId: journey.id,
+        filters,
+    })
+
+    const formattedTotalConversationsSent =
+        totalConversations?.value > 1000
+            ? `${(totalConversations.value / 1000).toFixed(1)}k`
+            : totalConversations.value.toString()
 
     const isLoadingMetrics = analyticsData.some((data) => data.isLoading)
     const isEmpty = !analyticsData.some(
         (data) => data.value !== 0 && data.prevValue !== 0,
     )
     const shouldRenderTotalConversationsCard =
-        !isLoadingMetrics && !isEmpty && totalConversations !== '0'
+        !isLoadingMetrics && !isEmpty && formattedTotalConversationsSent !== '0'
     const shouldRenderFooter = !isLoadingMetrics && !isEmpty
 
     useEffect(() => {
-        if (journey?.state) setJourneyState(journey?.state)
+        if (journey.state) setJourneyState(journey.state)
     }, [journey])
 
     const statusIcon = {
@@ -102,7 +118,7 @@ export const AnalyticsCard = ({
                     journeyState === JourneyStatusEnum.Active
                         ? JourneyStatusEnum.Paused
                         : JourneyStatusEnum.Active,
-                journeyMessageInstructions: journey?.message_instructions,
+                journeyMessageInstructions: journey.message_instructions,
             })
             setJourneyState(newData.state)
         } catch (error) {
@@ -113,7 +129,7 @@ export const AnalyticsCard = ({
                 }),
             )
         }
-    }, [journeyState, dispatch, handleUpdate, journey?.message_instructions])
+    }, [journeyState, dispatch, handleUpdate, journey.message_instructions])
 
     const totalRevenue = analyticsData.find(
         (data) => data.label === 'Total Revenue',
@@ -121,12 +137,14 @@ export const AnalyticsCard = ({
 
     const shouldRenderMoreOptions = shopName && journeyType
 
+    const formattedJourneyType = JOURNEY_TYPES_MAP_TO_STRING[journey.type]
+
     const cardContent = () => {
         if (isLoadingMetrics) {
             return <LoadingSpinner style={{ height: '25px', width: '25px' }} />
         }
         if (isEmpty) {
-            return <EmptyState />
+            return <EmptyState journeyType={formattedJourneyType} />
         }
         return (
             <>
@@ -140,7 +158,7 @@ export const AnalyticsCard = ({
             <div className={analyticsContentClass}>
                 <div className={css.status}>
                     <img src={statusIcon[journeyState]} alt="sphere-icon" />
-                    <span>Abandoned Cart</span>
+                    <span>{formattedJourneyType}</span>
                     <div className={statusBadgeClass}>
                         {journeyState?.toUpperCase()}
                     </div>
@@ -156,7 +174,7 @@ export const AnalyticsCard = ({
                 {cardContent()}
                 {shouldRenderTotalConversationsCard && (
                     <TotalConversationsCard
-                        totalConversations={totalConversations}
+                        totalConversations={formattedTotalConversationsSent}
                         ticketViewId={ticketViewId}
                     />
                 )}
@@ -164,7 +182,7 @@ export const AnalyticsCard = ({
             {shouldRenderFooter && (
                 <Footer
                     isDiscountEnabled={isDiscountEnabled}
-                    journeyType={journey?.type.replace('_', '-')}
+                    journeyType={journeyType}
                     maxDiscount={maxDiscount}
                     totalRevenue={totalRevenue}
                 />

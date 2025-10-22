@@ -9,6 +9,44 @@ export const abandonedCartKpisMock: MetricProps[] = [
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
         currency: 'USD',
+        isLoading: false,
+    },
+    {
+        label: 'Conversion rate',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent-precision-1',
+        isLoading: false,
+    },
+    {
+        label: 'Response Rate',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent-precision-1',
+        currency: 'USD',
+        isLoading: false,
+        drilldown: {
+            title: 'Response Rate',
+            metricName: 'aiJourneyResponseRate' as any,
+            integrationId: '33858',
+            shopName: 'artemisathletix',
+        },
+    },
+]
+
+export const loadingAbandonedCartKpisMock: MetricProps[] = [
+    {
+        label: 'Total Revenue',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency: 'USD',
         isLoading: true,
     },
     {
@@ -29,6 +67,44 @@ export const abandonedCartKpisMock: MetricProps[] = [
         metricFormat: 'percent-precision-1',
         currency: 'USD',
         isLoading: true,
+        drilldown: {
+            title: 'Response Rate',
+            metricName: 'aiJourneyResponseRate' as any,
+            integrationId: '33858',
+            shopName: 'artemisathletix',
+        },
+    },
+]
+
+export const emptyAbandonedCartKpisMock: MetricProps[] = [
+    {
+        label: 'Total Revenue',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency: 'USD',
+        isLoading: false,
+    },
+    {
+        label: 'Conversion rate',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent-precision-1',
+        isLoading: false,
+    },
+    {
+        label: 'Response Rate',
+        value: 0,
+        prevValue: 0,
+        series: [],
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent-precision-1',
+        currency: 'USD',
+        isLoading: false,
         drilldown: {
             title: 'Response Rate',
             metricName: 'aiJourneyResponseRate' as any,

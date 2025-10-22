@@ -3,3 +3,7 @@ export { useJourneyUpdateHandler } from './useJourneyUpdateHandler/useUpdateJour
 export { useAIJourneyProductList } from './useAIJourneyProductList/useAIJourneyProductList'
 export { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage/useGeneratePlaygroundMessage'
 export { useHandleSendTestSMS } from './useHandleSendTestSMS/useHandleSendTestSMS'
+export { useFilters } from './useFilters/useFilters'
+export { useAIJourneyTotalConversations } from './useAIJourneyTotalConversations/useAIJourneyTotalConversations'
+export { useAIJourneyKpis } from './useAIJourneyKpis/useAIJourneyKpis'
+export { useKpisPerJourney } from './useKpisPerJourney/useKpisPerJourney'
