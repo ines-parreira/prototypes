@@ -10,11 +10,11 @@ import { createStore } from 'redux'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import { RootState } from 'state/types'
 
 import useChatMigrationBanner from '../useChatMigrationBanner'
+import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 
 const defaultState = {
     integrations: fromJS({
@@ -41,8 +41,9 @@ jest.mock('state/integrations/selectors', () => ({
     getStoreIntegrations: jest.fn(),
 }))
 
-jest.mock('state/entities/chatInstallationStatus/selectors', () => ({
-    getChatInstallationStatus: jest.fn(),
+jest.mock('../useThemeAppExtensionInstallation', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 
 describe('useChatMigrationBanner', () => {
@@ -56,37 +57,37 @@ describe('useChatMigrationBanner', () => {
     const now = new Date().toISOString()
 
     const script_tags_scope = `['read_script_tags', 'write_script_tags']`
-    const missing_scopes = `[]`
 
     it.each`
-        featureFlagV3Banner | featureFlagScriptTag | metaOauthScope       | minSnipV | o_c_install_dt | o_c_uninstall_dt | o_c_install_m   | clickInstalled | showBanners             | description
-        ${false}            | ${false}             | ${script_tags_scope} | ${'v2'}  | ${now}         | ${now}           | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] all feature flag OFF'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[true, false, true]}  | ${'[v3-banner:Y, ST-banner:N] not using 1click'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${false}       | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, not using 1click'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true, true]}  | ${'[v3-banner:N, ST-banner:Y] using 1click, having v2, not showing the 2 banners'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[true, false, true]}  | ${'[v3-banner:Y, ST-banner:N] 1click churned > 5days'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}      | ${false}       | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, 1click churned > 5days'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${now}         | ${now}           | ${'asset'}      | ${false}       | ${[false, true, true]}  | ${'[v3-banner:N, ST-banner:Y] already v3, 1click churned < 5days'}
-        ${true}             | ${true}              | ${missing_scopes}    | ${'v2'}  | ${undefined}   | ${undefined}     | ${undefined}    | ${true}        | ${[false, true, false]} | ${'[v3-banner:N, ST-banner:Y] using 1click, missing scope, not showing the 2 banners'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v3'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] already v3, script tab migrated'}
-        ${true}             | ${true}              | ${script_tags_scope} | ${'v2'}  | ${undefined}   | ${undefined}     | ${'script_tag'} | ${true}        | ${[false, false, true]} | ${'[v3-banner:N, ST-banner:N] do not show v3 banner if script tag migrated'}
+        themeAppExtensionEnabled | metaOauthScope       | o_c_install_dt | o_c_uninstall_dt | o_c_install_m            | clickInstalled | showBanner | hasScope | description
+        ${false}                 | ${script_tags_scope} | ${now}         | ${now}           | ${'asset'}               | ${true}        | ${false}   | ${true}  | ${'Banner hidden when theme extension feature is disabled'}
+        ${true}                  | ${script_tags_scope} | ${undefined}   | ${undefined}     | ${undefined}             | ${false}       | ${false}   | ${true}  | ${'Banner hidden when not using 1click'}
+        ${true}                  | ${script_tags_scope} | ${undefined}   | ${undefined}     | ${'theme_app_extension'} | ${true}        | ${false}   | ${true}  | ${'Banner hidden when already using theme app extension'}
+        ${true}                  | ${script_tags_scope} | ${now}         | ${undefined}     | ${'asset'}               | ${true}        | ${true}    | ${true}  | ${'Banner shown when using asset method with 1click'}
+        ${true}                  | ${script_tags_scope} | ${now}         | ${undefined}     | ${'script_tag'}          | ${true}        | ${true}    | ${true}  | ${'Banner shown when using script_tag method'}
+        ${true}                  | ${script_tags_scope} | ${sixDaysAgo}  | ${sixDaysAgo}    | ${'asset'}               | ${false}       | ${false}   | ${true}  | ${'Banner hidden when 1click churned > 5days'}
+        ${true}                  | ${script_tags_scope} | ${now}         | ${now}           | ${'asset'}               | ${false}       | ${true}    | ${true}  | ${'Banner shown when 1click churned < 5days'}
     `(
         'Should return the correct banner state ($description)',
         ({
-            featureFlagV3Banner,
-            featureFlagScriptTag,
+            themeAppExtensionEnabled,
             metaOauthScope,
-            minSnipV,
             o_c_install_dt,
             o_c_uninstall_dt,
             o_c_install_m,
             clickInstalled,
-            showBanners,
+            showBanner,
+            hasScope,
         }) => {
             mockFlags({
-                [FeatureFlagKey.ChatSnippetV3Banner]: featureFlagV3Banner,
-                [FeatureFlagKey.ShopifyIntegrationScopeScriptTag]:
-                    featureFlagScriptTag,
+                [FeatureFlagKey.SwitchToShopifyThemeAppExtension]:
+                    themeAppExtensionEnabled ? Date.now() : false,
+            })
+            ;(useThemeAppExtensionInstallation as jest.Mock).mockReturnValue({
+                themeAppExtensionEnabled,
+                shouldUseThemeAppExtensionInstallation:
+                    themeAppExtensionEnabled,
+                themeAppExtensionInstallationUrl: null,
             })
             ;(getStoreIntegrations as unknown as jest.Mock).mockReturnValue([
                 {
@@ -100,11 +101,7 @@ describe('useChatMigrationBanner', () => {
                     } as Partial<ShopifyIntegrationMeta> as unknown as ShopifyIntegrationMeta,
                 },
             ])
-            ;(
-                getChatInstallationStatus as unknown as jest.Mock
-            ).mockReturnValue({
-                minimumSnippetVersion: minSnipV,
-            })
+
             const mockChatIntegration = fromJS({
                 id: 2,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -133,9 +130,8 @@ describe('useChatMigrationBanner', () => {
             )
 
             expect(result.current).toEqual({
-                showSnippetV3MigrationBanner: (showBanners as boolean[])[0],
-                showScriptTagMigrationBanner: (showBanners as boolean[])[1],
-                hasShopifyScriptTagScope: (showBanners as boolean[])[2],
+                showThemeExtensionsMigrationBanner: showBanner,
+                hasShopifyScriptTagScope: hasScope,
             })
         },
     )

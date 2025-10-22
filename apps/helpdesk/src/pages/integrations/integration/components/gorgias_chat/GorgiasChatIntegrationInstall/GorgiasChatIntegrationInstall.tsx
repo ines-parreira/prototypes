@@ -2,10 +2,8 @@ import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import warningIcon from 'assets/img/icons/warning.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import NavigatedSuccessModal, {
@@ -23,8 +21,6 @@ import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
-import InstallationStep from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
-import InstallationTab from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationTab'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 
@@ -68,8 +64,7 @@ const GorgiasChatIntegrationInstall = ({
         ? shopifyIntegrationIds.includes(shopIntegrationId)
         : undefined
 
-    const { showScriptTagMigrationBanner, hasShopifyScriptTagScope } =
-        useChatMigrationBanner(integration)
+    const { hasShopifyScriptTagScope } = useChatMigrationBanner(integration)
     const {
         shouldUseThemeAppExtensionInstallation,
         themeAppExtensionInstallationUrl,
@@ -115,61 +110,6 @@ const GorgiasChatIntegrationInstall = ({
 
                 <Container fluid className={css.container}>
                     <div className={css.content}>
-                        {showScriptTagMigrationBanner && (
-                            <Alert type={AlertType.Warning}>
-                                <p
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <img
-                                        src={warningIcon}
-                                        alt="icon"
-                                        className={css.migrationBannerIcon}
-                                    />
-                                    <b>
-                                        Update{' '}
-                                        {shouldUseThemeAppExtensionInstallation
-                                            ? 'quick'
-                                            : '1-click'}{' '}
-                                        installation for Shopify
-                                    </b>
-                                </p>
-                                <p>
-                                    We enhanced the{' '}
-                                    {shouldUseThemeAppExtensionInstallation
-                                        ? 'quick'
-                                        : '1-click'}{' '}
-                                    installation for Shopify to ensure better
-                                    stability. Please follow the steps below to
-                                    update your chat:
-                                </p>
-                                <InstallationTab>
-                                    <InstallationStep index={1}>
-                                        Go to the{' '}
-                                        <Link
-                                            to={`/app/settings/integrations/shopify/${
-                                                shopIntegrationId ?? ''
-                                            }`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Shopify integration settings page
-                                        </Link>{' '}
-                                        and click <b>Update App Permissions</b>.
-                                    </InstallationStep>
-                                    <InstallationStep index={2}>
-                                        <b>Uninstall and reinstall</b> your chat
-                                        via{' '}
-                                        {shouldUseThemeAppExtensionInstallation
-                                            ? 'quick'
-                                            : '1-click'}{' '}
-                                        installation for Shopify.
-                                    </InstallationStep>
-                                </InstallationTab>
-                            </Alert>
-                        )}
                         <div>
                             <div className={css.connectStoreTitle}>
                                 Connect store

@@ -1,30 +1,24 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatInstallationMethod,
     IntegrationType,
-    latestSnippetVersion,
 } from 'models/integration/types'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 const useChatMigrationBanner = (
     integration: Map<any, any>,
 ): {
-    showScriptTagMigrationBanner: boolean
-    showSnippetV3MigrationBanner: boolean
+    showThemeExtensionsMigrationBanner: boolean
     hasShopifyScriptTagScope: boolean
 } => {
-    const hasScriptTagFeatureFlagOn: boolean =
-        useFlags()[FeatureFlagKey.ShopifyIntegrationScopeScriptTag] ?? false
-    const isChatSnippetV3BannerEnabled =
-        useFlags()[FeatureFlagKey.ChatSnippetV3Banner] ?? false
+    const { shouldUseThemeAppExtensionInstallation } =
+        useThemeAppExtensionInstallation(integration.toJS())
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
@@ -56,8 +50,6 @@ const useChatMigrationBanner = (
         GorgiasChatInstallationMethod.Asset
     const fiveDays = 1000 * 60 * 60 * 24 * 5
 
-    const { minimumSnippetVersion } = useAppSelector(getChatInstallationStatus)
-
     const activeOrRecentOneClickUsage = useMemo(() => {
         // `one_click_installation_datetime` can be null despite oneClick installation to true,
         // because we only introduced this datetime tracking in the past months.
@@ -88,55 +80,14 @@ const useChatMigrationBanner = (
             storeIntegration,
         })
 
-    const {
-        showSnippetV3Banner,
-        showScriptTagBanner,
-    }:
-        | { showSnippetV3Banner: boolean; showScriptTagBanner: boolean }
-        | undefined = useMemo(() => {
-        let showScriptTagBanner = false
-        let showSnippetV3Banner = false
-
-        // Feature flag early return.
-        if (!hasScriptTagFeatureFlagOn) {
-            showSnippetV3Banner =
-                minimumSnippetVersion !== latestSnippetVersion &&
-                isChatSnippetV3BannerEnabled
-            showScriptTagBanner = false
-            return { showSnippetV3Banner, showScriptTagBanner }
-        }
-
-        showScriptTagBanner =
+    return {
+        showThemeExtensionsMigrationBanner:
+            shouldUseThemeAppExtensionInstallation &&
             isConnectedToShopify &&
             activeOrRecentOneClickUsage &&
-            (!hasShopifyScriptTagScope ||
-                oneClickInstallationMethod ===
-                    GorgiasChatInstallationMethod.Asset)
-
-        showSnippetV3Banner =
-            minimumSnippetVersion !== latestSnippetVersion &&
-            isChatSnippetV3BannerEnabled &&
-            // We do not show the banner for script_tag migrated integrations.
-            oneClickInstallationMethod ===
-                GorgiasChatInstallationMethod.Asset &&
-            // Do not show 2 banners at the same time.
-            !showScriptTagBanner
-
-        return { showSnippetV3Banner, showScriptTagBanner }
-    }, [
-        activeOrRecentOneClickUsage,
-        hasScriptTagFeatureFlagOn,
+            oneClickInstallationMethod !==
+                GorgiasChatInstallationMethod.ThemeAppExtension,
         hasShopifyScriptTagScope,
-        isChatSnippetV3BannerEnabled,
-        isConnectedToShopify,
-        minimumSnippetVersion,
-        oneClickInstallationMethod,
-    ])
-
-    return {
-        showScriptTagMigrationBanner: showScriptTagBanner,
-        showSnippetV3MigrationBanner: showSnippetV3Banner,
-        hasShopifyScriptTagScope: hasShopifyScriptTagScope,
     }
 }
 

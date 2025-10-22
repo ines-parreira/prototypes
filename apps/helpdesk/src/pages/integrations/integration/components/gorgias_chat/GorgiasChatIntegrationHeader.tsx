@@ -26,7 +26,8 @@ const GorgiasChatIntegrationHeader: React.FC<Props> = ({
         getShowShopifyCheckoutChatBanner,
     )
 
-    const { showSnippetV3MigrationBanner } = useChatMigrationBanner(integration)
+    const { showThemeExtensionsMigrationBanner } =
+        useChatMigrationBanner(integration)
     const shouldShowShopifyCheckoutBanner =
         useShouldShowShopifyCheckoutChatBanner(integration, tab)
 
@@ -34,10 +35,9 @@ const GorgiasChatIntegrationHeader: React.FC<Props> = ({
         <>
             <GorgiasChatIntegrationNavigation integration={integration} />
             {installed ? (
-                showSnippetV3MigrationBanner && (
+                showThemeExtensionsMigrationBanner && (
                     <GorgiasChatIntegrationOutdatedSnippetBanner
                         integration={integration}
-                        tab={tab}
                     />
                 )
             ) : (
