@@ -19,10 +19,12 @@ export const useGuidanceArticle = ({
     guidanceArticleId,
     guidanceHelpCenterId,
     locale,
+    enabled = true,
 }: {
     guidanceArticleId: number
     guidanceHelpCenterId: number
     locale: LocaleCode
+    enabled?: boolean
 }) => {
     const isIncreaseGuidanceCreationLimit = useFlag(
         FeatureFlagKey.IncreaseGuidanceCreationLimit,
@@ -34,6 +36,7 @@ export const useGuidanceArticle = ({
             guidanceHelpCenterId,
             locale,
             {
+                enabled,
                 initialData: () => {
                     const articlesCache = queryClient.getQueryData(
                         helpCenterKeys.articles(

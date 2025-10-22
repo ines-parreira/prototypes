@@ -1,7 +1,11 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { ArticleTranslationResponseDto } from 'models/helpCenter/types'
+import {
+    ArticleTranslationResponseDto,
+    ArticleWithLocalTranslation,
+} from 'models/helpCenter/types'
 import { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import { KnowledgeEditorGuidanceCreateView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceCreateView'
 import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceReadView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceReadView'
 import { GuidanceFormFields } from 'pages/aiAgent/types'
@@ -19,8 +23,8 @@ import css from './KnowledgeEditorGuidanceView.less'
 export type BaseProps = {
     shopName: string
     onClose: () => void
-    onClickPrevious: () => void
-    onClickNext: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
     guidanceMode: GuidanceMode['mode']
 }
 
@@ -29,15 +33,18 @@ type Props = BaseProps & {
     availableVariables: GuidanceVariableGroup[]
     onSave: (
         fields: GuidanceFormFields,
-    ) => Promise<ArticleTranslationResponseDto | undefined>
-    onDelete: () => Promise<void>
-    onDuplicate: () => Promise<void>
+    ) => Promise<ArticleTranslationResponseDto | undefined> | void
+    onCreate: (
+        fields: GuidanceFormFields,
+    ) => Promise<ArticleWithLocalTranslation | undefined> | void
+    onDelete: () => Promise<void> | void
+    onDuplicate: () => Promise<void> | void
     title: string
     content: string
     aiAgentEnabled: boolean
     onToggleAIAgentEnabled: () => void
-    createdDatetime: Date
-    lastUpdatedDatetime: Date
+    createdDatetime?: Date
+    lastUpdatedDatetime?: Date
     onChangeTitle: (title: string) => void
     onChangeContent: (content: string) => void
     isGuidanceArticleUpdating: boolean
@@ -50,6 +57,7 @@ export const KnowledgeEditorGuidanceView = ({
     availableActions,
     availableVariables,
     onSave,
+    onCreate,
     onDelete,
     onDuplicate,
     title,
@@ -83,13 +91,12 @@ export const KnowledgeEditorGuidanceView = ({
     const onClickCancel = useCallback(() => {
         onChangeTitle(initialTitle)
         onChangeContent(initialContent)
-        setGuidanceMode('read')
     }, [initialTitle, initialContent, onChangeTitle, onChangeContent])
 
     const onClickCreate = useCallback(async () => {
-        await onSave({ name: title, content, isVisible: aiAgentEnabled })
-        setGuidanceMode('edit')
-    }, [onSave, title, content, aiAgentEnabled])
+        await onCreate({ name: title, content, isVisible: aiAgentEnabled })
+        setGuidanceMode('read')
+    }, [onCreate, title, content, aiAgentEnabled])
 
     const onClickCopy = useCallback(async () => {
         await onDuplicate()
@@ -165,6 +172,17 @@ export const KnowledgeEditorGuidanceView = ({
 
                 {guidanceMode === 'edit' && (
                     <KnowledgeEditorGuidanceEditView
+                        availableActions={availableActions}
+                        content={content}
+                        title={title}
+                        onChangeContent={onChangeContent}
+                        onChangeTitle={onChangeTitle}
+                        shopName={shopName}
+                    />
+                )}
+
+                {guidanceMode === 'create' && (
+                    <KnowledgeEditorGuidanceCreateView
                         availableActions={availableActions}
                         content={content}
                         title={title}

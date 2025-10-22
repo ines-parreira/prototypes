@@ -17,6 +17,7 @@ describe('KnowledgeEditor', () => {
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}
                 guidanceMode="read"
+                isOpen
             />,
         )
 

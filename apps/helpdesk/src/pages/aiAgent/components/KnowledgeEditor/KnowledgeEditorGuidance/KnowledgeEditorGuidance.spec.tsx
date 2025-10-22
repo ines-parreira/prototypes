@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
@@ -17,11 +17,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
 
 const guidanceArticle = getGuidanceArticleFixture(1)
 
+const mockUseGuidanceArticle = jest.fn()
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
-    useGuidanceArticle: jest.fn(() => ({
-        guidanceArticle,
-        isGuidanceArticleLoading: false,
-    })),
+    useGuidanceArticle: (params: any) => mockUseGuidanceArticle(params),
 }))
 
 jest.mock(
@@ -35,10 +33,12 @@ jest.mock(
 )
 
 const updateGuidanceArticle = jest.fn()
+const createGuidanceArticle = jest.fn()
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(() => ({
         updateGuidanceArticle,
+        createGuidanceArticle,
         deleteGuidanceArticle: jest.fn(),
         duplicateGuidanceArticle: jest.fn(),
         isGuidanceArticleUpdating: false,
@@ -46,7 +46,15 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
 }))
 
 describe('KnowledgeEditorGuidance', () => {
-    it('renders', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle,
+            isGuidanceArticleLoading: false,
+        })
+    })
+
+    it('renders in edit mode and allows editing', () => {
         const { getByLabelText } = render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
@@ -57,6 +65,8 @@ describe('KnowledgeEditorGuidance', () => {
                     onClickPrevious={jest.fn()}
                     onClickNext={jest.fn()}
                     guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
                 />
             </Provider>,
         )
@@ -78,5 +88,255 @@ describe('KnowledgeEditorGuidance', () => {
             ),
             { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
         )
+    })
+
+    it('renders in create mode when no guidanceArticleId provided', () => {
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    onDelete={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        expect(nameInput).toHaveValue('')
+        expect(
+            screen.getByRole('button', { name: 'Create' }),
+        ).toBeInTheDocument()
+    })
+
+    it('transitions from create mode to edit mode after article creation', async () => {
+        const newArticle = {
+            ...guidanceArticle,
+            id: 999,
+            translation: {
+                title: 'New Article',
+                content: 'New Content',
+                visibility: 'PUBLIC',
+            },
+        }
+
+        createGuidanceArticle.mockResolvedValue(newArticle)
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: getGuidanceArticleFixture(999, {
+                title: 'New Article',
+                content: 'New Content',
+            }),
+            isGuidanceArticleLoading: false,
+        })
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    onDelete={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'New Article' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+        })
+
+        expect(createGuidanceArticle).toHaveBeenCalled()
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: 'Create' }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('tracks AI Agent enabled state in create mode', () => {
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    onDelete={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        fireEvent.change(nameInput, { target: { value: 'Test Article' } })
+
+        const createButton = screen.getByRole('button', { name: 'Create' })
+        act(() => {
+            fireEvent.click(createButton)
+        })
+
+        expect(createGuidanceArticle).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: 'Test Article',
+                content: '',
+                visibility: 'PUBLIC',
+                locale: 'en-US',
+            }),
+        )
+    })
+
+    it('calls onCreate callback after successful article creation', async () => {
+        const onCreate = jest.fn()
+        const newArticle = {
+            ...guidanceArticle,
+            id: 999,
+            translation: {
+                title: 'New Article',
+                content: 'New Content',
+                visibility: 'PUBLIC',
+            },
+        }
+
+        createGuidanceArticle.mockResolvedValue(newArticle)
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    onCreate={onCreate}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'New Article' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+        })
+
+        await waitFor(() => {
+            expect(onCreate).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('calls onUpdate callback after successful article update', async () => {
+        const onUpdate = jest.fn()
+        const updatedArticle = {
+            ...guidanceArticle,
+            title: 'Updated Title',
+        }
+
+        updateGuidanceArticle.mockResolvedValue(updatedArticle)
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onUpdate={onUpdate}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'Updated Title' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        })
+
+        await waitFor(() => {
+            expect(onUpdate).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('calls onDelete callback after successful article deletion', async () => {
+        const onDelete = jest.fn()
+        const deleteGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+
+        jest.mocked(
+            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
+                .useGuidanceArticleMutation,
+        ).mockReturnValue({
+            updateGuidanceArticle,
+            createGuidanceArticle,
+            deleteGuidanceArticle,
+            duplicateGuidanceArticle: jest.fn(),
+            isGuidanceArticleUpdating: false,
+        })
+
+        const { getByRole } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onDelete={onDelete}
+                    guidanceMode="read"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        await act(async () => {
+            fireEvent.click(getByRole('button', { name: 'delete' }))
+        })
+
+        await waitFor(() => {
+            expect(deleteGuidanceArticle).toHaveBeenCalledWith(1)
+            expect(onDelete).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('does not call onCreate when callback is not provided', async () => {
+        const newArticle = {
+            ...guidanceArticle,
+            id: 999,
+            translation: {
+                title: 'New Article',
+                content: 'New Content',
+                visibility: 'PUBLIC',
+            },
+        }
+
+        createGuidanceArticle.mockResolvedValue(newArticle)
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'New Article' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+        })
+
+        expect(createGuidanceArticle).toHaveBeenCalled()
     })
 })

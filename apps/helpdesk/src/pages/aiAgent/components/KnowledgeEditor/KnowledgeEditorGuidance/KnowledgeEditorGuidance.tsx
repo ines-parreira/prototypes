@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import _noop from 'lodash/noop'
+
 import { LoadingSpinner, SidePanel } from '@gorgias/axiom'
 
 import {
     ArticleTranslationResponseDto,
+    ArticleWithLocalTranslation,
     LocaleCode,
 } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
@@ -11,7 +14,11 @@ import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/varia
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { GuidanceArticle, GuidanceFormFields } from 'pages/aiAgent/types'
+import {
+    GuidanceArticle,
+    GuidanceFormFields,
+    GuidanceTemplate,
+} from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
@@ -20,7 +27,7 @@ import {
     KnowledgeEditorGuidanceView,
 } from './KnowledgeEditorGuidanceView'
 
-const KnowledgeEditorGuidanceStateful = ({
+const KnowledgeEditorGuidanceStatefulEdit = ({
     shopName,
     guidanceArticle,
     availableActions,
@@ -90,6 +97,7 @@ const KnowledgeEditorGuidanceStateful = ({
             availableActions={availableActions}
             availableVariables={guidanceVariables}
             onSave={onSave}
+            onCreate={_noop}
             onDelete={onDelete}
             onDuplicate={onDuplicate}
             title={title}
@@ -107,7 +115,65 @@ const KnowledgeEditorGuidanceStateful = ({
     )
 }
 
-const KnowledgeEditorGuidanceLoader = ({
+const KnowledgeEditorGuidanceStatefulCreate = ({
+    shopName,
+    guidanceTemplate,
+    availableActions,
+    onCreate: onCreateFn,
+    isGuidanceArticleUpdating,
+    onClose,
+    guidanceMode,
+}: BaseProps & {
+    shopName: string
+    guidanceTemplate?: GuidanceTemplate
+    availableActions: GuidanceAction[]
+    onCreate: (
+        guidanceArticle: GuidanceFormFields,
+    ) => Promise<ArticleWithLocalTranslation | undefined>
+    isGuidanceArticleUpdating: boolean
+}) => {
+    const [title, setTitle] = useState(guidanceTemplate?.name || '')
+    const [content, setContent] = useState(guidanceTemplate?.content || '')
+    const [aiAgentEnabled, setAiAgentEnabled] = useState(true)
+
+    const onCreate = useCallback(
+        async (guidanceFormFields: GuidanceFormFields) => {
+            const response = await onCreateFn({
+                ...guidanceFormFields,
+                isVisible: aiAgentEnabled,
+            })
+            return response
+        },
+        [onCreateFn, aiAgentEnabled],
+    )
+
+    const onToggleAIAgentEnabled = () => {
+        setAiAgentEnabled((prev) => !prev)
+    }
+
+    return (
+        <KnowledgeEditorGuidanceView
+            onClose={onClose}
+            availableActions={availableActions}
+            availableVariables={guidanceVariables}
+            onSave={_noop}
+            onCreate={onCreate}
+            onDelete={_noop}
+            onDuplicate={_noop}
+            title={title}
+            content={content}
+            aiAgentEnabled={aiAgentEnabled}
+            onToggleAIAgentEnabled={onToggleAIAgentEnabled}
+            shopName={shopName}
+            onChangeTitle={setTitle}
+            onChangeContent={setContent}
+            isGuidanceArticleUpdating={isGuidanceArticleUpdating}
+            guidanceMode={guidanceMode}
+        />
+    )
+}
+
+const KnowledgeEditorGuidanceLoaderForEdit = ({
     shopName,
     shopType,
     guidanceArticleId,
@@ -117,11 +183,15 @@ const KnowledgeEditorGuidanceLoader = ({
     onClickPrevious,
     onClickNext,
     guidanceMode,
+    onDeleteFn,
+    onUpdateFn,
 }: BaseProps & {
     shopType: string
     guidanceArticleId: number
     guidanceHelpCenterId: number
     locale: LocaleCode
+    onDeleteFn?: () => void
+    onUpdateFn?: () => void
 }) => {
     const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
         guidanceHelpCenterId,
@@ -143,21 +213,27 @@ const KnowledgeEditorGuidanceLoader = ({
 
     const onSave = useCallback(
         async (guidanceFormFields: GuidanceFormFields) => {
-            return updateGuidanceArticle(
+            const response = await updateGuidanceArticle(
                 mapGuidanceFormFieldsToGuidanceArticle(
                     guidanceFormFields,
                     locale,
                 ),
                 { articleId: guidanceArticleId, locale },
             )
+            if (response && onUpdateFn) {
+                onUpdateFn()
+            }
+            return response
         },
-        [updateGuidanceArticle, guidanceArticleId, locale],
+        [updateGuidanceArticle, guidanceArticleId, locale, onUpdateFn],
     )
 
-    const onDelete = useCallback(
-        () => deleteGuidanceArticle(guidanceArticleId),
-        [deleteGuidanceArticle, guidanceArticleId],
-    )
+    const onDelete = useCallback(async () => {
+        await deleteGuidanceArticle(guidanceArticleId)
+        if (onDeleteFn) {
+            onDeleteFn()
+        }
+    }, [deleteGuidanceArticle, guidanceArticleId, onDeleteFn])
 
     const onDuplicate = useCallback(
         () => duplicateGuidanceArticle(guidanceArticleId, shopName),
@@ -169,7 +245,7 @@ const KnowledgeEditorGuidanceLoader = ({
     }
 
     return (
-        <KnowledgeEditorGuidanceStateful
+        <KnowledgeEditorGuidanceStatefulEdit
             shopName={shopName}
             availableActions={guidanceActions}
             guidanceArticle={guidanceArticle}
@@ -185,18 +261,167 @@ const KnowledgeEditorGuidanceLoader = ({
     )
 }
 
+const KnowledgeEditorGuidanceLoaderForCreate = ({
+    shopName,
+    shopType,
+    guidanceTemplate,
+    guidanceHelpCenterId,
+    locale,
+    onClose,
+    onArticleCreated,
+    onCreateFn,
+    guidanceMode,
+}: BaseProps & {
+    shopType: string
+    guidanceTemplate?: GuidanceTemplate
+    guidanceHelpCenterId: number
+    locale: LocaleCode
+    onArticleCreated: (articleId: number) => void
+    onCreateFn?: () => void
+}) => {
+    const { guidanceActions, isLoading: isLoadingActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
+
+    const { createGuidanceArticle, isGuidanceArticleUpdating } =
+        useGuidanceArticleMutation({
+            guidanceHelpCenterId,
+        })
+
+    const onCreate = useCallback(
+        async (guidanceFormFields: GuidanceFormFields) => {
+            const response = await createGuidanceArticle(
+                mapGuidanceFormFieldsToGuidanceArticle(
+                    guidanceFormFields,
+                    locale,
+                    guidanceTemplate
+                        ? `template_guidance_${guidanceTemplate.id}`
+                        : undefined,
+                ),
+            )
+            if (response) {
+                onArticleCreated(response.id)
+                if (onCreateFn) {
+                    onCreateFn()
+                }
+            }
+            return response
+        },
+        [
+            createGuidanceArticle,
+            locale,
+            guidanceTemplate,
+            onArticleCreated,
+            onCreateFn,
+        ],
+    )
+
+    if (isLoadingActions) {
+        return <LoadingSpinner size="big" />
+    }
+
+    return (
+        <KnowledgeEditorGuidanceStatefulCreate
+            shopName={shopName}
+            availableActions={guidanceActions}
+            guidanceTemplate={guidanceTemplate}
+            onCreate={onCreate}
+            isGuidanceArticleUpdating={isGuidanceArticleUpdating}
+            onClose={onClose}
+            guidanceMode={guidanceMode}
+        />
+    )
+}
+
+const KnowledgeEditorGuidanceRouter = ({
+    shopName,
+    shopType,
+    guidanceArticleId,
+    guidanceTemplate,
+    guidanceHelpCenterId,
+    locale,
+    onClose,
+    onClickPrevious,
+    onClickNext,
+    onDeleteFn,
+    onCreateFn,
+    onUpdateFn,
+    guidanceMode,
+}: BaseProps & {
+    shopType: string
+    guidanceArticleId?: number
+    guidanceTemplate?: GuidanceTemplate
+    guidanceHelpCenterId: number
+    locale: LocaleCode
+    onDeleteFn?: () => void
+    onCreateFn?: () => void
+    onUpdateFn?: () => void
+}) => {
+    const [currentGuidanceArticleId, setCurrentGuidanceArticleId] =
+        useState(guidanceArticleId)
+    const [currentGuidanceMode, setCurrentGuidanceMode] = useState(guidanceMode)
+
+    const handleArticleCreated = useCallback((articleId: number) => {
+        setCurrentGuidanceArticleId(articleId)
+        setCurrentGuidanceMode('read')
+    }, [])
+
+    if (currentGuidanceArticleId && currentGuidanceMode !== 'create') {
+        return (
+            <KnowledgeEditorGuidanceLoaderForEdit
+                shopName={shopName}
+                shopType={shopType}
+                guidanceArticleId={currentGuidanceArticleId}
+                guidanceHelpCenterId={guidanceHelpCenterId}
+                locale={locale}
+                onClose={onClose}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+                onDeleteFn={onDeleteFn}
+                onUpdateFn={onUpdateFn}
+                guidanceMode={currentGuidanceMode}
+            />
+        )
+    }
+
+    return (
+        <KnowledgeEditorGuidanceLoaderForCreate
+            shopName={shopName}
+            shopType={shopType}
+            guidanceTemplate={guidanceTemplate}
+            guidanceHelpCenterId={guidanceHelpCenterId}
+            locale={locale}
+            onClose={onClose}
+            onClickPrevious={onClickPrevious}
+            onClickNext={onClickNext}
+            onArticleCreated={handleArticleCreated}
+            onCreateFn={onCreateFn}
+            guidanceMode={guidanceMode}
+        />
+    )
+}
+
 const KnowledgeEditorGuidanceHelpCenterLoader = ({
     shopName,
     shopType,
     guidanceArticleId,
+    guidanceTemplate,
     onClose,
     onClickPrevious,
     onClickNext,
     guidanceMode,
+    onDelete,
+    onCreate,
+    onUpdate,
+    isOpen,
 }: BaseProps & {
     shopName: string
     shopType: string
-    guidanceArticleId: number
+    guidanceArticleId?: number
+    guidanceTemplate?: GuidanceTemplate
+    onDelete?: () => void
+    onCreate?: () => void
+    onUpdate?: () => void
+    isOpen: boolean
 }) => {
     const guidanceHelpCenter = useAiAgentHelpCenter({
         shopName,
@@ -204,18 +429,22 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     })
 
     return (
-        <SidePanel isOpen={true} withoutPadding size="xl">
+        <SidePanel isOpen={isOpen} withoutPadding size="xl">
             {guidanceHelpCenter ? (
-                <KnowledgeEditorGuidanceLoader
+                <KnowledgeEditorGuidanceRouter
                     shopName={shopName}
                     shopType={shopType}
                     guidanceArticleId={guidanceArticleId}
+                    guidanceTemplate={guidanceTemplate}
                     guidanceHelpCenterId={guidanceHelpCenter.id}
                     locale={guidanceHelpCenter.default_locale}
                     onClose={onClose}
                     onClickPrevious={onClickPrevious}
                     onClickNext={onClickNext}
                     guidanceMode={guidanceMode}
+                    onDeleteFn={onDelete}
+                    onCreateFn={onCreate}
+                    onUpdateFn={onUpdate}
                 />
             ) : (
                 <LoadingSpinner size="big" />
