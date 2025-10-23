@@ -12,6 +12,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
+import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import {
@@ -23,6 +24,46 @@ import { PlaygroundInputSection } from './PlaygroundInputSection'
 
 const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
 const mockUsePlaygroundForm = jest.mocked(usePlaygroundForm)
+
+const mockUseCoreContext = jest.fn(() => ({
+    channel: 'email',
+    channelAvailability: 'online',
+    onChannelChange: jest.fn(),
+    onChannelAvailabilityChange: jest.fn(),
+    testSessionId: 'test-session-123',
+    isTestSessionLoading: false,
+    createTestSession: jest.fn(),
+    testSessionLogs: undefined,
+    isPolling: false,
+    startPolling: jest.fn(),
+    stopPolling: jest.fn(),
+}))
+
+jest.mock('../../contexts/CoreContext', () => ({
+    useCoreContext: () => mockUseCoreContext(),
+}))
+
+jest.mock('../../contexts/ConfigurationContext', () => ({
+    useConfigurationContext: jest.fn(() => ({
+        storeConfiguration: getStoreConfigurationFixture(),
+        accountConfiguration: null,
+        snippetHelpCenterId: 456,
+        httpIntegrationId: 1,
+        baseUrl: 'https://test.com',
+        gorgiasDomain: 'acme',
+        accountId: 1,
+        chatIntegrationId: 123,
+        shopName: 'test-store',
+    })),
+}))
+
+jest.mock('../../contexts/EventsContext', () => ({
+    useEvents: jest.fn(() => ({
+        on: jest.fn(() => jest.fn()),
+        emit: jest.fn(),
+    })),
+    useSubscribeToEvent: jest.fn(),
+}))
 
 jest.mock('./PlaygroundInputSection.less', () => ({
     container: 'container',
@@ -233,48 +274,41 @@ const renderComponent = (props: any = {}) => {
         ...formOverrides,
     }
 
-    mockUsePlaygroundContext.mockReturnValue({
-        storeConfiguration: {},
-        snippetHelpCenterId: 123,
-        events: {
-            on: jest.fn(() => jest.fn()),
-            emit: jest.fn(),
-        },
-        uiState: {
-            isInitialMessage: mappedMessagesOverrides.messages
-                ? mappedMessagesOverrides.messages.length === 0
-                : true,
-            setIsInitialMessage: jest.fn(),
-        },
-        channelState: {
-            channel: mappedChannelOverrides.channel || defaultProps.channel,
+    // Update CoreContext mock with channel overrides
+    if (Object.keys(mappedChannelOverrides).length > 0) {
+        mockUseCoreContext.mockReturnValueOnce({
+            channel: mappedChannelOverrides.channel || 'email',
             channelAvailability:
-                mappedChannelOverrides.channelAvailability ||
-                defaultProps.channelAvailability,
+                mappedChannelOverrides.channelAvailability || 'online',
             onChannelChange:
-                mappedChannelOverrides.onChannelChange ||
-                defaultProps.onChannelChange,
+                mappedChannelOverrides.onChannelChange || jest.fn(),
             onChannelAvailabilityChange:
-                mappedChannelOverrides.onChannelAvailabilityChange ||
-                defaultProps.onChannelAvailabilityChange,
-        },
-        messagesState: {
-            messages: mappedMessagesOverrides.messages || [],
-            onMessageSend:
-                mappedMessagesOverrides.onMessageSend ||
-                defaultProps.onSendMessage,
-            isMessageSending:
-                mappedMessagesOverrides.isMessageSending !== undefined
-                    ? mappedMessagesOverrides.isMessageSending
-                    : defaultProps.isMessageSending,
-            onNewConversation:
-                mappedMessagesOverrides.onNewConversation ||
-                defaultProps.onNewConversation,
-            isWaitingResponse:
-                mappedMessagesOverrides.isWaitingResponse !== undefined
-                    ? mappedMessagesOverrides.isWaitingResponse
-                    : defaultProps.isWaitingResponse,
-        },
+                mappedChannelOverrides.onChannelAvailabilityChange || jest.fn(),
+            testSessionId: 'test-session-123',
+            isTestSessionLoading: false,
+            createTestSession: jest.fn(),
+            testSessionLogs: undefined,
+            isPolling: false,
+            startPolling: jest.fn(),
+            stopPolling: jest.fn(),
+        } as any)
+    }
+
+    mockUsePlaygroundContext.mockReturnValue({
+        messages: mappedMessagesOverrides.messages || [],
+        onMessageSend:
+            mappedMessagesOverrides.onMessageSend || defaultProps.onSendMessage,
+        isMessageSending:
+            mappedMessagesOverrides.isMessageSending !== undefined
+                ? mappedMessagesOverrides.isMessageSending
+                : defaultProps.isMessageSending,
+        onNewConversation:
+            mappedMessagesOverrides.onNewConversation ||
+            defaultProps.onNewConversation,
+        isWaitingResponse:
+            mappedMessagesOverrides.isWaitingResponse !== undefined
+                ? mappedMessagesOverrides.isWaitingResponse
+                : defaultProps.isWaitingResponse,
         ...contextOverrides,
     } as any)
 

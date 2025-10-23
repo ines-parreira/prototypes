@@ -9,6 +9,13 @@ import { Button, Tooltip } from '@gorgias/axiom'
 import { FROALA_KEY } from 'config'
 import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage'
+import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import {
+    useEvents,
+    useSubscribeToEvent,
+} from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
@@ -99,22 +106,22 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
     }>()
 
     const {
-        storeConfiguration,
-        snippetHelpCenterId,
-        events,
-        uiState,
-        channelState,
-        messagesState,
-    } = usePlaygroundContext()
-
-    const {
         channel,
         channelAvailability,
         onChannelChange,
         onChannelAvailabilityChange,
-    } = channelState
+    } = useCoreContext()
 
-    const { onMessageSend, isMessageSending } = messagesState
+    const { onMessageSend, isMessageSending, messages } = usePlaygroundContext()
+
+    const { snippetHelpCenterId, storeConfiguration } =
+        useConfigurationContext()
+
+    const events = useEvents()
+
+    const isInitialMessage = !messages.some(
+        (message) => message.sender !== AI_AGENT_SENDER,
+    )
 
     const {
         formValues,
@@ -143,8 +150,6 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
         false,
     )
 
-    const { isInitialMessage } = uiState
-
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -153,9 +158,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
         onFormValuesChange('subject', subject)
     }
 
-    useEffect(() => {
-        return events.on(PlaygroundEvent.RESET_CONVERSATION, clearForm)
-    }, [events, clearForm])
+    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, clearForm)
 
     const handlePredefinedMessageSelect = (
         message: PlaygroundTemplateMessage,
@@ -234,7 +237,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
         events.emit(PlaygroundEvent.RESET_CONVERSATION)
         clearForm()
         setHasMessageBeenSent(false)
-    }, [events, clearForm])
+    }, [clearForm, events])
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {

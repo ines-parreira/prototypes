@@ -5,13 +5,15 @@ import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'
-import { StoreConfiguration } from 'models/aiAgent/types'
 import {
     MessageType,
     PlaygroundMessage,
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
+import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { reportError } from 'utils/errors'
 
 import {
@@ -19,21 +21,13 @@ import {
     GREETING_MESSAGE_TEXT,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import {
-    PlaygroundChannelAvailability,
-    PlaygroundChannels,
-    PlaygroundCustomer,
-    PlaygroundEvent,
-    PlaygroundEventEmitter,
-} from '../types'
+import { PlaygroundCustomer, PlaygroundEvent } from '../types'
 import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,
 } from '../utils/playground-handler.utils'
 import { shouldDisplayActions } from '../utils/playground-messages.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
-import { usePlaygroundPolling } from './usePlaygroundPolling'
-import { useTestSession } from './useTestSession'
 
 const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
     sender: AI_AGENT_SENDER,
@@ -47,42 +41,34 @@ const GREETING_MESSAGE: PlaygroundMessage = {
     createdDatetime: new Date().toISOString(),
 }
 
-export const usePlaygroundMessages = ({
-    storeData,
-    gorgiasDomain,
-    accountId,
-    httpIntegrationId,
-    channel,
-    channelIntegrationId,
-    channelAvailability,
-    baseUrl,
-    arePlaygroundActionsAllowed,
-    events,
-}: {
-    storeData?: StoreConfiguration
-    gorgiasDomain: string
-    accountId: number
-    httpIntegrationId: number
-    channel: PlaygroundChannels
-    channelIntegrationId?: number
-    channelAvailability?: PlaygroundChannelAvailability
-    baseUrl?: string
-    arePlaygroundActionsAllowed?: boolean
-    events: PlaygroundEventEmitter
-}) => {
+export const usePlaygroundMessages = () => {
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
         false,
     )
-    const { testSessionId, createTestSession } = useTestSession(baseUrl, {
-        areActionsAllowedToExecute: arePlaygroundActionsAllowed ?? false,
-    })
 
-    const { testSessionLogs, startPolling, stopPolling, isPolling } =
-        usePlaygroundPolling({
-            testSessionId: testSessionId ?? '',
-            baseUrl,
-        })
+    const {
+        storeConfiguration: storeData,
+        gorgiasDomain,
+        accountId,
+        httpIntegrationId,
+        chatIntegrationId,
+        baseUrl,
+    } = useConfigurationContext()
+
+    const {
+        testSessionLogs,
+        startPolling,
+        stopPolling,
+        isPolling,
+        testSessionId,
+        createTestSession,
+        channelAvailability,
+        channel,
+    } = useCoreContext()
+
+    const channelIntegrationId =
+        channel === 'chat' ? chatIntegrationId : undefined
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =
         usePlaygroundApi({
@@ -107,9 +93,7 @@ export const usePlaygroundMessages = ({
         setIsWaitingResponse(false)
     }, [abortCurrentRequest, stopPolling])
 
-    useEffect(() => {
-        return events.on(PlaygroundEvent.RESET_CONVERSATION, onNewConversation)
-    }, [events, onNewConversation])
+    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, onNewConversation)
 
     const processMessages = useCallback(
         async (
@@ -195,7 +179,6 @@ export const usePlaygroundMessages = ({
         },
         [
             accountId,
-            channel,
             onNewConversation,
             storeData,
             submitMessage,
@@ -204,6 +187,7 @@ export const usePlaygroundMessages = ({
             testSessionId,
             isNewAgenticArchitectureEnabled,
             startPolling,
+            channel,
         ],
     )
 
@@ -237,7 +221,7 @@ export const usePlaygroundMessages = ({
 
             await processMessages(newMessages, { customer, subject })
         },
-        [channel, messages, processMessages, isNewAgenticArchitectureEnabled],
+        [messages, processMessages, isNewAgenticArchitectureEnabled, channel],
     )
 
     useEffect(() => {

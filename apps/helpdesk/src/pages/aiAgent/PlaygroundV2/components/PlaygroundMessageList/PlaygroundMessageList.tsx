@@ -3,30 +3,22 @@ import React, { useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
+import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 
 import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
-import PlaygroundMessageComponent, {
-    AI_AGENT_SENDER,
-} from '../PlaygroundMessage/PlaygroundMessage'
+import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
 
 import css from '../../AiAgentPlayground.less'
 
 export const PlaygroundMessageList = () => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
 
-    const { uiState, channelState, messagesState, storeConfiguration } =
-        usePlaygroundContext()
-    const { channel } = channelState
-    const { messages } = messagesState
-
-    // Update isInitialMessage based on messages
-    useEffect(() => {
-        const isInitial =
-            messages.filter((m) => m.sender !== AI_AGENT_SENDER).length === 0
-        uiState.setIsInitialMessage(isInitial)
-    }, [messages, uiState])
+    const { storeConfiguration } = useConfigurationContext()
+    const { channel } = useCoreContext()
+    const { messages } = usePlaygroundContext()
 
     // Auto-scroll to bottom when messages change
     useEffect(() => {

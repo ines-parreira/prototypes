@@ -79,6 +79,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
 
             expect(result.current.testSessionId).toBe('test-session-123')
             expect(result.current.isTestSessionLoading).toBe(false)
+            expect(typeof result.current.createTestSession).toBe('function')
         })
 
         it('should include polling state', () => {

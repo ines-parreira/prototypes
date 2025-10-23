@@ -15,10 +15,6 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnrichFeedbackData } from '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
-import {
-    usePlaygroundContext,
-    usePlaygroundEvent,
-} from '../../contexts/PlaygroundContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
 import KnowledgeSourcesWrapper from './KnowledgeSourcesWrapper'
 
@@ -28,16 +24,12 @@ jest.mock(
     '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData',
 )
 jest.mock('@gorgias/axiom')
-jest.mock('../../contexts/PlaygroundContext', () => ({
-    ...jest.requireActual('../../contexts/PlaygroundContext'),
-    usePlaygroundContext: jest.fn(),
-    usePlaygroundEvent: jest.fn(),
+jest.mock('../../contexts/EventsContext', () => ({
+    useSubscribeToEvent: jest.fn(),
 }))
 
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)
-const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
-const mockUsePlaygroundEvent = jest.mocked(usePlaygroundEvent)
 const SkeletonMock = assumeMock(Skeleton)
 
 const mockStore = configureMockStore()
@@ -68,39 +60,8 @@ describe('KnowledgeSourcesWrapper', () => {
 
         // Mock Skeleton component to render a test-id for easy testing
         SkeletonMock.mockImplementation(() => <div data-testid="skeleton" />)
-
-        // Mock PlaygroundContext
-        mockUsePlaygroundContext.mockReturnValue({
-            storeConfiguration: {},
-            snippetHelpCenterId: 123,
-            httpIntegrationId: 456,
-            baseUrl: 'https://test.com',
-            gorgiasDomain: 'test.gorgias.com',
-            accountId: 789,
-            chatIntegrationId: 101,
-            events: {
-                on: jest.fn(() => jest.fn()),
-                emit: jest.fn(),
-            },
-            uiState: {
-                isInitialMessage: true,
-                setIsInitialMessage: jest.fn(),
-            },
-            channelState: {
-                channel: 'email',
-                channelAvailability: 'online',
-                onChannelChange: jest.fn(),
-                onChannelAvailabilityChange: jest.fn(),
-            },
-            messagesState: {
-                messages: [],
-                onMessageSend: jest.fn(),
-                isMessageSending: false,
-                onNewConversation: jest.fn(),
-                isWaitingResponse: false,
-            },
-        } as any)
     })
+
     it('should display knowledge sources when data is loaded', () => {
         const mockEnrichedData = {
             knowledgeResources: [
@@ -276,68 +237,6 @@ describe('KnowledgeSourcesWrapper', () => {
 
         const deletedLink = screen.getByText('Deleted Article').closest('a')
         expect(deletedLink).toHaveClass('deleted')
-    })
-
-    it('should register event listener for RESET_CONVERSATION', () => {
-        const stopPollingMock = jest.fn()
-        const onMock = jest.fn()
-
-        mockUseFeedbackPolling.mockReturnValue({
-            feedback: undefined,
-            isPolling: true,
-            stopPolling: stopPollingMock,
-            startPolling: jest.fn(),
-        })
-
-        mockUseEnrichFeedbackData.mockReturnValue({
-            enrichedData: {
-                knowledgeResources: [],
-                suggestedResources: [],
-                freeForm: null,
-            },
-            isLoading: false,
-        } as any)
-
-        mockUsePlaygroundContext.mockReturnValue({
-            storeConfiguration: {},
-            snippetHelpCenterId: 123,
-            httpIntegrationId: 456,
-            baseUrl: 'https://test.com',
-            gorgiasDomain: 'test.gorgias.com',
-            accountId: 789,
-            chatIntegrationId: 101,
-            events: {
-                on: onMock,
-                emit: jest.fn(),
-            },
-            uiState: {
-                isInitialMessage: true,
-                setIsInitialMessage: jest.fn(),
-            },
-            channelState: {
-                channel: 'email',
-                channelAvailability: 'online',
-                onChannelChange: jest.fn(),
-                onChannelAvailabilityChange: jest.fn(),
-            },
-            messagesState: {
-                messages: [],
-                onMessageSend: jest.fn(),
-                isMessageSending: false,
-                onNewConversation: jest.fn(),
-                isWaitingResponse: false,
-            },
-        } as any)
-
-        renderComponent({
-            executionId: 'test-execution-id',
-            storeConfiguration: mockStoreConfiguration,
-        })
-
-        expect(mockUsePlaygroundEvent).toHaveBeenCalledWith(
-            'RESET_CONVERSATION',
-            stopPollingMock,
-        )
     })
 
     it('should render knowledge source links with correct attributes', () => {

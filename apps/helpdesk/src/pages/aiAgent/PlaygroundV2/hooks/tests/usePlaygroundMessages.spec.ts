@@ -15,24 +15,12 @@ import { getStoreConfigurationFixture } from '../../../fixtures/storeConfigurati
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import { usePlaygroundApi } from '../usePlaygroundApi'
 import { usePlaygroundMessages } from '../usePlaygroundMessages'
-import { usePlaygroundPolling } from '../usePlaygroundPolling'
-import { useTestSession } from '../useTestSession'
 
 // Mock the hooks
 jest.mock('../usePlaygroundApi', () => ({
     usePlaygroundApi: jest.fn(),
 }))
 const mockedUsePlaygroundApi = jest.mocked(usePlaygroundApi)
-
-jest.mock('../usePlaygroundPolling', () => ({
-    usePlaygroundPolling: jest.fn(),
-}))
-const mockedUsePlaygroundPolling = jest.mocked(usePlaygroundPolling)
-
-jest.mock('../useTestSession', () => ({
-    useTestSession: jest.fn(),
-}))
-const mockedUseTestSession = jest.mocked(useTestSession)
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
@@ -43,26 +31,49 @@ jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
 }))
 
-const mockUsePlaygroundContextFn = jest.fn()
+const mockUseConfigurationContextFn = jest.fn()
+const mockUseCoreContextFn = jest.fn()
+const mockUseRegisterEventFn = jest.fn()
 
-jest.mock('../../contexts/PlaygroundContext', () => ({
-    ...jest.requireActual('../../contexts/PlaygroundContext'),
-    usePlaygroundContext: () => mockUsePlaygroundContextFn(),
+jest.mock('../../contexts/ConfigurationContext', () => ({
+    useConfigurationContext: () => mockUseConfigurationContextFn(),
 }))
 
-const mockedUsePlaygroundContext = mockUsePlaygroundContextFn
+jest.mock('../../contexts/CoreContext', () => ({
+    useCoreContext: () => mockUseCoreContextFn(),
+}))
 
-const defaultParams = {
-    storeData: getStoreConfigurationFixture(),
+jest.mock('../../contexts/EventsContext', () => ({
+    useSubscribeToEvent: (...args: any[]) => mockUseRegisterEventFn(...args),
+}))
+
+const mockedUseConfigurationContext = mockUseConfigurationContextFn
+const mockedUseCoreContext = mockUseCoreContextFn
+
+const defaultConfigurationContext = {
+    storeConfiguration: getStoreConfigurationFixture(),
+    accountConfiguration: null,
+    snippetHelpCenterId: 456,
+    httpIntegrationId: 1,
+    baseUrl: 'https://test.com',
     gorgiasDomain: 'acme',
     accountId: 1,
-    httpIntegrationId: 1,
+    chatIntegrationId: 123,
+    shopName: 'test-store',
+}
+
+const defaultCoreContext = {
     channel: 'email' as const,
-    channelIntegrationId: 123,
-    events: {
-        on: jest.fn(() => jest.fn()),
-        emit: jest.fn(),
-    },
+    channelAvailability: 'online' as const,
+    onChannelChange: jest.fn(),
+    onChannelAvailabilityChange: jest.fn(),
+    testSessionId: '123',
+    isTestSessionLoading: false,
+    createTestSession: jest.fn(() => Promise.resolve('123')),
+    testSessionLogs: undefined,
+    isPolling: false,
+    startPolling: jest.fn(),
+    stopPolling: jest.fn(),
 }
 
 describe('usePlaygroundMessages hook', () => {
@@ -78,54 +89,13 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        mockedUseTestSession.mockReturnValue({
-            testSessionId: '123',
-            createTestSession: jest.fn(() => Promise.resolve('123')),
-            isTestSessionLoading: false,
-        })
-
         mockedUseFlag.mockReturnValue(false)
 
-        mockedUsePlaygroundContext.mockImplementation(
-            () =>
-                ({
-                    storeConfiguration: {},
-                    snippetHelpCenterId: 123,
-                    httpIntegrationId: 456,
-                    baseUrl: 'https://test.com',
-                    gorgiasDomain: 'test.gorgias.com',
-                    accountId: 789,
-                    chatIntegrationId: 101,
-                    events: {
-                        on: jest.fn(() => jest.fn()),
-                        emit: jest.fn(),
-                    },
-                    uiState: {
-                        isInitialMessage: true,
-                        setIsInitialMessage: jest.fn(),
-                    },
-                    channelState: {
-                        channel: 'email',
-                        channelAvailability: 'online',
-                        onChannelChange: jest.fn(),
-                        onChannelAvailabilityChange: jest.fn(),
-                    },
-                    messagesState: {
-                        messages: [],
-                        onMessageSend: jest.fn(),
-                        isMessageSending: false,
-                        onNewConversation: jest.fn(),
-                        isWaitingResponse: false,
-                    },
-                }) as any,
+        mockedUseConfigurationContext.mockReturnValue(
+            defaultConfigurationContext as any,
         )
 
-        mockedUsePlaygroundPolling.mockReturnValue({
-            isPolling: false,
-            startPolling: jest.fn(),
-            stopPolling: jest.fn(),
-            testSessionLogs: undefined,
-        })
+        mockedUseCoreContext.mockReturnValue(defaultCoreContext as any)
 
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
     })
@@ -141,9 +111,7 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
@@ -161,8 +129,8 @@ describe('usePlaygroundMessages hook', () => {
             customer: DEFAULT_PLAYGROUND_CUSTOMER,
             subject: undefined,
             channel: 'email',
-            storeData: defaultParams.storeData,
-            channelAvailability: undefined,
+            storeData: defaultConfigurationContext.storeConfiguration,
+            channelAvailability: defaultCoreContext.channelAvailability,
             testSessionId: '123',
             createTestSession: expect.any(Function),
         })
@@ -179,9 +147,7 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
@@ -203,9 +169,7 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: abortMock,
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         act(() => {
             result.current.onNewConversation()
@@ -234,12 +198,13 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages({
-                ...defaultParams,
-                channel: 'chat',
-            }),
-        )
+        // Update core context to use 'chat' channel
+        mockedUseCoreContext.mockReturnValue({
+            ...defaultCoreContext,
+            channel: 'chat',
+        } as any)
+
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
@@ -265,9 +230,7 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
@@ -294,9 +257,7 @@ describe('usePlaygroundMessages hook', () => {
             abortCurrentRequest: jest.fn(),
         })
 
-        const { result } = renderHook(() =>
-            usePlaygroundMessages(defaultParams),
-        )
+        const { result } = renderHook(() => usePlaygroundMessages())
 
         await act(async () => {
             await result.current.onMessageSend(playgroundMessageFixture, {
@@ -314,7 +275,8 @@ describe('usePlaygroundMessages hook', () => {
             mockedUseFlag.mockReturnValue(true)
 
             // Mock initial state
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -322,7 +284,7 @@ describe('usePlaygroundMessages hook', () => {
             })
 
             const { result, rerender } = renderHook(() =>
-                usePlaygroundMessages(defaultParams),
+                usePlaygroundMessages(),
             )
 
             expect(result.current.messages.length).toBe(0)
@@ -351,7 +313,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -376,7 +339,7 @@ describe('usePlaygroundMessages hook', () => {
             mockedUseFlag.mockReturnValue(true)
 
             const { result, rerender } = renderHook(() =>
-                usePlaygroundMessages(defaultParams),
+                usePlaygroundMessages(),
             )
 
             // Initial state with in-progress session
@@ -403,7 +366,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -443,7 +407,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: false,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -466,7 +431,7 @@ describe('usePlaygroundMessages hook', () => {
             mockedUseFlag.mockReturnValue(true)
 
             const { result, rerender } = renderHook(() =>
-                usePlaygroundMessages(defaultParams),
+                usePlaygroundMessages(),
             )
 
             // Initial logs
@@ -493,7 +458,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -529,7 +495,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -555,7 +522,7 @@ describe('usePlaygroundMessages hook', () => {
             mockedUseFlag.mockReturnValue(true)
 
             const { result, rerender } = renderHook(() =>
-                usePlaygroundMessages(defaultParams),
+                usePlaygroundMessages(),
             )
 
             // Logs with an unknown type that will return null
@@ -582,7 +549,8 @@ describe('usePlaygroundMessages hook', () => {
                 ],
             }
 
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: true,
                 startPolling: jest.fn(),
                 stopPolling: jest.fn(),
@@ -603,16 +571,15 @@ describe('usePlaygroundMessages hook', () => {
             mockedUseFlag.mockReturnValue(true)
 
             const startPollingMock = jest.fn()
-            mockedUsePlaygroundPolling.mockReturnValue({
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
                 isPolling: false,
                 startPolling: startPollingMock,
                 stopPolling: jest.fn(),
                 testSessionLogs: undefined,
             })
 
-            const { result } = renderHook(() =>
-                usePlaygroundMessages(defaultParams),
-            )
+            const { result } = renderHook(() => usePlaygroundMessages())
 
             // Send a message
             await act(async () => {

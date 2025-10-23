@@ -7,6 +7,7 @@ import { Skeleton } from '@gorgias/axiom'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { ticketOutcomeToLabel } from 'pages/aiAgent/components/TicketEvent/TicketEvent'
+import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import {
     AiAgentKnowledgeResourceTypeEnum,
@@ -14,7 +15,6 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 
-import { usePlaygroundEvent } from '../../contexts/PlaygroundContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
 import { PlaygroundEvent } from '../../types'
 
@@ -56,7 +56,7 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
     }, [executionId, hasReceivedData, startPolling])
 
     // Stop polling when conversation is reset
-    usePlaygroundEvent(PlaygroundEvent.RESET_CONVERSATION, stopPolling)
+    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, stopPolling)
 
     const knowledgeSources = useMemo(() => {
         if (!enrichedData || !enrichedData.knowledgeResources) return []

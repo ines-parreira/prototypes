@@ -1,16 +1,23 @@
-import React from 'react'
-
 import { act, render, screen } from '@testing-library/react'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage'
 
+import { useConfigurationContext } from '../../../contexts/ConfigurationContext'
+import { useCoreContext } from '../../../contexts/CoreContext'
 import { usePlaygroundContext } from '../../../contexts/PlaygroundContext'
 import { PlaygroundMessageList } from '../PlaygroundMessageList'
 
 jest.mock('../../../contexts/PlaygroundContext', () => ({
     usePlaygroundContext: jest.fn(),
+}))
+
+jest.mock('../../../contexts/ConfigurationContext', () => ({
+    useConfigurationContext: jest.fn(),
+}))
+
+jest.mock('../../../contexts/CoreContext', () => ({
+    useCoreContext: jest.fn(),
 }))
 
 jest.mock('../../PlaygroundInitialContent/PlaygroundInitialContent', () => ({
@@ -38,45 +45,54 @@ jest.mock('../../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
 }))
 
 const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUseConfigurationContext = jest.mocked(useConfigurationContext)
+const mockUseCoreContext = jest.mocked(useCoreContext)
 
-const defaultContext = {
-    uiState: {
-        isInitialMessage: true,
-        setIsInitialMessage: jest.fn(),
-    },
-    channelState: {
-        channel: 'email' as const,
-        channelAvailability: 'online' as const,
-        onChannelChange: jest.fn(),
-        onChannelAvailabilityChange: jest.fn(),
-    },
-    messagesState: {
-        messages: [],
-        onMessageSend: jest.fn(),
-        isMessageSending: false,
-        onNewConversation: jest.fn(),
-        isWaitingResponse: false,
-    },
+const defaultMessagesState = {
+    messages: [],
+    onMessageSend: jest.fn(),
+    isMessageSending: false,
+    onNewConversation: jest.fn(),
+    isWaitingResponse: false,
+}
+
+const defaultConfigurationContext = {
     storeConfiguration: getStoreConfigurationFixture({
         storeName: 'test-store',
         guidanceHelpCenterId: 123,
     }),
+    accountConfiguration: null,
     snippetHelpCenterId: 456,
     httpIntegrationId: 789,
     baseUrl: 'https://test-base-url.com',
     gorgiasDomain: 'test-domain',
     accountId: 123,
     chatIntegrationId: 456,
-    events: {
-        on: jest.fn(),
-        emit: jest.fn(),
-    },
+    shopName: 'test-store',
+}
+
+const defaultCoreContext = {
+    channel: 'email' as const,
+    channelAvailability: 'online' as const,
+    onChannelChange: jest.fn(),
+    onChannelAvailabilityChange: jest.fn(),
+    testSessionId: 'test-session-123',
+    isTestSessionLoading: false,
+    createTestSession: jest.fn(),
+    testSessionLogs: undefined,
+    isPolling: false,
+    startPolling: jest.fn(),
+    stopPolling: jest.fn(),
 }
 
 describe('PlaygroundMessageList', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUsePlaygroundContext.mockReturnValue(defaultContext as any)
+        mockUsePlaygroundContext.mockReturnValue(defaultMessagesState as any)
+        mockUseConfigurationContext.mockReturnValue(
+            defaultConfigurationContext as any,
+        )
+        mockUseCoreContext.mockReturnValue(defaultCoreContext as any)
     })
 
     describe('Empty state', () => {
@@ -85,44 +101,26 @@ describe('PlaygroundMessageList', () => {
 
             expect(screen.getByText('Initial Content')).toBeInTheDocument()
         })
-
-        it('should set isInitialMessage to true when no customer messages', () => {
-            const setIsInitialMessage = jest.fn()
-            mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                uiState: {
-                    isInitialMessage: true,
-                    setIsInitialMessage,
-                },
-            } as any)
-
-            render(<PlaygroundMessageList />)
-
-            expect(setIsInitialMessage).toHaveBeenCalledWith(true)
-        })
     })
 
     describe('Messages rendering', () => {
         it('should render messages when present', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'Customer',
-                            type: MessageType.MESSAGE,
-                            content: 'Hello',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.MESSAGE,
-                            content: 'Hi there!',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'Customer',
+                        type: MessageType.MESSAGE,
+                        content: 'Hello',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Hi there!',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
@@ -133,19 +131,16 @@ describe('PlaygroundMessageList', () => {
 
         it('should render KnowledgeSourcesWrapper for AI Agent messages with executionId', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.MESSAGE,
-                            content: 'Response',
-                            executionId: 'exec-123',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Response',
+                        executionId: 'exec-123',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
@@ -159,18 +154,15 @@ describe('PlaygroundMessageList', () => {
 
         it('should not render KnowledgeSourcesWrapper for messages without executionId', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.MESSAGE,
-                            content: 'Response',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Response',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
@@ -182,19 +174,16 @@ describe('PlaygroundMessageList', () => {
 
         it('should not render KnowledgeSourcesWrapper for non-MESSAGE type messages', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.TICKET_EVENT,
-                            executionId: 'exec-123',
-                            outcome: 'resolved',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.TICKET_EVENT,
+                        executionId: 'exec-123',
+                        outcome: 'resolved',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
@@ -208,31 +197,28 @@ describe('PlaygroundMessageList', () => {
     describe('Ticket event outcome', () => {
         it('should pass outcome to KnowledgeSourcesWrapper when ticket event message exists', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'Customer',
-                            type: MessageType.MESSAGE,
-                            content: 'Hello',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.MESSAGE,
-                            content: 'Response',
-                            executionId: 'exec-123',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.TICKET_EVENT,
-                            outcome: 'resolved',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'Customer',
+                        type: MessageType.MESSAGE,
+                        content: 'Hello',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Response',
+                        executionId: 'exec-123',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.TICKET_EVENT,
+                        outcome: 'resolved',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
@@ -246,86 +232,27 @@ describe('PlaygroundMessageList', () => {
 
         it('should pass undefined outcome when no ticket event message', () => {
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'AI Agent',
-                            type: MessageType.MESSAGE,
-                            content: 'Response',
-                            executionId: 'exec-123',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Response',
+                        executionId: 'exec-123',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             render(<PlaygroundMessageList />)
 
-            const knowledgeSourcesWrapper = screen.getByText(
-                (content, element) => {
-                    return (
-                        element?.textContent ===
-                        'KnowledgeSourcesWrapper - executionId: exec-123, outcome: '
-                    )
-                },
-            )
+            const knowledgeSourcesWrapper = screen.getByText((_, element) => {
+                return (
+                    element?.textContent ===
+                    'KnowledgeSourcesWrapper - executionId: exec-123, outcome: '
+                )
+            })
             expect(knowledgeSourcesWrapper).toBeInTheDocument()
-        })
-    })
-
-    describe('isInitialMessage state', () => {
-        it('should set isInitialMessage to false when customer messages exist', () => {
-            const setIsInitialMessage = jest.fn()
-            mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                uiState: {
-                    isInitialMessage: true,
-                    setIsInitialMessage,
-                },
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'Customer',
-                            type: MessageType.MESSAGE,
-                            content: 'Hello',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
-            } as any)
-
-            render(<PlaygroundMessageList />)
-
-            expect(setIsInitialMessage).toHaveBeenCalledWith(false)
-        })
-
-        it('should set isInitialMessage to true when only AI Agent messages exist', () => {
-            const setIsInitialMessage = jest.fn()
-            mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                uiState: {
-                    isInitialMessage: false,
-                    setIsInitialMessage,
-                },
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: AI_AGENT_SENDER,
-                            type: MessageType.MESSAGE,
-                            content: 'Hello',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
-            } as any)
-
-            render(<PlaygroundMessageList />)
-
-            expect(setIsInitialMessage).toHaveBeenCalledWith(true)
         })
     })
 
@@ -337,18 +264,15 @@ describe('PlaygroundMessageList', () => {
             const { rerender } = render(<PlaygroundMessageList />)
 
             mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                messagesState: {
-                    ...defaultContext.messagesState,
-                    messages: [
-                        {
-                            sender: 'Customer',
-                            type: MessageType.MESSAGE,
-                            content: 'Hello',
-                            createdDatetime: new Date().toISOString(),
-                        },
-                    ],
-                },
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'Customer',
+                        type: MessageType.MESSAGE,
+                        content: 'Hello',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
             } as any)
 
             act(() => {
@@ -373,9 +297,9 @@ describe('PlaygroundMessageList', () => {
 
     describe('Store configuration', () => {
         it('should return null when storeConfiguration is undefined', () => {
-            mockUsePlaygroundContext.mockReturnValue({
-                ...defaultContext,
-                storeConfiguration: undefined,
+            mockUseConfigurationContext.mockReturnValue({
+                ...defaultConfigurationContext,
+                storeConfiguration: null,
             } as any)
 
             const { container } = render(<PlaygroundMessageList />)

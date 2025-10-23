@@ -1,21 +1,20 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    useEvents,
+    useSubscribeToEvent,
+} from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { PlaygroundInputSection } from './components/PlaygroundInputSection/PlaygroundInputSection'
 import { PlaygroundMessageList } from './components/PlaygroundMessageList/PlaygroundMessageList'
 import { PlaygroundMissingKnowledgeAlert } from './components/PlaygroundMissingKnowledgeAlert/PlaygroundMissingKnowledgeAlert'
-import {
-    PlaygroundProvider,
-    usePlaygroundContext,
-    usePlaygroundEvent,
-} from './contexts/PlaygroundContext'
-import { useAiAgentHttpIntegration } from './hooks/useAiAgentHttpIntegration'
+import { PlaygroundProvider } from './contexts/PlaygroundContext'
 import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from './hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from './hooks/usePlaygroundTracking'
@@ -37,7 +36,8 @@ const ResetEventEmitter = ({
     resetPlaygroundCallback,
     shopName,
 }: ResetEventEmitterProps) => {
-    const { events } = usePlaygroundContext()
+    const events = useEvents()
+
     const arePlaygroundActionsAllowedRef = useRef<boolean | undefined>(
         arePlaygroundActionsAllowed,
     )
@@ -47,7 +47,7 @@ const ResetEventEmitter = ({
         shopName: shopName || '',
     })
 
-    usePlaygroundEvent(PlaygroundEvent.RESET_CONVERSATION, onPlaygroundReset)
+    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, onPlaygroundReset)
 
     useEffect(() => {
         if (
@@ -114,35 +114,6 @@ export const AiAgentPlayground = ({
         snippetHelpCenterId,
     })
 
-    const { httpIntegrationId, baseUrl } = useAiAgentHttpIntegration()
-
-    const initializedHttpIntegrationId =
-        httpIntegrationId || accountConfiguration?.httpIntegration?.id || 0
-    const gorgiasDomain = accountConfiguration?.gorgiasDomain || ''
-    const accountId = accountConfiguration?.accountId || 0
-    const chatIntegrationId = storeConfiguration?.monitoredChatIntegrations?.[0]
-
-    const playgroundContextValue = useMemo(
-        () => ({
-            storeConfiguration,
-            snippetHelpCenterId,
-            httpIntegrationId: initializedHttpIntegrationId,
-            baseUrl,
-            gorgiasDomain,
-            accountId,
-            chatIntegrationId,
-        }),
-        [
-            storeConfiguration,
-            snippetHelpCenterId,
-            initializedHttpIntegrationId,
-            baseUrl,
-            gorgiasDomain,
-            accountId,
-            chatIntegrationId,
-        ],
-    )
-
     const { onTestPageViewed } = usePlaygroundTracking({
         shopName,
     })
@@ -170,7 +141,6 @@ export const AiAgentPlayground = ({
     ) {
         return (
             <PlaygroundProvider
-                value={playgroundContextValue}
                 arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
             >
                 <ResetEventEmitter
