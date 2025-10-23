@@ -542,12 +542,13 @@ describe('ChannelsStep', () => {
             mockChatAndEmailDisabled()
             renderWithProvider()
 
-            expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
-            expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+            await waitFor(() => {
+                expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
+                expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+            })
 
-            // Click on next button
             const nextButton = screen.getByText('Next')
-            user.click(nextButton)
+            await user.click(nextButton)
             expect(defaultProps.goToStep).not.toHaveBeenCalled()
 
             await waitFor(() => {
