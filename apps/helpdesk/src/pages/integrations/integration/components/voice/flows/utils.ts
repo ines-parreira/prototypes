@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import {
     CallRoutingFlow,
     CallRoutingFlowSteps,
+    CustomerFieldsConditionalStep,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
@@ -28,6 +29,8 @@ import {
     VoiceFlowNodeType,
 } from './constants'
 import {
+    CustomerLookupNode,
+    CustomerLookupOptionNode,
     EnqueueNode,
     EnqueueOptionNode,
     IntermediaryNode,
@@ -50,6 +53,7 @@ export function canAddNewStepOnEdge(
         case VoiceFlowNodeType.TimeSplitConditional:
         case VoiceFlowNodeType.SendToSMS:
         case VoiceFlowNodeType.Intermediary:
+        case VoiceFlowNodeType.CustomerLookup:
             return false
         case VoiceFlowNodeType.Enqueue:
             return target.type !== VoiceFlowNodeType.EnqueueOption
@@ -70,7 +74,11 @@ export function isVoiceFlowStep(
 
 export function isBranchingNode(
     node: VoiceFlowNodeBase,
-): node is IvrMenuNode | TimeSplitConditionalNode | EnqueueNode {
+): node is
+    | IvrMenuNode
+    | TimeSplitConditionalNode
+    | EnqueueNode
+    | CustomerLookupNode {
     const isEnqueueBranchingNode =
         node.type === VoiceFlowNodeType.Enqueue &&
         'conditional_routing' in node.data &&
@@ -79,6 +87,7 @@ export function isBranchingNode(
     return (
         isEnqueueBranchingNode ||
         [
+            VoiceFlowNodeType.CustomerLookup,
             VoiceFlowNodeType.IvrMenu,
             VoiceFlowNodeType.TimeSplitConditional,
         ].includes(node.type)
@@ -91,7 +100,8 @@ export function isBranchingOption(
     return (
         node.type === VoiceFlowNodeType.TimeSplitOption ||
         node.type === VoiceFlowNodeType.IvrOption ||
-        node.type === VoiceFlowNodeType.EnqueueOption
+        node.type === VoiceFlowNodeType.EnqueueOption ||
+        node.type === VoiceFlowNodeType.CustomerLookupOption
     )
 }
 
@@ -100,6 +110,14 @@ export function getNextNodes(
     nodes: VoiceFlowNode[],
 ): string[] {
     switch (node.type) {
+        case VoiceFlowNodeType.CustomerLookup:
+            const branchOptions = node.data.branch_options.map(
+                (option) => option.next_step_id,
+            )
+            return [
+                ...branchOptions,
+                node.data.default_next_step_id ?? END_CALL_NODE.id,
+            ]
         case VoiceFlowNodeType.Enqueue:
             const nextStepId = node.data.next_step_id ?? END_CALL_NODE.id
             const skipStepId = node.data.skip_step_id ?? END_CALL_NODE.id
@@ -133,6 +151,11 @@ export function getNextSteps(
     const step = steps[stepId]
 
     switch (step.step_type) {
+        case VoiceFlowNodeType.CustomerLookup:
+            const branchOptions = step.branch_options.map(
+                (option) => option.next_step_id,
+            )
+            return [...branchOptions, step.default_next_step_id]
         case VoiceFlowNodeType.IvrMenu:
             return step.branch_options.map((option) => option.next_step_id)
         case VoiceFlowNodeType.TimeSplitConditional:
@@ -208,11 +231,72 @@ export function createEnqueueOptionNode(
     }
 }
 
+export function createCustomerLookupOptionNode(
+    parentId: string,
+    isDefaultOption: boolean,
+    optionIndex: number | null,
+    nextStepId: string | null,
+): VoiceFlowNodeBase<CustomerLookupOptionNode> {
+    return {
+        id: uuidv4(),
+        type: VoiceFlowNodeType.CustomerLookupOption,
+        data: {
+            parentId,
+            isDefaultOption,
+            optionIndex,
+            next_step_id: nextStepId!,
+        },
+    }
+}
+
 function handleBranchingNode(
-    node: IvrMenuNode | TimeSplitConditionalNode | EnqueueNode,
+    node:
+        | IvrMenuNode
+        | TimeSplitConditionalNode
+        | EnqueueNode
+        | CustomerLookupNode,
     voiceFlowNodes: VoiceFlowNodeBase[],
 ): VoiceFlowNodeBase[] {
     switch (node.type) {
+        case VoiceFlowNodeType.CustomerLookup: {
+            const defaultBranchOption = createCustomerLookupOptionNode(
+                node.id,
+                true,
+                null,
+                node.data.default_next_step_id,
+            )
+            const branchOptions = Object.values(node.data.branch_options).map(
+                (option, index) =>
+                    createCustomerLookupOptionNode(
+                        node.id,
+                        false,
+                        index,
+                        option.next_step_id,
+                    ),
+            )
+
+            const updatedParentNode = {
+                ...node,
+                data: {
+                    ...node.data,
+                    default_next_step_id: defaultBranchOption.id,
+                    branch_options: node.data.branch_options.map((opt, i) => ({
+                        ...opt,
+                        next_step_id: branchOptions[i].id,
+                    })),
+                },
+            }
+
+            const updatedVoiceFlowNodes = voiceFlowNodes.map((n) =>
+                n.id === node.id ? updatedParentNode : n,
+            )
+
+            return [
+                ...updatedVoiceFlowNodes,
+                defaultBranchOption,
+                ...branchOptions,
+            ]
+        }
         case VoiceFlowNodeType.IvrMenu: {
             const branchNodes = Object.values(node.data.branch_options).map(
                 (branch, index) =>
@@ -301,15 +385,22 @@ function connectTerminalStepsToEndCallStep(
 
     Object.keys(newSteps).forEach((stepId) => {
         const step = newSteps[stepId]
-        if (step.step_type === 'ivr_menu') {
+        if (step.step_type === VoiceFlowNodeType.CustomerLookup) {
+            step.default_next_step_id =
+                step.default_next_step_id || END_CALL_NODE.id
             step.branch_options = step.branch_options.map((option) => ({
                 ...option,
                 next_step_id: option.next_step_id || END_CALL_NODE.id,
             }))
-        } else if (step.step_type === 'time_split_conditional') {
+        } else if (step.step_type === VoiceFlowNodeType.IvrMenu) {
+            step.branch_options = step.branch_options.map((option) => ({
+                ...option,
+                next_step_id: option.next_step_id || END_CALL_NODE.id,
+            }))
+        } else if (step.step_type === VoiceFlowNodeType.TimeSplitConditional) {
             step.on_true_step_id = step.on_true_step_id || END_CALL_NODE.id
             step.on_false_step_id = step.on_false_step_id || END_CALL_NODE.id
-        } else if (step.step_type === 'enqueue') {
+        } else if (step.step_type === VoiceFlowNodeType.Enqueue) {
             step.next_step_id = step.next_step_id || END_CALL_NODE.id
             if (step.conditional_routing) {
                 step.skip_step_id = step.skip_step_id || END_CALL_NODE.id
@@ -409,6 +500,7 @@ export const insertIntermediaryNode = (
             case VoiceFlowNodeType.TimeSplitConditional:
             case VoiceFlowNodeType.IvrMenu:
             case VoiceFlowNodeType.EndCall:
+            case VoiceFlowNodeType.CustomerLookup:
                 // these nodes shouldn't be included in convergence points (they should be filtered out before)
                 // we just safeguard against it here
                 break
@@ -450,10 +542,12 @@ export function getEdgeProps(
         // short edges, that bring the elements closer together
         case VoiceFlowNodeType.IvrMenu:
         case VoiceFlowNodeType.TimeSplitConditional:
+        case VoiceFlowNodeType.CustomerLookup:
             return BRANCHING_PROP
         case VoiceFlowNodeType.IvrOption:
         case VoiceFlowNodeType.TimeSplitOption:
         case VoiceFlowNodeType.EnqueueOption:
+        case VoiceFlowNodeType.CustomerLookupOption:
             return OPTIONS_PROP
         default:
             return DEFAULT_PROP
@@ -475,6 +569,16 @@ export const generateNodeData = (
                 rule_type: TimeSplitConditionalRuleType.BusinessHours,
             }
             return timeSplitConditional
+        case VoiceFlowNodeType.CustomerLookup:
+            const customerLookup: CustomerFieldsConditionalStep = {
+                id: uuidv4(),
+                name: 'Customer lookup',
+                step_type: VoiceFlowNodeType.CustomerLookup,
+                default_next_step_id: next_step_id,
+                branch_options: [],
+                custom_field_id: null!,
+            }
+            return customerLookup
         case VoiceFlowNodeType.IvrMenu:
             const ivrMenu: IvrMenuStep = {
                 id: uuidv4(),
@@ -645,6 +749,29 @@ export const linkFormStep = (
     if (!formStep) return null
 
     switch (formStep.step_type) {
+        case VoiceFlowNodeType.CustomerLookup:
+            if (relatedNode.type !== VoiceFlowNodeType.CustomerLookupOption) {
+                return null
+            }
+
+            if (relatedNode.data.isDefaultOption) {
+                return {
+                    ...formStep,
+                    default_next_step_id: nextStepId,
+                }
+            }
+
+            return {
+                ...formStep,
+                branch_options: formStep.branch_options.map((option, index) =>
+                    index === relatedNode.data.optionIndex
+                        ? {
+                              ...option,
+                              next_step_id: nextStepId,
+                          }
+                        : option,
+                ),
+            }
         case VoiceFlowNodeType.TimeSplitConditional:
             if (relatedNode.type !== VoiceFlowNodeType.TimeSplitOption) {
                 return null
@@ -762,6 +889,17 @@ export function updateFormFlowOnNodeDelete(
         const parentStep = flow.steps[parentStepId]
 
         switch (parentStep.step_type) {
+            case VoiceFlowNodeType.CustomerLookup:
+                parentStep.branch_options.forEach((option) => {
+                    if (option.next_step_id === nodeId) {
+                        option.next_step_id = nextStepId
+                    }
+                })
+
+                if (parentStep.default_next_step_id === nodeId) {
+                    parentStep.default_next_step_id = nextStepId
+                }
+                break
             case VoiceFlowNodeType.Enqueue:
                 if (parentStep.next_step_id === nodeId) {
                     parentStep.next_step_id = nextStepId
@@ -797,48 +935,4 @@ export function updateFormFlowOnNodeDelete(
     delete flow.steps[nodeId]
 
     return flow
-}
-
-export function addIvrOption(
-    parentNodeId: string,
-    intermediaryNodeId: string,
-    insertAtIndex: number,
-    setNodes: (
-        payload:
-            | VoiceFlowNode[]
-            | ((nodes: VoiceFlowNode[]) => VoiceFlowNode[]),
-    ) => void,
-): void {
-    const newNode: IvrOptionNode = {
-        ...createIvrOptionNode(parentNodeId, insertAtIndex, intermediaryNodeId),
-        position: { x: 0, y: 0 },
-    }
-
-    // Update nodes of other options to match the correct index & add the new node
-    setNodes((nodes) => {
-        let insertNodeIndex = nodes.length
-        const updatedNodes = nodes.map((node) => {
-            if (
-                node.type === VoiceFlowNodeType.IvrOption &&
-                node.data.parentId === parentNodeId &&
-                node.data.optionIndex >= insertAtIndex
-            ) {
-                if (node.data.optionIndex === insertAtIndex) {
-                    insertNodeIndex = nodes.indexOf(node)
-                }
-                return {
-                    ...node,
-                    data: {
-                        ...node.data,
-                        optionIndex: node.data.optionIndex + 1,
-                    },
-                }
-            }
-            return node
-        })
-
-        // insert the new node in between options to keep the order of the options organized in flow
-        updatedNodes.splice(insertNodeIndex, 0, newNode)
-        return updatedNodes
-    })
 }

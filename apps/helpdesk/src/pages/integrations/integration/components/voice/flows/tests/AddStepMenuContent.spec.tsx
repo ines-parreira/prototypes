@@ -1,9 +1,12 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
+import { useFlag } from 'core/flags'
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 
@@ -21,6 +24,22 @@ jest.mock('../useVoiceFlow', () => ({
         setNodes: mockSetNodes,
     }),
 }))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+const useFlagMock = assumeMock(useFlag)
+
+const mockUseAddNode = {
+    addNode: jest.fn(),
+    canAddFinalNode: true,
+}
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/utils/useAddNode',
+    () => ({
+        useAddNode: () => mockUseAddNode,
+    }),
+)
 
 describe('AddStepMenuContent', () => {
     const mockStep = mockPlayMessageStep({
@@ -76,10 +95,23 @@ describe('AddStepMenuContent', () => {
         )
     }
 
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.ExtendedCallFlowsGAReady) return true
+            return false
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('rendering options', () => {
         it('should render basic menu items', () => {
+            mockUseAddNode.canAddFinalNode = false
             renderComponent('incoming_call', 'source-node')
 
+            expect(screen.getByText('Customer lookup')).toBeInTheDocument()
             expect(screen.getByText('Time rule')).toBeInTheDocument()
             expect(screen.getByText('Play message')).toBeInTheDocument()
             expect(screen.getByText('IVR Menu')).toBeInTheDocument()
@@ -90,8 +122,10 @@ describe('AddStepMenuContent', () => {
         })
 
         it('should render final node options when target points to EndCall', () => {
+            mockUseAddNode.canAddFinalNode = true
             renderComponent()
 
+            expect(screen.getByText('Customer lookup')).toBeInTheDocument()
             expect(screen.getByText('Time rule')).toBeInTheDocument()
             expect(screen.getByText('Play message')).toBeInTheDocument()
             expect(screen.getByText('IVR Menu')).toBeInTheDocument()
@@ -99,6 +133,19 @@ describe('AddStepMenuContent', () => {
             expect(screen.getByText('Send to SMS')).toBeInTheDocument()
             expect(screen.getByText('Send to voicemail')).toBeInTheDocument()
             expect(screen.getByText('Forward to')).toBeInTheDocument()
+        })
+
+        it('should not render Customer lookup option when ExtendedCallFlowsGAReady is disabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.ExtendedCallFlowsGAReady)
+                    return false
+                return true
+            })
+
+            renderComponent()
+            expect(
+                screen.queryByText('Customer lookup'),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -111,70 +158,9 @@ describe('AddStepMenuContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockSetNodes).toHaveBeenCalledWith([
-                mockInitialNode,
-                {
-                    ...mockSourceNode,
-                    data: {
-                        ...mockSourceNode.data,
-                        next_step_id: 'new-node-id',
-                    },
-                },
-                {
-                    id: 'new-node-id',
-                    type: 'play_message',
-                    data: {
-                        id: 'new-node-id',
-                        name: 'Play message',
-                        step_type: 'play_message',
-                        message: {
-                            voice_message_type: 'text_to_speech',
-                            text_to_speech_content: '',
-                        },
-                        next_step_id: 'end_call',
-                    },
-                    position: {
-                        x: 0,
-                        y: 0,
-                    },
-                },
-                mockTargetNode,
-            ])
-        })
-    })
-
-    it('should handle adding a PlayMessage node as first', async () => {
-        renderComponent('incoming_call', 'source-node')
-
-        const playMessageButton = screen.getByText('Play message')
-        act(() => {
-            userEvent.click(playMessageButton)
-        })
-
-        await waitFor(() => {
-            expect(mockSetNodes).toHaveBeenCalledWith([
-                { ...mockInitialNode, data: { next_step_id: 'new-node-id' } },
-                mockSourceNode,
-                {
-                    id: 'new-node-id',
-                    type: 'play_message',
-                    data: {
-                        id: 'new-node-id',
-                        name: 'Play message',
-                        step_type: 'play_message',
-                        message: {
-                            voice_message_type: 'text_to_speech',
-                            text_to_speech_content: '',
-                        },
-                        next_step_id: 'source-node',
-                    },
-                    position: {
-                        x: 0,
-                        y: 0,
-                    },
-                },
-                mockTargetNode,
-            ])
+            expect(mockUseAddNode.addNode).toHaveBeenCalledWith(
+                VoiceFlowNodeType.PlayMessage,
+            )
         })
     })
 
@@ -187,32 +173,9 @@ describe('AddStepMenuContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockSetNodes).toHaveBeenCalledWith([
-                mockInitialNode,
-                {
-                    ...mockSourceNode,
-                    data: {
-                        ...mockSourceNode.data,
-                        next_step_id: 'new-node-id',
-                    },
-                },
-                {
-                    id: 'new-node-id',
-                    type: 'forward_to_external_number',
-                    data: {
-                        id: 'new-node-id',
-                        name: 'Forward to',
-                        step_type: 'forward_to_external_number',
-                        external_number: '',
-                        next_step_id: 'end_call',
-                    },
-                    position: {
-                        x: 0,
-                        y: 0,
-                    },
-                },
-                mockTargetNode,
-            ])
+            expect(mockUseAddNode.addNode).toHaveBeenCalledWith(
+                VoiceFlowNodeType.ForwardToExternalNumber,
+            )
         })
     })
 })

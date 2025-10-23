@@ -1,7 +1,8 @@
 import { Edge } from '@xyflow/react'
-import * as uuid from 'uuid'
 
 import {
+    mockCustomerFieldBranchOption,
+    mockCustomerFieldsConditionalStep,
     mockEnqueueStep,
     mockForwardToExternalNumberStep,
     mockIvrMenuStep,
@@ -13,6 +14,7 @@ import {
 import {
     CallRoutingFlow,
     CallRoutingFlowSteps,
+    CustomerFieldsConditionalStep,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
@@ -28,6 +30,8 @@ import {
     VoiceFlowNodeType,
 } from '../constants'
 import {
+    CustomerLookupNode,
+    CustomerLookupOptionNode,
     EndCallNode,
     EnqueueNode,
     EnqueueOptionNode,
@@ -43,8 +47,8 @@ import {
     VoiceFlowNodeData,
 } from '../types'
 import {
-    addIvrOption,
     canAddNewStepOnEdge,
+    createCustomerLookupOptionNode,
     createEnqueueOptionNode,
     createIvrOptionNode,
     createTimeSplitOptionNode,
@@ -66,15 +70,6 @@ import {
     updateIvrMenuNodeData,
     updateTimeSplitNodeData,
 } from '../utils'
-
-// Mock uuid module but use original implementation by default
-jest.mock('uuid', () => {
-    const originalUuid = jest.requireActual('uuid')
-    return {
-        ...originalUuid,
-        v4: jest.fn(() => originalUuid.v4()),
-    }
-})
 
 describe('utils', () => {
     describe('canAddNewStepOnEdge', () => {
@@ -164,6 +159,39 @@ describe('utils', () => {
     })
 
     describe('getNextNodes', () => {
+        it('should return the next nodes for a CustomerLookup node with only default next step', () => {
+            const node: CustomerLookupNode = {
+                type: VoiceFlowNodeType.CustomerLookup,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockCustomerFieldsConditionalStep({
+                    branch_options: [],
+                    default_next_step_id: '2',
+                }),
+            }
+
+            expect(getNextNodes(node, [])).toEqual(['2'])
+        })
+
+        it('should return the next nodes for a CustomerLookup node with branch options', () => {
+            const node: CustomerLookupNode = {
+                type: VoiceFlowNodeType.CustomerLookup,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockCustomerFieldsConditionalStep({
+                    default_next_step_id: '3',
+                    branch_options: [
+                        {
+                            field_value: '1',
+                            next_step_id: '2',
+                        },
+                    ],
+                }),
+            }
+
+            expect(getNextNodes(node, [])).toEqual(['2', '3'])
+        })
+
         it('should return the next nodes for an Enqueue with conditional routing', () => {
             const node: EnqueueNode = {
                 type: VoiceFlowNodeType.Enqueue,
@@ -250,6 +278,63 @@ describe('utils', () => {
             ]
 
             expect(getNextNodes(node, nodes)).toEqual(['2', '3'])
+        })
+    })
+
+    describe('createCustomerLookupOptionNode', () => {
+        it('should create a CustomerLookup option node for default next step', () => {
+            const customerLookupNode: CustomerLookupNode = {
+                type: VoiceFlowNodeType.CustomerLookup,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockCustomerFieldsConditionalStep(),
+            }
+
+            const node = createCustomerLookupOptionNode(
+                customerLookupNode.id,
+                true,
+                null,
+                customerLookupNode.data.default_next_step_id,
+            )
+
+            expect(node).toEqual({
+                id: expect.any(String),
+                type: VoiceFlowNodeType.CustomerLookupOption,
+                data: {
+                    parentId: customerLookupNode.id,
+                    isDefaultOption: true,
+                    optionIndex: null,
+                    next_step_id: customerLookupNode.data.default_next_step_id,
+                },
+            })
+        })
+
+        it('should create a CustomerLookup option node for branch options', () => {
+            const customerLookupNode: CustomerLookupNode = {
+                type: VoiceFlowNodeType.CustomerLookup,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockCustomerFieldsConditionalStep(),
+            }
+
+            const node = createCustomerLookupOptionNode(
+                customerLookupNode.id,
+                false,
+                0,
+                customerLookupNode.data.branch_options[0].next_step_id,
+            )
+
+            expect(node).toEqual({
+                id: expect.any(String),
+                type: VoiceFlowNodeType.CustomerLookupOption,
+                data: {
+                    parentId: customerLookupNode.id,
+                    isDefaultOption: false,
+                    optionIndex: 0,
+                    next_step_id:
+                        customerLookupNode.data.branch_options[0].next_step_id,
+                },
+            })
         })
     })
 
@@ -682,6 +767,85 @@ describe('utils', () => {
             expect(intermediaryNodes).toHaveLength(6)
         })
 
+        it('should transform a flow with customer lookup correctly', () => {
+            const playMessageStep = mockPlayMessageStep({
+                next_step_id: null,
+            })
+            const customerLookupNode = mockCustomerFieldsConditionalStep({
+                branch_options: [
+                    mockCustomerFieldBranchOption({
+                        next_step_id: playMessageStep.id,
+                    }),
+                ],
+                default_next_step_id: playMessageStep.id,
+            })
+            const flow = {
+                steps: {
+                    [customerLookupNode.id]: customerLookupNode,
+                    [playMessageStep.id]: playMessageStep,
+                },
+                first_step_id: customerLookupNode.id,
+            }
+
+            const nodes = transformToReactFlowNodes(flow)
+
+            expect(nodes).toEqual([
+                expect.objectContaining({
+                    ...INCOMING_CALL_NODE,
+                    data: { next_step_id: customerLookupNode.id },
+                }),
+                expect.objectContaining({
+                    id: customerLookupNode.id,
+                    data: {
+                        ...customerLookupNode,
+                        default_next_step_id: expect.not.stringMatching(
+                            playMessageStep.id,
+                        ),
+                        branch_options: [
+                            expect.objectContaining({
+                                ...customerLookupNode.branch_options[0],
+                                next_step_id: expect.not.stringMatching(
+                                    playMessageStep.id,
+                                ),
+                            }),
+                        ],
+                    },
+                }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.CustomerLookupOption,
+                    data: expect.objectContaining({
+                        isDefaultOption: true,
+                        next_step_id: expect.not.stringMatching(
+                            playMessageStep.id,
+                        ),
+                    }),
+                }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.CustomerLookupOption,
+                    data: expect.objectContaining({
+                        isDefaultOption: false,
+                        next_step_id: expect.not.stringMatching(
+                            playMessageStep.id,
+                        ),
+                    }),
+                }),
+                expect.objectContaining({
+                    id: playMessageStep.id,
+                    data: expect.objectContaining({
+                        ...playMessageStep,
+                        next_step_id: END_CALL_NODE.id,
+                    }),
+                }),
+                expect.objectContaining({ ...END_CALL_NODE }),
+                expect.objectContaining({
+                    type: VoiceFlowNodeType.Intermediary,
+                    data: expect.objectContaining({
+                        next_step_id: playMessageStep.id,
+                    }),
+                }),
+            ])
+        })
+
         it('should transform a simple enqueue node with conditional routing', () => {
             const enqueueNode = mockEnqueueStep({
                 id: 'enqueue',
@@ -953,6 +1117,7 @@ describe('utils', () => {
         })
 
         it.each([
+            VoiceFlowNodeType.CustomerLookup,
             VoiceFlowNodeType.IvrMenu,
             VoiceFlowNodeType.TimeSplitConditional,
         ])('should return short edge props for %s source', (type) => {
@@ -975,6 +1140,7 @@ describe('utils', () => {
         })
 
         it.each([
+            VoiceFlowNodeType.CustomerLookupOption,
             VoiceFlowNodeType.IvrOption,
             VoiceFlowNodeType.TimeSplitOption,
             VoiceFlowNodeType.EnqueueOption,
@@ -1032,6 +1198,22 @@ describe('utils', () => {
     })
 
     describe('isBranchingOption', () => {
+        it('should return true for CustomerLookupOption node', () => {
+            const node: CustomerLookupOptionNode = {
+                type: VoiceFlowNodeType.CustomerLookupOption,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: {
+                    parentId: 'parent-1',
+                    isDefaultOption: false,
+                    optionIndex: 0,
+                    next_step_id: '2',
+                },
+            }
+
+            expect(isBranchingOption(node)).toBe(true)
+        })
+
         it('should return true for IvrOption node', () => {
             const node: IvrOptionNode = {
                 type: VoiceFlowNodeType.IvrOption,
@@ -1092,6 +1274,11 @@ describe('utils', () => {
     describe('isBranchingNode', () => {
         it.each([
             {
+                type: VoiceFlowNodeType.CustomerLookup,
+                data: mockCustomerFieldsConditionalStep(),
+                expected: true,
+            },
+            {
                 type: VoiceFlowNodeType.IvrMenu,
                 data: mockIvrMenuStep(),
                 expected: true,
@@ -1142,6 +1329,21 @@ describe('utils', () => {
                 rule_type: TimeSplitConditionalRuleType.BusinessHours,
             })
             expect(nodeData?.id).toBeDefined()
+        })
+
+        it('should generate CustomerLookup node data', () => {
+            const nodeData = generateNodeData(
+                VoiceFlowNodeType.CustomerLookup,
+                'next-step-id',
+            )
+
+            expect(nodeData).toMatchObject({
+                name: 'Customer lookup',
+                step_type: VoiceFlowNodeType.CustomerLookup,
+                default_next_step_id: 'next-step-id',
+                branch_options: [],
+                custom_field_id: null!,
+            })
         })
 
         it('should generate IvrMenu node data', () => {
@@ -1359,6 +1561,73 @@ describe('utils', () => {
     })
 
     describe('linkFormStep', () => {
+        it('should update CustomerLookup default branch', () => {
+            const relatedNode: CustomerLookupOptionNode = {
+                id: 'option-1',
+                type: VoiceFlowNodeType.CustomerLookupOption,
+                data: {
+                    parentId: 'customer-lookup-1',
+                    isDefaultOption: true,
+                    optionIndex: null,
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = {
+                id: 'customer-lookup-1',
+                step_type: VoiceFlowNodeType.CustomerLookup,
+                name: 'Customer lookup',
+                default_next_step_id: 'old-id',
+                branch_options: [],
+                custom_field_id: null!,
+            } as CustomerFieldsConditionalStep
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as CustomerFieldsConditionalStep
+
+            expect(updated?.default_next_step_id).toBe('new-id')
+        })
+
+        it('should update CustomerLookup branch option', () => {
+            const relatedNode: CustomerLookupOptionNode = {
+                id: 'option-2',
+                type: VoiceFlowNodeType.CustomerLookupOption,
+                data: {
+                    parentId: 'customer-lookup-1',
+                    isDefaultOption: false,
+                    optionIndex: 0,
+                    next_step_id: 'old-id',
+                },
+                position: { x: 0, y: 0 },
+            }
+
+            const formStep = {
+                id: 'customer-lookup-1',
+                step_type: VoiceFlowNodeType.CustomerLookup,
+                name: 'Customer lookup',
+                default_next_step_id: 'old-id',
+                branch_options: [
+                    {
+                        field_value: '1',
+                        next_step_id: 'old-id',
+                    },
+                ],
+                custom_field_id: null!,
+            } as CustomerFieldsConditionalStep
+
+            const updated = linkFormStep(
+                relatedNode,
+                formStep,
+                'new-id',
+            ) as CustomerFieldsConditionalStep
+
+            expect(updated?.branch_options[0].next_step_id).toBe('new-id')
+        })
+
         it('should update TimeSplitConditional true branch', () => {
             const relatedNode: TimeSplitOptionNode = {
                 id: 'option-1',
@@ -2064,6 +2333,19 @@ describe('utils', () => {
                     skip_step_id: 'step-10',
                     conditional_routing: false,
                 }),
+                'step-10': mockCustomerFieldsConditionalStep({
+                    default_next_step_id: 'step-11',
+                    branch_options: [
+                        {
+                            field_value: '1',
+                            next_step_id: 'step-12',
+                        },
+                        {
+                            field_value: '2',
+                            next_step_id: 'step-13',
+                        },
+                    ],
+                }),
             }
 
             expect(getNextSteps(steps, 'step-1')).toEqual(['step-2'])
@@ -2079,6 +2361,11 @@ describe('utils', () => {
             expect(getNextSteps(steps, 'step-7')).toEqual([])
             expect(getNextSteps(steps, 'step-8')).toEqual(['step-9', 'step-10'])
             expect(getNextSteps(steps, 'step-9')).toEqual(['step-9'])
+            expect(getNextSteps(steps, 'step-10')).toEqual([
+                'step-12',
+                'step-13',
+                'step-11',
+            ])
         })
 
         it('should return skip step for Enqueue nodes even if conditional routing is false when includeInactive is true', () => {
@@ -2202,7 +2489,7 @@ describe('utils', () => {
             })
         })
 
-        it('should update the flow correctly when a branching node is deleted', () => {
+        it('should update the flow correctly when a branching node with at least 2 branches is deleted', () => {
             const firstStep = mockPlayMessageStep({
                 id: 'first-step',
                 next_step_id: 'second-step',
@@ -2484,307 +2771,6 @@ describe('utils', () => {
                 },
                 [fourthStep.id]: fourthStep,
             })
-        })
-    })
-
-    describe('addIvrOption', () => {
-        let mockSetNodes: jest.Mock
-        let mockNodes: VoiceFlowNode[]
-
-        beforeEach(() => {
-            mockSetNodes = jest.fn()
-            mockNodes = []
-            jest.clearAllMocks()
-
-            // Mock uuid.v4 only for these tests
-            ;(uuid.v4 as jest.Mock).mockReturnValue('new-option-id')
-        })
-
-        afterEach(() => {
-            // Clear the mock
-            ;(uuid.v4 as jest.Mock).mockClear()
-        })
-
-        const createMockIvrOptionNode = (
-            id: string,
-            parentId: string,
-            optionIndex: number,
-            nextStepId: string,
-        ): IvrOptionNode => ({
-            id,
-            type: VoiceFlowNodeType.IvrOption,
-            data: {
-                parentId,
-                optionIndex,
-                next_step_id: nextStepId,
-            },
-            position: { x: 100, y: 100 },
-        })
-
-        it('should add a new IVR option node at the correct index', () => {
-            const parentNodeId = 'parent-1'
-            const intermediaryNodeId = 'intermediary-1'
-            const insertAtIndex = 1
-
-            mockNodes = [
-                createMockIvrOptionNode(
-                    'option-1',
-                    parentNodeId,
-                    0,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'option-2',
-                    parentNodeId,
-                    1,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'option-3',
-                    parentNodeId,
-                    2,
-                    intermediaryNodeId,
-                ),
-            ]
-
-            mockSetNodes.mockImplementation((callback) => {
-                return callback(mockNodes)
-            })
-
-            addIvrOption(
-                parentNodeId,
-                intermediaryNodeId,
-                insertAtIndex,
-                mockSetNodes,
-            )
-
-            expect(mockSetNodes).toHaveBeenCalledWith(expect.any(Function))
-
-            const callback = mockSetNodes.mock.calls[0][0]
-            const result = callback(mockNodes)
-
-            // Check that existing nodes with index >= insertAtIndex have their indices incremented
-            const updatedOption2 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-2',
-            )
-            const updatedOption3 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-3',
-            )
-
-            expect(updatedOption2.data.optionIndex).toBe(2) // Was 1, now 2
-            expect(updatedOption3.data.optionIndex).toBe(3) // Was 2, now 3
-
-            // Check that the new node was inserted with generated ID
-            const newNodeInResult = result.find(
-                (n: VoiceFlowNode) => n.id === 'new-option-id',
-            )
-            expect(newNodeInResult).toBeDefined()
-            expect(newNodeInResult.data.optionIndex).toBe(insertAtIndex)
-            expect(newNodeInResult.data.parentId).toBe(parentNodeId)
-            expect(newNodeInResult.data.next_step_id).toBe(intermediaryNodeId)
-        })
-
-        it('should only affect IVR option nodes with matching parentId', () => {
-            const parentNodeId = 'parent-1'
-            const otherParentId = 'parent-2'
-            const intermediaryNodeId = 'intermediary-1'
-            const insertAtIndex = 1
-
-            mockNodes = [
-                createMockIvrOptionNode(
-                    'option-1',
-                    parentNodeId,
-                    0,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'option-2',
-                    parentNodeId,
-                    1,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'other-option',
-                    otherParentId,
-                    1,
-                    intermediaryNodeId,
-                ), // Different parent
-                {
-                    id: 'non-ivr-node',
-                    type: VoiceFlowNodeType.PlayMessage,
-                    data: {},
-                    position: { x: 0, y: 0 },
-                } as VoiceFlowNode,
-            ]
-
-            mockSetNodes.mockImplementation((callback) => {
-                return callback(mockNodes)
-            })
-
-            addIvrOption(
-                parentNodeId,
-                intermediaryNodeId,
-                insertAtIndex,
-                mockSetNodes,
-            )
-
-            const callback = mockSetNodes.mock.calls[0][0]
-            const result = callback(mockNodes)
-
-            // Node with different parent should not be affected
-            const otherOption = result.find(
-                (n: VoiceFlowNode) => n.id === 'other-option',
-            )
-            expect(otherOption.data.optionIndex).toBe(1) // Should remain unchanged
-
-            // Non-IVR node should not be affected
-            const nonIvrNode = result.find(
-                (n: VoiceFlowNode) => n.id === 'non-ivr-node',
-            )
-            expect(nonIvrNode).toBeDefined()
-            expect(nonIvrNode.type).toBe(VoiceFlowNodeType.PlayMessage)
-        })
-
-        it('should handle inserting at index 0 correctly', () => {
-            const parentNodeId = 'parent-1'
-            const intermediaryNodeId = 'intermediary-1'
-            const insertAtIndex = 0
-
-            mockNodes = [
-                createMockIvrOptionNode(
-                    'option-0',
-                    parentNodeId,
-                    0,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'option-1',
-                    parentNodeId,
-                    1,
-                    intermediaryNodeId,
-                ),
-            ]
-
-            mockSetNodes.mockImplementation((callback) => {
-                return callback(mockNodes)
-            })
-
-            addIvrOption(
-                parentNodeId,
-                intermediaryNodeId,
-                insertAtIndex,
-                mockSetNodes,
-            )
-
-            const callback = mockSetNodes.mock.calls[0][0]
-            const result = callback(mockNodes)
-
-            // All existing options should have their indices incremented
-            const updatedOption0 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-0',
-            )
-            const updatedOption1 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-1',
-            )
-
-            expect(updatedOption0.data.optionIndex).toBe(1)
-            expect(updatedOption1.data.optionIndex).toBe(2)
-
-            // New node should be inserted at the beginning
-            const newNode = result.find(
-                (n: VoiceFlowNode) => n.id === 'new-option-id',
-            )
-            expect(newNode.data.optionIndex).toBe(0)
-            expect(result.indexOf(newNode)).toBe(0)
-        })
-
-        it('should handle inserting at the end when no existing nodes match the index', () => {
-            const parentNodeId = 'parent-1'
-            const intermediaryNodeId = 'intermediary-1'
-            const insertAtIndex = 5 // Higher than any existing index
-
-            mockNodes = [
-                createMockIvrOptionNode(
-                    'option-0',
-                    parentNodeId,
-                    0,
-                    intermediaryNodeId,
-                ),
-                createMockIvrOptionNode(
-                    'option-1',
-                    parentNodeId,
-                    1,
-                    intermediaryNodeId,
-                ),
-                {
-                    id: 'other-node',
-                    type: VoiceFlowNodeType.PlayMessage,
-                    data: {},
-                    position: { x: 0, y: 0 },
-                } as VoiceFlowNode,
-            ]
-
-            mockSetNodes.mockImplementation((callback) => {
-                return callback(mockNodes)
-            })
-
-            addIvrOption(
-                parentNodeId,
-                intermediaryNodeId,
-                insertAtIndex,
-                mockSetNodes,
-            )
-
-            const callback = mockSetNodes.mock.calls[0][0]
-            const result = callback(mockNodes)
-
-            // No existing nodes should have their indices changed
-            const option0 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-0',
-            )
-            const option1 = result.find(
-                (n: VoiceFlowNode) => n.id === 'option-1',
-            )
-
-            expect(option0.data.optionIndex).toBe(0)
-            expect(option1.data.optionIndex).toBe(1)
-
-            // New node should be added at the end
-            const newNode = result.find(
-                (n: VoiceFlowNode) => n.id === 'new-option-id',
-            )
-            expect(newNode).toBeDefined()
-            expect(result[result.length - 1]).toBe(newNode)
-        })
-
-        it('should handle empty nodes array', () => {
-            const parentNodeId = 'parent-1'
-            const intermediaryNodeId = 'intermediary-1'
-            const insertAtIndex = 0
-
-            mockNodes = []
-
-            mockSetNodes.mockImplementation((callback) => {
-                return callback(mockNodes)
-            })
-
-            addIvrOption(
-                parentNodeId,
-                intermediaryNodeId,
-                insertAtIndex,
-                mockSetNodes,
-            )
-
-            expect(mockSetNodes).toHaveBeenCalledWith(expect.any(Function))
-
-            const callback = mockSetNodes.mock.calls[0][0]
-            const result = callback(mockNodes)
-
-            expect(result).toHaveLength(1)
-            expect(result[0].id).toBe('new-option-id')
-            expect(result[0].data.optionIndex).toBe(insertAtIndex)
-            expect(result[0].data.parentId).toBe(parentNodeId)
-            expect(result[0].data.next_step_id).toBe(intermediaryNodeId)
         })
     })
 })

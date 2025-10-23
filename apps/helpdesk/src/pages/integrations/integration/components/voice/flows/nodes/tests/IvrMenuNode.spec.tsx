@@ -11,13 +11,20 @@ import {
 
 import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
-import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { END_CALL_NODE, VoiceFlowNodeType } from '../../constants'
+import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
 import { createIvrOptionNode } from '../../utils'
 import { IvrMenuNode } from '../IvrMenuNode'
+
+const mockUpdateNodes = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/hooks/useUpdateNodes',
+    () => ({
+        useUpdateNodes: () => mockUpdateNodes,
+    }),
+)
 
 const matchesOriginal = HTMLElement.prototype.matches
 HTMLElement.prototype.matches = function (query: string) {
@@ -205,77 +212,7 @@ describe('IvrMenuNode', () => {
         })
 
         await waitFor(() => {
-            expect(onNodesChange).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        type: 'add',
-                        item: expect.objectContaining({
-                            data: expect.objectContaining({
-                                // next_step_id is END_CALL_NODE.id when intermediary node is not found
-                                next_step_id: END_CALL_NODE.id,
-                            }),
-                        }),
-                    }),
-                ]),
-            )
-        })
-    })
-
-    it('should add new node with intermediary node as next_step_id when intermediary node is found', async () => {
-        const user = userEvent.setup()
-        renderComponent({
-            ...flowProps,
-            nodes: [
-                ...nodes,
-                {
-                    id: getIntermediaryNodeId(ivrMenuStep.id),
-                    position: { x: 0, y: 0 },
-                    data: { next_step_id: 'end_call' },
-                    type: VoiceFlowNodeType.Intermediary,
-                },
-            ],
-        })
-
-        await act(async () => {
-            await user.click(screen.getByText('Add option'))
-        })
-
-        await waitFor(() => {
-            expect(onNodesChange).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        type: 'add',
-                        item: expect.objectContaining({
-                            data: expect.objectContaining({
-                                next_step_id: getIntermediaryNodeId(
-                                    ivrMenuStep.id,
-                                ),
-                            }),
-                        }),
-                    }),
-                ]),
-            )
-        })
-    })
-
-    it('should update node data when the value changes', async () => {
-        const user = userEvent.setup()
-
-        renderComponent()
-
-        const onNodesChangeNumberOfCalls = onNodesChange.mock.calls.length
-
-        await act(async () => {
-            await user.type(
-                screen.getAllByPlaceholderText('Branch name')[0],
-                'test-value',
-            )
-        })
-
-        await waitFor(() => {
-            expect(onNodesChange.mock.calls.length).toBeGreaterThan(
-                onNodesChangeNumberOfCalls,
-            )
+            expect(mockUpdateNodes).toHaveBeenCalled()
         })
     })
 

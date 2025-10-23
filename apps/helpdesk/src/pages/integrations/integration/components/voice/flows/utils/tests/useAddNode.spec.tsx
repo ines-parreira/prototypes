@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
 import { FlowProvider } from 'core/ui/flows'
-import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from '../../constants'
 import {
@@ -17,6 +16,14 @@ import {
     VoiceFlowNode,
 } from '../../types'
 import { useAddNode } from '../useAddNode'
+
+const mockUpdateNodes = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/hooks/useUpdateNodes',
+    () => ({
+        useUpdateNodes: () => mockUpdateNodes,
+    }),
+)
 
 jest.mock('uuid')
 const mockUuid = assumeMock(uuidv4).mockReturnValue('new-node-id')
@@ -86,10 +93,13 @@ describe('useAddNode', () => {
         })
     })
 
+    const mockSetValue = jest.fn()
+
     const Wrapper = ({ children }: { children: ReactNode }) => {
         const methods = useForm<VoiceFlowFormValues>({
             defaultValues: defaultFormValues,
         })
+        methods.setValue = mockSetValue
 
         return (
             <FlowProvider
@@ -143,25 +153,31 @@ describe('useAddNode', () => {
                 result.current.addNode(VoiceFlowNodeType.PlayMessage)
             })
 
-            await waitFor(() =>
-                expect(mockSetNodes).toHaveBeenCalledWith(
-                    expect.arrayContaining([
-                        expect.objectContaining({
-                            id: 'new-node-id',
-                            type: VoiceFlowNodeType.PlayMessage,
-                            data: expect.objectContaining({
-                                id: 'new-node-id',
-                                name: 'Play message',
-                                step_type: VoiceFlowNodeType.PlayMessage,
-                                next_step_id: 'end_call',
-                            }),
-                        }),
-                    ]),
-                ),
-            )
+            await waitFor(() => {
+                // newly added step
+                expect(mockSetValue).toHaveBeenCalledWith(
+                    'steps.new-node-id',
+                    expect.objectContaining({
+                        id: 'new-node-id',
+                        name: 'Play message',
+                        step_type: VoiceFlowNodeType.PlayMessage,
+                        next_step_id: null,
+                    }),
+                    { shouldDirty: true },
+                )
+
+                expect(mockSetValue).toHaveBeenCalledWith(
+                    'steps.source-node',
+                    expect.objectContaining({
+                        id: 'source-node',
+                        next_step_id: 'new-node-id',
+                    }),
+                )
+                expect(mockUpdateNodes).toHaveBeenCalled()
+            })
         })
 
-        it('should add a TimeSplitConditional node', () => {
+        it('should add a TimeSplitConditional node', async () => {
             mockUuid.mockReturnValueOnce('new-node-id')
 
             const { result } = renderHook(
@@ -173,118 +189,29 @@ describe('useAddNode', () => {
                 result.current.addNode(VoiceFlowNodeType.TimeSplitConditional)
             })
 
-            expect(mockSetNodes).toHaveBeenCalledWith(
-                expect.arrayContaining([
+            await waitFor(() => {
+                // newly added step
+                expect(mockSetValue).toHaveBeenCalledWith(
+                    'steps.new-node-id',
                     expect.objectContaining({
                         id: 'new-node-id',
-                        type: VoiceFlowNodeType.TimeSplitConditional,
-                        data: expect.objectContaining({
-                            id: 'new-node-id',
-                            name: 'Time rule',
-                            step_type: VoiceFlowNodeType.TimeSplitConditional,
-                            on_true_step_id: 'new-node-id-true',
-                            on_false_step_id: 'new-node-id-false',
-                        }),
+                        name: 'Time rule',
+                        step_type: VoiceFlowNodeType.TimeSplitConditional,
+                        on_true_step_id: null,
+                        on_false_step_id: null,
                     }),
-                    expect.objectContaining({
-                        id: 'new-node-id-true',
-                        type: VoiceFlowNodeType.TimeSplitOption,
-                        data: expect.objectContaining({
-                            parentId: 'new-node-id',
-                            next_step_id: getIntermediaryNodeId('new-node-id'),
-                        }),
-                    }),
-                    expect.objectContaining({
-                        id: 'new-node-id-false',
-                        type: VoiceFlowNodeType.TimeSplitOption,
-                        data: expect.objectContaining({
-                            parentId: 'new-node-id',
-                            next_step_id: getIntermediaryNodeId('new-node-id'),
-                        }),
-                    }),
-                ]),
-            )
-        })
+                    { shouldDirty: true },
+                )
 
-        it('should add a SendToVoicemail node', async () => {
-            const { result } = renderHook(
-                () => useAddNode('source-node', 'end_call'),
-                { wrapper: Wrapper },
-            )
-
-            act(() => {
-                result.current.addNode(VoiceFlowNodeType.SendToVoicemail)
+                expect(mockSetValue).toHaveBeenCalledWith(
+                    'steps.source-node',
+                    expect.objectContaining({
+                        id: 'source-node',
+                        next_step_id: 'new-node-id',
+                    }),
+                )
+                expect(mockUpdateNodes).toHaveBeenCalled()
             })
-
-            await waitFor(() =>
-                expect(mockSetNodes).toHaveBeenCalledWith(
-                    expect.arrayContaining([
-                        expect.objectContaining({
-                            id: 'new-node-id',
-                            type: VoiceFlowNodeType.SendToVoicemail,
-                            data: expect.objectContaining({
-                                id: 'new-node-id',
-                                name: 'Send to voicemail',
-                                step_type: VoiceFlowNodeType.SendToVoicemail,
-                                allow_to_leave_voicemail: true,
-                                next_step_id: 'end_call',
-                            }),
-                        }),
-                    ]),
-                ),
-            )
-        })
-
-        it('should add a SendToSMS node', () => {
-            const { result } = renderHook(
-                () => useAddNode('source-node', 'end_call'),
-                { wrapper: Wrapper },
-            )
-
-            act(() => {
-                result.current.addNode(VoiceFlowNodeType.SendToSMS)
-            })
-
-            expect(mockSetNodes).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        id: 'new-node-id',
-                        type: VoiceFlowNodeType.SendToSMS,
-                        data: expect.objectContaining({
-                            id: 'new-node-id',
-                            name: 'Send to SMS',
-                            step_type: VoiceFlowNodeType.SendToSMS,
-                            next_step_id: 'end_call',
-                        }),
-                    }),
-                ]),
-            )
-        })
-
-        it('should add an Enqueue node', () => {
-            const { result } = renderHook(
-                () => useAddNode('source-node', 'end_call'),
-                { wrapper: Wrapper },
-            )
-
-            act(() => {
-                result.current.addNode(VoiceFlowNodeType.Enqueue)
-            })
-
-            expect(mockSetNodes).toHaveBeenCalledWith(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        id: 'new-node-id',
-                        type: VoiceFlowNodeType.Enqueue,
-                        data: expect.objectContaining({
-                            id: 'new-node-id',
-                            name: 'Route to',
-                            step_type: VoiceFlowNodeType.Enqueue,
-                            next_step_id: 'end_call',
-                        }),
-                    }),
-                ]),
-            )
         })
 
         it('should not add node if source or target is undefined', () => {
@@ -299,7 +226,8 @@ describe('useAddNode', () => {
                 result.current.addNode(VoiceFlowNodeType.PlayMessage)
             })
 
-            expect(mockSetNodes).not.toHaveBeenCalled()
+            expect(mockSetValue).not.toHaveBeenCalled()
+            expect(mockUpdateNodes).not.toHaveBeenCalled()
         })
     })
 

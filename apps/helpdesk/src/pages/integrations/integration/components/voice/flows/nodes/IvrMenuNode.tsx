@@ -1,13 +1,9 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
 import { Banner, Label } from '@gorgias/axiom'
-import {
-    BranchOptions,
-    CustomRecordingType,
-    IvrMenuStep,
-} from '@gorgias/helpdesk-types'
+import { CustomRecordingType, IvrMenuStep } from '@gorgias/helpdesk-types'
 import {
     validateBranchOptions,
     validateVoiceMessage,
@@ -21,9 +17,10 @@ import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
+import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { type IvrMenuNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
-import { addIvrOption, getFormTargetStepId } from '../utils'
+import { getFormTargetStepId } from '../utils'
 import { useDeleteNode } from '../utils/useDeleteNode'
 import { VoiceStepNode } from './VoiceStepNode'
 
@@ -34,8 +31,9 @@ type IvrMenuNodeProps = NodeProps<IvrMenuNode>
 export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
-    const { updateNodeData, getNodes, getNode, setNodes } = useVoiceFlow()
-    const { deleteIvrBranch } = useDeleteNode()
+    const { getNodes, getNode } = useVoiceFlow()
+    const { deleteBranch } = useDeleteNode()
+    const updateNodes = useUpdateNodes()
 
     const { id } = data
     const step: IvrMenuStep | null = useWatch({
@@ -46,15 +44,6 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         step?.message?.voice_message_type === 'text_to_speech'
             ? step?.message?.text_to_speech_content || 'Add greeting message'
             : 'Custom recording'
-
-    useEffect(() => {
-        if (!step) return
-
-        if (step.branch_options.length !== data.branch_options.length) {
-            // Update node data when the value changes to reflect in children nodes
-            updateNodeData(id, step)
-        }
-    }, [step, id, updateNodeData, data])
 
     const errors = useMemo(() => {
         const errors: string[] = []
@@ -123,20 +112,15 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                 <Label>Menu options</Label>
                 <IvrMenuActionsFieldArray
                     name={`steps.${id}.branch_options`}
-                    onAddOption={(
-                        option: BranchOptions,
-                        insertAtIndex: number,
-                    ) => {
-                        addIvrOption(
-                            id,
-                            intermediaryNodeId,
-                            insertAtIndex,
-                            setNodes,
-                        )
-                    }}
+                    onAddOption={updateNodes}
                     branchNextId={nextStepId}
                     onRemoveOption={(optionIndex) =>
-                        deleteIvrBranch(optionIndex, id, intermediaryNodeId)
+                        deleteBranch(
+                            VoiceFlowNodeType.IvrOption,
+                            optionIndex,
+                            id,
+                            intermediaryNodeId,
+                        )
                     }
                     maxOptions={isNestedIvr ? 8 : 9}
                 />

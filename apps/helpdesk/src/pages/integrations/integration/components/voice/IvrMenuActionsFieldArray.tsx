@@ -1,4 +1,4 @@
-import { Box, LegacyButton as Button } from '@gorgias/axiom'
+import { Box, Button, Icon } from '@gorgias/axiom'
 import { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { useFieldArray, useWatch } from 'core/forms'
@@ -7,7 +7,7 @@ import { IvrMenuActionFieldItem } from './IvrMenuActionsFieldItem'
 
 type Props = {
     name: string
-    onAddOption?: (option: BranchOptions, insertAtIndex: number) => void
+    onAddOption?: () => void
     onRemoveOption?: (optionIndex: number) => void
     branchNextId: string | null
     maxOptions?: number
@@ -36,7 +36,7 @@ export function IvrMenuActionsFieldArray({
                 next_step_id: branchNextId!,
             }
             insert(insertAtIndex, newOption)
-            onAddOption?.(newOption, insertAtIndex)
+            onAddOption?.()
         }
     }
 
@@ -60,9 +60,9 @@ export function IvrMenuActionsFieldArray({
             })}
             {fields.length < maxOptions && (
                 <Button
-                    intent="secondary"
+                    variant="secondary"
                     onClick={handleAddOption}
-                    leadingIcon="add"
+                    leadingSlot={<Icon name="add-plus" />}
                 >
                     Add option
                 </Button>

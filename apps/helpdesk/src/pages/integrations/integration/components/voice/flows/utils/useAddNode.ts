@@ -1,6 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 
 import { VoiceFlowNodeType } from '../constants'
+import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { VoiceFlowFormValues, VoiceFlowNode, VoiceFlowNodeData } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import {
@@ -10,14 +11,14 @@ import {
     isBranchingOption,
     linkFormStep,
     pointsToEndNode,
-    transformToReactFlowNodes,
 } from '../utils'
 import { useVoiceFlowContext } from '../VoiceFlowContext'
 
 export const useAddNode = (source: string, target: string) => {
     const { watch, setValue } = useFormContext<VoiceFlowFormValues>()
-    const { getNode, getNodes, setNodes } = useVoiceFlow()
+    const { getNode, getNodes } = useVoiceFlow()
     const { setSelectedNode } = useVoiceFlowContext()
+    const updateNodes = useUpdateNodes()
 
     const sourceNode = getNode(source)
     const targetNode = getNode(target)
@@ -62,10 +63,7 @@ export const useAddNode = (source: string, target: string) => {
 
         addNewStepInForm(newNodeData, sourceNode)
 
-        const first_step_id = watch('first_step_id')
-        const steps = watch('steps')
-        const nodes = transformToReactFlowNodes({ first_step_id, steps })
-        setNodes(nodes)
+        updateNodes()
         setSelectedNode(newNodeData.id)
     }
 

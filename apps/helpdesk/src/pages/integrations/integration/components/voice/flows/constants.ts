@@ -1,4 +1,6 @@
 export enum VoiceFlowNodeType {
+    CustomerLookup = 'customer_fields_conditional',
+    CustomerLookupOption = 'customer_fields_conditional_option',
     IncomingCall = 'incoming_call',
     EndCall = 'end_call',
     PlayMessage = 'play_message',

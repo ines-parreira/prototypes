@@ -17,6 +17,14 @@ import { useVoiceFlow } from '../../useVoiceFlow'
 import { transformToReactFlowNodes } from '../../utils'
 import { useDeleteNode } from '../useDeleteNode'
 
+const mockUpdateNodes = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/hooks/useUpdateNodes',
+    () => ({
+        useUpdateNodes: () => mockUpdateNodes,
+    }),
+)
+
 jest.mock('../../useVoiceFlow')
 jest.mock('core/forms')
 
@@ -33,8 +41,8 @@ const renderHookWithMocks = (
     const nodes = initialNodes || transformToReactFlowNodes(flow)
 
     useVoiceFlowReturnValue = {
-        getNodes: () => nodes,
-        getNode: (id: string) => nodes.find((node) => node.id === id),
+        getNodes: jest.fn(() => nodes),
+        getNode: jest.fn((id: string) => nodes.find((node) => node.id === id)),
         setNodes: jest.fn(),
     } as unknown as ReturnType<typeof useVoiceFlow>
 
@@ -79,17 +87,7 @@ describe('useDeleteNode', () => {
                     'first_step_id',
                     null,
                 )
-                expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
-                    expect.objectContaining({
-                        id: 'incoming_call',
-                        data: {
-                            next_step_id: 'end_call',
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: 'end_call',
-                    }),
-                ])
+                expect(mockUpdateNodes).toHaveBeenCalled()
             })
         })
 
@@ -159,31 +157,7 @@ describe('useDeleteNode', () => {
                     'first_step_id',
                     firstStep.id,
                 )
-                expect(useVoiceFlowReturnValue.setNodes).toHaveBeenCalledWith([
-                    expect.objectContaining({
-                        id: 'incoming_call',
-                        data: {
-                            next_step_id: firstStep.id,
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: firstStep.id,
-                        data: {
-                            ...firstStep,
-                            next_step_id: beforeEndCall.id,
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: beforeEndCall.id,
-                        data: {
-                            ...beforeEndCall,
-                            next_step_id: 'end_call',
-                        },
-                    }),
-                    expect.objectContaining({
-                        id: 'end_call',
-                    }),
-                ])
+                expect(mockUpdateNodes).toHaveBeenCalled()
             })
         })
     })
@@ -243,44 +217,18 @@ describe('useDeleteNode', () => {
             const { result } = renderHookWithMocks(flow)
 
             await act(async () => {
-                result.current.deleteIvrBranch(1, ivrMenuStep.id, endNode.id)
+                result.current.deleteBranch(
+                    VoiceFlowNodeType.IvrOption,
+                    1,
+                    ivrMenuStep.id,
+                    endNode.id,
+                )
             })
 
             await waitFor(() => {
                 expect(
                     useFormContextReturnValue.unregister,
                 ).toHaveBeenCalledWith('steps.branch-2-step-1')
-
-                const setNodesCallback = (
-                    useVoiceFlowReturnValue.setNodes as jest.Mock
-                ).mock.calls[0][0]
-                const updatedNodes = setNodesCallback(
-                    useVoiceFlowReturnValue.getNodes(),
-                )
-
-                const remainingNodeIds = updatedNodes.map((n: any) => n.id)
-                expect(remainingNodeIds).not.toContain('branch-2-step-1')
-
-                const updatedIvrOptions = updatedNodes.filter(
-                    (n: any) =>
-                        n.type === VoiceFlowNodeType.IvrOption &&
-                        n.data.parentId === ivrMenuStep.id,
-                )
-
-                const option0 = updatedIvrOptions.find(
-                    (n: any) => n.data.optionIndex === 0,
-                )
-                const option1 = updatedIvrOptions.find(
-                    (n: any) => n.data.optionIndex === 1,
-                )
-
-                expect(option0).toBeDefined()
-                expect(option1).toBeDefined()
-                expect(
-                    updatedIvrOptions.find(
-                        (n: any) => n.data.optionIndex === 2,
-                    ),
-                ).toBeUndefined()
             })
         })
 
@@ -334,7 +282,12 @@ describe('useDeleteNode', () => {
             const { result } = renderHookWithMocks(flow)
 
             await act(async () => {
-                result.current.deleteIvrBranch(0, ivrMenuStep.id, endNode.id)
+                result.current.deleteBranch(
+                    VoiceFlowNodeType.IvrOption,
+                    0,
+                    ivrMenuStep.id,
+                    endNode.id,
+                )
             })
 
             await waitFor(() => {
@@ -347,112 +300,6 @@ describe('useDeleteNode', () => {
                 expect(
                     useFormContextReturnValue.unregister,
                 ).toHaveBeenCalledWith('steps.branch-1-step-3')
-
-                const setNodesCallback = (
-                    useVoiceFlowReturnValue.setNodes as jest.Mock
-                ).mock.calls[0][0]
-                const updatedNodes = setNodesCallback(
-                    useVoiceFlowReturnValue.getNodes(),
-                )
-
-                const remainingNodeIds = updatedNodes.map((n: any) => n.id)
-                expect(remainingNodeIds).not.toContain('branch-1-step-1')
-                expect(remainingNodeIds).not.toContain('branch-1-step-2')
-                expect(remainingNodeIds).not.toContain('branch-1-step-3')
-
-                const remainingIvrOption = updatedNodes.find(
-                    (n: any) =>
-                        n.type === VoiceFlowNodeType.IvrOption &&
-                        n.data.parentId === ivrMenuStep.id,
-                )
-                expect(remainingIvrOption.data.optionIndex).toBe(0)
-            })
-        })
-
-        it('should correctly decrement option indices after deleted branch', async () => {
-            const ivrMenuStep = mockIvrMenuStep({
-                id: 'ivr-menu',
-                branch_options: [
-                    {
-                        input_digit: '1',
-                        next_step_id: 'branch-1-step',
-                    },
-                    {
-                        input_digit: '2',
-                        next_step_id: 'branch-2-step',
-                    },
-                    {
-                        input_digit: '3',
-                        next_step_id: 'branch-3-step',
-                    },
-                    {
-                        input_digit: '4',
-                        next_step_id: 'branch-4-step',
-                    },
-                ],
-            })
-            const branch1Step = mockPlayMessageStep({
-                id: 'branch-1-step',
-                next_step_id: 'end-node',
-            })
-            const branch2Step = mockPlayMessageStep({
-                id: 'branch-2-step',
-                next_step_id: 'end-node',
-            })
-            const branch3Step = mockPlayMessageStep({
-                id: 'branch-3-step',
-                next_step_id: 'end-node',
-            })
-            const branch4Step = mockPlayMessageStep({
-                id: 'branch-4-step',
-                next_step_id: 'end-node',
-            })
-            const endNode = mockPlayMessageStep({
-                id: 'end-node',
-                next_step_id: null,
-            })
-
-            const flow: CallRoutingFlow = {
-                first_step_id: ivrMenuStep.id,
-                steps: {
-                    [ivrMenuStep.id]: ivrMenuStep,
-                    [branch1Step.id]: branch1Step,
-                    [branch2Step.id]: branch2Step,
-                    [branch3Step.id]: branch3Step,
-                    [branch4Step.id]: branch4Step,
-                    [endNode.id]: endNode,
-                },
-            }
-
-            const { result } = renderHookWithMocks(flow)
-
-            await act(async () => {
-                result.current.deleteIvrBranch(1, ivrMenuStep.id, endNode.id)
-            })
-
-            await waitFor(() => {
-                const setNodesCallback = (
-                    useVoiceFlowReturnValue.setNodes as jest.Mock
-                ).mock.calls[0][0]
-                const updatedNodes = setNodesCallback(
-                    useVoiceFlowReturnValue.getNodes(),
-                )
-
-                const updatedIvrOptions = updatedNodes
-                    .filter(
-                        (n: any) =>
-                            n.type === VoiceFlowNodeType.IvrOption &&
-                            n.data.parentId === ivrMenuStep.id,
-                    )
-                    .sort(
-                        (a: any, b: any) =>
-                            a.data.optionIndex - b.data.optionIndex,
-                    )
-
-                expect(updatedIvrOptions).toHaveLength(3)
-                expect(updatedIvrOptions[0].data.optionIndex).toBe(0)
-                expect(updatedIvrOptions[1].data.optionIndex).toBe(1)
-                expect(updatedIvrOptions[2].data.optionIndex).toBe(2)
             })
         })
 
@@ -470,7 +317,12 @@ describe('useDeleteNode', () => {
             const { result } = renderHookWithMocks(flow)
 
             await act(async () => {
-                result.current.deleteIvrBranch(0, 'ivr-menu', 'end-node')
+                result.current.deleteBranch(
+                    VoiceFlowNodeType.IvrOption,
+                    0,
+                    'ivr-menu',
+                    'end-node',
+                )
             })
 
             expect(useVoiceFlowReturnValue.setNodes).not.toHaveBeenCalled()

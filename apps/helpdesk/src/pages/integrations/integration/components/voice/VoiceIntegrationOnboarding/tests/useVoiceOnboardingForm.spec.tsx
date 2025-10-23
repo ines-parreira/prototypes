@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -278,7 +279,7 @@ describe('useOnboardingForm', () => {
 
     it('should call createIntegration with correct data when ExtendedCallFlowsGAReady is enabled', async () => {
         useFlagMock.mockImplementation((flag) => {
-            if (flag === 'extended-call-flows-ga-ready') return true
+            if (flag === FeatureFlagKey.ExtendedCallFlowsGAReady) return true
             return false
         })
         createIntegrationMock.mockResolvedValue({

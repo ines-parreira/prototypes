@@ -1,4 +1,6 @@
 import { VoiceFlowNodeType } from './constants'
+import { CustomerLookupNode } from './nodes/CustomerLookupNode'
+import { CustomerLookupOptionNode } from './nodes/CustomerLookupOptionNode'
 import { EndCallNode } from './nodes/EndCallNode'
 import { EnqueueOptionNode } from './nodes/EnqueueOptionNode'
 import { ForwardToNode } from './nodes/ForwardToNode'
@@ -14,6 +16,8 @@ import { TimeSplitConditionalNode } from './nodes/TimeSplitConditionalNode'
 import { TimeSplitOptionNode } from './nodes/TimeSplitOptionNode'
 
 export const nodeTypes = {
+    [VoiceFlowNodeType.CustomerLookup]: CustomerLookupNode,
+    [VoiceFlowNodeType.CustomerLookupOption]: CustomerLookupOptionNode,
     [VoiceFlowNodeType.IncomingCall]: IncomingCallNode,
     [VoiceFlowNodeType.IvrMenu]: IvrMenuNode,
     [VoiceFlowNodeType.IvrOption]: IvrOptionNode,

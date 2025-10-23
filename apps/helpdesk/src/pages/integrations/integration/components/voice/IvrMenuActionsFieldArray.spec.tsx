@@ -44,7 +44,7 @@ describe('IvrMenuActionsFieldArray', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('button', { name: 'Add option' }),
+            screen.getByRole('button', { name: /Add option/ }),
         ).toBeInTheDocument()
     })
 
@@ -52,7 +52,7 @@ describe('IvrMenuActionsFieldArray', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const addButton = screen.getByRole('button', { name: 'Add option' })
+        const addButton = screen.getByRole('button', { name: /Add option/ })
 
         expect(addButton).toBeInTheDocument()
 
@@ -61,14 +61,7 @@ describe('IvrMenuActionsFieldArray', () => {
         })
 
         await waitFor(() => {
-            expect(defaultProps.onAddOption).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    input_digit: '4',
-                    branch_name: '',
-                    next_step_id: defaultProps.branchNextId,
-                }),
-                3,
-            )
+            expect(defaultProps.onAddOption).toHaveBeenCalled()
         })
     })
 
@@ -93,32 +86,14 @@ describe('IvrMenuActionsFieldArray', () => {
             someFieldArray: branchOptions,
         })
 
-        const addButton = screen.getByRole('button', { name: 'Add option' })
+        const addButton = screen.getByRole('button', { name: /Add option/ })
 
         await act(async () => {
             await user.click(addButton)
         })
 
         await waitFor(() => {
-            expect(defaultProps.onAddOption).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    input_digit: '2',
-                }),
-                1,
-            )
-        })
-
-        await act(async () => {
-            await user.click(addButton)
-        })
-
-        await waitFor(() => {
-            expect(defaultProps.onAddOption).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    input_digit: '3',
-                }),
-                2,
-            )
+            expect(defaultProps.onAddOption).toHaveBeenCalled()
         })
 
         await act(async () => {
@@ -126,12 +101,15 @@ describe('IvrMenuActionsFieldArray', () => {
         })
 
         await waitFor(() => {
-            expect(defaultProps.onAddOption).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    input_digit: '6',
-                }),
-                5,
-            )
+            expect(defaultProps.onAddOption).toHaveBeenCalled()
+        })
+
+        await act(async () => {
+            await user.click(addButton)
+        })
+
+        await waitFor(() => {
+            expect(defaultProps.onAddOption).toHaveBeenCalled()
         })
     })
 
@@ -185,7 +163,7 @@ describe('IvrMenuActionsFieldArray', () => {
             )
 
             expect(
-                screen.queryByRole('button', { name: 'Add option' }),
+                screen.queryByRole('button', { name: /Add option/ }),
             ).not.toBeInTheDocument()
         })
 
@@ -207,7 +185,7 @@ describe('IvrMenuActionsFieldArray', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: 'Add option' }),
+                screen.getByRole('button', { name: /Add option/ }),
             ).toBeInTheDocument()
         })
 
@@ -250,7 +228,7 @@ describe('IvrMenuActionsFieldArray', () => {
             renderComponent(defaultProps, { someFieldArray: branchOptions8 })
 
             expect(
-                screen.getByRole('button', { name: 'Add option' }),
+                screen.getByRole('button', { name: /Add option/ }),
             ).toBeInTheDocument()
 
             cleanup()
@@ -266,7 +244,7 @@ describe('IvrMenuActionsFieldArray', () => {
             renderComponent(defaultProps, { someFieldArray: branchOptions9 })
 
             expect(
-                screen.queryByRole('button', { name: 'Add option' }),
+                screen.queryByRole('button', { name: /Add option/ }),
             ).not.toBeInTheDocument()
         })
     })

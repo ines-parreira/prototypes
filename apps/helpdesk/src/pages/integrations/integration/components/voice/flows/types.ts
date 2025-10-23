@@ -1,6 +1,7 @@
 import {
     CallRoutingFlow,
     CallRoutingFlowSteps,
+    CustomerFieldsConditionalStep,
     EnqueueStep,
     ForwardToExternalNumberStep,
     IvrMenuStep,
@@ -33,11 +34,28 @@ export type TimeSplitOptionStep = {
     next_step_id: string
 }
 
+export type CustomerLookupOptionStep = {
+    parentId: string
+    isDefaultOption?: boolean
+    optionIndex: number | null
+    next_step_id: string
+}
+
 export type IncomingCallNode = Node<
     {
         next_step_id: string
     },
     VoiceFlowNodeType.IncomingCall
+>
+
+export type CustomerLookupNode = Node<
+    CustomerFieldsConditionalStep,
+    VoiceFlowNodeType.CustomerLookup
+>
+
+export type CustomerLookupOptionNode = Node<
+    CustomerLookupOptionStep,
+    VoiceFlowNodeType.CustomerLookupOption
 >
 
 export type EndCallNode = Node<{}, VoiceFlowNodeType.EndCall>
@@ -83,6 +101,8 @@ export type ForwardToExternalNode = Node<
 export type VoiceFlowNodeData = CallRoutingFlowSteps[string]
 
 export type VoiceFlowNode =
+    | CustomerLookupNode
+    | CustomerLookupOptionNode
     | IncomingCallNode
     | EndCallNode
     | IvrMenuNode

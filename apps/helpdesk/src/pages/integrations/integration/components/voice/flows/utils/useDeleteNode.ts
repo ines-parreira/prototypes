@@ -4,20 +4,21 @@ import { useFormContext } from 'core/forms'
 import { bfsNodesBetween, getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
+import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { VoiceFlowFormValues } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import {
     getFormTargetStepId,
     getNextNodes,
     isBranchingNode,
-    transformToReactFlowNodes,
     updateFormFlowOnNodeDelete,
 } from '../utils'
 
 export function useDeleteNode() {
     const { unregister, setValue, watch } =
         useFormContext<VoiceFlowFormValues>()
-    const { setNodes, getNode, getNodes } = useVoiceFlow()
+    const { getNode, getNodes } = useVoiceFlow()
+    const updateNodes = useUpdateNodes()
 
     const deleteEnqueueBranches = (nodeId: string) => {
         const flow = watch()
@@ -97,11 +98,10 @@ export function useDeleteNode() {
         /* if it's not unregistering here, trying to register it later won't work */
         unregister(`steps.${nodeId}.skip_step_id`)
 
-        const newNodes = transformToReactFlowNodes(newFlow)
         setValue('steps', newFlow.steps, {
             shouldDirty: true,
         })
-        setNodes(newNodes)
+        updateNodes()
     }
 
     const deleteNode = (nodeId: string) => {
@@ -110,15 +110,16 @@ export function useDeleteNode() {
         let branchConnectorStepId: string | null | undefined
         let branchingSubflowNodes: string[] = []
         const isBranchingStep = currentNode && isBranchingNode(currentNode)
+        const nodes = getNodes()
 
-        if (isBranchingStep) {
+        if (isBranchingStep && getNextNodes(currentNode, nodes).length > 1) {
             const intermediaryNodeId = getIntermediaryNodeId(nodeId)
             const intermediaryNode = getNode(intermediaryNodeId)
 
             if (!intermediaryNode) return
 
             branchingSubflowNodes = bfsNodesBetween(
-                getNodes(),
+                nodes,
                 nodeId,
                 intermediaryNodeId,
                 getNextNodes,
@@ -145,13 +146,15 @@ export function useDeleteNode() {
             unregister(`steps.${nodeId}`)
         }
 
-        const nodes = transformToReactFlowNodes(newFlow)
         setValue('steps', newFlow.steps, { shouldDirty: true })
         setValue('first_step_id', newFlow.first_step_id)
-        setNodes(nodes)
+        updateNodes()
     }
 
-    const deleteIvrBranch = (
+    const deleteBranch = (
+        optionType:
+            | VoiceFlowNodeType.CustomerLookupOption
+            | VoiceFlowNodeType.IvrOption,
         optionIndex: number,
         parentId: string,
         nextStepId: string,
@@ -160,12 +163,11 @@ export function useDeleteNode() {
 
         const optionNode = getNodes().find(
             (n) =>
-                n.type === VoiceFlowNodeType.IvrOption &&
+                n.type === optionType &&
                 n.data.optionIndex === optionIndex &&
                 n.data.parentId === parentId,
         )
-        if (!optionNode || optionNode.type !== VoiceFlowNodeType.IvrOption)
-            return
+        if (!optionNode || optionNode.type !== optionType) return
 
         const branchingSubflowNodes = bfsNodesBetween(
             getNodes(),
@@ -178,29 +180,8 @@ export function useDeleteNode() {
             unregister(`steps.${nodeId}`)
         })
         setValue('steps', currentFlow.steps, { shouldDirty: true })
-
-        setNodes((nodes) =>
-            nodes
-                .filter((node) => !branchingSubflowNodes.includes(node.id))
-                .map((node) => {
-                    if (
-                        node.type === VoiceFlowNodeType.IvrOption &&
-                        node.data.parentId === parentId &&
-                        node.data.optionIndex >= optionIndex
-                    ) {
-                        // Decrement option index of options after the deleted one
-                        return {
-                            ...node,
-                            data: {
-                                ...node.data,
-                                optionIndex: node.data.optionIndex - 1,
-                            },
-                        }
-                    }
-                    return node
-                }),
-        )
+        updateNodes()
     }
 
-    return { deleteNode, deleteIvrBranch, deleteEnqueueBranches }
+    return { deleteNode, deleteBranch, deleteEnqueueBranches }
 }
