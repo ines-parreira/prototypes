@@ -125,7 +125,12 @@ export function getNextNodes(
                 ? [nextStepId, skipStepId]
                 : [nextStepId]
         case VoiceFlowNodeType.TimeSplitConditional:
-            return [node.data.on_true_step_id, node.data.on_false_step_id]
+            const onTrueId = node.data.on_true_step_id ?? END_CALL_NODE.id
+            const onFalseId = node.data.on_false_step_id ?? END_CALL_NODE.id
+            if (onTrueId === onFalseId) {
+                return [onTrueId]
+            }
+            return [onTrueId, onFalseId]
         case VoiceFlowNodeType.IvrMenu:
             const nextNodes = nodes.filter(
                 (n) =>
@@ -201,7 +206,7 @@ export function createIvrOptionNode(
 
 export function createTimeSplitOptionNode(
     node: TimeSplitConditionalNode,
-    nextStepId: string,
+    nextStepId: string | null,
     isTrueBranch: boolean,
 ): VoiceFlowNodeBase {
     return {

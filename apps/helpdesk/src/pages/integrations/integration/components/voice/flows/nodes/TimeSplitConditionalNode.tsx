@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -66,11 +66,20 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
     const alwaysOnWarning =
         'Your business hours are set to 24/7. All steps on the “Outside business hours” branch will be ignored.'
 
-    const errors =
-        step?.on_true_step_id && step?.on_false_step_id
-            ? []
-            : ['Branches are required and cannot point to end call']
-    const warnings = is24_7 ? [alwaysOnWarning] : []
+    const warnings = useMemo(() => {
+        const warnings: string[] = []
+
+        if (is24_7) {
+            warnings.push(alwaysOnWarning)
+        }
+        if (!step?.on_true_step_id || (!step?.on_false_step_id && !is24_7)) {
+            warnings.push(
+                'We recommend you configure the branch. Otherwise, the call will be ended automatically with no warning.',
+            )
+        }
+
+        return warnings
+    }, [is24_7, step?.on_true_step_id, step?.on_false_step_id])
 
     useEffect(() => {
         // If the rule type is set to custom hours, ensure the timezone is set automatically if unset
@@ -108,7 +117,7 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
             title="Time rule"
             description={`${isCustomHours ? 'Custom hours' : 'Business hours'}: ${hours}`}
             icon={<StepCardIcon backgroundColor="purple" name="clock" />}
-            errors={errors}
+            errors={[]}
             warnings={warnings}
             drawerRef={ref}
             {...props}

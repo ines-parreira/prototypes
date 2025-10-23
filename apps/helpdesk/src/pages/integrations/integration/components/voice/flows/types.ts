@@ -31,7 +31,7 @@ export type IvrOptionStep = {
 export type TimeSplitOptionStep = {
     parentId: string
     isTrueBranch: boolean
-    next_step_id: string
+    next_step_id: string | null
 }
 
 export type CustomerLookupOptionStep = {

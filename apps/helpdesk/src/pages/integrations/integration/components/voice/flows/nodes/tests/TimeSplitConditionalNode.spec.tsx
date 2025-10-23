@@ -48,6 +48,8 @@ describe('TimeSplitConditionalNode', () => {
                 ],
                 timezone: 'America/New_York',
             },
+            on_true_step_id: 'step_true',
+            on_false_step_id: 'step_false',
         })
     const mockDefaultFlowData = {
         ...mockCallRoutingFlow({
@@ -263,11 +265,11 @@ describe('TimeSplitConditionalNode', () => {
         })
     })
 
-    it('should validate branch options are not pointing to end call', async () => {
+    it('should show warning when branch options are not pointing to end call', async () => {
         const step = {
             ...mockDefaultStep,
-            on_true_step_id: null!,
-            on_false_step_id: null!,
+            on_true_step_id: null,
+            on_false_step_id: null,
         } as TimeSplitConditionalStep
 
         const mockFlow = {
@@ -278,7 +280,7 @@ describe('TimeSplitConditionalNode', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'triangle-warning' }),
             ).toBeInTheDocument()
         })
     })
@@ -305,6 +307,48 @@ describe('TimeSplitConditionalNode', () => {
         server.use(mockGetBusinessHours24_7.handler)
 
         renderComponent(mockDefaultStep, mockDefaultFlowData)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should show warning icon when false branch is undefined', async () => {
+        const step = {
+            ...mockDefaultStep,
+            on_false_step_id: null,
+        }
+        const flow = {
+            ...mockCallRoutingFlow({
+                first_step_id: step.id,
+                steps: { [step.id]: step },
+            }),
+            business_hours_id: 123,
+        }
+        renderComponent(step, flow)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should show warning icon when true branch is undefined', async () => {
+        const step = {
+            ...mockDefaultStep,
+            on_true_step_id: null,
+        }
+        const flow = {
+            ...mockCallRoutingFlow({
+                first_step_id: step.id,
+                steps: { [step.id]: step },
+            }),
+            business_hours_id: 123,
+        }
+        renderComponent(step, flow)
 
         await waitFor(() => {
             expect(

@@ -226,13 +226,30 @@ describe('utils', () => {
                 type: VoiceFlowNodeType.TimeSplitConditional,
                 id: '1',
                 position: { x: 0, y: 0 },
-                data: mockTimeSplitConditionalStep(),
+                data: mockTimeSplitConditionalStep({
+                    on_true_step_id: 'testing-true',
+                    on_false_step_id: 'testing-false',
+                }),
             }
 
             expect(getNextNodes(node, [])).toEqual([
                 node.data.on_true_step_id,
                 node.data.on_false_step_id,
             ])
+        })
+
+        it('should return the next nodes for an empty time split conditional', () => {
+            const node: TimeSplitConditionalNode = {
+                type: VoiceFlowNodeType.TimeSplitConditional,
+                id: '1',
+                position: { x: 0, y: 0 },
+                data: mockTimeSplitConditionalStep({
+                    on_true_step_id: null,
+                    on_false_step_id: null,
+                }),
+            }
+
+            expect(getNextNodes(node, [])).toEqual([END_CALL_NODE.id])
         })
 
         it('should return the next nodes for an IVRMenu', () => {
@@ -535,10 +552,10 @@ describe('utils', () => {
                     data: {
                         ...timeSplitConditionalNode,
                         on_true_step_id: expect.not.stringMatching(
-                            timeSplitConditionalNode.on_true_step_id,
+                            timeSplitConditionalNode.on_true_step_id!,
                         ),
                         on_false_step_id: expect.not.stringMatching(
-                            timeSplitConditionalNode.on_false_step_id,
+                            timeSplitConditionalNode.on_false_step_id!,
                         ),
                     },
                 },
