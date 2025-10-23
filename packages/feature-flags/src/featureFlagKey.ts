@@ -55,6 +55,7 @@ export enum FeatureFlagKey {
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',
     /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',
+    AiShoppingAssistantAbTesting = 'ai-shopping-assistant-ab-testing',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',

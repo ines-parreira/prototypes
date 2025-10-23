@@ -56,6 +56,10 @@ export const useTrialPromoCard = (
         FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
         false,
     )
+    const isAbTestingEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantAbTesting,
+        false,
+    )
 
     const trialAccess = useTrialAccess(shopName)
     const { isDisabled } = useNotifyAdmins(shopName, trialAccess.trialType)
@@ -106,7 +110,8 @@ export const useTrialPromoCard = (
         trialAccess.hasAnyTrialStarted
 
     const promoCardContent = useMemo((): PromoCardContent | null => {
-        if (!isFeatureEnabled || !hasAnyAccess) return null
+        if (!isFeatureEnabled || !hasAnyAccess || isAbTestingEnabled)
+            return null
 
         const title = getPromoCardTitle(
             isExpandingTrialExperienceMilestone2Enabled,
@@ -180,6 +185,7 @@ export const useTrialPromoCard = (
     }, [
         isFeatureEnabled,
         hasAnyAccess,
+        isAbTestingEnabled,
         variant,
         isTrialProgress,
         description,

@@ -294,6 +294,36 @@ describe('useTrialPromoCard', () => {
         })
     })
 
+    describe('AB Testing flag enabled', () => {
+        it('should return null when AB testing flag is enabled', () => {
+            mockUseFlag.mockImplementation((flagKey: string) => {
+                if (
+                    flagKey === FeatureFlagKey.ShoppingAssistantTrialImprovement
+                ) {
+                    return true
+                }
+                if (flagKey === FeatureFlagKey.AiShoppingAssistantAbTesting) {
+                    return true
+                }
+                return false
+            })
+
+            mockUseTrialAccess.mockReturnValue({
+                ...baseTrialAccess,
+                canSeeTrialCTA: true,
+            })
+
+            const { result } = renderHook(
+                () => useTrialPromoCard('first-shop', mockShopifyIntegrations),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current?.promoCardContent).toBeNull()
+        })
+    })
+
     describe('User Story: Admin with Starter/Basic Plan - Trial Access', () => {
         beforeEach(() => {
             mockFeatureFlags(true, false, true)

@@ -644,6 +644,24 @@ describe('SalesPaywallMiddleware', () => {
         expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
     })
 
+    it('should render the child component and bypass paywall when AB testing flag is enabled', () => {
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
+                key === FeatureFlagKey.AiShoppingAssistantAbTesting ||
+                false,
+        )
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
+        })
+
+        renderMiddleware()
+        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
+        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
+    })
+
     it('should render waitlist paywall when it has automate + generation 5 plan and not part of alpha', () => {
         setupUseAppSelectorMock({
             hasAutomate: true,

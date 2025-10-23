@@ -200,15 +200,22 @@ export const SalesPaywallMiddleware =
             FeatureFlagKey.ShoppingAssistantTrialImprovement,
         )
 
+        const isAbTestingEnabled = useFlag(
+            FeatureFlagKey.AiShoppingAssistantAbTesting,
+            false,
+        )
+
         const showUpgradePaywall =
             !hasNewAutomatePlan &&
             !currentStoreHasActiveTrial &&
-            !isAiSalesAlphaDemoUser
+            !isAiSalesAlphaDemoUser &&
+            !isAbTestingEnabled
 
         const showSalesSettings =
             hasNewAutomatePlan ||
             isAiSalesAlphaDemoUser ||
-            currentStoreHasActiveTrial
+            currentStoreHasActiveTrial ||
+            isAbTestingEnabled
 
         const trialModal = useModalManager(AI_TRIAL_MODAL_NAME, {
             autoDestroy: false,

@@ -133,7 +133,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 hash: '',
             })
 
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
@@ -157,7 +157,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 hash: '',
             })
 
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
@@ -174,7 +174,7 @@ describe('useShoppingAssistantTrialBanner', () => {
         })
 
         it('should not add banner when canSeeSystemBanner is false', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
 
             renderHook(() => useShoppingAssistantTrialBanner())
 
@@ -205,7 +205,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                 hash: '',
             })
 
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
@@ -213,7 +213,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             )
         })
 
-        it('should add banner with correct configuration', () => {
+        it('should add trial banner with correct configuration', () => {
             renderHook(() => useShoppingAssistantTrialBanner())
 
             expect(mockedAddBanner).toHaveBeenCalledWith({
@@ -230,6 +230,18 @@ describe('useShoppingAssistantTrialBanner', () => {
                     onClick: expect.any(Function),
                 },
             })
+        })
+
+        it('should not add banner when AB testing flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderHook(() => useShoppingAssistantTrialBanner())
+
+            expect(mockedAddBanner).not.toHaveBeenCalled()
+            expect(mockedRemoveBanner).toHaveBeenCalledWith(
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
+                BannerCategories.AI_SHOPPING_ASSISTANT_TRIAL_REVAMP,
+            )
         })
 
         it('should log display event when banner is shown', () => {
@@ -272,7 +284,7 @@ describe('useShoppingAssistantTrialBanner', () => {
             mockedRemoveBanner.mockClear()
 
             // Make eligible
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
@@ -287,7 +299,7 @@ describe('useShoppingAssistantTrialBanner', () => {
 
         it('should re-evaluate when isOnEligiblePlan changes from true to false', () => {
             // Initially eligible
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
@@ -320,7 +332,7 @@ describe('useShoppingAssistantTrialBanner', () => {
 
     describe('location-based behavior', () => {
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockReturnValue(false)
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeSystemBanner: true,
