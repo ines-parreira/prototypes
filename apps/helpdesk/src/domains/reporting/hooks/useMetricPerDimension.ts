@@ -168,9 +168,15 @@ const formatMetricPerDimensionResponse = <
 })
 
 const queryWithDeciles =
-    <TCube extends Cubes>(query: ReportingQuery<TCube>) =>
+    <TCube extends Cubes, TMeta extends ScopeMeta>(
+        query: ReportingQuery<TCube>,
+        newQuery?: BuiltQuery<TMeta>,
+    ) =>
     () =>
-        postReporting<QueryReturnType<TCube>>([query]).then(withDeciles)
+        postReporting<QueryReturnType<TCube>, TCube, TMeta>(
+            [query],
+            newQuery,
+        ).then(withDeciles)
 
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
@@ -205,7 +211,7 @@ export function useMetricPerDimensionV2<
         TMeta
     >([query], newQuery, {
         select: (data) => data.data.data,
-        queryFn: queryWithDeciles(query),
+        queryFn: queryWithDeciles(query, newQuery),
         enabled,
     })
 
