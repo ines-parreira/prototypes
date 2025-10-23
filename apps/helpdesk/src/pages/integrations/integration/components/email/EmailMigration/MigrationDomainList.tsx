@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
@@ -48,8 +48,9 @@ export default function MigrationDomainList({
         {},
     )
 
-    const singleSenderEnabled =
-        useFlags()[FeatureFlagKey.SendgridMigrationSingleSender]
+    const singleSenderEnabled = useFlag(
+        FeatureFlagKey.SendgridMigrationSingleSender,
+    )
 
     const handleSwitchSelectedVerificationType = (name: string) => {
         setSelectedOutboundVerificationType({

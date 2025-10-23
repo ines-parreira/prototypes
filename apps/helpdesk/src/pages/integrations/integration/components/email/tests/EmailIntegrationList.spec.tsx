@@ -650,6 +650,9 @@ describe('<EmailIntegrationList/>', () => {
                         [FeatureFlagKey.NewDomainVerification]:
                             newDomainVerificationFFEnabled ?? false,
                     })
+                    useFlagMock.mockReturnValue(
+                        newDomainVerificationFFEnabled ?? false,
+                    )
                     useEmailOnboardingCompleteCheckMock.mockReturnValue({
                         isOnboardingComplete: onboardingComplete,
                     } as any)

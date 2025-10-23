@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AttachmentEnum } from 'common/types'
+import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -30,12 +31,12 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('models/convert/campaign/queries')
+jest.mock('core/flags')
 
 jest.mock('models/convert/campaign/queries')
 const useCreateCampaignMock = assumeMock(useCreateCampaign)
@@ -49,9 +50,8 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 jest.mock('state/newMessage/selectors')
 const getNewMessageAttachmentsMock = assumeMock(getNewMessageAttachments)
 
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({})
+const mockUseFlag = useFlag as jest.Mock
+mockUseFlag.mockReturnValue(false)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockGenerateSuggestions = jest.fn()

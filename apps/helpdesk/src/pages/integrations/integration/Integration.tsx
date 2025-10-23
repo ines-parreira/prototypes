@@ -5,13 +5,13 @@ import { useAsyncFn, useEffectOnce, useUpdateEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider } from 'models/integration/constants'
@@ -107,8 +107,9 @@ export const IntegrationDetail = ({
     }>()
 
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
-    const isNewDomainVerificationEnabled =
-        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+    const isNewDomainVerificationEnabled = useFlag(
+        FeatureFlagKey.NewDomainVerification,
+    )
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)

@@ -1,14 +1,11 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -16,6 +13,8 @@ import { renderWithRouter } from 'utils/testing'
 
 import { IntegrationDetail } from '../Integration'
 import { Tab } from '../types'
+
+jest.mock('core/flags')
 
 jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>
@@ -175,6 +174,7 @@ jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
+const useFlagMock = jest.mocked(useFlag)
 
 describe('<IntegrationDetail />', () => {
     const minProps = {
@@ -225,11 +225,7 @@ describe('<IntegrationDetail />', () => {
         }),
     }
 
-    beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.NewDomainVerification]: false,
-        })
-    })
+    beforeEach(() => {})
 
     it.each([
         [IntegrationType.Aircall],
@@ -546,9 +542,7 @@ describe('<IntegrationDetail />', () => {
         ])(
             'should render the domain verification tab when new-domain-verification FF is on',
             ({ provider, tab }) => {
-                mockFlags({
-                    [FeatureFlagKey.NewDomainVerification]: true,
-                })
+                useFlagMock.mockReturnValue(true)
 
                 const props = {
                     ...minProps,
@@ -578,9 +572,7 @@ describe('<IntegrationDetail />', () => {
         )
 
         it('should render the onboarding tab when domain verification FF is on and tab is Onboarding', () => {
-            mockFlags({
-                [FeatureFlagKey.NewDomainVerification]: true,
-            })
+            useFlagMock.mockReturnValue(true)
 
             const props = {
                 ...minProps,

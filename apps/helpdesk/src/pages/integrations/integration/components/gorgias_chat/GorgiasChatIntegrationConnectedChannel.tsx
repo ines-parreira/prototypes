@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
@@ -17,8 +17,9 @@ const GorgiasChatIntegrationConnectedChannel = () => {
         useState(false)
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     const logChatEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return

@@ -1,7 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import {
     EmailIntegration,
@@ -11,6 +10,7 @@ import {
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     EmailIntegration as DEPRECATED_EmailIntegration,
@@ -49,10 +49,12 @@ export default function EmailIntegrationListItem({
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
     const defaultIntegrations = useAppSelector(getDefaultIntegrationSettings)
 
-    const showDefaultIntegration: boolean | undefined =
-        useFlags()[FeatureFlagKey.DefaultEmailAddress]
-    const isNewDomainVerificationEnabled: boolean =
-        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+    const showDefaultIntegration: boolean | undefined = useFlag(
+        FeatureFlagKey.DefaultEmailAddress,
+    )
+    const isNewDomainVerificationEnabled: boolean = useFlag(
+        FeatureFlagKey.NewDomainVerification,
+    )
 
     const { isOnboardingComplete } =
         useEmailOnboardingCompleteCheck(integration)

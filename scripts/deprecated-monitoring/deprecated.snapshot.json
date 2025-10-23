@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1499,
-    "reportGeneratedAt": "2025-10-21T07:29:21.993Z"
+    "totalUsages": 1489,
+    "reportGeneratedAt": "2025-10-23T06:52:25.341Z"
   },
   "entries": [
     {
@@ -520,7 +520,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 30,
+          "usageCount": 22,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -533,13 +533,6 @@
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
-              "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/Integration.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationListItem.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationDomainList.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/email/tests/EmailIntegrationListItem.spec.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationConnectedChannel.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationOneClickInstallationCard.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList.tsx",
@@ -547,7 +540,6 @@
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/tests/useThemeAppExtensionInstallation.spec.ts",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useChatMigrationBanner.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration.tsx",
               "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx",
@@ -1246,7 +1238,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 673,
+          "usageCount": 672,
           "name": "@gorgias.LegacyButton",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -1454,7 +1446,6 @@
               "apps/helpdesk/src/pages/common/components/Paywall/Paywall.stories.tsx",
               "apps/helpdesk/src/pages/common/components/PaywallView/PaywallView.stories.tsx",
               "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/IncomingPhoneCall/IncomingPhoneCall.tsx",
-              "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall.tsx",
               "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown.tsx",
               "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OutgoingPhoneCall/OutgoingPhoneCall.tsx",
               "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/WrapUpCallBar.tsx",
@@ -1932,7 +1923,7 @@
           }
         },
         {
-          "usageCount": 111,
+          "usageCount": 110,
           "name": "Alert",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2024-03-05",
@@ -2009,7 +2000,6 @@
               "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/components/CustomizeToneOfVoiceBlock.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab.tsx",

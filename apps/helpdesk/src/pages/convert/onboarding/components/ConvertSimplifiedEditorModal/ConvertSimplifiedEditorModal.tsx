@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { Badge, BadgeIcon, LegacyButton as Button } from '@gorgias/axiom'
 
@@ -13,6 +12,7 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
+import { useFlag } from 'core/flags'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -196,8 +196,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         return findContactCaptureForm(attachments)
     }, [attachments])
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     const updateCampaignData = useCallback((data: Campaign) => {
         setCampaign(data)

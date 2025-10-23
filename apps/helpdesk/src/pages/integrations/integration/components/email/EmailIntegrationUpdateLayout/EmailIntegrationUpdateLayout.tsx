@@ -1,8 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { useFlag } from 'core/flags'
 import { EmailProvider } from 'models/integration/constants'
 import { Integration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -20,8 +20,9 @@ type Props = {
 
 const EmailIntegrationUpdateLayout = ({ integration, children }: Props) => {
     const integrationId = integration.id
-    const isNewDomainVerificationEnabled: boolean =
-        useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
+    const isNewDomainVerificationEnabled = useFlag(
+        FeatureFlagKey.NewDomainVerification,
+    )
 
     if (!isGenericEmailIntegration(integration)) {
         return null

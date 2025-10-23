@@ -1,9 +1,5 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -13,6 +9,7 @@ import {
     GmailIntegration,
 } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType, OutlookIntegration } from 'models/integration/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
@@ -21,7 +18,7 @@ import EmailIntegrationListItem from '../EmailIntegrationListItem'
 import { canIntegrationDomainBeVerified } from '../helpers'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock('../helpers')
 
@@ -40,7 +37,7 @@ const store = mockStore({
     }),
 })
 
-const useFlagsMock = useFlags as jest.MockedFunction<typeof useFlags>
+const mockUseFlag = useFlag as jest.Mock
 const useEmailOnboardingCompleteCheckMock =
     useEmailOnboardingCompleteCheck as jest.MockedFunction<
         typeof useEmailOnboardingCompleteCheck
@@ -52,10 +49,7 @@ const canIntegrationDomainBeVerifiedMock =
 
 describe('<EmailIntegrationListItem/>', () => {
     beforeEach(() => {
-        useFlagsMock.mockReturnValue({
-            [FeatureFlagKey.DefaultEmailAddress]: true,
-            [FeatureFlagKey.NewDomainVerification]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
         useEmailOnboardingCompleteCheckMock.mockReturnValue({
             isOnboardingComplete: true,
             completeOnboarding: jest.fn(),
@@ -122,10 +116,7 @@ describe('<EmailIntegrationListItem/>', () => {
         })
 
         it('should not show default badge when feature flag is disabled', () => {
-            useFlagsMock.mockReturnValue({
-                [FeatureFlagKey.DefaultEmailAddress]: false,
-                [FeatureFlagKey.NewDomainVerification]: true,
-            })
+            mockUseFlag.mockReturnValue(false)
 
             render(
                 <Provider store={store}>
