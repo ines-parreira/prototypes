@@ -24,9 +24,8 @@ exports[`<TicketList /> should display with default props 1`] = `
     </div>
     <div>
       ActionsComponent:
-      Props:
       <div>
-        openMacroModal
+        TicketListActions
       </div>
     </div>
     <div>
@@ -65,9 +64,8 @@ exports[`<TicketList /> should render SearchRankProvider on search url 1`] = `
       </div>
       <div>
         ActionsComponent:
-        Props:
         <div>
-          openMacroModal
+          TicketListActions
         </div>
       </div>
       <div>

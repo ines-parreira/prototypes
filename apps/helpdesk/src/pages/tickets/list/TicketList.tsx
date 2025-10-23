@@ -1,14 +1,7 @@
-import {
-    ComponentProps,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTitle } from '@repo/hooks'
 import classnames from 'classnames'
-import decorateComponentWithProps from 'decorate-component-with-props'
 import { fromJS, List } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -142,22 +135,14 @@ const TicketList = () => {
         return fromJS(translatedTickets)
     }, [tickets, translationMap, shouldShowTranslatedContent])
 
-    const viewTable = (
-        <ViewTable
-            className={css.table}
-            type={EntityType.Ticket}
-            items={translatedTickets}
-            isUpdate={isUpdate}
-            isSearch={isSearch}
-            urlViewId={params.viewId}
-            ActionsComponent={decorateComponentWithProps<
-                ComponentProps<typeof TicketListActions>,
-                { openMacroModal: () => void }
-            >(TicketListActions, {
-                openMacroModal: () => setIsMacroModalOpen(true),
-            })}
-            viewButtons={!isEditMode && <CreateTicketButton />}
-        />
+    const ActionComponent = useCallback(
+        () => (
+            <TicketListActions
+                openMacroModal={() => setIsMacroModalOpen(true)}
+                selectedItemsIds={selectedItemsIds}
+            />
+        ),
+        [selectedItemsIds],
     )
 
     return (
@@ -171,10 +156,28 @@ const TicketList = () => {
                 <SearchRankScenarioProvider
                     source={SearchRankSource.TicketsView}
                 >
-                    {viewTable}
+                    <ViewTable
+                        className={css.table}
+                        type={EntityType.Ticket}
+                        items={translatedTickets}
+                        isUpdate={isUpdate}
+                        isSearch={isSearch}
+                        urlViewId={params.viewId}
+                        ActionsComponent={ActionComponent}
+                        viewButtons={!isEditMode && <CreateTicketButton />}
+                    />
                 </SearchRankScenarioProvider>
             ) : (
-                viewTable
+                <ViewTable
+                    className={css.table}
+                    type={EntityType.Ticket}
+                    items={translatedTickets}
+                    isUpdate={isUpdate}
+                    isSearch={isSearch}
+                    urlViewId={params.viewId}
+                    ActionsComponent={ActionComponent}
+                    viewButtons={!isEditMode && <CreateTicketButton />}
+                />
             )}
 
             {isMacroModalOpen && (

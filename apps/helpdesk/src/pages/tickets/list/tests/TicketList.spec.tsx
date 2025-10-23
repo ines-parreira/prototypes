@@ -3,7 +3,6 @@ import { ComponentProps, ReactNode } from 'react'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent } from '@testing-library/react'
-import decorateComponentWithProps from 'decorate-component-with-props'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -16,26 +15,23 @@ import { EntityType } from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import * as TicketListActionsModule from 'pages/tickets/list/components/TicketListActions'
 import TicketList from 'pages/tickets/list/TicketList'
 import { fetchTags } from 'state/tags/actions'
 import { updateSelectedItemsIds } from 'state/views/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-jest.mock('decorate-component-with-props')
-const decorateComponentWithPropsMock = assumeMock(decorateComponentWithProps)
-decorateComponentWithPropsMock.mockImplementation((_component, props) => () => (
-    <>
-        Props:
-        {Object.entries(props as { openMacroModal: () => void }).map(
-            ([propName, value]) => (
-                <div key={propName} onClick={value}>
-                    {propName}
-                </div>
-            ),
-        )}
-    </>
-))
+jest.mock('pages/tickets/list/components/TicketListActions')
+const TicketListActionsMock =
+    TicketListActionsModule.TicketListActions as jest.Mock
+TicketListActionsMock.mockImplementation(
+    ({
+        openMacroModal,
+    }: ComponentProps<typeof TicketListActionsModule.TicketListActions>) => (
+        <div onClick={openMacroModal}>TicketListActions</div>
+    ),
+)
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -347,7 +343,7 @@ describe('<TicketList />', () => {
             </QueryClientProvider>,
         )
 
-        fireEvent.click(getByText('openMacroModal'))
+        fireEvent.click(getByText('TicketListActions'))
         fireEvent.click(getByText('MacroContainer'))
         expect(updateSelectedItemsIdsMock).toHaveBeenCalledWith(mockItemsIds)
     })
@@ -805,6 +801,121 @@ describe('<TicketList />', () => {
             expect(items.get(1).get('excerpt')).toBe('Original Excerpt 2')
             expect(items.get(2).get('subject')).toBe('Translated Subject 3')
             expect(items.get(2).get('excerpt')).toBe('Translated Excerpt 3')
+        })
+    })
+
+    describe('ActionComponent memoization', () => {
+        it('should pass selectedItemsIds to TicketListActions', () => {
+            const selectedIds = fromJS([1, 2, 3])
+            const customStore = mockStore({
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: fixtureView,
+                    _internal: {
+                        selectedItemsIds: selectedIds,
+                    },
+                }),
+            })
+
+            jest.spyOn(ViewTable, 'default').mockImplementation(
+                ({
+                    ActionsComponent,
+                }: ComponentProps<typeof ViewTable.ViewTableContainer>) => {
+                    return <div>{ActionsComponent && <ActionsComponent />}</div>
+                },
+            )
+
+            renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider store={customStore}>
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(TicketListActionsMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    selectedItemsIds: selectedIds,
+                    openMacroModal: expect.any(Function),
+                }),
+                {},
+            )
+        })
+
+        it('should provide the same ActionsComponent reference when selectedItemsIds does not change', () => {
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            const { rerender } = renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider store={store}>
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const firstCall = spy.mock.calls[0][0].ActionsComponent
+
+            rerender(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider store={store}>
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const secondCall = spy.mock.calls[1][0].ActionsComponent
+
+            expect(firstCall).toBe(secondCall)
+        })
+
+        it('should provide a new ActionsComponent reference when selectedItemsIds changes', () => {
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            const firstStore = mockStore({
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: fixtureView,
+                    _internal: {
+                        selectedItemsIds: fromJS([1]),
+                    },
+                }),
+            })
+
+            const { rerender } = renderWithRouter(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider store={firstStore}>
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const firstCall = spy.mock.calls[0][0].ActionsComponent
+
+            const secondStore = mockStore({
+                tickets: fromJS({ items: [] }),
+                views: fromJS({
+                    active: fixtureView,
+                    _internal: {
+                        selectedItemsIds: fromJS([1, 2]),
+                    },
+                }),
+            })
+
+            rerender(
+                <QueryClientProvider client={mockedQueryClient}>
+                    <Provider store={secondStore}>
+                        <TicketList />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            const secondCall = spy.mock.calls[1][0].ActionsComponent
+
+            expect(firstCall).not.toBe(secondCall)
         })
     })
 })
