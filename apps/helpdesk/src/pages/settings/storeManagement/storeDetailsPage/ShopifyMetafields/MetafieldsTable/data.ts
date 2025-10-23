@@ -78,25 +78,4 @@ export const data: Field[] = [
         category: 'customer',
         isVisible: true,
     },
-    {
-        id: '12',
-        name: 'Last click date',
-        type: 'date',
-        category: 'customer',
-        isVisible: true,
-    },
-    {
-        id: '13',
-        name: 'Last order date',
-        type: 'date',
-        category: 'draft_order',
-        isVisible: true,
-    },
-    {
-        id: '14',
-        name: 'Order rating',
-        type: 'rating',
-        category: 'draft_order',
-        isVisible: true,
-    },
 ]

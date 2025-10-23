@@ -86,7 +86,9 @@ describe('ShopifyMetafields', () => {
         } as any)
 
         render(<ShopifyMetafields />, { wrapper })
-        expect(screen.getByText('No data available.')).toBeInTheDocument()
+        expect(
+            screen.getByText('You haven’t added any metafields yet'),
+        ).toBeInTheDocument()
     })
 
     it('should pass isLoading state to MetafieldsTable', () => {

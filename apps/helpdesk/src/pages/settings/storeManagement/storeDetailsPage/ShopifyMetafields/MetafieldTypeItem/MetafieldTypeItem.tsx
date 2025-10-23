@@ -75,7 +75,11 @@ export default function MetafieldTypeItem({
     const { icon, label } = Object(typeConfig[type])
     return (
         <div className={cn(css.container, { [css.disabled]: disabled })}>
-            <Icon aria-disabled={disabled ? true : undefined} name={icon} />
+            <Icon
+                size="md"
+                aria-disabled={disabled ? true : undefined}
+                name={icon}
+            />
             <Text>{label}</Text>
         </div>
     )

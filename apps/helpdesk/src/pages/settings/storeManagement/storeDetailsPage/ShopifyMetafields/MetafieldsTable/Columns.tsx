@@ -12,12 +12,20 @@ import MetafieldTypeItem, {
     MetafieldType,
 } from '../MetafieldTypeItem/MetafieldTypeItem'
 import { MetafieldCategory } from '../types'
+import VisibilityChip from '../VisibilityChip/VisibilityChip'
 import { Field, MetafieldsTableMeta } from './types'
 
 export const columns: ColumnDef<Field>[] = [
-    createSortableColumn<Field>('name', 'Name', (info) => (
-        <Text variant="bold">{info.getValue() as string}</Text>
-    )),
+    createSortableColumn<Field>('name', 'Name', (info) => {
+        const isVisible = info.row.original.isVisible ?? false
+
+        return (
+            <Box gap="xxxs" minWidth="200px">
+                <Text variant="bold">{info.getValue() as string}</Text>
+                {!isVisible && <VisibilityChip />}
+            </Box>
+        )
+    }),
     {
         accessorKey: 'type',
         header: 'Type',
@@ -36,7 +44,6 @@ export const columns: ColumnDef<Field>[] = [
             const onVisibilityToggle = meta.onVisibilityToggle
             const metafieldId = info.row.original.id
             const isVisible = info.row.original.isVisible ?? true
-
             return (
                 <Box gap="xs">
                     <Button

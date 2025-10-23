@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import {
+    Box,
     ColumnDef,
     HeaderRowGroup,
     TableBodyContent,
@@ -10,6 +11,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import EmptyMetafieldsState from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
@@ -108,6 +110,11 @@ export default function MetafieldsTable<TData, TValue>({
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
                         table={table}
+                        renderEmptyStateComponent={() => (
+                            <Box alignItems="center" justifyContent="center">
+                                <EmptyMetafieldsState />
+                            </Box>
+                        )}
                     />
                 </TableRoot>
                 <TableToolbar table={table} right={['pagination']} />
