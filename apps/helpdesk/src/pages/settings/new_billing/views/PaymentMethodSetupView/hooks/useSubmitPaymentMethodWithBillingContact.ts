@@ -1,4 +1,5 @@
 import { useUpdateBillingContactWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
+import { isStripeUserError } from 'pages/settings/new_billing/utils/isStripeUserError'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import { useSubmitPaymentMethod } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
 import { BillingContactUpdatePayload } from 'state/billing/types'
@@ -14,7 +15,9 @@ export const useSubmitPaymentMethodWithBillingContact = (
             return submitPaymentMethod()
         },
         onError: (error) => {
-            reportCRMGrowthError(error, 'Failed to update billing contact')
+            if (!isStripeUserError(error)) {
+                reportCRMGrowthError(error, 'Failed to update billing contact')
+            }
             throw error
         },
     })

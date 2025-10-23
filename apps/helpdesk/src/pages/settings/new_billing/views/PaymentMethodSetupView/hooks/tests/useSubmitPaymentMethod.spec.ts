@@ -4,9 +4,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
-import { SentryTeam } from 'common/const/sentryTeamNames'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { reportError } from 'utils/errors'
 
 import { useSubmitPaymentMethod } from '../useSubmitPaymentMethod'
 
@@ -20,8 +18,6 @@ jest.mock('@stripe/react-stripe-js', () => ({
         }),
     }),
 }))
-
-jest.mock('utils/errors')
 
 jest.mock('@gorgias/helpdesk-client')
 
@@ -52,7 +48,7 @@ describe('useSubmitPaymentMethod hook', () => {
         })
     })
 
-    it('should handle error when confirmStripeSetupIntent fails', async () => {
+    it('should throw error when confirmStripeSetupIntent fails', async () => {
         const error = new Error('Stripe setup intent failed')
 
         assumeMock(useStripe).mockReturnValue({
@@ -66,14 +62,9 @@ describe('useSubmitPaymentMethod hook', () => {
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
             'Stripe setup intent failed',
         )
-
-        expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: SentryTeam.CRM_GROWTH },
-            extra: { context: 'Failed to confirm stripe setup intent' },
-        })
     })
 
-    it('should handle error when confirmBillingPaymentMethodSetup fails', async () => {
+    it('should throw error when confirmBillingPaymentMethodSetup fails', async () => {
         const error = new Error('Billing payment method setup failed')
 
         assumeMock(confirmBillingPaymentMethodSetup).mockRejectedValue(error)
@@ -85,11 +76,6 @@ describe('useSubmitPaymentMethod hook', () => {
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
             'Billing payment method setup failed',
         )
-
-        expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: SentryTeam.CRM_GROWTH },
-            extra: { context: 'Failed to confirm stripe setup intent' },
-        })
     })
 
     it('should return isLoading as true if the useConfirmStripeSetupIntent mutation is loading', async () => {

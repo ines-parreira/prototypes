@@ -6,7 +6,6 @@ import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import * as errorUtils from 'utils/errors'
 
 import { useConfirmStripeSetupIntent } from '../useConfirmStripeSetupIntent'
 
@@ -115,9 +114,7 @@ describe('useConfirmStripeSetupIntent', () => {
         expect(mockConfirmStripe).not.toHaveBeenCalled()
     })
 
-    it('should not call sentry if the card is declined', async () => {
-        const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
-
+    it('should throw error if the card is declined', async () => {
         mockConfirmStripe.mockResolvedValue({
             error: {
                 code: 'card_declined',
@@ -137,13 +134,9 @@ describe('useConfirmStripeSetupIntent', () => {
                 code: 'card_declined',
             })
         }
-
-        expect(reportErrorSpy).not.toHaveBeenCalled()
     })
 
-    it('should call sentry in case of an error that is not card_declined', async () => {
-        const reportErrorSpy = jest.spyOn(errorUtils, 'reportError')
-
+    it('should throw error in case of any Stripe error', async () => {
         mockConfirmStripe.mockRejectedValue({
             code: 'some_error',
         })
@@ -161,8 +154,6 @@ describe('useConfirmStripeSetupIntent', () => {
                 code: 'some_error',
             })
         }
-
-        expect(reportErrorSpy).toHaveBeenCalled()
     })
 
     it('should notify users with error message from Stripe when the error type is card_error or validation_error', async () => {

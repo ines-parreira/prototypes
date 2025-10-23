@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useBillingContact } from 'models/billing/queries'
-import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import { notify } from 'state/notifications/actions'
 import {
     NotificationStatus,
@@ -67,24 +66,6 @@ export const useConfirmStripeSetupIntent = (
         },
         onError: (error, ...args) => {
             const stripeError = error as unknown as StripeError
-
-            if (
-                (stripeError.setup_intent?.status !== 'succeeded' &&
-                    stripeError.code &&
-                    ![
-                        'card_declined',
-                        'expired_card',
-                        'incorrect_cvc',
-                        'incorrect_number',
-                    ].includes(stripeError.code)) ||
-                !stripeError.code
-            ) {
-                // We only want to report errors that are not related to the user's input.
-                reportCRMGrowthError(
-                    error,
-                    'Failed to confirm stripe setup intent',
-                )
-            }
 
             const userFacingErrorTypes: StripeErrorType[] = [
                 'card_error',
