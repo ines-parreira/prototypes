@@ -4,14 +4,33 @@ import { Team } from '@gorgias/helpdesk-queries'
 
 import { useListTeamsSearch } from './useListTeamsSearch'
 
+const SECTION_DETAILS = {
+    TEAMS: {
+        id: 'teams',
+        name: '',
+    },
+    NO_TEAM: {
+        id: 'no_team_section',
+        name: '',
+    },
+}
+
 export const NO_TEAM_OPTION = {
     id: 'no_team',
     label: 'No team',
 } as const
 
-export type TeamOption = {
-    id: number | typeof NO_TEAM_OPTION.id
-    label: string
+export type TeamOption =
+    | {
+          id: number
+          label: string
+      }
+    | typeof NO_TEAM_OPTION
+
+export type TeamSection = {
+    id: string
+    name: string
+    items: TeamOption[]
 }
 
 type UseTeamOptionsParams = {
@@ -26,18 +45,32 @@ export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
         return new Map(teams.map((team) => [team.id, team]))
     }, [teams])
 
-    const teamOptions = useMemo<TeamOption[]>(() => {
-        const options = teams.map((team) => ({
-            id: team.id,
-            label: team.name,
-        }))
+    const teamSections = useMemo<TeamSection[]>(() => {
+        const sections: TeamSection[] = []
 
-        if (currentTeam && !isLoading && !search) {
-            return [NO_TEAM_OPTION, ...options]
+        if (teams.length > 0) {
+            sections.push({
+                ...SECTION_DETAILS.TEAMS,
+                items: teams.map((team) => ({
+                    id: team.id,
+                    label: team.name,
+                })),
+            })
         }
 
-        return options
-    }, [teams, currentTeam, isLoading, search])
+        if (currentTeam && !isLoading && !search && sections.length > 0) {
+            sections.unshift({
+                ...SECTION_DETAILS.NO_TEAM,
+                items: [NO_TEAM_OPTION],
+            })
+        }
+
+        return sections
+    }, [currentTeam, isLoading, search, teams])
+
+    const teamOptions = useMemo<TeamOption[]>(() => {
+        return teamSections.flatMap((section) => section.items)
+    }, [teamSections])
 
     const selectedOption = useMemo(() => {
         if (!currentTeam) {
@@ -47,9 +80,8 @@ export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
     }, [currentTeam, teamOptions])
 
     return {
-        teams,
         teamsMap,
-        teamOptions,
+        teamSections,
         selectedOption,
         isLoading,
         search,

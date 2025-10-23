@@ -42,7 +42,7 @@ afterAll(() => {
 })
 
 describe('useTeamOptions', () => {
-    it('should return team options when no team is selected', async () => {
+    it('should return team sections when no team is selected', async () => {
         const { result } = renderHook(() =>
             useTeamOptions({ currentTeam: null }),
         )
@@ -51,17 +51,17 @@ describe('useTeamOptions', () => {
             expect(result.current.isLoading).toBe(false)
         })
 
-        expect(result.current.teams).toEqual([team1, team2, team3])
-        expect(result.current.teamOptions).toEqual([
+        expect(result.current.teamSections).toHaveLength(1)
+        expect(result.current.teamSections[0].id).toBe('teams')
+        expect(result.current.teamSections[0].items).toEqual([
             { id: 1, label: 'Support' },
             { id: 2, label: 'Sales' },
             { id: 3, label: 'Engineering' },
         ])
         expect(result.current.selectedOption).toEqual(NO_TEAM_OPTION)
-        expect(result.current.teamsMap.size).toBe(3)
     })
 
-    it('should include NO_TEAM_OPTION when a team is selected', async () => {
+    it('should include "No team" section when a team is selected', async () => {
         const { result } = renderHook(() =>
             useTeamOptions({ currentTeam: team1 }),
         )
@@ -70,8 +70,11 @@ describe('useTeamOptions', () => {
             expect(result.current.isLoading).toBe(false)
         })
 
-        expect(result.current.teamOptions).toEqual([
-            NO_TEAM_OPTION,
+        expect(result.current.teamSections).toHaveLength(2)
+        expect(result.current.teamSections[0].id).toBe('no_team_section')
+        expect(result.current.teamSections[0].items).toEqual([NO_TEAM_OPTION])
+        expect(result.current.teamSections[1].id).toBe('teams')
+        expect(result.current.teamSections[1].items).toEqual([
             { id: 1, label: 'Support' },
             { id: 2, label: 'Sales' },
             { id: 3, label: 'Engineering' },
@@ -82,7 +85,7 @@ describe('useTeamOptions', () => {
         })
     })
 
-    it('should exclude NO_TEAM_OPTION when searching', async () => {
+    it('should exclude "No team" section when searching', async () => {
         const { result } = renderHook(() =>
             useTeamOptions({ currentTeam: team1 }),
         )
@@ -96,10 +99,10 @@ describe('useTeamOptions', () => {
         })
 
         await waitFor(() => {
-            expect(result.current.teamOptions).toEqual([
-                { id: 1, label: 'Support' },
-            ])
+            expect(result.current.teamSections).toHaveLength(1)
         })
+
+        expect(result.current.teamSections[0].id).toBe('teams')
     })
 
     it('should return a teamsMap for team lookup', async () => {

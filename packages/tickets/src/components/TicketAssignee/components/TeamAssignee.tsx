@@ -3,12 +3,20 @@ import { useCallback } from 'react'
 import { Emoji } from 'emoji-mart'
 import { isNumber } from 'lodash'
 
-import { Icon, ListItem, LoadingSpinner, NewTag, Select } from '@gorgias/axiom'
+import {
+    Icon,
+    ListItem,
+    ListSection,
+    LoadingSpinner,
+    NewTag,
+    Select,
+} from '@gorgias/axiom'
 import { Team } from '@gorgias/helpdesk-queries'
 
 import {
     NO_TEAM_OPTION,
     TeamOption,
+    TeamSection,
     useTeamOptions,
 } from '../hooks/useTeamOptions'
 import { useUpdateTicketTeam } from '../hooks/useUpdateTicketTeam'
@@ -24,7 +32,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
 
     const {
         teamsMap,
-        teamOptions,
+        teamSections,
         selectedOption,
         isLoading,
         search,
@@ -52,11 +60,13 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
     return (
         <Select
             placeholder="No team"
-            items={teamOptions}
+            items={teamSections}
             isSearchable={true}
             searchValue={search}
             onSearchChange={setSearch}
+            // @ts-expect-error - the generic expects a TeamSection
             selectedItem={selectedOption}
+            // @ts-expect-error - the generic expects a TeamSection handler
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isUpdatingTeam || isLoading}
@@ -100,40 +110,41 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                 )
             }}
         >
-            {(option) => {
-                const emoji =
-                    option.id !== NO_TEAM_OPTION.id
-                        ? teamsMap.get(option.id)?.decoration?.emoji
-                        : null
+            {(section: TeamSection) => (
+                <ListSection
+                    id={section.id}
+                    name={section.name}
+                    items={section.items}
+                >
+                    {(option) => {
+                        const emoji =
+                            option.id !== NO_TEAM_OPTION.id
+                                ? teamsMap.get(option.id)?.decoration?.emoji
+                                : null
 
-                return (
-                    <ListItem
-                        key={option.id}
-                        textValue={option.label}
-                        label={option.label}
-                        leadingSlot={
-                            !!emoji ? (
-                                <span
-                                    style={{
-                                        display: 'flex',
-                                    }}
-                                >
-                                    <Emoji emoji={emoji} size={16} />
-                                </span>
-                            ) : (
-                                <Icon
-                                    name={
-                                        option.id === NO_TEAM_OPTION.id
-                                            ? 'close'
-                                            : 'users'
-                                    }
-                                    size="sm"
-                                />
-                            )
-                        }
-                    />
-                )
-            }}
+                        return (
+                            <ListItem
+                                key={option.id}
+                                textValue={option.label}
+                                label={option.label}
+                                leadingSlot={
+                                    !!emoji ? (
+                                        <span
+                                            style={{
+                                                display: 'flex',
+                                            }}
+                                        >
+                                            <Emoji emoji={emoji} size={16} />
+                                        </span>
+                                    ) : (
+                                        <Icon name="user" size="sm" />
+                                    )
+                                }
+                            />
+                        )
+                    }}
+                </ListSection>
+            )}
         </Select>
     )
 }
