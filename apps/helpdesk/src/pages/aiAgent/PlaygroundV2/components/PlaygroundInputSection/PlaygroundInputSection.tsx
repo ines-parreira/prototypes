@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
 import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FROALA_KEY } from 'config'
-import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
@@ -19,7 +19,6 @@ import {
 import TextInput from 'pages/common/forms/input/TextInput'
 import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
-import shortcutManager from 'services/shortcutManager'
 
 import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
@@ -359,7 +358,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                                 offset="0, 4px"
                             >
                                 {shortcutManager.getActionKeys(
-                                    keymap.TicketDetailContainer.actions
+                                    shortcuts.TicketDetailContainer.actions
                                         .SUBMIT_TICKET,
                                 )}
                             </Tooltip>

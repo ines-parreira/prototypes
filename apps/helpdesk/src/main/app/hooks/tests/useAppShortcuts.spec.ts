@@ -1,13 +1,16 @@
 import { renderHook } from '@repo/testing'
+import { useShortcuts } from '@repo/utils'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useShortcuts from 'hooks/useShortcuts'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 
 import useAppShortcuts from '../useAppShortcuts'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useShortcuts', () => jest.fn())
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    useShortcuts: jest.fn(),
+}))
 jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     undoMessage: jest.fn(),
 }))

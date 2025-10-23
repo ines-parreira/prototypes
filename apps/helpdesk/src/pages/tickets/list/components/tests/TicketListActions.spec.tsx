@@ -23,7 +23,6 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { Update } from 'jobs'
 import { JobType } from 'models/job/types'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { createJob as createJobTicket } from 'state/tickets/actions'
 import { RootState, StoreState } from 'state/types'
 import {
@@ -35,7 +34,27 @@ import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import { TicketListActions } from '../TicketListActions'
 
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => {
+    const React = jest.requireActual('react')
+    const mockBind = jest.fn()
+    const mockUnbind = jest.fn()
+
+    return {
+        ...jest.requireActual('@repo/utils'),
+        shortcutManager: {
+            bind: mockBind,
+            unbind: mockUnbind,
+        },
+        useShortcuts: (component: string, actions: Record<string, any>) => {
+            React.useEffect(() => {
+                mockBind(component, actions)
+                return () => {
+                    mockUnbind(component)
+                }
+            }, [actions, component])
+        },
+    }
+})
 jest.mock('state/views/actions')
 jest.mock('state/tickets/actions')
 jest.mock('@repo/routing', () => ({
@@ -64,9 +83,9 @@ const mockedCreateJobTicket = assumeMock(createJobTicket)
 const mockedCreateJobView = assumeMock(createJobView)
 const mockedUpdateSelectedItemsIds = assumeMock(updateSelectedItemsIds)
 
-const shortcutManagerMock = shortcutManager as jest.Mocked<
-    typeof shortcutManager
->
+// Get the mocked shortcutManager from the module
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
+
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>

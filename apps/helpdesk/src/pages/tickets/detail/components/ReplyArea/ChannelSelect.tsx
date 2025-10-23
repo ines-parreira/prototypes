@@ -1,5 +1,6 @@
-import React, { useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
+import { useShortcuts } from '@repo/utils'
 import {
     DropdownItem,
     DropdownMenu,
@@ -9,7 +10,6 @@ import {
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useOutboundChannels from 'hooks/useOutboundChannels'
-import useShortcuts from 'hooks/useShortcuts'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import { humanizeChannel } from 'state/ticket/utils'

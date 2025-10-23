@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useConditionalShortcuts } from '@repo/utils'
 import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import { TagDropdownMenu } from 'tags'
 

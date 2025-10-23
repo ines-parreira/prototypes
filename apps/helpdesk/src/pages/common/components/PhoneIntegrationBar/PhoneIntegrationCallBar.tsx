@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
 import { useBeforeUnload } from '@repo/hooks'
+import { useConditionalShortcuts } from '@repo/utils'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import MonitoringPhoneCall from 'pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall'
 
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'

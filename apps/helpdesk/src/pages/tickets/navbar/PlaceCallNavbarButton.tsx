@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 
+import { useConditionalShortcuts } from '@repo/utils'
+
 import { ShortcutKey, Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
@@ -9,7 +11,6 @@ import {
 } from 'business/twilio'
 import { Navigation } from 'components/Navigation/Navigation'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import DeactivatedViewIcon from 'pages/common/components/DeactivatedViewIcon'

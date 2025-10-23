@@ -6,17 +6,44 @@ import thunk from 'redux-thunk'
 
 import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
-import shortcutManager from 'services/shortcutManager'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import MacroModalList from '../MacroModalList'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('services/shortcutManager')
-const shortcutManagerMock = shortcutManager as jest.Mocked<
-    typeof shortcutManager
->
+jest.mock('@repo/utils', () => {
+    const React = jest.requireActual('react')
+    const actual = jest.requireActual('@repo/utils')
+    const mockBind = jest.fn()
+    const mockUnbind = jest.fn()
+
+    return {
+        ...actual,
+        shortcutManager: {
+            bind: mockBind,
+            unbind: mockUnbind,
+        },
+        useConditionalShortcuts: (
+            mount: boolean,
+            component: string,
+            actions: Record<string, any>,
+        ) => {
+            React.useEffect(() => {
+                if (!mount) return
+
+                mockBind(component, actions)
+
+                return () => {
+                    mockUnbind(component)
+                }
+            }, [actions, component, mount])
+        },
+    }
+})
+
+// Get the mocked shortcutManager from the module
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
 
 const shortcutEventMock = {
     preventDefault: jest.fn(),

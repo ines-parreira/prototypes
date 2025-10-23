@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 
+import { useShortcuts } from '@repo/utils'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import useShortcuts from 'hooks/useShortcuts'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import { goToActiveView } from 'state/views/actions'
 

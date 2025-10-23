@@ -1,17 +1,16 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
 import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
-import keymap from 'config/shortcuts'
 import { useFlag } from 'core/flags'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import TextInput from 'pages/common/forms/input/TextInput'
-import shortcutManager from 'services/shortcutManager'
 
 import {
     PLAYGROUND_PROMPT_CONTENT,
@@ -335,7 +334,8 @@ export const PlaygroundInputSection = ({
                         offset="0, 4px"
                     >
                         {shortcutManager.getActionKeys(
-                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET,
+                            shortcuts.TicketDetailContainer.actions
+                                .SUBMIT_TICKET,
                         )}
                     </Tooltip>
                 )}

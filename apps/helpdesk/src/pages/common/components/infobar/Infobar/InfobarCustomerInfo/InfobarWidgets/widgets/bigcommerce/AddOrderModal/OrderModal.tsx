@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { Row } from 'reactstrap'
 
@@ -43,7 +44,6 @@ import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { getCustomerAddresses } from 'state/infobarActions/bigcommerce/createOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 

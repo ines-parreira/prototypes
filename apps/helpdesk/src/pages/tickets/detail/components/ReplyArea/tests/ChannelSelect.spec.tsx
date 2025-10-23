@@ -1,8 +1,6 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,15 +12,36 @@ import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import { ChannelIdentifier } from 'services/channels'
-import shortcutManager from 'services/shortcutManager'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import ChannelSelect from '../ChannelSelect'
 
-jest.mock('services/shortcutManager')
-const shortcutManagerMock = shortcutManager as jest.Mocked<
-    typeof shortcutManager
->
+jest.mock('@repo/utils', () => {
+    const React = jest.requireActual('react')
+    const actual = jest.requireActual('@repo/utils')
+    const mockBind = jest.fn()
+    const mockUnbind = jest.fn()
+
+    return {
+        ...actual,
+        shortcutManager: {
+            bind: mockBind,
+            unbind: mockUnbind,
+        },
+        useShortcuts: (component: string, actions: Record<string, any>) => {
+            React.useEffect(() => {
+                mockBind(component, actions)
+                return () => {
+                    mockUnbind(component)
+                }
+            }, [actions, component])
+        },
+    }
+})
+
+// Get the mocked shortcutManager from the module
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
+
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>

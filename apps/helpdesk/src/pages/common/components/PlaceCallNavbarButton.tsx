@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { useConditionalShortcuts } from '@repo/utils'
 import classNames from 'classnames'
 
 import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
@@ -10,7 +11,6 @@ import {
     MICROPHONE_PERMISSION_ERROR_MESSAGE,
 } from 'business/twilio'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'

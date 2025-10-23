@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
@@ -21,7 +22,6 @@ import {
 } from 'models/discountCodes/types'
 import { DiscountCodeResultsWrapper } from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
 import { DiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
-import shortcutManager from 'services/shortcutManager'
 import { getIconFromType } from 'state/integrations/helpers'
 import { insertText } from 'utils'
 

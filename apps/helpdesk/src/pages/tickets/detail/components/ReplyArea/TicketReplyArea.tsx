@@ -1,5 +1,6 @@
 import React, { Component, KeyboardEvent as KeyboardEventReact } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS, List, Map } from 'immutable'
@@ -17,7 +18,6 @@ import {
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
 import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
-import shortcutManager from 'services/shortcutManager/index'
 import { getPreferences } from 'state/currentUser/selectors'
 import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
 import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'

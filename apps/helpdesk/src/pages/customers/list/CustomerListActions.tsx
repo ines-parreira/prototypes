@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import { connect, ConnectedProps } from 'react-redux'
@@ -16,7 +17,6 @@ import {
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
-import shortcutManager from 'services/shortcutManager/index'
 import { bulkDeleteCustomer } from 'state/customers/actions'
 import { RootState } from 'state/types'
 import {

@@ -7,6 +7,8 @@ import React, {
     useState,
 } from 'react'
 
+import { shortcutManager } from '@repo/utils'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -30,7 +32,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import { EntireOrderRefundOrderModal } from './components/EntireOrderRefundOrderModal'

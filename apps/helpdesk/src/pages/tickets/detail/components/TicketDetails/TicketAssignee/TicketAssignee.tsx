@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
@@ -23,7 +24,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
 import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
-import shortcutManager from 'services/shortcutManager/index'
 import { getHumanAgentsExceptGorgiasSupport } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getTeams } from 'state/teams/selectors'

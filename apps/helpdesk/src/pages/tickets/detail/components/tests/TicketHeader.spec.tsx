@@ -28,7 +28,6 @@ import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import shortcutManager from 'services/shortcutManager'
 import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
@@ -51,7 +50,27 @@ jest.mock(
     () => () => <div>TicketAssigneeMock</div>,
 )
 
-jest.mock('services/shortcutManager')
+jest.mock('@repo/utils', () => {
+    const React = jest.requireActual('react')
+    const mockBind = jest.fn()
+    const mockUnbind = jest.fn()
+
+    return {
+        ...jest.requireActual('@repo/utils'),
+        shortcutManager: {
+            bind: mockBind,
+            unbind: mockUnbind,
+        },
+        useShortcuts: (component: string, actions: Record<string, any>) => {
+            React.useEffect(() => {
+                mockBind(component, actions)
+                return () => {
+                    mockUnbind(component)
+                }
+            }, [actions, component])
+        },
+    }
+})
 
 jest.mock('../TicketDetails/TicketTags', () => () => 'TicketTagsMock')
 
@@ -113,9 +132,9 @@ jest.mock('../Snooze', () => ({ onUpdate }: ComponentProps<typeof Snooze>) => (
     <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
 ))
 
-const shortcutManagerMock = shortcutManager as jest.Mocked<
-    typeof shortcutManager
->
+// Get the mocked shortcutManager from the module
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
+
 const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>
@@ -1477,7 +1496,7 @@ describe('<TicketHeader />', () => {
     })
 
     describe('Keyboard shortcuts', () => {
-        it('should close ticket with CLOSE_TICKET shortcut', () => {
+        it('should close ticket with CLOSE_TICKET shortcut', async () => {
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <Provider
@@ -1491,6 +1510,10 @@ describe('<TicketHeader />', () => {
                 </QueryClientProvider>,
             )
 
+            await waitFor(() => {
+                expect(shortcutManagerMock.bind).toHaveBeenCalled()
+            })
+
             makeExecuteKeyboardAction(
                 shortcutManagerMock,
                 shortcutEventMock,
@@ -1500,7 +1523,7 @@ describe('<TicketHeader />', () => {
             expect(minProps.setStatus).toHaveBeenCalledWith('closed')
         })
 
-        it('should open ticket with OPEN_TICKET shortcut', () => {
+        it('should open ticket with OPEN_TICKET shortcut', async () => {
             const closedTicket = fromJS({ ...ticket, status: 'closed' })
 
             render(
@@ -1516,6 +1539,10 @@ describe('<TicketHeader />', () => {
                 </QueryClientProvider>,
             )
 
+            await waitFor(() => {
+                expect(shortcutManagerMock.bind).toHaveBeenCalled()
+            })
+
             makeExecuteKeyboardAction(
                 shortcutManagerMock,
                 shortcutEventMock,
@@ -1525,7 +1552,7 @@ describe('<TicketHeader />', () => {
             expect(minProps.setStatus).toHaveBeenCalledWith('open')
         })
 
-        it('should toggle spam with MARK_TICKET_SPAM shortcut', () => {
+        it('should toggle spam with MARK_TICKET_SPAM shortcut', async () => {
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <Provider
@@ -1539,6 +1566,10 @@ describe('<TicketHeader />', () => {
                 </QueryClientProvider>,
             )
 
+            await waitFor(() => {
+                expect(shortcutManagerMock.bind).toHaveBeenCalled()
+            })
+
             makeExecuteKeyboardAction(
                 shortcutManagerMock,
                 shortcutEventMock,
@@ -1548,7 +1579,7 @@ describe('<TicketHeader />', () => {
             expect(ticketActions.setSpam).toHaveBeenCalled()
         })
 
-        it('should hide trash confirmation popover with ESC key', () => {
+        it('should hide trash confirmation popover with ESC key', async () => {
             const { queryByText } = render(
                 <QueryClientProvider client={appQueryClient}>
                     <Provider
@@ -1561,6 +1592,10 @@ describe('<TicketHeader />', () => {
                     </Provider>
                 </QueryClientProvider>,
             )
+
+            await waitFor(() => {
+                expect(shortcutManagerMock.bind).toHaveBeenCalled()
+            })
 
             // First open the trash confirmation
             makeExecuteKeyboardAction(

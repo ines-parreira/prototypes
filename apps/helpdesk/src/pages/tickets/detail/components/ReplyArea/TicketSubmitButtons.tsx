@@ -1,5 +1,6 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 
+import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _sample from 'lodash/sample'
@@ -8,13 +9,11 @@ import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
-import keymap from 'config/shortcuts'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import shortcutManager from 'services/shortcutManager'
 import { submitSetting } from 'state/currentUser/actions'
 import {
     isHidingTips as getIsHidingTips,
@@ -160,7 +159,8 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         offset="0, 4px"
                     >
                         {shortcutManager.getActionKeys(
-                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET,
+                            shortcuts.TicketDetailContainer.actions
+                                .SUBMIT_TICKET,
                         )}
                     </Tooltip>
                 )}
@@ -201,7 +201,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         offset="0, 4px"
                     >
                         {shortcutManager.getActionKeys(
-                            keymap.TicketDetailContainer.actions
+                            shortcuts.TicketDetailContainer.actions
                                 .SUBMIT_CLOSE_TICKET,
                         )}
                     </Tooltip>

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useConditionalShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 
 import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'

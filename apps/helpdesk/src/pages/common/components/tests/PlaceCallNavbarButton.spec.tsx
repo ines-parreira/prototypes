@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { useConditionalShortcuts } from '@repo/utils'
 import {
     cleanup,
     fireEvent,
@@ -12,7 +13,6 @@ import {
     MICROPHONE_PERMISSION_ERROR_MESSAGE,
 } from 'business/twilio'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
@@ -21,7 +21,9 @@ import * as platform from 'utils/platform'
 
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
-jest.mock('hooks/useConditionalShortcuts')
+jest.mock('@repo/utils', () => ({
+    useConditionalShortcuts: jest.fn(),
+}))
 jest.mock('utils/device')
 jest.mock('../DeactivatedViewIcon', () => ({ tooltipText }: any) => (
     <div>{tooltipText}</div>

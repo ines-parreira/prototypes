@@ -1,5 +1,6 @@
 import { Component, createRef } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
@@ -12,7 +13,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { mergeTickets } from 'state/mergeTickets/actions'
 
 import BuildFinalTicket from './BuildFinalTicket'

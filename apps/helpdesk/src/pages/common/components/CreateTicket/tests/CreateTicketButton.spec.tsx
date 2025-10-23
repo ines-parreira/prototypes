@@ -1,12 +1,15 @@
 import { userEvent } from '@repo/testing'
+import { useConditionalShortcuts } from '@repo/utils'
 
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import { renderWithRouter } from 'utils/testing'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 
-jest.mock('hooks/useConditionalShortcuts', () => jest.fn())
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    useConditionalShortcuts: jest.fn(),
+}))
 
 jest.mock('../useHandleTicketDraft')
 const mockUseHandleTicketDraft = useHandleTicketDraft as jest.Mock

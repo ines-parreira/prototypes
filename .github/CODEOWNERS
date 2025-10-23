@@ -68,7 +68,6 @@ apps/helpdesk/src/pages/tickets @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/services/browserNotification.ts @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/services/NotificationSounds.ts @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/services/localForageManager @gorgias/support-agent-xp-frontend
-apps/helpdesk/src/services/shortcutManager @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/pages/common/components/Spotlight @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/pages/settings/teams @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/pages/settings/tags @gorgias/support-agent-xp-frontend
@@ -86,6 +85,7 @@ apps/helpdesk/src/state/entities/ruleRecipes @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/state/entities/rules @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/state/rules @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion @gorgias/support-agent-xp-frontend
+packages/utils/src/shortcuts @gorgias/support-agent-xp-frontend
 
 # Phone scope @gorgias/support-phone
 

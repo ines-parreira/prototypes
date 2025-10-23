@@ -119,3 +119,6 @@ catalogs:
   emoji-mart:
     'emoji-mart': '1.0.1'
     '@types/emoji-mart': '3.0.3'
+  mousetrap:
+    'mousetrap': '^1.6.5'
+    '@types/mousetrap': '^1.6.15'

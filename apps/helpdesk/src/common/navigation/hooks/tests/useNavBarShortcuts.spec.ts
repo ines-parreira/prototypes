@@ -1,11 +1,13 @@
 import { renderHook } from '@repo/testing'
-
-import useShortcuts from 'hooks/useShortcuts'
+import { useShortcuts } from '@repo/utils'
 
 import { useNavBar } from '../useNavBar/useNavBar'
 import { useNavBarShortcuts } from '../useNavBarShortcuts'
 
-jest.mock('hooks/useShortcuts', () => jest.fn())
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    useShortcuts: jest.fn(),
+}))
 jest.mock('../useNavBar/useNavBar', () => ({
     NavBarDisplayMode: {
         Open: 'open',

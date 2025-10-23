@@ -179,16 +179,12 @@ jest.mock('@gorgias/axiom', () => ({
     ),
 }))
 
-jest.mock('services/shortcutManager', () => ({
-    __esModule: true,
-    default: {
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
         getActionKeys: jest.fn(() => 'Cmd+Enter'),
     },
-}))
-
-jest.mock('config/shortcuts', () => ({
-    __esModule: true,
-    default: {
+    shortcuts: {
         TicketDetailContainer: {
             actions: {
                 SUBMIT_TICKET: {

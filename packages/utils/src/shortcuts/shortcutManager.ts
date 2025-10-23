@@ -6,33 +6,17 @@ import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
 import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap'
 
-import keymap from 'config/shortcuts'
-import { isEditable } from 'services/common/utils'
-
+import { shortcuts } from './shortcuts'
+import { KeyboardAction, KeyMap } from './types'
 import {
     closest,
     getModifier,
     isButton,
+    isEditable,
     isGlobalNavigationButton,
 } from './utils'
 
 const mousetrap = new Mousetrap()
-
-export type KeyboardAction = {
-    key: string | string[]
-    action?: (e: Event) => void
-    description: string
-    component?: string
-}
-
-export type KeymapActions = {
-    [key: string]: KeyboardAction
-}
-
-export type KeyMap = {
-    description?: string
-    actions: KeymapActions
-}
 
 export class ShortcutManager {
     constructor() {
@@ -65,7 +49,7 @@ export class ShortcutManager {
         return isEditable(element) || isButton(element)
     }
 
-    _keymap: typeof keymap & { [key: string]: KeyMap } = _clone(keymap)
+    _keymap: typeof shortcuts & { [key: string]: KeyMap } = _clone(shortcuts)
 
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
@@ -255,4 +239,4 @@ export class ShortcutManager {
     }
 }
 
-export default new ShortcutManager()
+export const shortcutManager = new ShortcutManager()

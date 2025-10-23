@@ -1,14 +1,15 @@
 import { renderHook } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import { act } from '@testing-library/react'
-
-import shortcutManager from 'services/shortcutManager'
 
 import { useModalShortcuts } from '../useModalShortcuts'
 import { useTicketModal } from '../useTicketModal'
 
-jest.mock('services/shortcutManager', () => ({
-    bind: jest.fn(),
-    unbind: jest.fn(),
+jest.mock('@repo/utils', () => ({
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
 }))
 
 const mockShortcutManager = shortcutManager as jest.Mocked<

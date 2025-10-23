@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -9,7 +10,6 @@ import {
     SpotlightContext,
     SpotlightContextType,
 } from 'providers/ui/SpotlightContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({
     __esModule: true,
@@ -22,7 +22,13 @@ jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({
     ),
 }))
 
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
+}))
 const mockShortcutManager = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >

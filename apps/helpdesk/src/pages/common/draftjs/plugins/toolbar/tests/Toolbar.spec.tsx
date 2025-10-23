@@ -25,7 +25,12 @@ const insertTextSpy = jest.spyOn(utils, 'insertText')
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+    },
+}))
 
 jest.mock('../components', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

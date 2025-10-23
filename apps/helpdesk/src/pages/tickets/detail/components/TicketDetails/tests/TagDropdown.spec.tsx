@@ -1,17 +1,19 @@
 import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
+import { useConditionalShortcuts } from '@repo/utils'
 import { render, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import { TagDropdownMenu } from 'tags'
 
 import TagDropdown from '../TagDropdown'
 
-jest.mock('hooks/useConditionalShortcuts')
+jest.mock('@repo/utils', () => ({
+    useConditionalShortcuts: jest.fn(),
+}))
 const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)
 
 jest.mock(

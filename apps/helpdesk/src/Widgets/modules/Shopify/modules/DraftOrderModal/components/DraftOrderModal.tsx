@@ -1,6 +1,7 @@
 import { useCallback, useContext, useMemo, useRef } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
+import { shortcutManager } from '@repo/utils'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -25,7 +26,6 @@ import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSea
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
     addRow,

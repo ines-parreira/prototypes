@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { act, render, RenderOptions } from '@testing-library/react'
 import { BackendFactory } from 'dnd-core'
 import { createMemoryHistory, History } from 'history'
@@ -11,7 +12,6 @@ import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { RootState } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

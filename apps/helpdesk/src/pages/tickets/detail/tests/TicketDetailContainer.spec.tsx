@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -29,7 +30,6 @@ import { useOutboundTranslationContext } from 'providers/OutboundTranslationProv
 import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { initialState as currentUser } from 'state/currentUser/reducers'
 import {
@@ -65,7 +65,13 @@ const voiceCallsSpy = jest.spyOn(voiceCallQueries, 'useListVoiceCalls')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = useCustomFieldDefinitions as jest.Mock
 
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
+}))
 jest.mock('../components/TicketView', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { TicketStatus } = require('business/types/ticket')

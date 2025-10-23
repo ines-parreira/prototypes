@@ -1,6 +1,7 @@
 // TODO: remove component entirely after Virtualization is tested out
 import { Component } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
 import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -10,7 +11,6 @@ import { connect, ConnectedProps } from 'react-redux'
 
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
-import shortcutManager from 'services/shortcutManager/index'
 import * as ticketSelectors from 'state/ticket/selectors'
 import { RootState } from 'state/types'
 

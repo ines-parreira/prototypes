@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { createEvent, fireEvent, render } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import BlankState from 'pages/common/components/BlankState/BlankState'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import Table from 'pages/common/components/ViewTable/Table'
 import Row from 'pages/common/components/ViewTable/Table/Row'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { RootState, StoreDispatch } from 'state/types'
 import { ViewNavDirection } from 'state/views/types'
 
@@ -60,7 +60,13 @@ jest.mock(
             </div>
         ),
 )
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
+}))
 
 jest.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({

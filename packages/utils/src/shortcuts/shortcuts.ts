@@ -1,8 +1,8 @@
 import { history } from '@repo/routing'
 
-import { KeyMap } from '../services/shortcutManager/shortcutManager'
+import { Shortcuts } from './types'
 
-const shortcuts: Record<string, KeyMap> = {
+export const shortcuts: Shortcuts = {
     App: {
         description: 'Global navigation',
         actions: {
@@ -293,5 +293,3 @@ const shortcuts: Record<string, KeyMap> = {
         },
     },
 }
-
-export default shortcuts

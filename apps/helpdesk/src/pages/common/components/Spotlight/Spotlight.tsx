@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 
+import { shortcutManager } from '@repo/utils'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import SpotlightModal from 'pages/common/components/Spotlight/SpotlightModal'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 const Spotlight = () => {
     const { isOpen, setIsOpen } = useContext(SpotlightContext)

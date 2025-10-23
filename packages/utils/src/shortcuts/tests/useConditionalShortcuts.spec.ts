@@ -1,13 +1,15 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import shortcutManager from 'services/shortcutManager'
+import { shortcutManager } from '../shortcutManager'
+import { useConditionalShortcuts } from '../useConditionalShortcuts'
 
-import useConditionalShortcuts from '../useConditionalShortcuts'
-
-jest.mock('services/shortcutManager', () => ({
-    bind: jest.fn(),
-    unbind: jest.fn(),
+vi.mock('../shortcutManager', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    shortcutManager: {
+        bind: vi.fn(),
+        unbind: vi.fn(),
+    },
 }))
 
 describe('useConditionalShortcuts', () => {
@@ -17,8 +19,8 @@ describe('useConditionalShortcuts', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
-        jest.restoreAllMocks()
+        vi.resetAllMocks()
+        vi.restoreAllMocks()
     })
 
     it('should bind the given actions on mount', () => {

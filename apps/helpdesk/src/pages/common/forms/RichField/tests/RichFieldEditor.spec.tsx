@@ -1,5 +1,6 @@
 import React, { ComponentProps, LegacyRef } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { fireEvent, render } from '@testing-library/react'
 import { convertToHTML } from 'draft-convert'
 import { ContentState, EditorState } from 'draft-js'
@@ -8,7 +9,6 @@ import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import { Provider } from 'react-redux'
 
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import { convertFromHTML } from 'utils/editor'
 import { mockStore } from 'utils/testing'
 
@@ -18,7 +18,13 @@ import { RichFieldEditor } from '../RichFieldEditor'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock('services/shortcutManager/shortcutManager')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        denylist: jest.fn(),
+        clear: jest.fn(),
+    },
+}))
 
 describe('RichFieldEditor', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> = {

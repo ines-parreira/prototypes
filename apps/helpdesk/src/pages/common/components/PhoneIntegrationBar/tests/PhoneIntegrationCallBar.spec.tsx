@@ -1,9 +1,9 @@
 import { assumeMock } from '@repo/testing'
+import { useConditionalShortcuts } from '@repo/utils'
 import { Call, Device } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import client from 'models/api/resources'
 import { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { initialState } from 'state/twilio/voiceDevice'
@@ -18,7 +18,9 @@ import { renderWithRouter } from 'utils/testing'
 import PhoneIntegrationCallBar from '../PhoneIntegrationCallBar'
 
 jest.mock('@twilio/voice-sdk')
-jest.mock('hooks/useConditionalShortcuts')
+jest.mock('@repo/utils', () => ({
+    useConditionalShortcuts: jest.fn(),
+}))
 
 jest.mock('../OngoingPhoneCall/OngoingPhoneCall', () => () => (
     <div data-testid="ongoing-phone-call" />

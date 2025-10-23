@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
+import { shortcutManager, shortcuts, useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 
 import { Badge } from '@gorgias/axiom'
 
-import keymap from 'config/shortcuts'
-import useShortcuts from 'hooks/useShortcuts'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import shortcutManager from 'services/shortcutManager'
 
 import css from './KeyboardHelp.less'
 
@@ -42,8 +40,8 @@ export default function KeyboardHelp() {
         >
             <ModalHeader title="Keyboard shortcuts" />
             <ModalBody className={css.content}>
-                {Object.keys(keymap).map((componentName, i) => {
-                    const component = keymap[componentName]
+                {Object.keys(shortcuts).map((componentName, i) => {
+                    const component = shortcuts[componentName]
                     const actions = component.actions
 
                     return (

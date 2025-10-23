@@ -22,6 +22,7 @@ import React, {
     ReactNode,
 } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
@@ -35,7 +36,6 @@ import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.
 import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
 import createGuidanceActionsPlugin from 'pages/common/draftjs/plugins/guidanceActions'
 import { addVideo } from 'pages/common/draftjs/plugins/utils'
-import shortcutManager from 'services/shortcutManager'
 import { extractUrlsFromString } from 'utils'
 
 import { notify } from '../../../../state/notifications/actions'

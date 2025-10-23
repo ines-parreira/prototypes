@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useContext, useMemo } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -16,7 +17,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     onCancel,
     onInit,

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
@@ -14,7 +15,6 @@ import {
     logActivityEvent,
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
-import shortcutManager from 'services/shortcutManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 
@@ -45,8 +45,11 @@ jest.mock(
             unregisterAppActivityTrackerHooks: jest.fn(),
         }) as typeof import('services/activityTracker'),
 )
-jest.mock('services/shortcutManager', () => ({
-    triggerAction: jest.fn(),
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        triggerAction: jest.fn(),
+    },
 }))
 
 jest.mock(

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { shortcutManager } from '@repo/utils'
 import _debounce from 'lodash/debounce'
 import { DropTargetMonitor } from 'react-dnd'
 import { connect, ConnectedProps } from 'react-redux'
@@ -31,7 +32,6 @@ import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     SplitTicketViewToggle,
     useSplitTicketViewSwitcher,

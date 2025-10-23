@@ -1,5 +1,6 @@
 import React, { Component, ContextType, KeyboardEvent, useEffect } from 'react'
 
+import { closest } from '@repo/utils'
 import { EditorState, Modifier } from 'draft-js'
 import ReactPlayer from 'react-player'
 import { connect, ConnectedProps } from 'react-redux'
@@ -19,7 +20,6 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
-import { closest } from 'services/shortcutManager/utils'
 import { linkEditionEnded, linkEditionStarted } from 'state/ui/editor/actions'
 import {
     focusToTheEndOfContent,

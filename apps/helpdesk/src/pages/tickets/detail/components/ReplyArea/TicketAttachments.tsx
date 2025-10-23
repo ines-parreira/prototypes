@@ -1,5 +1,6 @@
 import React, { Component, MouseEvent } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import Lightbox from 'react-images'
@@ -11,7 +12,6 @@ import { ContactFormAttachmentContainer } from 'pages/convert/campaigns/componen
 import { getIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 import { DiscountOfferTicketAttachment } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
-import shortcutManager from 'services/shortcutManager/index'
 import { proxifyURL, replaceAttachmentURL } from 'utils'
 
 import css from './TicketAttachments.less'

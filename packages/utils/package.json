@@ -1,0 +1,54 @@
+{
+    "name": "@repo/utils",
+    "version": "1.0.0",
+    "description": "Shared low level utilities for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@repo/routing": "workspace:*",
+        "lodash": "catalog:lodash",
+        "mousetrap": "catalog:mousetrap",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "react-router": "catalog:react-router",
+        "react-router-dom": "catalog:react-router"
+    },
+    "devDependencies": {
+        "@repo/config": "workspace:*",
+        "@repo/routing": "workspace:*",
+        "@repo/types": "workspace:*",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/lodash": "catalog:lodash",
+        "@types/history": "catalog:react-router",
+        "@types/mousetrap": "catalog:mousetrap",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@types/react-router": "catalog:react-router",
+        "@types/react-router-dom": "catalog:react-router",
+        "@vitest/coverage-v8": "catalog:test",
+        "lodash": "catalog:lodash",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "react-router": "catalog:react-router",
+        "react-router-dom": "catalog:react-router",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

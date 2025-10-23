@@ -1,10 +1,12 @@
-import { renderHook } from '@repo/testing'
+import { renderHook } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import useConditionalShortcuts from '../useConditionalShortcuts'
-import useShortcuts from '../useShortcuts'
+import { useConditionalShortcuts } from '../useConditionalShortcuts'
+import { useShortcuts } from '../useShortcuts'
 
-jest.mock('../useConditionalShortcuts', () => jest.fn())
+vi.mock('../useConditionalShortcuts', () => ({
+    useConditionalShortcuts: vi.fn(),
+}))
 
 describe('useShortcuts', () => {
     const component = 'MyComponent'
@@ -13,8 +15,8 @@ describe('useShortcuts', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
-        jest.restoreAllMocks()
+        vi.resetAllMocks()
+        vi.restoreAllMocks()
     })
 
     it('should bind the given actions on mount', () => {

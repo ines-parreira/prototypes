@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import shortcutManager from 'services/shortcutManager'
+import { shortcutManager } from '@repo/utils'
 
 interface Options {
     next: () => void

@@ -1,6 +1,7 @@
 import { useCallback, useContext, useMemo, useRef } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
+import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -18,7 +19,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
     addRow,

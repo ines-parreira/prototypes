@@ -1,10 +1,10 @@
 import { useRef } from 'react'
 
+import { useShortcuts } from '@repo/utils'
 import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
-import useShortcuts from 'hooks/useShortcuts'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

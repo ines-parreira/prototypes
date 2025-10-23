@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -18,7 +19,6 @@ import {
     logActivityEvent,
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
-import shortcutManager from 'services/shortcutManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'

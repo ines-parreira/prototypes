@@ -1,13 +1,15 @@
 import { renderHook } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import _noop from 'lodash/noop'
-
-import shortcutManager from 'services/shortcutManager'
 
 import useKeyboardNavigation from '../useKeyboardNavigation'
 
-jest.mock('services/shortcutManager', () => ({
-    bind: jest.fn(),
-    unbind: jest.fn(),
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
 }))
 
 describe('useKeyboardNavigation', () => {

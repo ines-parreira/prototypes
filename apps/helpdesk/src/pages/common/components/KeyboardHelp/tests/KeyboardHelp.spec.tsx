@@ -1,23 +1,47 @@
-import React from 'react'
-
+import { shortcuts } from '@repo/utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import keymap from 'config/shortcuts'
-import shortcutManager from 'services/shortcutManager'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
 
-jest.mock('services/shortcutManager')
-const shortcutManagerMock = shortcutManager as jest.Mocked<
-    typeof shortcutManager
->
 const badgeContentMock = 'badgeContentMock'
-shortcutManagerMock.getActionKeys.mockImplementation((action) => {
-    const key =
-        typeof action.key === 'string' ? action.key : action.key.join(',')
-    return `${key}${badgeContentMock}`
+
+jest.mock('@repo/utils', () => {
+    const React = jest.requireActual('react')
+    const actual = jest.requireActual('@repo/utils')
+    const mockBind = jest.fn()
+    const mockUnbind = jest.fn()
+    const mockGetActionKeys = jest.fn((action) => {
+        const key =
+            typeof action.key === 'string' ? action.key : action.key.join(',')
+        return `${key}${badgeContentMock}`
+    })
+    const mockPause = jest.fn()
+    const mockUnpause = jest.fn()
+
+    return {
+        ...actual,
+        shortcutManager: {
+            bind: mockBind,
+            unbind: mockUnbind,
+            getActionKeys: mockGetActionKeys,
+            pause: mockPause,
+            unpause: mockUnpause,
+        },
+        useShortcuts: (component: string, actions: Record<string, any>) => {
+            React.useEffect(() => {
+                mockBind(component, actions)
+                return () => {
+                    mockUnbind(component)
+                }
+            }, [actions, component])
+        },
+    }
 })
+
+// Get the mocked shortcutManager from the module
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
 
 const shortcutEventMock = {
     preventDefault: jest.fn(),
@@ -34,11 +58,13 @@ describe('<KeyboardHelp />', () => {
         )('SHOW_HELP')
 
         expect(screen.getByText(/Keyboard shortcuts/)).toBeInTheDocument()
-        expect(screen.getByText(keymap['App'].description!)).toBeInTheDocument()
+        expect(
+            screen.getByText(shortcuts['App'].description!),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(
                 `${
-                    keymap['App'].actions.GO_HOME.key as string
+                    shortcuts['App'].actions.GO_HOME.key as string
                 }${badgeContentMock}`,
             ),
         ).toBeInTheDocument()

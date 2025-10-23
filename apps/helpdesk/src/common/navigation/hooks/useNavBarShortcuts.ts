@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useShortcuts from 'hooks/useShortcuts'
+import { useShortcuts } from '@repo/utils'
 
 import { useNavBar } from './useNavBar/useNavBar'
 

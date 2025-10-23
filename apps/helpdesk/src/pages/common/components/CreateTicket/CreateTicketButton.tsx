@@ -1,5 +1,6 @@
 import { ReactElement, useRef } from 'react'
 
+import { useConditionalShortcuts } from '@repo/utils'
 import { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,6 @@ import {
     type LegacyButtonIntent as ButtonIntent,
 } from '@gorgias/axiom'
 
-import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import shortcutManager from 'services/shortcutManager'
+import { shortcutManager } from '@repo/utils'
 
 import { useTicketModal } from './useTicketModal'
 
