@@ -5,6 +5,7 @@ import _capitalize from 'lodash/capitalize'
 import { Button } from 'reactstrap'
 
 import * as viewsConfig from 'config/views'
+import { OBJECT_PATHS, OBJECT_TYPES } from 'custom-fields/constants'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import QAScoreSelect from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
 import { getQaScoreDimensionFromObjectPath } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
@@ -32,6 +33,8 @@ export default function Left({
     )
 
     const isCustomFieldObject = suffixPath.includes('custom_fields')
+    const isCustomerFieldObject =
+        isCustomFieldObject && suffixPath.includes(OBJECT_PATHS.CUSTOMER)
     const isQaScoreFieldObject = suffixPath.includes('qa_score_dimensions')
 
     const qaScoreDimension = useMemo(
@@ -50,7 +53,9 @@ export default function Left({
     const field = fields.find(
         (f: Map<any, any>) =>
             f.get('path') === suffixPath ||
-            (isCustomFieldObject && f.get('path') === 'custom_fields') ||
+            (isCustomerFieldObject &&
+                f.get('path') === OBJECT_PATHS.CUSTOMER) ||
+            (isCustomFieldObject && f.get('path') === OBJECT_PATHS.TICKET) ||
             (isQaScoreFieldObject && f.get('path') === 'qa_score_dimensions'),
     ) as Map<any, any>
 
@@ -72,6 +77,11 @@ export default function Left({
                     value={customFieldId}
                     onChange={onCustomFieldChange}
                     showManagedFields={true}
+                    objectType={
+                        isCustomerFieldObject
+                            ? OBJECT_TYPES.CUSTOMER
+                            : OBJECT_TYPES.TICKET
+                    }
                 />
             )}
         </>

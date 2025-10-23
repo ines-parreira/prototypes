@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import { OBJECT_PATHS } from 'custom-fields/constants'
 import { IntegrationType } from 'models/integration/constants'
 import { IntegrationFromType } from 'models/integration/types'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
@@ -269,6 +270,16 @@ describe('<Right />', () => {
             objectPath: 'ticket.custom_fields[123].value',
         }
 
+        const customerCustomFieldProps = {
+            ...baseCustomFieldProps,
+            field: fromJS({
+                name: 'customer_field',
+                title: 'Customer Field',
+                path: OBJECT_PATHS.CUSTOMER,
+            }),
+            objectPath: `ticket.${OBJECT_PATHS.CUSTOMER}[456].value`,
+        }
+
         it('should set rendered custom field value on mount', () => {
             render(
                 <Provider store={store}>
@@ -392,6 +403,27 @@ describe('<Right />', () => {
 
             expect(screen.queryByText(/Custom:/)).not.toBeInTheDocument()
         })
+
+        it('should handle customer custom field expressions', async () => {
+            const user = userEvent.setup()
+
+            const { container } = render(
+                <Provider store={store}>
+                    <RightContainer
+                        {...minProps}
+                        {...customerCustomFieldProps}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Value: "foo"')).toBeInTheDocument()
+
+            await act(async () => {
+                await user.click(container.firstChild as Element)
+            })
+
+            expect(screen.getByText('Value: "baz"')).toBeInTheDocument()
+        })
     })
 
     it('should render plain danger button when no field is present, but a value is passed in node', () => {
@@ -406,6 +438,21 @@ describe('<Right />', () => {
         )
 
         expect(screen.getByText('true')).toHaveClass('btn-outline-danger')
+    })
+
+    it('should render plain danger button for custom field when metadata is missing', () => {
+        render(
+            <Provider store={store}>
+                <RightContainer
+                    {...minProps}
+                    field={undefined}
+                    objectPath="ticket.custom_fields[123].value"
+                    node={{ value: 'foo', raw: "'foo'", type: 'Literal' }}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('foo')).toHaveClass('btn-outline-danger')
     })
 
     it('should render nothing when no field is present and no value is passed in node', () => {

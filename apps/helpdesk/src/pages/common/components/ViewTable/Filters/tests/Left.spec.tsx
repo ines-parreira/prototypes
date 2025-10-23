@@ -4,6 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import { view } from 'fixtures/views'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import Left from 'pages/common/components/ViewTable/Filters/Left'
@@ -85,7 +86,26 @@ describe('<Left />', () => {
 
         expect(getByText('Custom Field Select')).toBeInTheDocument()
         expect(CustomFieldSelectMock).toHaveBeenCalledWith(
-            expect.objectContaining({ value: 123 }),
+            expect.objectContaining({
+                value: 123,
+                objectType: OBJECT_TYPES.TICKET,
+            }),
+            {},
+        )
+    })
+
+    it('should render CustomFieldSelect with customer object type when the objectPath includes "customer.custom_fields"', () => {
+        const { getByText } = renderComponent({
+            ...props,
+            objectPath: 'ticket.customer.custom_fields[456].value',
+        })
+
+        expect(getByText('Custom Field Select')).toBeInTheDocument()
+        expect(CustomFieldSelectMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                value: 456,
+                objectType: OBJECT_TYPES.CUSTOMER,
+            }),
             {},
         )
     })

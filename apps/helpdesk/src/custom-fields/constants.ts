@@ -12,6 +12,11 @@ export const OBJECT_TYPES = {
     CUSTOMER: 'Customer',
 } as const
 
+export const OBJECT_PATHS = {
+    TICKET: 'custom_fields',
+    CUSTOMER: 'customer.custom_fields',
+} as const
+
 export const OBJECT_TYPE_SETTINGS: {
     [key in CustomFieldObjectTypes]: {
         LABEL: string

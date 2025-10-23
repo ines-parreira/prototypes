@@ -19,6 +19,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { BASIC_OPERATORS, UNARY_OPERATORS } from 'config'
+import { OBJECT_PATHS } from 'custom-fields/constants'
 import { RootState } from 'state/types'
 import { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
@@ -110,12 +111,16 @@ export const CallExpression = ({
     const objectPath = resolveObjectPath(left)
 
     const isCustomFieldPath = objectPath.includes('custom_fields')
+    const isCustomerFieldPath =
+        isCustomFieldPath && objectPath.includes(OBJECT_PATHS.CUSTOMER)
     const isQaScoreFieldPath = objectPath.includes('qa_score_dimensions')
     const fields: List<any> = config.get('fields', fromJS([]))
     const field = fields.find(
         (field: Map<any, any>) =>
             objectPath === `${config.get('singular')}.${fieldPath(field)}` ||
-            (isCustomFieldPath && fieldPath(field) === 'custom_fields') ||
+            (isCustomerFieldPath &&
+                fieldPath(field) === OBJECT_PATHS.CUSTOMER) ||
+            (isCustomFieldPath && fieldPath(field) === OBJECT_PATHS.TICKET) ||
             (isQaScoreFieldPath && fieldPath(field) === 'qa_score_dimensions'),
     )
 

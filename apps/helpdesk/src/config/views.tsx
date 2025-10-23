@@ -7,6 +7,7 @@ import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { BASE_VIEW_ID } from 'constants/view'
+import { OBJECT_PATHS } from 'custom-fields/constants'
 import { OrderDirection } from 'models/api/types'
 import {
     EntityType,
@@ -337,9 +338,16 @@ export const defaultTicketView = {
             },
         },
         {
+            name: ViewField.CustomerField,
+            title: 'Customer field',
+            path: OBJECT_PATHS.CUSTOMER,
+            show: false,
+            filter: {},
+        },
+        {
             name: ViewField.TicketField,
             title: 'Ticket field',
-            path: 'custom_fields',
+            path: OBJECT_PATHS.TICKET,
             filter: {},
             show: false,
         },

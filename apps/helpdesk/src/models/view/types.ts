@@ -45,6 +45,7 @@ export enum ViewField {
     Closed = 'closed',
     Snooze = 'snooze',
     TicketField = 'ticket_field',
+    CustomerField = 'customer_field',
     CSATScore = 'csat_score',
     QAScore = 'qa_score',
     Priority = 'priority',

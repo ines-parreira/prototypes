@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { OBJECT_PATHS, OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -29,6 +30,10 @@ export default function useCustomFieldsFilters({
         [objectPath],
     )
 
+    const objectType = objectPath.includes(OBJECT_PATHS.CUSTOMER)
+        ? OBJECT_TYPES.CUSTOMER
+        : OBJECT_TYPES.TICKET
+
     const { data: customField } = useCustomFieldDefinition(
         // @ts-ignore - customFieldId can be null - but the query is disabled in that case
         customFieldId,
@@ -41,7 +46,7 @@ export default function useCustomFieldsFilters({
 
     const customFields = useCustomFieldDefinitions({
         archived: false,
-        object_type: 'Ticket',
+        object_type: objectType,
     })
 
     const activeCustomFields = useMemo(() => {

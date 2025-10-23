@@ -36,6 +36,7 @@ import { LegacyButton as Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { getConfigByName } from 'config/views'
 import { useFlag } from 'core/flags'
+import { OBJECT_PATHS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -383,6 +384,10 @@ export const FilterTopbar = ({
         FeatureFlagKey.FilterViewsByTicketFields,
     )
 
+    const isCustomerFieldsViewFilterEnabled = useFlag(
+        FeatureFlagKey.TicketCustomerFieldsInSearchAndViews,
+    )
+
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const isFilterViewsByStoreEnabled = useFlag(
@@ -404,8 +409,12 @@ export const FilterTopbar = ({
                         return false
                     }
 
-                    if (field.get('path', '') === 'custom_fields') {
+                    if (field.get('path', '') === OBJECT_PATHS.TICKET) {
                         return isSearch ? true : isTicketFieldsViewFilterEnabled
+                    }
+
+                    if (field.get('path', '') === OBJECT_PATHS.CUSTOMER) {
+                        return isCustomerFieldsViewFilterEnabled
                     }
 
                     if (
@@ -424,6 +433,7 @@ export const FilterTopbar = ({
             isSearch,
             isTicketFieldsViewFilterEnabled,
             hasAutomate,
+            isCustomerFieldsViewFilterEnabled,
         ],
     )
 

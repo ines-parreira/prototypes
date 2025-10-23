@@ -10,12 +10,14 @@ import {
     useGetStoreMappingsByAccountId,
 } from '@gorgias/helpdesk-queries'
 
+import { OBJECT_PATHS } from 'custom-fields/constants'
 import { CustomField } from 'custom-fields/types'
 import { view as viewFixture } from 'fixtures/views'
 import useAppSelector from 'hooks/useAppSelector'
 import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
 import Left from 'pages/common/components/ViewTable/Filters/Left'
 import Right from 'pages/common/components/ViewTable/Filters/Right'
+import { getAST, getFirstExpressionOfAST } from 'utils'
 
 import { CallExpression } from '../CallExpression'
 import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'
@@ -85,6 +87,10 @@ const callExpressionNode = {
     ],
 } as ESCallExpression
 
+const customerCustomFieldCallExpression = getFirstExpressionOfAST(
+    getAST("eq(ticket.customer.custom_fields['123'].value, 'vip')"),
+).toJS() as ESCallExpression
+
 const minProps: ComponentProps<typeof CallExpression> = {
     node: callExpressionNode,
     view: fromJS(viewFixture),
@@ -142,9 +148,17 @@ const minProps: ComponentProps<typeof CallExpression> = {
 
 describe('<CallExpression />', () => {
     beforeEach(() => {
+        RightMock.mockClear()
         LeftMock.mockImplementation(() => <div>Left</div>)
         useCustomFieldsFiltersMock.mockReturnValue({
-            customField: {} as CustomField,
+            customField: {
+                definition: {
+                    data_type: 'text',
+                    input_settings: {
+                        input_type: 'dropdown',
+                    },
+                },
+            } as unknown as CustomField,
             activeCustomFields: [],
             onCustomFieldChange: jest.fn(),
         })
@@ -256,5 +270,37 @@ describe('<CallExpression />', () => {
                 expect.anything(),
             )
         })
+    })
+
+    it('should resolve customer custom field config when path targets customer custom fields', () => {
+        const configWithCustomFields = fromJS({
+            singular: 'ticket',
+            fields: [
+                {
+                    name: 'customer_field',
+                    title: 'Customer field',
+                    path: OBJECT_PATHS.CUSTOMER,
+                },
+                {
+                    name: 'ticket_field',
+                    title: 'Ticket field',
+                    path: OBJECT_PATHS.TICKET,
+                },
+            ],
+        })
+
+        render(
+            <CallExpression
+                {...minProps}
+                node={customerCustomFieldCallExpression}
+                config={configWithCustomFields}
+            />,
+        )
+
+        const rightProps = RightMock.mock.calls[0][0]
+        const { field } = rightProps
+        expect(field).toBeDefined()
+        expect(field!.get('path')).toBe(OBJECT_PATHS.CUSTOMER)
+        expect(field!.get('title')).toBe('Customer field')
     })
 })

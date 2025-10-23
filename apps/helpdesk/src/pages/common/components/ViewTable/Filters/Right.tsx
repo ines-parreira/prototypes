@@ -39,7 +39,7 @@ import { RootState } from 'state/types'
 import { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
 import { FieldSearchResult } from 'state/views/types'
-import { formatDatetime, getLanguageDisplayName } from 'utils'
+import { fieldPath, formatDatetime, getLanguageDisplayName } from 'utils'
 import { stringToDatetime } from 'utils/date'
 
 import { getCustomFieldIdFromObjectPath, getMultiSelectLabel } from './utils'
@@ -90,14 +90,14 @@ export class RightContainer extends Component<Props, State> {
                     // Automatically set the first option
                     // if the operator is not an empty operator AND the field has only one option
                     this._selectFirstOption()
-                } else if (this._isTicketFieldExpression()) {
+                } else if (this._isCustomFieldExpression()) {
                     this.setState({
                         renderedCustomFieldValue:
                             node.value as CustomFieldValue,
                     })
                 }
             } else if (
-                this._isTicketFieldExpression() &&
+                this._isCustomFieldExpression() &&
                 (node as ArrayExpression)?.type === 'ArrayExpression'
             ) {
                 this.setState({
@@ -124,7 +124,7 @@ export class RightContainer extends Component<Props, State> {
         const { node } = nextProps
 
         if (
-            this._isTicketFieldExpression() &&
+            this._isCustomFieldExpression() &&
             (!node ||
                 (typeof (node as Literal).value !== 'boolean' &&
                     !(node as Literal).value &&
@@ -135,8 +135,12 @@ export class RightContainer extends Component<Props, State> {
         }
     }
 
-    _isTicketFieldExpression = () => {
-        return this.props.field?.get('name') === 'ticket_field'
+    _isCustomFieldExpression = () => {
+        if (!this.props.field) {
+            return false
+        }
+
+        return fieldPath(this.props.field).includes('custom_fields')
     }
 
     _selectFirstOption = () => {
@@ -474,7 +478,7 @@ export class RightContainer extends Component<Props, State> {
                     />
                 )
             }
-        } else if (this._isTicketFieldExpression()) {
+        } else if (this._isCustomFieldExpression()) {
             const customFieldId = getCustomFieldIdFromObjectPath(
                 this.props.objectPath,
             )
